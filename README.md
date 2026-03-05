@@ -1,4 +1,4 @@
-# dreadrith-drm-re
+# dreadtools-unlocked
 
 Reverse engineering of the DRM system used by two discontinued [DreadScripts](https://dreadscripts.com) Unity Editor plugins. The backend validation server (`us-central1-dreadscripts-c6b62.cloudfunctions.net`) is permanently offline, making legitimately purchased products non-functional.
 
