@@ -35,6 +35,10 @@ Full reverse engineering notes are in [`DRM.md`](DRM.md).
 
 ```
 drm_server/                # Go HTTPS server: intercepts DRM endpoint, returns licensed
+ilspy_export/              # ILSpy decompiled source of the obfuscated DLLs
+  ADOverhaul2019/          # ADOverHaul (2019 build)
+  ADOverhaul2022/          # ADOverHaul (2022 build)
+  ControllerEditor/        # ControllerEditor
 DRM.md                     # Full reverse engineering documentation
 ```
 
