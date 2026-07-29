@@ -882,31 +882,22 @@ for (;;) {
 
 Since the backend is offline and permanently returns `success=false`, the DSLICINF cache write path is never triggered under normal circumstances.
 
-### ADOverhaul — `ADORestorationPatch`
-
-Strategy (Options A+B combined):
-- **Postfix on `AssetConfiguration`:** After it runs, set `_Service=true`, `_Reponse=true`, `_Worker=true`, `_Struct=false` via reflection; call `ResolveConfiguration(true)` to fire the callback chain.
-- **Dialog suppressor:** Prefixes `EditorUtility.DisplayDialog` to suppress the server-down popup when `_Service=true`.
-- **Direct field set on install:** `[InitializeOnLoad]` forces fields via reflection immediately on domain reload.
-- **Class lookup:** by name `DreadScripts.ADOverhaul.IdentifierSerializerConnector`; falls back to TypeDef token `0x0200000D` for the original (non-de4dot) DLL.
-- **Method lookup:** `AssetConfiguration` by name; falls back to `static void(bool)` signature matching.
-
-### ControllerEditor — `CERestorationPatch`
-
-Strategy:
-- **Postfix on `VerifyAnnotation`:** Set `m_DispatcherAnnotation=true` after every DRM startup check.
-- **Dialog suppressor:** Same pattern as ADO.
-- **Class lookup:** `DreadScripts.ControllerEditor.ControllerEditor`; falls back to TypeDef token `0x0200001F` (RID 31).
-- **Method lookup:** `VerifyAnnotation` by name; falls back to `[InitializeOnLoadMethod] static void()` signature.
+> **Abandoned:** A runtime Harmony-patch approach (`ADORestorationPatch` / `CERestorationPatch`) was
+> prototyped but has been removed. **No patches are maintained.** The DRM field maps documented
+> elsewhere in this file record which fields gate each license (`_Service` for ADOverhaul,
+> `m_DispatcherAnnotation` for ControllerEditor) for reference only.
 
 ### Mock Server
 
-`mock_server/main.go` — a Go HTTPS server that accepts all requests and returns `success: true`. To use:
-1. Add hosts entry: `127.0.0.1  us-central1-dreadscripts-c6b62.cloudfunctions.net`
-2. Generate and install the self-signed TLS cert into the Windows Trusted Root CA store
-3. Run `go run .` (requires port 443 admin access, or `-addr :8443`)
+`drm_server/` — a Go HTTPS server that accepts all requests and returns `success: true`. To use:
+1. `drm_server.exe patch-hosts` (or manually add `127.0.0.1  us-central1-dreadscripts-c6b62.cloudfunctions.net` to the hosts file)
+2. `drm_server.exe install-cert` (installs the self-signed TLS cert into the Windows Trusted Root CA store)
+3. `drm_server.exe serve` (requires port 443 admin access, or `serve --addr :8443`)
 
-The mock server accepts all commands and returns appropriate stub responses. This causes the DLL to write a valid DSLICINF cache after activation.
+Or run `install.ps1` from an elevated prompt to do all of the above plus register it as an auto-start
+Windows service in one step. See `drm_server/README.md` for full details.
+
+The server accepts all commands and returns appropriate stub responses. This causes the DLL to write a valid DSLICINF cache after activation.
 
 ### Synthetic DSLICINF (Option C — not yet implemented)
 
