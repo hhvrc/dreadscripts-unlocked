@@ -12,10 +12,29 @@ go build -o drm_server.exe .
 Or run directly:
 
 ```
-go run .
+go run . serve
 ```
 
-## Setup (two steps required)
+## Quick install (Windows, recommended)
+
+From an elevated PowerShell prompt in this folder, after building `drm_server.exe`:
+
+```
+.\install.ps1
+```
+
+This copies the binary to `C:\ProgramData\DreadScriptsDRM\`, patches the hosts file, installs the
+self-signed cert, and registers + starts a Windows auto-start service — one command, no manual
+steps. To remove everything:
+
+```
+.\uninstall.ps1
+```
+
+(The cert stays in the Windows Root store afterward — remove it manually via **certmgr.msc** →
+Trusted Root Certification Authorities → "DreadScripts DRM Server" → Delete, if desired.)
+
+## Manual setup (two steps required)
 
 ### 1. Redirect DNS to localhost
 
@@ -86,8 +105,8 @@ But note: the DLL hardcodes port 443 (standard HTTPS), so with a non-443 port yo
 
 | `command` | Response |
 |---|---|
-| `activatelicense` | `success=true`, welcome message |
-| `verifylicense` | `success=true` |
+| `activatelicense` | `success=true`, `message="License verified."`, plus date/username/HMAC token/HWID fields for the DSLICINF cache |
+| `verifylicense` | Same as `activatelicense` — both call the identical grant path |
 | `getdownloadinfo` | `success=true`, "no update available" |
 | `sendfeedback` | `success=true` |
 | `findsolution` | `success=true` |
