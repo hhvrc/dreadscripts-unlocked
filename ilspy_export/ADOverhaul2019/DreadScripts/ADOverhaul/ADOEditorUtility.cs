@@ -3171,9 +3171,9 @@ internal static class ADOEditorUtility
 		{
 			reg = new Color(0.3f, 0.7f, 1f);
 		}
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, Color.clear))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, reg.Value))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, reg.Value))
 			{
 				bool result = AwakeManager(key, ManageRequest().m_WatcherTemplate, GUILayout.ExpandWidth(expand: false));
 				IncludeManager(reg);

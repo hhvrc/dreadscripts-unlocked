@@ -10,7 +10,7 @@ namespace DreadScripts.ControllerEditor;
 
 internal class MenuSelector : EditorWindow
 {
-	private AuthenticationThread _ExceptionThread;
+	private MenuExpressionTreeView _ExceptionThread;
 
 	private bool objectThread = true;
 
@@ -40,7 +40,7 @@ internal class MenuSelector : EditorWindow
 	{
 		MenuSelector window = EditorWindow.GetWindow<MenuSelector>("Menu Selector");
 		VRCExpressionsMenu asset = ((m_MerchantThread == null) ? reference : ((!valueThread.Contains(reference)) ? reference : m_MerchantThread));
-		window._ExceptionThread = new AuthenticationThread(asset);
+		window._ExceptionThread = new MenuExpressionTreeView(asset);
 		window._ExceptionThread.repositoryThread = window.FindRecord;
 		window.m_ValThread = caller;
 		window.utilsThread = column_c;
@@ -78,10 +78,10 @@ internal class MenuSelector : EditorWindow
 		EditorGUI.DrawRect(rect3, new Color(0.2f, 0.2f, 0.2f));
 		EditorGUI.DrawRect(rect2, new Color(0.25f, 0.25f, 0.25f));
 		EditorGUI.BeginChangeCheck();
-		bool parameterThread = GUI.Toggle(rect4, AuthenticationThread.m_ParameterThread, content);
+		bool parameterThread = GUI.Toggle(rect4, MenuExpressionTreeView.m_ParameterThread, content);
 		if (EditorGUI.EndChangeCheck())
 		{
-			AuthenticationThread.m_ParameterThread = parameterThread;
+			MenuExpressionTreeView.m_ParameterThread = parameterThread;
 			_ExceptionThread.Reload();
 		}
 		using (new EditorGUI.DisabledScope(!_ExceptionThread.HasSelection() || _ExceptionThread.GetSelection().All((int ident) => !_ExceptionThread.m_ReponseThread.ContainsKey(ident) || !_ExceptionThread.m_ReponseThread[ident].RestartError(1))))

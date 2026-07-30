@@ -381,7 +381,7 @@ internal sealed class LicenseManager
 				{
 					if (string.IsNullOrWhiteSpace(m_Mapping))
 					{
-						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._EventSerializer))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._EventSerializer))
 						{
 							GUILayout.Label("No solution Found! Please write the steps to reproduce this issue below:");
 						}
@@ -436,14 +436,14 @@ internal sealed class LicenseManager
 					}
 					if (!queue)
 					{
-						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._EventSerializer))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._EventSerializer))
 						{
 							GUILayout.Label("Known issue! Details:");
 						}
 					}
 					else
 					{
-						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._ObserverSerializer))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._ObserverSerializer))
 						{
 							GUILayout.Label("Solution Found!");
 						}
@@ -459,7 +459,7 @@ internal sealed class LicenseManager
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
 					GUILayout.Label(ADOEditorUtility.CustomizeRef().reponseSerializer, ADOEditorUtility.MapRef().m_ProducerSerializer);
-					using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._BroadcasterSerializer))
+					using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._BroadcasterSerializer))
 					{
 						GUILayout.Label("There was an issue contacting the server for a solution.");
 					}
@@ -2752,7 +2752,7 @@ internal sealed class LicenseManager
 				}, GUILayout.ExpandWidth(expand: false));
 				bool flag;
 				string text = ((!(flag = RefImporterDescriptor.GetConsumer().globalGizmo)) ? "Local Setting" : "Global Setting");
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
 				{
 					using (new RefImporterDescriptor.TestPropertyFilter(InterruptSingleton))
 					{
@@ -3728,7 +3728,7 @@ internal sealed class LicenseManager
 					}, GUILayout.ExpandWidth(expand: false));
 					bool flag;
 					string text = ((!(flag = RefImporterDescriptor.GetConsumer().globalGizmo)) ? "Local Setting" : "Global Setting");
-					using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
 					{
 						using (new RefImporterDescriptor.TestPropertyFilter(InterruptSingleton))
 						{
@@ -3788,7 +3788,7 @@ internal sealed class LicenseManager
 			if (ValidateAccount())
 			{
 				bool flag = RefImporterDescriptor.GetConsumer().onSceneNameLabels;
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, flag, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
 				{
 					for (int i = 0; i < m_MapperIdentifier.Length; i++)
 					{
@@ -3810,7 +3810,7 @@ internal sealed class LicenseManager
 			if (FlushAccount())
 			{
 				bool flag2 = RefImporterDescriptor.GetConsumer().onSceneNameLabels;
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, flag2, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag2, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
 				{
 					for (int num = 0; num < mappingIdentifier.Length; num++)
 					{
@@ -3833,7 +3833,7 @@ internal sealed class LicenseManager
 			{
 				bool flag3 = RefImporterDescriptor.GetConsumer().onSceneNameLabels;
 				Handles.color = RefImporterDescriptor.GetConsumer().selectionColor.VerifyPage();
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, flag3, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag3, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
 				{
 					for (int num2 = 0; num2 < _PolicyIdentifier.Length; num2++)
 					{
@@ -3859,7 +3859,7 @@ internal sealed class LicenseManager
 			{
 				bool flag4 = RefImporterDescriptor.GetConsumer().onSceneNameLabels;
 				Handles.color = RefImporterDescriptor.GetConsumer().selectionColor.VerifyPage();
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, flag4, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag4, RefImporterDescriptor.GetConsumer().labelColor.VerifyPage()))
 				{
 					for (int num3 = 0; num3 < _PolicyIdentifier.Length; num3++)
 					{
@@ -4650,7 +4650,7 @@ internal sealed class LicenseManager
 			bool flag = _ErrorIdentifier.enumValueIndex == 1;
 			int positionmap = (_ErrorIdentifier.hasMultipleDifferentValues ? 2 : _ErrorIdentifier.enumValueIndex);
 			using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, positionmap, ADOEditorUtility.MapRef().m_SerializerMethod))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, positionmap, ADOEditorUtility.MapRef().m_SerializerMethod))
 			{
 				flag = GUILayout.Toggle(flag, "Advanced", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 			}
@@ -4676,7 +4676,7 @@ internal sealed class LicenseManager
 					EditorGUILayout.PropertyField(visitorAuthentication);
 				}
 				UpdateSingleton(invocationAuthentication, string.Empty);
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, RemoveAccount() && CountAccount() == algoAuthentication, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, RemoveAccount() && CountAccount() == algoAuthentication, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
 					if (ADOEditorUtility.CallStatus(ADOEditorUtility.CustomizeRef().stateSerializer, ADOEditorUtility.MapRef().methodMethod, GUILayout.ExpandWidth(expand: false)))
 					{
@@ -4994,7 +4994,7 @@ internal sealed class LicenseManager
 			{
 				bool ignorecaller;
 				string tooltip = ((!(ignorecaller = RefImporterDescriptor.GetConsumer().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
 					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
 					{
@@ -5016,21 +5016,21 @@ internal sealed class LicenseManager
 
 		internal void CheckServer()
 		{
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
 			{
 				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.QueryStatus() || ADOEditorUtility.ComputeStatus())
 				{
 					NewConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
 			{
 				if (ADOEditorUtility.PatchStatus("Restart"))
 				{
 					CompareConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
 			{
 				using (new EditorGUI.DisabledScope(!m_Stub))
 				{
@@ -6372,7 +6372,7 @@ internal sealed class LicenseManager
 			}
 			if (isres2 && serializedProperty4 != null)
 			{
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, serializedProperty4.boolValue, ADOEditorUtility.resolverSerializer, ADOEditorUtility._ObserverSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, serializedProperty4.boolValue, ADOEditorUtility.resolverSerializer, ADOEditorUtility._ObserverSerializer))
 				{
 					serializedProperty4.boolValue = ADOEditorUtility.ChangeStatus(serializedProperty4.boolValue, (!serializedProperty4.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 				}
@@ -6418,7 +6418,7 @@ internal sealed class LicenseManager
 						serializedProperty3.quaternionValue = Quaternion.Euler(eulerAngles);
 					}
 				}
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, filter, Color.green, Color.red))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, filter, Color.green, Color.red))
 				{
 					filter = GUILayout.Toggle(filter, ADOEditorUtility.CustomizeRef().stateSerializer, ADOEditorUtility.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
 				}
@@ -6710,7 +6710,7 @@ internal sealed class LicenseManager
 			{
 				bool ignorecaller;
 				string tooltip = ((!(ignorecaller = RefImporterDescriptor.GetConsumer().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
 					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
 					{
@@ -6730,21 +6730,21 @@ internal sealed class LicenseManager
 			}
 		}, delegate
 		{
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
 			{
 				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.QueryStatus() || ADOEditorUtility.ComputeStatus())
 				{
 					NewConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
 			{
 				if (ADOEditorUtility.PatchStatus("Restart"))
 				{
 					CompareConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
 			{
 				using (new EditorGUI.DisabledScope(!m_Stub))
 				{
@@ -7315,7 +7315,7 @@ internal sealed class LicenseManager
 
 	private static bool LoginConfiguration(bool movefirst, GUIContent vis)
 	{
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, movefirst, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, movefirst, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 		{
 			movefirst = ADOEditorUtility.PrepareStatus(movefirst, vis, ADOEditorUtility.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
 			return movefirst;
@@ -7329,7 +7329,7 @@ internal sealed class LicenseManager
 
 	private static void CheckConfiguration(GUIContent item, ref bool pol, params GUILayoutOption[] options)
 	{
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, pol, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, pol, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 		{
 			pol = ADOEditorUtility.PrepareStatus(pol, item, GUI.skin.button, options);
 		}
@@ -7345,7 +7345,7 @@ internal sealed class LicenseManager
 		int positionmap = (def.hasMultipleDifferentValues ? 2 : (def.boolValue ? 1 : 0));
 		using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
 		bool boolValue;
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, positionmap, ADOEditorUtility.MapRef().m_SerializerMethod))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, positionmap, ADOEditorUtility.MapRef().m_SerializerMethod))
 		{
 			boolValue = ADOEditorUtility.PrepareStatus(def.boolValue, visitor, GUI.skin.button, options);
 		}
@@ -7455,7 +7455,7 @@ internal sealed class LicenseManager
 	{
 		using (new GUILayout.HorizontalScope())
 		{
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, _Account, ADOEditorUtility._BroadcasterSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, _Account, ADOEditorUtility._BroadcasterSerializer))
 			{
 				bool isPlaying;
 				string asset = ((isPlaying = Application.isPlaying) ? "Editor is in PlayMode" : ((!_Account) ? "Test PhysBones in Scene" : "Stop Testing - ESC / Enter"));
@@ -7471,7 +7471,7 @@ internal sealed class LicenseManager
 			{
 				return false;
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
 			{
 				if (ADOEditorUtility.PatchStatus("Restart", GUILayout.ExpandWidth(expand: false)))
 				{
@@ -7480,7 +7480,7 @@ internal sealed class LicenseManager
 			}
 			UnityEngine.Object[] array = param.Where((UnityEngine.Object b) => b != null && _Test.ContainsKey(b) && candidate[b] != null).ToArray();
 			bool flag = array.Any((UnityEngine.Object b) => _Test[b]);
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer))
 			{
 				using (new EditorGUI.DisabledScope(!flag))
 				{
@@ -8356,7 +8356,7 @@ internal sealed class LicenseManager
 
 	private static void DeleteIdentifier()
 	{
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, Color.clear))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
 			if (GUILayout.Button(new GUIContent("Made By @Dreadrith ♡", "https://dreadrith.com/links"), ADOEditorUtility.MapRef()._ContextMethod))
 			{

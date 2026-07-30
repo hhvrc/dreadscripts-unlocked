@@ -17,35 +17,35 @@ internal static class SetterTests
 {
 	internal static class ConnectionTests
 	{
-		public static readonly PagePolicy contextTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver contextTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy recordTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver recordTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy helperTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver helperTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy consumerTests = new PagePolicy("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver consumerTests = new TypeResolver("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy _AdapterTests = new PagePolicy("UnityEditor.Graphs.AnimatorControllerTool+BreadCrumbElement, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver _AdapterTests = new TypeResolver("UnityEditor.Graphs.AnimatorControllerTool+BreadCrumbElement, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy interpreterTests = new PagePolicy("UnityEditor.Graphs.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver interpreterTests = new TypeResolver("UnityEditor.Graphs.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy _WatcherTests = new PagePolicy("UnityEditor.Graphs.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver _WatcherTests = new TypeResolver("UnityEditor.Graphs.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy _CandidateTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.StateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver _CandidateTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.StateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy m_ProductTests = new PagePolicy("UnityEditor.Graphs.AnimationBlendTree.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver m_ProductTests = new TypeResolver("UnityEditor.Graphs.AnimationBlendTree.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy m_ExpressionTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.StateMachineNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver m_ExpressionTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.StateMachineNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy _SystemTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.EntryNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver _SystemTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EntryNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy _WorkerTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.AnyStateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver _WorkerTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.AnyStateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy m_FilterTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.ExitNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver m_FilterTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.ExitNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy m_StubTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.EdgeInfo, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver m_StubTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EdgeInfo, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly PagePolicy readerTests = new PagePolicy("UnityEditor.Graphs.AnimationStateMachine.TransitionEditionContext, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver readerTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.TransitionEditionContext, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
 		private static ConnectionTests RunStruct;
 
@@ -57,65 +57,65 @@ internal static class SetterTests
 
 	internal static class BridgeTests
 	{
-		public static readonly DefinitionPolicy<FieldInfo> _StrategyTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.consumerTests, "tool");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _StrategyTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.consumerTests, "tool");
 
-		public static readonly DefinitionPolicy<FieldInfo> customerTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.consumerTests, "stateMachineGraph");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> customerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.consumerTests, "stateMachineGraph");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_DatabaseTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.consumerTests, "blendTreeGraph");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_DatabaseTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.consumerTests, "blendTreeGraph");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_ExporterTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.consumerTests, "stateMachineGraphGUI");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ExporterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.consumerTests, "stateMachineGraphGUI");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_IdentifierTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.consumerTests, "blendTreeGraphGUI");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_IdentifierTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.consumerTests, "blendTreeGraphGUI");
 
-		public static readonly DefinitionPolicy<FieldInfo> attrTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.consumerTests, "m_BreadCrumbs");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> attrTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.consumerTests, "m_BreadCrumbs");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_DispatcherTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.consumerTests, "graphDirtyCallback");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_DispatcherTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.consumerTests, "graphDirtyCallback");
 
-		public static readonly DefinitionPolicy<FieldInfo> _RegistryTests = new DefinitionPolicy<FieldInfo>(ConnectionTests._AdapterTests, "m_Target");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _RegistryTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests._AdapterTests, "m_Target");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_TagTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.contextTests, "m_ActiveStateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_TagTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.contextTests, "m_ActiveStateMachine");
 
-		public static readonly DefinitionPolicy<FieldInfo> _ImporterTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.contextTests, "rootStateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _ImporterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.contextTests, "rootStateMachine");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_RequestTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.contextTests, "parentStateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_RequestTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.contextTests, "parentStateMachine");
 
-		public static readonly DefinitionPolicy<FieldInfo> printerTests = new DefinitionPolicy<FieldInfo>(ConnectionTests._WatcherTests, "selection");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> printerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests._WatcherTests, "selection");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_WriterTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.interpreterTests, "nodes");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_WriterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.interpreterTests, "nodes");
 
-		public static readonly DefinitionPolicy<FieldInfo> _ParamsTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.interpreterTests, "edges");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _ParamsTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.interpreterTests, "edges");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_ListenerTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.contextTests, "m_EntryNode");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ListenerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.contextTests, "m_EntryNode");
 
-		public static readonly DefinitionPolicy<FieldInfo> getterTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.contextTests, "m_ExitNode");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> getterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.contextTests, "m_ExitNode");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_InterceptorTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.contextTests, "m_AnyStateNode");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_InterceptorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.contextTests, "m_AnyStateNode");
 
-		public static readonly DefinitionPolicy<FieldInfo> _CreatorTests = new DefinitionPolicy<FieldInfo>(ConnectionTests._CandidateTests, "state");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _CreatorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests._CandidateTests, "state");
 
-		public static readonly DefinitionPolicy<FieldInfo> eventTests = new DefinitionPolicy<FieldInfo>(ConnectionTests._SystemTests, "m_StateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> eventTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests._SystemTests, "m_StateMachine");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_InfoTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.m_ExpressionTests, "stateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_InfoTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.m_ExpressionTests, "stateMachine");
 
-		public static readonly DefinitionPolicy<FieldInfo> m_FacadeTests = new DefinitionPolicy<FieldInfo>(ConnectionTests._CandidateTests, "m_StateMachineProxyLookup");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_FacadeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests._CandidateTests, "m_StateMachineProxyLookup");
 
-		public static readonly DefinitionPolicy<FieldInfo> advisorTests = new DefinitionPolicy<FieldInfo>(ConnectionTests._CandidateTests, "m_StateMachineLookup");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> advisorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests._CandidateTests, "m_StateMachineLookup");
 
-		public static readonly DefinitionPolicy<FieldInfo> callbackTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.m_StubTests, "transitions");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> callbackTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.m_StubTests, "transitions");
 
-		public static readonly DefinitionPolicy<MethodInfo> m_IndexerTests = new DefinitionPolicy<MethodInfo>(ConnectionTests.contextTests, "GetEdgeInfo");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> m_IndexerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(ConnectionTests.contextTests, "GetEdgeInfo");
 
-		public static readonly DefinitionPolicy<MethodInfo> _IssuerTests = new DefinitionPolicy<MethodInfo>(ConnectionTests.contextTests, "FindNode", typeof(AnimatorState));
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> _IssuerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(ConnectionTests.contextTests, "FindNode", typeof(AnimatorState));
 
-		public static readonly DefinitionPolicy<MethodInfo> _PrototypeTests = new DefinitionPolicy<MethodInfo>(ConnectionTests.contextTests, "FindNode", typeof(AnimatorStateMachine));
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> _PrototypeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(ConnectionTests.contextTests, "FindNode", typeof(AnimatorStateMachine));
 
-		public static readonly DefinitionPolicy<MethodInfo> m_RuleTests = new DefinitionPolicy<MethodInfo>(ConnectionTests.m_StubTests, "HasTransition", typeof(AnimatorTransitionBase));
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> m_RuleTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(ConnectionTests.m_StubTests, "HasTransition", typeof(AnimatorTransitionBase));
 
-		public static readonly DefinitionPolicy<PropertyInfo> _SingletonTests = new DefinitionPolicy<PropertyInfo>(ConnectionTests.consumerTests, "animatorController");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> _SingletonTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(ConnectionTests.consumerTests, "animatorController");
 
-		public static readonly DefinitionPolicy<PropertyInfo> factoryTests = new DefinitionPolicy<PropertyInfo>(ConnectionTests.recordTests, "edgeGUI");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> factoryTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(ConnectionTests.recordTests, "edgeGUI");
 
-		public static readonly DefinitionPolicy<PropertyInfo> m_AccountTests = new DefinitionPolicy<PropertyInfo>(ConnectionTests.m_StubTests, "hasMultipleTransitions");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_AccountTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(ConnectionTests.m_StubTests, "hasMultipleTransitions");
 
 		private static BridgeTests ConnectStruct;
 
@@ -696,21 +696,21 @@ internal static class SetterTests
 
 	internal readonly struct InstanceTests
 	{
-		private static readonly DefinitionPolicy<FieldInfo> m_FieldTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.readerTests, "m_DisplayName");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_FieldTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.readerTests, "m_DisplayName");
 
-		private static readonly DefinitionPolicy<FieldInfo> attributeTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.readerTests, "m_FullName");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> attributeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.readerTests, "m_FullName");
 
-		private static readonly DefinitionPolicy<FieldInfo> m_ClientTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.readerTests, "sourceState");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ClientTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.readerTests, "sourceState");
 
-		private static readonly DefinitionPolicy<FieldInfo> m_ConfigTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.readerTests, "sourceStateMachine");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ConfigTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.readerTests, "sourceStateMachine");
 
-		private static readonly DefinitionPolicy<FieldInfo> descriptorTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.readerTests, "ownerStateMachine");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> descriptorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.readerTests, "ownerStateMachine");
 
-		private static readonly DefinitionPolicy<FieldInfo> _TemplateTests = new DefinitionPolicy<FieldInfo>(ConnectionTests.readerTests, "transition");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _TemplateTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(ConnectionTests.readerTests, "transition");
 
-		private static readonly DefinitionPolicy<PropertyInfo> m_MessageTests = new DefinitionPolicy<PropertyInfo>(ConnectionTests.readerTests, "isAnyStateTransition");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_MessageTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(ConnectionTests.readerTests, "isAnyStateTransition");
 
-		private static readonly DefinitionPolicy<PropertyInfo> m_CollectionTests = new DefinitionPolicy<PropertyInfo>(ConnectionTests.readerTests, "isDefaultTransition");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_CollectionTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(ConnectionTests.readerTests, "isDefaultTransition");
 
 		public readonly object parserTests;
 

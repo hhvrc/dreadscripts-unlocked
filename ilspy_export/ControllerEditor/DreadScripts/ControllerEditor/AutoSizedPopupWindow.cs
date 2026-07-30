@@ -56,7 +56,7 @@ internal class AutoSizedPopupWindow : EditorWindow
 			return;
 		}
 		Event current = Event.current;
-		using (new SpecificationThread(ref m_StatusThread))
+		using (new ScrollViewScope(ref m_StatusThread))
 		{
 			EventType type = current.type;
 			int num = refThread;

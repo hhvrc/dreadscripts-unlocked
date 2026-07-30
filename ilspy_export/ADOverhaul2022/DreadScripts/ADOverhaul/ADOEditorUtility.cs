@@ -3159,9 +3159,9 @@ internal static class ADOEditorUtility
 		{
 			selection = new Color(0.3f, 0.7f, 1f);
 		}
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, Color.clear))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, selection.Value))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, selection.Value))
 			{
 				bool result = CallStatus(info, MapRef()._SchemaSerializer, GUILayout.ExpandWidth(expand: false));
 				PostStatus(selection);

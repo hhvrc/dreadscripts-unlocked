@@ -412,7 +412,7 @@ internal sealed class LicenseManager
 					using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 					{
 						GUILayout.Label(ADOEditorUtility.PrepareRequest().fieldTemplate, ADOEditorUtility.ManageRequest().m_ReaderTemplate);
-						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility.infoTemplate))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility.infoTemplate))
 						{
 							GUILayout.Label("There was an issue contacting the server for a solution.");
 						}
@@ -427,14 +427,14 @@ internal sealed class LicenseManager
 				{
 					if (!_List)
 					{
-						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility._AuthenticationTemplate))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._AuthenticationTemplate))
 						{
 							GUILayout.Label("Known issue! Details:");
 						}
 					}
 					else
 					{
-						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility.m_InitializerTemplate))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility.m_InitializerTemplate))
 						{
 							GUILayout.Label("Solution Found!");
 						}
@@ -447,7 +447,7 @@ internal sealed class LicenseManager
 					}
 					return;
 				}
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility._AuthenticationTemplate))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._AuthenticationTemplate))
 				{
 					GUILayout.Label("No solution Found! Please write the steps to reproduce this issue below:");
 				}
@@ -2683,7 +2683,7 @@ internal sealed class LicenseManager
 				{
 					text = "Global Setting";
 				}
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
 				{
 					using (new ManagerStruct.MappingStruct(CancelProducer))
 					{
@@ -3650,7 +3650,7 @@ internal sealed class LicenseManager
 					{
 						text = "Global Setting";
 					}
-					using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
 					{
 						using (new ManagerStruct.MappingStruct(CancelProducer))
 						{
@@ -3714,7 +3714,7 @@ internal sealed class LicenseManager
 			if (AddMethod())
 			{
 				bool flag = ManagerStruct.SearchTest().onSceneNameLabels;
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, flag, ManagerStruct.SearchTest().labelColor.DefineError()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, ManagerStruct.SearchTest().labelColor.DefineError()))
 				{
 					for (int i = 0; i < _ImporterStruct.Length; i++)
 					{
@@ -3736,7 +3736,7 @@ internal sealed class LicenseManager
 			if (QueryMethod())
 			{
 				bool flag2 = ManagerStruct.SearchTest().onSceneNameLabels;
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, flag2, ManagerStruct.SearchTest().labelColor.DefineError()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag2, ManagerStruct.SearchTest().labelColor.DefineError()))
 				{
 					for (int num = 0; num < m_RegStruct.Length; num++)
 					{
@@ -3759,7 +3759,7 @@ internal sealed class LicenseManager
 			{
 				bool flag3 = ManagerStruct.SearchTest().onSceneNameLabels;
 				Handles.color = ManagerStruct.SearchTest().selectionColor.DefineError();
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, flag3, ManagerStruct.SearchTest().labelColor.DefineError()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag3, ManagerStruct.SearchTest().labelColor.DefineError()))
 				{
 					for (int num2 = 0; num2 < parameterStruct.Length; num2++)
 					{
@@ -3785,7 +3785,7 @@ internal sealed class LicenseManager
 			{
 				bool flag4 = ManagerStruct.SearchTest().onSceneNameLabels;
 				Handles.color = ManagerStruct.SearchTest().selectionColor.DefineError();
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, flag4, ManagerStruct.SearchTest().labelColor.DefineError()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag4, ManagerStruct.SearchTest().labelColor.DefineError()))
 				{
 					for (int num3 = 0; num3 < parameterStruct.Length; num3++)
 					{
@@ -4582,7 +4582,7 @@ internal sealed class LicenseManager
 			bool flag = policyStruct.enumValueIndex == 1;
 			int row_ord = (policyStruct.hasMultipleDifferentValues ? 2 : policyStruct.enumValueIndex);
 			using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, row_ord, ADOEditorUtility.ManageRequest().configDic))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, row_ord, ADOEditorUtility.ManageRequest().configDic))
 			{
 				flag = GUILayout.Toggle(flag, "Advanced", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 			}
@@ -4608,7 +4608,7 @@ internal sealed class LicenseManager
 					EditorGUILayout.PropertyField(indexerConfig, second);
 				}
 				AssetProducer(broadcasterConfig, string.Empty);
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, CollectMethod() && PrintMethod() == containerModelDispatcher, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, CollectMethod() && PrintMethod() == containerModelDispatcher, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 				{
 					if (ADOEditorUtility.AwakeManager(ADOEditorUtility.PrepareRequest().m_PrinterTemplate, ADOEditorUtility.ManageRequest().modelDic, GUILayout.ExpandWidth(expand: false)))
 					{
@@ -4924,7 +4924,7 @@ internal sealed class LicenseManager
 			{
 				bool ordclose;
 				string tooltip = ((ordclose = ManagerStruct.SearchTest().hideToolsDuringTesting) ? "Native tools are hidden during test." : "Native tools are visible during test.");
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ordclose, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ordclose, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 				{
 					if (ADOEditorUtility.RateManager(new GUIContent(ADOEditorUtility.PrepareRequest().repositoryTemplate)
 					{
@@ -4946,21 +4946,21 @@ internal sealed class LicenseManager
 
 		internal void VisitRules()
 		{
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility.infoTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.infoTemplate))
 			{
 				if (ADOEditorUtility.GetManager("Stop Testing") || ADOEditorUtility.SetupManager() || ADOEditorUtility.SortManager())
 				{
 					StopSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility._ClientTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility._ClientTemplate))
 			{
 				if (ADOEditorUtility.GetManager("Restart"))
 				{
 					WriteSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Class, ADOEditorUtility.m_InitializerTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, _Class, ADOEditorUtility.m_InitializerTemplate))
 			{
 				using (new EditorGUI.DisabledScope(!_Class))
 				{
@@ -6140,7 +6140,7 @@ internal sealed class LicenseManager
 			}
 			if (testtask2 && serializedProperty3 != null)
 			{
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, serializedProperty3.boolValue, ADOEditorUtility.workerTemplate, ADOEditorUtility.m_InitializerTemplate))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, serializedProperty3.boolValue, ADOEditorUtility.workerTemplate, ADOEditorUtility.m_InitializerTemplate))
 				{
 					serializedProperty3.boolValue = ADOEditorUtility.CustomizeManager(serializedProperty3.boolValue, (!serializedProperty3.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 				}
@@ -6186,7 +6186,7 @@ internal sealed class LicenseManager
 						serializedProperty2.quaternionValue = Quaternion.Euler(eulerAngles);
 					}
 				}
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Factory, Color.green, Color.red))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, _Factory, Color.green, Color.red))
 				{
 					_Factory = GUILayout.Toggle(_Factory, ADOEditorUtility.PrepareRequest().m_PrinterTemplate, ADOEditorUtility.ManageRequest().modelDic, GUILayout.Width(18f), GUILayout.Height(18f));
 				}
@@ -6481,7 +6481,7 @@ internal sealed class LicenseManager
 			{
 				bool ordclose;
 				string tooltip = ((ordclose = ManagerStruct.SearchTest().hideToolsDuringTesting) ? "Native tools are hidden during test." : "Native tools are visible during test.");
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ordclose, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ordclose, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 				{
 					if (ADOEditorUtility.RateManager(new GUIContent(ADOEditorUtility.PrepareRequest().repositoryTemplate)
 					{
@@ -6501,21 +6501,21 @@ internal sealed class LicenseManager
 			}
 		}, delegate
 		{
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility.infoTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.infoTemplate))
 			{
 				if (ADOEditorUtility.GetManager("Stop Testing") || ADOEditorUtility.SetupManager() || ADOEditorUtility.SortManager())
 				{
 					StopSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility._ClientTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility._ClientTemplate))
 			{
 				if (ADOEditorUtility.GetManager("Restart"))
 				{
 					WriteSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Class, ADOEditorUtility.m_InitializerTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, _Class, ADOEditorUtility.m_InitializerTemplate))
 			{
 				using (new EditorGUI.DisabledScope(!_Class))
 				{
@@ -7086,7 +7086,7 @@ internal sealed class LicenseManager
 
 	private static bool ResetSystem(bool isi, GUIContent ivk)
 	{
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, isi, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, isi, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 		{
 			isi = ADOEditorUtility.ChangeManager(isi, ivk, ADOEditorUtility.ManageRequest().modelDic, GUILayout.Width(18f), GUILayout.Height(18f));
 			return isi;
@@ -7100,7 +7100,7 @@ internal sealed class LicenseManager
 
 	private static void VisitSystem(GUIContent key, ref bool pol, params GUILayoutOption[] options)
 	{
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, pol, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, pol, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 		{
 			pol = ADOEditorUtility.ChangeManager(pol, key, GUI.skin.button, options);
 		}
@@ -7116,7 +7116,7 @@ internal sealed class LicenseManager
 		int row_ord = (asset.hasMultipleDifferentValues ? 2 : (asset.boolValue ? 1 : 0));
 		using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
 		bool boolValue;
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, row_ord, ADOEditorUtility.ManageRequest().configDic))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, row_ord, ADOEditorUtility.ManageRequest().configDic))
 		{
 			boolValue = ADOEditorUtility.ChangeManager(asset.boolValue, vis, GUI.skin.button, options);
 		}
@@ -7226,7 +7226,7 @@ internal sealed class LicenseManager
 	{
 		using (new GUILayout.HorizontalScope())
 		{
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, producer, ADOEditorUtility.infoTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, producer, ADOEditorUtility.infoTemplate))
 			{
 				bool isPlaying;
 				string v = ((isPlaying = Application.isPlaying) ? "Editor is in PlayMode" : ((!producer) ? "Test PhysBones in Scene" : "Stop Testing - ESC / Enter"));
@@ -7242,7 +7242,7 @@ internal sealed class LicenseManager
 			{
 				return false;
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility._ClientTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility._ClientTemplate))
 			{
 				if (ADOEditorUtility.GetManager("Restart", GUILayout.ExpandWidth(expand: false)))
 				{
@@ -7251,7 +7251,7 @@ internal sealed class LicenseManager
 			}
 			UnityEngine.Object[] array = init.Where((UnityEngine.Object b) => b != null && merchant.ContainsKey(b) && m_Val[b] != null).ToArray();
 			bool flag = array.Any((UnityEngine.Object b) => merchant[b]);
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate))
 			{
 				using (new EditorGUI.DisabledScope(!flag))
 				{
@@ -8155,7 +8155,7 @@ internal sealed class LicenseManager
 
 	private static void NewStruct()
 	{
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, Color.clear))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
 			if (GUILayout.Button(new GUIContent("Made By @Dreadrith ♡", "https://dreadrith.com/links"), ADOEditorUtility.ManageRequest()._StructDic))
 			{

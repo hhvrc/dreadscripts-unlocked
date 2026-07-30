@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DreadScripts.ControllerEditor;
 
-internal class QuickInputWindow : CustomUtilityWindow<QuickInputWindow>
+internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>
 {
 	internal enum FieldType
 	{
@@ -36,7 +36,7 @@ internal class QuickInputWindow : CustomUtilityWindow<QuickInputWindow>
 
 	private static QuickInputWindow FillClient;
 
-	string CustomUtilityWindow<QuickInputWindow>.title => string.Empty;
+	string DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.title => string.Empty;
 
 	internal static QuickInputWindow CreateHelper(string info, FieldType[] second, GUIContent[] dic, Action<object[]> map2, Func<object[], bool[]> second3 = null)
 	{
@@ -66,7 +66,7 @@ internal class QuickInputWindow : CustomUtilityWindow<QuickInputWindow>
 				break;
 			}
 		}
-		QuickInputWindow quickInputWindow = CustomUtilityWindow<QuickInputWindow>.CloneHelper();
+		QuickInputWindow quickInputWindow = DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.CloneHelper();
 		quickInputWindow.titleContent.text = info;
 		quickInputWindow._ModelPolicy = array;
 		quickInputWindow.m_DecoratorPolicy = second;
@@ -103,7 +103,7 @@ internal class QuickInputWindow : CustomUtilityWindow<QuickInputWindow>
 		LoginHelper(asset, ViewHelper());
 	}
 
-	void CustomUtilityWindow<QuickInputWindow>.OnCustomGUI()
+	void DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.OnCustomGUI()
 	{
 		if (_ModelPolicy != null)
 		{

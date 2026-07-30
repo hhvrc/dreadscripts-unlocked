@@ -242,30 +242,30 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		internal bool _MapperAlgo;
 
-		internal WorkerProperty.BridgeProperty.AttrProperty m_InitializerAlgo;
+		internal AnimatorTypeCache.BridgeProperty.AttrProperty m_InitializerAlgo;
 
-		internal List<(WorkerProperty.BridgeProperty, int)> definitionAlgo;
+		internal List<(AnimatorTypeCache.BridgeProperty, int)> definitionAlgo;
 
 		private static AlgoAlgo NewIndexer;
 
-		internal AlgoAlgo(WorkerProperty.BridgeProperty asset, int cust)
+		internal AlgoAlgo(AnimatorTypeCache.BridgeProperty asset, int cust)
 		{
 			_MapperAlgo = false;
 			m_InitializerAlgo = asset.m_DatabaseProperty[cust];
-			definitionAlgo = new List<(WorkerProperty.BridgeProperty, int)> { (asset, cust) };
+			definitionAlgo = new List<(AnimatorTypeCache.BridgeProperty, int)> { (asset, cust) };
 		}
 
-		internal void RegisterInitializer(WorkerProperty.BridgeProperty config, int size_connection)
+		internal void RegisterInitializer(AnimatorTypeCache.BridgeProperty config, int size_connection)
 		{
 			_MapperAlgo = true;
 			definitionAlgo.Add((config, size_connection));
 		}
 
-		internal void LogoutInitializer(WorkerProperty.BridgeProperty.AttrProperty ident)
+		internal void LogoutInitializer(AnimatorTypeCache.BridgeProperty.AttrProperty ident)
 		{
 			for (int i = 0; i < definitionAlgo.Count; i++)
 			{
-				WorkerProperty.BridgeProperty item = definitionAlgo[i].Item1;
+				AnimatorTypeCache.BridgeProperty item = definitionAlgo[i].Item1;
 				RestartAnnotation(ident, item.m_DatabaseProperty[definitionAlgo[i].Item2]);
 				EditorUtility.SetDirty(item._StrategyProperty);
 			}
@@ -275,7 +275,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			foreach (var item2 in definitionAlgo)
 			{
-				WorkerProperty.BridgeProperty _RegAlgo = item2.Item1;
+				AnimatorTypeCache.BridgeProperty _RegAlgo = item2.Item1;
 				int item = item2.Item2;
 				bool num = _RegAlgo.InitPage(item);
 				EditorUtility.SetDirty(_RegAlgo._StrategyProperty);
@@ -366,13 +366,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.Label("Tracking Control");
-					using (new TemplateThread(TemplateThread.ColoringType.BG, Color.red))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.red))
 					{
 						if (EditorUtils.RestartQueue(EditorUtils.CalcError().fieldProcessor, EditorUtils.CalcError().configProcessor, GUILayout.Width(25f), GUILayout.Height(20f)))
 						{
 							m_AlgoAnnotation.InvokeResolver(delegate(AnimatorState s)
 							{
-								s.ReflectPredicate(WorkerProperty.QueryPage(), isstate: true);
+								s.ReflectPredicate(AnimatorTypeCache.QueryPage(), isstate: true);
 							});
 							m_ConnectionAnnotation = false;
 							return;
@@ -383,7 +383,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					List<SerializedProperty> helperAlgo = queueAlgo;
 					int num = (queueAlgo.All((SerializedProperty p) => !p.hasMultipleDifferentValues && p.enumValueIndex == helperAlgo[0].enumValueIndex) ? queueAlgo[0].enumValueIndex : 3);
-					using (new TemplateThread(TemplateThread.ColoringType.FG, num, colors))
+					using (new GUIColorScope(GUIColorScope.ColoringType.FG, num, colors))
 					{
 						using (new GUILayout.HorizontalScope())
 						{
@@ -409,7 +409,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					SerializedProperty serializedProperty = queueAlgo[num2];
 					int visZ = ((!serializedProperty.hasMultipleDifferentValues) ? serializedProperty.enumValueIndex : 3);
-					using (new TemplateThread(TemplateThread.ColoringType.FG, visZ, colors))
+					using (new GUIColorScope(GUIColorScope.ColoringType.FG, visZ, colors))
 					{
 						using (new GUILayout.HorizontalScope())
 						{
@@ -1922,7 +1922,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					if (string.IsNullOrWhiteSpace(m_AccountAlgo))
 					{
-						using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils._WrapperProcessor))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, EditorUtils._WrapperProcessor))
 						{
 							GUILayout.Label("No solution Found! Please write the steps to reproduce this issue below:");
 						}
@@ -1977,14 +1977,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					if (m_RefAlgo)
 					{
-						using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils.configurationProperty))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, EditorUtils.configurationProperty))
 						{
 							GUILayout.Label("Solution Found!");
 						}
 					}
 					else
 					{
-						using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils._WrapperProcessor))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, EditorUtils._WrapperProcessor))
 						{
 							GUILayout.Label("Known issue! Details:");
 						}
@@ -2000,7 +2000,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
 					GUILayout.Label(EditorUtils.DestroyError().ruleProcessor, EditorUtils.CalcError().broadcasterProcessor);
-					using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils._ProcProperty))
+					using (new GUIColorScope(GUIColorScope.ColoringType.FG, EditorUtils._ProcProperty))
 					{
 						GUILayout.Label("There was an issue contacting the server for a solution.");
 					}
@@ -2730,7 +2730,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return DeleteReg("com.dreadscripts.controllereditor.tool");
 		}
 
-		[PrototypeServer(0)]
+		[CallbackMethod(0)]
 		internal static void ConnectReg()
 		{
 			for (int i = 0; i < _TaskAlgo.Length; i++)
@@ -2745,7 +2745,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 		}
 
-		[RuleServer(0)]
+		[ControllerCallback(0)]
 		internal static void CalculateReg()
 		{
 			if (methodAlgo != null)
@@ -3511,7 +3511,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					_ClassMapper = EditorGUILayout.Foldout(_ClassMapper, "Animation Window");
 					GUILayout.FlexibleSpace();
-					using (new TemplateThread(TemplateThread.ColoringType.BG, ConsumerAlgo.CallDefinition().aw_active, Color.green, Color.grey))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, ConsumerAlgo.CallDefinition().aw_active, Color.green, Color.grey))
 					{
 						ConsumerAlgo.CallDefinition().aw_active.ExcludeDefinition(EditorUtils.InvokeQueue(ConsumerAlgo.CallDefinition().aw_active, (!ConsumerAlgo.CallDefinition().aw_active) ? "Disabled" : "Enabled"));
 					}
@@ -3520,7 +3520,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					using (new EditorGUI.DisabledScope(!ConsumerAlgo.CallDefinition().aw_active))
 					{
-						using (new SchemaThread())
+						using (new IndentedLayoutScope())
 						{
 							using (new GUILayout.HorizontalScope())
 							{
@@ -3549,7 +3549,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new GUILayout.VerticalScope(GUI.skin.box))
 			{
-				using (new PublisherThread(ref mockMapper, "Animator Window"))
+				using (new FoldoutScope(ref mockMapper, "Animator Window"))
 				{
 					if (!mockMapper)
 					{
@@ -3557,7 +3557,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					using (new GUILayout.VerticalScope(GUI.skin.box))
 					{
-						using (new PublisherThread(ref instanceMapper, "Layers"))
+						using (new FoldoutScope(ref instanceMapper, "Layers"))
 						{
 							if (instanceMapper)
 							{
@@ -3578,7 +3578,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					using (new GUILayout.VerticalScope(GUI.skin.box))
 					{
-						using (new PublisherThread(ref m_FieldMapper, "Parameters"))
+						using (new FoldoutScope(ref m_FieldMapper, "Parameters"))
 						{
 							if (m_FieldMapper)
 							{
@@ -3586,7 +3586,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								{
 									_AttributeMapper = EditorGUILayout.Foldout(_AttributeMapper, "Type Indicator");
 									GUILayout.FlexibleSpace();
-									using (new TemplateThread(TemplateThread.ColoringType.BG, ConsumerAlgo.CallDefinition().displayParameterType, Color.green, Color.grey))
+									using (new GUIColorScope(GUIColorScope.ColoringType.BG, ConsumerAlgo.CallDefinition().displayParameterType, Color.green, Color.grey))
 									{
 										ConsumerAlgo.CallDefinition().displayParameterType.ExcludeDefinition(EditorUtils.InvokeQueue(ConsumerAlgo.CallDefinition().displayParameterType, (!ConsumerAlgo.CallDefinition().displayParameterType) ? "Disabled" : "Enabled"));
 									}
@@ -3595,7 +3595,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								{
 									if (_AttributeMapper)
 									{
-										using (new SchemaThread())
+										using (new IndentedLayoutScope())
 										{
 											ConsumerAlgo.CallDefinition().capitalParameterIndicator.QueryDefinition(new GUIContent("Capital Letters", "Changes 'f' to 'F' and 'i' to 'I'"), null);
 											ConsumerAlgo.CallDefinition().parameterLabelFontStyle.ValidateDefinition<FontStyle>(new GUIContent("Font style", "The font style of the parameter indicators."), ismap: false, null, Array.Empty<GUILayoutOption>());
@@ -3608,7 +3608,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					using (new GUILayout.VerticalScope(GUI.skin.box))
 					{
-						using (new PublisherThread(ref configMapper, "Transitions"))
+						using (new FoldoutScope(ref configMapper, "Transitions"))
 						{
 							if (configMapper)
 							{
@@ -3631,7 +3631,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					using (new GUILayout.VerticalScope(GUI.skin.box))
 					{
-						using (new PublisherThread(ref _ClientMapper, "Nodes"))
+						using (new FoldoutScope(ref _ClientMapper, "Nodes"))
 						{
 							if (_ClientMapper)
 							{
@@ -3645,7 +3645,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					using (new GUILayout.VerticalScope(GUI.skin.box))
 					{
-						using (new PublisherThread(ref collectionMapper, "Colors"))
+						using (new FoldoutScope(ref collectionMapper, "Colors"))
 						{
 							if (!collectionMapper)
 							{
@@ -3659,7 +3659,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									GUILayout.FlexibleSpace();
 									bool flag;
 									string map = ((!(flag = ConsumerAlgo.CallDefinition().cosmeticTransitionsActive.FindDefinition())) ? "Disabled" : "Enabled");
-									using (new TemplateThread(TemplateThread.ColoringType.BG, flag, Color.green, Color.grey))
+									using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, Color.green, Color.grey))
 									{
 										ConsumerAlgo.CallDefinition().cosmeticTransitionsActive.ExcludeDefinition(EditorUtils.InvokeQueue(flag, map));
 									}
@@ -3668,7 +3668,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								{
 									if (_ParserMapper)
 									{
-										using (new SchemaThread())
+										using (new IndentedLayoutScope())
 										{
 											ConsumerAlgo.CallDefinition().normalTransitionColor.VerifyDefinition("Normal Transition", true);
 											ConsumerAlgo.CallDefinition().entryTransitionColor.VerifyDefinition("Entry Transition", true);
@@ -3686,7 +3686,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									GUILayout.FlexibleSpace();
 									bool flag2;
 									string map2 = ((!(flag2 = ConsumerAlgo.CallDefinition().cosmeticGraphActive.FindDefinition())) ? "Disabled" : "Enabled");
-									using (new TemplateThread(TemplateThread.ColoringType.BG, flag2, Color.green, Color.grey))
+									using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag2, Color.green, Color.grey))
 									{
 										using (new ConsumerAlgo.WorkerAlgo(SortAlgo))
 										{
@@ -3698,7 +3698,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								{
 									if (m_DescriptorMapper)
 									{
-										using (new SchemaThread())
+										using (new IndentedLayoutScope())
 										{
 											using (new GUILayout.HorizontalScope())
 											{
@@ -3745,7 +3745,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									GUILayout.FlexibleSpace();
 									bool flag3;
 									string map3 = ((flag3 = ConsumerAlgo.CallDefinition().cosmeticNodesActive.FindDefinition()) ? "Enabled" : "Disabled");
-									using (new TemplateThread(TemplateThread.ColoringType.BG, flag3, Color.green, Color.grey))
+									using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag3, Color.green, Color.grey))
 									{
 										ConsumerAlgo.CallDefinition().cosmeticNodesActive.ExcludeDefinition(EditorUtils.InvokeQueue(flag3, map3));
 									}
@@ -3754,7 +3754,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								{
 									if (templateMapper)
 									{
-										using (new SchemaThread())
+										using (new IndentedLayoutScope())
 										{
 											NewTests(ConsumerAlgo.CallDefinition().normalStateNodeColor, "State Node");
 											NewTests(ConsumerAlgo.CallDefinition().machineStateNodeColor, "Machine Node");
@@ -3969,7 +3969,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				m_MessageMapper = EditorGUILayout.Foldout(m_MessageMapper, "Default Layer Options");
 				if (m_MessageMapper)
 				{
-					using (new SchemaThread())
+					using (new IndentedLayoutScope())
 					{
 						ConsumerAlgo.CallDefinition().defaultLayerWeight.FlushDefinition(EditorGUILayout.Slider("Default Layer Weight", ConsumerAlgo.CallDefinition().defaultLayerWeight, 0f, 1f));
 						ConsumerAlgo.CallDefinition().defaultLayerMask.CheckDefinition("Default Layer Mask", false);
@@ -4170,7 +4170,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	internal class ParameterRenameWindow : CustomUtilityWindow<ParameterRenameWindow>
+	internal class ParameterRenameWindow : DreadScripts.ControllerEditor.UtilityWindowBase<ParameterRenameWindow>
 	{
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass11_1
@@ -4197,11 +4197,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static ParameterRenameWindow ListProduct;
 
-		string CustomUtilityWindow<ParameterRenameWindow>.title => "Parameter Rename";
+		string DreadScripts.ControllerEditor.UtilityWindowBase<ParameterRenameWindow>.title => "Parameter Rename";
 
 		internal static ParameterRenameWindow ResolveTests(UnityEditor.Animations.AnimatorController def, UnityEditor.Animations.AnimatorController vis, bool acceptutil)
 		{
-			ParameterRenameWindow parameterRenameWindow = CustomUtilityWindow<ParameterRenameWindow>.CloneHelper();
+			ParameterRenameWindow parameterRenameWindow = DreadScripts.ControllerEditor.UtilityWindowBase<ParameterRenameWindow>.CloneHelper();
 			parameterRenameWindow.m_ProxyMapper = def;
 			parameterRenameWindow._StructMapper = vis;
 			parameterRenameWindow.serviceMapper = acceptutil;
@@ -4222,7 +4222,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return parameterRenameWindow;
 		}
 
-		void CustomUtilityWindow<ParameterRenameWindow>.OnCustomGUI()
+		void DreadScripts.ControllerEditor.UtilityWindowBase<ParameterRenameWindow>.OnCustomGUI()
 		{
 			if (globalMapper == null)
 			{
@@ -4231,7 +4231,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			m_DicPolicy = true;
 			EditorGUI.BeginChangeCheck();
-			using (new TemplateThread(TemplateThread.ColoringType.BG, serviceMapper, Color.green, Color.grey))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, serviceMapper, Color.green, Color.grey))
 			{
 				serviceMapper = EditorUtils.AddQueue(serviceMapper, "Unique Parameters", GUI.skin.button);
 			}
@@ -4336,7 +4336,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	internal class QuickToggleWindow : CustomUtilityWindow<QuickToggleWindow>
+	internal class QuickToggleWindow : DreadScripts.ControllerEditor.UtilityWindowBase<QuickToggleWindow>
 	{
 		[Serializable]
 		[CompilerGenerated]
@@ -4348,13 +4348,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			public static Func<GameObject, QueueProperty> m_ThreadInitializer;
 
-			public static Action<StatusServer<string>.UtilsServer> policyInitializer;
+			public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer> policyInitializer;
 
 			public static Func<string, string, bool> m_SerializerInitializer;
 
 			public static Func<Component, Type> m_PageInitializer;
 
-			public static Action<StatusServer<Type>.UtilsServer> _ResolverInitializer;
+			public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer> _ResolverInitializer;
 
 			public static Func<Type, object[]> predicateInitializer;
 
@@ -4378,7 +4378,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				return new QueueProperty(o);
 			}
 
-			internal void OrderProperty(StatusServer<string>.UtilsServer i)
+			internal void OrderProperty(DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer i)
 			{
 				GUILayout.Label(i._ValueServer);
 			}
@@ -4393,7 +4393,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				return c.GetType();
 			}
 
-			internal void PostProperty(StatusServer<Type>.UtilsServer item)
+			internal void PostProperty(DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer item)
 			{
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
@@ -4476,7 +4476,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					Rect position = rect.SortResolver(20f, isfield: false, 80f);
 					string text = ((!_003C_003Ec__DisplayClass18_.m_RecordInitializer.PatchSerializer()) ? "Off" : "On");
-					using (new TemplateThread(TemplateThread.ColoringType.BG, _003C_003Ec__DisplayClass18_.m_RecordInitializer.PatchSerializer(), Color.green, Color.red))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, _003C_003Ec__DisplayClass18_.m_RecordInitializer.PatchSerializer(), Color.green, Color.red))
 					{
 						if (GUI.Button(position, text))
 						{
@@ -4494,9 +4494,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						if (EditorGUI.DropdownButton(rect4, new GUIContent(_003C_003Ec__DisplayClass18_.m_RecordInitializer.SetPage()), FocusType.Keyboard, EditorStyles.toolbarDropDown))
 						{
-							StatusServer<string> statusServer = new StatusServer<string>("Property", _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_HelperProperty, _003C_003Ec.observerInitializer.OrderProperty, _003C_003Ec__DisplayClass18_.CountProperty);
-							statusServer.GetConnection(_003C_003Ec.observerInitializer.CompareProperty);
-							statusServer.RunConnection(rect4);
+							DreadScripts.ControllerEditor.SearchablePickerPopup<string> searchablePickerPopup = new DreadScripts.ControllerEditor.SearchablePickerPopup<string>("Property", _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_HelperProperty, _003C_003Ec.observerInitializer.OrderProperty, _003C_003Ec__DisplayClass18_.CountProperty);
+							searchablePickerPopup.GetConnection(_003C_003Ec.observerInitializer.CompareProperty);
+							searchablePickerPopup.RunConnection(rect4);
 						}
 					}
 					_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty = EditorGUI.FloatField(rect5, _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty);
@@ -4513,11 +4513,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						if (Event.current.button == 0)
 						{
-							StatusServer<Type> statusServer2 = new StatusServer<Type>("Target Type", new Type[1] { typeof(GameObject) }.Concat(_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_SetterProperty.Select(_003C_003Ec.observerInitializer.SetProperty)).Distinct().ToList(), _003C_003Ec.observerInitializer.PostProperty, _003C_003Ec__DisplayClass18_.DisableProperty);
-							statusServer2.IncludeConnection(_003C_003Ec.observerInitializer.SetupProperty);
+							DreadScripts.ControllerEditor.SearchablePickerPopup<Type> searchablePickerPopup2 = new DreadScripts.ControllerEditor.SearchablePickerPopup<Type>("Target Type", new Type[1] { typeof(GameObject) }.Concat(_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_SetterProperty.Select(_003C_003Ec.observerInitializer.SetProperty)).Distinct().ToList(), _003C_003Ec.observerInitializer.PostProperty, _003C_003Ec__DisplayClass18_.DisableProperty);
+							searchablePickerPopup2.IncludeConnection(_003C_003Ec.observerInitializer.SetupProperty);
 							if (!ConsumerAlgo.CallDefinition().advancedQuickToggle)
 							{
-								StatusServer<Type>.UtilsServer[] dicServer = statusServer2.m_DicServer;
+								DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer[] dicServer = searchablePickerPopup2.m_DicServer;
 								for (int i = 0; i < dicServer.Length; i++)
 								{
 									_003C_003Ec__DisplayClass18_2 _003C_003Ec__DisplayClass18_2 = new _003C_003Ec__DisplayClass18_2
@@ -4530,7 +4530,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									}
 								}
 							}
-							statusServer2.RunConnection(rect3);
+							searchablePickerPopup2.RunConnection(rect3);
 						}
 						else
 						{
@@ -4623,7 +4623,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass18_2
 		{
-			public StatusServer<Type>.UtilsServer interpreterInitializer;
+			public DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer interpreterInitializer;
 
 			internal bool AddProperty(Type vt)
 			{
@@ -4637,7 +4637,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		private List<AnimatorState> _VisitorInitializer;
 
-		private ThreadTests<QueueProperty> _AlgoInitializer;
+		private DreadScripts.ControllerEditor.ReorderableListHelper<QueueProperty> _AlgoInitializer;
 
 		private static readonly Color[] _MapperInitializer = new Color[3]
 		{
@@ -4666,7 +4666,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static QuickToggleWindow CancelInfo;
 
-		string CustomUtilityWindow<QuickToggleWindow>.title => "CEditor QuickToggle";
+		string DreadScripts.ControllerEditor.UtilityWindowBase<QuickToggleWindow>.title => "CEditor QuickToggle";
 
 		[SpecialName]
 		private static bool RegisterTests()
@@ -4694,7 +4694,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static QuickToggleWindow AssetTests(List<AnimatorState> i, Transform second, List<GameObject> template)
 		{
-			QuickToggleWindow m_ContextInitializer = CustomUtilityWindow<QuickToggleWindow>.CloneHelper();
+			QuickToggleWindow m_ContextInitializer = DreadScripts.ControllerEditor.UtilityWindowBase<QuickToggleWindow>.CloneHelper();
 			m_ContextInitializer._VisitorInitializer = i;
 			m_ContextInitializer.regInitializer = new bool[i.Count];
 			AnimatorState defaultState = ConsumerAlgo.CallDefinition().defaultState;
@@ -4712,7 +4712,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			m_ContextInitializer.m_WrapperInitializer = second;
 			m_ContextInitializer.annotationInitializer = new List<QueueProperty>(template.Select((GameObject o) => new QueueProperty(o)));
 			_003C_003Ec__DisplayClass18_0 CS_0024_003C_003E8__locals0;
-			m_ContextInitializer._AlgoInitializer = new ThreadTests<QueueProperty>(delegate
+			m_ContextInitializer._AlgoInitializer = new DreadScripts.ControllerEditor.ReorderableListHelper<QueueProperty>(delegate
 			{
 				m_ContextInitializer._AlgoInitializer.LogoutThread("Target GameObjects", "The GameObjects that will be animated by the animation clip");
 				GUILayout.FlexibleSpace();
@@ -4744,7 +4744,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					Rect rect3 = rect.SortResolver(20f, isfield: false, 80f);
 					string text = ((!_003C_003Ec__DisplayClass18_.m_RecordInitializer.PatchSerializer()) ? "Off" : "On");
-					using (new TemplateThread(TemplateThread.ColoringType.BG, _003C_003Ec__DisplayClass18_.m_RecordInitializer.PatchSerializer(), Color.green, Color.red))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, _003C_003Ec__DisplayClass18_.m_RecordInitializer.PatchSerializer(), Color.green, Color.red))
 					{
 						if (GUI.Button(rect3, text))
 						{
@@ -4762,9 +4762,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						if (EditorGUI.DropdownButton(rect4, new GUIContent(_003C_003Ec__DisplayClass18_.m_RecordInitializer.SetPage()), FocusType.Keyboard, EditorStyles.toolbarDropDown))
 						{
-							StatusServer<string> statusServer = new StatusServer<string>("Property", _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_HelperProperty, _003C_003Ec.observerInitializer.OrderProperty, _003C_003Ec__DisplayClass18_.CountProperty);
-							statusServer.GetConnection(_003C_003Ec.observerInitializer.CompareProperty);
-							statusServer.RunConnection(rect4);
+							DreadScripts.ControllerEditor.SearchablePickerPopup<string> searchablePickerPopup = new DreadScripts.ControllerEditor.SearchablePickerPopup<string>("Property", _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_HelperProperty, _003C_003Ec.observerInitializer.OrderProperty, _003C_003Ec__DisplayClass18_.CountProperty);
+							searchablePickerPopup.GetConnection(_003C_003Ec.observerInitializer.CompareProperty);
+							searchablePickerPopup.RunConnection(rect4);
 						}
 					}
 					_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty = EditorGUI.FloatField(res, _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty);
@@ -4781,11 +4781,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						if (Event.current.button == 0)
 						{
-							StatusServer<Type> statusServer2 = new StatusServer<Type>("Target Type", new Type[1] { typeof(GameObject) }.Concat(_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_SetterProperty.Select(_003C_003Ec.observerInitializer.SetProperty)).Distinct().ToList(), _003C_003Ec.observerInitializer.PostProperty, _003C_003Ec__DisplayClass18_.DisableProperty);
-							statusServer2.IncludeConnection(_003C_003Ec.observerInitializer.SetupProperty);
+							DreadScripts.ControllerEditor.SearchablePickerPopup<Type> searchablePickerPopup2 = new DreadScripts.ControllerEditor.SearchablePickerPopup<Type>("Target Type", new Type[1] { typeof(GameObject) }.Concat(_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_SetterProperty.Select(_003C_003Ec.observerInitializer.SetProperty)).Distinct().ToList(), _003C_003Ec.observerInitializer.PostProperty, _003C_003Ec__DisplayClass18_.DisableProperty);
+							searchablePickerPopup2.IncludeConnection(_003C_003Ec.observerInitializer.SetupProperty);
 							if (!ConsumerAlgo.CallDefinition().advancedQuickToggle)
 							{
-								StatusServer<Type>.UtilsServer[] dicServer = statusServer2.m_DicServer;
+								DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer[] dicServer = searchablePickerPopup2.m_DicServer;
 								for (int k = 0; k < dicServer.Length; k++)
 								{
 									_003C_003Ec__DisplayClass18_2 _003C_003Ec__DisplayClass18_2 = new _003C_003Ec__DisplayClass18_2();
@@ -4796,7 +4796,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									}
 								}
 							}
-							statusServer2.RunConnection(item);
+							searchablePickerPopup2.RunConnection(item);
 						}
 						else
 						{
@@ -4859,7 +4859,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return m_ContextInitializer;
 		}
 
-		void CustomUtilityWindow<QuickToggleWindow>.OnCustomGUI()
+		void DreadScripts.ControllerEditor.UtilityWindowBase<QuickToggleWindow>.OnCustomGUI()
 		{
 			if (_AlgoInitializer == null)
 			{
@@ -4883,7 +4883,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					GUILayout.FlexibleSpace();
 					GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._AccountProcessor.CompareHelper(), "Merge: Adds the properties to the existing clips on states. Creates a new clip if no clip exists.\n\nReplace: Replaces the existing clips on states with new clips and adds the properties to them."), GUILayout.Width(14f), GUILayout.Height(18f));
 					string res = ((_InitializerInitializer == 0) ? "Merge" : ((_InitializerInitializer == 1) ? "Replace" : "Mixed"));
-					using (new TemplateThread(TemplateThread.ColoringType.BG, _InitializerInitializer, _MapperInitializer[0], _MapperInitializer[1], _MapperInitializer[2]))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, _InitializerInitializer, _MapperInitializer[0], _MapperInitializer[1], _MapperInitializer[2]))
 					{
 						if (EditorUtils.DisableQueue(res))
 						{
@@ -4916,7 +4916,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					return;
 				}
-				using (new SchemaThread())
+				using (new IndentedLayoutScope())
 				{
 					for (int k = 0; k < _VisitorInitializer.Count; k++)
 					{
@@ -4935,7 +4935,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							GUILayout.Label(animationClip.name);
 							GUILayout.FlexibleSpace();
 							string res2 = (regInitializer[k] ? "Merge" : "Replace");
-							using (new TemplateThread(TemplateThread.ColoringType.BG, regInitializer[k], _MapperInitializer[0], _MapperInitializer[1]))
+							using (new GUIColorScope(GUIColorScope.ColoringType.BG, regInitializer[k], _MapperInitializer[0], _MapperInitializer[1]))
 							{
 								if (EditorUtils.DisableQueue(res2))
 								{
@@ -5087,7 +5087,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Func<System.Reflection.Assembly, IEnumerable<MethodInfo>> _FacadeInitializer;
 
-		public static Func<(MethodInfo, CallbackServer, bool), int> m_AdvisorInitializer;
+		public static Func<(MethodInfo, CallbackAttribute, bool), int> m_AdvisorInitializer;
 
 		public static Action m_CallbackInitializer;
 
@@ -5317,7 +5317,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Func<Material, Shader> m_TagDefinition;
 
-		public static Action<StatusServer<string>.UtilsServer> importerDefinition;
+		public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer> importerDefinition;
 
 		public static Func<string, string, bool> _RequestDefinition;
 
@@ -5325,7 +5325,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Func<Type, bool> _WriterDefinition;
 
-		public static Action<StatusServer<Type>.UtilsServer> paramsDefinition;
+		public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer> paramsDefinition;
 
 		public static Func<Type, object[]> m_ListenerDefinition;
 
@@ -5550,7 +5550,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal bool CalcProperty(StateMachineBehaviour b)
 		{
-			return b.GetType() != WorkerProperty.QueryPage();
+			return b.GetType() != AnimatorTypeCache.QueryPage();
 		}
 
 		internal bool IncludeProperty(AnimatorStateTransition t)
@@ -5585,7 +5585,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return t.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 		}
 
-		internal int CreateProperty((MethodInfo, CallbackServer, bool onVerify) x)
+		internal int CreateProperty((MethodInfo, CallbackAttribute, bool onVerify) x)
 		{
 			return x.Item2._IssuerServer;
 		}
@@ -6337,7 +6337,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return m.shader;
 		}
 
-		internal void DisableObserver(StatusServer<string>.UtilsServer i)
+		internal void DisableObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer i)
 		{
 			GUILayout.Label(i._ValueServer, EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
 			EditorUtils.StartQueue();
@@ -6358,7 +6358,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return VerifyVisitor(t);
 		}
 
-		internal void AddObserver(StatusServer<Type>.UtilsServer i)
+		internal void AddObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer i)
 		{
 			GUILayout.Label((GUIContent)i.CloneConnection(), EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
 			EditorUtils.StartQueue();
@@ -7348,11 +7348,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			foreach (StateMachineBehaviour stateMachineBehaviour in behaviours)
 			{
-				if (!(stateMachineBehaviour.GetType() == WorkerProperty.InsertPage()))
+				if (!(stateMachineBehaviour.GetType() == AnimatorTypeCache.InsertPage()))
 				{
 					continue;
 				}
-				WorkerProperty.BridgeProperty bridgeProperty = new WorkerProperty.BridgeProperty(stateMachineBehaviour);
+				AnimatorTypeCache.BridgeProperty bridgeProperty = new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour);
 				for (int num = bridgeProperty.m_DatabaseProperty.Count - 1; num >= 0; num--)
 				{
 					if (PushServer(bridgeProperty.m_DatabaseProperty[num].ResetPage()))
@@ -7412,13 +7412,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				s.transitions[num].conditions = conditions;
 			}
 			EditorUtility.SetDirty(s);
-			if (WorkerProperty.InvokePage())
+			if (AnimatorTypeCache.InvokePage())
 			{
 				CollectServer(s.behaviours);
 			}
 		}
 
-		internal void VerifyServer(InstanceServer t)
+		internal void VerifyServer(AnimatorStateTransitionSet t)
 		{
 			for (int num = t.SetContext().Length - 1; num >= 0; num--)
 			{
@@ -7469,11 +7469,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			foreach (StateMachineBehaviour stateMachineBehaviour in behaviours)
 			{
-				if (!(stateMachineBehaviour.GetType() == WorkerProperty.InsertPage()))
+				if (!(stateMachineBehaviour.GetType() == AnimatorTypeCache.InsertPage()))
 				{
 					continue;
 				}
-				WorkerProperty.BridgeProperty bridgeProperty = new WorkerProperty.BridgeProperty(stateMachineBehaviour);
+				AnimatorTypeCache.BridgeProperty bridgeProperty = new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour);
 				for (int num = bridgeProperty.m_DatabaseProperty.Count - 1; num >= 0; num--)
 				{
 					if (FillServer(bridgeProperty.m_DatabaseProperty[num].ResetPage()))
@@ -7550,11 +7550,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			foreach (StateMachineBehaviour stateMachineBehaviour in b)
 			{
-				if (stateMachineBehaviour.GetType() != WorkerProperty.InsertPage())
+				if (stateMachineBehaviour.GetType() != AnimatorTypeCache.InsertPage())
 				{
 					continue;
 				}
-				WorkerProperty.BridgeProperty bridgeProperty = new WorkerProperty.BridgeProperty(stateMachineBehaviour);
+				AnimatorTypeCache.BridgeProperty bridgeProperty = new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour);
 				for (int num = bridgeProperty.m_DatabaseProperty.Count - 1; num >= 0; num--)
 				{
 					if (CheckServer(bridgeProperty.m_DatabaseProperty[num].ResetPage()))
@@ -7585,7 +7585,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				s.timeParameterActive = false;
 			}
 			PrepareServer(s.transitions, s.RemoveTransition);
-			if (WorkerProperty.InvokePage())
+			if (AnimatorTypeCache.InvokePage())
 			{
 				_AttrReg(s.behaviours);
 			}
@@ -7625,11 +7625,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			StateMachineBehaviour[] behaviours = s.behaviours;
 			foreach (StateMachineBehaviour stateMachineBehaviour in behaviours)
 			{
-				if (!(stateMachineBehaviour.GetType() == WorkerProperty.InsertPage()))
+				if (!(stateMachineBehaviour.GetType() == AnimatorTypeCache.InsertPage()))
 				{
 					continue;
 				}
-				foreach (WorkerProperty.BridgeProperty.AttrProperty item in new WorkerProperty.BridgeProperty(stateMachineBehaviour).m_DatabaseProperty)
+				foreach (AnimatorTypeCache.BridgeProperty.AttrProperty item in new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour).m_DatabaseProperty)
 				{
 					item.FlushPage(RegisterServer(item.ResetPage()));
 					EditorUtility.SetDirty(stateMachineBehaviour);
@@ -7654,11 +7654,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			StateMachineBehaviour[] behaviours = m.behaviours;
 			foreach (StateMachineBehaviour stateMachineBehaviour in behaviours)
 			{
-				if (!(stateMachineBehaviour.GetType() == WorkerProperty.InsertPage()))
+				if (!(stateMachineBehaviour.GetType() == AnimatorTypeCache.InsertPage()))
 				{
 					continue;
 				}
-				foreach (WorkerProperty.BridgeProperty.AttrProperty item in new WorkerProperty.BridgeProperty(stateMachineBehaviour).m_DatabaseProperty)
+				foreach (AnimatorTypeCache.BridgeProperty.AttrProperty item in new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour).m_DatabaseProperty)
 				{
 					item.FlushPage(RegisterServer(item.ResetPage()));
 				}
@@ -8303,7 +8303,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static ReorderableList _ErrorAnnotation;
 
-	private static List<WorkerProperty.BridgeProperty> setterAnnotation = new List<WorkerProperty.BridgeProperty>();
+	private static List<AnimatorTypeCache.BridgeProperty> setterAnnotation = new List<AnimatorTypeCache.BridgeProperty>();
 
 	private static bool m_ConnectionAnnotation;
 
@@ -8403,7 +8403,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static readonly AnimBool _AccountAnnotation = new AnimBool();
 
-	private static readonly SingletonServer m_RefAnnotation = new SingletonServer("3.3.2");
+	private static readonly VersionNumber m_RefAnnotation = new VersionNumber("3.3.2");
 
 	private static readonly (string, string)[] statusAnnotation = new(string, string)[1] { ("Templates", "https://notes.sleightly.dev/templates/") };
 
@@ -8643,9 +8643,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static ReorderableList.SelectCallbackDelegate _CallbackVisitor;
 
-	private static AnnotationProperty indexerVisitor;
+	private static RenameOverlayWrapper indexerVisitor;
 
-	private static AnnotationProperty _IssuerVisitor;
+	private static RenameOverlayWrapper _IssuerVisitor;
 
 	private static MethodInfo m_PrototypeVisitor;
 
@@ -8840,7 +8840,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return;
 		}
 		_Attribute = 0;
-		using (new SpecificationThread(ref field))
+		using (new ScrollViewScope(ref field))
 		{
 			using (new GUILayout.HorizontalScope())
 			{
@@ -9064,7 +9064,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_AnnotationAnnotation = m_WrapperAnnotation;
 		}
 		ConnectAnnotation();
-		if (WorkerProperty.InvokePage())
+		if (AnimatorTypeCache.InvokePage())
 		{
 			CallAnnotation();
 			MoveAnnotation();
@@ -9391,7 +9391,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		});
 	}
 
-	private static List<AlgoAlgo> PopAnnotation(WorkerProperty.BridgeProperty init, List<AlgoAlgo> cust = null)
+	private static List<AlgoAlgo> PopAnnotation(AnimatorTypeCache.BridgeProperty init, List<AlgoAlgo> cust = null)
 	{
 		List<AlgoAlgo> list = cust;
 		if (list != null)
@@ -9424,7 +9424,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		return list;
 	}
 
-	private static bool ComputeAnnotation(WorkerProperty.BridgeProperty.AttrProperty i, WorkerProperty.BridgeProperty.AttrProperty pol)
+	private static bool ComputeAnnotation(AnimatorTypeCache.BridgeProperty.AttrProperty i, AnimatorTypeCache.BridgeProperty.AttrProperty pol)
 	{
 		if (!LogoutMapper())
 		{
@@ -9438,7 +9438,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			int second;
 			UnityEngine.AnimatorControllerParameterType type = ResetAnnotation(i.ResetPage(), out second).type;
-			if (i.CreatePage() == WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Set || i.CreatePage() == WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Add)
+			if (i.CreatePage() == AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Set || i.CreatePage() == AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Add)
 			{
 				if (type == UnityEngine.AnimatorControllerParameterType.Trigger)
 				{
@@ -9475,7 +9475,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			StateMachineBehaviour[] behaviours = item.behaviours;
 			foreach (StateMachineBehaviour stateMachineBehaviour in behaviours)
 			{
-				if (stateMachineBehaviour.GetType() == WorkerProperty.QueryPage())
+				if (stateMachineBehaviour.GetType() == AnimatorTypeCache.QueryPage())
 				{
 					flag = true;
 					list.Add(stateMachineBehaviour);
@@ -9498,9 +9498,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		foreach (AnimatorState item in m_AlgoAnnotation)
 		{
-			if (item.behaviours.All((StateMachineBehaviour b) => b.GetType() != WorkerProperty.QueryPage()))
+			if (item.behaviours.All((StateMachineBehaviour b) => b.GetType() != AnimatorTypeCache.QueryPage()))
 			{
-				item.AddStateMachineBehaviour(WorkerProperty.QueryPage());
+				item.AddStateMachineBehaviour(AnimatorTypeCache.QueryPage());
 			}
 		}
 		MoveAnnotation();
@@ -9515,9 +9515,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			bool flag = false;
 			for (int j = 0; j < m_AlgoAnnotation[i].behaviours.Length; j++)
 			{
-				if (m_AlgoAnnotation[i].behaviours[j].GetType() == WorkerProperty.InsertPage())
+				if (m_AlgoAnnotation[i].behaviours[j].GetType() == AnimatorTypeCache.InsertPage())
 				{
-					WorkerProperty.BridgeProperty bridgeProperty = new WorkerProperty.BridgeProperty(m_AlgoAnnotation[i].behaviours[j]);
+					AnimatorTypeCache.BridgeProperty bridgeProperty = new AnimatorTypeCache.BridgeProperty(m_AlgoAnnotation[i].behaviours[j]);
 					setterAnnotation.Add(bridgeProperty);
 					_QueueAnnotation = PopAnnotation(bridgeProperty, _QueueAnnotation);
 					flag = true;
@@ -9555,7 +9555,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return;
 		}
-		WorkerProperty.BridgeProperty.AttrProperty initializerAlgo = _QueueAnnotation[cust_end].m_InitializerAlgo;
+		AnimatorTypeCache.BridgeProperty.AttrProperty initializerAlgo = _QueueAnnotation[cust_end].m_InitializerAlgo;
 		int second;
 		UnityEngine.AnimatorControllerParameter animatorControllerParameter = ResetAnnotation(initializerAlgo.ResetPage(), out second);
 		Rect source = new Rect(ident);
@@ -9569,9 +9569,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			initializerAlgo.FlushPage(TestAnnotation(EditorGUI.Popup(source, second, _Schema)));
 			source.x += source.width;
-			if (animatorControllerParameter.type == UnityEngine.AnimatorControllerParameterType.Trigger || initializerAlgo.CreatePage() == WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Set || (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Float && animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Int) || initializerAlgo.CreatePage() != WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Random)
+			if (animatorControllerParameter.type == UnityEngine.AnimatorControllerParameterType.Trigger || initializerAlgo.CreatePage() == AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Set || (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Float && animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Int) || initializerAlgo.CreatePage() != AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Random)
 			{
-				if (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Trigger || initializerAlgo.CreatePage() != WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Set)
+				if (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Trigger || initializerAlgo.CreatePage() != AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Set)
 				{
 					source.width /= 2f;
 				}
@@ -9580,16 +9580,16 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				source.width /= 3f;
 			}
-			initializerAlgo.NewPage((WorkerProperty.BridgeProperty.AttrProperty.ChangeType)(object)EditorGUI.EnumPopup(selected: (Enum)((animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Bool && animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Trigger) ? ((object)(VRCFullOptions)initializerAlgo.CreatePage()) : ((object)(VRCHalfOptions)initializerAlgo.CreatePage())), position: source));
+			initializerAlgo.NewPage((AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType)(object)EditorGUI.EnumPopup(selected: (Enum)((animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Bool && animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Trigger) ? ((object)(VRCFullOptions)initializerAlgo.CreatePage()) : ((object)(VRCHalfOptions)initializerAlgo.CreatePage())), position: source));
 			source.x += source.width;
 			source.height -= 5f;
 			if (animatorControllerParameter.type == UnityEngine.AnimatorControllerParameterType.Bool || animatorControllerParameter.type == UnityEngine.AnimatorControllerParameterType.Trigger)
 			{
-				if (initializerAlgo.CreatePage() == WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Add)
+				if (initializerAlgo.CreatePage() == AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Add)
 				{
-					initializerAlgo.NewPage(WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Set);
+					initializerAlgo.NewPage(AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Set);
 				}
-				if (initializerAlgo.CreatePage() != WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Set)
+				if (initializerAlgo.CreatePage() != AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Set)
 				{
 					EditorGUIUtility.labelWidth = 50f;
 					source.width -= 17f;
@@ -9610,8 +9610,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			else
 			{
-				bool flag2 = initializerAlgo.CreatePage() == WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Add;
-				if (initializerAlgo.CreatePage() == WorkerProperty.BridgeProperty.AttrProperty.ChangeType.Set || flag2)
+				bool flag2 = initializerAlgo.CreatePage() == AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Add;
+				if (initializerAlgo.CreatePage() == AnimatorTypeCache.BridgeProperty.AttrProperty.ChangeType.Set || flag2)
 				{
 					EditorGUIUtility.labelWidth = 37f;
 					if (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Int)
@@ -9701,7 +9701,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		rect.x += rect.width - 80f;
 		rect.width -= rect.x + 2f;
 		int num = 0;
-		foreach (WorkerProperty.BridgeProperty item in setterAnnotation)
+		foreach (AnimatorTypeCache.BridgeProperty item in setterAnnotation)
 		{
 			switch (num)
 			{
@@ -9733,7 +9733,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				break;
 			}
 		}
-		using (new TemplateThread(TemplateThread.ColoringType.BG, num, Color.grey, Color.red, Color.yellow, Color.green))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, num, Color.grey, Color.red, Color.yellow, Color.green))
 		{
 			if (!GUI.Button(rect, "Local Only"))
 			{
@@ -9744,7 +9744,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			case 1:
 			case 2:
 			{
-				foreach (WorkerProperty.BridgeProperty item2 in setterAnnotation)
+				foreach (AnimatorTypeCache.BridgeProperty item2 in setterAnnotation)
 				{
 					item2.ReadPage(instanceinstall: true);
 				}
@@ -9752,7 +9752,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			case 3:
 			{
-				foreach (WorkerProperty.BridgeProperty item3 in setterAnnotation)
+				foreach (AnimatorTypeCache.BridgeProperty item3 in setterAnnotation)
 				{
 					item3.ReadPage(instanceinstall: false);
 				}
@@ -9764,7 +9764,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void InsertAnnotation(ReorderableList spec)
 	{
-		WorkerProperty.BridgeProperty.AttrProperty attrProperty = null;
+		AnimatorTypeCache.BridgeProperty.AttrProperty attrProperty = null;
 		string def = "";
 		if (_QueueAnnotation.Count <= 0)
 		{
@@ -9779,26 +9779,26 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		for (int i = 0; i < m_AlgoAnnotation.Count; i++)
 		{
-			WorkerProperty.BridgeProperty bridgeProperty = null;
+			AnimatorTypeCache.BridgeProperty bridgeProperty = null;
 			for (int j = 0; j < m_AlgoAnnotation[i].behaviours.Length; j++)
 			{
-				if (m_AlgoAnnotation[i].behaviours[j].GetType() == WorkerProperty.InsertPage())
+				if (m_AlgoAnnotation[i].behaviours[j].GetType() == AnimatorTypeCache.InsertPage())
 				{
-					bridgeProperty = new WorkerProperty.BridgeProperty(m_AlgoAnnotation[i].behaviours[j]);
+					bridgeProperty = new AnimatorTypeCache.BridgeProperty(m_AlgoAnnotation[i].behaviours[j]);
 					break;
 				}
 			}
 			if (bridgeProperty == null)
 			{
-				StateMachineBehaviour stateMachineBehaviour = (StateMachineBehaviour)ScriptableObject.CreateInstance(WorkerProperty.InsertPage());
+				StateMachineBehaviour stateMachineBehaviour = (StateMachineBehaviour)ScriptableObject.CreateInstance(AnimatorTypeCache.InsertPage());
 				stateMachineBehaviour.hideFlags = HideFlags.HideInHierarchy;
 				AssetDatabase.AddObjectToAsset(stateMachineBehaviour, LogoutMapper());
 				StateMachineBehaviour[] array = m_AlgoAnnotation[i].behaviours;
 				ArrayUtility.Add(ref array, stateMachineBehaviour);
 				m_AlgoAnnotation[i].behaviours = array;
-				bridgeProperty = new WorkerProperty.BridgeProperty(stateMachineBehaviour);
+				bridgeProperty = new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour);
 			}
-			WorkerProperty.BridgeProperty.AttrProperty attrProperty2 = bridgeProperty.VisitPage();
+			AnimatorTypeCache.BridgeProperty.AttrProperty attrProperty2 = bridgeProperty.VisitPage();
 			if (attrProperty != null)
 			{
 				RestartAnnotation(attrProperty, attrProperty2);
@@ -9812,7 +9812,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		PatchWrapper();
 	}
 
-	private static void RestartAnnotation(WorkerProperty.BridgeProperty.AttrProperty def, WorkerProperty.BridgeProperty.AttrProperty vis)
+	private static void RestartAnnotation(AnimatorTypeCache.BridgeProperty.AttrProperty def, AnimatorTypeCache.BridgeProperty.AttrProperty vis)
 	{
 		vis.InstantiatePage(validatekey: true);
 		vis.GetPage(def.DestroyPage());
@@ -10101,7 +10101,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if ((bool)ConsumerAlgo.CallDefinition().displayParameterType)
 		{
-			using (new TemplateThread(TemplateThread.ColoringType.FG, ConsumerAlgo.CallDefinition().parameterLabelColor.WriteDefinition()))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, ConsumerAlgo.CallDefinition().parameterLabelColor.WriteDefinition()))
 			{
 				EditorUtils.ConnectQueue(param, second, overridethird: true, 0f, 1f, isparam4: false, ConsumerAlgo.m_AdapterAlgo);
 			}
@@ -10205,23 +10205,23 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void ResolveAnnotation()
 	{
-		List<(MethodInfo, CallbackServer, bool)> list = new List<(MethodInfo, CallbackServer, bool)>();
+		List<(MethodInfo, CallbackAttribute, bool)> list = new List<(MethodInfo, CallbackAttribute, bool)>();
 		foreach (MethodInfo item in AppDomain.CurrentDomain.GetAssemblies().SelectMany((System.Reflection.Assembly assembly) => assembly.GetTypes().SelectMany((Type t) => t.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))))
 		{
-			CallbackServer[] array = item.GetCustomAttributes<CallbackServer>().ToArray();
-			foreach (CallbackServer callbackServer in array)
+			CallbackAttribute[] array = item.GetCustomAttributes<CallbackAttribute>().ToArray();
+			foreach (CallbackAttribute callbackAttribute in array)
 			{
-				if (callbackServer is PrototypeServer)
+				if (callbackAttribute is CallbackMethodAttribute)
 				{
-					list.Add((item, callbackServer, true));
+					list.Add((item, callbackAttribute, true));
 				}
-				else if (callbackServer is RuleServer)
+				else if (callbackAttribute is ControllerCallbackAttribute)
 				{
-					list.Add((item, callbackServer, false));
+					list.Add((item, callbackAttribute, false));
 				}
 			}
 		}
-		foreach (var item2 in list.OrderBy<(MethodInfo, CallbackServer, bool), int>(((MethodInfo, CallbackServer, bool onVerify) x) => x.Item2._IssuerServer))
+		foreach (var item2 in list.OrderBy<(MethodInfo, CallbackAttribute, bool), int>(((MethodInfo, CallbackAttribute, bool onVerify) x) => x.Item2._IssuerServer))
 		{
 			var (m_ComparatorDefinition, exceptionDefinition, _) = item2;
 			if (item2.Item3)
@@ -11096,7 +11096,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void QueryVisitor()
 	{
-		using (new TemplateThread(TemplateThread.ColoringType.BG, Color.clear))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
 			using (new GUILayout.HorizontalScope())
 			{
@@ -11549,7 +11549,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				ConsumerAlgo.CallDefinition().u_announcementHidden.ExcludeDefinition(excludeparam: false);
 			}
 		}
-		if (!(m_RefAnnotation < new SingletonServer(ConsumerAlgo.CallDefinition().u_updateVersion.CollectDefinition())))
+		if (!(m_RefAnnotation < new VersionNumber(ConsumerAlgo.CallDefinition().u_updateVersion.CollectDefinition())))
 		{
 			if (setasset)
 			{
@@ -11620,7 +11620,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		else
 		{
-			using (new AnnotationPolicy(iskey: false))
+			using (new GUIDisabledScope(iskey: false))
 			{
 				Rect item2 = new Rect(spec);
 				item2.width = 16f;
@@ -11719,7 +11719,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorGUI.EndDisabledGroup();
 		spec.x += spec.width - 52f;
 		spec.width = 15f;
-		using (new AnnotationPolicy(iskey: false))
+		using (new GUIDisabledScope(iskey: false))
 		{
 			if (EditorUtils.QueryQueue(spec, new GUIContent(EditorUtils.DestroyError()._RequestProcessor)
 			{
@@ -11792,7 +11792,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			CS_0024_003C_003E8__locals43.CompareServer(rect);
 			if (!CS_0024_003C_003E8__locals43._IteratorDefinition)
 			{
-				using (new ManagerThread(globalVisitor.iteratorVisitor[0]))
+				using (new MixedValueScope(globalVisitor.iteratorVisitor[0]))
 				{
 					EditorGUI.BeginChangeCheck();
 					int firstsize = EditorGUI.Popup(rect, -1, _Schema);
@@ -11859,7 +11859,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			CS_0024_003C_003E8__locals43.CompareServer(rect6);
 			if (!CS_0024_003C_003E8__locals43.m_ProcDefinition && !CS_0024_003C_003E8__locals43._IteratorDefinition)
 			{
-				using (new ManagerThread(globalVisitor.iteratorVisitor[0]))
+				using (new MixedValueScope(globalVisitor.iteratorVisitor[0]))
 				{
 					if ((bool)ConsumerAlgo.CallDefinition().useLegacyDropdown)
 					{
@@ -11885,7 +11885,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			GUI.Label(rect7, EditorUtils.DestroyError().m_ValProcessor, GUIStyle.none);
 			if (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Trigger)
 			{
-				using (new ManagerThread(globalVisitor.iteratorVisitor[1]))
+				using (new MixedValueScope(globalVisitor.iteratorVisitor[1]))
 				{
 					EditorGUI.BeginChangeCheck();
 					Enum selected;
@@ -11913,7 +11913,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						flag = true;
 					}
 				}
-				using (new ManagerThread(globalVisitor.iteratorVisitor[2]))
+				using (new MixedValueScope(globalVisitor.iteratorVisitor[2]))
 				{
 					EditorGUI.BeginChangeCheck();
 					UnityEngine.AnimatorControllerParameterType type = animatorControllerParameter.type;
@@ -12330,7 +12330,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			string token = $"State Count: {num}";
 			DeleteAnnotation(GetVisitor, token, ConsumerAlgo.CallDefinition().showStateCount, iscont2: true, 3);
 			DeleteAnnotation(CalcVisitor, "State Settings", ConsumerAlgo.CallDefinition().showStateSettings, iscont2: true, 4);
-			if (WorkerProperty.InvokePage())
+			if (AnimatorTypeCache.InvokePage())
 			{
 				DeleteAnnotation(RunVisitor, "VRC Parameter Drivers", ConsumerAlgo.CallDefinition().showVRCDrivers, iscont2: false, 5);
 				DeleteAnnotation(CloneVisitor, "VRC Tracking Control", ConsumerAlgo.CallDefinition().showVRCTracking, iscont2: false, 6);
@@ -12626,7 +12626,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.Label(EditorUtils.DestroyError()._DatabaseProcessor, GUILayout.Width(35f), GUILayout.Height(35f));
 				using (new GUILayout.VerticalScope())
 				{
-					using (new ManagerThread(m_TokenizerAnnotation))
+					using (new MixedValueScope(m_TokenizerAnnotation))
 					{
 						EditorGUI.BeginChangeCheck();
 						string serv = EditorGUILayout.DelayedTextField(string.Empty, m_TokenizerAnnotation.stringValue);
@@ -12960,7 +12960,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	[PrototypeServer(0)]
+	[CallbackMethod(0)]
 	private static void ViewVisitor()
 	{
 		List<Type> list = (from t in AppDomain.CurrentDomain.GetAssemblies().SelectMany((System.Reflection.Assembly a) => a.GetTypes())
@@ -13490,13 +13490,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 				});
 			});
-			if (WorkerProperty.InvokePage())
+			if (AnimatorTypeCache.InvokePage())
 			{
 				s.behaviours.InvokeResolver(delegate(StateMachineBehaviour b)
 				{
-					if (b.GetType() == WorkerProperty.InsertPage())
+					if (b.GetType() == AnimatorTypeCache.InsertPage())
 					{
-						new WorkerProperty.BridgeProperty(b).m_DatabaseProperty.InvokeResolver(delegate(WorkerProperty.BridgeProperty.AttrProperty p)
+						new AnimatorTypeCache.BridgeProperty(b).m_DatabaseProperty.InvokeResolver(delegate(AnimatorTypeCache.BridgeProperty.AttrProperty p)
 						{
 							if (!string.IsNullOrEmpty(p.ResetPage()))
 							{
@@ -13527,13 +13527,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			});
 		});
-		if (WorkerProperty.InvokePage())
+		if (AnimatorTypeCache.InvokePage())
 		{
 			spec.behaviours.InvokeResolver(delegate(StateMachineBehaviour b)
 			{
-				if (b.GetType() == WorkerProperty.InsertPage())
+				if (b.GetType() == AnimatorTypeCache.InsertPage())
 				{
-					new WorkerProperty.BridgeProperty(b).m_DatabaseProperty.InvokeResolver(delegate(WorkerProperty.BridgeProperty.AttrProperty p)
+					new AnimatorTypeCache.BridgeProperty(b).m_DatabaseProperty.InvokeResolver(delegate(AnimatorTypeCache.BridgeProperty.AttrProperty p)
 					{
 						if (!string.IsNullOrEmpty(p.ResetPage()))
 						{
@@ -13591,7 +13591,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		AssetDatabase.SaveAssets();
 	}
 
-	[PrototypeServer(0)]
+	[CallbackMethod(0)]
 	private static void RevertVisitor()
 	{
 		List<UnityEditor.Animations.AnimatorController> list = new List<UnityEditor.Animations.AnimatorController>();
@@ -13705,7 +13705,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		CS_0024_003C_003E8__locals15._ReaderReg = istask2;
 		CS_0024_003C_003E8__locals15.m_BridgeReg = map;
 		CS_0024_003C_003E8__locals15.m_StrategyReg = consumer;
-		if (WorkerProperty.InvokePage())
+		if (AnimatorTypeCache.InvokePage())
 		{
 			CS_0024_003C_003E8__locals15.CollectServer(param.behaviours);
 		}
@@ -13738,12 +13738,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				s.transitions[num].conditions = conditions;
 			}
 			EditorUtility.SetDirty(s);
-			if (WorkerProperty.InvokePage())
+			if (AnimatorTypeCache.InvokePage())
 			{
 				CS_0024_003C_003E8__locals15.CollectServer(s.behaviours);
 			}
 		}, requiresc: false);
-		param.ResolvePredicate(delegate(InstanceServer t)
+		param.ResolvePredicate(delegate(AnimatorStateTransitionSet t)
 		{
 			for (int num = t.SetContext().Length - 1; num >= 0; num--)
 			{
@@ -13786,15 +13786,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		CS_0024_003C_003E8__locals22._IdentifierReg = connection;
 		CS_0024_003C_003E8__locals22.m_DispatcherReg = res;
 		CS_0024_003C_003E8__locals22._AttrReg = null;
-		if (WorkerProperty.InvokePage())
+		if (AnimatorTypeCache.InvokePage())
 		{
 			CS_0024_003C_003E8__locals22._AttrReg = delegate(StateMachineBehaviour[] b)
 			{
 				foreach (StateMachineBehaviour stateMachineBehaviour in b)
 				{
-					if (!(stateMachineBehaviour.GetType() != WorkerProperty.InsertPage()))
+					if (!(stateMachineBehaviour.GetType() != AnimatorTypeCache.InsertPage()))
 					{
-						WorkerProperty.BridgeProperty bridgeProperty = new WorkerProperty.BridgeProperty(stateMachineBehaviour);
+						AnimatorTypeCache.BridgeProperty bridgeProperty = new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour);
 						for (int num2 = bridgeProperty.m_DatabaseProperty.Count - 1; num2 >= 0; num2--)
 						{
 							if (CS_0024_003C_003E8__locals22.CheckServer(bridgeProperty.m_DatabaseProperty[num2].ResetPage()))
@@ -13826,7 +13826,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				s.timeParameterActive = false;
 			}
 			CS_0024_003C_003E8__locals22.PrepareServer(s.transitions, s.RemoveTransition);
-			if (WorkerProperty.InvokePage())
+			if (AnimatorTypeCache.InvokePage())
 			{
 				CS_0024_003C_003E8__locals22._AttrReg(s.behaviours);
 			}
@@ -13839,7 +13839,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			CS_0024_003C_003E8__locals22.m_DispatcherReg.RemoveAnyStateTransition(t);
 		});
-		if (WorkerProperty.InvokePage())
+		if (AnimatorTypeCache.InvokePage())
 		{
 			CS_0024_003C_003E8__locals22._AttrReg(CS_0024_003C_003E8__locals22.m_DispatcherReg.behaviours);
 		}
@@ -13866,9 +13866,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			StateMachineBehaviour[] behaviours = s.behaviours;
 			foreach (StateMachineBehaviour stateMachineBehaviour in behaviours)
 			{
-				if (stateMachineBehaviour.GetType() == WorkerProperty.InsertPage())
+				if (stateMachineBehaviour.GetType() == AnimatorTypeCache.InsertPage())
 				{
-					foreach (WorkerProperty.BridgeProperty.AttrProperty item2 in new WorkerProperty.BridgeProperty(stateMachineBehaviour).m_DatabaseProperty)
+					foreach (AnimatorTypeCache.BridgeProperty.AttrProperty item2 in new AnimatorTypeCache.BridgeProperty(stateMachineBehaviour).m_DatabaseProperty)
 					{
 						item2.FlushPage(CS_0024_003C_003E8__locals9.RegisterServer(item2.ResetPage()));
 						EditorUtility.SetDirty(stateMachineBehaviour);
@@ -15543,7 +15543,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return true;
 		}
-		using (new AnnotationPolicy(iskey: false))
+		using (new GUIDisabledScope(iskey: false))
 		{
 			if (annotationVisitor == null)
 			{
@@ -15705,7 +15705,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						array = array.Concat(second).ToArray();
 					}
 				}
-				StatusServer<string> statusServer = new StatusServer<string>("Property Name", array, _003C_003Ec.watcherInitializer.DisableObserver, delegate(int i, string s)
+				DreadScripts.ControllerEditor.SearchablePickerPopup<string> searchablePickerPopup = new DreadScripts.ControllerEditor.SearchablePickerPopup<string>("Property Name", array, _003C_003Ec.watcherInitializer.DisableObserver, delegate(int i, string s)
 				{
 					foreach (EditorCurveBinding item in temp.Distinct())
 					{
@@ -15717,8 +15717,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						});
 					}
 				});
-				statusServer.GetConnection(_003C_003Ec.watcherInitializer.InsertObserver);
-				statusServer.RunConnection(token);
+				searchablePickerPopup.GetConnection(_003C_003Ec.watcherInitializer.InsertObserver);
+				searchablePickerPopup.RunConnection(token);
 			});
 		}
 		else
@@ -15741,7 +15741,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				enumerable = m_ManagerAnnotation.Where(VerifyVisitor);
 			}
-			StatusServer<Type> statusServer = new StatusServer<Type>("Type", enumerable, _003C_003Ec.watcherInitializer.AddObserver, delegate(int i, Type t)
+			DreadScripts.ControllerEditor.SearchablePickerPopup<Type> searchablePickerPopup = new DreadScripts.ControllerEditor.SearchablePickerPopup<Type>("Type", enumerable, _003C_003Ec.watcherInitializer.AddObserver, delegate(int i, Type t)
 			{
 				string[] array = ListVisitor(t);
 				if (array.Length != 0)
@@ -15764,9 +15764,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				FindVisitor(t.Name + " has no animatable properties.");
 			});
-			statusServer.IncludeConnection(_003C_003Ec.watcherInitializer.InvokeObserver);
-			statusServer.GetConnection(_003C_003Ec.watcherInitializer.FindObserver);
-			statusServer.RunConnection(new Rect(token));
+			searchablePickerPopup.IncludeConnection(_003C_003Ec.watcherInitializer.InvokeObserver);
+			searchablePickerPopup.GetConnection(_003C_003Ec.watcherInitializer.FindObserver);
+			searchablePickerPopup.RunConnection(new Rect(token));
 		});
 	}
 
@@ -15790,7 +15790,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		Rect rect2 = new Rect(rect);
 		rect2.height = 14f;
 		Rect rect3 = rect2;
-		using (new AnnotationPolicy(m_ItemReg == null))
+		using (new GUIDisabledScope(m_ItemReg == null))
 		{
 			GUI.Label(rect3, "[Drag & Drop GameObjects]", EditorUtils.CalcError()._VisitorObserver);
 			EditorUtils.AwakeRules(rect, delegate(IEnumerable<GameObject> enu)
@@ -16516,7 +16516,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		if (flag2)
 		{
-			using (new TemplateThread(TemplateThread.ColoringType.FG, !ConsumerAlgo.CallDefinition().layerCompactView, Color.gray))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, !ConsumerAlgo.CallDefinition().layerCompactView, Color.gray))
 			{
 				if (EditorUtils.QueryQueue(rect, new GUIContent(EditorUtils.DestroyError().m_SingletonProcessor)
 				{
@@ -16534,7 +16534,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		using (new EditorGUI.DisabledScope(writerVisitor == LayerViewViewType.DefaultView))
 		{
-			using (new TemplateThread(TemplateThread.ColoringType.FG, !ConsumerAlgo.CallDefinition().sortCategoryViewLayers, Color.gray))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, !ConsumerAlgo.CallDefinition().sortCategoryViewLayers, Color.gray))
 			{
 				if (EditorUtils.QueryQueue(item, EditorUtils.DestroyError()._MappingProcessor, EditorUtils.CalcError().configProcessor))
 				{
@@ -16657,7 +16657,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					bool flag = num < 1f;
 					bool flag2 = num == 0f;
 					float num2 = ((!flag) ? 1f : Mathf.Lerp(0.5f, 1f, num));
-					using (new TemplateThread(TemplateThread.ColoringType.FG, flag, new Color(num2, num2, num2)))
+					using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, new Color(num2, num2, num2)))
 					{
 						GUI.Label(rect, animatorControllerLayer.name, EditorStyles.label);
 					}
@@ -17234,7 +17234,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							}
 						}
 						Rect var = def.SortResolver(visitor, isfield: true);
-						using (new TemplateThread(TemplateThread.ColoringType.BG, skipcont, EditorUtils.configurationProperty, Color.gray))
+						using (new GUIColorScope(GUIColorScope.ColoringType.BG, skipcont, EditorUtils.configurationProperty, Color.gray))
 						{
 							if (EditorUtils.CancelQueue(var, importerMapper.requestMapper, EditorStyles.toolbarButton))
 							{
@@ -17369,7 +17369,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	[PrototypeServer(1)]
+	[CallbackMethod(1)]
 	private static void SelectMapper()
 	{
 		if (m_InterceptorVisitor == null)
@@ -17430,8 +17430,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		recordAnnotation = _ConsumerVisitor.RestartList("m_PreviewAnimator");
 		helperAnnotation = _ConsumerVisitor.QueryList("liveLink");
 		m_ConsumerAnnotation = _ReaderVisitor.QueryList("selectedLayerIndex");
-		indexerVisitor = new AnnotationProperty(() => _ReaderVisitor.GetMethod("get_renameOverlay").Invoke(ReadAnnotation(), null));
-		_IssuerVisitor = new AnnotationProperty();
+		indexerVisitor = new RenameOverlayWrapper(() => _ReaderVisitor.GetMethod("get_renameOverlay").Invoke(ReadAnnotation(), null));
+		_IssuerVisitor = new RenameOverlayWrapper();
 		_IssuerVisitor._RulesProperty = delegate(bool accepted)
 		{
 			if (accepted)
@@ -18040,7 +18040,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return;
 		}
 		GUI.Label(connection, "+", GUI.skin.label);
-		if (!new DispatcherPolicy(Event.current).ExcludeHelper().InvokeHelper().QueryHelper(connection))
+		if (!new EventWrapper(Event.current).ExcludeHelper().InvokeHelper().QueryHelper(connection))
 		{
 			return;
 		}
@@ -18378,7 +18378,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void ParameterRenameEndPost()
 	{
-		if (!WorkerProperty.InvokePage())
+		if (!AnimatorTypeCache.InvokePage())
 		{
 			return;
 		}
@@ -18775,7 +18775,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					};
 					try
 					{
-						using (new ManagerThread(field))
+						using (new MixedValueScope(field))
 						{
 							EditorGUI.BeginChangeCheck();
 							stringValue = (string)EditorUtils.CalcError().LoginError().Invoke(null, parameters);
@@ -18794,7 +18794,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				EditorGUI.indentLevel--;
 			}
-			using (new ManagerThread(def2))
+			using (new MixedValueScope(def2))
 			{
 				EditorGUI.BeginChangeCheck();
 				bool boolValue = EditorGUILayout.ToggleLeft("Parameter", def2.boolValue, GUILayout.MaxWidth(100f));

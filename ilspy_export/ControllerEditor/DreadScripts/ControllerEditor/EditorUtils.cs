@@ -160,29 +160,29 @@ internal static class EditorUtils
 
 		internal readonly GUIContent[] m_FacadeProcessor;
 
-		internal readonly ErrorPolicy m_AdvisorProcessor = NewList("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
+		internal readonly CachedTextureContent m_AdvisorProcessor = NewList("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
 
-		internal readonly ErrorPolicy _CallbackProcessor = NewList("Refresh", "ds-icon-refresh", "Reset");
+		internal readonly CachedTextureContent _CallbackProcessor = NewList("Refresh", "ds-icon-refresh", "Reset");
 
-		internal readonly ErrorPolicy indexerProcessor = NewList("console.infoicon.sml", "ds-icon-announcement");
+		internal readonly CachedTextureContent indexerProcessor = NewList("console.infoicon.sml", "ds-icon-announcement");
 
-		internal readonly ErrorPolicy issuerProcessor = NewList("console.warnicon.sml", "ds-icon-warning");
+		internal readonly CachedTextureContent issuerProcessor = NewList("console.warnicon.sml", "ds-icon-warning");
 
-		internal readonly ErrorPolicy prototypeProcessor = NewList("console.warnicon.inactive.sml", "ds-icon-note");
+		internal readonly CachedTextureContent prototypeProcessor = NewList("console.warnicon.inactive.sml", "ds-icon-note");
 
-		internal readonly ErrorPolicy ruleProcessor = NewList("console.erroricon.sml", "ds-icon-error");
+		internal readonly CachedTextureContent ruleProcessor = NewList("console.erroricon.sml", "ds-icon-error");
 
-		internal readonly ErrorPolicy m_SingletonProcessor = NewList("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
+		internal readonly CachedTextureContent m_SingletonProcessor = NewList("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
 
-		internal readonly ErrorPolicy _FactoryProcessor = NewList("Lightmapping", "ds-icon-light", "Ping");
+		internal readonly CachedTextureContent _FactoryProcessor = NewList("Lightmapping", "ds-icon-light", "Ping");
 
-		internal readonly ErrorPolicy _AccountProcessor = NewList("_Help", "ds-icon-help");
+		internal readonly CachedTextureContent _AccountProcessor = NewList("_Help", "ds-icon-help");
 
-		internal readonly ErrorPolicy _RefProcessor = NewList("scenevis_visible_hover", "ds-icon-visible", "Visible");
+		internal readonly CachedTextureContent _RefProcessor = NewList("scenevis_visible_hover", "ds-icon-visible", "Visible");
 
-		internal readonly ErrorPolicy m_StatusProcessor = NewList("scenevis_hidden_hover", "ds-icon-hidden", "Hidden");
+		internal readonly CachedTextureContent m_StatusProcessor = NewList("scenevis_hidden_hover", "ds-icon-hidden", "Hidden");
 
-		internal readonly ErrorPolicy m_TokenProcessor = NewList("Mirror", "ds-icon-mirror", "Mirror");
+		internal readonly CachedTextureContent m_TokenProcessor = NewList("Mirror", "ds-icon-mirror", "Mirror");
 
 		internal readonly GUIContent m_CodeProcessor = PushQueue("TestPassed", "Up to Date!");
 
@@ -1309,7 +1309,7 @@ internal static class EditorUtils
 
 		internal UnityEditor.Animations.AnimatorController m_CreatorObserver;
 
-		internal SystemThread eventObserver;
+		internal ValidationResult eventObserver;
 
 		internal bool infoObserver;
 
@@ -1328,7 +1328,7 @@ internal static class EditorUtils
 
 		internal ParamsObserver RegisterError(VRCAvatarDescriptor spec, VRCAvatarDescriptor.AnimLayerType connection, UnityEditor.Animations.AnimatorController pool, bool isdef2 = false)
 		{
-			eventObserver = new SystemThread(isparam: false, "Unknown Error");
+			eventObserver = new ValidationResult(isparam: false, "Unknown Error");
 			m_ListenerObserver = spec;
 			_GetterObserver = connection;
 			interceptorObserver = true;
@@ -1338,7 +1338,7 @@ internal static class EditorUtils
 
 		internal ParamsObserver LogoutError(UnityEditor.Animations.AnimatorController task, bool istoken = false)
 		{
-			eventObserver = new SystemThread(isparam: false, "Unknown Error");
+			eventObserver = new ValidationResult(isparam: false, "Unknown Error");
 			infoObserver = istoken;
 			m_CreatorObserver = task;
 			return this;
@@ -1350,13 +1350,13 @@ internal static class EditorUtils
 			{
 				if (!(m_CreatorObserver == null) || infoObserver)
 				{
-					eventObserver = new SystemThread(isparam: true, "Check is valid");
+					eventObserver = new ValidationResult(isparam: true, "Check is valid");
 					return this;
 				}
-				eventObserver = ((!interceptorObserver) ? new SystemThread(isparam: false, "Controller is not set (Null)") : new SystemThread(isparam: false, $"{_GetterObserver} Controller was not found"));
+				eventObserver = ((!interceptorObserver) ? new ValidationResult(isparam: false, "Controller is not set (Null)") : new ValidationResult(isparam: false, $"{_GetterObserver} Controller was not found"));
 				return this;
 			}
-			eventObserver = new SystemThread(isparam: false, "Avatar is not set (Null)");
+			eventObserver = new ValidationResult(isparam: false, "Avatar is not set (Null)");
 			return this;
 		}
 
@@ -1427,7 +1427,7 @@ internal static class EditorUtils
 
 		internal bool _DicObserver;
 
-		internal SystemThread m_InvocationObserver;
+		internal ValidationResult m_InvocationObserver;
 
 		internal List<(string, int)> roleObserver;
 
@@ -1458,7 +1458,7 @@ internal static class EditorUtils
 		{
 			roleObserver = new List<(string, int)>();
 			_ParamObserver = string.Empty;
-			m_InvocationObserver = new SystemThread(isparam: false, "Unknown Error", -1);
+			m_InvocationObserver = new ValidationResult(isparam: false, "Unknown Error", -1);
 			_DicObserver = isasset;
 		}
 
@@ -1504,19 +1504,19 @@ internal static class EditorUtils
 					statusObserver = roleObserver.Sum(((string, int) c) => c.Item2);
 					_TokenObserver = m_RefObserver - statusObserver;
 					m_CodeObserver = _TokenObserver >= 0;
-					m_InvocationObserver = ((!m_CodeObserver) ? new SystemThread(isparam: false, $"Adding {statusObserver} bits of parameters would exceed the maximum parameters memory of ${RunError()}", 2) : new SystemThread(isparam: true, "Success"));
+					m_InvocationObserver = ((!m_CodeObserver) ? new ValidationResult(isparam: false, $"Adding {statusObserver} bits of parameters would exceed the maximum parameters memory of ${RunError()}", 2) : new ValidationResult(isparam: true, "Success"));
 					_ParamObserver = $"Remaining: {_TokenObserver}\n" + string.Join("\n", roleObserver.Select(((string, int) c) => c.Item1));
 				}
 				else
 				{
 					m_CodeObserver = false;
-					m_InvocationObserver = new SystemThread(isparam: false, "Expression Parameters is not set (Null)", 1);
+					m_InvocationObserver = new ValidationResult(isparam: false, "Expression Parameters is not set (Null)", 1);
 				}
 			}
 			else
 			{
 				m_CodeObserver = false;
-				m_InvocationObserver = new SystemThread(isparam: false, "Avatar is not set (Null)");
+				m_InvocationObserver = new ValidationResult(isparam: false, "Avatar is not set (Null)");
 			}
 		}
 
@@ -1545,7 +1545,7 @@ internal static class EditorUtils
 
 		private void ConcatSetter()
 		{
-			using (new TemplateThread(TemplateThread.ColoringType.FG, m_CodeObserver, configurationProperty, _WrapperProcessor))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, m_CodeObserver, configurationProperty, _WrapperProcessor))
 			{
 				GUILayout.Label(new GUIContent($"{statusObserver}/{m_RefObserver}", _ParamObserver), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
 			}
@@ -1602,7 +1602,7 @@ internal static class EditorUtils
 
 		internal bool _MockObserver;
 
-		internal SystemThread _InstanceObserver;
+		internal ValidationResult _InstanceObserver;
 
 		private Action<VRCExpressionsMenu> _FieldObserver;
 
@@ -1689,7 +1689,7 @@ internal static class EditorUtils
 			if (_ComposerObserver && m_ParameterObserver == null)
 			{
 				_MockObserver = false;
-				_InstanceObserver = new SystemThread(isparam: false, "Source Menu is not set (Null)")
+				_InstanceObserver = new ValidationResult(isparam: false, "Source Menu is not set (Null)")
 				{
 					_StubThread = 1
 				};
@@ -1698,7 +1698,7 @@ internal static class EditorUtils
 			if (m_MappingObserver && _RepositoryObserver == null)
 			{
 				_MockObserver = false;
-				_InstanceObserver = new SystemThread(isparam: false, "Source Controls are null")
+				_InstanceObserver = new ValidationResult(isparam: false, "Source Controls are null")
 				{
 					_StubThread = 2
 				};
@@ -1709,14 +1709,14 @@ internal static class EditorUtils
 				m_ContainerObserver = 8 - m_PoolObserver.controls.Count;
 				_ClassObserver = m_ContainerObserver - _BaseObserver;
 				_MockObserver = _ClassObserver >= 0;
-				_InstanceObserver = ((!_MockObserver) ? new SystemThread(isparam: false, $"Adding {_BaseObserver} controls to {m_PoolObserver.name} would exceed the 8 controls limit")
+				_InstanceObserver = ((!_MockObserver) ? new ValidationResult(isparam: false, $"Adding {_BaseObserver} controls to {m_PoolObserver.name} would exceed the 8 controls limit")
 				{
 					_StubThread = 4
-				} : new SystemThread(isparam: true, "Adding Controls Validated"));
+				} : new ValidationResult(isparam: true, "Adding Controls Validated"));
 				return this;
 			}
 			_MockObserver = false;
-			_InstanceObserver = new SystemThread(isparam: false, "Target Menu is not set (Null)")
+			_InstanceObserver = new ValidationResult(isparam: false, "Target Menu is not set (Null)")
 			{
 				_StubThread = 3
 			};
@@ -1734,7 +1734,7 @@ internal static class EditorUtils
 
 		private void RemoveSetter()
 		{
-			using (new TemplateThread(TemplateThread.ColoringType.FG, _MockObserver, configurationProperty, _WrapperProcessor))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, _MockObserver, configurationProperty, _WrapperProcessor))
 			{
 				GUILayout.Label(new GUIContent($"{_BaseObserver}/{m_ContainerObserver}", $"Remaining: {_ClassObserver}"), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
 			}
@@ -1919,7 +1919,7 @@ internal static class EditorUtils
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass164_0
 	{
-		public Dictionary<UnityEngine.Object, RepositoryServer> m_SerializerServer;
+		public Dictionary<UnityEngine.Object, AnimatorTransitionRef> m_SerializerServer;
 
 		internal void InterruptSetter(AnimatorStateMachine m)
 		{
@@ -1937,14 +1937,14 @@ internal static class EditorUtils
 			{
 				if (!m_SerializerServer.ContainsKey(item))
 				{
-					m_SerializerServer.Add(item, new RepositoryServer(item));
+					m_SerializerServer.Add(item, new AnimatorTransitionRef(item));
 				}
 			}
 			foreach (AnimatorStateMachine item2 in _003C_003Ec__DisplayClass164_._PageServer.stateMachines.Select(_003C_003Ec.m_ConfigObserver.DestroySetter))
 			{
 				if (!m_SerializerServer.ContainsKey(item2))
 				{
-					m_SerializerServer.Add(item2, new RepositoryServer(_003C_003Ec__DisplayClass164_._PageServer, item2));
+					m_SerializerServer.Add(item2, new AnimatorTransitionRef(_003C_003Ec__DisplayClass164_._PageServer, item2));
 				}
 			}
 		}
@@ -1957,7 +1957,7 @@ internal static class EditorUtils
 
 		public _003C_003Ec__DisplayClass164_0 _ResolverServer;
 
-		internal void ManageSetter(InstanceServer et)
+		internal void ManageSetter(AnimatorStateTransitionSet et)
 		{
 			if (!et.fieldServer)
 			{
@@ -1972,7 +1972,7 @@ internal static class EditorUtils
 			if ((bool)obj)
 			{
 				bool num = _ResolverServer.m_SerializerServer.ContainsKey(obj);
-				RepositoryServer value = (num ? _ResolverServer.m_SerializerServer[obj] : ((!flag) ? new RepositoryServer(_PageServer, et.PrintConnection()) : new RepositoryServer(et.RegisterConnection())));
+				AnimatorTransitionRef value = (num ? _ResolverServer.m_SerializerServer[obj] : ((!flag) ? new AnimatorTransitionRef(_PageServer, et.PrintConnection()) : new AnimatorTransitionRef(et.RegisterConnection())));
 				if (!num)
 				{
 					_ResolverServer.m_SerializerServer.Add(obj, value);
@@ -2223,7 +2223,7 @@ internal static class EditorUtils
 
 	private static bool errorProcessor;
 
-	internal static readonly WatcherPolicy setterProcessor = new WatcherPolicy("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", checkselection: true, "DreadBanner.png");
+	internal static readonly RemoteTextureView setterProcessor = new RemoteTextureView("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", checkselection: true, "DreadBanner.png");
 
 	private static Texture2D connectionProcessor;
 
@@ -3739,7 +3739,7 @@ internal static class EditorUtils
 		return dictionary.Values.All((int c) => c == 0);
 	}
 
-	internal static void NewPredicate(this UnityEditor.Animations.AnimatorController first, Action<AnimatorStateMachine> result, Action<AnimatorState> dic, Action<InstanceServer> config2)
+	internal static void NewPredicate(this UnityEditor.Animations.AnimatorController first, Action<AnimatorStateMachine> result, Action<AnimatorState> dic, Action<AnimatorStateTransitionSet> config2)
 	{
 		UnityEditor.Animations.AnimatorControllerLayer[] layers = first.layers;
 		for (int i = 0; i < layers.Length; i++)
@@ -3748,7 +3748,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void PushPredicate(this AnimatorStateMachine last, Action<AnimatorStateMachine> ivk, Action<AnimatorState> comp, Action<InstanceServer> instance2, bool evaluateasset3 = true)
+	internal static void PushPredicate(this AnimatorStateMachine last, Action<AnimatorStateMachine> ivk, Action<AnimatorState> comp, Action<AnimatorStateTransitionSet> instance2, bool evaluateasset3 = true)
 	{
 		if (ivk != null)
 		{
@@ -3786,7 +3786,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void ResolvePredicate(this AnimatorStateMachine asset, Action<InstanceServer> attr, bool moveserv = true)
+	internal static void ResolvePredicate(this AnimatorStateMachine asset, Action<AnimatorStateTransitionSet> attr, bool moveserv = true)
 	{
 		if (!asset)
 		{
@@ -3795,12 +3795,12 @@ internal static class EditorUtils
 		AnimatorTransition[] entryTransitions = asset.entryTransitions;
 		foreach (AnimatorTransition init in entryTransitions)
 		{
-			attr(new InstanceServer(init, InstanceServer.TransitionSourceType.EntryTransition, asset));
+			attr(new AnimatorStateTransitionSet(init, AnimatorStateTransitionSet.TransitionSourceType.EntryTransition, asset));
 		}
 		AnimatorStateTransition[] anyStateTransitions = asset.anyStateTransitions;
 		foreach (AnimatorStateTransition init2 in anyStateTransitions)
 		{
-			attr(new InstanceServer(init2, InstanceServer.TransitionSourceType.AnyTransition, asset));
+			attr(new AnimatorStateTransitionSet(init2, AnimatorStateTransitionSet.TransitionSourceType.AnyTransition, asset));
 		}
 		ChildAnimatorState[] states = asset.states;
 		for (int i = 0; i < states.Length; i++)
@@ -3809,7 +3809,7 @@ internal static class EditorUtils
 			anyStateTransitions = childAnimatorState.state.transitions;
 			foreach (AnimatorStateTransition param in anyStateTransitions)
 			{
-				attr(new InstanceServer(param, InstanceServer.TransitionSourceType.StateTransition, childAnimatorState.state));
+				attr(new AnimatorStateTransitionSet(param, AnimatorStateTransitionSet.TransitionSourceType.StateTransition, childAnimatorState.state));
 			}
 		}
 		ChildAnimatorStateMachine[] stateMachines = asset.stateMachines;
@@ -3819,7 +3819,7 @@ internal static class EditorUtils
 			entryTransitions = asset.GetStateMachineTransitions(childAnimatorStateMachine.stateMachine);
 			foreach (AnimatorTransition item in entryTransitions)
 			{
-				attr(new InstanceServer(item, InstanceServer.TransitionSourceType.MachineTransition, childAnimatorStateMachine.stateMachine, asset));
+				attr(new AnimatorStateTransitionSet(item, AnimatorStateTransitionSet.TransitionSourceType.MachineTransition, childAnimatorStateMachine.stateMachine, asset));
 			}
 		}
 		if (!moveserv)
@@ -4075,11 +4075,11 @@ internal static class EditorUtils
 		return 0;
 	}
 
-	internal static Dictionary<UnityEngine.Object, RepositoryServer> RegisterPredicate(this AnimatorStateMachine def, Dictionary<UnityEngine.Object, RepositoryServer> cust = null, bool addtemplate = true)
+	internal static Dictionary<UnityEngine.Object, AnimatorTransitionRef> RegisterPredicate(this AnimatorStateMachine def, Dictionary<UnityEngine.Object, AnimatorTransitionRef> cust = null, bool addtemplate = true)
 	{
 		if (cust == null)
 		{
-			cust = new Dictionary<UnityEngine.Object, RepositoryServer>();
+			cust = new Dictionary<UnityEngine.Object, AnimatorTransitionRef>();
 		}
 		_003C_003Ec__DisplayClass164_0 CS_0024_003C_003E8__locals0;
 		def.CollectPredicate(delegate(AnimatorStateMachine m)
@@ -4096,14 +4096,14 @@ internal static class EditorUtils
 			{
 				if (!cust.ContainsKey(item))
 				{
-					cust.Add(item, new RepositoryServer(item));
+					cust.Add(item, new AnimatorTransitionRef(item));
 				}
 			}
 			foreach (AnimatorStateMachine item2 in _003C_003Ec__DisplayClass164_._PageServer.stateMachines.Select(_003C_003Ec.m_ConfigObserver.DestroySetter))
 			{
 				if (!cust.ContainsKey(item2))
 				{
-					cust.Add(item2, new RepositoryServer(_003C_003Ec__DisplayClass164_._PageServer, item2));
+					cust.Add(item2, new AnimatorTransitionRef(_003C_003Ec__DisplayClass164_._PageServer, item2));
 				}
 			}
 		}, addtemplate);
@@ -4354,12 +4354,12 @@ internal static class EditorUtils
 		}, last);
 	}
 
-	internal static void PopRules<T>(string asset, string b, T util, Action<T> param2, SystemThread config3, Action counter4, Action<T> ivk5 = null, bool isord6 = true, string cust7 = null) where T : UnityEngine.Object
+	internal static void PopRules<T>(string asset, string b, T util, Action<T> param2, ValidationResult config3, Action counter4, Action<T> ivk5 = null, bool isord6 = true, string cust7 = null) where T : UnityEngine.Object
 	{
 		ComputeRules(new GUIContent(asset), b, util, param2, config3, counter4, ivk5, isord6, cust7);
 	}
 
-	internal static void ComputeRules<T>(GUIContent i, string attr, T state, Action<T> selection2, SystemThread pol3, Action visitor4, Action<T> second5 = null, bool containstask6 = true, string asset7 = null) where T : UnityEngine.Object
+	internal static void ComputeRules<T>(GUIContent i, string attr, T state, Action<T> selection2, ValidationResult pol3, Action visitor4, Action<T> second5 = null, bool containstask6 = true, string asset7 = null) where T : UnityEngine.Object
 	{
 		if (asset7 == null)
 		{
@@ -4372,11 +4372,11 @@ internal static class EditorUtils
 			GUILayout.Label(i, GUILayout.MaxWidth(120f));
 			using (new GUILayout.HorizontalScope(EditorStyles.objectField, GUILayout.ExpandHeight(expand: true)))
 			{
-				TemplateThread templateThread = ((!readerThread) ? null : new TemplateThread(TemplateThread.ColoringType.FG, workerThread, configurationProperty, _WrapperProcessor));
+				GUIColorScope gUIColorScope = ((!readerThread) ? null : new GUIColorScope(GUIColorScope.ColoringType.FG, workerThread, configurationProperty, _WrapperProcessor));
 				GUILayout.Label(attr, CalcError()._StructProcessor);
 				if (readerThread)
 				{
-					templateThread.Dispose();
+					gUIColorScope.Dispose();
 				}
 			}
 			Rect def = GUILayoutUtility.GetLastRect();
@@ -4398,16 +4398,16 @@ internal static class EditorUtils
 				}, CalcError().broadcasterProcessor);
 			}
 			StartQueue(def);
-			DispatcherPolicy dispatcherPolicy = new DispatcherPolicy(Event.current).InvokeHelper().QueryHelper(def);
+			EventWrapper eventWrapper = new EventWrapper(Event.current).InvokeHelper().QueryHelper(def);
 			int controlID = GUIUtility.GetControlID(FocusType.Keyboard, def);
 			if (containstask6 && GUIUtility.keyboardControl == controlID && VerifyQueue())
 			{
 				selection2(null);
 			}
-			if (dispatcherPolicy.m_TagPolicy)
+			if (eventWrapper.m_TagPolicy)
 			{
 				GUIUtility.keyboardControl = controlID;
-				if (state == null || (bool)dispatcherPolicy.VisitHelper().ExcludeHelper() || (bool)dispatcherPolicy.InitHelper())
+				if (state == null || (bool)eventWrapper.VisitHelper().ExcludeHelper() || (bool)eventWrapper.InitHelper())
 				{
 					ConcatList(state, typeof(T), null, null, loaddef3: false, null, null, delegate(UnityEngine.Object o)
 					{
@@ -4422,7 +4422,7 @@ internal static class EditorUtils
 					PrintRules("ProjectBrowser", isattr: true);
 					EditorGUIUtility.PingObject(state);
 				}
-				dispatcherPolicy.DefineHelper();
+				eventWrapper.DefineHelper();
 			}
 			InstantiateRules(def, selection2);
 			using (new GUILayout.HorizontalScope(GUILayout.MaxWidth(90f)))
@@ -4713,12 +4713,12 @@ internal static class EditorUtils
 					AvatarMaskBodyPart visitor;
 					if (!(item.path == string.Empty))
 					{
-						MessageServer messageServer = null;
+						TempGameObjectHierarchy tempGameObjectHierarchy = null;
 						Transform transform2;
 						if (!reg)
 						{
-							messageServer = new MessageServer(item.path);
-							transform2 = messageServer.m_CollectionServer.Last().transform;
+							tempGameObjectHierarchy = new TempGameObjectHierarchy(item.path);
+							transform2 = tempGameObjectHierarchy.m_CollectionServer.Last().transform;
 						}
 						else
 						{
@@ -4729,7 +4729,7 @@ internal static class EditorUtils
 							m_PredicateServer.AddTransformPath(transform2, recursive: false);
 							m_QueueServer.Add(item.path);
 						}
-						messageServer?.EnableContext();
+						tempGameObjectHierarchy?.EnableContext();
 					}
 					else if (item.type == typeof(Animator) && SelectRules(item.propertyName, out visitor))
 					{
@@ -4768,9 +4768,9 @@ internal static class EditorUtils
 
 	internal static void VisitRules(this AvatarMask res, string connection)
 	{
-		MessageServer messageServer = new MessageServer(connection);
-		res.AddTransformPath(messageServer.m_CollectionServer.Last().transform);
-		messageServer.EnableContext();
+		TempGameObjectHierarchy tempGameObjectHierarchy = new TempGameObjectHierarchy(connection);
+		res.AddTransformPath(tempGameObjectHierarchy.m_CollectionServer.Last().transform);
+		tempGameObjectHierarchy.EnableContext();
 	}
 
 	internal static void DefineRules(this AvatarMask v, AvatarMask token)
@@ -5720,9 +5720,9 @@ internal static class EditorUtils
 		{
 			cont = m_MapperProcessor;
 		}
-		using (new TemplateThread(TemplateThread.ColoringType.BG, Color.clear))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
-			using (new TemplateThread(TemplateThread.ColoringType.FG, cont.Value))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, cont.Value))
 			{
 				bool result = RestartQueue(item, CalcError()._IteratorProcessor, GUILayout.ExpandWidth(expand: false));
 				ConcatQueue(cont);
@@ -6094,7 +6094,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void RunQueue(Transform asset, PrototypePolicy caller)
+	internal static void RunQueue(Transform asset, TransformControlSettings caller)
 	{
 		if (asset == null)
 		{
@@ -7325,9 +7325,9 @@ internal static class EditorUtils
 	{
 		if (!(ident == null))
 		{
-			using (ConsumerPolicy consumerPolicy = new ConsumerPolicy(ident))
+			using (ReadableTextureScope readableTextureScope = new ReadableTextureScope(ident))
 			{
-				Texture2D interpreterPolicy = consumerPolicy.m_InterpreterPolicy;
+				Texture2D interpreterPolicy = readableTextureScope.m_InterpreterPolicy;
 				int width = interpreterPolicy.width;
 				int height = interpreterPolicy.height;
 				int num = width;
@@ -7445,18 +7445,18 @@ internal static class EditorUtils
 		return texture2D;
 	}
 
-	internal static ErrorPolicy NewList(string value, string vis, string template = "")
+	internal static CachedTextureContent NewList(string value, string vis, string template = "")
 	{
-		ErrorPolicy errorPolicy = new ErrorPolicy(vis, template);
-		if (errorPolicy.CompareHelper() == null)
+		CachedTextureContent cachedTextureContent = new CachedTextureContent(vis, template);
+		if (cachedTextureContent.CompareHelper() == null)
 		{
 			GUIContent gUIContent = EditorGUIUtility.IconContent(value);
 			if (gUIContent != null && gUIContent.image != null)
 			{
-				errorPolicy.SetHelper(CloneList(gUIContent.image as Texture2D));
+				cachedTextureContent.SetHelper(CloneList(gUIContent.image as Texture2D));
 			}
 		}
-		return errorPolicy;
+		return cachedTextureContent;
 	}
 
 	internal static Color PushList(float i)
@@ -7603,7 +7603,7 @@ internal static class EditorUtils
 	internal static VRCContactSender FillList(this VRCContactReceiver res, GameObject cfg)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(cfg);
-		new InterceptorPolicy(res).TestHelper(vRCContactSender);
+		new PhysBoneColliderSnapshot(res).TestHelper(vRCContactSender);
 		vRCContactSender.collisionTags = res.collisionTags;
 		vRCContactSender.rootTransform = res.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
@@ -7616,7 +7616,7 @@ internal static class EditorUtils
 	internal static VRCContactSender WriteList(this VRCPhysBoneCollider asset, GameObject selection)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(selection);
-		new InterceptorPolicy(asset).TestHelper(vRCContactSender);
+		new PhysBoneColliderSnapshot(asset).TestHelper(vRCContactSender);
 		vRCContactSender.rootTransform = asset.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
 		{
@@ -7628,7 +7628,7 @@ internal static class EditorUtils
 	internal static VRCContactReceiver ForgotList(this VRCContactSender init, GameObject result)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(result);
-		new InterceptorPolicy(init).TestHelper(vRCContactReceiver);
+		new PhysBoneColliderSnapshot(init).TestHelper(vRCContactReceiver);
 		vRCContactReceiver.collisionTags = init.collisionTags;
 		vRCContactReceiver.rootTransform = init.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
@@ -7641,7 +7641,7 @@ internal static class EditorUtils
 	internal static VRCContactReceiver StopList(this VRCPhysBoneCollider param, GameObject cfg)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(cfg);
-		new InterceptorPolicy(param).TestHelper(vRCContactReceiver);
+		new PhysBoneColliderSnapshot(param).TestHelper(vRCContactReceiver);
 		vRCContactReceiver.rootTransform = param.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
 		{
@@ -7653,7 +7653,7 @@ internal static class EditorUtils
 	internal static VRCPhysBoneCollider CheckList(this VRCContactReceiver task, GameObject cont)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cont);
-		new InterceptorPolicy(task).MapHelper(vRCPhysBoneCollider);
+		new PhysBoneColliderSnapshot(task).MapHelper(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = task.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -7665,7 +7665,7 @@ internal static class EditorUtils
 	internal static VRCPhysBoneCollider PrepareList(this VRCContactSender reference, GameObject selection)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(selection);
-		new InterceptorPolicy(reference).MapHelper(vRCPhysBoneCollider);
+		new PhysBoneColliderSnapshot(reference).MapHelper(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = reference.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -7826,12 +7826,12 @@ internal static class EditorUtils
 		EditorUtility.SetDirty(info);
 	}
 
-	internal static SystemThread PrintList(this VRCAvatarDescriptor init, VRCExpressionParameters selection, bool validatedic = true, bool isparam2 = true)
+	internal static ValidationResult PrintList(this VRCAvatarDescriptor init, VRCExpressionParameters selection, bool validatedic = true, bool isparam2 = true)
 	{
 		return init.SearchList((!(selection == null)) ? selection.parameters.ToList() : null, validatedic, isparam2);
 	}
 
-	internal static SystemThread SearchList(this VRCAvatarDescriptor asset, IEnumerable<VRCExpressionParameters.Parameter> ivk, bool isproc = true, bool explicitx2 = true, bool iscol3 = false)
+	internal static ValidationResult SearchList(this VRCAvatarDescriptor asset, IEnumerable<VRCExpressionParameters.Parameter> ivk, bool isproc = true, bool explicitx2 = true, bool iscol3 = false)
 	{
 		if (!(asset == null))
 		{
@@ -7839,34 +7839,34 @@ internal static class EditorUtils
 			{
 				return asset.expressionParameters.CompareError(ivk, isproc, explicitx2, iscol3);
 			}
-			SystemThread result = new SystemThread(isparam: false, "Avatar Expression Parameters are not set (Null)");
+			ValidationResult result = new ValidationResult(isparam: false, "Avatar Expression Parameters are not set (Null)");
 			result._StubThread = 1;
 			return result;
 		}
 		return (false, "Avatar is not set (Null)");
 	}
 
-	internal static SystemThread RevertList(this VRCExpressionParameters init, VRCExpressionParameters pred, bool extractres = true, bool isident2 = true)
+	internal static ValidationResult RevertList(this VRCExpressionParameters init, VRCExpressionParameters pred, bool extractres = true, bool isident2 = true)
 	{
 		return init.CompareError(pred?.parameters.ToList(), extractres, isident2);
 	}
 
-	internal static SystemThread OrderError(this VRCExpressionParameters spec, IEnumerable<VRCExpressionParameters> token, bool isrule = true, bool overridesetup2 = true)
+	internal static ValidationResult OrderError(this VRCExpressionParameters spec, IEnumerable<VRCExpressionParameters> token, bool isrule = true, bool overridesetup2 = true)
 	{
 		return spec.CompareError((from p in token?.Where((VRCExpressionParameters p) => p != null).SelectMany((VRCExpressionParameters p) => p.parameters)
 			where p != null
 			select p), isrule, overridesetup2);
 	}
 
-	internal static SystemThread CompareError(this VRCExpressionParameters var1, IEnumerable<VRCExpressionParameters.Parameter> map, bool isproc = true, bool moveresult2 = true, bool setconfig3 = false)
+	internal static ValidationResult CompareError(this VRCExpressionParameters var1, IEnumerable<VRCExpressionParameters.Parameter> map, bool isproc = true, bool moveresult2 = true, bool setconfig3 = false)
 	{
 		if (map != null)
 		{
 			bool flag = var1 == null;
-			SystemThread result;
+			ValidationResult result;
 			if (!setconfig3 && flag)
 			{
-				result = new SystemThread(isparam: false, "Target Expression Parameters are not set (Null)");
+				result = new ValidationResult(isparam: false, "Target Expression Parameters are not set (Null)");
 				result._StubThread = 1;
 				return result;
 			}
@@ -7883,7 +7883,7 @@ internal static class EditorUtils
 			{
 				return (true, string.Empty);
 			}
-			result = new SystemThread(isparam: false, $"Expression Parameters would exceed the {RunError()} cost limit");
+			result = new ValidationResult(isparam: false, $"Expression Parameters would exceed the {RunError()} cost limit");
 			result._StubThread = 2;
 			return result;
 		}
@@ -8081,17 +8081,17 @@ internal static class EditorUtils
 		EditorUtility.SetDirty(instance);
 	}
 
-	internal static SystemThread CancelError(this VRCExpressionParameters.Parameter ident, VRCExpressionParameters.Parameter second, bool countcomp = true)
+	internal static ValidationResult CancelError(this VRCExpressionParameters.Parameter ident, VRCExpressionParameters.Parameter second, bool countcomp = true)
 	{
 		if (ident != second)
 		{
 			if (ident == null || second == null)
 			{
-				return new SystemThread(isparam: false, "One of the parameters is null");
+				return new ValidationResult(isparam: false, "One of the parameters is null");
 			}
 			if (!(ident.name == second.name))
 			{
-				return new SystemThread(isparam: false, "Parameters don't match by name", 1);
+				return new ValidationResult(isparam: false, "Parameters don't match by name", 1);
 			}
 			if (ident.valueType != second.valueType)
 			{
@@ -8099,14 +8099,14 @@ internal static class EditorUtils
 				{
 					return true;
 				}
-				return new SystemThread(isparam: false, "Parameters don't match by type.", 2);
+				return new ValidationResult(isparam: false, "Parameters don't match by type.", 2);
 			}
 			return true;
 		}
 		return true;
 	}
 
-	internal static SystemThread CountError(this VRCAvatarDescriptor i, VRCExpressionsMenu reg)
+	internal static ValidationResult CountError(this VRCAvatarDescriptor i, VRCExpressionsMenu reg)
 	{
 		if (i == null)
 		{
@@ -8116,23 +8116,23 @@ internal static class EditorUtils
 		{
 			return i.expressionsMenu.DisableError(reg);
 		}
-		return new SystemThread(isparam: false, "Avatar Expressions Menu is not set (Null)");
+		return new ValidationResult(isparam: false, "Avatar Expressions Menu is not set (Null)");
 	}
 
-	internal static SystemThread DisableError(this VRCExpressionsMenu ident, VRCExpressionsMenu b)
+	internal static ValidationResult DisableError(this VRCExpressionsMenu ident, VRCExpressionsMenu b)
 	{
 		if (b == null)
 		{
-			return new SystemThread(isparam: false, "Expression Menu is not set (Null)");
+			return new ValidationResult(isparam: false, "Expression Menu is not set (Null)");
 		}
 		if (!(ident == null))
 		{
 			return ident.QueryError(b.controls.Count);
 		}
-		return new SystemThread(isparam: false, "Target Expression Menu is not set (Null)");
+		return new ValidationResult(isparam: false, "Target Expression Menu is not set (Null)");
 	}
 
-	internal static SystemThread InsertError(this VRCExpressionsMenu.Control i, VRCExpressionsMenu selection)
+	internal static ValidationResult InsertError(this VRCExpressionsMenu.Control i, VRCExpressionsMenu selection)
 	{
 		if (selection == null)
 		{
@@ -8141,7 +8141,7 @@ internal static class EditorUtils
 		return i.RestartError(selection.controls.Count);
 	}
 
-	internal static SystemThread RestartError(this VRCExpressionsMenu.Control ident, int startmap)
+	internal static ValidationResult RestartError(this VRCExpressionsMenu.Control ident, int startmap)
 	{
 		if (ident == null)
 		{
@@ -8154,17 +8154,17 @@ internal static class EditorUtils
 		return ident.subMenu.QueryError(startmap);
 	}
 
-	internal static SystemThread QueryError(this VRCExpressionsMenu first, int remove_VISITORAt)
+	internal static ValidationResult QueryError(this VRCExpressionsMenu first, int remove_VISITORAt)
 	{
 		if (first == null)
 		{
-			SystemThread result = new SystemThread(isparam: false, "SubMenu is Null");
+			ValidationResult result = new ValidationResult(isparam: false, "SubMenu is Null");
 			result._StubThread = 1;
 			return result;
 		}
 		if (first.controls.Count + remove_VISITORAt > 8)
 		{
-			SystemThread result = new SystemThread(isparam: false, $"Adding {remove_VISITORAt} controls to {first.name} would exceed the 8 controls limit");
+			ValidationResult result = new ValidationResult(isparam: false, $"Adding {remove_VISITORAt} controls to {first.name} would exceed the 8 controls limit");
 			result._StubThread = 2;
 			return result;
 		}
@@ -8342,33 +8342,33 @@ internal static class EditorUtils
 		EditorUtility.SetDirty(task);
 	}
 
-	internal static SystemThread SelectError(this VRCExpressionsMenu.Control key, VRCExpressionsMenu.Control visitor)
+	internal static ValidationResult SelectError(this VRCExpressionsMenu.Control key, VRCExpressionsMenu.Control visitor)
 	{
 		if (key != visitor)
 		{
 			if (key == null || visitor == null)
 			{
-				return new SystemThread(isparam: false, "One of the controls is null");
+				return new ValidationResult(isparam: false, "One of the controls is null");
 			}
 			if (key.type == visitor.type)
 			{
 				if (!key.parameter.RemoveError(visitor.parameter))
 				{
-					return new SystemThread(isparam: false, "Parameter does not match", 2);
+					return new ValidationResult(isparam: false, "Parameter does not match", 2);
 				}
 				VRCExpressionsMenu.Control.ControlType type = key.type;
 				if (type == VRCExpressionsMenu.Control.ControlType.SubMenu)
 				{
 					if (key.subMenu != visitor.subMenu)
 					{
-						return new SystemThread(isparam: false, "SubMenus do not match", 3);
+						return new ValidationResult(isparam: false, "SubMenus do not match", 3);
 					}
 				}
 				else if ((uint)(type - 201) <= 1u)
 				{
 					if (!key.subParameters.GetRules() || !visitor.subParameters.GetRules() || key.subParameters?.Length != visitor.subParameters?.Length)
 					{
-						return new SystemThread(isparam: false, "SubParameters do not match", 4);
+						return new ValidationResult(isparam: false, "SubParameters do not match", 4);
 					}
 					if (key.subParameters != null && visitor.subParameters != null)
 					{
@@ -8376,14 +8376,14 @@ internal static class EditorUtils
 						{
 							if (!key.subParameters[i].RemoveError(visitor.subParameters[i]))
 							{
-								return new SystemThread(isparam: false, "SubParameters do not match", 4);
+								return new ValidationResult(isparam: false, "SubParameters do not match", 4);
 							}
 						}
 					}
 				}
 				return true;
 			}
-			return new SystemThread(isparam: false, "Control types do not match", 1);
+			return new ValidationResult(isparam: false, "Control types do not match", 1);
 		}
 		return true;
 	}
