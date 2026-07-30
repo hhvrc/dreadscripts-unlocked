@@ -626,10 +626,7 @@ internal class _003CModule_003E
 		{
 			if (uint_2 != windowSize)
 			{
-				while (true)
-				{
-					byte_0 = new byte[windowSize];
-				}
+				byte_0 = new byte[windowSize];
 			}
 			uint_2 = windowSize;
 			uint_0 = 0u;

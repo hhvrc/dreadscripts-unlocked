@@ -79,41 +79,9 @@ internal static class AnimatorTypeCache
 				try
 				{
 					m_RegistryProperty.FindPropertyRelative("source").stringValue = spec;
-					uint num4 = default(uint);
-					while (true)
+					while (!RemovePage())
 					{
-						int num;
-						int num2;
-						if (!RemovePage())
-						{
-							num = -2113787510;
-							num2 = -2113787510;
-						}
-						else
-						{
-							num = -1526977687;
-							num2 = -1526977687;
-						}
-						int num3 = num ^ ((int)num4 * -1344518119);
-						while (true)
-						{
-							switch ((num4 = (uint)(num3 ^ -692394164)) % 4)
-							{
-							default:
-								return;
-							case 0u:
-							case 3u:
-								break;
-							case 1u:
-								goto IL_0057;
-							case 2u:
-								return;
-							}
-							break;
-							IL_0057:
-							_DispatcherProperty.DefinePage();
-							num3 = ((int)num4 * -456668155) ^ 0x9B8C1A3;
-						}
+						_DispatcherProperty.DefinePage();
 					}
 				}
 				catch

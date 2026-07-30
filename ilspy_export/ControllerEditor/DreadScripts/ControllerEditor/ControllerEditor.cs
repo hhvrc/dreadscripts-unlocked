@@ -695,44 +695,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				using (new GUILayout.HorizontalScope())
 				{
 					FlushDefinition(EditorGUILayout.Slider(last, ResetDefinition(), cfg, temp, options));
-					if (!compareconfig2)
+					if (compareconfig2)
 					{
-						return;
-					}
-					uint num4 = default(uint);
-					while (true)
-					{
-						int num;
-						int num2;
-						if (!EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
+						while (EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 						{
-							num = 1145303574;
-							num2 = 1145303574;
-						}
-						else
-						{
-							num = 39847116;
-							num2 = 39847116;
-						}
-						int num3 = num ^ (int)(num4 * 1512022182);
-						while (true)
-						{
-							switch ((num4 = (uint)(num3 ^ -2088492295)) % 4)
-							{
-							case 0u:
-							case 2u:
-								break;
-							default:
-								return;
-							case 1u:
-								goto IL_0085;
-							case 3u:
-								return;
-							}
-							break;
-							IL_0085:
 							Reset();
-							num3 = (int)((num4 * 1782949549) ^ 0x2FFAFC4F);
 						}
 					}
 				}
@@ -980,9 +947,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				if (_value != value)
 				{
-					_value = value;
-					printerAlgo?.Invoke();
-					SetupDefinition();
+					while (true)
+					{
+						_value = value;
+					}
 				}
 			}
 
@@ -1759,10 +1727,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			roleAlgo = b;
 			if (pool_amount > 0)
 			{
-				while (true)
-				{
-					CompareReg(pool_amount, v2, selection3_length);
-				}
+				CompareReg(pool_amount, v2, selection3_length);
 			}
 			try
 			{
@@ -2439,9 +2404,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				bool num = AssetDatabase.LoadAllAssetsAtPath(assetPath).Length == 1;
 				AssetDatabase.RemoveObjectFromAsset(var1);
-				if (!num)
+				if (num)
 				{
+					AssetDatabase.DeleteAsset(assetPath);
+					continue;
 				}
+				break;
 			}
 		}
 
@@ -4008,8 +3976,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			if (!_BaseMapper)
 			{
-				DeleteTests();
-				CreateTests();
+				while (true)
+				{
+					DeleteTests();
+					CreateTests();
+				}
 			}
 		}
 
@@ -9648,28 +9619,37 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		int num = 0;
 		foreach (AnimatorTypeCache.BridgeProperty item in setterAnnotation)
 		{
-			switch (num)
+			int num2 = num;
+			while (true)
 			{
-			case 3:
-				if (!item.StartPage())
+				switch (num2)
 				{
-					num = 2;
-				}
-				break;
-			case 1:
-				if (item.StartPage())
-				{
-					num = 2;
-				}
-				break;
-			case 0:
-				if (item.StartPage())
-				{
-					num = 3;
-				}
-				else if (!item.StartPage())
-				{
-					num = 1;
+				default:
+					continue;
+				case 3:
+					if (!item.StartPage())
+					{
+						num = 2;
+					}
+					break;
+				case 2:
+					break;
+				case 1:
+					if (item.StartPage())
+					{
+						num = 2;
+					}
+					break;
+				case 0:
+					if (item.StartPage())
+					{
+						num = 3;
+					}
+					else if (!item.StartPage())
+					{
+						num = 1;
+					}
+					break;
 				}
 				break;
 			}
@@ -12016,7 +11996,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						flag = true;
 						flag4 = true;
 						break;
-					case ControllerAction.TagCurrentLayerWith:
+					case ControllerAction.Copy:
+						break;
+					default:
 						flag3 = true;
 						break;
 					case ControllerAction.RemoveLayersWithTag:
@@ -12204,26 +12186,30 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 		}
 		_ModelAnnotation = GUILayout.Toolbar(_ModelAnnotation, EditorUtils.DestroyError().m_FacadeProcessor, EditorStyles.toolbarButton);
-		switch (_ModelAnnotation)
+		int modelAnnotation = _ModelAnnotation;
+		while (true)
 		{
-		case 5:
-			_Service.stateVisitor.ForEach(RateVisitor);
-			break;
-		case 2:
-			_Service.structVisitor.ForEach(RateVisitor);
-			break;
-		case 3:
-			_Service._SchemaVisitor.ForEach(RateVisitor);
-			break;
-		case 1:
-			_Service.m_ServiceVisitor.ForEach(RateVisitor);
-			break;
-		case 4:
-			_Service.broadcasterVisitor.ForEach(RateVisitor);
-			break;
-		case 0:
-			_Service._ProxyVisitor.ForEach(RateVisitor);
-			break;
+			switch (modelAnnotation)
+			{
+			case 5:
+				_Service.stateVisitor.ForEach(RateVisitor);
+				return;
+			case 2:
+				_Service.structVisitor.ForEach(RateVisitor);
+				return;
+			case 3:
+				_Service._SchemaVisitor.ForEach(RateVisitor);
+				return;
+			case 1:
+				_Service.m_ServiceVisitor.ForEach(RateVisitor);
+				return;
+			case 4:
+				_Service.broadcasterVisitor.ForEach(RateVisitor);
+				return;
+			case 0:
+				_Service._ProxyVisitor.ForEach(RateVisitor);
+				return;
+			}
 		}
 	}
 
@@ -13180,7 +13166,19 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void SortVisitor()
 	{
-		m_ThreadAnnotation = (SetInitializer() ? _ProcessorAnnotation.itemTests.conditions.ToList() : ((!specification) ? m_CodeAnnotation.Select((GlobalVisitor sc) => sc.m_ProcessVisitor).ToList() : _TokenAnnotation.Select((GlobalVisitor sc) => sc.m_ProcessVisitor).ToList()));
+		List<AnimatorCondition> threadAnnotation;
+		if (SetInitializer())
+		{
+			threadAnnotation = _ProcessorAnnotation.itemTests.conditions.ToList();
+		}
+		else
+		{
+			while (!specification)
+			{
+			}
+			threadAnnotation = _TokenAnnotation.Select((GlobalVisitor sc) => sc.m_ProcessVisitor).ToList();
+		}
+		m_ThreadAnnotation = threadAnnotation;
 	}
 
 	private static void RegisterVisitor()
@@ -16851,40 +16849,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void PublishMapper()
 	{
-		if (ControllerEditorWindow._CallbackMapper)
+		if (ControllerEditorWindow._CallbackMapper && (bool)ControllerEditorWindow.m_AdvisorMapper)
 		{
-			uint num3 = default(uint);
-			while (true)
-			{
-				int num;
-				int num2;
-				if ((bool)ControllerEditorWindow.m_AdvisorMapper)
-				{
-					num = 1586421337;
-					num2 = 1586421337;
-				}
-				else
-				{
-					num = 1658763188;
-					num2 = 1658763188;
-				}
-				switch ((num3 = (uint)(num ^ ((int)num3 * -1915708665) ^ -180051237)) % 5)
-				{
-				case 1u:
-				case 3u:
-					continue;
-				default:
-					return;
-				case 0u:
-					CancelMapper(ControllerEditorWindow.m_AdvisorMapper.transform);
-					return;
-				case 2u:
-					break;
-				}
-				break;
-			}
+			CancelMapper(ControllerEditorWindow.m_AdvisorMapper.transform);
 		}
-		ValidateAnnotation(PopMapper);
+		else
+		{
+			ValidateAnnotation(PopMapper);
+		}
 	}
 
 	private static void PopMapper(object[] ident)
@@ -17801,13 +17773,27 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (m_DescriptorVisitor)
 		{
-			(_MockVisitor switch
+			MethodInfo methodInfo;
+			switch (_MockVisitor)
 			{
-				4 => paramVisitor, 
-				2 => roleVisitor, 
-				1 => tokenizerVisitor, 
-				_ => modelVisitor, 
-			}).Invoke(classVisitor, null);
+			case 4:
+				methodInfo = paramVisitor;
+				goto IL_002d;
+			case 2:
+				methodInfo = roleVisitor;
+				goto IL_002d;
+			case 3:
+				methodInfo = modelVisitor;
+				goto IL_002d;
+			case 1:
+				{
+					methodInfo = tokenizerVisitor;
+					goto IL_002d;
+				}
+				IL_002d:
+				methodInfo.Invoke(classVisitor, null);
+				break;
+			}
 			m_DescriptorVisitor = true;
 			m_UtilsVisitor = true;
 		}

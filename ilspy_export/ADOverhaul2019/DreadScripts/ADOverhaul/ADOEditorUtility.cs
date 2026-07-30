@@ -209,36 +209,194 @@ internal static class ADOEditorUtility
 			};
 			bool flag = current.button == 0;
 			PrototypeTemplate[] array2 = array;
-			for (int i = 0; i < array2.Length; i++)
+			int num2 = 0;
+			while (true)
 			{
-				PrototypeTemplate prototypeTemplate = array2[i];
-				if ((prototypeTemplate._CreatorTemplate & b) < prototypeTemplate._CreatorTemplate)
-				{
-					continue;
-				}
+				Vector2 vector;
+				PrototypeTemplate prototypeTemplate;
 				MouseCursor pred;
-				switch (prototypeTemplate._CreatorTemplate)
+				if (num2 >= array2.Length)
 				{
-				case PositionFlag.TopRight:
-				case PositionFlag.BottomLeft:
-					pred = MouseCursor.ResizeUpRight;
-					break;
-				case PositionFlag.Right:
-				case PositionFlag.Left:
-					pred = MouseCursor.ResizeHorizontal;
-					break;
-				default:
-					pred = MouseCursor.Arrow;
-					break;
-				case PositionFlag.TopLeft:
-				case PositionFlag.BottomRight:
-					pred = MouseCursor.ResizeUpLeft;
-					break;
-				case PositionFlag.Top:
-				case PositionFlag.Bottom:
-					pred = MouseCursor.ResizeVertical;
-					break;
+					if (current.type != EventType.MouseDrag || GUIUtility.hotControl != _SetterTemplate)
+					{
+						break;
+					}
+					PositionFlag creatorTemplate = array[m_MapperTemplate]._CreatorTemplate;
+					vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - productTemplate;
+					if (pageTemplate)
+					{
+						if (!(vector.sqrMagnitude > new Vector2(15f, 15f).sqrMagnitude))
+						{
+							break;
+						}
+						pageTemplate = false;
+					}
+					if (!(vector != Vector2.zero))
+					{
+						goto IL_0331;
+					}
+					if (creatorTemplate > PositionFlag.Bottom)
+					{
+						if (creatorTemplate <= PositionFlag.TopLeft)
+						{
+							if (creatorTemplate == PositionFlag.TopRight)
+							{
+								m_StatusTemplate += vector.x;
+								if (GetRequest())
+								{
+									if (!util.HasFlag(PositionFlag.Left))
+									{
+										m_VisitorTemplate -= vector.y;
+									}
+									else
+									{
+										m_StatusTemplate -= vector.y;
+									}
+								}
+								else
+								{
+									tokenTemplate -= vector.y;
+								}
+							}
+							else if (creatorTemplate == PositionFlag.TopLeft)
+							{
+								m_VisitorTemplate -= vector.x;
+								if (GetRequest())
+								{
+									if (!util.HasFlag(PositionFlag.Bottom))
+									{
+										goto IL_077c;
+									}
+									tokenTemplate -= vector.x;
+								}
+								else
+								{
+									tokenTemplate -= vector.y;
+								}
+							}
+						}
+						else if (creatorTemplate == PositionFlag.BottomRight)
+						{
+							m_StatusTemplate += vector.x;
+							if (GetRequest())
+							{
+								if (!util.HasFlag(PositionFlag.Top))
+								{
+									tokenTemplate += vector.x;
+								}
+								else
+								{
+									stateTemplate += vector.x;
+								}
+							}
+							else
+							{
+								stateTemplate += vector.y;
+							}
+						}
+						else if (creatorTemplate == PositionFlag.BottomLeft)
+						{
+							m_VisitorTemplate -= vector.x;
+							if (GetRequest())
+							{
+								if (util.HasFlag(PositionFlag.Bottom))
+								{
+									tokenTemplate += vector.x;
+								}
+								else
+								{
+									stateTemplate += vector.x;
+								}
+							}
+							else
+							{
+								stateTemplate += vector.y;
+							}
+						}
+					}
+					else
+					{
+						switch (creatorTemplate)
+						{
+						case PositionFlag.Middle:
+						case PositionFlag.Middle | PositionFlag.Right:
+							break;
+						case PositionFlag.Right:
+							goto IL_06d6;
+						case PositionFlag.Left:
+							goto IL_0728;
+						default:
+							goto IL_077c;
+						}
+					}
 				}
+				else
+				{
+					prototypeTemplate = array2[num2];
+					if ((prototypeTemplate._CreatorTemplate & b) < prototypeTemplate._CreatorTemplate)
+					{
+						goto IL_03cb;
+					}
+					PositionFlag creatorTemplate2 = prototypeTemplate._CreatorTemplate;
+					if (creatorTemplate2 > PositionFlag.Bottom)
+					{
+						if (creatorTemplate2 <= PositionFlag.TopLeft)
+						{
+							if (creatorTemplate2 == PositionFlag.TopRight)
+							{
+								goto IL_03d6;
+							}
+							if (creatorTemplate2 != PositionFlag.TopLeft)
+							{
+								goto IL_049e;
+							}
+						}
+						else if (creatorTemplate2 != PositionFlag.BottomRight)
+						{
+							if (creatorTemplate2 == PositionFlag.BottomLeft)
+							{
+								goto IL_03d6;
+							}
+							goto IL_049e;
+						}
+						pred = MouseCursor.ResizeUpLeft;
+						goto IL_03d8;
+					}
+					switch (creatorTemplate2)
+					{
+					case PositionFlag.Right:
+					case PositionFlag.Left:
+						goto IL_048b;
+					case PositionFlag.Middle:
+					case PositionFlag.Middle | PositionFlag.Right:
+						goto IL_049e;
+					}
+				}
+				goto IL_0324;
+				IL_03cb:
+				num2++;
+				continue;
+				IL_0331:
+				productTemplate = GUIUtility.GUIToScreenPoint(current.mousePosition);
+				break;
+				IL_0324:
+				_ObjectTemplate?.Invoke();
+				goto IL_0331;
+				IL_0728:
+				m_VisitorTemplate -= vector.x;
+				if (GetRequest())
+				{
+					if (!util.HasFlag(PositionFlag.Bottom))
+					{
+						stateTemplate -= vector.x;
+					}
+					else
+					{
+						tokenTemplate -= vector.x;
+					}
+				}
+				goto IL_0324;
+				IL_03d8:
 				CallManager(prototypeTemplate._BaseTemplate, pred);
 				Rect baseTemplate = prototypeTemplate._BaseTemplate;
 				if (m_AlgoTemplate)
@@ -256,157 +414,34 @@ internal static class ADOEditorUtility
 					productTemplate = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
 				}
-			}
-			if (current.type != EventType.MouseDrag || GUIUtility.hotControl != _SetterTemplate)
-			{
-				return;
-			}
-			PositionFlag creatorTemplate = array[m_MapperTemplate]._CreatorTemplate;
-			Vector2 vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - productTemplate;
-			if (pageTemplate)
-			{
-				if (!(vector.sqrMagnitude > new Vector2(15f, 15f).sqrMagnitude))
+				goto IL_03cb;
+				IL_06d6:
+				m_StatusTemplate += vector.x;
+				if (GetRequest())
 				{
-					return;
+					if (!util.HasFlag(PositionFlag.Bottom))
+					{
+						stateTemplate += vector.x;
+					}
+					else
+					{
+						tokenTemplate += vector.x;
+					}
 				}
-				pageTemplate = false;
+				goto IL_0324;
+				IL_03d6:
+				pred = MouseCursor.ResizeUpRight;
+				goto IL_03d8;
+				IL_049e:
+				pred = MouseCursor.Arrow;
+				goto IL_03d8;
+				IL_077c:
+				stateTemplate -= vector.x;
+				goto IL_0324;
+				IL_048b:
+				pred = MouseCursor.ResizeHorizontal;
+				goto IL_03d8;
 			}
-			if (vector != Vector2.zero)
-			{
-				switch (creatorTemplate)
-				{
-				case PositionFlag.TopRight:
-					m_StatusTemplate += vector.x;
-					if (GetRequest())
-					{
-						if (!util.HasFlag(PositionFlag.Left))
-						{
-							m_VisitorTemplate -= vector.y;
-						}
-						else
-						{
-							m_StatusTemplate -= vector.y;
-						}
-					}
-					else
-					{
-						tokenTemplate -= vector.y;
-					}
-					break;
-				case PositionFlag.TopLeft:
-					m_VisitorTemplate -= vector.x;
-					if (GetRequest())
-					{
-						if (util.HasFlag(PositionFlag.Bottom))
-						{
-							tokenTemplate -= vector.x;
-						}
-						else
-						{
-							stateTemplate -= vector.x;
-						}
-					}
-					else
-					{
-						tokenTemplate -= vector.y;
-					}
-					break;
-				case PositionFlag.Bottom:
-					stateTemplate += vector.y;
-					if (GetRequest())
-					{
-						if (!util.HasFlag(PositionFlag.Left))
-						{
-							m_VisitorTemplate += vector.y;
-						}
-						else
-						{
-							m_StatusTemplate += vector.y;
-						}
-					}
-					break;
-				case PositionFlag.BottomRight:
-					m_StatusTemplate += vector.x;
-					if (GetRequest())
-					{
-						if (!util.HasFlag(PositionFlag.Top))
-						{
-							tokenTemplate += vector.x;
-						}
-						else
-						{
-							stateTemplate += vector.x;
-						}
-					}
-					else
-					{
-						stateTemplate += vector.y;
-					}
-					break;
-				case PositionFlag.BottomLeft:
-					m_VisitorTemplate -= vector.x;
-					if (GetRequest())
-					{
-						if (util.HasFlag(PositionFlag.Bottom))
-						{
-							tokenTemplate += vector.x;
-						}
-						else
-						{
-							stateTemplate += vector.x;
-						}
-					}
-					else
-					{
-						stateTemplate += vector.y;
-					}
-					break;
-				case PositionFlag.Top:
-					tokenTemplate -= vector.y;
-					if (GetRequest())
-					{
-						if (!util.HasFlag(PositionFlag.Left))
-						{
-							m_VisitorTemplate -= vector.y;
-						}
-						else
-						{
-							m_StatusTemplate -= vector.y;
-						}
-					}
-					break;
-				case PositionFlag.Right:
-					m_StatusTemplate += vector.x;
-					if (GetRequest())
-					{
-						if (!util.HasFlag(PositionFlag.Bottom))
-						{
-							stateTemplate += vector.x;
-						}
-						else
-						{
-							tokenTemplate += vector.x;
-						}
-					}
-					break;
-				case PositionFlag.Left:
-					m_VisitorTemplate -= vector.x;
-					if (GetRequest())
-					{
-						if (!util.HasFlag(PositionFlag.Bottom))
-						{
-							stateTemplate -= vector.x;
-						}
-						else
-						{
-							tokenTemplate -= vector.x;
-						}
-					}
-					break;
-				}
-				_ObjectTemplate?.Invoke();
-			}
-			productTemplate = GUIUtility.GUIToScreenPoint(current.mousePosition);
 		}
 
 		public static float CompareRequest(PositionFlag instance, bool tokenclose = false)
@@ -1181,11 +1216,13 @@ internal static class ADOEditorUtility
 		[SpecialName]
 		internal Texture2D DefineAlgo()
 		{
-			if (m_ExceptionDic)
+			if (m_ExceptionDic && m_DescriptorDic == null)
 			{
-				while (m_DescriptorDic == null)
+				while (true)
 				{
 					m_ExceptionDic = false;
+					SearchWrapper();
+					m_ExceptionDic = m_DescriptorDic != null;
 				}
 			}
 			return m_DescriptorDic;
@@ -3141,15 +3178,15 @@ internal static class ADOEditorUtility
 		{
 			goto IL_000a;
 		}
-		goto IL_0019;
-		IL_0019:
+		goto IL_0014;
+		IL_0014:
 		pol = EditorGUIUtility.singleLineHeight;
 		goto IL_000a;
 		IL_000a:
 		if (dic == -1f)
 		{
 			dic = EditorGUIUtility.singleLineHeight;
-			goto IL_0019;
+			goto IL_0014;
 		}
 		bool result = GUILayout.Button(ident, ManageRequest().m_ReaderTemplate, GUILayout.Width(pol), GUILayout.Height(dic));
 		PopManager();
@@ -4035,11 +4072,7 @@ internal static class ADOEditorUtility
 
 	internal static Texture2D RunParam(Color init)
 	{
-		if (!(registryTemplate == null))
-		{
-			registryTemplate.SetPixel(0, 0, init);
-		}
-		else
+		if (registryTemplate == null)
 		{
 			registryTemplate = new Texture2D(1, 1, TextureFormat.RGBAFloat, mipChain: false)
 			{
@@ -4047,6 +4080,7 @@ internal static class ADOEditorUtility
 				anisoLevel = 0
 			};
 		}
+		registryTemplate.SetPixel(0, 0, init);
 		registryTemplate.Apply();
 		return registryTemplate;
 	}
@@ -4057,41 +4091,9 @@ internal static class ADOEditorUtility
 		GUIContent gUIContent = EditorGUIUtility.IconContent(setup);
 		if (gUIContent != null)
 		{
-			uint num4 = default(uint);
-			while (true)
+			while (gUIContent.image != null)
 			{
-				int num;
-				int num2;
-				if (!(gUIContent.image != null))
-				{
-					num = -984079066;
-					num2 = -984079066;
-				}
-				else
-				{
-					num = -266021196;
-					num2 = -266021196;
-				}
-				int num3 = num ^ (int)(num4 * 259068305);
-				while (true)
-				{
-					switch ((num4 = (uint)(num3 ^ 0x19EC9FAB)) % 4)
-					{
-					case 1u:
-						i = SelectParam(gUIContent.image as Texture2D);
-						num3 = ((int)num4 * -599345641) ^ 0x6B42EA2F;
-						continue;
-					case 0u:
-					case 2u:
-						break;
-					default:
-						goto end_IL_0034;
-					}
-					break;
-				}
-				continue;
-				end_IL_0034:
-				break;
+				i = SelectParam(gUIContent.image as Texture2D);
 			}
 		}
 		return new CachedIcon(i, token, comp);

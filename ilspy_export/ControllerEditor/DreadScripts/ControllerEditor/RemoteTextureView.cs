@@ -73,14 +73,40 @@ internal sealed class RemoteTextureView
 
 	internal void SetupHelper()
 	{
-		if (!EnableHelper())
+		if (EnableHelper())
 		{
-			UnityWebRequest m_ExporterPolicy = new UnityWebRequest(systemPolicy)
-			{
-				downloadHandler = new DownloadHandlerBuffer()
-			};
-			m_ReaderPolicy = false;
+			return;
 		}
+		UnityWebRequest m_ExporterPolicy = new UnityWebRequest(systemPolicy)
+		{
+			downloadHandler = new DownloadHandlerBuffer()
+		};
+		m_ExporterPolicy.SendWebRequest().completed += delegate
+		{
+			if (!m_ExporterPolicy.isDone || m_ExporterPolicy.isHttpError || m_ExporterPolicy.isNetworkError)
+			{
+				m_ExporterPolicy.Dispose();
+				return;
+			}
+			try
+			{
+				byte[] data = m_ExporterPolicy.downloadHandler.data;
+				candidatePolicy = new Texture2D(0, 0);
+				candidatePolicy.LoadImage(data);
+				candidatePolicy.Apply();
+				m_StubPolicy = true;
+				if (!string.IsNullOrWhiteSpace(_FilterPolicy))
+				{
+					CachedTextureContent.PrintRecord(data, _FilterPolicy);
+					_ProductPolicy = true;
+				}
+			}
+			finally
+			{
+				m_ExporterPolicy.Dispose();
+			}
+		};
+		m_ReaderPolicy = false;
 	}
 
 	internal bool EnableHelper()

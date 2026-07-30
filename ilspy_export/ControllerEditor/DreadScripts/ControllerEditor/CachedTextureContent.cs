@@ -40,7 +40,10 @@ internal sealed class CachedTextureContent
 	{
 		if (_HelperPolicy && _ConnectionPolicy == null)
 		{
-			RegisterRecord();
+			while (true)
+			{
+				RegisterRecord();
+			}
 		}
 		return _ConnectionPolicy;
 	}

@@ -470,7 +470,7 @@ internal static class SetterTests
 			case NodeType.exit:
 				valueTests = RefTests.CalculatePolicy().FillPolicy();
 				break;
-			case NodeType.machine:
+			default:
 				valueTests = OrderPolicy(m_ExceptionTests).FillPolicy();
 				break;
 			case NodeType.entry:
@@ -478,6 +478,8 @@ internal static class SetterTests
 				break;
 			case NodeType.state:
 				valueTests = RevertThread(comparatorTests).FillPolicy();
+				break;
+			case NodeType.tree:
 				break;
 			}
 			return valueTests;

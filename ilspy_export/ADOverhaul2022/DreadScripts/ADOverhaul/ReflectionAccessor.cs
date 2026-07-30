@@ -136,11 +136,7 @@ internal class ReflectionAccessor
 
 	public bool WritePredicate(string param, object second)
 	{
-		if (m_ExceptionMethod.publisherMethod.TryGetValue(param, out var value))
-		{
-			value.SetValue(processorMethod, second);
-		}
-		else
+		if (!m_ExceptionMethod.publisherMethod.TryGetValue(param, out var value))
 		{
 			if (!m_ExceptionMethod.m_MerchantMethod.TryGetValue(param, out var value2))
 			{
@@ -148,6 +144,7 @@ internal class ReflectionAccessor
 			}
 			value2.SetValue(processorMethod, second);
 		}
+		value.SetValue(processorMethod, second);
 		return true;
 	}
 

@@ -41,39 +41,49 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 	internal static QuickInputWindow CreateHelper(string info, FieldType[] second, GUIContent[] dic, Action<object[]> map2, Func<object[], bool[]> second3 = null)
 	{
 		int num = second.Length;
-		object[] array = new object[second.Length];
-		for (int i = 0; i < num; i++)
+		while (true)
 		{
-			switch (second[i])
+			object[] array = new object[second.Length];
+			int num2 = 0;
+			while (true)
 			{
-			case FieldType.ToggleGroup:
-				array[i] = false;
-				break;
-			case FieldType.Integer:
-				array[i] = 0;
-				break;
-			case FieldType.Toggle:
-				array[i] = false;
-				break;
-			case FieldType.String:
-				array[i] = "";
-				break;
-			case FieldType.Float:
-				array[i] = 0;
-				break;
-			case FieldType.Object:
-				array[i] = null;
-				break;
+				if (num2 < num)
+				{
+					switch (second[num2])
+					{
+					case FieldType.ToggleGroup:
+						array[num2] = false;
+						goto IL_001e;
+					case FieldType.Integer:
+						array[num2] = 0;
+						goto IL_001e;
+					case FieldType.Toggle:
+						array[num2] = false;
+						goto IL_001e;
+					case FieldType.String:
+						array[num2] = "";
+						goto IL_001e;
+					case FieldType.Float:
+						array[num2] = 0;
+						goto IL_001e;
+					case FieldType.Object:
+						array[num2] = null;
+						goto IL_001e;
+					}
+					break;
+				}
+				QuickInputWindow quickInputWindow = DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.CloneHelper();
+				quickInputWindow.titleContent.text = info;
+				quickInputWindow._ModelPolicy = array;
+				quickInputWindow.m_DecoratorPolicy = second;
+				quickInputWindow.m_TokenizerPolicy = dic;
+				quickInputWindow.exceptionPolicy = map2;
+				quickInputWindow.m_ObjectPolicy = second3;
+				return quickInputWindow;
+				IL_001e:
+				num2++;
 			}
 		}
-		QuickInputWindow quickInputWindow = DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.CloneHelper();
-		quickInputWindow.titleContent.text = info;
-		quickInputWindow._ModelPolicy = array;
-		quickInputWindow.m_DecoratorPolicy = second;
-		quickInputWindow.m_TokenizerPolicy = dic;
-		quickInputWindow.exceptionPolicy = map2;
-		quickInputWindow.m_ObjectPolicy = second3;
-		return quickInputWindow;
 	}
 
 	internal void NewHelper(int instancelow, object caller)

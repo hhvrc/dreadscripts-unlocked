@@ -145,7 +145,13 @@ internal static class ADOEditorUtility
 		public void SetupRef(Rect ident, PositionFlag cust = PositionFlag.Right | PositionFlag.Left, PositionFlag c = PositionFlag.Middle, float counter2 = 4f)
 		{
 			Event current = Event.current;
-			if (_WorkerSerializer && current.type == EventType.MouseUp)
+			if (_WorkerSerializer)
+			{
+				goto IL_000e;
+			}
+			goto IL_003e;
+			IL_000e:
+			if (current.type == EventType.MouseUp)
 			{
 				if (GUIUtility.hotControl == parserSerializer)
 				{
@@ -155,6 +161,8 @@ internal static class ADOEditorUtility
 				current.Use();
 				_WorkerSerializer = false;
 			}
+			goto IL_003e;
+			IL_003e:
 			float num = counter2 * 2f;
 			RegistryRegDic[] array = new RegistryRegDic[8]
 			{
@@ -209,36 +217,195 @@ internal static class ADOEditorUtility
 			};
 			bool flag = current.button == 0;
 			RegistryRegDic[] array2 = array;
-			for (int i = 0; i < array2.Length; i++)
+			int num2 = 0;
+			RegistryRegDic registryRegDic = default(RegistryRegDic);
+			while (true)
 			{
-				RegistryRegDic registryRegDic = array2[i];
+				Vector2 vector;
+				if (num2 >= array2.Length)
+				{
+					if (current.type != EventType.MouseDrag || GUIUtility.hotControl != parserSerializer)
+					{
+						return;
+					}
+					PositionFlag itemSerializer = array[_InvocationSerializer]._ItemSerializer;
+					vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - _ListenerSerializer;
+					if (_WorkerSerializer)
+					{
+						if (!(vector.sqrMagnitude > new Vector2(15f, 15f).sqrMagnitude))
+						{
+							return;
+						}
+						_WorkerSerializer = false;
+					}
+					if (!(vector != Vector2.zero))
+					{
+						goto IL_0399;
+					}
+					if (itemSerializer > PositionFlag.Bottom)
+					{
+						if (itemSerializer > PositionFlag.TopLeft)
+						{
+							if (itemSerializer == PositionFlag.BottomRight)
+							{
+								_DescriptorSerializer += vector.x;
+								if (PatchRef())
+								{
+									if (!c.HasFlag(PositionFlag.Top))
+									{
+										strategySerializer += vector.x;
+									}
+									else
+									{
+										globalSerializer += vector.x;
+									}
+								}
+								else
+								{
+									globalSerializer += vector.y;
+								}
+							}
+							else if (itemSerializer == PositionFlag.BottomLeft)
+							{
+								m_RepositorySerializer -= vector.x;
+								if (PatchRef())
+								{
+									if (c.HasFlag(PositionFlag.Bottom))
+									{
+										strategySerializer += vector.x;
+									}
+									else
+									{
+										globalSerializer += vector.x;
+									}
+								}
+								else
+								{
+									globalSerializer += vector.y;
+								}
+							}
+						}
+						else if (itemSerializer == PositionFlag.TopRight)
+						{
+							_DescriptorSerializer += vector.x;
+							if (PatchRef())
+							{
+								if (c.HasFlag(PositionFlag.Left))
+								{
+									_DescriptorSerializer -= vector.y;
+								}
+								else
+								{
+									m_RepositorySerializer -= vector.y;
+								}
+							}
+							else
+							{
+								strategySerializer -= vector.y;
+							}
+						}
+						else if (itemSerializer == PositionFlag.TopLeft)
+						{
+							m_RepositorySerializer -= vector.x;
+							if (!PatchRef())
+							{
+								strategySerializer -= vector.y;
+							}
+							else if (!c.HasFlag(PositionFlag.Bottom))
+							{
+								globalSerializer -= vector.x;
+							}
+							else
+							{
+								strategySerializer -= vector.x;
+							}
+						}
+						goto IL_0388;
+					}
+					switch (itemSerializer)
+					{
+					case PositionFlag.Middle:
+					case PositionFlag.Middle | PositionFlag.Right:
+						goto IL_0388;
+					case PositionFlag.Right:
+						goto IL_05a3;
+					case PositionFlag.Left:
+						goto IL_068b;
+					}
+				}
+				else
+				{
+					registryRegDic = array2[num2];
+				}
 				if ((registryRegDic._ItemSerializer & cust) < registryRegDic._ItemSerializer)
 				{
-					continue;
+					goto IL_0360;
 				}
-				MouseCursor selection;
-				switch (registryRegDic._ItemSerializer)
+				PositionFlag itemSerializer2 = registryRegDic._ItemSerializer;
+				if (itemSerializer2 <= PositionFlag.Bottom)
 				{
-				case PositionFlag.Right:
-				case PositionFlag.Left:
-					selection = MouseCursor.ResizeHorizontal;
-					break;
-				default:
-					selection = MouseCursor.Arrow;
-					break;
-				case PositionFlag.Top:
-				case PositionFlag.Bottom:
-					selection = MouseCursor.ResizeVertical;
-					break;
-				case PositionFlag.TopRight:
-				case PositionFlag.BottomLeft:
-					selection = MouseCursor.ResizeUpRight;
-					break;
-				case PositionFlag.TopLeft:
-				case PositionFlag.BottomRight:
-					selection = MouseCursor.ResizeUpLeft;
+					switch (itemSerializer2)
+					{
+					case PositionFlag.Right:
+					case PositionFlag.Left:
+						goto IL_0336;
+					case PositionFlag.Middle:
+					case PositionFlag.Middle | PositionFlag.Right:
+						goto IL_04c5;
+					}
 					break;
 				}
+				if (itemSerializer2 <= PositionFlag.TopLeft)
+				{
+					if (itemSerializer2 == PositionFlag.TopRight)
+					{
+						goto IL_05f3;
+					}
+					if (itemSerializer2 != PositionFlag.TopLeft)
+					{
+						goto IL_04c5;
+					}
+				}
+				else if (itemSerializer2 != PositionFlag.BottomRight)
+				{
+					if (itemSerializer2 != PositionFlag.BottomLeft)
+					{
+						goto IL_04c5;
+					}
+					goto IL_05f3;
+				}
+				MouseCursor selection = MouseCursor.ResizeUpLeft;
+				goto IL_0339;
+				IL_04c5:
+				selection = MouseCursor.Arrow;
+				goto IL_0339;
+				IL_05a3:
+				_DescriptorSerializer += vector.x;
+				if (PatchRef())
+				{
+					if (c.HasFlag(PositionFlag.Bottom))
+					{
+						strategySerializer += vector.x;
+					}
+					else
+					{
+						globalSerializer += vector.x;
+					}
+				}
+				goto IL_0388;
+				IL_0399:
+				_ListenerSerializer = GUIUtility.GUIToScreenPoint(current.mousePosition);
+				return;
+				IL_0360:
+				num2++;
+				continue;
+				IL_0336:
+				selection = MouseCursor.ResizeHorizontal;
+				goto IL_0339;
+				IL_05f3:
+				selection = MouseCursor.ResizeUpRight;
+				goto IL_0339;
+				IL_0339:
 				InsertStatus(registryRegDic.m_IndexerSerializer, selection);
 				Rect indexerSerializer = registryRegDic.m_IndexerSerializer;
 				if (collectionSerializer)
@@ -256,154 +423,26 @@ internal static class ADOEditorUtility
 					_ListenerSerializer = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
 				}
-			}
-			if (current.type != EventType.MouseDrag || GUIUtility.hotControl != parserSerializer)
-			{
-				return;
-			}
-			PositionFlag itemSerializer = array[_InvocationSerializer]._ItemSerializer;
-			Vector2 vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - _ListenerSerializer;
-			if (_WorkerSerializer)
-			{
-				if (!(vector.sqrMagnitude > new Vector2(15f, 15f).sqrMagnitude))
+				goto IL_0360;
+				IL_0388:
+				m_PrinterSerializer?.Invoke();
+				goto IL_0399;
+				IL_068b:
+				m_RepositorySerializer -= vector.x;
+				if (PatchRef())
 				{
-					return;
-				}
-				_WorkerSerializer = false;
-			}
-			if (vector != Vector2.zero)
-			{
-				switch (itemSerializer)
-				{
-				case PositionFlag.TopRight:
-					_DescriptorSerializer += vector.x;
-					if (PatchRef())
-					{
-						if (c.HasFlag(PositionFlag.Left))
-						{
-							_DescriptorSerializer -= vector.y;
-						}
-						else
-						{
-							m_RepositorySerializer -= vector.y;
-						}
-					}
-					else
-					{
-						strategySerializer -= vector.y;
-					}
-					break;
-				case PositionFlag.TopLeft:
-					m_RepositorySerializer -= vector.x;
-					if (!PatchRef())
-					{
-						strategySerializer -= vector.y;
-					}
-					else if (!c.HasFlag(PositionFlag.Bottom))
-					{
-						globalSerializer -= vector.x;
-					}
-					else
+					if (c.HasFlag(PositionFlag.Bottom))
 					{
 						strategySerializer -= vector.x;
 					}
-					break;
-				case PositionFlag.Right:
-					_DescriptorSerializer += vector.x;
-					if (PatchRef())
-					{
-						if (c.HasFlag(PositionFlag.Bottom))
-						{
-							strategySerializer += vector.x;
-						}
-						else
-						{
-							globalSerializer += vector.x;
-						}
-					}
-					break;
-				case PositionFlag.Bottom:
-					globalSerializer += vector.y;
-					if (PatchRef())
-					{
-						if (!c.HasFlag(PositionFlag.Left))
-						{
-							m_RepositorySerializer += vector.y;
-						}
-						else
-						{
-							_DescriptorSerializer += vector.y;
-						}
-					}
-					break;
-				case PositionFlag.Left:
-					m_RepositorySerializer -= vector.x;
-					if (PatchRef())
-					{
-						if (c.HasFlag(PositionFlag.Bottom))
-						{
-							strategySerializer -= vector.x;
-						}
-						else
-						{
-							globalSerializer -= vector.x;
-						}
-					}
-					break;
-				case PositionFlag.BottomRight:
-					_DescriptorSerializer += vector.x;
-					if (PatchRef())
-					{
-						if (!c.HasFlag(PositionFlag.Top))
-						{
-							strategySerializer += vector.x;
-						}
-						else
-						{
-							globalSerializer += vector.x;
-						}
-					}
 					else
 					{
-						globalSerializer += vector.y;
+						globalSerializer -= vector.x;
 					}
-					break;
-				case PositionFlag.BottomLeft:
-					m_RepositorySerializer -= vector.x;
-					if (PatchRef())
-					{
-						if (c.HasFlag(PositionFlag.Bottom))
-						{
-							strategySerializer += vector.x;
-						}
-						else
-						{
-							globalSerializer += vector.x;
-						}
-					}
-					else
-					{
-						globalSerializer += vector.y;
-					}
-					break;
-				case PositionFlag.Top:
-					strategySerializer -= vector.y;
-					if (PatchRef())
-					{
-						if (c.HasFlag(PositionFlag.Left))
-						{
-							_DescriptorSerializer -= vector.y;
-						}
-						else
-						{
-							m_RepositorySerializer -= vector.y;
-						}
-					}
-					break;
 				}
-				m_PrinterSerializer?.Invoke();
+				goto IL_0388;
 			}
-			_ListenerSerializer = GUIUtility.GUIToScreenPoint(current.mousePosition);
+			goto IL_000e;
 		}
 
 		public static float SelectRef(PositionFlag def, bool wantresult = false)
@@ -3994,6 +4033,13 @@ internal static class ADOEditorUtility
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(selection);
 		new ShapeSnapshot(param).InvokeProduct(vRCContactReceiver);
 		vRCContactReceiver.rootTransform = param.rootTransform;
+		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
+		{
+			while (true)
+			{
+				vRCContactReceiver.rootTransform = null;
+			}
+		}
 		return vRCContactReceiver;
 	}
 

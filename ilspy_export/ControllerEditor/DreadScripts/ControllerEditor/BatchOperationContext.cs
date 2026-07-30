@@ -103,40 +103,11 @@ internal struct BatchOperationContext
 		_ItemServer = 0;
 		_ManagerServer.Clear();
 		m_StateServer = false;
-		uint num4 = default(uint);
-		while (true)
+		while (_ServiceServer)
 		{
-			int num;
-			int num2;
-			if (!_ServiceServer)
-			{
-				num = -446460968;
-				num2 = -446460968;
-			}
-			else
-			{
-				num = -40722905;
-				num2 = -40722905;
-			}
-			int num3 = num ^ ((int)num4 * -1296928010);
-			while (true)
-			{
-				switch ((num4 = (uint)(num3 ^ -1535384199)) % 4)
-				{
-				case 1u:
-				case 2u:
-					break;
-				case 0u:
-					goto IL_0073;
-				default:
-					return this;
-				}
-				break;
-				IL_0073:
-				EditorUtility.ClearProgressBar();
-				num3 = ((int)num4 * -262750743) ^ -1873662458;
-			}
+			EditorUtility.ClearProgressBar();
 		}
+		return this;
 	}
 
 	internal BatchOperationContext CountContext(bool evaluateinstance)

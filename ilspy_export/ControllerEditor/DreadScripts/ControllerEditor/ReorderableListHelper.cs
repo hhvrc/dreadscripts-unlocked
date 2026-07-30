@@ -127,20 +127,24 @@ internal class ReorderableListHelper<T>
 
 	internal void PatchThread(bool rejectv = true, bool writeattr = true)
 	{
-		if (writeattr)
+		if (!writeattr)
+		{
+			if (rejectv)
+			{
+				m_QueueTests = EditorUtils.ExcludeQueue(m_QueueTests, (!m_QueueTests) ? EditorUtils.DestroyError().m_StatusProcessor : EditorUtils.DestroyError()._RefProcessor, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
+			}
+			using (new EditorGUI.DisabledScope(!m_QueueTests))
+			{
+				if (EditorUtils.RestartQueue(EditorGUIUtility.IconContent("d_ol_plus"), GUI.skin.label, GUILayout.Width(18f)))
+				{
+					m_SerializerTests.onAddCallback(m_SerializerTests);
+				}
+				return;
+			}
+		}
+		while (true)
 		{
 			GUILayout.FlexibleSpace();
-		}
-		if (rejectv)
-		{
-			m_QueueTests = EditorUtils.ExcludeQueue(m_QueueTests, (!m_QueueTests) ? EditorUtils.DestroyError().m_StatusProcessor : EditorUtils.DestroyError()._RefProcessor, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
-		}
-		using (new EditorGUI.DisabledScope(!m_QueueTests))
-		{
-			if (EditorUtils.RestartQueue(EditorGUIUtility.IconContent("d_ol_plus"), GUI.skin.label, GUILayout.Width(18f)))
-			{
-				m_SerializerTests.onAddCallback(m_SerializerTests);
-			}
 		}
 	}
 

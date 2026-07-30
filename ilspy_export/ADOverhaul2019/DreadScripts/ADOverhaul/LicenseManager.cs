@@ -354,41 +354,12 @@ internal sealed class LicenseManager
 				{
 					bool flag = response.StartTest("success");
 					string text = response.StartTest("message");
-					uint num = default(uint);
-					while (true)
+					reg = true;
+					if (!string.IsNullOrWhiteSpace(text))
 					{
-						reg = true;
-						if (!string.IsNullOrWhiteSpace(text))
-						{
-							switch ((num = (uint)(0x2069BEBE ^ ((int)num * -302936629) ^ -1617907521)) % 6)
-							{
-							default:
-								return;
-							case 0u:
-							case 5u:
-								break;
-							case 4u:
-								goto end_IL_005c;
-							case 2u:
-								goto IL_0084;
-							case 3u:
-								goto IL_0090;
-							case 1u:
-								return;
-							}
-							continue;
-						}
-						goto IL_0084;
-						IL_0090:
-						_Importer = response.StartTest("solution");
-						break;
-						IL_0084:
 						StopStruct(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
-						goto IL_0090;
-						continue;
-						end_IL_005c:
-						break;
 					}
+					_Importer = response.StartTest("solution");
 					_List = response.StartTest("complete");
 				}, UnityEngine.Debug.LogException, null, null, delegate
 				{
@@ -1427,10 +1398,8 @@ internal sealed class LicenseManager
 			{
 				if (!m_MerchantStruct)
 				{
-					while (true)
-					{
-						m_MerchantStruct = true;
-					}
+					m_MerchantStruct = true;
+					m_ClassStruct = ListError<UnityEngine.Object>(guid, localID);
 				}
 				return m_ClassStruct;
 			}
@@ -2374,8 +2343,18 @@ internal sealed class LicenseManager
 		[MenuItem("CONTEXT/VRCPhysBoneCollider/ADOverhaul/Move To Empty", false, 896)]
 		private static void FillTask(MenuCommand asset)
 		{
-			if (!ComputeSystem())
+			if (ComputeSystem())
 			{
+				UnityEngine.Component component = asset.context as UnityEngine.Component;
+				ComponentUtility.CopyComponent(component);
+				GameObject gameObject = new GameObject(component.gameObject.name + " Collider");
+				Undo.RegisterCreatedObjectUndo(gameObject, "Move Colliders To Empty");
+				Transform transform = component.transform;
+				gameObject.transform.parent = transform.parent;
+				gameObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
+				gameObject.transform.localScale = transform.localScale;
+				ComponentUtility.PasteComponentAsNew(gameObject);
+				Undo.DestroyObjectImmediate(component);
 			}
 		}
 
@@ -2678,11 +2657,7 @@ internal sealed class LicenseManager
 					}
 				}, GUILayout.ExpandWidth(expand: false));
 				bool flag;
-				string text = default(string);
-				if (flag = ManagerStruct.SearchTest().globalGizmo)
-				{
-					text = "Global Setting";
-				}
+				string text = ((flag = ManagerStruct.SearchTest().globalGizmo) ? "Global Setting" : "Local Setting");
 				using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
 				{
 					using (new ManagerStruct.MappingStruct(CancelProducer))
@@ -3645,11 +3620,7 @@ internal sealed class LicenseManager
 						}
 					}, GUILayout.ExpandWidth(expand: false));
 					bool flag;
-					string text = default(string);
-					if (flag = ManagerStruct.SearchTest().globalGizmo)
-					{
-						text = "Global Setting";
-					}
+					string text = ((flag = ManagerStruct.SearchTest().globalGizmo) ? "Global Setting" : "Local Setting");
 					using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
 					{
 						using (new ManagerStruct.MappingStruct(CancelProducer))
@@ -4564,16 +4535,7 @@ internal sealed class LicenseManager
 		{
 			if ((bool)ManagerStruct.SearchTest().globalGizmo)
 			{
-				VRCPhysBone[] array = UnityEngine.Object.FindObjectsOfType<VRCPhysBone>();
-				int num = 0;
-				if (0 < array.Length)
-				{
-					VRCPhysBone obj = array[num];
-					obj.showGizmos = ManagerStruct.SearchTest().gizmosActive;
-					obj.boneOpacity = ManagerStruct.SearchTest().gizmoBoneOpacity;
-					obj.limitOpacity = ManagerStruct.SearchTest().gizmoLimitOpacity;
-					num++;
-				}
+				UnityEngine.Object.FindObjectsOfType<VRCPhysBone>();
 			}
 		}
 
@@ -6650,7 +6612,10 @@ internal sealed class LicenseManager
 	{
 		if (producer)
 		{
-			StopSystem();
+			while (true)
+			{
+				StopSystem();
+			}
 		}
 		StopSystem();
 	}
@@ -7201,6 +7166,8 @@ internal sealed class LicenseManager
 				{
 					switch (array[1])
 					{
+					default:
+						return;
 					case 2:
 						IncludeStruct(helper.m_ProcModel.LogoutAccount(col._SingletonModel.stringValue, UnityEngine.AnimatorControllerParameterType.Float, 0f), ref col, ref helper);
 						break;
@@ -7529,45 +7496,30 @@ internal sealed class LicenseManager
 	private static void CloneSystem()
 	{
 		_Advisor = true;
-		uint num = default(uint);
-		while (!LogoutSystem())
+		if (!LogoutSystem())
 		{
-			switch ((num = 0xF4833053u ^ (num * 571586353) ^ 0x2EEB6183) % 5)
-			{
-			case 2u:
-			case 3u:
-				continue;
-			default:
-				return;
-			case 4u:
-				MapSystem(delegate
-				{
-					List<(string, string)> list = PrintSystem("activatelicense");
-					FindSystem(list);
-					CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
-					{
-						_Advisor = false;
-						SetupSystem(response, delegate
-						{
-							state = false;
-							ManagerStruct.SearchTest().a_HasSucceededLastVerification.ListService(useres: true);
-							CreateSystem(isres: true);
-						});
-					}, delegate(Exception exception)
-					{
-						_Advisor = false;
-						StopStruct($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
-					}, null, null, SetStruct);
-				}, readvis: true);
-				return;
-			case 1u:
-				return;
-			case 0u:
-				break;
-			}
-			break;
+			StopStruct("Invalid License Key!", CustomLogType.Error);
+			return;
 		}
-		StopStruct("Invalid License Key!", CustomLogType.Error);
+		MapSystem(delegate
+		{
+			List<(string, string)> list = PrintSystem("activatelicense");
+			FindSystem(list);
+			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+			{
+				_Advisor = false;
+				SetupSystem(response, delegate
+				{
+					state = false;
+					ManagerStruct.SearchTest().a_HasSucceededLastVerification.ListService(useres: true);
+					CreateSystem(isres: true);
+				});
+			}, delegate(Exception exception)
+			{
+				_Advisor = false;
+				StopStruct($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
+			}, null, null, SetStruct);
+		}, readvis: true);
 	}
 
 	private static void FlushSystem()
@@ -7621,11 +7573,11 @@ internal sealed class LicenseManager
 		if (string.IsNullOrWhiteSpace(setter))
 		{
 			setter = EditorPrefs.GetString("No1lKII9IzcBAbihub6nCg==LK", string.Empty);
-			if (!ExcludeSystem())
+			if (ExcludeSystem())
 			{
-				setter = string.Empty;
+				return !(state = string.IsNullOrWhiteSpace(setter));
 			}
-			return !(state = string.IsNullOrWhiteSpace(setter));
+			setter = string.Empty;
 		}
 		return true;
 	}
@@ -8084,7 +8036,10 @@ internal sealed class LicenseManager
 			GUILayout.FlexibleSpace();
 			if (ADOEditorUtility.CancelManager((!m_Callback) ? "Transfer License" : "Activate License"))
 			{
-				m_Callback = !m_Callback;
+				while (true)
+				{
+					m_Callback = !m_Callback;
+				}
 			}
 		}
 	}
@@ -8674,39 +8629,47 @@ internal sealed class LicenseManager
 		}
 		_003C_003Ec__DisplayClass46_2 first = default(_003C_003Ec__DisplayClass46_2);
 		first._DispatcherModel = consumer._PolicyModel - visitor.messageModel[visitor._BridgeModel].m_ValDic;
-		switch (visitor._UtilsModel)
+		while (true)
 		{
-		case 2:
-		{
-			CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].m_ValDic, out visitor.messageModel[visitor._BridgeModel].merchantDic, ref first);
-			for (int j = 0; j < visitor.messageModel.Length; j++)
+			int num;
+			switch (visitor._UtilsModel)
 			{
-				if (j != visitor._BridgeModel)
+			case 2:
+				CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].m_ValDic, out visitor.messageModel[visitor._BridgeModel].merchantDic, ref first);
+				num = 0;
+				while (true)
 				{
-					visitor.messageModel[j].m_ValDic = visitor.messageModel[visitor._BridgeModel].m_ValDic;
-					if (visitor.messageModel[j]._DatabaseDic == 0)
+					if (num >= visitor.messageModel.Length)
 					{
-						visitor.messageModel[j].merchantDic = visitor.messageModel[j].m_ValDic * 2f;
+						return;
 					}
-					else
+					if (num != visitor._BridgeModel)
 					{
-						visitor.messageModel[j].merchantDic += first._DispatcherModel * 2f;
+						visitor.messageModel[num].m_ValDic = visitor.messageModel[visitor._BridgeModel].m_ValDic;
+						if (visitor.messageModel[num]._DatabaseDic == 0)
+						{
+							break;
+						}
+						visitor.messageModel[num].merchantDic += first._DispatcherModel * 2f;
 					}
+					num++;
 				}
-			}
-			break;
-		}
-		case 0:
-		{
-			for (int i = 0; i < visitor.messageModel.Length; i++)
+				goto IL_0113;
+			case 0:
 			{
-				CheckStruct(visitor.messageModel[i], out visitor.messageModel[i].m_ValDic, out visitor.messageModel[i].merchantDic, ref first);
+				for (int i = 0; i < visitor.messageModel.Length; i++)
+				{
+					CheckStruct(visitor.messageModel[i], out visitor.messageModel[i].m_ValDic, out visitor.messageModel[i].merchantDic, ref first);
+				}
+				return;
 			}
-			break;
-		}
-		case 1:
-			CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].m_ValDic, out visitor.messageModel[visitor._BridgeModel].merchantDic, ref first);
-			break;
+			case 1:
+				CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].m_ValDic, out visitor.messageModel[visitor._BridgeModel].merchantDic, ref first);
+				return;
+			}
+			continue;
+			IL_0113:
+			visitor.messageModel[num].merchantDic = visitor.messageModel[num].m_ValDic * 2f;
 		}
 	}
 

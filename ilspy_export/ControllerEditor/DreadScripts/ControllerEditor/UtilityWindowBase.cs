@@ -42,8 +42,9 @@ internal abstract class UtilityWindowBase<T> : EditorWindow where T : DreadScrip
 		}
 		using (new ScrollViewScope(ref m_RolePolicy))
 		{
-			if (string.IsNullOrEmpty(invocationPolicy))
+			if (!string.IsNullOrEmpty(invocationPolicy))
 			{
+				EditorGUILayout.HelpBox(invocationPolicy, MessageType.Info);
 			}
 			DreadScripts_002EControllerEditor_002ECustomUtilityWindow_003CDreadScripts_002EControllerEditor_002EControllerEditor_002EParameterRenameWindow_003E_002EOnCustomGUI();
 		}

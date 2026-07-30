@@ -80,6 +80,7 @@ internal sealed class LicenseManager
 				GetConfiguration();
 				SortIdentifier();
 				ConcatIdentifier();
+				m_Base.ConcatComparator(this);
 			}
 		}
 
@@ -354,12 +355,12 @@ internal sealed class LicenseManager
 					bool flag = response.PublishConsumer("success");
 					string text = response.PublishConsumer("message");
 					processor = true;
-					if (!string.IsNullOrWhiteSpace(text))
+					if (string.IsNullOrWhiteSpace(text))
 					{
 						NewIdentifier(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
+						m_Mapping = response.PublishConsumer("solution");
+						queue = response.PublishConsumer("complete");
 					}
-					m_Mapping = response.PublishConsumer("solution");
-					queue = response.PublishConsumer("complete");
 				}, UnityEngine.Debug.LogException, null, null, delegate
 				{
 					_Exception = false;
@@ -486,44 +487,9 @@ internal sealed class LicenseManager
 
 		internal static void WriteMethod(object asset)
 		{
-			if (m_Value.HasValue)
+			if (m_Value.HasValue && producer != null)
 			{
-				uint num4 = default(uint);
-				while (true)
-				{
-					int num;
-					int num2;
-					if (producer != null)
-					{
-						num = -1329262136;
-						num2 = -1329262136;
-					}
-					else
-					{
-						num = -527039267;
-						num2 = -527039267;
-					}
-					int num3 = num ^ (int)(num4 * 669105039);
-					while (true)
-					{
-						switch ((num4 = (uint)(num3 ^ -275398087)) % 4)
-						{
-						case 0u:
-							InvokeMethod(producer, m_Value.Value._Container, m_Value.Value.order, m_Value.Value.schema);
-							num3 = ((int)num4 * -644099936) ^ 0x24BBB284;
-							continue;
-						case 2u:
-						case 3u:
-							break;
-						default:
-							goto end_IL_005d;
-						}
-						break;
-					}
-					continue;
-					end_IL_005d:
-					break;
-				}
+				InvokeMethod(producer, m_Value.Value._Container, m_Value.Value.order, m_Value.Value.schema);
 			}
 			producer = null;
 			CompilationPipeline.compilationStarted -= WriteMethod;
@@ -921,30 +887,14 @@ internal sealed class LicenseManager
 
 			internal void RunUtils(GUIContent info, GUIStyle selection = null, params GUILayoutOption[] options)
 			{
-				if (selection == null)
+				if (selection != null)
 				{
-					uint num = default(uint);
-					while (true)
-					{
-						ConcatUtils(EditorGUILayout.Toggle(info, CustomizeUtils(), options));
-						switch ((num = (uint)(((int)num * -77227172) ^ -344708589 ^ 0x1EC2843A)) % 5)
-						{
-						case 0u:
-							break;
-						default:
-							return;
-						case 4u:
-							return;
-						case 1u:
-						case 2u:
-							continue;
-						case 3u:
-							return;
-						}
-						break;
-					}
+					ConcatUtils(EditorGUILayout.Toggle(info, CustomizeUtils(), selection, options));
 				}
-				ConcatUtils(EditorGUILayout.Toggle(info, CustomizeUtils(), selection, options));
+				else
+				{
+					ConcatUtils(EditorGUILayout.Toggle(info, CustomizeUtils(), options));
+				}
 			}
 
 			internal void OrderUtils(string spec, string token = null, bool rejectproc = false, Color? reg2 = null, Color? config3 = null, params GUILayoutOption[] options)
@@ -1029,45 +979,9 @@ internal sealed class LicenseManager
 				using (new GUILayout.HorizontalScope())
 				{
 					CheckUtils((dir != null) ? EditorGUILayout.FloatField(spec, PatchUtils(), dir, options) : EditorGUILayout.FloatField(spec, PatchUtils(), options));
-					if (!ispol)
+					if (ispol && GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
-						return;
-					}
-					uint num4 = default(uint);
-					while (true)
-					{
-						int num;
-						int num2;
-						if (!GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
-						{
-							num = 255188901;
-							num2 = 255188901;
-						}
-						else
-						{
-							num = 1961405910;
-							num2 = 1961405910;
-						}
-						int num3 = num ^ (int)(num4 * 1762542089);
-						while (true)
-						{
-							switch ((num4 = (uint)(num3 ^ -1488522537)) % 4)
-							{
-							case 2u:
-								goto IL_003b;
-							case 0u:
-							case 3u:
-								break;
-							default:
-								return;
-							case 1u:
-								return;
-							}
-							break;
-							IL_003b:
-							QueryCollection();
-							num3 = (int)(num4 * 1566378496) ^ -515627630;
-						}
+						QueryCollection();
 					}
 				}
 			}
@@ -6347,39 +6261,45 @@ internal sealed class LicenseManager
 				{
 					vector6 = helperMethod.InverseTransformVector(vector6);
 				}
+				int num4 = default(int);
 				switch (pool.m_ValueContext)
 				{
+				default:
+					pool.m_TokenizerContext[num4]._RulesMethod = pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod;
+					num4++;
+					goto IL_029b;
 				case 2:
-				{
 					pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod += vector6;
-					for (int num4 = 0; num4 < pool.m_TokenizerContext.Length; num4++)
-					{
-						pool.m_TokenizerContext[num4]._RulesMethod = pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod;
-					}
-					break;
-				}
+					num4 = 0;
+					goto IL_029b;
 				case 1:
 					pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod += vector6;
 					break;
 				case 0:
-				{
-					for (int num3 = 0; num3 < pool.m_TokenizerContext.Length; num3++)
 					{
-						if (!flag)
+						for (int num3 = 0; num3 < pool.m_TokenizerContext.Length; num3++)
 						{
-							pool.m_TokenizerContext[num3]._RulesMethod += pool.m_TokenizerContext[num3].m_HelperMethod.InverseTransformVector(vector6);
+							if (!flag)
+							{
+								pool.m_TokenizerContext[num3]._RulesMethod += pool.m_TokenizerContext[num3].m_HelperMethod.InverseTransformVector(vector6);
+							}
+							else if (!(pool.m_TokenizerContext[num3].customerMethod == pool.m_TokenizerContext[pool._ExceptionContext].customerMethod))
+							{
+								pool.m_TokenizerContext[num3]._RulesMethod += pool.m_TokenizerContext[num3].m_TestsMethod * Quaternion.Inverse(pool.m_TokenizerContext[pool._ExceptionContext].m_TestsMethod) * vector6;
+							}
+							else
+							{
+								pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod += vector6;
+							}
 						}
-						else if (!(pool.m_TokenizerContext[num3].customerMethod == pool.m_TokenizerContext[pool._ExceptionContext].customerMethod))
-						{
-							pool.m_TokenizerContext[num3]._RulesMethod += pool.m_TokenizerContext[num3].m_TestsMethod * Quaternion.Inverse(pool.m_TokenizerContext[pool._ExceptionContext].m_TestsMethod) * vector6;
-						}
-						else
-						{
-							pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod += vector6;
-						}
+						break;
 					}
-					break;
-				}
+					IL_029b:
+					if (num4 >= pool.m_TokenizerContext.Length)
+					{
+						break;
+					}
+					goto default;
 				}
 			}
 		}
@@ -6716,10 +6636,7 @@ internal sealed class LicenseManager
 	{
 		if (_Account)
 		{
-			while (true)
-			{
-				NewConfiguration();
-			}
+			NewConfiguration();
 		}
 		NewConfiguration();
 	}
@@ -7256,18 +7173,25 @@ internal sealed class LicenseManager
 			{
 				return;
 			}
-			Rect controlRect = EditorGUILayout.GetControlRect(GUILayout.Width(50f));
-			PublishConfiguration(_Observer, m_Broadcaster, new string[3] { "Bool", "Int", "Float" }, out var cfg, out var pred);
-			EditorGUI.BeginChangeCheck();
-			int idx_v = EditorGUI.IntPopup(controlRect, -1, cfg, pred);
-			if (EditorGUI.EndChangeCheck())
+			Rect controlRect;
+			_003C_003Ec__DisplayClass86_1 field = default(_003C_003Ec__DisplayClass86_1);
+			while (true)
 			{
+				controlRect = EditorGUILayout.GetControlRect(GUILayout.Width(50f));
+				PublishConfiguration(_Observer, m_Broadcaster, new string[3] { "Bool", "Int", "Float" }, out var cfg, out var pred);
+				EditorGUI.BeginChangeCheck();
+				int idx_v = EditorGUI.IntPopup(controlRect, -1, cfg, pred);
+				if (!EditorGUI.EndChangeCheck())
+				{
+					break;
+				}
 				int[] array = CollectConfiguration(idx_v, 2);
-				_003C_003Ec__DisplayClass86_1 field = default(_003C_003Ec__DisplayClass86_1);
 				if (m_Predicate.MapVal((VRCAvatarDescriptor.AnimLayerType)array[0], out field._MethodSerializer))
 				{
 					switch (array[1])
 					{
+					default:
+						continue;
 					case 2:
 						PostIdentifier(field._MethodSerializer.FindProcess(visitor.serializerSerializer.stringValue, UnityEngine.AnimatorControllerParameterType.Float, 0f), ref visitor, ref field);
 						break;
@@ -7283,6 +7207,7 @@ internal sealed class LicenseManager
 				{
 					NewIdentifier("Couldn't fetch selected playable layer!", CustomLogType.Error);
 				}
+				break;
 			}
 			controlRect.x += 3f;
 			GUI.Label(controlRect, "Add");
@@ -7596,10 +7521,30 @@ internal sealed class LicenseManager
 	private static void PopConfiguration()
 	{
 		_Rule = true;
-		while (FindConfiguration())
+		if (!FindConfiguration())
 		{
+			NewIdentifier("Invalid License Key!", CustomLogType.Error);
+			return;
 		}
-		NewIdentifier("Invalid License Key!", CustomLogType.Error);
+		CloneConfiguration(delegate
+		{
+			List<(string, string)> list = CountConfiguration("activatelicense");
+			StartConfiguration(list);
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+			{
+				_Rule = false;
+				QueryConfiguration(response, delegate
+				{
+					_Worker = false;
+					RefImporterDescriptor.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: true);
+					AssetConfiguration(testkey: true);
+				});
+			}, delegate(Exception exception)
+			{
+				_Rule = false;
+				NewIdentifier($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
+			}, null, null, CalculateIdentifier);
+		}, ispred: true);
 	}
 
 	private static void InstantiateConfiguration()
@@ -8015,20 +7960,9 @@ internal sealed class LicenseManager
 			disabledScope = new EditorGUI.DisabledScope(!FindConfiguration() || _Mock);
 			try
 			{
-				if (!_Mock)
-				{
-					goto IL_00ee;
-				}
-				object asset = "Sending Verification Code...";
-				goto IL_00f3;
-				IL_00ee:
-				asset = "Send Verification Code";
-				goto IL_00f3;
-				IL_00f3:
-				if (ADOEditorUtility.PatchStatus((string)asset))
+				if (ADOEditorUtility.PatchStatus((!_Mock) ? "Send Verification Code" : "Sending Verification Code..."))
 				{
 					VerifyIdentifier();
-					goto IL_00ee;
 				}
 			}
 			finally
@@ -8218,18 +8152,24 @@ internal sealed class LicenseManager
 	{
 		if (includefilter)
 		{
-			Color color = ((reg == CustomLogType.Regular) ? ADOEditorUtility._ObserverSerializer : ((reg != CustomLogType.Warning) ? ADOEditorUtility._BroadcasterSerializer : ADOEditorUtility._EventSerializer));
-			string message = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">[ADOverhaul]</color> " + def.Replace("\\n", "\n");
-			switch (reg)
+			while (true)
 			{
-			case CustomLogType.Error:
-				UnityEngine.Debug.LogError(message);
-				break;
-			case CustomLogType.Warning:
-				UnityEngine.Debug.LogWarning(message);
-				break;
-			case CustomLogType.Regular:
-				UnityEngine.Debug.Log(message);
+				Color color = ((reg == CustomLogType.Regular) ? ADOEditorUtility._ObserverSerializer : ((reg != CustomLogType.Warning) ? ADOEditorUtility._BroadcasterSerializer : ADOEditorUtility._EventSerializer));
+				string message = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">[ADOverhaul]</color> " + def.Replace("\\n", "\n");
+				switch (reg)
+				{
+				default:
+					continue;
+				case CustomLogType.Error:
+					UnityEngine.Debug.LogError(message);
+					break;
+				case CustomLogType.Warning:
+					UnityEngine.Debug.LogWarning(message);
+					break;
+				case CustomLogType.Regular:
+					UnityEngine.Debug.Log(message);
+					break;
+				}
 				break;
 			}
 		}
@@ -8742,7 +8682,7 @@ internal sealed class LicenseManager
 		case 1:
 			PrintIdentifier(col.m_TokenizerContext[col._ExceptionContext], out col.m_TokenizerContext[col._ExceptionContext].m_ReaderMethod, out col.m_TokenizerContext[col._ExceptionContext].m_StubMethod, ref var);
 			break;
-		case 0:
+		default:
 		{
 			for (int i = 0; i < col.m_TokenizerContext.Length; i++)
 			{
@@ -8800,7 +8740,7 @@ internal sealed class LicenseManager
 		case 1:
 			pool.m_TokenizerContext[pool._ExceptionContext].m_StubMethod += num;
 			break;
-		case 0:
+		default:
 		{
 			for (int i = 0; i < pool.m_TokenizerContext.Length; i++)
 			{

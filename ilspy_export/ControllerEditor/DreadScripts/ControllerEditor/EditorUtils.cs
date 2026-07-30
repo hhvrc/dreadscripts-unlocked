@@ -729,29 +729,52 @@ internal static class EditorUtils
 				{
 					continue;
 				}
+				PositionFlag setterObserver = errorObserver._SetterObserver;
 				MouseCursor pred;
-				switch (errorObserver._SetterObserver)
+				if (setterObserver > PositionFlag.Bottom)
 				{
-				default:
-					pred = MouseCursor.Arrow;
-					break;
+					if (setterObserver > PositionFlag.TopLeft)
+					{
+						if (setterObserver == PositionFlag.BottomRight)
+						{
+							goto IL_05d0;
+						}
+						if (setterObserver != PositionFlag.BottomLeft)
+						{
+							goto IL_0523;
+						}
+					}
+					else if (setterObserver != PositionFlag.TopRight)
+					{
+						if (setterObserver != PositionFlag.TopLeft)
+						{
+							goto IL_0523;
+						}
+						goto IL_05d0;
+					}
+					pred = MouseCursor.ResizeUpRight;
+					goto IL_0526;
+				}
+				switch (setterObserver)
+				{
+				case PositionFlag.Middle:
+				case PositionFlag.Middle | PositionFlag.Right:
+					goto IL_0523;
 				case PositionFlag.Right:
 				case PositionFlag.Left:
-					pred = MouseCursor.ResizeHorizontal;
-					break;
-				case PositionFlag.TopLeft:
-				case PositionFlag.BottomRight:
-					pred = MouseCursor.ResizeUpLeft;
-					break;
-				case PositionFlag.Top:
-				case PositionFlag.Bottom:
-					pred = MouseCursor.ResizeVertical;
-					break;
-				case PositionFlag.TopRight:
-				case PositionFlag.BottomLeft:
-					pred = MouseCursor.ResizeUpRight;
-					break;
+					goto IL_059b;
 				}
+				continue;
+				IL_0523:
+				pred = MouseCursor.Arrow;
+				goto IL_0526;
+				IL_05d0:
+				pred = MouseCursor.ResizeUpLeft;
+				goto IL_0526;
+				IL_059b:
+				pred = MouseCursor.ResizeHorizontal;
+				goto IL_0526;
+				IL_0526:
 				AwakeQueue(errorObserver.connectionObserver, pred);
 				Rect connectionObserver = errorObserver.connectionObserver;
 				if (m_ProxyProperty)
@@ -774,7 +797,7 @@ internal static class EditorUtils
 			{
 				return;
 			}
-			PositionFlag setterObserver = array[m_ObserverObserver]._SetterObserver;
+			PositionFlag setterObserver2 = array[m_ObserverObserver]._SetterObserver;
 			Vector2 vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - _ServerObserver;
 			if (m_QueueObserver)
 			{
@@ -786,127 +809,132 @@ internal static class EditorUtils
 			}
 			if (vector != Vector2.zero)
 			{
-				switch (setterObserver)
+				if (setterObserver2 > PositionFlag.Bottom)
 				{
-				case PositionFlag.TopRight:
-					pageObserver += vector.x;
-					if (!ResolveError())
+					if (setterObserver2 <= PositionFlag.TopLeft)
 					{
-						resolverObserver -= vector.y;
+						if (setterObserver2 == PositionFlag.TopRight)
+						{
+							pageObserver += vector.x;
+							if (!ResolveError())
+							{
+								resolverObserver -= vector.y;
+							}
+							else if (!comp.HasFlag(PositionFlag.Left))
+							{
+								_SerializerObserver -= vector.y;
+							}
+							else
+							{
+								pageObserver -= vector.y;
+							}
+						}
+						else if (setterObserver2 == PositionFlag.TopLeft)
+						{
+							_SerializerObserver -= vector.x;
+							if (!ResolveError())
+							{
+								resolverObserver -= vector.y;
+							}
+							else if (!comp.HasFlag(PositionFlag.Bottom))
+							{
+								predicateObserver -= vector.x;
+							}
+							else
+							{
+								resolverObserver -= vector.x;
+							}
+						}
 					}
-					else if (!comp.HasFlag(PositionFlag.Left))
+					else if (setterObserver2 != PositionFlag.BottomRight)
 					{
-						_SerializerObserver -= vector.y;
+						if (setterObserver2 == PositionFlag.BottomLeft)
+						{
+							_SerializerObserver -= vector.x;
+							if (!ResolveError())
+							{
+								predicateObserver += vector.y;
+							}
+							else if (comp.HasFlag(PositionFlag.Bottom))
+							{
+								resolverObserver += vector.x;
+							}
+							else
+							{
+								predicateObserver += vector.x;
+							}
+						}
 					}
 					else
 					{
-						pageObserver -= vector.y;
+						pageObserver += vector.x;
+						if (ResolveError())
+						{
+							if (comp.HasFlag(PositionFlag.Top))
+							{
+								predicateObserver += vector.x;
+							}
+							else
+							{
+								resolverObserver += vector.x;
+							}
+						}
+						else
+						{
+							predicateObserver += vector.y;
+						}
 					}
-					break;
-				case PositionFlag.BottomLeft:
-					_SerializerObserver -= vector.x;
-					if (!ResolveError())
+				}
+				else
+				{
+					switch (setterObserver2)
 					{
+					case PositionFlag.Middle:
+					case PositionFlag.Middle | PositionFlag.Right:
+						break;
+					default:
 						predicateObserver += vector.y;
-					}
-					else if (comp.HasFlag(PositionFlag.Bottom))
-					{
-						resolverObserver += vector.x;
-					}
-					else
-					{
-						predicateObserver += vector.x;
-					}
-					break;
-				case PositionFlag.Top:
-					resolverObserver -= vector.y;
-					if (ResolveError())
-					{
-						if (comp.HasFlag(PositionFlag.Left))
+						if (ResolveError())
 						{
-							pageObserver -= vector.y;
+							if (comp.HasFlag(PositionFlag.Left))
+							{
+								pageObserver += vector.y;
+							}
+							else
+							{
+								_SerializerObserver += vector.y;
+							}
 						}
-						else
+						break;
+					case PositionFlag.Left:
+						_SerializerObserver -= vector.x;
+						if (ResolveError())
 						{
-							_SerializerObserver -= vector.y;
+							if (comp.HasFlag(PositionFlag.Bottom))
+							{
+								resolverObserver -= vector.x;
+							}
+							else
+							{
+								predicateObserver -= vector.x;
+							}
 						}
-					}
-					break;
-				case PositionFlag.Bottom:
-					predicateObserver += vector.y;
-					if (ResolveError())
-					{
-						if (comp.HasFlag(PositionFlag.Left))
+						break;
+					case PositionFlag.Right:
+						pageObserver += vector.x;
+						if (ResolveError())
 						{
-							pageObserver += vector.y;
+							if (comp.HasFlag(PositionFlag.Bottom))
+							{
+								resolverObserver += vector.x;
+							}
+							else
+							{
+								predicateObserver += vector.x;
+							}
 						}
-						else
-						{
-							_SerializerObserver += vector.y;
-						}
+						break;
 					}
-					break;
-				case PositionFlag.TopLeft:
-					_SerializerObserver -= vector.x;
-					if (!ResolveError())
-					{
-						resolverObserver -= vector.y;
-					}
-					else if (!comp.HasFlag(PositionFlag.Bottom))
-					{
-						predicateObserver -= vector.x;
-					}
-					else
-					{
-						resolverObserver -= vector.x;
-					}
-					break;
-				case PositionFlag.Left:
-					_SerializerObserver -= vector.x;
-					if (ResolveError())
-					{
-						if (comp.HasFlag(PositionFlag.Bottom))
-						{
-							resolverObserver -= vector.x;
-						}
-						else
-						{
-							predicateObserver -= vector.x;
-						}
-					}
-					break;
-				case PositionFlag.BottomRight:
-					pageObserver += vector.x;
-					if (ResolveError())
-					{
-						if (comp.HasFlag(PositionFlag.Top))
-						{
-							predicateObserver += vector.x;
-						}
-						else
-						{
-							resolverObserver += vector.x;
-						}
-					}
-					else
-					{
-						predicateObserver += vector.y;
-					}
-					break;
-				case PositionFlag.Right:
-					pageObserver += vector.x;
-					if (ResolveError())
-					{
-						if (comp.HasFlag(PositionFlag.Bottom))
-						{
-							resolverObserver += vector.x;
-						}
-						else
-						{
-							predicateObserver += vector.x;
-						}
-					}
-					break;
 				}
 				_PolicyObserver?.Invoke();
 			}
@@ -3243,61 +3271,13 @@ internal static class EditorUtils
 
 	internal static float FindPredicate(this AnimationClip v)
 	{
-		if (!AnimationUtility.GetCurveBindings(v).Any())
+		if (!AnimationUtility.GetCurveBindings(v).Any() && !AnimationUtility.GetObjectReferenceCurveBindings(v).Any())
 		{
-			uint num4 = default(uint);
-			while (true)
+			if (!(v.frameRate > 0f))
 			{
-				int num;
-				int num2;
-				if (!AnimationUtility.GetObjectReferenceCurveBindings(v).Any())
-				{
-					num = -1318284075;
-					num2 = -1318284075;
-				}
-				else
-				{
-					num = -836449655;
-					num2 = -836449655;
-				}
-				int num3 = num ^ (int)(num4 * 1738322238);
-				while (true)
-				{
-					switch ((num4 = (uint)(num3 ^ -1080307183)) % 6)
-					{
-					case 1u:
-					case 3u:
-						break;
-					case 5u:
-						return 1f / 60f;
-					case 0u:
-					{
-						int num5;
-						int num6;
-						if (!(v.frameRate > 0f))
-						{
-							num5 = -699664398;
-							num6 = -699664398;
-						}
-						else
-						{
-							num5 = -1440947483;
-							num6 = -1440947483;
-						}
-						num3 = num5 ^ (int)(num4 * 283448667);
-						continue;
-					}
-					default:
-						goto end_IL_000d;
-					case 2u:
-						return 1f / v.frameRate;
-					}
-					break;
-				}
-				continue;
-				end_IL_000d:
-				break;
+				return 1f / 60f;
 			}
+			return 1f / v.frameRate;
 		}
 		return v.length;
 	}
@@ -3342,16 +3322,11 @@ internal static class EditorUtils
 
 	private static bool DefinePredicate(AnimatorStateTransition item)
 	{
-		if (item.isExit)
+		if (!item.isExit || !item.mute || !(item.destinationState == null))
 		{
-			while (true)
-			{
-				if (!item.mute)
-				{
-				}
-			}
+			return false;
 		}
-		return false;
+		return item.destinationStateMachine == null;
 	}
 
 	internal static void StartPredicate(this UnityEditor.Animations.AnimatorControllerLayer info, string caller)
@@ -5909,7 +5884,7 @@ internal static class EditorUtils
 			{
 				reference = GUILayoutUtility.GetLastRect();
 			}
-			if (reference.Contains(current.mousePosition))
+			else if (reference.Contains(current.mousePosition))
 			{
 				current.Use();
 				return true;
@@ -6532,7 +6507,10 @@ internal static class EditorUtils
 	{
 		if (!m_ProxyProperty)
 		{
-			ident.y += 40f;
+			while (true)
+			{
+				ident.y += 40f;
+			}
 		}
 		ident.height -= (m_ProxyProperty ? 27f : 21f);
 		return ident;
@@ -6583,68 +6561,9 @@ internal static class EditorUtils
 		try
 		{
 			Transform boneTransform = asset.GetBoneTransform(ispool ? HumanBodyBones.RightLowerArm : HumanBodyBones.LeftLowerArm);
-			int num = 2;
-			Vector3 vector = default(Vector3);
-			uint num3 = default(uint);
-			float z = default(float);
-			Vector3 normalized = default(Vector3);
-			while (true)
-			{
-				int num2;
-				switch (num)
-				{
-				case 6:
-					vector = asset.GetBoneTransform((!ispool) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand).position - boneTransform.position;
-					num = 5;
-					continue;
-				default:
-					num2 = ((int)num3 * -1543680158) ^ -1954093558;
-					goto IL_0092;
-				case 2:
-					goto IL_008d;
-				case 4:
-					z = Vector3.SignedAngle(b * Vector3.up, normalized, asset.transform.forward);
-					num = 3;
-					continue;
-				case 3:
-					b *= Quaternion.Euler(0f, 0f, z);
-					num = 0;
-					continue;
-				case 5:
-					num2 = 320153224;
-					goto IL_0092;
-				case 1:
-					break;
-					IL_0092:
-					switch ((num3 = (uint)(num2 ^ 0x12354566)) % 4)
-					{
-					case 1u:
-						break;
-					case 3u:
-						goto IL_008d;
-					case 2u:
-						goto IL_00b3;
-					default:
-						goto IL_0125;
-					case 0u:
-						goto end_IL_0057;
-					}
-					goto case 6;
-					IL_0125:
-					num = 1;
-					continue;
-					IL_00b3:
-					normalized = vector.normalized;
-					num = 4;
-					continue;
-					IL_008d:
-					num2 = 2058828455;
-					goto IL_0092;
-					end_IL_0057:
-					break;
-				}
-				break;
-			}
+			Vector3 normalized = (asset.GetBoneTransform((!ispool) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand).position - boneTransform.position).normalized;
+			float z = Vector3.SignedAngle(b * Vector3.up, normalized, asset.transform.forward);
+			b *= Quaternion.Euler(0f, 0f, z);
 		}
 		catch
 		{
@@ -7026,19 +6945,31 @@ internal static class EditorUtils
 					matrix4x.m10 = matrix4x2.m10 * weight + matrix4x3.m10 * weight2 + matrix4x4.m10 * weight3 + matrix4x5.m10 * weight4;
 					matrix4x.m11 = matrix4x2.m11 * weight + matrix4x3.m11 * weight2 + matrix4x4.m11 * weight3 + matrix4x5.m11 * weight4;
 					matrix4x.m12 = matrix4x2.m12 * weight + matrix4x3.m12 * weight2 + matrix4x4.m12 * weight3 + matrix4x5.m12 * weight4;
-					matrix4x.m13 = matrix4x2.m13 * weight + matrix4x3.m13 * weight2 + matrix4x4.m13 * weight3 + matrix4x5.m13 * weight4;
-					matrix4x.m20 = matrix4x2.m20 * weight + matrix4x3.m20 * weight2 + matrix4x4.m20 * weight3 + matrix4x5.m20 * weight4;
-					matrix4x.m21 = matrix4x2.m21 * weight + matrix4x3.m21 * weight2 + matrix4x4.m21 * weight3 + matrix4x5.m21 * weight4;
-					matrix4x.m22 = matrix4x2.m22 * weight + matrix4x3.m22 * weight2 + matrix4x4.m22 * weight3 + matrix4x5.m22 * weight4;
-					matrix4x.m23 = matrix4x2.m23 * weight + matrix4x3.m23 * weight2 + matrix4x4.m23 * weight3 + matrix4x5.m23 * weight4;
-					m_CandidateServer[num] = matrix4x.MultiplyPoint3x4(_AdapterServer[num]);
-					int num2 = SelectList(weight, weight2, weight3, weight4) switch
+					int num2;
+					while (true)
 					{
-						2 => boneWeight.boneIndex2, 
-						1 => boneWeight.boneIndex1, 
-						0 => boneWeight.boneIndex0, 
-						_ => boneWeight.boneIndex3, 
-					};
+						matrix4x.m13 = matrix4x2.m13 * weight + matrix4x3.m13 * weight2 + matrix4x4.m13 * weight3 + matrix4x5.m13 * weight4;
+						matrix4x.m20 = matrix4x2.m20 * weight + matrix4x3.m20 * weight2 + matrix4x4.m20 * weight3 + matrix4x5.m20 * weight4;
+						matrix4x.m21 = matrix4x2.m21 * weight + matrix4x3.m21 * weight2 + matrix4x4.m21 * weight3 + matrix4x5.m21 * weight4;
+						matrix4x.m22 = matrix4x2.m22 * weight + matrix4x3.m22 * weight2 + matrix4x4.m22 * weight3 + matrix4x5.m22 * weight4;
+						matrix4x.m23 = matrix4x2.m23 * weight + matrix4x3.m23 * weight2 + matrix4x4.m23 * weight3 + matrix4x5.m23 * weight4;
+						m_CandidateServer[num] = matrix4x.MultiplyPoint3x4(_AdapterServer[num]);
+						switch (SelectList(weight, weight2, weight3, weight4))
+						{
+						default:
+							continue;
+						case 2:
+							num2 = boneWeight.boneIndex2;
+							break;
+						case 1:
+							num2 = boneWeight.boneIndex1;
+							break;
+						case 0:
+							num2 = boneWeight.boneIndex0;
+							break;
+						}
+						break;
+					}
 					m_ProductServer[_ExpressionServer[num2]].Add(m_CandidateServer[num]);
 				}
 			});
@@ -8148,7 +8079,9 @@ internal static class EditorUtils
 		{
 			return i.expressionsMenu.DisableError(reg);
 		}
-		return new ValidationResult(isparam: false, "Avatar Expressions Menu is not set (Null)");
+		ValidationResult result = new ValidationResult(isparam: false, "Avatar Expressions Menu is not set (Null)");
+		result._StubThread = 1;
+		return result;
 	}
 
 	internal static ValidationResult DisableError(this VRCExpressionsMenu ident, VRCExpressionsMenu b)
