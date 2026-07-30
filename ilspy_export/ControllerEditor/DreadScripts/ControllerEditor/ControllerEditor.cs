@@ -8024,65 +8024,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal void SelectThread(AnimatorCondition c)
 		{
-			int num = 5;
-			uint num4 = default(uint);
-			AnimatorTransitionBase animatorTransitionBase = default(AnimatorTransitionBase);
-			while (true)
-			{
-				int num2 = num;
-				while (true)
-				{
-					int num3;
-					switch (num2)
-					{
-					case 6:
-						num3 = (int)(num4 * 2032351528) ^ -900384976;
-						goto IL_001d;
-					default:
-						EditorUtility.CopySerialized(baseReg, animatorTransitionBase);
-						num = 6;
-						break;
-					case 1:
-						goto IL_0079;
-					case 5:
-						animatorTransitionBase = RevertMapper().AddAnyStateTransition(baseReg.destinationState);
-						num2 = 4;
-						continue;
-					case 2:
-						containerReg._ComposerReg.Add(animatorTransitionBase);
-						num2 = 3;
-						continue;
-					case 4:
-						goto IL_00d3;
-					case 3:
-						return;
-						IL_001d:
-						switch ((num4 = (uint)(num3 ^ -1858540428)) % 3)
-						{
-						case 2u:
-							break;
-						case 1u:
-							goto IL_0079;
-						case 0u:
-							goto IL_00d3;
-						default:
-							goto IL_00dd;
-						}
-						goto default;
-						IL_00dd:
-						num2 = 1;
-						continue;
-						IL_00d3:
-						num3 = -1057653085;
-						goto IL_001d;
-						IL_0079:
-						animatorTransitionBase.conditions = new AnimatorCondition[1] { c };
-						num = 2;
-						break;
-					}
-					break;
-				}
-			}
+			AnimatorTransitionBase animatorTransitionBase = RevertMapper().AddAnyStateTransition(baseReg.destinationState);
+			EditorUtility.CopySerialized(baseReg, animatorTransitionBase);
+			animatorTransitionBase.conditions = new AnimatorCondition[1] { c };
+			containerReg._ComposerReg.Add(animatorTransitionBase);
 		}
 	}
 
@@ -15917,108 +15862,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void AssetAlgo()
 	{
-		int num = 7;
-		uint num4 = default(uint);
-		Type type = default(Type);
-		while (true)
-		{
-			int num2 = num;
-			while (true)
-			{
-				int num3;
-				switch (num2)
-				{
-				case 11:
-					num3 = -1588810435;
-					goto IL_0014;
-				default:
-					SpecificationAlgo.MapReg(rulesVisitor, "get_gridMajorColor", SpecificationAlgo.RevertReg<Color, bool>(GraphGUIMajorGridColorPrefix));
-					num2 = 2;
-					break;
-				case 4:
-					num3 = (int)(num4 * 951581349) ^ -992599709;
-					goto IL_0014;
-				case 2:
-					num3 = -496835034;
-					goto IL_0014;
-				case 3:
-					num3 = -569321772;
-					goto IL_0014;
-				case 1:
-					num3 = -700389342;
-					goto IL_0014;
-				case 9:
-					num3 = -454051144;
-					goto IL_0014;
-				case 7:
-					SpecificationAlgo.MapReg(_StatusVisitor, "get_selectedEdgeColor", SpecificationAlgo.RevertReg<Color, bool>(SelectedTransitionColorPrefix));
-					num2 = 6;
-					break;
-				case 6:
-					SpecificationAlgo.MapReg(_StatusVisitor, "get_defaultTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(EntryTransitionColorPrefix));
-					num2 = 10;
-					break;
-				case 10:
-					SpecificationAlgo.MapReg(_StatusVisitor, "get_selectorTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(BaseTransitionColorPrefix));
-					num2 = 8;
-					break;
-				case 8:
-					goto IL_01bb;
-				case 5:
-					return;
-					IL_0014:
-					switch ((num4 = (uint)(num3 ^ -725294010)) % 8)
-					{
-					case 7u:
-						break;
-					case 2u:
-						goto IL_00bf;
-					case 5u:
-						goto IL_01bb;
-					default:
-						goto IL_01c5;
-					case 1u:
-						goto end_IL_0075;
-					case 6u:
-						goto IL_01e9;
-					case 3u:
-						goto IL_021a;
-					case 0u:
-						goto IL_0255;
-					case 4u:
-						return;
-					}
-					goto default;
-					IL_0255:
-					SpecificationAlgo.MapReg(rulesVisitor, "get_gridMinorColor", SpecificationAlgo.RevertReg<Color, bool>(GraphGUIMinorGridColorPrefix));
-					num2 = 9;
-					break;
-					IL_021a:
-					SpecificationAlgo.ValidateReg(m_AdapterVisitor, typeof(bool), "AddNode", null, SpecificationAlgo.NewReg<Node>(AddNodePost));
-					num2 = 1;
-					break;
-					IL_01e9:
-					SpecificationAlgo.MapReg(_StatusVisitor, "DrawArrows", SpecificationAlgo.AssetReg<Vector3[]>(DrawArrowsPrefix));
-					num2 = 11;
-					break;
-					IL_01c5:
-					num2 = 5;
-					break;
-					IL_01bb:
-					num3 = -1042290705;
-					goto IL_0014;
-					IL_00bf:
-					SpecificationAlgo.CalcReg(m_QueueVisitor.GetConstructor(new Type[2] { type, type }), null, SpecificationAlgo.NewReg<Edge>(EdgeConstructorPost));
-					num2 = 4;
-					break;
-				}
-				continue;
-				end_IL_0075:
-				break;
-			}
-			type = EditorUtils.FillRules("UnityEditor.Graphs.Slot, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-			num = 3;
-		}
+		SpecificationAlgo.MapReg(_StatusVisitor, "get_selectedEdgeColor", SpecificationAlgo.RevertReg<Color, bool>(SelectedTransitionColorPrefix));
+		SpecificationAlgo.MapReg(_StatusVisitor, "get_defaultTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(EntryTransitionColorPrefix));
+		SpecificationAlgo.MapReg(_StatusVisitor, "get_selectorTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(BaseTransitionColorPrefix));
+		Type type = EditorUtils.FillRules("UnityEditor.Graphs.Slot, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		SpecificationAlgo.CalcReg(m_QueueVisitor.GetConstructor(new Type[2] { type, type }), null, SpecificationAlgo.NewReg<Edge>(EdgeConstructorPost));
+		SpecificationAlgo.MapReg(rulesVisitor, "get_gridMajorColor", SpecificationAlgo.RevertReg<Color, bool>(GraphGUIMajorGridColorPrefix));
+		SpecificationAlgo.MapReg(rulesVisitor, "get_gridMinorColor", SpecificationAlgo.RevertReg<Color, bool>(GraphGUIMinorGridColorPrefix));
+		SpecificationAlgo.MapReg(_StatusVisitor, "DrawArrows", SpecificationAlgo.AssetReg<Vector3[]>(DrawArrowsPrefix));
+		SpecificationAlgo.ValidateReg(m_AdapterVisitor, typeof(bool), "AddNode", null, SpecificationAlgo.NewReg<Node>(AddNodePost));
 	}
 
 	private static bool SelectedTransitionColorPrefix(ref Color __result)

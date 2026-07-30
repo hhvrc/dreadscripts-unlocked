@@ -109,29 +109,8 @@ internal static class EditorLayoutUtils
 	public static void ComputeWrapper(GUIContent param)
 	{
 		EditorGUILayout.LabelField(param, EditorStyles.boldLabel);
-		Color setup;
-		uint num = default(uint);
-		while (true)
-		{
-			setup = default(Color);
-			switch ((num = (num * 1171511289) ^ 0x704A8B4E ^ 0x1AC13A25) % 5)
-			{
-			case 0u:
-			case 4u:
-				continue;
-			default:
-				return;
-			case 3u:
-				break;
-			case 1u:
-				GUILayout.Space(7f);
-				break;
-			case 2u:
-				return;
-			}
-			break;
-		}
-		ConcatWrapper(setup);
+		ConcatWrapper();
+		GUILayout.Space(7f);
 	}
 
 	public static void MoveWrapper(Rect res = default(Rect), Color reg = default(Color))

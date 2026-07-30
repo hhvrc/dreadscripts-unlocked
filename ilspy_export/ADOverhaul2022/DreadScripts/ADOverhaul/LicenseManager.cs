@@ -5298,64 +5298,10 @@ internal sealed class LicenseManager
 				state = false;
 				QueryConfiguration(response, delegate
 				{
-					int num = 2;
-					uint num4 = default(uint);
-					while (true)
-					{
-						int num2 = num;
-						while (true)
-						{
-							int num3;
-							switch (num2)
-							{
-							case 6:
-								AssetConfiguration(testkey: true);
-								num2 = 5;
-								continue;
-							case 2:
-								_Info = false;
-								num2 = 1;
-								continue;
-							case 4:
-								num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
-								goto IL_0058;
-							default:
-								goto IL_0076;
-							case 1:
-								break;
-							case 3:
-								goto IL_0097;
-							case 5:
-								return;
-								IL_0058:
-								switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
-								{
-								case 1u:
-									break;
-								case 2u:
-									goto IL_0076;
-								case 0u:
-									goto IL_0097;
-								default:
-									goto IL_009e;
-								}
-								goto case 6;
-								IL_009e:
-								num2 = 6;
-								continue;
-								IL_0097:
-								num3 = -1327699375;
-								goto IL_0058;
-								IL_0076:
-								_Worker = false;
-								num2 = 4;
-								continue;
-							}
-							break;
-						}
-						m_Config = false;
-						num = 3;
-					}
+					_Info = false;
+					m_Config = false;
+					_Worker = false;
+					AssetConfiguration(testkey: true);
 				});
 			}, delegate(Exception exception)
 			{
@@ -5369,127 +5315,19 @@ internal sealed class LicenseManager
 			state = false;
 			QueryConfiguration(response, delegate
 			{
-				int num = 2;
-				uint num4 = default(uint);
-				while (true)
-				{
-					int num2 = num;
-					while (true)
-					{
-						int num3;
-						switch (num2)
-						{
-						case 6:
-							AssetConfiguration(testkey: true);
-							num2 = 5;
-							continue;
-						case 2:
-							_Info = false;
-							num2 = 1;
-							continue;
-						case 4:
-							num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
-							goto IL_0058;
-						default:
-							goto IL_0076;
-						case 1:
-							break;
-						case 3:
-							goto IL_0097;
-						case 5:
-							return;
-							IL_0058:
-							switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
-							{
-							case 1u:
-								break;
-							case 2u:
-								goto IL_0076;
-							case 0u:
-								goto IL_0097;
-							default:
-								goto IL_009e;
-							}
-							goto case 6;
-							IL_009e:
-							num2 = 6;
-							continue;
-							IL_0097:
-							num3 = -1327699375;
-							goto IL_0058;
-							IL_0076:
-							_Worker = false;
-							num2 = 4;
-							continue;
-						}
-						break;
-					}
-					m_Config = false;
-					num = 3;
-				}
+				_Info = false;
+				m_Config = false;
+				_Worker = false;
+				AssetConfiguration(testkey: true);
 			});
 		}
 
 		internal void RunWatcher()
 		{
-			int num = 2;
-			uint num4 = default(uint);
-			while (true)
-			{
-				int num2 = num;
-				while (true)
-				{
-					int num3;
-					switch (num2)
-					{
-					case 6:
-						AssetConfiguration(testkey: true);
-						num2 = 5;
-						continue;
-					case 2:
-						_Info = false;
-						num2 = 1;
-						continue;
-					case 4:
-						num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
-						goto IL_0058;
-					default:
-						goto IL_0076;
-					case 1:
-						break;
-					case 3:
-						goto IL_0097;
-					case 5:
-						return;
-						IL_0058:
-						switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
-						{
-						case 1u:
-							break;
-						case 2u:
-							goto IL_0076;
-						case 0u:
-							goto IL_0097;
-						default:
-							goto IL_009e;
-						}
-						goto case 6;
-						IL_009e:
-						num2 = 6;
-						continue;
-						IL_0097:
-						num3 = -1327699375;
-						goto IL_0058;
-						IL_0076:
-						_Worker = false;
-						num2 = 4;
-						continue;
-					}
-					break;
-				}
-				m_Config = false;
-				num = 3;
-			}
+			_Info = false;
+			m_Config = false;
+			_Worker = false;
+			AssetConfiguration(testkey: true);
 		}
 
 		internal void OrderWatcher(Exception exception)
@@ -8449,64 +8287,10 @@ internal sealed class LicenseManager
 				state = false;
 				QueryConfiguration(response, delegate
 				{
-					int num = 2;
-					uint num4 = default(uint);
-					while (true)
-					{
-						int num2 = num;
-						while (true)
-						{
-							int num3;
-							switch (num2)
-							{
-							case 6:
-								AssetConfiguration(testkey: true);
-								num2 = 5;
-								continue;
-							case 2:
-								_Info = false;
-								num2 = 1;
-								continue;
-							case 4:
-								num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
-								goto IL_0058;
-							default:
-								goto IL_0076;
-							case 1:
-								break;
-							case 3:
-								goto IL_0097;
-							case 5:
-								return;
-								IL_0058:
-								switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
-								{
-								case 1u:
-									break;
-								case 2u:
-									goto IL_0076;
-								case 0u:
-									goto IL_0097;
-								default:
-									goto IL_009e;
-								}
-								goto case 6;
-								IL_009e:
-								num2 = 6;
-								continue;
-								IL_0097:
-								num3 = -1327699375;
-								goto IL_0058;
-								IL_0076:
-								_Worker = false;
-								num2 = 4;
-								continue;
-							}
-							break;
-						}
-						m_Config = false;
-						num = 3;
-					}
+					_Info = false;
+					m_Config = false;
+					_Worker = false;
+					AssetConfiguration(testkey: true);
 				});
 			}, delegate(Exception exception)
 			{

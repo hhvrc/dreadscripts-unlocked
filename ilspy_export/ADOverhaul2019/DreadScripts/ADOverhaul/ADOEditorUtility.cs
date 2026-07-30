@@ -2358,76 +2358,11 @@ internal static class ADOEditorUtility
 
 	internal static float EnableAccount(float config, float pol, float serv, float def2, float pred3)
 	{
-		int num = 4;
-		uint num4 = default(uint);
-		float num5 = default(float);
-		float num6 = default(float);
-		float num7 = default(float);
-		float num8 = default(float);
-		while (true)
-		{
-			int num2 = num;
-			while (true)
-			{
-				int num3;
-				switch (num2)
-				{
-				case 6:
-					num3 = (int)((num4 * 1017991685) ^ 0x489C18C8);
-					goto IL_0041;
-				case 2:
-					num5 = 0f - config + 3f * pol - 3f * serv + def2;
-					num2 = 6;
-					continue;
-				case 5:
-					num3 = (int)((num4 * 1550774083) ^ 0x1DADDAB1);
-					goto IL_0041;
-				default:
-					goto IL_00b8;
-				case 4:
-					goto end_IL_000d;
-				case 3:
-					goto IL_00de;
-				case 1:
-					break;
-					IL_0041:
-					switch ((num4 = (uint)(num3 ^ -1373404918)) % 4)
-					{
-					case 1u:
-						break;
-					case 2u:
-						goto IL_00b8;
-					case 0u:
-						goto IL_00de;
-					default:
-						goto IL_00e8;
-					case 3u:
-						goto end_IL_000d_2;
-					}
-					num6 = 2f * config - 5f * pol + 4f * serv - def2;
-					num2 = 2;
-					continue;
-					IL_00e8:
-					num2 = 1;
-					continue;
-					IL_00de:
-					num3 = -1983321664;
-					goto IL_0041;
-					IL_00b8:
-					num7 = serv - config;
-					num2 = 5;
-					continue;
-					end_IL_000d_2:
-					break;
-				}
-				return 0.5f * (num8 + num7 * pred3 + num6 * pred3 * pred3 + num5 * pred3 * pred3 * pred3);
-				continue;
-				end_IL_000d:
-				break;
-			}
-			num8 = 2f * pol;
-			num = 3;
-		}
+		float num = 2f * pol;
+		float num2 = serv - config;
+		float num3 = 2f * config - 5f * pol + 4f * serv - def2;
+		float num4 = 0f - config + 3f * pol - 3f * serv + def2;
+		return 0.5f * (num + num2 * pred3 + num3 * pred3 * pred3 + num4 * pred3 * pred3 * pred3);
 	}
 
 	internal static float ConcatAccount(Keyframe last, Keyframe token, float proc)
@@ -3852,11 +3787,13 @@ internal static class ADOEditorUtility
 	{
 		int num = 11;
 		IList list = default(IList);
+		uint num4 = default(uint);
 		while (true)
 		{
 			int num2 = num;
 			while (true)
 			{
+				int num3;
 				switch (num2)
 				{
 				case 11:
@@ -3867,36 +3804,80 @@ internal static class ADOEditorUtility
 					}
 					goto case 8;
 				case 8:
-					m_ValTemplate = Type.GetType("UnityEditor.CustomEditorAttributes, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-					num = 6;
-					break;
+					num3 = 1225964724;
+					goto IL_0024;
+				case 9:
+					num3 = 1943821506;
+					goto IL_0024;
 				case 2:
-					ReflectParam();
-					num2 = 1;
-					continue;
+					num3 = 398242098;
+					goto IL_0024;
 				case 5:
 					m_PredicateTemplate.SetValue(list[0], connection);
 					num2 = 2;
 					continue;
 				case 3:
-					m_PredicateTemplate = m_MerchantTemplate.GetField("m_InspectorType", BindingFlags.Instance | BindingFlags.Public);
-					num2 = 0;
-					continue;
+					num3 = 957987786;
+					goto IL_0024;
+				case 7:
+				case 10:
+					goto IL_00de;
 				default:
-					list = (_ClassTemplate.GetValue(null) as IDictionary)[value] as IList;
-					num2 = 5;
-					continue;
+					num3 = 447651416;
+					goto IL_0024;
 				case 1:
-				case 9:
-					_ClassTemplate = m_ValTemplate.GetField("kSCustomMultiEditors", BindingFlags.Static | BindingFlags.NonPublic);
-					num2 = 3;
-					continue;
+					num3 = ((int)num4 * -2024031107) ^ 0x57549AE4;
+					goto IL_0024;
 				case 6:
 					m_MerchantTemplate = Type.GetType("UnityEditor.CustomEditorAttributes+MonoEditorType, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 					num = 9;
 					break;
 				case 4:
 					return;
+					IL_0024:
+					switch ((num4 = (uint)(num3 ^ 0x76B74BC0)) % 7)
+					{
+					case 2u:
+						break;
+					case 6u:
+						goto IL_0055;
+					case 0u:
+						goto IL_00de;
+					case 3u:
+						goto IL_0105;
+					default:
+						goto IL_013b;
+					case 5u:
+						goto IL_0145;
+					case 4u:
+						goto IL_0182;
+					case 1u:
+						return;
+					}
+					goto case 8;
+					IL_0182:
+					m_PredicateTemplate = m_MerchantTemplate.GetField("m_InspectorType", BindingFlags.Instance | BindingFlags.Public);
+					num2 = 0;
+					continue;
+					IL_0145:
+					_ClassTemplate = m_ValTemplate.GetField("kSCustomMultiEditors", BindingFlags.Static | BindingFlags.NonPublic);
+					num2 = 3;
+					continue;
+					IL_013b:
+					num2 = 4;
+					continue;
+					IL_0105:
+					ReflectParam();
+					num2 = 1;
+					continue;
+					IL_00de:
+					list = (_ClassTemplate.GetValue(null) as IDictionary)[value] as IList;
+					num2 = 5;
+					continue;
+					IL_0055:
+					m_ValTemplate = Type.GetType("UnityEditor.CustomEditorAttributes, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+					num = 6;
+					break;
 				}
 				break;
 			}

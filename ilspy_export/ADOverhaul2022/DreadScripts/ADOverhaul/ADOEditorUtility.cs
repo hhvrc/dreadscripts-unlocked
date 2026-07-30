@@ -2362,83 +2362,15 @@ internal static class ADOEditorUtility
 
 	internal static float ConnectProcess(Keyframe instance, Keyframe pol, float serv)
 	{
-		int num = 4;
-		float num5 = default(float);
-		uint num8 = default(uint);
-		float num4 = default(float);
-		float num3 = default(float);
-		float value = default(float);
-		float value2 = default(float);
-		while (true)
-		{
-			int num2 = num;
-			while (true)
-			{
-				int num7;
-				switch (num2)
-				{
-				case 7:
-					num5 = 57.29578f * Mathf.Atan(pol.inTangent);
-					num2 = 2;
-					continue;
-				default:
-					goto IL_004d;
-				case 6:
-					num7 = (int)((num8 * 213133787) ^ 0x5005E2BC);
-					goto IL_0072;
-				case 5:
-					goto IL_006d;
-				case 4:
-					num4 = pol.time - instance.time;
-					num2 = 3;
-					continue;
-				case 3:
-					break;
-				case 2:
-					num7 = ((int)num8 * -559947318) ^ 0x2BEDEAD5;
-					goto IL_0072;
-				case 1:
-					{
-						float instance2 = instance.value + Mathf.Tan(num3 + 180f) * num4;
-						float first = pol.value + Mathf.Tan(num5 + 180f) * num4;
-						float num6 = InitProcess(instance2, value, value2, first, serv);
-						return (InitProcess(instance2, value, value2, first, serv + 1E-05f) - num6) / 1E-05f;
-					}
-					IL_0072:
-					switch ((num8 = (uint)(num7 ^ -628465245)) % 4)
-					{
-					case 1u:
-						break;
-					case 3u:
-						goto IL_004d;
-					case 2u:
-						goto IL_006d;
-					case 0u:
-						goto IL_00d1;
-					default:
-						goto IL_00f7;
-					}
-					goto case 7;
-					IL_00f7:
-					num2 = 0;
-					continue;
-					IL_00d1:
-					value = instance.value;
-					num2 = 6;
-					continue;
-					IL_006d:
-					num7 = -648835266;
-					goto IL_0072;
-					IL_004d:
-					value2 = pol.value;
-					num2 = 1;
-					continue;
-				}
-				break;
-			}
-			num3 = 57.29578f * Mathf.Atan(instance.outTangent);
-			num = 5;
-		}
+		float num = pol.time - instance.time;
+		float num2 = 57.29578f * Mathf.Atan(instance.outTangent);
+		float num3 = 57.29578f * Mathf.Atan(pol.inTangent);
+		float value = instance.value;
+		float value2 = pol.value;
+		float instance2 = instance.value + Mathf.Tan(num2 + 180f) * num;
+		float first = pol.value + Mathf.Tan(num3 + 180f) * num;
+		float num4 = InitProcess(instance2, value, value2, first, serv);
+		return (InitProcess(instance2, value, value2, first, serv + 1E-05f) - num4) / 1E-05f;
 	}
 
 	internal static bool FindProcess(this AnimatorController ident, string cont, AnimatorControllerParameterType dir, float key2)

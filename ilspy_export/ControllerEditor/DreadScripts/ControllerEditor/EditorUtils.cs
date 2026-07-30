@@ -6585,21 +6585,23 @@ internal static class EditorUtils
 			Transform boneTransform = asset.GetBoneTransform(ispool ? HumanBodyBones.RightLowerArm : HumanBodyBones.LeftLowerArm);
 			int num = 2;
 			Vector3 vector = default(Vector3);
-			Vector3 normalized = default(Vector3);
+			uint num3 = default(uint);
 			float z = default(float);
+			Vector3 normalized = default(Vector3);
 			while (true)
 			{
+				int num2;
 				switch (num)
 				{
-				case 2:
 				case 6:
 					vector = asset.GetBoneTransform((!ispool) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand).position - boneTransform.position;
 					num = 5;
 					continue;
 				default:
-					normalized = vector.normalized;
-					num = 4;
-					continue;
+					num2 = ((int)num3 * -1543680158) ^ -1954093558;
+					goto IL_0092;
+				case 2:
+					goto IL_008d;
 				case 4:
 					z = Vector3.SignedAngle(b * Vector3.up, normalized, asset.transform.forward);
 					num = 3;
@@ -6608,7 +6610,37 @@ internal static class EditorUtils
 					b *= Quaternion.Euler(0f, 0f, z);
 					num = 0;
 					continue;
+				case 5:
+					num2 = 320153224;
+					goto IL_0092;
 				case 1:
+					break;
+					IL_0092:
+					switch ((num3 = (uint)(num2 ^ 0x12354566)) % 4)
+					{
+					case 1u:
+						break;
+					case 3u:
+						goto IL_008d;
+					case 2u:
+						goto IL_00b3;
+					default:
+						goto IL_0125;
+					case 0u:
+						goto end_IL_0057;
+					}
+					goto case 6;
+					IL_0125:
+					num = 1;
+					continue;
+					IL_00b3:
+					normalized = vector.normalized;
+					num = 4;
+					continue;
+					IL_008d:
+					num2 = 2058828455;
+					goto IL_0092;
+					end_IL_0057:
 					break;
 				}
 				break;
