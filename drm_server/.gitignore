@@ -33,3 +33,7 @@ go.work.sum
 
 # Generated certificates
 *.pem
+
+# Server binary built without an extension (Linux/macOS), and exported certs
+drm_server
+*.crt

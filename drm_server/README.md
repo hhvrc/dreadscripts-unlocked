@@ -76,9 +76,14 @@ certutil -addstore -f Root cert.pem
 #### Option C — Harmony-patch UnityWebRequest to skip cert validation
 
 Add a prefix patch to `UnityWebRequest.SendWebRequest` that sets
-`certificateHandler = new AcceptAllCertificatesHandler()`.  No admin needed.
+`certificateHandler = new AcceptAllCertificatesHandler()`. No admin needed, but requires a Harmony
+mod loader in the Unity Editor process.
 
 ## Running
+
+```
+drm_server.exe serve
+```
 
 Port 443 (default) requires elevation on Windows. If you don't want to run as Administrator, use port 8443:
 
@@ -86,7 +91,23 @@ Port 443 (default) requires elevation on Windows. If you don't want to run as Ad
 drm_server.exe serve --addr :8443
 ```
 
-But note: the DLL hardcodes port 443 (standard HTTPS), so with a non-443 port you would also need to Harmony-patch the URL in the DLL.  The simplest approach is to run elevated with `patch-hosts` and `install-cert`.
+But note: the DLL hardcodes port 443 (standard HTTPS), so a non-443 port only works if you also
+Harmony-patch the URL in the DLL, or redirect 443 → your port at the network/proxy layer. The
+simplest approach is to run elevated with `patch-hosts` + `install-cert` (or just `install.ps1`).
+
+### Activating in Unity, once the server is up
+
+Open the plugin's license window and enter any license key matching the expected format
+(`XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX`, hex), then click Activate. The server returns success, and the
+DLL runs its normal activation path — which writes a valid DSLICINF cache into `EditorPrefs`.
+
+That cache is keyed on the current date, so **it satisfies startup checks for the rest of the day and
+the plugin then re-checks the next day.** Leaving the server installed as a service
+(`install-service`, or `install.ps1`, which does it for you) is what makes that invisible; otherwise
+activate again whenever the plugin reports itself unlicensed.
+[`DRM.md`](https://github.com/hhvrc/dreadscripts-unlocked/blob/main/DRM.md) § "DSLICINF — Local License
+Cache" has the cache format and validation rules. (Absolute link on purpose: this file is published
+into the public repo alongside `DRM.md`, but lives one directory deeper here.)
 
 ### All subcommands
 
@@ -111,13 +132,15 @@ But note: the DLL hardcodes port 443 (standard HTTPS), so with a non-443 port yo
 | `sendfeedback` | `success=true` |
 | `findsolution` | `success=true` |
 | `reportbug` | `success=true` |
-| `transferlicenserequest` | `success=true`, offline message |
-| `transferlicense` | `success=true`, offline message |
-| `transferlicenseconfirm` | `success=true`, offline message |
-| _(anything else)_ | `success=true`, logged as unknown |
+| `transferlicenserequest` / `transferlicense` / `transferlicenseconfirm` | `success=true`, explains transfers are unnecessary since the backend is offline |
+| _(anything else)_ | `success=true`, logged as unrecognised |
 
 ## How it works
 
-1. On startup, loads the ECDSA P-256 self-signed cert from `drm-server-cert.pem` / `drm-server-key.pem` if they exist, otherwise generates a new one and saves it to those files. The cert covers both the DRM hostname and `localhost`.
+1. On startup, loads the ECDSA P-256 self-signed cert from `drm-server-cert.pem` / `drm-server-key.pem`
+   in the working directory if present, otherwise generates a fresh one (10-year validity, covering
+   the DRM hostname + `localhost` + `127.0.0.1`) and saves it there for reuse on subsequent runs —
+   so an installed trust-store entry stays valid across restarts.
 2. Starts a TLS listener with that cert.
 3. For every POST to `/receiveCommand`, parses the JSON body, logs `command` / product / version / HWID prefix, and returns `{"success": true, ...}`.
+4. Can optionally run as a Windows service (`install-service`) so it survives reboots without a login session.

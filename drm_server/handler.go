@@ -170,14 +170,17 @@ func buildResponse(req request, prod product) response {
 // ── Per-command handlers ──────────────────────────────────────────────────────
 
 // handleActivate grants the license and populates DSLICINF cache fields.
-// No message is needed on activate — the DLL shows a dialog for non-empty
-// messages and would repeat it on every startup after cache expiry.
+// NOTE: licenseGranted() always sets message="License verified." — if the DLL
+// shows a dialog for any non-empty message and this ends up repeating on every
+// startup after cache expiry, this handler (not handleVerify) needs to drop the
+// message; not changed here without confirming actual DLL dialog behavior first.
 func handleActivate(req request, prod product) response {
 	log.Printf("  [activated %s]", prod.Name)
 	return licenseGranted(req, prod)
 }
 
-// handleVerify silently re-grants the license (no dialog on verify).
+// handleVerify re-grants the license the same way handleActivate does — same
+// message, same cache fields, no separate "silent" behavior currently exists.
 func handleVerify(req request, prod product) response {
 	return licenseGranted(req, prod)
 }
