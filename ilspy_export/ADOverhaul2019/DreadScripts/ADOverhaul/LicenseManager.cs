@@ -32,7 +32,7 @@ namespace DreadScripts.ADOverhaul;
 
 internal sealed class LicenseManager
 {
-	private sealed class Queue : EditorWindow
+	private sealed class ADOverhaulWindow : EditorWindow
 	{
 		private enum EasyDynamicsFunctions
 		{
@@ -63,12 +63,12 @@ internal sealed class LicenseManager
 
 		private static bool _Parameter;
 
-		private static Queue CreateGlobal;
+		private static ADOverhaulWindow CreateGlobal;
 
 		[MenuItem("DreadTools/ADOverhaul", false, 6)]
 		internal static void PublishTemplate()
 		{
-			EditorWindow.GetWindow<Queue>(utility: false, "Avatar Dynamics Overhaul", focus: true);
+			EditorWindow.GetWindow<ADOverhaulWindow>(utility: false, "Avatar Dynamics Overhaul", focus: true);
 		}
 
 		private void OnGUI()
@@ -501,7 +501,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class ListServiceSerializer
+	private sealed class ProcessRunner
 	{
 		private readonly ProcessStartInfo proc;
 
@@ -521,9 +521,9 @@ internal sealed class LicenseManager
 
 		private bool errorStruct;
 
-		private static ListServiceSerializer PushGlobal;
+		private static ProcessRunner PushGlobal;
 
-		internal ListServiceSerializer(string info, Action<string> second, bool iscontrol = false, bool iscust2 = false, Action v3 = null)
+		internal ProcessRunner(string info, Action<string> second, bool iscontrol = false, bool iscust2 = false, Action v3 = null)
 		{
 			proc = new ProcessStartInfo((!iscontrol) ? "powershell.exe" : "cmd.exe")
 			{
@@ -1574,10 +1574,10 @@ internal sealed class LicenseManager
 		internal ParamsTestStub a_VerifyOnProjectLoad = new ParamsTestStub(compareinit: false);
 
 		[SerializeField]
-		internal ParamsTestStub gizmosActive = new ParamsTestStub(compareinit: true, ComparatorMethodObject.CancelProducer);
+		internal ParamsTestStub gizmosActive = new ParamsTestStub(compareinit: true, PhysBoneEditor.CancelProducer);
 
 		[SerializeField]
-		internal ParamsTestStub globalGizmo = new ParamsTestStub(compareinit: true, ComparatorMethodObject.CancelProducer);
+		internal ParamsTestStub globalGizmo = new ParamsTestStub(compareinit: true, PhysBoneEditor.CancelProducer);
 
 		[SerializeField]
 		internal ParamsTestStub editorAnimatedFoldouts = new ParamsTestStub(compareinit: true);
@@ -1616,10 +1616,10 @@ internal sealed class LicenseManager
 		internal QueueStructPolicy toolOverlayAlignment = QueueStructPolicy.CalculateService(ADOEditorUtility.PositionFlag.BottomRight);
 
 		[SerializeField]
-		internal ClientStruct gizmoBoneOpacity = new ClientStruct(0.5f, ComparatorMethodObject.CancelProducer);
+		internal ClientStruct gizmoBoneOpacity = new ClientStruct(0.5f, PhysBoneEditor.CancelProducer);
 
 		[SerializeField]
-		internal ClientStruct gizmoLimitOpacity = new ClientStruct(0.5f, ComparatorMethodObject.CancelProducer);
+		internal ClientStruct gizmoLimitOpacity = new ClientStruct(0.5f, PhysBoneEditor.CancelProducer);
 
 		[SerializeField]
 		internal ClientStruct handleSizeMultiplier = new ClientStruct(1f);
@@ -1788,7 +1788,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class RoleStruct : Editor
+	private sealed class ContactReceiverEditor : Editor
 	{
 		private static readonly AnimBool[] m_RegistryStruct = new AnimBool[3]
 		{
@@ -1831,7 +1831,7 @@ internal sealed class LicenseManager
 
 		private static Type m_BaseStruct;
 
-		private static RoleStruct CloneWorker;
+		private static ContactReceiverEditor CloneWorker;
 
 		public override void OnInspectorGUI()
 		{
@@ -2006,7 +2006,7 @@ internal sealed class LicenseManager
 				m_BaseStruct = ADOEditorUtility.ResolveManager("VRCContactReceiverEditor");
 			}
 			_StrategyStruct = !islast;
-			ADOEditorUtility.RevertManager(_CreatorStruct, (!_StrategyStruct) ? m_BaseStruct : typeof(RoleStruct));
+			ADOEditorUtility.RevertManager(_CreatorStruct, (!_StrategyStruct) ? m_BaseStruct : typeof(ContactReceiverEditor));
 		}
 
 		[CompilerGenerated]
@@ -2061,7 +2061,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class ConsumerStruct : Editor
+	private sealed class ContactSenderEditor : Editor
 	{
 		private static readonly AnimBool[] _AttrStruct = new AnimBool[2]
 		{
@@ -2091,7 +2091,7 @@ internal sealed class LicenseManager
 
 		private static Type _AdapterStruct;
 
-		private static ConsumerStruct RestartWorker;
+		private static ContactSenderEditor RestartWorker;
 
 		public override void OnInspectorGUI()
 		{
@@ -2237,7 +2237,7 @@ internal sealed class LicenseManager
 				_AdapterStruct = ADOEditorUtility.ResolveManager("VRCContactSenderEditor");
 			}
 			_RecordStruct = !isvalue;
-			ADOEditorUtility.RevertManager(_ComparatorStruct, (!_RecordStruct) ? _AdapterStruct : typeof(ConsumerStruct));
+			ADOEditorUtility.RevertManager(_ComparatorStruct, (!_RecordStruct) ? _AdapterStruct : typeof(ContactSenderEditor));
 		}
 
 		[CompilerGenerated]
@@ -2267,7 +2267,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class ErrorServiceClass : Editor
+	private sealed class PhysBoneColliderEditor : Editor
 	{
 		private static readonly AnimBool[] m_ComposerStruct = new AnimBool[1]
 		{
@@ -2296,7 +2296,7 @@ internal sealed class LicenseManager
 
 		private static Type candidateStruct;
 
-		internal static ErrorServiceClass DefineWorker;
+		internal static PhysBoneColliderEditor DefineWorker;
 
 		public override void OnInspectorGUI()
 		{
@@ -2397,7 +2397,7 @@ internal sealed class LicenseManager
 				candidateStruct = ADOEditorUtility.ResolveManager("VRCPhysBoneColliderEditor");
 			}
 			_CodeStruct = !cankey;
-			ADOEditorUtility.RevertManager(m_RefStruct, _CodeStruct ? typeof(ErrorServiceClass) : candidateStruct);
+			ADOEditorUtility.RevertManager(m_RefStruct, _CodeStruct ? typeof(PhysBoneColliderEditor) : candidateStruct);
 		}
 
 		private void PostTask()
@@ -2472,7 +2472,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class ComparatorMethodObject : Editor
+	private sealed class PhysBoneEditor : Editor
 	{
 		internal class ContainerModelDispatcher
 		{
@@ -2722,7 +2722,7 @@ internal sealed class LicenseManager
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass108_0
 		{
-			public ComparatorMethodObject callbackConfig;
+			public PhysBoneEditor callbackConfig;
 
 			public bool m_FilterConfig;
 
@@ -3112,7 +3112,7 @@ internal sealed class LicenseManager
 
 		private static readonly int m_UtilsStruct = GUIUtility.GetControlID("ADOToolSelectionDragControlID".GetHashCode(), FocusType.Passive);
 
-		private static readonly ADOEditorUtility.PublisherTemplate m_IdentifierStruct = new ADOEditorUtility.PublisherTemplate();
+		private static readonly ADOEditorUtility.ResizeHandle m_IdentifierStruct = new ADOEditorUtility.ResizeHandle();
 
 		private static SerializedProperty globalStruct;
 
@@ -3236,7 +3236,7 @@ internal sealed class LicenseManager
 
 		private static int valConfig = -1;
 
-		private static readonly TemplateTemplate _MerchantConfig = new TemplateTemplate(7);
+		private static readonly ExclusiveSelectionState _MerchantConfig = new ExclusiveSelectionState(7);
 
 		private static readonly string[] classConfig = new string[7] { "None", "End Position Edit", "Ignore Selection", "Ignore Copy", "Collision Selection", "Collision Copy", "Property Edit" };
 
@@ -3250,7 +3250,7 @@ internal sealed class LicenseManager
 
 		private static bool registryConfig;
 
-		internal static ComparatorMethodObject MapWorker;
+		internal static PhysBoneEditor MapWorker;
 
 		[SpecialName]
 		private static ContainerModelDispatcher PrintMethod()
@@ -3800,7 +3800,7 @@ internal sealed class LicenseManager
 			{
 				ADOEditorUtility.PositionFlag positionFlag = ManagerStruct.SearchTest().toolSelectionOverlayAlignment.InvokeService<ADOEditorUtility.PositionFlag>();
 				bool flag2;
-				using (new ADOEditorUtility.AdvisorTemplate(first, 250f, 34f, positionFlag, m_IdentifierStruct))
+				using (new ADOEditorUtility.SceneViewPanel(first, 250f, 34f, positionFlag, m_IdentifierStruct))
 				{
 					Rect lastRect;
 					using (new GUILayout.HorizontalScope())
@@ -3850,7 +3850,7 @@ internal sealed class LicenseManager
 						GUILayout.FlexibleSpace();
 						if (ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest().m_ComposerTemplate))
 						{
-							Queue.PublishTemplate();
+							ADOverhaulWindow.PublishTemplate();
 						}
 					}
 					flag2 = ADOEditorUtility.DestroyManager(lastRect, m_UtilsStruct);
@@ -4285,7 +4285,7 @@ internal sealed class LicenseManager
 				roleConfig = ADOEditorUtility.ResolveManager("VRCPhysBoneEditor");
 			}
 			listenerStruct = !readv;
-			ADOEditorUtility.RevertManager(ruleConfig, listenerStruct ? typeof(ComparatorMethodObject) : roleConfig);
+			ADOEditorUtility.RevertManager(ruleConfig, listenerStruct ? typeof(PhysBoneEditor) : roleConfig);
 		}
 
 		private static void ComputeProducer()
@@ -4769,7 +4769,7 @@ internal sealed class LicenseManager
 
 		public static Action<Exception> _ContainerModel;
 
-		public static Func<ListServiceSerializer, bool> m_ExceptionModel;
+		public static Func<ProcessRunner, bool> m_ExceptionModel;
 
 		public static Func<string, bool> m_PropertyModel;
 
@@ -5103,7 +5103,7 @@ internal sealed class LicenseManager
 			StopStruct($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
 		}
 
-		internal bool RestartRules(ListServiceSerializer p)
+		internal bool RestartRules(ProcessRunner p)
 		{
 			return p._ServiceStruct;
 		}
@@ -5495,7 +5495,7 @@ internal sealed class LicenseManager
 
 		public CancellationTokenSource m_CallbackModel;
 
-		public ListServiceSerializer[] filterModel;
+		public ProcessRunner[] filterModel;
 
 		public bool m_ProxyModel;
 
@@ -5869,10 +5869,10 @@ internal sealed class LicenseManager
 				}
 				if (flag2)
 				{
-					ComparatorMethodObject.InterruptProducer();
-					ErrorServiceClass.CallTask();
-					ConsumerStruct.InsertTask();
-					RoleStruct.CalculateError();
+					PhysBoneEditor.InterruptProducer();
+					PhysBoneColliderEditor.CallTask();
+					ContactSenderEditor.InsertTask();
+					ContactReceiverEditor.CalculateError();
 				}
 			}
 			catch (Exception message)
@@ -5968,7 +5968,7 @@ internal sealed class LicenseManager
 
 	private static bool _Params;
 
-	private static readonly ADOEditorUtility.PublisherTemplate _Serializer = new ADOEditorUtility.PublisherTemplate();
+	private static readonly ADOEditorUtility.ResizeHandle _Serializer = new ADOEditorUtility.ResizeHandle();
 
 	private static readonly int interceptor = GUIUtility.GetControlID("ADOTooltipDragControlID".GetHashCode(), FocusType.Passive);
 
@@ -7614,40 +7614,40 @@ internal sealed class LicenseManager
 		CS_0024_003C_003E8__locals31.m_ItemModel = new string[4];
 		CS_0024_003C_003E8__locals31.decoratorModel = new string[4];
 		CS_0024_003C_003E8__locals31.m_InvocationModel = new string[4];
-		ListServiceSerializer[] param = new ListServiceSerializer[4]
+		ProcessRunner[] param = new ProcessRunner[4]
 		{
-			new ListServiceSerializer("wmic baseboard get *", delegate(string o)
+			new ProcessRunner("wmic baseboard get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ItemModel[0] = o;
 			}, iscontrol: true),
-			new ListServiceSerializer("wmic cpu get *", delegate(string o)
+			new ProcessRunner("wmic cpu get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ItemModel[1] = o;
 			}, iscontrol: true),
-			new ListServiceSerializer("wmic diskdrive get *", delegate(string o)
+			new ProcessRunner("wmic diskdrive get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ItemModel[2] = o;
 			}, iscontrol: true),
-			new ListServiceSerializer("wmic memorychip get *", delegate(string o)
+			new ProcessRunner("wmic memorychip get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ItemModel[3] = o;
 			}, iscontrol: true)
 		};
-		CS_0024_003C_003E8__locals31.filterModel = new ListServiceSerializer[4]
+		CS_0024_003C_003E8__locals31.filterModel = new ProcessRunner[4]
 		{
-			new ListServiceSerializer("Get-CimInstance -class Win32_baseboard | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class Win32_baseboard | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.decoratorModel[0] = o;
 			}),
-			new ListServiceSerializer("Get-CimInstance -class Win32_processor | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class Win32_processor | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.decoratorModel[1] = o;
 			}),
-			new ListServiceSerializer("Get-CimInstance -class Win32_diskdrive | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class Win32_diskdrive | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.decoratorModel[2] = o;
 			}),
-			new ListServiceSerializer("Get-CimInstance -class win32_physicalmemory | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class win32_physicalmemory | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.decoratorModel[3] = o;
 			})
@@ -8101,7 +8101,7 @@ internal sealed class LicenseManager
 
 	private static void DeleteStruct()
 	{
-		Queue[] array = Resources.FindObjectsOfTypeAll<Queue>();
+		ADOverhaulWindow[] array = Resources.FindObjectsOfTypeAll<ADOverhaulWindow>();
 		for (int i = 0; i < array.Length; i++)
 		{
 			array[i].Repaint();
@@ -8585,7 +8585,7 @@ internal sealed class LicenseManager
 		Rect ivk = def.ExcludeManager();
 		ADOEditorUtility.PositionFlag positionFlag = ManagerStruct.SearchTest().toolOverlayAlignment.InvokeService<ADOEditorUtility.PositionFlag>();
 		bool flag;
-		using (new ADOEditorUtility.AdvisorTemplate(def, second2, connection3, positionFlag, _Serializer))
+		using (new ADOEditorUtility.SceneViewPanel(def, second2, connection3, positionFlag, _Serializer))
 		{
 			Rect rect = token();
 			ADOEditorUtility.CallManager(rect, MouseCursor.Pan);
@@ -8608,7 +8608,7 @@ internal sealed class LicenseManager
 	{
 		if (ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest().m_ComposerTemplate))
 		{
-			Queue.PublishTemplate();
+			ADOverhaulWindow.PublishTemplate();
 		}
 	}
 
@@ -8898,19 +8898,19 @@ internal sealed class LicenseManager
 	}
 
 	[CompilerGenerated]
-	internal static async void ChangeStruct(ListServiceSerializer[] param, Action cust, CancellationTokenSource control)
+	internal static async void ChangeStruct(ProcessRunner[] param, Action cust, CancellationTokenSource control)
 	{
 		try
 		{
 			await Task.Run(delegate
 			{
-				ListServiceSerializer[] array = param;
+				ProcessRunner[] array = param;
 				for (int i = 0; i < array.Length; i++)
 				{
 					array[i].SortDic();
 				}
 			}, control.Token);
-			while (!param.All((ListServiceSerializer p) => p._ServiceStruct))
+			while (!param.All((ProcessRunner p) => p._ServiceStruct))
 			{
 				control.Token.ThrowIfCancellationRequested();
 				await Task.Delay(50, control.Token);

@@ -543,9 +543,9 @@ internal static class EditorUtils
 		All = -1
 	}
 
-	internal class ProcessorObserver
+	internal class ResizeHandle
 	{
-		private struct ErrorObserver
+		private struct ResizeZone
 		{
 			internal PositionFlag _SetterObserver;
 
@@ -574,7 +574,7 @@ internal static class EditorUtils
 
 		private bool m_QueueObserver;
 
-		internal static ProcessorObserver RateCandidate;
+		internal static ResizeHandle RateCandidate;
 
 		[SpecialName]
 		public bool ResolveError()
@@ -621,7 +621,7 @@ internal static class EditorUtils
 			}
 		}
 
-		public ProcessorObserver(bool usekey = false)
+		public ResizeHandle(bool usekey = false)
 		{
 			_RulesObserver = usekey;
 		}
@@ -669,51 +669,51 @@ internal static class EditorUtils
 				m_QueueObserver = false;
 			}
 			float num = param2 * 2f;
-			ErrorObserver[] array = new ErrorObserver[8]
+			ResizeZone[] array = new ResizeZone[8]
 			{
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.Left,
 					contextObserver = 0,
 					connectionObserver = new Rect(info.x - param2, info.y + param2, num, info.height - num)
 				},
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.TopLeft,
 					contextObserver = 1,
 					connectionObserver = new Rect(info.x - param2, info.y - param2, num, num)
 				},
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.Top,
 					contextObserver = 2,
 					connectionObserver = new Rect(info.x + param2, info.y - param2, info.width - num, num)
 				},
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.TopRight,
 					contextObserver = 3,
 					connectionObserver = new Rect(info.x + info.width - param2, info.y - param2, num, num)
 				},
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.Right,
 					contextObserver = 4,
 					connectionObserver = new Rect(info.x + info.width - param2, info.y + param2, num, info.height - num)
 				},
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.BottomRight,
 					contextObserver = 5,
 					connectionObserver = new Rect(info.x + info.width - param2, info.y + info.height - param2, num, num)
 				},
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.Bottom,
 					contextObserver = 6,
 					connectionObserver = new Rect(info.x + param2, info.y + info.height - param2, info.width - num, num)
 				},
-				new ErrorObserver
+				new ResizeZone
 				{
 					_SetterObserver = PositionFlag.BottomLeft,
 					contextObserver = 7,
@@ -721,15 +721,15 @@ internal static class EditorUtils
 				}
 			};
 			bool flag = current.button == 0;
-			ErrorObserver[] array2 = array;
+			ResizeZone[] array2 = array;
 			for (int i = 0; i < array2.Length; i++)
 			{
-				ErrorObserver errorObserver = array2[i];
-				if ((errorObserver._SetterObserver & pol) < errorObserver._SetterObserver)
+				ResizeZone resizeZone = array2[i];
+				if ((resizeZone._SetterObserver & pol) < resizeZone._SetterObserver)
 				{
 					continue;
 				}
-				PositionFlag setterObserver = errorObserver._SetterObserver;
+				PositionFlag setterObserver = resizeZone._SetterObserver;
 				MouseCursor pred;
 				if (setterObserver > PositionFlag.Bottom)
 				{
@@ -775,8 +775,8 @@ internal static class EditorUtils
 				pred = MouseCursor.ResizeHorizontal;
 				goto IL_0526;
 				IL_0526:
-				AwakeQueue(errorObserver.connectionObserver, pred);
-				Rect connectionObserver = errorObserver.connectionObserver;
+				AwakeQueue(resizeZone.connectionObserver, pred);
+				Rect connectionObserver = resizeZone.connectionObserver;
 				if (m_ProxyProperty)
 				{
 					connectionObserver.y += 46f;
@@ -787,7 +787,7 @@ internal static class EditorUtils
 					{
 						m_QueueObserver = true;
 					}
-					m_ObserverObserver = errorObserver.contextObserver;
+					m_ObserverObserver = resizeZone.contextObserver;
 					GUIUtility.hotControl = m_ThreadObserver;
 					_ServerObserver = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
@@ -1003,7 +1003,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal class RecordObserver : IDisposable
+	internal class SceneViewPanel : IDisposable
 	{
 		public readonly bool helperObserver;
 
@@ -1011,16 +1011,16 @@ internal static class EditorUtils
 
 		private readonly Rect m_AdapterObserver;
 
-		internal static RecordObserver DisableCandidate;
+		internal static SceneViewPanel DisableCandidate;
 
-		public RecordObserver(SceneView res, string col, float pool = 200f, float item2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ProcessorObserver v4 = null)
+		public SceneViewPanel(SceneView res, string col, float pool = 200f, float item2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ResizeHandle v4 = null)
 			: this(res, pool, item2 + 40f, v3, v4)
 		{
 			GUILayout.Label(col, CalcError()._StructProcessor);
 			MapQueue(2, 0);
 		}
 
-		public RecordObserver(SceneView key, float map, float serv = 20f, PositionFlag config2 = PositionFlag.BottomRight, ProcessorObserver ident3 = null)
+		public SceneViewPanel(SceneView key, float map, float serv = 20f, PositionFlag config2 = PositionFlag.BottomRight, ResizeHandle ident3 = null)
 		{
 			Handles.BeginGUI();
 			Rect rect = key.SortQueue();
@@ -1107,7 +1107,7 @@ internal static class EditorUtils
 		FocusProjectWindow
 	}
 
-	internal struct InterpreterObserver
+	internal struct HandleSphere
 	{
 		internal string watcherObserver;
 
@@ -1127,19 +1127,19 @@ internal static class EditorUtils
 
 		internal Action m_ReaderObserver;
 
-		internal Func<InterpreterObserver, float[]> bridgeObserver;
+		internal Func<HandleSphere, float[]> bridgeObserver;
 
-		internal Action<InterpreterObserver> m_StrategyObserver;
+		internal Action<HandleSphere> m_StrategyObserver;
 
 		private static object TestCandidate;
 
-		internal static InterpreterObserver WriteError(Vector3 spec, string token = "", float helper = 0.05f, int version_visitor2 = -1, Action map3 = null)
+		internal static HandleSphere WriteError(Vector3 spec, string token = "", float helper = 0.05f, int version_visitor2 = -1, Action map3 = null)
 		{
-			return new InterpreterObserver
+			return new HandleSphere
 			{
 				m_StrategyObserver = CheckError,
 				_CandidateObserver = new GUIStyle(EditorStyles.boldLabel),
-				bridgeObserver = (InterpreterObserver sc) => new float[1] { HandleUtility.DistanceToCircle(sc._ProductObserver, sc._WorkerObserver / 2f) },
+				bridgeObserver = (HandleSphere sc) => new float[1] { HandleUtility.DistanceToCircle(sc._ProductObserver, sc._WorkerObserver / 2f) },
 				_ProductObserver = spec,
 				_WorkerObserver = helper,
 				watcherObserver = token,
@@ -1158,7 +1158,7 @@ internal static class EditorUtils
 			return bridgeObserver(this);
 		}
 
-		internal static void CheckError(InterpreterObserver config)
+		internal static void CheckError(HandleSphere config)
 		{
 			Handles.SphereHandleCap(config._StubObserver, config._ProductObserver, Quaternion.identity, config._WorkerObserver, EventType.Repaint);
 			if (!string.IsNullOrWhiteSpace(config.watcherObserver))
@@ -1327,7 +1327,7 @@ internal static class EditorUtils
 		XY
 	}
 
-	internal struct ParamsObserver
+	internal struct ControllerPicker
 	{
 		internal VRCAvatarDescriptor m_ListenerObserver;
 
@@ -1349,12 +1349,12 @@ internal static class EditorUtils
 			return eventObserver._WorkerThread;
 		}
 
-		internal ParamsObserver SortError(VRCAvatarDescriptor value, VRCAvatarDescriptor.AnimLayerType token, bool dorole = false)
+		internal ControllerPicker SortError(VRCAvatarDescriptor value, VRCAvatarDescriptor.AnimLayerType token, bool dorole = false)
 		{
 			return RegisterError(value, token, (!(value != null)) ? null : value.ChangeList(token), dorole);
 		}
 
-		internal ParamsObserver RegisterError(VRCAvatarDescriptor spec, VRCAvatarDescriptor.AnimLayerType connection, UnityEditor.Animations.AnimatorController pool, bool isdef2 = false)
+		internal ControllerPicker RegisterError(VRCAvatarDescriptor spec, VRCAvatarDescriptor.AnimLayerType connection, UnityEditor.Animations.AnimatorController pool, bool isdef2 = false)
 		{
 			eventObserver = new ValidationResult(isparam: false, "Unknown Error");
 			m_ListenerObserver = spec;
@@ -1364,7 +1364,7 @@ internal static class EditorUtils
 			return LogoutError(pool, isdef2);
 		}
 
-		internal ParamsObserver LogoutError(UnityEditor.Animations.AnimatorController task, bool istoken = false)
+		internal ControllerPicker LogoutError(UnityEditor.Animations.AnimatorController task, bool istoken = false)
 		{
 			eventObserver = new ValidationResult(isparam: false, "Unknown Error");
 			infoObserver = istoken;
@@ -1372,7 +1372,7 @@ internal static class EditorUtils
 			return this;
 		}
 
-		internal ParamsObserver Process()
+		internal ControllerPicker Process()
 		{
 			if (!interceptorObserver || !(m_ListenerObserver == null))
 			{
@@ -1403,7 +1403,7 @@ internal static class EditorUtils
 			}
 			bool cfg;
 			string b = (m_CreatorObserver.CallRules(out cfg) ? ((!cfg) ? "No Controller Selected" : ((!flag2) ? "Controller Is Missing!" : ("[Avatar's " + text + " Is Missing!]"))) : ((!flag2) ? m_CreatorObserver.name : ("[Avatar's " + text + "]")));
-			ParamsObserver _FacadeObserver = this;
+			ControllerPicker _FacadeObserver = this;
 			PopRules(ord, b, m_CreatorObserver, delegate(UnityEditor.Animations.AnimatorController c)
 			{
 				_FacadeObserver.InterruptError(c, m_AdvisorObserver, last);
@@ -1437,7 +1437,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal struct RuleObserver
+	internal struct ParameterCostTracker
 	{
 		internal VRCAvatarDescriptor _SingletonObserver;
 
@@ -1553,7 +1553,7 @@ internal static class EditorUtils
 			bool flag = _FactoryObserver && _SingletonObserver != null && _SingletonObserver.expressionParameters == accountObserver;
 			bool cfg;
 			string b = (accountObserver.CallRules(out cfg) ? ((!cfg) ? "No Parameters Selected" : ((!flag) ? "Parameters Are Missing!" : "[Avatar's Parameters Are Missing!]")) : ((!(_FactoryObserver && flag)) ? accountObserver.name : "[Avatar's Parameters]"));
-			RuleObserver objectObserver = this;
+			ParameterCostTracker objectObserver = this;
 			PopRules(connection, b, accountObserver, delegate(VRCExpressionParameters p)
 			{
 				objectObserver.CallSetter(p, spec);
@@ -1606,7 +1606,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal struct MerchantObserver
+	internal struct MenuClipboardState
 	{
 		internal VRCAvatarDescriptor authenticationObserver;
 
@@ -1642,14 +1642,14 @@ internal static class EditorUtils
 			return _InstanceObserver._WorkerThread;
 		}
 
-		internal MerchantObserver ExcludeSetter(VRCAvatarDescriptor def, VRCExpressionsMenu token, VRCExpressionsMenu serv = null)
+		internal MenuClipboardState ExcludeSetter(VRCAvatarDescriptor def, VRCExpressionsMenu token, VRCExpressionsMenu serv = null)
 		{
 			authenticationObserver = def;
 			reponseObserver = true;
 			return DefineSetter(token, serv);
 		}
 
-		internal MerchantObserver InitSetter(VRCAvatarDescriptor last, List<VRCExpressionsMenu.Control> cfg, VRCExpressionsMenu temp = null)
+		internal MenuClipboardState InitSetter(VRCAvatarDescriptor last, List<VRCExpressionsMenu.Control> cfg, VRCExpressionsMenu temp = null)
 		{
 			authenticationObserver = last;
 			reponseObserver = true;
@@ -1663,14 +1663,14 @@ internal static class EditorUtils
 			return this;
 		}
 
-		internal MerchantObserver VisitSetter(VRCAvatarDescriptor task, int bend, VRCExpressionsMenu template = null)
+		internal MenuClipboardState VisitSetter(VRCAvatarDescriptor task, int bend, VRCExpressionsMenu template = null)
 		{
 			authenticationObserver = task;
 			reponseObserver = true;
 			return ReadSetter(bend, template);
 		}
 
-		internal MerchantObserver DefineSetter(VRCExpressionsMenu last, VRCExpressionsMenu ivk = null)
+		internal MenuClipboardState DefineSetter(VRCExpressionsMenu last, VRCExpressionsMenu ivk = null)
 		{
 			m_ParameterObserver = last;
 			_ComposerObserver = true;
@@ -1687,7 +1687,7 @@ internal static class EditorUtils
 			return this;
 		}
 
-		internal MerchantObserver StartSetter(List<VRCExpressionsMenu.Control> first, VRCExpressionsMenu cust = null)
+		internal MenuClipboardState StartSetter(List<VRCExpressionsMenu.Control> first, VRCExpressionsMenu cust = null)
 		{
 			_RepositoryObserver = first;
 			m_MappingObserver = true;
@@ -1699,14 +1699,14 @@ internal static class EditorUtils
 			return ReadSetter(first.Count, cust);
 		}
 
-		internal MerchantObserver ReadSetter(int position_ident, VRCExpressionsMenu second)
+		internal MenuClipboardState ReadSetter(int position_ident, VRCExpressionsMenu second)
 		{
 			_BaseObserver = position_ident;
 			m_PoolObserver = second;
 			return this;
 		}
 
-		internal MerchantObserver Process()
+		internal MenuClipboardState Process()
 		{
 			if (reponseObserver && authenticationObserver == null)
 			{
@@ -6472,7 +6472,7 @@ internal static class EditorUtils
 		i.SetInt("_ZTest", 8);
 	}
 
-	internal static void ChangeQueue(InterpreterObserver key)
+	internal static void ChangeQueue(HandleSphere key)
 	{
 		Event current = Event.current;
 		key.m_StrategyObserver?.Invoke(key);

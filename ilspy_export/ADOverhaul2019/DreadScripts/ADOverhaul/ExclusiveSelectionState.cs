@@ -1,14 +1,14 @@
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class TemplateTemplate
+internal sealed class ExclusiveSelectionState
 {
 	private bool[] m_DicTemplate;
 
 	internal int serviceTemplate = -1;
 
-	internal static TemplateTemplate PushFactory;
+	internal static ExclusiveSelectionState PushFactory;
 
-	internal TemplateTemplate(int max_def)
+	internal ExclusiveSelectionState(int max_def)
 	{
 		AssetAccount(max_def);
 	}

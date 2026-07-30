@@ -32,7 +32,7 @@ namespace DreadScripts.ADOverhaul;
 
 internal sealed class LicenseManager
 {
-	private sealed class MessageUtilsAttribute : EditorWindow
+	private sealed class ADOverhaulWindow : EditorWindow
 	{
 		private enum EasyDynamicsFunctions
 		{
@@ -63,12 +63,12 @@ internal sealed class LicenseManager
 
 		private static bool message;
 
-		internal static MessageUtilsAttribute CallTokenizer;
+		internal static ADOverhaulWindow CallTokenizer;
 
 		[MenuItem("DreadTools/ADOverhaul", false, 6)]
 		internal static void CreateSerializer()
 		{
-			EditorWindow.GetWindow<MessageUtilsAttribute>(utility: false, "Avatar Dynamics Overhaul", focus: true);
+			EditorWindow.GetWindow<ADOverhaulWindow>(utility: false, "Avatar Dynamics Overhaul", focus: true);
 		}
 
 		private void OnGUI()
@@ -501,7 +501,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class AuthenticationIdentifier
+	private sealed class ProcessRunner
 	{
 		private readonly ProcessStartInfo m_ContextIdentifier;
 
@@ -521,9 +521,9 @@ internal sealed class LicenseManager
 
 		private bool accountIdentifier;
 
-		private static AuthenticationIdentifier ReadTokenizer;
+		private static ProcessRunner ReadTokenizer;
 
-		internal AuthenticationIdentifier(string i, Action<string> second, bool wantfilter = false, bool istask2 = false, Action token3 = null)
+		internal ProcessRunner(string i, Action<string> second, bool wantfilter = false, bool istask2 = false, Action token3 = null)
 		{
 			m_ContextIdentifier = new ProcessStartInfo((!wantfilter) ? "powershell.exe" : "cmd.exe")
 			{
@@ -1577,10 +1577,10 @@ internal sealed class LicenseManager
 		internal ConnectionIdentifierService a_VerifyOnProjectLoad = new ConnectionIdentifierService(forcev: false);
 
 		[SerializeField]
-		internal ConnectionIdentifierService gizmosActive = new ConnectionIdentifierService(forcev: true, ComposerIdentifier.InterruptSingleton);
+		internal ConnectionIdentifierService gizmosActive = new ConnectionIdentifierService(forcev: true, PhysBoneEditor.InterruptSingleton);
 
 		[SerializeField]
-		internal ConnectionIdentifierService globalGizmo = new ConnectionIdentifierService(forcev: true, ComposerIdentifier.InterruptSingleton);
+		internal ConnectionIdentifierService globalGizmo = new ConnectionIdentifierService(forcev: true, PhysBoneEditor.InterruptSingleton);
 
 		[SerializeField]
 		internal ConnectionIdentifierService editorAnimatedFoldouts = new ConnectionIdentifierService(forcev: true);
@@ -1619,10 +1619,10 @@ internal sealed class LicenseManager
 		internal ListenerWatcherRule toolOverlayAlignment = ListenerWatcherRule.ReadUtils(ADOEditorUtility.PositionFlag.BottomRight);
 
 		[SerializeField]
-		internal BroadcasterIdentifier gizmoBoneOpacity = new BroadcasterIdentifier(0.5f, ComposerIdentifier.InterruptSingleton);
+		internal BroadcasterIdentifier gizmoBoneOpacity = new BroadcasterIdentifier(0.5f, PhysBoneEditor.InterruptSingleton);
 
 		[SerializeField]
-		internal BroadcasterIdentifier gizmoLimitOpacity = new BroadcasterIdentifier(0.5f, ComposerIdentifier.InterruptSingleton);
+		internal BroadcasterIdentifier gizmoLimitOpacity = new BroadcasterIdentifier(0.5f, PhysBoneEditor.InterruptSingleton);
 
 		[SerializeField]
 		internal BroadcasterIdentifier handleSizeMultiplier = new BroadcasterIdentifier(1f);
@@ -1791,7 +1791,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class AttributeConsumerExporter : Editor
+	private sealed class ContactReceiverEditor : Editor
 	{
 		private static readonly AnimBool[] _GetterIdentifier = new AnimBool[3]
 		{
@@ -1834,7 +1834,7 @@ internal sealed class LicenseManager
 
 		private static Type poolIdentifier;
 
-		internal static AttributeConsumerExporter InvokeTask;
+		internal static ContactReceiverEditor InvokeTask;
 
 		public override void OnInspectorGUI()
 		{
@@ -2012,7 +2012,7 @@ internal sealed class LicenseManager
 				poolIdentifier = ADOEditorUtility.CancelStatus("VRCContactReceiverEditor");
 			}
 			_ThreadIdentifier = !insertasset;
-			ADOEditorUtility.RevertStatus(m_IndexerIdentifier, (!_ThreadIdentifier) ? poolIdentifier : typeof(AttributeConsumerExporter));
+			ADOEditorUtility.RevertStatus(m_IndexerIdentifier, (!_ThreadIdentifier) ? poolIdentifier : typeof(ContactReceiverEditor));
 		}
 
 		[CompilerGenerated]
@@ -2067,7 +2067,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class RuleIdentifier : Editor
+	private sealed class ContactSenderEditor : Editor
 	{
 		private static readonly AnimBool[] _StructIdentifier = new AnimBool[2]
 		{
@@ -2097,7 +2097,7 @@ internal sealed class LicenseManager
 
 		private static Type m_ConfigIdentifier;
 
-		private static RuleIdentifier DefineTask;
+		private static ContactSenderEditor DefineTask;
 
 		public override void OnInspectorGUI()
 		{
@@ -2246,7 +2246,7 @@ internal sealed class LicenseManager
 				m_ConfigIdentifier = ADOEditorUtility.CancelStatus("VRCContactSenderEditor");
 			}
 			_InterpreterIdentifier = !isinstance;
-			ADOEditorUtility.RevertStatus(m_ModelIdentifier, (!_InterpreterIdentifier) ? m_ConfigIdentifier : typeof(RuleIdentifier));
+			ADOEditorUtility.RevertStatus(m_ModelIdentifier, (!_InterpreterIdentifier) ? m_ConfigIdentifier : typeof(ContactSenderEditor));
 		}
 
 		[CompilerGenerated]
@@ -2276,7 +2276,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class IndexerMethodBridge : Editor
+	private sealed class PhysBoneColliderEditor : Editor
 	{
 		private static readonly AnimBool[] _FieldIdentifier = new AnimBool[1]
 		{
@@ -2305,7 +2305,7 @@ internal sealed class LicenseManager
 
 		private static Type _RequestIdentifier;
 
-		internal static IndexerMethodBridge VerifyTask;
+		internal static PhysBoneColliderEditor VerifyTask;
 
 		public override void OnInspectorGUI()
 		{
@@ -2405,7 +2405,7 @@ internal sealed class LicenseManager
 				_RequestIdentifier = ADOEditorUtility.CancelStatus("VRCPhysBoneColliderEditor");
 			}
 			advisorIdentifier = !isi;
-			ADOEditorUtility.RevertStatus(m_BaseIdentifier, (!advisorIdentifier) ? _RequestIdentifier : typeof(IndexerMethodBridge));
+			ADOEditorUtility.RevertStatus(m_BaseIdentifier, (!advisorIdentifier) ? _RequestIdentifier : typeof(PhysBoneColliderEditor));
 		}
 
 		private void EnableProperty()
@@ -2480,7 +2480,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	private sealed class ComposerIdentifier : Editor
+	private sealed class PhysBoneEditor : Editor
 	{
 		internal class AlgoAuthentication
 		{
@@ -2610,12 +2610,12 @@ internal sealed class LicenseManager
 				using (new GUILayout.HorizontalScope())
 				{
 					EditorGUILayout.LabelField("Limit Rotation Curves");
-					UpdateSingleton(ComposerIdentifier.adapterAuthentication, "X", isproc: false);
+					UpdateSingleton(PhysBoneEditor.adapterAuthentication, "X", isproc: false);
 					UpdateSingleton(_ProxyAuthentication, "Y", isproc: false);
 					UpdateSingleton(m_RefAuthentication, "Z", isproc: false);
 					if (ADOEditorUtility.CallStatus(ADOEditorUtility.CustomizeRef().baseSerializer, GUI.skin.label, GUILayout.Width(14f)))
 					{
-						SerializedProperty adapterAuthentication = ComposerIdentifier.adapterAuthentication;
+						SerializedProperty adapterAuthentication = PhysBoneEditor.adapterAuthentication;
 						SerializedProperty proxyAuthentication = _ProxyAuthentication;
 						AnimationCurve animationCurve = (m_RefAuthentication.animationCurveValue = new AnimationCurve());
 						AnimationCurve animationCurveValue = (proxyAuthentication.animationCurveValue = animationCurve);
@@ -2730,7 +2730,7 @@ internal sealed class LicenseManager
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass108_0
 		{
-			public ComposerIdentifier m_InfoAuthentication;
+			public PhysBoneEditor m_InfoAuthentication;
 
 			public bool _ModelAuthentication;
 
@@ -3123,7 +3123,7 @@ internal sealed class LicenseManager
 
 		private static readonly int _TokenizerIdentifier = GUIUtility.GetControlID("ADOToolSelectionDragControlID".GetHashCode(), FocusType.Passive);
 
-		private static readonly ADOEditorUtility.ExporterServerStub m_ExceptionIdentifier = new ADOEditorUtility.ExporterServerStub();
+		private static readonly ADOEditorUtility.ResizeHandle m_ExceptionIdentifier = new ADOEditorUtility.ResizeHandle();
 
 		private static SerializedProperty _ValueIdentifier;
 
@@ -3247,7 +3247,7 @@ internal sealed class LicenseManager
 
 		private static int m_StubAuthentication = -1;
 
-		private static readonly TokenParamsDispatcher rulesAuthentication = new TokenParamsDispatcher(7);
+		private static readonly ExclusiveSelectionState rulesAuthentication = new ExclusiveSelectionState(7);
 
 		private static readonly string[] m_TestsAuthentication = new string[7] { "None", "End Position Edit", "Ignore Selection", "Ignore Copy", "Collision Selection", "Collision Copy", "Property Edit" };
 
@@ -3261,7 +3261,7 @@ internal sealed class LicenseManager
 
 		private static bool threadAuthentication;
 
-		private static ComposerIdentifier ReflectTask;
+		private static PhysBoneEditor ReflectTask;
 
 		[SpecialName]
 		private static AlgoAuthentication CountAccount()
@@ -3817,7 +3817,7 @@ internal sealed class LicenseManager
 			{
 				ADOEditorUtility.PositionFlag positionFlag = RefImporterDescriptor.GetConsumer().toolSelectionOverlayAlignment.RegisterUtils<ADOEditorUtility.PositionFlag>();
 				bool flag2;
-				using (new ADOEditorUtility.SystemSerializer(info, 250f, 34f, positionFlag, m_ExceptionIdentifier))
+				using (new ADOEditorUtility.SceneViewPanel(info, 250f, 34f, positionFlag, m_ExceptionIdentifier))
 				{
 					Rect lastRect;
 					using (new GUILayout.HorizontalScope())
@@ -3864,7 +3864,7 @@ internal sealed class LicenseManager
 						GUILayout.FlexibleSpace();
 						if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
 						{
-							MessageUtilsAttribute.CreateSerializer();
+							ADOverhaulWindow.CreateSerializer();
 						}
 					}
 					flag2 = ADOEditorUtility.VisitStatus(lastRect, _TokenizerIdentifier);
@@ -4299,7 +4299,7 @@ internal sealed class LicenseManager
 				getterAuthentication = ADOEditorUtility.CancelStatus("VRCPhysBoneEditor");
 			}
 			_CallbackIdentifier = !issetup;
-			ADOEditorUtility.RevertStatus(m_TokenAuthentication, (!_CallbackIdentifier) ? getterAuthentication : typeof(ComposerIdentifier));
+			ADOEditorUtility.RevertStatus(m_TokenAuthentication, (!_CallbackIdentifier) ? getterAuthentication : typeof(PhysBoneEditor));
 		}
 
 		private static void MoveSingleton()
@@ -4791,7 +4791,7 @@ internal sealed class LicenseManager
 
 		public static Action<Exception> filterContext;
 
-		public static Func<AuthenticationIdentifier, bool> m_FactoryContext;
+		public static Func<ProcessRunner, bool> m_FactoryContext;
 
 		public static Func<string, bool> m_AttributeContext;
 
@@ -5125,7 +5125,7 @@ internal sealed class LicenseManager
 			NewIdentifier($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
 		}
 
-		internal bool ResolveServer(AuthenticationIdentifier p)
+		internal bool ResolveServer(ProcessRunner p)
 		{
 			return p.m_SingletonIdentifier;
 		}
@@ -5517,7 +5517,7 @@ internal sealed class LicenseManager
 
 		public CancellationTokenSource _InfoContext;
 
-		public AuthenticationIdentifier[] modelContext;
+		public ProcessRunner[] modelContext;
 
 		public bool _ConfigContext;
 
@@ -5891,10 +5891,10 @@ internal sealed class LicenseManager
 				}
 				if (flag2)
 				{
-					ComposerIdentifier.WriteSingleton();
-					IndexerMethodBridge.InsertProperty();
-					RuleIdentifier.InvokeProperty();
-					AttributeConsumerExporter.ReadPage();
+					PhysBoneEditor.WriteSingleton();
+					PhysBoneColliderEditor.InsertProperty();
+					ContactSenderEditor.InvokeProperty();
+					ContactReceiverEditor.ReadPage();
 				}
 			}
 			catch (Exception message)
@@ -5990,7 +5990,7 @@ internal sealed class LicenseManager
 
 	private static bool task;
 
-	private static readonly ADOEditorUtility.ExporterServerStub customer = new ADOEditorUtility.ExporterServerStub();
+	private static readonly ADOEditorUtility.ResizeHandle customer = new ADOEditorUtility.ResizeHandle();
 
 	private static readonly int m_Database = GUIUtility.GetControlID("ADOTooltipDragControlID".GetHashCode(), FocusType.Passive);
 
@@ -7639,40 +7639,40 @@ internal sealed class LicenseManager
 		CS_0024_003C_003E8__locals31.m_ObjectContext = new string[4];
 		CS_0024_003C_003E8__locals31.m_ServiceContext = new string[4];
 		CS_0024_003C_003E8__locals31.reponseContext = new string[4];
-		AuthenticationIdentifier[] reference = new AuthenticationIdentifier[4]
+		ProcessRunner[] reference = new ProcessRunner[4]
 		{
-			new AuthenticationIdentifier("wmic baseboard get *", delegate(string o)
+			new ProcessRunner("wmic baseboard get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ObjectContext[0] = o;
 			}, wantfilter: true),
-			new AuthenticationIdentifier("wmic cpu get *", delegate(string o)
+			new ProcessRunner("wmic cpu get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ObjectContext[1] = o;
 			}, wantfilter: true),
-			new AuthenticationIdentifier("wmic diskdrive get *", delegate(string o)
+			new ProcessRunner("wmic diskdrive get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ObjectContext[2] = o;
 			}, wantfilter: true),
-			new AuthenticationIdentifier("wmic memorychip get *", delegate(string o)
+			new ProcessRunner("wmic memorychip get *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ObjectContext[3] = o;
 			}, wantfilter: true)
 		};
-		CS_0024_003C_003E8__locals31.modelContext = new AuthenticationIdentifier[4]
+		CS_0024_003C_003E8__locals31.modelContext = new ProcessRunner[4]
 		{
-			new AuthenticationIdentifier("Get-CimInstance -class Win32_baseboard | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class Win32_baseboard | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ServiceContext[0] = o;
 			}),
-			new AuthenticationIdentifier("Get-CimInstance -class Win32_processor | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class Win32_processor | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ServiceContext[1] = o;
 			}),
-			new AuthenticationIdentifier("Get-CimInstance -class Win32_diskdrive | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class Win32_diskdrive | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ServiceContext[2] = o;
 			}),
-			new AuthenticationIdentifier("Get-CimInstance -class win32_physicalmemory | Select *", delegate(string o)
+			new ProcessRunner("Get-CimInstance -class win32_physicalmemory | Select *", delegate(string o)
 			{
 				CS_0024_003C_003E8__locals31.m_ServiceContext[3] = o;
 			})
@@ -8119,7 +8119,7 @@ internal sealed class LicenseManager
 
 	private static void CalcIdentifier()
 	{
-		MessageUtilsAttribute[] array = Resources.FindObjectsOfTypeAll<MessageUtilsAttribute>();
+		ADOverhaulWindow[] array = Resources.FindObjectsOfTypeAll<ADOverhaulWindow>();
 		for (int i = 0; i < array.Length; i++)
 		{
 			array[i].Repaint();
@@ -8613,7 +8613,7 @@ internal sealed class LicenseManager
 		Rect ivk4 = ident.AddStatus();
 		ADOEditorUtility.PositionFlag positionFlag = RefImporterDescriptor.GetConsumer().toolOverlayAlignment.RegisterUtils<ADOEditorUtility.PositionFlag>();
 		bool flag;
-		using (new ADOEditorUtility.SystemSerializer(ident, pol2, ivk3, positionFlag, customer))
+		using (new ADOEditorUtility.SceneViewPanel(ident, pol2, ivk3, positionFlag, customer))
 		{
 			Rect rect = result();
 			ADOEditorUtility.InsertStatus(rect, MouseCursor.Pan);
@@ -8636,7 +8636,7 @@ internal sealed class LicenseManager
 	{
 		if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
 		{
-			MessageUtilsAttribute.CreateSerializer();
+			ADOverhaulWindow.CreateSerializer();
 		}
 	}
 
@@ -8918,19 +8918,19 @@ internal sealed class LicenseManager
 	}
 
 	[CompilerGenerated]
-	internal static async void PrepareIdentifier(AuthenticationIdentifier[] reference, Action visitor, CancellationTokenSource state)
+	internal static async void PrepareIdentifier(ProcessRunner[] reference, Action visitor, CancellationTokenSource state)
 	{
 		try
 		{
 			await Task.Run(delegate
 			{
-				AuthenticationIdentifier[] array = reference;
+				ProcessRunner[] array = reference;
 				for (int i = 0; i < array.Length; i++)
 				{
 					array[i].ComputeMethod();
 				}
 			}, state.Token);
-			while (!reference.All((AuthenticationIdentifier p) => p.m_SingletonIdentifier))
+			while (!reference.All((ProcessRunner p) => p.m_SingletonIdentifier))
 			{
 				state.Token.ThrowIfCancellationRequested();
 				await Task.Delay(50, state.Token);

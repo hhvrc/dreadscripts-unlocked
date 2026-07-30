@@ -36,9 +36,9 @@ internal static class ADOEditorUtility
 		All = -1
 	}
 
-	internal class ExporterServerStub
+	internal class ResizeHandle
 	{
-		private struct RegistryRegDic
+		private struct ResizeZone
 		{
 			internal PositionFlag _ItemSerializer;
 
@@ -67,7 +67,7 @@ internal static class ADOEditorUtility
 
 		private bool _WorkerSerializer;
 
-		internal static ExporterServerStub ConnectOrder;
+		internal static ResizeHandle ConnectOrder;
 
 		[SpecialName]
 		public bool PatchRef()
@@ -108,7 +108,7 @@ internal static class ADOEditorUtility
 			}
 		}
 
-		public ExporterServerStub(bool islast = false)
+		public ResizeHandle(bool islast = false)
 		{
 			_ManagerSerializer = islast;
 		}
@@ -164,51 +164,51 @@ internal static class ADOEditorUtility
 			goto IL_003e;
 			IL_003e:
 			float num = counter2 * 2f;
-			RegistryRegDic[] array = new RegistryRegDic[8]
+			ResizeZone[] array = new ResizeZone[8]
 			{
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.Left,
 					poolSerializer = 0,
 					m_IndexerSerializer = new Rect(ident.x - counter2, ident.y + counter2, num, ident.height - num)
 				},
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.TopLeft,
 					poolSerializer = 1,
 					m_IndexerSerializer = new Rect(ident.x - counter2, ident.y - counter2, num, num)
 				},
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.Top,
 					poolSerializer = 2,
 					m_IndexerSerializer = new Rect(ident.x + counter2, ident.y - counter2, ident.width - num, num)
 				},
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.TopRight,
 					poolSerializer = 3,
 					m_IndexerSerializer = new Rect(ident.x + ident.width - counter2, ident.y - counter2, num, num)
 				},
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.Right,
 					poolSerializer = 4,
 					m_IndexerSerializer = new Rect(ident.x + ident.width - counter2, ident.y + counter2, num, ident.height - num)
 				},
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.BottomRight,
 					poolSerializer = 5,
 					m_IndexerSerializer = new Rect(ident.x + ident.width - counter2, ident.y + ident.height - counter2, num, num)
 				},
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.Bottom,
 					poolSerializer = 6,
 					m_IndexerSerializer = new Rect(ident.x + counter2, ident.y + ident.height - counter2, ident.width - num, num)
 				},
-				new RegistryRegDic
+				new ResizeZone
 				{
 					_ItemSerializer = PositionFlag.BottomLeft,
 					poolSerializer = 7,
@@ -216,9 +216,9 @@ internal static class ADOEditorUtility
 				}
 			};
 			bool flag = current.button == 0;
-			RegistryRegDic[] array2 = array;
+			ResizeZone[] array2 = array;
 			int num2 = 0;
-			RegistryRegDic registryRegDic = default(RegistryRegDic);
+			ResizeZone resizeZone = default(ResizeZone);
 			while (true)
 			{
 				Vector2 vector;
@@ -335,13 +335,13 @@ internal static class ADOEditorUtility
 				}
 				else
 				{
-					registryRegDic = array2[num2];
+					resizeZone = array2[num2];
 				}
-				if ((registryRegDic._ItemSerializer & cust) < registryRegDic._ItemSerializer)
+				if ((resizeZone._ItemSerializer & cust) < resizeZone._ItemSerializer)
 				{
 					goto IL_0360;
 				}
-				PositionFlag itemSerializer2 = registryRegDic._ItemSerializer;
+				PositionFlag itemSerializer2 = resizeZone._ItemSerializer;
 				if (itemSerializer2 <= PositionFlag.Bottom)
 				{
 					switch (itemSerializer2)
@@ -406,8 +406,8 @@ internal static class ADOEditorUtility
 				selection = MouseCursor.ResizeUpRight;
 				goto IL_0339;
 				IL_0339:
-				InsertStatus(registryRegDic.m_IndexerSerializer, selection);
-				Rect indexerSerializer = registryRegDic.m_IndexerSerializer;
+				InsertStatus(resizeZone.m_IndexerSerializer, selection);
+				Rect indexerSerializer = resizeZone.m_IndexerSerializer;
 				if (collectionSerializer)
 				{
 					indexerSerializer.y += 46f;
@@ -418,7 +418,7 @@ internal static class ADOEditorUtility
 					{
 						_WorkerSerializer = true;
 					}
-					_InvocationSerializer = registryRegDic.poolSerializer;
+					_InvocationSerializer = resizeZone.poolSerializer;
 					GUIUtility.hotControl = parserSerializer;
 					_ListenerSerializer = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
@@ -507,7 +507,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal class SystemSerializer : IDisposable
+	internal class SceneViewPanel : IDisposable
 	{
 		public readonly bool setterSerializer;
 
@@ -515,16 +515,16 @@ internal static class ADOEditorUtility
 
 		private readonly Rect m_StructSerializer;
 
-		internal static SystemSerializer InstantiateDescriptor;
+		internal static SceneViewPanel InstantiateDescriptor;
 
-		public SystemSerializer(SceneView ident, string result, float tag, int first2_end, float value3 = 20f, PositionFlag first4 = PositionFlag.BottomRight, ExporterServerStub reference5 = null)
+		public SceneViewPanel(SceneView ident, string result, float tag, int first2_end, float value3 = 20f, PositionFlag first4 = PositionFlag.BottomRight, ResizeHandle reference5 = null)
 			: this(ident, tag, first2_end + 2, value3, first4, reference5)
 		{
 			GUILayout.Label(result, MapRef().m_WriterSerializer);
 			DisableStatus(2, 0);
 		}
 
-		public SystemSerializer(SceneView value, float visitor, int offsetdir, float res2 = 20f, PositionFlag ord3 = PositionFlag.BottomRight, ExporterServerStub init4 = null)
+		public SceneViewPanel(SceneView value, float visitor, int offsetdir, float res2 = 20f, PositionFlag ord3 = PositionFlag.BottomRight, ResizeHandle init4 = null)
 		{
 			Handles.BeginGUI();
 			Rect rect = value.AddStatus();
@@ -549,7 +549,7 @@ internal static class ADOEditorUtility
 			GUILayout.BeginArea(m_StructSerializer);
 		}
 
-		public SystemSerializer(SceneView instance, float col, float role = 20f, PositionFlag vis2 = PositionFlag.BottomRight, ExporterServerStub x3 = null)
+		public SceneViewPanel(SceneView instance, float col, float role = 20f, PositionFlag vis2 = PositionFlag.BottomRight, ResizeHandle x3 = null)
 			: this(instance, col, 1, role, vis2, x3)
 		{
 		}

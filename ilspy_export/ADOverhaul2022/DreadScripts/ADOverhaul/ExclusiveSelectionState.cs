@@ -1,14 +1,14 @@
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class TokenParamsDispatcher
+internal sealed class ExclusiveSelectionState
 {
 	private bool[] _PropertySerializer;
 
 	internal int singletonSerializer = -1;
 
-	internal static TokenParamsDispatcher ReadOrder;
+	internal static ExclusiveSelectionState ReadOrder;
 
-	internal TokenParamsDispatcher(int indexOf_def)
+	internal ExclusiveSelectionState(int indexOf_def)
 	{
 		UpdateProcess(indexOf_def);
 	}

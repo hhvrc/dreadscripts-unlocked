@@ -9,9 +9,9 @@ namespace DreadScripts.ControllerEditor;
 
 internal static class AnimatorTypeCache
 {
-	internal class BridgeProperty
+	internal class ParameterDriverBinding
 	{
-		internal class AttrProperty
+		internal class ParameterEntry
 		{
 			internal enum ChangeType
 			{
@@ -20,13 +20,13 @@ internal static class AnimatorTypeCache
 				Random
 			}
 
-			internal BridgeProperty _DispatcherProperty;
+			internal ParameterDriverBinding _DispatcherProperty;
 
 			internal SerializedProperty m_RegistryProperty;
 
 			private bool _TagProperty;
 
-			internal static AttrProperty ListStruct;
+			internal static ParameterEntry ListStruct;
 
 			[SpecialName]
 			internal bool RemovePage()
@@ -166,7 +166,7 @@ internal static class AnimatorTypeCache
 				_DispatcherProperty.m_CustomerProperty.ApplyModifiedProperties();
 			}
 
-			internal AttrProperty(BridgeProperty param, SerializedProperty b)
+			internal ParameterEntry(ParameterDriverBinding param, SerializedProperty b)
 			{
 				_DispatcherProperty = param;
 				m_RegistryProperty = b;
@@ -182,13 +182,13 @@ internal static class AnimatorTypeCache
 
 		internal SerializedObject m_CustomerProperty;
 
-		internal List<AttrProperty> m_DatabaseProperty = new List<AttrProperty>();
+		internal List<ParameterEntry> m_DatabaseProperty = new List<ParameterEntry>();
 
 		internal SerializedProperty m_ExporterProperty;
 
 		private readonly SerializedProperty _IdentifierProperty;
 
-		private static BridgeProperty SetupStruct;
+		private static ParameterDriverBinding SetupStruct;
 
 		[SpecialName]
 		internal bool StartPage()
@@ -203,7 +203,7 @@ internal static class AnimatorTypeCache
 			DefinePage();
 		}
 
-		internal BridgeProperty(StateMachineBehaviour value)
+		internal ParameterDriverBinding(StateMachineBehaviour value)
 		{
 			_StrategyProperty = value;
 			m_CustomerProperty = new SerializedObject(value);
@@ -211,13 +211,13 @@ internal static class AnimatorTypeCache
 			_IdentifierProperty = m_CustomerProperty.FindProperty("localOnly");
 			for (int i = 0; i < m_ExporterProperty.arraySize; i++)
 			{
-				m_DatabaseProperty.Add(new AttrProperty(this, m_ExporterProperty.GetArrayElementAtIndex(i)));
+				m_DatabaseProperty.Add(new ParameterEntry(this, m_ExporterProperty.GetArrayElementAtIndex(i)));
 			}
 		}
 
-		internal AttrProperty ExcludePage(int instance_Z)
+		internal ParameterEntry ExcludePage(int instance_Z)
 		{
-			return new AttrProperty(this, m_ExporterProperty.GetArrayElementAtIndex(instance_Z));
+			return new ParameterEntry(this, m_ExporterProperty.GetArrayElementAtIndex(instance_Z));
 		}
 
 		internal bool InitPage(int init)
@@ -232,10 +232,10 @@ internal static class AnimatorTypeCache
 			return true;
 		}
 
-		internal AttrProperty VisitPage()
+		internal ParameterEntry VisitPage()
 		{
 			m_ExporterProperty.InsertArrayElementAtIndex(m_ExporterProperty.arraySize);
-			m_DatabaseProperty.Add(new AttrProperty(this, m_ExporterProperty.GetArrayElementAtIndex(m_ExporterProperty.arraySize - 1)));
+			m_DatabaseProperty.Add(new ParameterEntry(this, m_ExporterProperty.GetArrayElementAtIndex(m_ExporterProperty.arraySize - 1)));
 			m_CustomerProperty.ApplyModifiedProperties();
 			return ExcludePage(m_ExporterProperty.arraySize - 1);
 		}
@@ -251,7 +251,7 @@ internal static class AnimatorTypeCache
 		}
 	}
 
-	internal class ImporterProperty
+	internal class AvatarDescriptorBinding
 	{
 		private Component _RequestProperty;
 
@@ -335,9 +335,9 @@ internal static class AnimatorTypeCache
 
 		internal SerializedProperty m_PoolProperty = new SerializedObject((UnityEngine.Object)null).FindProperty("collider_fingerIndexL");
 
-		private static ImporterProperty InstantiateStruct;
+		private static AvatarDescriptorBinding InstantiateStruct;
 
-		internal ImporterProperty(Component def)
+		internal AvatarDescriptorBinding(Component def)
 		{
 			_RequestProperty = def;
 			_PrinterProperty = new SerializedObject(def);
@@ -389,22 +389,22 @@ internal static class AnimatorTypeCache
 	}
 
 	[DefaultMember("Item")]
-	internal class ParameterProperty : MappingProperty
+	internal class ExpressionsMenuBinding : SerializedObjectWrapper
 	{
-		internal readonly BaseProperty _ComposerProperty;
+		internal readonly SerializedPropertyWrapper _ComposerProperty;
 
-		private static ParameterProperty RegisterCandidate;
+		private static ExpressionsMenuBinding RegisterCandidate;
 
-		internal ParameterProperty(UnityEngine.Object spec)
+		internal ExpressionsMenuBinding(UnityEngine.Object spec)
 			: base(spec)
 		{
 			_ComposerProperty = SortPage("controls");
 		}
 
 		[SpecialName]
-		public RepositoryProperty ViewPage(int index_spec)
+		public MenuControlBinding ViewPage(int index_spec)
 		{
-			return new RepositoryProperty(_ComposerProperty.LogoutPage(index_spec));
+			return new MenuControlBinding(_ComposerProperty.LogoutPage(index_spec));
 		}
 
 		internal static bool FlushCandidate()
@@ -413,9 +413,9 @@ internal static class AnimatorTypeCache
 		}
 	}
 
-	internal class RepositoryProperty : BaseProperty
+	internal class MenuControlBinding : SerializedPropertyWrapper
 	{
-		private static RepositoryProperty CustomizeCandidate;
+		private static MenuControlBinding CustomizeCandidate;
 
 		[SpecialName]
 		internal string ResolvePage()
@@ -454,18 +454,18 @@ internal static class AnimatorTypeCache
 		}
 
 		[SpecialName]
-		internal ParameterProperty AssetPage()
+		internal ExpressionsMenuBinding AssetPage()
 		{
-			return new ParameterProperty(InterruptPage("submenu").m_ContainerProperty.objectReferenceValue);
+			return new ExpressionsMenuBinding(InterruptPage("submenu").m_ContainerProperty.objectReferenceValue);
 		}
 
 		[SpecialName]
-		internal void UpdatePage(ParameterProperty item)
+		internal void UpdatePage(ExpressionsMenuBinding item)
 		{
 			InterruptPage("submenu").m_ContainerProperty.objectReferenceValue = item.targetObject;
 		}
 
-		public RepositoryProperty(SerializedProperty key)
+		public MenuControlBinding(SerializedProperty key)
 			: base(key)
 		{
 		}
@@ -477,19 +477,19 @@ internal static class AnimatorTypeCache
 	}
 
 	[DefaultMember("Item")]
-	internal class MappingProperty : SerializedObject
+	internal class SerializedObjectWrapper : SerializedObject
 	{
-		internal static MappingProperty CancelCandidate;
+		internal static SerializedObjectWrapper CancelCandidate;
 
-		internal MappingProperty(UnityEngine.Object info)
+		internal SerializedObjectWrapper(UnityEngine.Object info)
 			: base(info)
 		{
 		}
 
 		[SpecialName]
-		public BaseProperty SortPage(string i)
+		public SerializedPropertyWrapper SortPage(string i)
 		{
-			return new BaseProperty(FindProperty(i));
+			return new SerializedPropertyWrapper(FindProperty(i));
 		}
 
 		internal static bool RestartCandidate()
@@ -499,30 +499,30 @@ internal static class AnimatorTypeCache
 	}
 
 	[DefaultMember("Item")]
-	internal class BaseProperty
+	internal class SerializedPropertyWrapper
 	{
 		internal readonly SerializedProperty m_ContainerProperty;
 
-		internal static BaseProperty FillCandidate;
+		internal static SerializedPropertyWrapper FillCandidate;
 
-		public BaseProperty(SerializedProperty setup)
+		public SerializedPropertyWrapper(SerializedProperty setup)
 		{
 			m_ContainerProperty = setup;
 		}
 
 		[SpecialName]
-		public BaseProperty LogoutPage(int mini)
+		public SerializedPropertyWrapper LogoutPage(int mini)
 		{
-			return new BaseProperty(m_ContainerProperty.GetArrayElementAtIndex(mini));
+			return new SerializedPropertyWrapper(m_ContainerProperty.GetArrayElementAtIndex(mini));
 		}
 
 		[SpecialName]
-		public BaseProperty InterruptPage(string instance)
+		public SerializedPropertyWrapper InterruptPage(string instance)
 		{
-			return new BaseProperty(m_ContainerProperty.FindPropertyRelative(instance));
+			return new SerializedPropertyWrapper(m_ContainerProperty.FindPropertyRelative(instance));
 		}
 
-		public static implicit operator SerializedProperty(BaseProperty last)
+		public static implicit operator SerializedProperty(SerializedPropertyWrapper last)
 		{
 			return last.m_ContainerProperty;
 		}

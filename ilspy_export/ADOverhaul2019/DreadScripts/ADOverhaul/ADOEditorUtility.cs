@@ -36,9 +36,9 @@ internal static class ADOEditorUtility
 		All = -1
 	}
 
-	internal class PublisherTemplate
+	internal class ResizeHandle
 	{
-		private struct PrototypeTemplate
+		private struct ResizeZone
 		{
 			internal PositionFlag _CreatorTemplate;
 
@@ -67,7 +67,7 @@ internal static class ADOEditorUtility
 
 		private bool pageTemplate;
 
-		private static PublisherTemplate AssetFactory;
+		private static ResizeHandle AssetFactory;
 
 		[SpecialName]
 		public bool GetRequest()
@@ -108,7 +108,7 @@ internal static class ADOEditorUtility
 			}
 		}
 
-		public PublisherTemplate(bool evaluatesetup = false)
+		public ResizeHandle(bool evaluatesetup = false)
 		{
 			helperTemplate = evaluatesetup;
 		}
@@ -156,51 +156,51 @@ internal static class ADOEditorUtility
 				pageTemplate = false;
 			}
 			float num = selection2 * 2f;
-			PrototypeTemplate[] array = new PrototypeTemplate[8]
+			ResizeZone[] array = new ResizeZone[8]
 			{
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.Left,
 					m_GetterTemplate = 0,
 					_BaseTemplate = new Rect(ident.x - selection2, ident.y + selection2, num, ident.height - num)
 				},
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.TopLeft,
 					m_GetterTemplate = 1,
 					_BaseTemplate = new Rect(ident.x - selection2, ident.y - selection2, num, num)
 				},
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.Top,
 					m_GetterTemplate = 2,
 					_BaseTemplate = new Rect(ident.x + selection2, ident.y - selection2, ident.width - num, num)
 				},
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.TopRight,
 					m_GetterTemplate = 3,
 					_BaseTemplate = new Rect(ident.x + ident.width - selection2, ident.y - selection2, num, num)
 				},
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.Right,
 					m_GetterTemplate = 4,
 					_BaseTemplate = new Rect(ident.x + ident.width - selection2, ident.y + selection2, num, ident.height - num)
 				},
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.BottomRight,
 					m_GetterTemplate = 5,
 					_BaseTemplate = new Rect(ident.x + ident.width - selection2, ident.y + ident.height - selection2, num, num)
 				},
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.Bottom,
 					m_GetterTemplate = 6,
 					_BaseTemplate = new Rect(ident.x + selection2, ident.y + ident.height - selection2, ident.width - num, num)
 				},
-				new PrototypeTemplate
+				new ResizeZone
 				{
 					_CreatorTemplate = PositionFlag.BottomLeft,
 					m_GetterTemplate = 7,
@@ -208,12 +208,12 @@ internal static class ADOEditorUtility
 				}
 			};
 			bool flag = current.button == 0;
-			PrototypeTemplate[] array2 = array;
+			ResizeZone[] array2 = array;
 			int num2 = 0;
 			while (true)
 			{
 				Vector2 vector;
-				PrototypeTemplate prototypeTemplate;
+				ResizeZone resizeZone;
 				MouseCursor pred;
 				if (num2 >= array2.Length)
 				{
@@ -332,12 +332,12 @@ internal static class ADOEditorUtility
 				}
 				else
 				{
-					prototypeTemplate = array2[num2];
-					if ((prototypeTemplate._CreatorTemplate & b) < prototypeTemplate._CreatorTemplate)
+					resizeZone = array2[num2];
+					if ((resizeZone._CreatorTemplate & b) < resizeZone._CreatorTemplate)
 					{
 						goto IL_03cb;
 					}
-					PositionFlag creatorTemplate2 = prototypeTemplate._CreatorTemplate;
+					PositionFlag creatorTemplate2 = resizeZone._CreatorTemplate;
 					if (creatorTemplate2 > PositionFlag.Bottom)
 					{
 						if (creatorTemplate2 <= PositionFlag.TopLeft)
@@ -397,8 +397,8 @@ internal static class ADOEditorUtility
 				}
 				goto IL_0324;
 				IL_03d8:
-				CallManager(prototypeTemplate._BaseTemplate, pred);
-				Rect baseTemplate = prototypeTemplate._BaseTemplate;
+				CallManager(resizeZone._BaseTemplate, pred);
+				Rect baseTemplate = resizeZone._BaseTemplate;
 				if (m_AlgoTemplate)
 				{
 					baseTemplate.y += 46f;
@@ -409,7 +409,7 @@ internal static class ADOEditorUtility
 					{
 						pageTemplate = true;
 					}
-					m_MapperTemplate = prototypeTemplate.m_GetterTemplate;
+					m_MapperTemplate = resizeZone.m_GetterTemplate;
 					GUIUtility.hotControl = _SetterTemplate;
 					productTemplate = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
@@ -506,7 +506,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal class AdvisorTemplate : IDisposable
+	internal class SceneViewPanel : IDisposable
 	{
 		public readonly bool consumerTemplate;
 
@@ -514,16 +514,16 @@ internal static class ADOEditorUtility
 
 		private readonly Rect _RecordTemplate;
 
-		private static AdvisorTemplate EnableFactory;
+		private static SceneViewPanel EnableFactory;
 
-		public AdvisorTemplate(SceneView spec, string second, float consumer, int key2, float setup3 = 20f, PositionFlag col4 = PositionFlag.BottomRight, PublisherTemplate def5 = null)
+		public SceneViewPanel(SceneView spec, string second, float consumer, int key2, float setup3 = 20f, PositionFlag col4 = PositionFlag.BottomRight, ResizeHandle def5 = null)
 			: this(spec, consumer, key2 + 2, setup3, col4, def5)
 		{
 			GUILayout.Label(second, ManageRequest()._WriterTemplate);
 			RemoveManager(2, 0);
 		}
 
-		public AdvisorTemplate(SceneView init, float cust, int position_third, float map2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, PublisherTemplate caller4 = null)
+		public SceneViewPanel(SceneView init, float cust, int position_third, float map2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ResizeHandle caller4 = null)
 		{
 			Handles.BeginGUI();
 			Rect rect = init.ExcludeManager();
@@ -548,7 +548,7 @@ internal static class ADOEditorUtility
 			GUILayout.BeginArea(_RecordTemplate);
 		}
 
-		public AdvisorTemplate(SceneView key, float cust, float state = 20f, PositionFlag config2 = PositionFlag.BottomRight, PublisherTemplate map3 = null)
+		public SceneViewPanel(SceneView key, float cust, float state = 20f, PositionFlag config2 = PositionFlag.BottomRight, ResizeHandle map3 = null)
 			: this(key, cust, 1, state, config2, map3)
 		{
 		}
