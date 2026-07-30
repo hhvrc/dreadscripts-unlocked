@@ -988,51 +988,8 @@ internal static class EditorUtils
 		public RecordObserver(SceneView res, string col, float pool = 200f, float item2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ProcessorObserver v4 = null)
 			: this(res, pool, item2 + 40f, v3, v4)
 		{
-			int num = 2;
-			uint num3 = default(uint);
-			while (true)
-			{
-				int num2;
-				switch (num)
-				{
-				case 3:
-					MapQueue(2, 0);
-					num = 4;
-					break;
-				default:
-					num2 = (int)(num3 * 1612674555) ^ -904989341;
-					goto IL_004c;
-				case 1:
-					goto IL_0069;
-				case 2:
-					goto IL_0085;
-				case 4:
-					return;
-					IL_004c:
-					switch ((num3 = (uint)(num2 ^ 0x4C46B07B)) % 3)
-					{
-					case 1u:
-						break;
-					case 2u:
-						goto IL_0069;
-					case 0u:
-						goto IL_0085;
-					default:
-						goto IL_008c;
-					}
-					goto case 3;
-					IL_008c:
-					num = 3;
-					break;
-					IL_0085:
-					num2 = 1989184190;
-					goto IL_004c;
-					IL_0069:
-					GUILayout.Label(col, CalcError()._StructProcessor);
-					num = 0;
-					break;
-				}
-			}
+			GUILayout.Label(col, CalcError()._StructProcessor);
+			MapQueue(2, 0);
 		}
 
 		public RecordObserver(SceneView key, float map, float serv = 20f, PositionFlag config2 = PositionFlag.BottomRight, ProcessorObserver ident3 = null)
@@ -2686,68 +2643,10 @@ internal static class EditorUtils
 
 	internal static void SelectResolver(this Transform item, Vector3 counter)
 	{
-		int num = 5;
-		Matrix4x4 worldToLocalMatrix = default(Matrix4x4);
-		uint num3 = default(uint);
-		while (true)
-		{
-			int num2;
-			switch (num)
-			{
-			case 6:
-				item.localScale = worldToLocalMatrix.MultiplyPoint(counter);
-				num = 0;
-				break;
-			default:
-				num2 = ((int)num3 * -66799257) ^ -186578037;
-				goto IL_0075;
-			case 4:
-				goto IL_0070;
-			case 5:
-				item.localScale = Vector3.one;
-				num = 4;
-				break;
-			case 1:
-				num2 = ((int)num3 * -1307626300) ^ -1479778053;
-				goto IL_0075;
-			case 2:
-				num2 = ((int)num3 * -1383715344) ^ 0x3BE14396;
-				goto IL_0075;
-			case 3:
-				return;
-				IL_0075:
-				switch ((num3 = (uint)(num2 ^ 0x3B6B97DA)) % 5)
-				{
-				case 1u:
-					break;
-				case 2u:
-					goto IL_0039;
-				case 4u:
-					goto IL_0070;
-				case 3u:
-					goto IL_00af;
-				default:
-					goto IL_00de;
-				case 0u:
-					return;
-				}
-				goto case 6;
-				IL_00de:
-				num = 3;
-				break;
-				IL_00af:
-				worldToLocalMatrix = item.worldToLocalMatrix;
-				num = 1;
-				break;
-				IL_0070:
-				num2 = 155851025;
-				goto IL_0075;
-				IL_0039:
-				worldToLocalMatrix.SetColumn(3, new Vector4(0f, 0f, 0f, 1f));
-				num = 2;
-				break;
-			}
-		}
+		item.localScale = Vector3.one;
+		Matrix4x4 worldToLocalMatrix = item.worldToLocalMatrix;
+		worldToLocalMatrix.SetColumn(3, new Vector4(0f, 0f, 0f, 1f));
+		item.localScale = worldToLocalMatrix.MultiplyPoint(counter);
 	}
 
 	internal static bool RemoveResolver<T>(this Type config)

@@ -1019,60 +1019,9 @@ internal sealed class LicenseManager
 
 			internal void CancelUtils(string info, float attr, bool moverule = true, GUIStyle setup2 = null, params GUILayoutOption[] options)
 			{
-				int num = 3;
-				uint num3 = default(uint);
-				while (true)
-				{
-					int num2;
-					switch (num)
-					{
-					case 5:
-						num2 = (int)(num3 * 2134301307) ^ -2130345100;
-						goto IL_0010;
-					case 4:
-						LogoutUtils(new GUIContent(info), moverule, setup2, options);
-						num = 1;
-						break;
-					default:
-						return;
-					case 3:
-						EditorGUIUtility.labelWidth = attr;
-						num = 2;
-						break;
-					case 1:
-						num2 = ((int)num3 * -78164118) ^ 0x498694B;
-						goto IL_0010;
-					case 2:
-						goto IL_0096;
-					case 0:
-						return;
-						IL_0010:
-						switch ((num3 = (uint)(num2 ^ 0x1584FC4B)) % 4)
-						{
-						case 3u:
-							break;
-						case 2u:
-							goto IL_0066;
-						case 0u:
-							goto IL_0096;
-						default:
-							goto IL_00a0;
-						case 1u:
-							return;
-						}
-						goto case 4;
-						IL_00a0:
-						num = 0;
-						break;
-						IL_0096:
-						num2 = 1750880980;
-						goto IL_0010;
-						IL_0066:
-						EditorGUIUtility.labelWidth = 0f;
-						num = 5;
-						break;
-					}
-				}
+				EditorGUIUtility.labelWidth = attr;
+				LogoutUtils(new GUIContent(info), moverule, setup2, options);
+				EditorGUIUtility.labelWidth = 0f;
 			}
 
 			internal void LogoutUtils(GUIContent spec, bool ispol = true, GUIStyle dir = null, params GUILayoutOption[] options)

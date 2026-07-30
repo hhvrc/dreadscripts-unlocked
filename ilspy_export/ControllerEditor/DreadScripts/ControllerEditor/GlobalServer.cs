@@ -262,56 +262,9 @@ internal class GlobalServer
 	[SpecialName]
 	internal void TestContext(Enum setup, object selection)
 	{
-		int num = 2;
-		uint num3 = default(uint);
-		string key = default(string);
-		while (true)
-		{
-			int num2;
-			switch (num)
-			{
-			default:
-				_ProcServer = true;
-				num = 5;
-				break;
-			case 4:
-				goto IL_002c;
-			case 3:
-				num2 = (int)((num3 * 899230434) ^ 0x2B271009);
-				goto IL_0054;
-			case 1:
-				goto IL_004f;
-			case 2:
-				key = setup.ToString();
-				num = 1;
-				break;
-			case 5:
-				return;
-				IL_0054:
-				switch ((num3 = (uint)(num2 ^ -944865669)) % 3)
-				{
-				case 1u:
-					break;
-				case 2u:
-					goto IL_002c;
-				case 0u:
-					goto IL_004f;
-				default:
-					goto IL_007f;
-				}
-				goto default;
-				IL_007f:
-				num = 0;
-				break;
-				IL_004f:
-				num2 = -304830982;
-				goto IL_0054;
-				IL_002c:
-				configurationServer[key] = selection;
-				num = 3;
-				break;
-			}
-		}
+		string key = setup.ToString();
+		configurationServer[key] = selection;
+		_ProcServer = true;
 	}
 
 	internal T SelectContext<T>(string first)

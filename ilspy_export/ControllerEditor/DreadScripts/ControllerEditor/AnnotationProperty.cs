@@ -83,51 +83,8 @@ internal class AnnotationProperty
 
 	internal AnnotationProperty(object value)
 	{
-		int num = 1;
-		uint num3 = default(uint);
-		while (true)
-		{
-			int num2;
-			switch (num)
-			{
-			case 4:
-				num2 = ((int)num3 * -1608422529) ^ 0x984E66E;
-				goto IL_001a;
-			case 2:
-				FlushSerializer();
-				num = 4;
-				break;
-			default:
-				goto IL_005a;
-			case 1:
-				goto IL_0068;
-			case 3:
-				return;
-				IL_001a:
-				switch ((num3 = (uint)(num2 ^ 0x674B4E4D)) % 3)
-				{
-				case 2u:
-					break;
-				case 1u:
-					goto IL_005a;
-				case 0u:
-					goto IL_0068;
-				default:
-					goto IL_006f;
-				}
-				goto case 2;
-				IL_006f:
-				num = 0;
-				break;
-				IL_0068:
-				num2 = 1438254393;
-				goto IL_001a;
-				IL_005a:
-				DestroySerializer(value);
-				num = 3;
-				break;
-			}
-		}
+		FlushSerializer();
+		DestroySerializer(value);
 	}
 
 	internal AnnotationProperty(Func<object> i)

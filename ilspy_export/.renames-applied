@@ -1,0 +1,5 @@
+renames/ was applied to the assembly metadata before decompiling.
+Regenerate with scripts/reexport.py; --no-rename produces the raw tree instead.
+
+ADOverhaul2022  <- renames/ADOverhaul2022.json
+ControllerEditor  <- renames/ControllerEditor.json

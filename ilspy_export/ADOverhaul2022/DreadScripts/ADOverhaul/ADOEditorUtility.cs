@@ -1347,75 +1347,11 @@ internal static class ADOEditorUtility
 
 		internal void CustomizeProduct(VRCPhysBoneCollider reference)
 		{
-			int num = 3;
-			uint num4 = default(uint);
-			while (true)
-			{
-				int num2 = num;
-				while (true)
-				{
-					int num3;
-					switch (num2)
-					{
-					default:
-						return;
-					case 7:
-						num3 = ((int)num4 * -39859234) ^ -908515091;
-						goto IL_004c;
-					case 2:
-						num3 = -1513732898;
-						goto IL_004c;
-					case 6:
-						reference.position = _RulesMethod;
-						num2 = 7;
-						break;
-					case 4:
-						num3 = (int)((num4 * 553844865) ^ 0xE986C9D);
-						goto IL_004c;
-					case 1:
-						goto IL_0091;
-					case 5:
-						goto IL_00a7;
-					case 3:
-						reference.radius = m_ReaderMethod;
-						num2 = 2;
-						break;
-					case 0:
-						return;
-						IL_004c:
-						switch ((num4 = (uint)(num3 ^ -1801738476)) % 4)
-						{
-						case 3u:
-							break;
-						case 2u:
-							goto IL_0091;
-						case 0u:
-							goto IL_00a7;
-						case 1u:
-							goto IL_00bd;
-						default:
-							goto end_IL_000d;
-						}
-						goto case 2;
-						IL_00bd:
-						reference.rotation = m_TestsMethod;
-						num2 = 4;
-						break;
-						IL_00a7:
-						reference.shapeType = (VRCPhysBoneColliderBase.ShapeType)_CandidateMethod;
-						num2 = 0;
-						break;
-						IL_0091:
-						reference.height = m_StubMethod;
-						num2 = 6;
-						break;
-					}
-					continue;
-					end_IL_000d:
-					break;
-				}
-				num = 5;
-			}
+			reference.radius = m_ReaderMethod;
+			reference.height = m_StubMethod;
+			reference.position = _RulesMethod;
+			reference.rotation = m_TestsMethod;
+			reference.shapeType = (VRCPhysBoneColliderBase.ShapeType)_CandidateMethod;
 		}
 
 		internal static bool EnableDescriptor()

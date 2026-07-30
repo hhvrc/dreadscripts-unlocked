@@ -5811,205 +5811,6 @@ internal sealed class ConfigurationTestStub
 	}
 
 	[CompilerGenerated]
-	private sealed class _003C_003Ec__DisplayClass165_0
-	{
-		[StructLayout(LayoutKind.Auto)]
-		private struct AdapterMethodObject : IAsyncStateMachine
-		{
-			public int _ProcessModel;
-
-			public AsyncTaskMethodBuilder connectionModel;
-
-			public _003C_003Ec__DisplayClass165_0 customerModel;
-
-			private HttpWebRequest queueModel;
-
-			private StreamReader annotationModel;
-
-			private StreamWriter m_ValueModel;
-
-			private TaskAwaiter _RepositoryModel;
-
-			private TaskAwaiter<string> _RefModel;
-
-			private static object EnableClass;
-
-			private void MoveNext()
-			{
-				int num = _ProcessModel;
-				_003C_003Ec__DisplayClass165_0 _003C_003Ec__DisplayClass165_ = customerModel;
-				try
-				{
-					TaskAwaiter<string> awaiter;
-					if (num != 0)
-					{
-						if (num == 1)
-						{
-							awaiter = _RefModel;
-							_RefModel = default(TaskAwaiter<string>);
-							num = -1;
-							_ProcessModel = -1;
-							goto IL_0034;
-						}
-						queueModel = RevertSystem(_003C_003Ec__DisplayClass165_._ComposerModel);
-						m_ValueModel = new StreamWriter(queueModel.GetRequestStream());
-					}
-					try
-					{
-						TaskAwaiter awaiter2;
-						if (num == 0)
-						{
-							awaiter2 = _RepositoryModel;
-							_RepositoryModel = default(TaskAwaiter);
-							num = -1;
-							_ProcessModel = -1;
-						}
-						else
-						{
-							awaiter2 = m_ValueModel.WriteAsync(_003C_003Ec__DisplayClass165_.codeModel).GetAwaiter();
-							if (!awaiter2.IsCompleted)
-							{
-								num = 0;
-								_ProcessModel = 0;
-								_RepositoryModel = awaiter2;
-								connectionModel.AwaitUnsafeOnCompleted(ref awaiter2, ref this);
-								return;
-							}
-						}
-						awaiter2.GetResult();
-					}
-					finally
-					{
-						if (num < 0 && m_ValueModel != null)
-						{
-							((IDisposable)m_ValueModel).Dispose();
-						}
-					}
-					m_ValueModel = null;
-					HttpWebResponse httpWebResponse = (HttpWebResponse)queueModel.GetResponse();
-					annotationModel = new StreamReader(httpWebResponse.GetResponseStream());
-					awaiter = annotationModel.ReadToEndAsync().GetAwaiter();
-					if (!awaiter.IsCompleted)
-					{
-						num = 1;
-						_ProcessModel = 1;
-						_RefModel = awaiter;
-						connectionModel.AwaitUnsafeOnCompleted(ref awaiter, ref this);
-						return;
-					}
-					goto IL_0034;
-					IL_0034:
-					string result = awaiter.GetResult();
-					annotationModel.Dispose();
-					_003C_003Ec__DisplayClass165_.facadeModel = new GetterDicBridge(result);
-				}
-				catch (Exception exception)
-				{
-					_ProcessModel = -2;
-					queueModel = null;
-					annotationModel = null;
-					connectionModel.SetException(exception);
-					return;
-				}
-				_ProcessModel = -2;
-				queueModel = null;
-				annotationModel = null;
-				connectionModel.SetResult();
-			}
-
-			void IAsyncStateMachine.MoveNext()
-			{
-				//ILSpy generated this explicit interface implementation from .override directive in MoveNext
-				this.MoveNext();
-			}
-
-			[DebuggerHidden]
-			private void SetStateMachine(IAsyncStateMachine i)
-			{
-				connectionModel.SetStateMachine(i);
-			}
-
-			void IAsyncStateMachine.SetStateMachine(IAsyncStateMachine i)
-			{
-				//ILSpy generated this explicit interface implementation from .override directive in SetStateMachine
-				this.SetStateMachine(i);
-			}
-
-			internal static bool ForgotClass()
-			{
-				return EnableClass == null;
-			}
-		}
-
-		public string _ComposerModel;
-
-		public string codeModel;
-
-		public GetterDicBridge facadeModel;
-
-		[AsyncStateMachine(typeof(AdapterMethodObject))]
-		internal Task ChangeSpecification()
-		{
-			int num = 1;
-			AdapterMethodObject stateMachine = default(AdapterMethodObject);
-			uint num3 = default(uint);
-			while (true)
-			{
-				int num2;
-				switch (num)
-				{
-				case 6:
-					stateMachine._ProcessModel = -1;
-					num = 4;
-					break;
-				case 2:
-					goto IL_0033;
-				case 4:
-					num2 = ((int)num3 * -1822740786) ^ 0x39FDD62B;
-					goto IL_005c;
-				case 5:
-					goto IL_0057;
-				default:
-					stateMachine.customerModel = this;
-					num = 5;
-					break;
-				case 1:
-					stateMachine.connectionModel = AsyncTaskMethodBuilder.Create();
-					num = 0;
-					break;
-				case 3:
-					{
-						return stateMachine.connectionModel.Task;
-					}
-					IL_005c:
-					switch ((num3 = (uint)(num2 ^ 0x4C4AA72B)) % 3)
-					{
-					case 2u:
-						break;
-					case 1u:
-						goto IL_0033;
-					case 0u:
-						goto IL_0057;
-					default:
-						goto IL_009e;
-					}
-					goto case 6;
-					IL_009e:
-					num = 2;
-					break;
-					IL_0057:
-					num2 = 866198723;
-					goto IL_005c;
-					IL_0033:
-					stateMachine.connectionModel.Start(ref stateMachine);
-					num = 3;
-					break;
-				}
-			}
-		}
-	}
-
-	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass179_0
 	{
 		public GetterDicBridge candidateModel;
@@ -8316,70 +8117,21 @@ internal sealed class ConfigurationTestStub
 
 	private static async Task<GetterDicBridge> ReflectStruct(string i, string col)
 	{
-		_003C_003Ec__DisplayClass165_0 CS_0024_003C_003E8__locals5 = new _003C_003Ec__DisplayClass165_0();
-		CS_0024_003C_003E8__locals5._ComposerModel = i;
-		CS_0024_003C_003E8__locals5.codeModel = col;
-		CS_0024_003C_003E8__locals5.facadeModel = default(GetterDicBridge);
-		await Task.Run([AsyncStateMachine(typeof(_003C_003Ec__DisplayClass165_0.AdapterMethodObject))] () =>
+		GetterDicBridge facadeModel = default(GetterDicBridge);
+		await Task.Run(async delegate
 		{
-			int num = 1;
-			_003C_003Ec__DisplayClass165_0.AdapterMethodObject stateMachine = default(_003C_003Ec__DisplayClass165_0.AdapterMethodObject);
-			uint num3 = default(uint);
-			while (true)
+			HttpWebRequest httpWebRequest = RevertSystem(i);
+			using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
 			{
-				int num2;
-				switch (num)
-				{
-				case 6:
-					stateMachine._ProcessModel = -1;
-					num = 4;
-					break;
-				case 2:
-					goto IL_0033;
-				case 4:
-					num2 = ((int)num3 * -1822740786) ^ 0x39FDD62B;
-					goto IL_005c;
-				case 5:
-					goto IL_0057;
-				default:
-					stateMachine.customerModel = CS_0024_003C_003E8__locals5;
-					num = 5;
-					break;
-				case 1:
-					stateMachine.connectionModel = AsyncTaskMethodBuilder.Create();
-					num = 0;
-					break;
-				case 3:
-					{
-						return stateMachine.connectionModel.Task;
-					}
-					IL_005c:
-					switch ((num3 = (uint)(num2 ^ 0x4C4AA72B)) % 3)
-					{
-					case 2u:
-						break;
-					case 1u:
-						goto IL_0033;
-					case 0u:
-						goto IL_0057;
-					default:
-						goto IL_009e;
-					}
-					goto case 6;
-					IL_009e:
-					num = 2;
-					break;
-					IL_0057:
-					num2 = 866198723;
-					goto IL_005c;
-					IL_0033:
-					stateMachine.connectionModel.Start(ref stateMachine);
-					num = 3;
-					break;
-				}
+				await streamWriter.WriteAsync(col);
 			}
+			HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+			StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
+			string def = await streamReader.ReadToEndAsync();
+			streamReader.Dispose();
+			facadeModel = new GetterDicBridge(def);
 		});
-		return CS_0024_003C_003E8__locals5.facadeModel;
+		return facadeModel;
 	}
 
 	private static Task<GetterDicBridge> CountStruct(string param)

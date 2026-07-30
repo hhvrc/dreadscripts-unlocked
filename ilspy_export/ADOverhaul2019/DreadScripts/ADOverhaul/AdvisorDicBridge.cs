@@ -484,51 +484,8 @@ internal static class AdvisorDicBridge
 		public AdvisorTemplate(SceneView spec, string second, float consumer, int key2, float setup3 = 20f, PositionFlag col4 = PositionFlag.BottomRight, PublisherTemplate def5 = null)
 			: this(spec, consumer, key2 + 2, setup3, col4, def5)
 		{
-			int num = 2;
-			uint num3 = default(uint);
-			while (true)
-			{
-				int num2;
-				switch (num)
-				{
-				case 4:
-					RemoveManager(2, 0);
-					num = 1;
-					break;
-				default:
-					num2 = ((int)num3 * -593078698) ^ 0x4684C630;
-					goto IL_0052;
-				case 2:
-					goto IL_004d;
-				case 3:
-					goto IL_006f;
-				case 1:
-					return;
-					IL_0052:
-					switch ((num3 = (uint)(num2 ^ 0x3A654A93)) % 3)
-					{
-					case 0u:
-						break;
-					case 2u:
-						goto IL_004d;
-					case 1u:
-						goto IL_006f;
-					default:
-						goto IL_008b;
-					}
-					goto case 4;
-					IL_008b:
-					num = 4;
-					break;
-					IL_006f:
-					GUILayout.Label(second, ManageRequest()._WriterTemplate);
-					num = 0;
-					break;
-					IL_004d:
-					num2 = 1714725738;
-					goto IL_0052;
-				}
-			}
+			GUILayout.Label(second, ManageRequest()._WriterTemplate);
+			RemoveManager(2, 0);
 		}
 
 		public AdvisorTemplate(SceneView init, float cust, int position_third, float map2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, PublisherTemplate caller4 = null)

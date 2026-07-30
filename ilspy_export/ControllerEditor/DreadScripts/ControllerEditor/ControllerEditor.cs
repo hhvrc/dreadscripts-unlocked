@@ -297,17 +297,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private struct TestsAlgo
 	{
-		[CompilerGenerated]
-		private sealed class _003C_003Ec__DisplayClass14_0
-		{
-			public int recordAlgo;
-
-			internal void OrderDefinition(SerializedProperty p)
-			{
-				p.enumValueIndex = recordAlgo;
-			}
-		}
-
 		private readonly SerializedObject _PropertyAlgo;
 
 		private SerializedProperty m_ProcessorAlgo;
@@ -355,56 +344,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		private void ManageInitializer(int length_first)
 		{
-			int num = 4;
-			_003C_003Ec__DisplayClass14_0 _003C_003Ec__DisplayClass14_ = default(_003C_003Ec__DisplayClass14_0);
-			uint num3 = default(uint);
-			while (true)
+			queueAlgo.ForEach(delegate(SerializedProperty p)
 			{
-				int num2;
-				switch (num)
-				{
-				case 5:
-					queueAlgo.ForEach(_003C_003Ec__DisplayClass14_.OrderDefinition);
-					num = 2;
-					break;
-				default:
-					num2 = (int)((num3 * 1612200334) ^ 0x7DDA0999);
-					goto IL_0049;
-				case 1:
-					goto IL_0066;
-				case 4:
-					_003C_003Ec__DisplayClass14_ = new _003C_003Ec__DisplayClass14_0();
-					num = 3;
-					break;
-				case 3:
-					goto IL_0081;
-				case 2:
-					return;
-					IL_0049:
-					switch ((num3 = (uint)(num2 ^ -1380365129)) % 3)
-					{
-					case 1u:
-						break;
-					case 2u:
-						goto IL_0066;
-					case 0u:
-						goto IL_0081;
-					default:
-						goto IL_0088;
-					}
-					goto case 5;
-					IL_0088:
-					num = 5;
-					break;
-					IL_0081:
-					num2 = -718050693;
-					goto IL_0049;
-					IL_0066:
-					_003C_003Ec__DisplayClass14_.recordAlgo = length_first;
-					num = 0;
-					break;
-				}
-			}
+				p.enumValueIndex = length_first;
+			});
 		}
 
 		internal void PrintInitializer()
@@ -2917,59 +2860,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static void CloneReg(string config)
 		{
-			int num = 4;
-			uint num3 = default(uint);
-			ProcessAlgo processAlgo = default(ProcessAlgo);
-			while (true)
-			{
-				int num2;
-				switch (num)
-				{
-				case 1:
-					num2 = (int)(num3 * 23821478) ^ -133066335;
-					goto IL_005d;
-				case 3:
-					goto IL_0058;
-				default:
-					num2 = (int)((num3 * 465626693) ^ 0x68766FE7);
-					goto IL_005d;
-				case 2:
-					goto IL_008d;
-				case 4:
-					processAlgo = m_SchemaAlgo[config];
-					num = 3;
-					break;
-				case 5:
-					return;
-					IL_005d:
-					switch ((num3 = (uint)(num2 ^ 0x5BD71B0C)) % 4)
-					{
-					case 3u:
-						break;
-					case 2u:
-						goto IL_0058;
-					case 1u:
-						goto IL_008d;
-					default:
-						goto IL_00c3;
-					case 0u:
-						return;
-					}
-					RateReg(processAlgo.m_PublisherAlgo, processAlgo.configurationAlgo, processAlgo.procAlgo, processAlgo.wrapperMapper);
-					num = 0;
-					break;
-					IL_00c3:
-					num = 5;
-					break;
-					IL_008d:
-					AddTests().Unpatch(processAlgo.m_ProducerAlgo, processAlgo.iteratorAlgo);
-					num = 1;
-					break;
-					IL_0058:
-					num2 = 519820861;
-					goto IL_005d;
-				}
-			}
+			ProcessAlgo processAlgo = m_SchemaAlgo[config];
+			AddTests().Unpatch(processAlgo.m_ProducerAlgo, processAlgo.iteratorAlgo);
+			RateReg(processAlgo.m_PublisherAlgo, processAlgo.configurationAlgo, processAlgo.procAlgo, processAlgo.wrapperMapper);
 		}
 
 		internal static void LoginReg()
@@ -5699,57 +5592,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal void NewProperty()
 		{
-			int num = 4;
-			uint num3 = default(uint);
-			while (true)
-			{
-				int num2;
-				switch (num)
-				{
-				case 5:
-					InsertVisitor();
-					num = 0;
-					break;
-				default:
-					return;
-				case 4:
-					systemAnnotation = false;
-					num = 3;
-					break;
-				case 1:
-					num2 = ((int)num3 * -1182591194) ^ 0x4F74DE58;
-					goto IL_0046;
-				case 2:
-					goto IL_0063;
-				case 3:
-					goto IL_0070;
-				case 0:
-					return;
-					IL_0046:
-					switch ((num3 = (uint)(num2 ^ 0x6D87232F)) % 3)
-					{
-					case 1u:
-						break;
-					case 2u:
-						goto IL_0063;
-					case 0u:
-						goto IL_0070;
-					default:
-						goto IL_0077;
-					}
-					goto case 5;
-					IL_0077:
-					num = 5;
-					break;
-					IL_0070:
-					num2 = 1619722105;
-					goto IL_0046;
-					IL_0063:
-					m_ExpressionAnnotation = false;
-					num = 1;
-					break;
-				}
-			}
+			systemAnnotation = false;
+			m_ExpressionAnnotation = false;
+			InsertVisitor();
 		}
 
 		internal void PushProperty()
@@ -5847,6 +5692,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					serviceDefinition = response
 				};
+				m_CallbackAnnotation = false;
+				SortAnnotation(_003C_003Ec__DisplayClass239_.serviceDefinition, _003C_003Ec__DisplayClass239_.InterruptObserver);
 			}, delegate(Exception exception)
 			{
 				m_CallbackAnnotation = false;
@@ -5860,6 +5707,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				serviceDefinition = response
 			};
+			m_CallbackAnnotation = false;
+			SortAnnotation(_003C_003Ec__DisplayClass239_.serviceDefinition, _003C_003Ec__DisplayClass239_.InterruptObserver);
 		}
 
 		internal void RegisterProperty(Exception exception)
@@ -6668,139 +6517,27 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			LogoutAnnotation(list);
 			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
 			{
-				int num = 7;
-				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = default(_003C_003Ec__DisplayClass186_3);
-				uint num3 = default(uint);
-				while (true)
+				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3
 				{
-					int num2;
-					switch (num)
-					{
-					case 8:
-						_RequestAnnotation = false;
-						num = 4;
-						break;
-					default:
-						return;
-					case 7:
-						_003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
-						num = 6;
-						break;
-					case 4:
-						m_IdentifierAnnotation = true;
-						num = 3;
-						break;
-					case 2:
-						goto IL_0056;
-					case 1:
-						_003C_003Ec__DisplayClass186_.valueDefinition = response;
-						num = 5;
-						break;
-					case 3:
-						SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
-						num = 0;
-						break;
-					case 5:
-						num2 = (int)(num3 * 2106439369) ^ -1356884480;
-						goto IL_00b4;
-					case 6:
-						goto IL_00af;
-					case 0:
-						return;
-						IL_00b4:
-						switch ((num3 = (uint)(num2 ^ -1587768776)) % 3)
-						{
-						case 1u:
-							break;
-						case 2u:
-							goto IL_0056;
-						case 0u:
-							goto IL_00af;
-						default:
-							goto IL_00cf;
-						}
-						goto case 8;
-						IL_00cf:
-						num = 8;
-						break;
-						IL_00af:
-						num2 = -1758829102;
-						goto IL_00b4;
-						IL_0056:
-						_003C_003Ec__DisplayClass186_.m_MerchantDefinition = this;
-						num = 1;
-						break;
-					}
-				}
+					m_MerchantDefinition = this,
+					valueDefinition = response
+				};
+				_RequestAnnotation = false;
+				m_IdentifierAnnotation = true;
+				SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
 			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, InsertVisitor);
 		}
 
 		internal void LoginObserver(FieldAlgo response)
 		{
-			int num = 7;
-			_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = default(_003C_003Ec__DisplayClass186_3);
-			uint num3 = default(uint);
-			while (true)
+			_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3
 			{
-				int num2;
-				switch (num)
-				{
-				case 8:
-					_RequestAnnotation = false;
-					num = 4;
-					break;
-				default:
-					return;
-				case 7:
-					_003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
-					num = 6;
-					break;
-				case 4:
-					m_IdentifierAnnotation = true;
-					num = 3;
-					break;
-				case 2:
-					goto IL_0056;
-				case 1:
-					_003C_003Ec__DisplayClass186_.valueDefinition = response;
-					num = 5;
-					break;
-				case 3:
-					SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
-					num = 0;
-					break;
-				case 5:
-					num2 = (int)(num3 * 2106439369) ^ -1356884480;
-					goto IL_00b4;
-				case 6:
-					goto IL_00af;
-				case 0:
-					return;
-					IL_00b4:
-					switch ((num3 = (uint)(num2 ^ -1587768776)) % 3)
-					{
-					case 1u:
-						break;
-					case 2u:
-						goto IL_0056;
-					case 0u:
-						goto IL_00af;
-					default:
-						goto IL_00cf;
-					}
-					goto case 8;
-					IL_00cf:
-					num = 8;
-					break;
-					IL_00af:
-					num2 = -1758829102;
-					goto IL_00b4;
-					IL_0056:
-					_003C_003Ec__DisplayClass186_.m_MerchantDefinition = this;
-					num = 1;
-					break;
-				}
-			}
+				m_MerchantDefinition = this,
+				valueDefinition = response
+			};
+			_RequestAnnotation = false;
+			m_IdentifierAnnotation = true;
+			SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
 		}
 
 		internal void ReflectObserver(string key, string value, ref _003C_003Ec__DisplayClass186_4 _003C_003Ec__DisplayClass186_4_0, ref _003C_003Ec__DisplayClass186_5 _003C_003Ec__DisplayClass186_5_0)
@@ -10528,71 +10265,22 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(m_WorkerAnnotation) || systemAnnotation))
 			{
-				if (!EditorUtils.CountQueue("Send Feedback", EditorStyles.toolbarButton))
+				if (EditorUtils.CountQueue("Send Feedback", EditorStyles.toolbarButton))
 				{
-					return;
-				}
-				if (m_WorkerAnnotation.Length > 2000)
-				{
-					m_WorkerAnnotation = m_WorkerAnnotation.Substring(0, 2000);
-				}
-				List<(string, string)> list = RegisterAnnotation("sendfeedback", new(string, string)[1] { ("feedback", Uri.EscapeUriString(m_WorkerAnnotation)) });
-				LogoutAnnotation(list);
-				systemAnnotation = true;
-				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(ChangeAnnotation, UnityEngine.Debug.LogException, null, null, delegate
-				{
-					int num = 4;
-					uint num3 = default(uint);
-					while (true)
+					if (m_WorkerAnnotation.Length > 2000)
 					{
-						int num2;
-						switch (num)
-						{
-						case 5:
-							InsertVisitor();
-							num = 0;
-							break;
-						default:
-							return;
-						case 4:
-							systemAnnotation = false;
-							num = 3;
-							break;
-						case 1:
-							num2 = ((int)num3 * -1182591194) ^ 0x4F74DE58;
-							goto IL_0046;
-						case 2:
-							goto IL_0063;
-						case 3:
-							goto IL_0070;
-						case 0:
-							return;
-							IL_0046:
-							switch ((num3 = (uint)(num2 ^ 0x6D87232F)) % 3)
-							{
-							case 1u:
-								break;
-							case 2u:
-								goto IL_0063;
-							case 0u:
-								goto IL_0070;
-							default:
-								goto IL_0077;
-							}
-							goto case 5;
-							IL_0077:
-							num = 5;
-							break;
-							IL_0070:
-							num2 = 1619722105;
-							goto IL_0046;
-							IL_0063:
-							m_ExpressionAnnotation = false;
-							num = 1;
-							break;
-						}
+						m_WorkerAnnotation = m_WorkerAnnotation.Substring(0, 2000);
 					}
-				});
+					List<(string, string)> list = RegisterAnnotation("sendfeedback", new(string, string)[1] { ("feedback", Uri.EscapeUriString(m_WorkerAnnotation)) });
+					LogoutAnnotation(list);
+					systemAnnotation = true;
+					DisableVisitor(CallVisitor(list.ToArray())).QueryRules(ChangeAnnotation, UnityEngine.Debug.LogException, null, null, delegate
+					{
+						systemAnnotation = false;
+						m_ExpressionAnnotation = false;
+						InsertVisitor();
+					});
+				}
 			}
 		}
 	}
@@ -10707,70 +10395,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			LogoutAnnotation(list);
 			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
 			{
-				int num = 7;
-				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = default(_003C_003Ec__DisplayClass186_3);
-				uint num3 = default(uint);
-				while (true)
-				{
-					int num2;
-					switch (num)
-					{
-					case 8:
-						_RequestAnnotation = false;
-						num = 4;
-						break;
-					default:
-						return;
-					case 7:
-						_003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
-						num = 6;
-						break;
-					case 4:
-						m_IdentifierAnnotation = true;
-						num = 3;
-						break;
-					case 2:
-						goto IL_0056;
-					case 1:
-						_003C_003Ec__DisplayClass186_.valueDefinition = response;
-						num = 5;
-						break;
-					case 3:
-						SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
-						num = 0;
-						break;
-					case 5:
-						num2 = (int)(num3 * 2106439369) ^ -1356884480;
-						goto IL_00b4;
-					case 6:
-						goto IL_00af;
-					case 0:
-						return;
-						IL_00b4:
-						switch ((num3 = (uint)(num2 ^ -1587768776)) % 3)
-						{
-						case 1u:
-							break;
-						case 2u:
-							goto IL_0056;
-						case 0u:
-							goto IL_00af;
-						default:
-							goto IL_00cf;
-						}
-						goto case 8;
-						IL_00cf:
-						num = 8;
-						break;
-						IL_00af:
-						num2 = -1758829102;
-						goto IL_00b4;
-						IL_0056:
-						_003C_003Ec__DisplayClass186_.m_MerchantDefinition = CS_0024_003C_003E8__locals9;
-						num = 1;
-						break;
-					}
-				}
+				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
+				_003C_003Ec__DisplayClass186_.m_MerchantDefinition = CS_0024_003C_003E8__locals9;
+				_003C_003Ec__DisplayClass186_.valueDefinition = response;
+				_RequestAnnotation = false;
+				m_IdentifierAnnotation = true;
+				SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
 			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, InsertVisitor);
 		}, iscont: true);
 	}
@@ -11531,8 +11161,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				List<(string, string)> list = RegisterAnnotation("transferlicenserequest");
 				LogoutAnnotation(list);
-				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate
+				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
 				{
+					_003C_003Ec__DisplayClass239_0 _003C_003Ec__DisplayClass239_ = new _003C_003Ec__DisplayClass239_0();
+					_003C_003Ec__DisplayClass239_.serviceDefinition = response;
+					m_CallbackAnnotation = false;
+					SortAnnotation(_003C_003Ec__DisplayClass239_.serviceDefinition, _003C_003Ec__DisplayClass239_.InterruptObserver);
 				}, delegate(Exception exception)
 				{
 					m_CallbackAnnotation = false;
