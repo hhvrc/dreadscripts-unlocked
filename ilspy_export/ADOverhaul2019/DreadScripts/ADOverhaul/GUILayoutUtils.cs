@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul;
 
-internal static class SerializerTestStub
+internal static class GUILayoutUtils
 {
 	private static readonly Color m_FacadeDic = new Color(0.33f, 0.33f, 0.33f);
 
@@ -20,7 +20,7 @@ internal static class SerializerTestStub
 
 	private static MethodInfo _AnnotationDic;
 
-	internal static SerializerTestStub GetDatabase;
+	internal static GUILayoutUtils GetDatabase;
 
 	[SpecialName]
 	public static Type CollectMapping()

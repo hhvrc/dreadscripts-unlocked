@@ -3,19 +3,19 @@ using UnityEditor;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class CandidateDic : IDisposable
+internal sealed class ShowMixedValueScope : IDisposable
 {
 	private readonly bool m_ExpressionDic;
 
-	internal static CandidateDic RestartDatabase;
+	internal static ShowMixedValueScope RestartDatabase;
 
-	public CandidateDic(bool isv)
+	public ShowMixedValueScope(bool isv)
 	{
 		m_ExpressionDic = EditorGUI.showMixedValue;
 		EditorGUI.showMixedValue = isv;
 	}
 
-	public CandidateDic(SerializedProperty last)
+	public ShowMixedValueScope(SerializedProperty last)
 	{
 		m_ExpressionDic = EditorGUI.showMixedValue;
 		EditorGUI.showMixedValue = last.hasMultipleDifferentValues;

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DreadScripts.ADOverhaul;
 
 [DefaultMember("Item")]
-internal class DispatcherProducerList
+internal class ReflectionAccessor
 {
 	[Serializable]
 	[CompilerGenerated]
@@ -52,17 +52,17 @@ internal class DispatcherProducerList
 		}
 	}
 
-	internal static readonly Dictionary<Type, VisitorTokenizerResolver> _BridgeDic = new Dictionary<Type, VisitorTokenizerResolver>();
+	internal static readonly Dictionary<Type, ReflectionCache> _BridgeDic = new Dictionary<Type, ReflectionCache>();
 
 	internal readonly object utilsDic;
 
 	internal readonly Type _IdentifierDic;
 
-	internal readonly VisitorTokenizerResolver globalDic;
+	internal readonly ReflectionCache globalDic;
 
-	internal static DispatcherProducerList SetupDatabase;
+	internal static ReflectionAccessor SetupDatabase;
 
-	internal DispatcherProducerList(object param)
+	internal ReflectionAccessor(object param)
 	{
 		utilsDic = param;
 		_IdentifierDic = param.GetType();
@@ -83,7 +83,7 @@ internal class DispatcherProducerList
 			}
 			value.Add(item);
 		}
-		globalDic = new VisitorTokenizerResolver
+		globalDic = new ReflectionCache
 		{
 			_WatcherDic = members,
 			_ContextDic = contextDic,

@@ -19,7 +19,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul;
 
-internal static class AdvisorDicBridge
+internal static class ADOEditorUtility
 {
 	[Flags]
 	internal enum PositionFlag
@@ -559,21 +559,21 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal class TokenizerProducerEntry
+	internal class Contents
 	{
-		internal readonly ExporterErrorStatus _ItemTemplate = StopParam("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
+		internal readonly CachedIcon _ItemTemplate = StopParam("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
 
-		internal readonly ExporterErrorStatus m_DecoratorTemplate = StopParam("Refresh", "ds-icon-checkForUpdate", "Check For Update");
+		internal readonly CachedIcon m_DecoratorTemplate = StopParam("Refresh", "ds-icon-checkForUpdate", "Check For Update");
 
-		internal readonly ExporterErrorStatus _InvocationTemplate = StopParam("console.infoicon.sml", "ds-icon-announcement");
+		internal readonly CachedIcon _InvocationTemplate = StopParam("console.infoicon.sml", "ds-icon-announcement");
 
-		internal readonly ExporterErrorStatus exporterTemplate = StopParam("console.warnicon.sml", "ds-icon-warning");
+		internal readonly CachedIcon exporterTemplate = StopParam("console.warnicon.sml", "ds-icon-warning");
 
-		internal readonly ExporterErrorStatus fieldTemplate = StopParam("console.erroricon.sml", "ds-icon-error");
+		internal readonly CachedIcon fieldTemplate = StopParam("console.erroricon.sml", "ds-icon-error");
 
-		internal readonly ExporterErrorStatus m_CallbackTemplate = StopParam("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
+		internal readonly CachedIcon m_CallbackTemplate = StopParam("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
 
-		internal readonly ExporterErrorStatus m_FilterTemplate = StopParam("_Help", "ds-icon-help");
+		internal readonly CachedIcon m_FilterTemplate = StopParam("_Help", "ds-icon-help");
 
 		internal readonly GUIContent _ProxyTemplate = PatchManager("TestPassed", "Up to Date!");
 
@@ -631,9 +631,9 @@ internal static class AdvisorDicBridge
 
 		internal readonly GUIContent bridgeTemplate = new GUIContent("Tooltips", "Displays tooltips on how to use the current tool");
 
-		private static TokenizerProducerEntry VisitFactory;
+		private static Contents VisitFactory;
 
-		internal TokenizerProducerEntry()
+		internal Contents()
 		{
 			_AnnotationTemplate.tooltip = "Scene view clicks are allowed while editing.";
 			m_ValueTemplate.tooltip = "Scene view clicks are ignored while editing.";
@@ -649,7 +649,7 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal class UtilsTemplate
+	internal class Styles
 	{
 		internal static readonly Color m_IdentifierTemplate = new Color(0.357f, 0.357f, 0.357f);
 
@@ -818,7 +818,7 @@ internal static class AdvisorDicBridge
 
 		internal readonly GUIStyle dicDic = new GUIStyle("RL FooterButton");
 
-		internal static UtilsTemplate RevertFactory;
+		internal static Styles RevertFactory;
 
 		internal static bool CalcCandidate()
 		{
@@ -841,7 +841,7 @@ internal static class AdvisorDicBridge
 		FocusProjectWindow
 	}
 
-	internal struct ServiceDic
+	internal struct SphereHandle
 	{
 		internal string _ErrorDic;
 
@@ -861,19 +861,19 @@ internal static class AdvisorDicBridge
 
 		internal Action _SpecificationDic;
 
-		internal Func<ServiceDic, float[]> _AccountDic;
+		internal Func<SphereHandle, float[]> _AccountDic;
 
-		internal Action<ServiceDic> managerDic;
+		internal Action<SphereHandle> managerDic;
 
 		private static object NewCandidate;
 
-		internal static ServiceDic CountWrapper(Vector3 instance, string token = "", float dic = 0.05f, int position_asset2 = -1, Action init3 = null)
+		internal static SphereHandle CountWrapper(Vector3 instance, string token = "", float dic = 0.05f, int position_asset2 = -1, Action init3 = null)
 		{
-			return new ServiceDic
+			return new SphereHandle
 			{
 				managerDic = NewWrapper,
 				m_TaskDic = new GUIStyle(EditorStyles.boldLabel),
-				_AccountDic = (ServiceDic sc) => new float[1] { HandleUtility.DistanceToCircle(sc.producerDic, sc._IteratorDic / 2f) },
+				_AccountDic = (SphereHandle sc) => new float[1] { HandleUtility.DistanceToCircle(sc.producerDic, sc._IteratorDic / 2f) },
 				producerDic = instance,
 				_IteratorDic = dic,
 				_ErrorDic = token,
@@ -892,7 +892,7 @@ internal static class AdvisorDicBridge
 			return _AccountDic(this);
 		}
 
-		internal static void NewWrapper(ServiceDic value)
+		internal static void NewWrapper(SphereHandle value)
 		{
 			Handles.SphereHandleCap(value.m_TokenizerDic, value.producerDic, Quaternion.identity, value._IteratorDic, EventType.Repaint);
 			if (!string.IsNullOrWhiteSpace(value._ErrorDic))
@@ -907,7 +907,7 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal sealed class PolicyProducerList
+	internal sealed class BannerDownloader
 	{
 		private Texture2D testsDic;
 
@@ -927,7 +927,7 @@ internal static class AdvisorDicBridge
 
 		private bool m_InfoDic;
 
-		internal static PolicyProducerList FindCandidate;
+		internal static BannerDownloader FindCandidate;
 
 		[SpecialName]
 		internal Texture2D ChangeWrapper()
@@ -954,7 +954,7 @@ internal static class AdvisorDicBridge
 			return null;
 		}
 
-		internal PolicyProducerList(string i, bool requiresvisitor, string proc, bool isfirst2 = false)
+		internal BannerDownloader(string i, bool requiresvisitor, string proc, bool isfirst2 = false)
 		{
 			m_WrapperDic = i;
 			algoDic = requiresvisitor;
@@ -987,7 +987,7 @@ internal static class AdvisorDicBridge
 					_ParserDic = true;
 					if (!string.IsNullOrWhiteSpace(mappingDic))
 					{
-						ExporterErrorStatus.ConcatWrapper(data, mappingDic);
+						CachedIcon.ConcatWrapper(data, mappingDic);
 						m_RequestDic = true;
 					}
 				}
@@ -1004,7 +1004,7 @@ internal static class AdvisorDicBridge
 			if (m_RequestDic && !string.IsNullOrWhiteSpace(mappingDic))
 			{
 				m_RequestDic = false;
-				Texture2D texture2D = ExporterErrorStatus.EnableWrapper(mappingDic);
+				Texture2D texture2D = CachedIcon.EnableWrapper(mappingDic);
 				if (texture2D != null)
 				{
 					testsDic = texture2D;
@@ -1099,15 +1099,15 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal sealed class RegServiceSerializer : IDisposable
+	internal sealed class ReadableTexture : IDisposable
 	{
 		internal bool workerDic;
 
 		internal Texture2D m_ContainerDic;
 
-		private static RegServiceSerializer FillCandidate;
+		private static ReadableTexture FillCandidate;
 
-		internal RegServiceSerializer(Texture2D param)
+		internal ReadableTexture(Texture2D param)
 		{
 			try
 			{
@@ -1140,7 +1140,7 @@ internal static class AdvisorDicBridge
 			}
 		}
 
-		public static implicit operator Texture2D(RegServiceSerializer ident)
+		public static implicit operator Texture2D(ReadableTexture ident)
 		{
 			return ident.m_ContainerDic;
 		}
@@ -1151,7 +1151,7 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal sealed class ExporterErrorStatus
+	internal sealed class CachedIcon
 	{
 		private bool m_ExceptionDic = true;
 
@@ -1163,7 +1163,7 @@ internal static class AdvisorDicBridge
 
 		private readonly string m_TagDic;
 
-		private static ExporterErrorStatus CollectCandidate;
+		private static CachedIcon CollectCandidate;
 
 		[SpecialName]
 		private GUIContent StopAlgo()
@@ -1191,7 +1191,7 @@ internal static class AdvisorDicBridge
 			return m_DescriptorDic;
 		}
 
-		public ExporterErrorStatus(Texture2D i, string visitor, string template = "")
+		public CachedIcon(Texture2D i, string visitor, string template = "")
 		{
 			m_DescriptorDic = i;
 			factoryDic = visitor;
@@ -1264,7 +1264,7 @@ internal static class AdvisorDicBridge
 			SessionState.SetIntArray(map, value);
 		}
 
-		public static implicit operator GUIContent(ExporterErrorStatus last)
+		public static implicit operator GUIContent(CachedIcon last)
 		{
 			return last.StopAlgo();
 		}
@@ -1275,7 +1275,7 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal struct ConfigurationDic
+	internal struct ShapeSnapshot
 	{
 		internal readonly UnityEngine.Object m_ParamsDic;
 
@@ -1295,7 +1295,7 @@ internal static class AdvisorDicBridge
 
 		internal static object GetCandidate;
 
-		internal ConfigurationDic(VRCPhysBoneColliderBase item)
+		internal ShapeSnapshot(VRCPhysBoneColliderBase item)
 		{
 			m_ParamsDic = item;
 			serializerDic = true;
@@ -1307,7 +1307,7 @@ internal static class AdvisorDicBridge
 			_PredicateDic = item.rotation;
 		}
 
-		internal ConfigurationDic(ContactBase config)
+		internal ShapeSnapshot(ContactBase config)
 		{
 			m_ParamsDic = config;
 			serializerDic = false;
@@ -1364,41 +1364,41 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal class ObjectTokenizerResolver
+	internal class BoneChainTree
 	{
 		internal readonly VRCPhysBone _ServerDic;
 
 		internal readonly Transform ruleDic;
 
-		internal readonly List<StructTemplateExpression> _RoleDic;
+		internal readonly List<BoneNode> _RoleDic;
 
 		internal readonly int registryDic;
 
-		internal List<List<StructTemplateExpression>> _StrategyDic;
+		internal List<List<BoneNode>> _StrategyDic;
 
-		internal static ObjectTokenizerResolver CloneCandidate;
+		internal static BoneChainTree CloneCandidate;
 
 		[SpecialName]
 		internal IEnumerable<Matrix4x4> CancelAlgo()
 		{
-			return _RoleDic.Select((StructTemplateExpression b) => b._ObjectDic);
+			return _RoleDic.Select((BoneNode b) => b._ObjectDic);
 		}
 
-		internal ObjectTokenizerResolver(VRCPhysBone item)
+		internal BoneChainTree(VRCPhysBone item)
 		{
 			_ServerDic = item;
 			ruleDic = item.GetRootTransform();
-			_RoleDic = new List<StructTemplateExpression>();
+			_RoleDic = new List<BoneNode>();
 			ReadAlgo(ruleDic, 0);
-			registryDic = _RoleDic.Max((StructTemplateExpression b) => b._TokenDic);
+			registryDic = _RoleDic.Max((BoneNode b) => b._TokenDic);
 		}
 
 		internal void ReadAlgo(Transform def, int pred_Y)
 		{
 			bool flag = false;
-			StructTemplateExpression structTemplateExpression = new StructTemplateExpression();
-			StructTemplateExpression stateDic = null;
-			StructTemplateExpression structTemplateExpression2 = null;
+			BoneNode boneNode = new BoneNode();
+			BoneNode stateDic = null;
+			BoneNode boneNode2 = null;
 			Quaternion q = def.rotation;
 			List<Transform> list = new List<Transform>();
 			for (int i = 0; i < def.childCount; i++)
@@ -1416,7 +1416,7 @@ internal static class AdvisorDicBridge
 				{
 					Vector3 pos = def.TransformPoint(_ServerDic.endpointPosition);
 					q = def.rotation * Quaternion.FromToRotation(Vector3.up, Vector3.Normalize(_ServerDic.endpointPosition));
-					StructTemplateExpression obj = new StructTemplateExpression
+					BoneNode obj = new BoneNode
 					{
 						mapperDic = this,
 						productDic = ruleDic,
@@ -1424,10 +1424,10 @@ internal static class AdvisorDicBridge
 						_TokenDic = pred_Y + 1,
 						visitorDic = true,
 						statusDic = true,
-						m_HelperDic = structTemplateExpression
+						m_HelperDic = boneNode
 					};
 					stateDic = obj;
-					structTemplateExpression2 = obj;
+					boneNode2 = obj;
 				}
 				else if (_RoleDic.Count != 0)
 				{
@@ -1446,7 +1446,7 @@ internal static class AdvisorDicBridge
 					zero /= (float)list.Count;
 					Vector3 toDirection = zero - def.position;
 					q = def.rotation * Quaternion.FromToRotation(def.up, toDirection);
-					structTemplateExpression2 = (stateDic = new StructTemplateExpression
+					boneNode2 = (stateDic = new BoneNode
 					{
 						mapperDic = this,
 						productDic = ruleDic,
@@ -1454,7 +1454,7 @@ internal static class AdvisorDicBridge
 						_TokenDic = pred_Y + 1,
 						visitorDic = true,
 						statusDic = true,
-						m_HelperDic = structTemplateExpression
+						m_HelperDic = boneNode
 					});
 				}
 				else if (_ServerDic.multiChildType == VRCPhysBoneBase.MultiChildType.Ignore)
@@ -1464,24 +1464,24 @@ internal static class AdvisorDicBridge
 			}
 			if (!flag)
 			{
-				structTemplateExpression.mapperDic = this;
-				structTemplateExpression.productDic = ruleDic;
-				structTemplateExpression.m_SetterDic = def;
-				structTemplateExpression._ObjectDic = Matrix4x4.TRS(def.position, q, def.lossyScale);
-				structTemplateExpression._TokenDic = pred_Y;
-				structTemplateExpression.statusDic = statusDic;
-				structTemplateExpression.stateDic = stateDic;
-				StructTemplateExpression structTemplateExpression3 = _RoleDic.LastOrDefault();
-				if (structTemplateExpression3 != null && !structTemplateExpression3.statusDic && structTemplateExpression3.stateDic == null)
+				boneNode.mapperDic = this;
+				boneNode.productDic = ruleDic;
+				boneNode.m_SetterDic = def;
+				boneNode._ObjectDic = Matrix4x4.TRS(def.position, q, def.lossyScale);
+				boneNode._TokenDic = pred_Y;
+				boneNode.statusDic = statusDic;
+				boneNode.stateDic = stateDic;
+				BoneNode boneNode3 = _RoleDic.LastOrDefault();
+				if (boneNode3 != null && !boneNode3.statusDic && boneNode3.stateDic == null)
 				{
-					structTemplateExpression3.stateDic = structTemplateExpression;
-					structTemplateExpression.m_HelperDic = structTemplateExpression3;
+					boneNode3.stateDic = boneNode;
+					boneNode.m_HelperDic = boneNode3;
 				}
-				_RoleDic.Add(structTemplateExpression);
+				_RoleDic.Add(boneNode);
 			}
-			if (structTemplateExpression2 != null)
+			if (boneNode2 != null)
 			{
-				_RoleDic.Add(structTemplateExpression2);
+				_RoleDic.Add(boneNode2);
 			}
 			foreach (Transform item2 in list)
 			{
@@ -1491,17 +1491,17 @@ internal static class AdvisorDicBridge
 
 		internal void ResolveAlgo()
 		{
-			HashSet<StructTemplateExpression> hashSet = new HashSet<StructTemplateExpression>();
-			_StrategyDic = new List<List<StructTemplateExpression>>();
-			foreach (StructTemplateExpression item in _RoleDic)
+			HashSet<BoneNode> hashSet = new HashSet<BoneNode>();
+			_StrategyDic = new List<List<BoneNode>>();
+			foreach (BoneNode item in _RoleDic)
 			{
 				if (!hashSet.Contains(item))
 				{
-					List<StructTemplateExpression> list = new List<StructTemplateExpression>();
-					for (StructTemplateExpression structTemplateExpression = item; structTemplateExpression != null; structTemplateExpression = structTemplateExpression.stateDic)
+					List<BoneNode> list = new List<BoneNode>();
+					for (BoneNode boneNode = item; boneNode != null; boneNode = boneNode.stateDic)
 					{
-						list.Add(structTemplateExpression);
-						hashSet.Add(structTemplateExpression);
+						list.Add(boneNode);
+						hashSet.Add(boneNode);
 					}
 					_StrategyDic.Add(list);
 				}
@@ -1514,9 +1514,9 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal class StructTemplateExpression
+	internal class BoneNode
 	{
-		internal ObjectTokenizerResolver mapperDic;
+		internal BoneChainTree mapperDic;
 
 		internal Transform productDic;
 
@@ -1530,11 +1530,11 @@ internal static class AdvisorDicBridge
 
 		internal int _TokenDic;
 
-		internal StructTemplateExpression stateDic;
+		internal BoneNode stateDic;
 
-		internal StructTemplateExpression m_HelperDic;
+		internal BoneNode m_HelperDic;
 
-		internal static StructTemplateExpression RestartCandidate;
+		internal static BoneNode RestartCandidate;
 
 		[SpecialName]
 		internal Vector3 ResetAlgo()
@@ -1569,7 +1569,7 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	internal readonly struct PageDic
+	internal readonly struct PhysBoneParameter
 	{
 		internal readonly string _PrototypeDic;
 
@@ -1581,7 +1581,7 @@ internal static class AdvisorDicBridge
 
 		internal static object CreateCandidate;
 
-		internal PageDic(string ident, AnimatorControllerParameterType cont, string temp)
+		internal PhysBoneParameter(string ident, AnimatorControllerParameterType cont, string temp)
 		{
 			_PrototypeDic = ident;
 			_CreatorDic = cont;
@@ -2101,9 +2101,9 @@ internal static class AdvisorDicBridge
 
 	internal static Color m_ExceptionTemplate = new Color(1f, 0.5f, 0.7f);
 
-	internal static TokenizerProducerEntry _PropertyTemplate;
+	internal static Contents _PropertyTemplate;
 
-	internal static UtilsTemplate m_DescriptorTemplate;
+	internal static Styles m_DescriptorTemplate;
 
 	private static Mesh m_FactoryTemplate;
 
@@ -2131,7 +2131,7 @@ internal static class AdvisorDicBridge
 
 	internal static MethodInfo _RuleTemplate;
 
-	internal static readonly PolicyProducerList m_RoleTemplate = new PolicyProducerList("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", requiresvisitor: true, "DreadBanner.png");
+	internal static readonly BannerDownloader m_RoleTemplate = new BannerDownloader("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", requiresvisitor: true, "DreadBanner.png");
 
 	private static Texture2D registryTemplate;
 
@@ -2149,16 +2149,16 @@ internal static class AdvisorDicBridge
 		"FingerMiddleR", "FingerRingR", "FingerLittleR"
 	};
 
-	internal static PageDic[] _BroadcasterTemplate = new PageDic[5]
+	internal static PhysBoneParameter[] _BroadcasterTemplate = new PhysBoneParameter[5]
 	{
-		new PageDic("_IsGrabbed", AnimatorControllerParameterType.Bool, "param_IsGrabbedValue"),
-		new PageDic("_IsPosed", AnimatorControllerParameterType.Bool, "param_IsPosedValue"),
-		new PageDic("_Stretch", AnimatorControllerParameterType.Float, "param_StretchValue"),
-		new PageDic("_Squish", AnimatorControllerParameterType.Float, "param_SquishValue"),
-		new PageDic("_Angle", AnimatorControllerParameterType.Float, "param_AngleValue")
+		new PhysBoneParameter("_IsGrabbed", AnimatorControllerParameterType.Bool, "param_IsGrabbedValue"),
+		new PhysBoneParameter("_IsPosed", AnimatorControllerParameterType.Bool, "param_IsPosedValue"),
+		new PhysBoneParameter("_Stretch", AnimatorControllerParameterType.Float, "param_StretchValue"),
+		new PhysBoneParameter("_Squish", AnimatorControllerParameterType.Float, "param_SquishValue"),
+		new PhysBoneParameter("_Angle", AnimatorControllerParameterType.Float, "param_AngleValue")
 	};
 
-	internal static AdvisorDicBridge InterruptFactory;
+	internal static ADOEditorUtility InterruptFactory;
 
 	internal static bool PrintAccount(this PositionFlag setup)
 	{
@@ -3444,15 +3444,15 @@ internal static class AdvisorDicBridge
 	}
 
 	[SpecialName]
-	internal static TokenizerProducerEntry PrepareRequest()
+	internal static Contents PrepareRequest()
 	{
-		return _PropertyTemplate ?? (_PropertyTemplate = new TokenizerProducerEntry());
+		return _PropertyTemplate ?? (_PropertyTemplate = new Contents());
 	}
 
 	[SpecialName]
-	internal static UtilsTemplate ManageRequest()
+	internal static Styles ManageRequest()
 	{
-		return m_DescriptorTemplate ?? (m_DescriptorTemplate = new UtilsTemplate());
+		return m_DescriptorTemplate ?? (m_DescriptorTemplate = new Styles());
 	}
 
 	internal static bool CalcManager(EventCommands info, string pol = "", bool outputtemplate = true)
@@ -3653,7 +3653,7 @@ internal static class AdvisorDicBridge
 		asset.SetInt("_ZTest", 8);
 	}
 
-	internal static void EnableManager(ServiceDic setup)
+	internal static void EnableManager(SphereHandle setup)
 	{
 		Event current = Event.current;
 		setup.managerDic?.Invoke(setup);
@@ -3989,9 +3989,9 @@ internal static class AdvisorDicBridge
 	{
 		if (!(value == null))
 		{
-			using (RegServiceSerializer regServiceSerializer = new RegServiceSerializer(value))
+			using (ReadableTexture readableTexture = new ReadableTexture(value))
 			{
-				Texture2D containerDic = regServiceSerializer.m_ContainerDic;
+				Texture2D containerDic = readableTexture.m_ContainerDic;
 				int width = containerDic.width;
 				int height = containerDic.height;
 				int num = width;
@@ -4070,7 +4070,7 @@ internal static class AdvisorDicBridge
 		return registryTemplate;
 	}
 
-	internal static ExporterErrorStatus StopParam(string setup, string token, string comp = "")
+	internal static CachedIcon StopParam(string setup, string token, string comp = "")
 	{
 		Texture2D i = null;
 		GUIContent gUIContent = EditorGUIUtility.IconContent(setup);
@@ -4113,13 +4113,13 @@ internal static class AdvisorDicBridge
 				break;
 			}
 		}
-		return new ExporterErrorStatus(i, token, comp);
+		return new CachedIcon(i, token, comp);
 	}
 
 	internal static VRCContactSender WriteParam(this VRCContactReceiver def, GameObject vis)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(vis);
-		new ConfigurationDic(def).InsertAlgo(vRCContactSender);
+		new ShapeSnapshot(def).InsertAlgo(vRCContactSender);
 		vRCContactSender.collisionTags = def.collisionTags;
 		vRCContactSender.rootTransform = def.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
@@ -4132,7 +4132,7 @@ internal static class AdvisorDicBridge
 	internal static VRCContactSender DefineParam(this VRCPhysBoneCollider v, GameObject ivk)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(ivk);
-		new ConfigurationDic(v).InsertAlgo(vRCContactSender);
+		new ShapeSnapshot(v).InsertAlgo(vRCContactSender);
 		vRCContactSender.rootTransform = v.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
 		{
@@ -4144,7 +4144,7 @@ internal static class AdvisorDicBridge
 	internal static VRCContactReceiver PushParam(this VRCContactSender i, GameObject vis)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(vis);
-		new ConfigurationDic(i).InsertAlgo(vRCContactReceiver);
+		new ShapeSnapshot(i).InsertAlgo(vRCContactReceiver);
 		vRCContactReceiver.collisionTags = i.collisionTags;
 		vRCContactReceiver.rootTransform = i.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
@@ -4157,7 +4157,7 @@ internal static class AdvisorDicBridge
 	internal static VRCContactReceiver UpdateParam(this VRCPhysBoneCollider init, GameObject vis)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(vis);
-		new ConfigurationDic(init).InsertAlgo(vRCContactReceiver);
+		new ShapeSnapshot(init).InsertAlgo(vRCContactReceiver);
 		vRCContactReceiver.rootTransform = init.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
 		{
@@ -4169,7 +4169,7 @@ internal static class AdvisorDicBridge
 	internal static VRCPhysBoneCollider InsertParam(this VRCContactReceiver task, GameObject cfg)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cfg);
-		new ConfigurationDic(task).PrepareAlgo(vRCPhysBoneCollider);
+		new ShapeSnapshot(task).PrepareAlgo(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = task.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -4181,7 +4181,7 @@ internal static class AdvisorDicBridge
 	internal static VRCPhysBoneCollider PrepareParam(this VRCContactSender first, GameObject ivk)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(ivk);
-		new ConfigurationDic(first).PrepareAlgo(vRCPhysBoneCollider);
+		new ShapeSnapshot(first).PrepareAlgo(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = first.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{

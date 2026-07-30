@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class SystemTemplate
+internal sealed class SemVer
 {
 	[CompilerGenerated]
 	private readonly int structTemplate;
@@ -13,7 +13,7 @@ internal sealed class SystemTemplate
 	[CompilerGenerated]
 	private readonly int modelTemplate;
 
-	internal static SystemTemplate SetupFactory;
+	internal static SemVer SetupFactory;
 
 	[SpecialName]
 	[CompilerGenerated]
@@ -36,14 +36,14 @@ internal sealed class SystemTemplate
 		return modelTemplate;
 	}
 
-	internal SystemTemplate(int task_high, int max_visitor, int dir_size)
+	internal SemVer(int task_high, int max_visitor, int dir_size)
 	{
 		structTemplate = task_high;
 		_ConfigTemplate = max_visitor;
 		modelTemplate = dir_size;
 	}
 
-	internal SystemTemplate(string ident)
+	internal SemVer(string ident)
 	{
 		string[] array = ident.Split(new char[1] { '.' });
 		structTemplate = int.Parse(array[0]);
@@ -51,7 +51,7 @@ internal sealed class SystemTemplate
 		modelTemplate = int.Parse(array[2]);
 	}
 
-	public static bool operator >(SystemTemplate config, SystemTemplate counter)
+	public static bool operator >(SemVer config, SemVer counter)
 	{
 		if (config.CheckAccount() <= counter.CheckAccount())
 		{
@@ -72,22 +72,22 @@ internal sealed class SystemTemplate
 		return true;
 	}
 
-	public static bool operator <(SystemTemplate ident, SystemTemplate connection)
+	public static bool operator <(SemVer ident, SemVer connection)
 	{
 		return connection > ident;
 	}
 
-	public static bool operator >=(SystemTemplate reference, SystemTemplate ord)
+	public static bool operator >=(SemVer reference, SemVer ord)
 	{
 		return !(reference < ord);
 	}
 
-	public static bool operator <=(SystemTemplate item, SystemTemplate counter)
+	public static bool operator <=(SemVer item, SemVer counter)
 	{
 		return !(item > counter);
 	}
 
-	public static bool operator ==(SystemTemplate spec, SystemTemplate result)
+	public static bool operator ==(SemVer spec, SemVer result)
 	{
 		if (spec.CheckAccount() != result.CheckAccount() || spec.DisableAccount() != result.DisableAccount())
 		{
@@ -96,12 +96,12 @@ internal sealed class SystemTemplate
 		return spec.RateAccount() == result.RateAccount();
 	}
 
-	public static bool operator !=(SystemTemplate value, SystemTemplate ivk)
+	public static bool operator !=(SemVer value, SemVer ivk)
 	{
 		return !(value == ivk);
 	}
 
-	private bool ComputeAccount(SystemTemplate param)
+	private bool ComputeAccount(SemVer param)
 	{
 		return this == param;
 	}
@@ -112,11 +112,11 @@ internal sealed class SystemTemplate
 		{
 			return true;
 		}
-		if (!(i is SystemTemplate systemTemplate))
+		if (!(i is SemVer semVer))
 		{
 			return false;
 		}
-		return this == systemTemplate;
+		return this == semVer;
 	}
 
 	public override int GetHashCode()

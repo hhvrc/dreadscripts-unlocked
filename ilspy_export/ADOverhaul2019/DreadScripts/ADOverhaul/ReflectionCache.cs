@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace DreadScripts.ADOverhaul;
 
-internal struct VisitorTokenizerResolver
+internal struct ReflectionCache
 {
 	internal MemberInfo[] _WatcherDic;
 

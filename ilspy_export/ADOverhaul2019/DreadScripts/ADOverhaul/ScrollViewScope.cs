@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class ProcessRulesSpec : IDisposable
+internal sealed class ScrollViewScope : IDisposable
 {
 	private readonly bool m_StubDic;
 
-	internal static ProcessRulesSpec CreateDatabase;
+	internal static ScrollViewScope CreateDatabase;
 
-	internal ProcessRulesSpec(ref Vector2 spec)
+	internal ScrollViewScope(ref Vector2 spec)
 	{
 		try
 		{

@@ -30,7 +30,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class ConfigurationTestStub
+internal sealed class LicenseManager
 {
 	private sealed class Queue : EditorWindow
 	{
@@ -45,7 +45,7 @@ internal sealed class ConfigurationTestStub
 
 		private static readonly string[] _Value = new string[2] { "Easy Dynamics", "Cosmetic" };
 
-		private static readonly AdvisorDicBridge.PolicyProducerList _Repository = new AdvisorDicBridge.PolicyProducerList("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", requiresvisitor: true, "DreadBanner.png");
+		private static readonly ADOEditorUtility.BannerDownloader _Repository = new ADOEditorUtility.BannerDownloader("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", requiresvisitor: true, "DreadBanner.png");
 
 		private static EasyDynamicsFunctions m_Ref = EasyDynamicsFunctions.EasyGrab;
 
@@ -76,7 +76,7 @@ internal sealed class ConfigurationTestStub
 			if (QuerySystem(this))
 			{
 				RevertTemplate();
-				AdvisorDicBridge.RemoveManager();
+				ADOEditorUtility.RemoveManager();
 				SearchSystem();
 				UpdateStruct();
 				ListStruct();
@@ -92,7 +92,7 @@ internal sealed class ConfigurationTestStub
 			}
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				m_Ref = (EasyDynamicsFunctions)(object)EditorGUILayout.EnumPopup(AdvisorDicBridge.PrepareRequest().m_RegTemplate, m_Ref);
+				m_Ref = (EasyDynamicsFunctions)(object)EditorGUILayout.EnumPopup(ADOEditorUtility.PrepareRequest().m_RegTemplate, m_Ref);
 			}
 			EditorGUILayout.HelpBox("Under Development", MessageType.Info);
 		}
@@ -105,7 +105,7 @@ internal sealed class ConfigurationTestStub
 				if (_Instance)
 				{
 					EditorGUI.indentLevel++;
-					ManagerStruct.SearchTest().editorAnimatedFoldouts.ReflectService(AdvisorDicBridge.PrepareRequest().m_ExpressionTemplate, null);
+					ManagerStruct.SearchTest().editorAnimatedFoldouts.ReflectService(ADOEditorUtility.PrepareRequest().m_ExpressionTemplate, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -117,18 +117,18 @@ internal sealed class ConfigurationTestStub
 					EditorGUI.indentLevel++;
 					using (new GUILayout.HorizontalScope())
 					{
-						ManagerStruct.SearchTest().onSceneNameLabels.ReflectService(AdvisorDicBridge.PrepareRequest().m_StubTemplate, null);
+						ManagerStruct.SearchTest().onSceneNameLabels.ReflectService(ADOEditorUtility.PrepareRequest().m_StubTemplate, null);
 						if ((bool)ManagerStruct.SearchTest().onSceneNameLabels)
 						{
 							ManagerStruct.SearchTest().labelColor.CountError(GUIContent.none, true);
 						}
 					}
-					ManagerStruct.SearchTest().generalColor.CountError(AdvisorDicBridge.PrepareRequest()._InstanceTemplate, true);
-					ManagerStruct.SearchTest().activeColor.CountError(AdvisorDicBridge.PrepareRequest().m_ListenerTemplate, true);
-					ManagerStruct.SearchTest().inactiveColor.CountError(AdvisorDicBridge.PrepareRequest().observerTemplate, true);
-					ManagerStruct.SearchTest().mixedColor.CountError(AdvisorDicBridge.PrepareRequest().m_ParameterTemplate, true);
-					ManagerStruct.SearchTest().selectionColor.CountError(AdvisorDicBridge.PrepareRequest().importerTemplate, true);
-					ManagerStruct.SearchTest().handleSizeMultiplier.VerifyService(AdvisorDicBridge.PrepareRequest()._CandidateTemplate, true, null);
+					ManagerStruct.SearchTest().generalColor.CountError(ADOEditorUtility.PrepareRequest()._InstanceTemplate, true);
+					ManagerStruct.SearchTest().activeColor.CountError(ADOEditorUtility.PrepareRequest().m_ListenerTemplate, true);
+					ManagerStruct.SearchTest().inactiveColor.CountError(ADOEditorUtility.PrepareRequest().observerTemplate, true);
+					ManagerStruct.SearchTest().mixedColor.CountError(ADOEditorUtility.PrepareRequest().m_ParameterTemplate, true);
+					ManagerStruct.SearchTest().selectionColor.CountError(ADOEditorUtility.PrepareRequest().importerTemplate, true);
+					ManagerStruct.SearchTest().handleSizeMultiplier.VerifyService(ADOEditorUtility.PrepareRequest()._CandidateTemplate, true, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -145,18 +145,18 @@ internal sealed class ConfigurationTestStub
 					ManagerStruct.SearchTest().onSceneToolSelection.ReflectService(new GUIContent("Tool Overlay", "Displays the tool selection overlay on the scene view."), null);
 					using (new EditorGUI.DisabledScope(!ManagerStruct.SearchTest().onSceneToolSelection))
 					{
-						ManagerStruct.SearchTest().toolSelectionOverlayAlignment.ChangeService<AdvisorDicBridge.PositionFlag>("Position", requiresb: false, null, Array.Empty<GUILayoutOption>());
+						ManagerStruct.SearchTest().toolSelectionOverlayAlignment.ChangeService<ADOEditorUtility.PositionFlag>("Position", requiresb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
 				using (new GUILayout.HorizontalScope())
 				{
-					ManagerStruct.SearchTest().onSceneEditingOverlay.ReflectService(AdvisorDicBridge.PrepareRequest().messageTemplate, null);
+					ManagerStruct.SearchTest().onSceneEditingOverlay.ReflectService(ADOEditorUtility.PrepareRequest().messageTemplate, null);
 					using (new EditorGUI.DisabledScope(!ManagerStruct.SearchTest().onSceneEditingOverlay))
 					{
-						ManagerStruct.SearchTest().toolOverlayAlignment.ChangeService<AdvisorDicBridge.PositionFlag>("Position", requiresb: false, null, Array.Empty<GUILayoutOption>());
+						ManagerStruct.SearchTest().toolOverlayAlignment.ChangeService<ADOEditorUtility.PositionFlag>("Position", requiresb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
-				ManagerStruct.SearchTest().onSceneTooltip.ReflectService(AdvisorDicBridge.PrepareRequest().bridgeTemplate, null);
+				ManagerStruct.SearchTest().onSceneTooltip.ReflectService(ADOEditorUtility.PrepareRequest().bridgeTemplate, null);
 				EditorGUI.indentLevel--;
 			}
 		}
@@ -288,18 +288,18 @@ internal sealed class ConfigurationTestStub
 			}
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(AdvisorDicBridge.PrepareRequest().fieldTemplate, AdvisorDicBridge.ManageRequest().m_ReaderTemplate);
+				GUILayout.Label(ADOEditorUtility.PrepareRequest().fieldTemplate, ADOEditorUtility.ManageRequest().m_ReaderTemplate);
 				GUILayout.Label("An error has occurred! Do you want to report it?", EditorStyles.boldLabel);
-				if (AdvisorDicBridge.GetManager("Ignore"))
+				if (ADOEditorUtility.GetManager("Ignore"))
 				{
 					CompareDic(calcitem: false);
 				}
-				if (AdvisorDicBridge.GetManager("Find Solution"))
+				if (ADOEditorUtility.GetManager("Find Solution"))
 				{
 					CompareDic(calcitem: true);
 				}
 			}
-			AdvisorDicBridge.RemoveManager();
+			ADOEditorUtility.RemoveManager();
 		}
 
 		internal static bool ReadDic()
@@ -401,7 +401,7 @@ internal sealed class ConfigurationTestStub
 			{
 				if (bridge)
 				{
-					if (AdvisorDicBridge.ResetManager("Cancel", EditorStyles.toolbarButton))
+					if (ADOEditorUtility.ResetManager("Cancel", EditorStyles.toolbarButton))
 					{
 						CollectTemplate(isres: false);
 					}
@@ -411,13 +411,13 @@ internal sealed class ConfigurationTestStub
 				{
 					using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 					{
-						GUILayout.Label(AdvisorDicBridge.PrepareRequest().fieldTemplate, AdvisorDicBridge.ManageRequest().m_ReaderTemplate);
-						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, AdvisorDicBridge.infoTemplate))
+						GUILayout.Label(ADOEditorUtility.PrepareRequest().fieldTemplate, ADOEditorUtility.ManageRequest().m_ReaderTemplate);
+						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility.infoTemplate))
 						{
 							GUILayout.Label("There was an issue contacting the server for a solution.");
 						}
 					}
-					if (AdvisorDicBridge.GetManager("Cancel"))
+					if (ADOEditorUtility.GetManager("Cancel"))
 					{
 						CollectTemplate(isres: false);
 					}
@@ -427,27 +427,27 @@ internal sealed class ConfigurationTestStub
 				{
 					if (!_List)
 					{
-						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, AdvisorDicBridge._AuthenticationTemplate))
+						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility._AuthenticationTemplate))
 						{
 							GUILayout.Label("Known issue! Details:");
 						}
 					}
 					else
 					{
-						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, AdvisorDicBridge.m_InitializerTemplate))
+						using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility.m_InitializerTemplate))
 						{
 							GUILayout.Label("Solution Found!");
 						}
 					}
 					EditorGUILayout.Space();
 					EditorGUILayout.SelectableLabel(_Importer, GUI.skin.label, GUILayout.ExpandHeight(expand: false));
-					if (AdvisorDicBridge.GetManager("Ok"))
+					if (ADOEditorUtility.GetManager("Ok"))
 					{
 						CollectTemplate(isres: false);
 					}
 					return;
 				}
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, AdvisorDicBridge._AuthenticationTemplate))
+				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ADOEditorUtility._AuthenticationTemplate))
 				{
 					GUILayout.Label("No solution Found! Please write the steps to reproduce this issue below:");
 				}
@@ -462,13 +462,13 @@ internal sealed class ConfigurationTestStub
 				}
 				using (new GUILayout.HorizontalScope())
 				{
-					if (AdvisorDicBridge.GetManager("Cancel", GUILayout.ExpandWidth(expand: false)))
+					if (ADOEditorUtility.GetManager("Cancel", GUILayout.ExpandWidth(expand: false)))
 					{
 						CollectTemplate(isres: false);
 					}
 					using (new EditorGUI.DisabledScope(_Role))
 					{
-						if (!AdvisorDicBridge.GetManager("Report Issue"))
+						if (!ADOEditorUtility.GetManager("Report Issue"))
 						{
 							return;
 						}
@@ -1008,7 +1008,7 @@ internal sealed class ConfigurationTestStub
 				using (new GUILayout.HorizontalScope())
 				{
 					VisitService((proc == null) ? EditorGUILayout.FloatField(asset, GetService(), options) : EditorGUILayout.FloatField(asset, GetService(), proc, options));
-					if (readresult && GUILayout.Button(AdvisorDicBridge.PrepareRequest().adapterTemplate, AdvisorDicBridge.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (readresult && GUILayout.Button(ADOEditorUtility.PrepareRequest().adapterTemplate, ADOEditorUtility.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						SetupDefinition();
 					}
@@ -1032,7 +1032,7 @@ internal sealed class ConfigurationTestStub
 				using (new GUILayout.HorizontalScope())
 				{
 					VisitService(EditorGUILayout.Slider(reference, GetService(), second, consumer, options));
-					if (isord2 && GUILayout.Button(AdvisorDicBridge.PrepareRequest().adapterTemplate, AdvisorDicBridge.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (isord2 && GUILayout.Button(ADOEditorUtility.PrepareRequest().adapterTemplate, ADOEditorUtility.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						SetupDefinition();
 					}
@@ -1221,7 +1221,7 @@ internal sealed class ConfigurationTestStub
 				{
 					GUILayout.Label(value, GUILayout.MaxWidth(117f));
 					LogoutService(EditorGUILayout.Vector2Field(GUIContent.none, ConcatService(), options));
-					if (GUILayout.Button(AdvisorDicBridge.PrepareRequest().adapterTemplate, AdvisorDicBridge.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (GUILayout.Button(ADOEditorUtility.PrepareRequest().adapterTemplate, ADOEditorUtility.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						SetupDefinition();
 					}
@@ -1381,7 +1381,7 @@ internal sealed class ConfigurationTestStub
 				using (new GUILayout.HorizontalScope())
 				{
 					PushError(EditorGUILayout.ColorField(asset, DefineError(), options));
-					if (rejectmap && GUILayout.Button(AdvisorDicBridge.PrepareRequest().adapterTemplate, AdvisorDicBridge.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (rejectmap && GUILayout.Button(ADOEditorUtility.PrepareRequest().adapterTemplate, ADOEditorUtility.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						SetupDefinition();
 					}
@@ -1475,7 +1475,7 @@ internal sealed class ConfigurationTestStub
 				using (new GUILayout.HorizontalScope())
 				{
 					AssetError(EditorGUILayout.ObjectField(config, ForgotError(), _InterceptorStruct, allowSceneObjects: false, options));
-					if (isreg && GUILayout.Button(AdvisorDicBridge.PrepareRequest().adapterTemplate, AdvisorDicBridge.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (isreg && GUILayout.Button(ADOEditorUtility.PrepareRequest().adapterTemplate, ADOEditorUtility.ManageRequest()._InterpreterTemplate, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						SetupDefinition();
 					}
@@ -1641,10 +1641,10 @@ internal sealed class ConfigurationTestStub
 		internal ParamsTestStub hasReadColliderTestingWarning = new ParamsTestStub(compareinit: false);
 
 		[SerializeField]
-		internal QueueStructPolicy toolSelectionOverlayAlignment = QueueStructPolicy.CalculateService(AdvisorDicBridge.PositionFlag.BottomLeft);
+		internal QueueStructPolicy toolSelectionOverlayAlignment = QueueStructPolicy.CalculateService(ADOEditorUtility.PositionFlag.BottomLeft);
 
 		[SerializeField]
-		internal QueueStructPolicy toolOverlayAlignment = QueueStructPolicy.CalculateService(AdvisorDicBridge.PositionFlag.BottomRight);
+		internal QueueStructPolicy toolOverlayAlignment = QueueStructPolicy.CalculateService(ADOEditorUtility.PositionFlag.BottomRight);
 
 		[SerializeField]
 		internal ClientStruct gizmoBoneOpacity = new ClientStruct(0.5f, ComparatorMethodObject.CancelProducer);
@@ -2030,14 +2030,14 @@ internal sealed class ConfigurationTestStub
 		{
 			if (_CreatorStruct == null)
 			{
-				_CreatorStruct = AdvisorDicBridge.ResolveManager("VRCContactReceiver");
+				_CreatorStruct = ADOEditorUtility.ResolveManager("VRCContactReceiver");
 			}
 			if (m_BaseStruct == null)
 			{
-				m_BaseStruct = AdvisorDicBridge.ResolveManager("VRCContactReceiverEditor");
+				m_BaseStruct = ADOEditorUtility.ResolveManager("VRCContactReceiverEditor");
 			}
 			_StrategyStruct = !islast;
-			AdvisorDicBridge.RevertManager(_CreatorStruct, (!_StrategyStruct) ? m_BaseStruct : typeof(RoleStruct));
+			ADOEditorUtility.RevertManager(_CreatorStruct, (!_StrategyStruct) ? m_BaseStruct : typeof(RoleStruct));
 		}
 
 		[CompilerGenerated]
@@ -2261,14 +2261,14 @@ internal sealed class ConfigurationTestStub
 		{
 			if (_ComparatorStruct == null)
 			{
-				_ComparatorStruct = AdvisorDicBridge.ResolveManager("VRCContactSender");
+				_ComparatorStruct = ADOEditorUtility.ResolveManager("VRCContactSender");
 			}
 			if (_AdapterStruct == null)
 			{
-				_AdapterStruct = AdvisorDicBridge.ResolveManager("VRCContactSenderEditor");
+				_AdapterStruct = ADOEditorUtility.ResolveManager("VRCContactSenderEditor");
 			}
 			_RecordStruct = !isvalue;
-			AdvisorDicBridge.RevertManager(_ComparatorStruct, (!_RecordStruct) ? _AdapterStruct : typeof(ConsumerStruct));
+			ADOEditorUtility.RevertManager(_ComparatorStruct, (!_RecordStruct) ? _AdapterStruct : typeof(ConsumerStruct));
 		}
 
 		[CompilerGenerated]
@@ -2411,14 +2411,14 @@ internal sealed class ConfigurationTestStub
 		{
 			if (m_RefStruct == null)
 			{
-				m_RefStruct = AdvisorDicBridge.ResolveManager("VRCPhysBoneCollider");
+				m_RefStruct = ADOEditorUtility.ResolveManager("VRCPhysBoneCollider");
 			}
 			if (candidateStruct == null)
 			{
-				candidateStruct = AdvisorDicBridge.ResolveManager("VRCPhysBoneColliderEditor");
+				candidateStruct = ADOEditorUtility.ResolveManager("VRCPhysBoneColliderEditor");
 			}
 			_CodeStruct = !cankey;
-			AdvisorDicBridge.RevertManager(m_RefStruct, _CodeStruct ? typeof(ErrorServiceClass) : candidateStruct);
+			ADOEditorUtility.RevertManager(m_RefStruct, _CodeStruct ? typeof(ErrorServiceClass) : candidateStruct);
 		}
 
 		private void PostTask()
@@ -2564,7 +2564,7 @@ internal sealed class ConfigurationTestStub
 
 			public static Func<string, string> m_GetterConfig;
 
-			public static Func<AdvisorDicBridge.PageDic, bool> _AdvisorConfig;
+			public static Func<ADOEditorUtility.PhysBoneParameter, bool> _AdvisorConfig;
 
 			public static Action m_ConsumerConfig;
 
@@ -2574,11 +2574,11 @@ internal sealed class ConfigurationTestStub
 
 			public static Action<VRCPhysBone> m_ItemConfig;
 
-			public static Func<AdvisorDicBridge.StructTemplateExpression, bool> decoratorConfig;
+			public static Func<ADOEditorUtility.BoneNode, bool> decoratorConfig;
 
 			public static Func<Keyframe, float> m_InvocationConfig;
 
-			public static Func<AdvisorDicBridge.PageDic, bool> _ExporterConfig;
+			public static Func<ADOEditorUtility.PhysBoneParameter, bool> _ExporterConfig;
 
 			public static Func<VRCPhysBone, IEnumerable<Transform>> m_FieldConfig;
 
@@ -2626,7 +2626,7 @@ internal sealed class ConfigurationTestStub
 					AssetProducer(_AccountConfig, "X", updatedic: false);
 					AssetProducer(_ManagerConfig, "Y", updatedic: false);
 					AssetProducer(_ParamConfig, "Z", updatedic: false);
-					if (AdvisorDicBridge.AwakeManager(AdvisorDicBridge.PrepareRequest().refTemplate, GUI.skin.label, GUILayout.Width(14f)))
+					if (ADOEditorUtility.AwakeManager(ADOEditorUtility.PrepareRequest().refTemplate, GUI.skin.label, GUILayout.Width(14f)))
 					{
 						SerializedProperty accountConfig = _AccountConfig;
 						SerializedProperty managerConfig = _ManagerConfig;
@@ -2663,7 +2663,7 @@ internal sealed class ConfigurationTestStub
 				return s.Substring(0, s.LastIndexOf('_'));
 			}
 
-			internal bool UpdateResolver(AdvisorDicBridge.PageDic pbp2)
+			internal bool UpdateResolver(ADOEditorUtility.PhysBoneParameter pbp2)
 			{
 				return pbp2._BaseDic;
 			}
@@ -2683,7 +2683,7 @@ internal sealed class ConfigurationTestStub
 				{
 					text = "Global Setting";
 				}
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, AdvisorDicBridge.m_InitializerTemplate, AdvisorDicBridge._AuthenticationTemplate))
+				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
 				{
 					using (new ManagerStruct.MappingStruct(CancelProducer))
 					{
@@ -2719,7 +2719,7 @@ internal sealed class ConfigurationTestStub
 				pb.configHasUpdated = true;
 			}
 
-			internal bool ReadResolver(AdvisorDicBridge.StructTemplateExpression b)
+			internal bool ReadResolver(ADOEditorUtility.BoneNode b)
 			{
 				if (b.statusDic)
 				{
@@ -2733,7 +2733,7 @@ internal sealed class ConfigurationTestStub
 				return k.value;
 			}
 
-			internal bool VerifyResolver(AdvisorDicBridge.PageDic p)
+			internal bool VerifyResolver(ADOEditorUtility.PhysBoneParameter p)
 			{
 				return p._BaseDic;
 			}
@@ -2780,9 +2780,9 @@ internal sealed class ConfigurationTestStub
 						GUILayout.Space(12f);
 						m_CollectionStruct.isExpanded = EditorGUILayout.Foldout(m_CollectionStruct.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
 						GUILayout.FlexibleSpace();
-						LogoutMethod(ResetSystem(ConcatMethod(), AdvisorDicBridge.PrepareRequest()._FacadeTemplate));
+						LogoutMethod(ResetSystem(ConcatMethod(), ADOEditorUtility.PrepareRequest()._FacadeTemplate));
 						EditorGUI.BeginChangeCheck();
-						OrderMethod(ResetSystem(QueryMethod(), AdvisorDicBridge.PrepareRequest().codeTemplate));
+						OrderMethod(ResetSystem(QueryMethod(), ADOEditorUtility.PrepareRequest().codeTemplate));
 						if (EditorGUI.EndChangeCheck())
 						{
 							StartProducer();
@@ -2791,7 +2791,7 @@ internal sealed class ConfigurationTestStub
 					if (m_CollectionStruct.isExpanded)
 					{
 						EditorGUI.indentLevel++;
-						AdvisorDicBridge.CountManager<Transform>(m_CollectionStruct);
+						ADOEditorUtility.CountManager<Transform>(m_CollectionStruct);
 						EditorGUI.indentLevel--;
 					}
 				}
@@ -2811,9 +2811,9 @@ internal sealed class ConfigurationTestStub
 						GUILayout.Space(12f);
 						m_ServiceConfig.isExpanded = EditorGUILayout.Foldout(m_ServiceConfig.isExpanded, "Colliders", toggleOnLabelClick: true);
 						GUILayout.FlexibleSpace();
-						ReflectResolver(ResetSystem(RevertMethod(), AdvisorDicBridge.PrepareRequest()._FacadeTemplate));
+						ReflectResolver(ResetSystem(RevertMethod(), ADOEditorUtility.PrepareRequest()._FacadeTemplate));
 						EditorGUI.BeginChangeCheck();
-						PublishMethod(ResetSystem(AddMethod(), AdvisorDicBridge.PrepareRequest().codeTemplate));
+						PublishMethod(ResetSystem(AddMethod(), ADOEditorUtility.PrepareRequest().codeTemplate));
 						if (EditorGUI.EndChangeCheck())
 						{
 							ComputeProducer();
@@ -2822,7 +2822,7 @@ internal sealed class ConfigurationTestStub
 					if (m_ServiceConfig.isExpanded)
 					{
 						EditorGUI.indentLevel++;
-						AdvisorDicBridge.CountManager<VRCPhysBoneCollider>(m_ServiceConfig);
+						ADOEditorUtility.CountManager<VRCPhysBoneCollider>(m_ServiceConfig);
 						EditorGUI.indentLevel--;
 					}
 				}
@@ -2871,7 +2871,7 @@ internal sealed class ConfigurationTestStub
 						string stringValue = m_ContainerConfig.stringValue;
 						using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
 						{
-							stringValue = AdvisorDicBridge.CloneManager("Parameter", stringValue, c);
+							stringValue = ADOEditorUtility.CloneManager("Parameter", stringValue, c);
 							if (changeCheckScope.changed)
 							{
 								m_ContainerConfig.stringValue = stringValue;
@@ -2879,7 +2879,7 @@ internal sealed class ConfigurationTestStub
 						}
 						using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Mapping == null || string.IsNullOrEmpty(m_ContainerConfig.stringValue)))
 						{
-							if (AdvisorDicBridge.RateManager(AdvisorDicBridge.PrepareRequest()._ConnectionTemplate))
+							if (ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest()._ConnectionTemplate))
 							{
 								GenericMenu genericMenu = new GenericMenu();
 								using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Mapping.baseAnimationLayers.Concat(m_Mapping.specialAnimationLayers).GetEnumerator())
@@ -2894,7 +2894,7 @@ internal sealed class ConfigurationTestStub
 											continue;
 										}
 										UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.comparatorConfig.parameters;
-										AdvisorDicBridge.PageDic[] broadcasterTemplate = AdvisorDicBridge._BroadcasterTemplate;
+										ADOEditorUtility.PhysBoneParameter[] broadcasterTemplate = ADOEditorUtility._BroadcasterTemplate;
 										for (int i = 0; i < broadcasterTemplate.Length; i++)
 										{
 											_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
@@ -2924,18 +2924,18 @@ internal sealed class ConfigurationTestStub
 				}
 				using (new EditorGUILayout.HorizontalScope())
 				{
-					SerializerTestStub.ResetMapping(_InstanceStruct, null);
-					foreach (AdvisorDicBridge.PageDic item in AdvisorDicBridge._BroadcasterTemplate.Where(_003C_003Ec.tokenConfig.UpdateResolver))
+					GUILayoutUtils.ResetMapping(_InstanceStruct, null);
+					foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility._BroadcasterTemplate.Where(_003C_003Ec.tokenConfig.UpdateResolver))
 					{
 						using (new EditorGUILayout.VerticalScope())
 						{
 							GUILayout.Label(item._PrototypeDic, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
-							SerializerTestStub.ChangeMapping();
+							GUILayoutUtils.ChangeMapping();
 							GUILayout.Label(item.ChangeAlgo(vRCPhysBone));
 						}
-						SerializerTestStub.MoveMapping();
+						GUILayoutUtils.MoveMapping();
 					}
-					SerializerTestStub.AwakeMapping();
+					GUILayoutUtils.AwakeMapping();
 				}
 			}
 
@@ -2956,7 +2956,7 @@ internal sealed class ConfigurationTestStub
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass108_2
 		{
-			public AdvisorDicBridge.PageDic adapterConfig;
+			public ADOEditorUtility.PhysBoneParameter adapterConfig;
 
 			public string m_ThreadConfig;
 
@@ -3003,7 +3003,7 @@ internal sealed class ConfigurationTestStub
 
 			public ContainerModelDispatcher m_ReaderConfig;
 
-			internal void CountRules(AdvisorDicBridge.StructTemplateExpression b, float m)
+			internal void CountRules(ADOEditorUtility.BoneNode b, float m)
 			{
 				if (m != 0f)
 				{
@@ -3011,17 +3011,17 @@ internal sealed class ConfigurationTestStub
 					Vector4 column = objectDic.GetColumn(3);
 					float tag = m_BridgeConfig.radius * m;
 					EditorGUI.BeginChangeCheck();
-					float num = AdvisorDicBridge.PublishManager(objectDic.rotation, column, tag, !m_BridgeConfig.showGizmos, ManagerStruct.SearchTest().handleSizeMultiplier);
+					float num = ADOEditorUtility.PublishManager(objectDic.rotation, column, tag, !m_BridgeConfig.showGizmos, ManagerStruct.SearchTest().handleSizeMultiplier);
 					if (EditorGUI.EndChangeCheck())
 					{
 						float delta = num / m - m_BridgeConfig.radius;
 						SetRules(b, delta);
 					}
-					AdvisorDicBridge.LogoutManager(tag.ToString("F2"), column);
+					ADOEditorUtility.LogoutManager(tag.ToString("F2"), column);
 				}
 			}
 
-			internal void SetRules(AdvisorDicBridge.StructTemplateExpression bone, float delta)
+			internal void SetRules(ADOEditorUtility.BoneNode bone, float delta)
 			{
 				Event current = Event.current;
 				bool alt = current.alt;
@@ -3137,7 +3137,7 @@ internal sealed class ConfigurationTestStub
 
 		private static readonly int m_UtilsStruct = GUIUtility.GetControlID("ADOToolSelectionDragControlID".GetHashCode(), FocusType.Passive);
 
-		private static readonly AdvisorDicBridge.PublisherTemplate m_IdentifierStruct = new AdvisorDicBridge.PublisherTemplate();
+		private static readonly ADOEditorUtility.PublisherTemplate m_IdentifierStruct = new ADOEditorUtility.PublisherTemplate();
 
 		private static SerializedProperty globalStruct;
 
@@ -3406,9 +3406,9 @@ internal sealed class ConfigurationTestStub
 							GUILayout.Space(12f);
 							m_CollectionStruct.isExpanded = EditorGUILayout.Foldout(m_CollectionStruct.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
 							GUILayout.FlexibleSpace();
-							LogoutMethod(ResetSystem(ConcatMethod(), AdvisorDicBridge.PrepareRequest()._FacadeTemplate));
+							LogoutMethod(ResetSystem(ConcatMethod(), ADOEditorUtility.PrepareRequest()._FacadeTemplate));
 							EditorGUI.BeginChangeCheck();
-							OrderMethod(ResetSystem(QueryMethod(), AdvisorDicBridge.PrepareRequest().codeTemplate));
+							OrderMethod(ResetSystem(QueryMethod(), ADOEditorUtility.PrepareRequest().codeTemplate));
 							if (EditorGUI.EndChangeCheck())
 							{
 								StartProducer();
@@ -3417,7 +3417,7 @@ internal sealed class ConfigurationTestStub
 						if (m_CollectionStruct.isExpanded)
 						{
 							EditorGUI.indentLevel++;
-							AdvisorDicBridge.CountManager<Transform>(m_CollectionStruct);
+							ADOEditorUtility.CountManager<Transform>(m_CollectionStruct);
 							EditorGUI.indentLevel--;
 						}
 					}
@@ -3461,7 +3461,7 @@ internal sealed class ConfigurationTestStub
 						AssetProducer(_AccountConfig, "X", updatedic: false);
 						AssetProducer(_ManagerConfig, "Y", updatedic: false);
 						AssetProducer(_ParamConfig, "Z", updatedic: false);
-						if (AdvisorDicBridge.AwakeManager(AdvisorDicBridge.PrepareRequest().refTemplate, GUI.skin.label, GUILayout.Width(14f)))
+						if (ADOEditorUtility.AwakeManager(ADOEditorUtility.PrepareRequest().refTemplate, GUI.skin.label, GUILayout.Width(14f)))
 						{
 							SerializedProperty accountConfig = _AccountConfig;
 							SerializedProperty managerConfig = _ManagerConfig;
@@ -3494,9 +3494,9 @@ internal sealed class ConfigurationTestStub
 							GUILayout.Space(12f);
 							m_ServiceConfig.isExpanded = EditorGUILayout.Foldout(m_ServiceConfig.isExpanded, "Colliders", toggleOnLabelClick: true);
 							GUILayout.FlexibleSpace();
-							ReflectResolver(ResetSystem(RevertMethod(), AdvisorDicBridge.PrepareRequest()._FacadeTemplate));
+							ReflectResolver(ResetSystem(RevertMethod(), ADOEditorUtility.PrepareRequest()._FacadeTemplate));
 							EditorGUI.BeginChangeCheck();
-							PublishMethod(ResetSystem(AddMethod(), AdvisorDicBridge.PrepareRequest().codeTemplate));
+							PublishMethod(ResetSystem(AddMethod(), ADOEditorUtility.PrepareRequest().codeTemplate));
 							if (EditorGUI.EndChangeCheck())
 							{
 								ComputeProducer();
@@ -3505,7 +3505,7 @@ internal sealed class ConfigurationTestStub
 						if (m_ServiceConfig.isExpanded)
 						{
 							EditorGUI.indentLevel++;
-							AdvisorDicBridge.CountManager<VRCPhysBoneCollider>(m_ServiceConfig);
+							ADOEditorUtility.CountManager<VRCPhysBoneCollider>(m_ServiceConfig);
 							EditorGUI.indentLevel--;
 						}
 					}
@@ -3570,7 +3570,7 @@ internal sealed class ConfigurationTestStub
 							string stringValue = m_ContainerConfig.stringValue;
 							using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
 							{
-								stringValue = AdvisorDicBridge.CloneManager("Parameter", stringValue, c);
+								stringValue = ADOEditorUtility.CloneManager("Parameter", stringValue, c);
 								if (changeCheckScope.changed)
 								{
 									m_ContainerConfig.stringValue = stringValue;
@@ -3578,7 +3578,7 @@ internal sealed class ConfigurationTestStub
 							}
 							using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Mapping == null || string.IsNullOrEmpty(m_ContainerConfig.stringValue)))
 							{
-								if (AdvisorDicBridge.RateManager(AdvisorDicBridge.PrepareRequest()._ConnectionTemplate))
+								if (ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest()._ConnectionTemplate))
 								{
 									GenericMenu genericMenu = new GenericMenu();
 									using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Mapping.baseAnimationLayers.Concat(m_Mapping.specialAnimationLayers).GetEnumerator())
@@ -3591,7 +3591,7 @@ internal sealed class ConfigurationTestStub
 											if (!(_003C_003Ec__DisplayClass108_.comparatorConfig == null))
 											{
 												UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.comparatorConfig.parameters;
-												AdvisorDicBridge.PageDic[] broadcasterTemplate = AdvisorDicBridge._BroadcasterTemplate;
+												ADOEditorUtility.PhysBoneParameter[] broadcasterTemplate = ADOEditorUtility._BroadcasterTemplate;
 												for (int i = 0; i < broadcasterTemplate.Length; i++)
 												{
 													_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
@@ -3620,18 +3620,18 @@ internal sealed class ConfigurationTestStub
 					{
 						using (new EditorGUILayout.HorizontalScope())
 						{
-							SerializerTestStub.ResetMapping(_InstanceStruct, null);
-							foreach (AdvisorDicBridge.PageDic item in AdvisorDicBridge._BroadcasterTemplate.Where(_003C_003Ec.tokenConfig.UpdateResolver))
+							GUILayoutUtils.ResetMapping(_InstanceStruct, null);
+							foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility._BroadcasterTemplate.Where(_003C_003Ec.tokenConfig.UpdateResolver))
 							{
 								using (new EditorGUILayout.VerticalScope())
 								{
 									GUILayout.Label(item._PrototypeDic, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
-									SerializerTestStub.ChangeMapping();
+									GUILayoutUtils.ChangeMapping();
 									GUILayout.Label(item.ChangeAlgo(vRCPhysBone));
 								}
-								SerializerTestStub.MoveMapping();
+								GUILayoutUtils.MoveMapping();
 							}
-							SerializerTestStub.AwakeMapping();
+							GUILayoutUtils.AwakeMapping();
 						}
 					}
 				});
@@ -3650,7 +3650,7 @@ internal sealed class ConfigurationTestStub
 					{
 						text = "Global Setting";
 					}
-					using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, AdvisorDicBridge.m_InitializerTemplate, AdvisorDicBridge._AuthenticationTemplate))
+					using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility._AuthenticationTemplate))
 					{
 						using (new ManagerStruct.MappingStruct(CancelProducer))
 						{
@@ -3693,22 +3693,22 @@ internal sealed class ConfigurationTestStub
 			if (!(vRCPhysBone == null))
 			{
 				Tools.hidden = true;
-				AdvisorDicBridge.ObjectTokenizerResolver objectTokenizerResolver = new AdvisorDicBridge.ObjectTokenizerResolver(vRCPhysBone);
-				objectTokenizerResolver.ResolveAlgo();
+				ADOEditorUtility.BoneChainTree boneChainTree = new ADOEditorUtility.BoneChainTree(vRCPhysBone);
+				boneChainTree.ResolveAlgo();
 				if (RestartMethod())
 				{
-					PrepareProducer(observerStruct, objectTokenizerResolver);
+					PrepareProducer(observerStruct, boneChainTree);
 				}
 				if (CollectMethod())
 				{
-					ResolveProducer(observerStruct, objectTokenizerResolver, PrintMethod());
+					ResolveProducer(observerStruct, boneChainTree, PrintMethod());
 				}
 			}
 		}
 
 		private static void DefineProducer(SceneView spec)
 		{
-			AdvisorDicBridge.StartManager();
+			ADOEditorUtility.StartManager();
 			ListProducer();
 			PushProducer(spec);
 			if (AddMethod())
@@ -3720,16 +3720,16 @@ internal sealed class ConfigurationTestStub
 					{
 						int _ComposerConfig = i;
 						VRCPhysBoneCollider codeConfig = _ImporterStruct[_ComposerConfig];
-						AdvisorDicBridge.ServiceDic setup = AdvisorDicBridge.ServiceDic.CountWrapper(codeConfig.transform.TransformPoint(codeConfig.position), (!flag) ? string.Empty : codeConfig.name, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.05f, algo + i, delegate
+						ADOEditorUtility.SphereHandle setup = ADOEditorUtility.SphereHandle.CountWrapper(codeConfig.transform.TransformPoint(codeConfig.position), (!flag) ? string.Empty : codeConfig.name, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.05f, algo + i, delegate
 						{
-							m_ServiceConfig.RunManager<VRCPhysBoneCollider>(AdvisorDicBridge.ReadParam(m_MessageStruct, _ComposerConfig), codeConfig);
+							m_ServiceConfig.RunManager<VRCPhysBoneCollider>(ADOEditorUtility.ReadParam(m_MessageStruct, _ComposerConfig), codeConfig);
 						});
-						setup.managerDic = delegate(AdvisorDicBridge.ServiceDic sc2)
+						setup.managerDic = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
 							Handles.color = ManagerStruct.SearchTest().OrderTest()[m_MessageStruct[_ComposerConfig]];
-							AdvisorDicBridge.ServiceDic.NewWrapper(sc2);
+							ADOEditorUtility.SphereHandle.NewWrapper(sc2);
 						};
-						AdvisorDicBridge.EnableManager(setup);
+						ADOEditorUtility.EnableManager(setup);
 					}
 				}
 			}
@@ -3742,16 +3742,16 @@ internal sealed class ConfigurationTestStub
 					{
 						Transform processConfig = m_RegStruct[num];
 						int m_FacadeConfig = num;
-						AdvisorDicBridge.ServiceDic setup2 = AdvisorDicBridge.ServiceDic.CountWrapper(processConfig.position, (!flag2) ? string.Empty : processConfig.name, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.25f, algo + num, delegate
+						ADOEditorUtility.SphereHandle setup2 = ADOEditorUtility.SphereHandle.CountWrapper(processConfig.position, (!flag2) ? string.Empty : processConfig.name, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.25f, algo + num, delegate
 						{
-							m_CollectionStruct.RunManager<Transform>(AdvisorDicBridge.ReadParam(m_MessageStruct, m_FacadeConfig), processConfig);
+							m_CollectionStruct.RunManager<Transform>(ADOEditorUtility.ReadParam(m_MessageStruct, m_FacadeConfig), processConfig);
 						});
-						setup2.managerDic = delegate(AdvisorDicBridge.ServiceDic sc2)
+						setup2.managerDic = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
 							Handles.color = ManagerStruct.SearchTest().OrderTest()[m_MessageStruct[m_FacadeConfig]];
-							AdvisorDicBridge.ServiceDic.NewWrapper(sc2);
+							ADOEditorUtility.SphereHandle.NewWrapper(sc2);
 						};
-						AdvisorDicBridge.EnableManager(setup2);
+						ADOEditorUtility.EnableManager(setup2);
 					}
 				}
 			}
@@ -3765,7 +3765,7 @@ internal sealed class ConfigurationTestStub
 					{
 						VRCPhysBone vRCPhysBone = parameterStruct[num2];
 						int m_ConnectionConfig = num2;
-						AdvisorDicBridge.EnableManager(AdvisorDicBridge.ServiceDic.CountWrapper(vRCPhysBone.transform.position, (!flag3) ? string.Empty : vRCPhysBone.name, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.25f, algo + num2, delegate
+						ADOEditorUtility.EnableManager(ADOEditorUtility.SphereHandle.CountWrapper(vRCPhysBone.transform.position, (!flag3) ? string.Empty : vRCPhysBone.name, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.25f, algo + num2, delegate
 						{
 							VRCPhysBone[] array = observerStruct;
 							for (int j = 0; j < array.Length; j++)
@@ -3791,7 +3791,7 @@ internal sealed class ConfigurationTestStub
 					{
 						VRCPhysBone vRCPhysBone2 = parameterStruct[num3];
 						int m_CustomerConfig = num3;
-						AdvisorDicBridge.EnableManager(AdvisorDicBridge.ServiceDic.CountWrapper(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.25f, algo + num3, delegate
+						ADOEditorUtility.EnableManager(ADOEditorUtility.SphereHandle.CountWrapper(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)ManagerStruct.SearchTest().handleSizeMultiplier * 0.25f, algo + num3, delegate
 						{
 							VRCPhysBone[] array = observerStruct;
 							for (int j = 0; j < array.Length; j++)
@@ -3813,7 +3813,7 @@ internal sealed class ConfigurationTestStub
 				GUIUtility.hotControl = algo - 1;
 				current.Use();
 			}
-			AdvisorDicBridge.CheckManager();
+			ADOEditorUtility.CheckManager();
 		}
 
 		private static void PushProducer(SceneView first)
@@ -3827,22 +3827,22 @@ internal sealed class ConfigurationTestStub
 			bool flag = num > 0;
 			if ((bool)ManagerStruct.SearchTest().onSceneToolSelection && (flag || (bool)ManagerStruct.SearchTest().onSceneToolSelectionAlwaysVisible))
 			{
-				AdvisorDicBridge.PositionFlag positionFlag = ManagerStruct.SearchTest().toolSelectionOverlayAlignment.InvokeService<AdvisorDicBridge.PositionFlag>();
+				ADOEditorUtility.PositionFlag positionFlag = ManagerStruct.SearchTest().toolSelectionOverlayAlignment.InvokeService<ADOEditorUtility.PositionFlag>();
 				bool flag2;
-				using (new AdvisorDicBridge.AdvisorTemplate(first, 250f, 34f, positionFlag, m_IdentifierStruct))
+				using (new ADOEditorUtility.AdvisorTemplate(first, 250f, 34f, positionFlag, m_IdentifierStruct))
 				{
 					Rect lastRect;
 					using (new GUILayout.HorizontalScope())
 					{
 						using (new EditorGUI.DisabledScope(_MerchantConfig.serviceTemplate <= 0))
 						{
-							if (AdvisorDicBridge.RateManager(ManagerStruct.SearchTest().ignoreSceneClicks ? AdvisorDicBridge.PrepareRequest().m_ValueTemplate : AdvisorDicBridge.PrepareRequest()._AnnotationTemplate))
+							if (ADOEditorUtility.RateManager(ManagerStruct.SearchTest().ignoreSceneClicks ? ADOEditorUtility.PrepareRequest().m_ValueTemplate : ADOEditorUtility.PrepareRequest()._AnnotationTemplate))
 							{
 								ManagerStruct.SearchTest().ignoreSceneClicks.InstantiateTest();
 							}
 						}
 						GUILayout.FlexibleSpace();
-						GUILayout.Label("ADO Tool:", AdvisorDicBridge.ManageRequest()._WriterTemplate);
+						GUILayout.Label("ADO Tool:", ADOEditorUtility.ManageRequest()._WriterTemplate);
 						lastRect = GUILayoutUtility.GetLastRect();
 						GUIContent content = new GUIContent(classConfig[num]);
 						float x = GUI.skin.label.CalcSize(content).x;
@@ -3877,18 +3877,18 @@ internal sealed class ConfigurationTestStub
 							SceneView.RepaintAll();
 						}
 						GUILayout.FlexibleSpace();
-						if (AdvisorDicBridge.RateManager(AdvisorDicBridge.PrepareRequest().m_ComposerTemplate))
+						if (ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest().m_ComposerTemplate))
 						{
 							Queue.PublishTemplate();
 						}
 					}
-					flag2 = AdvisorDicBridge.DestroyManager(lastRect, m_UtilsStruct);
-					AdvisorDicBridge.CallManager(lastRect, MouseCursor.Pan);
+					flag2 = ADOEditorUtility.DestroyManager(lastRect, m_UtilsStruct);
+					ADOEditorUtility.CallManager(lastRect, MouseCursor.Pan);
 				}
 				if (flag2)
 				{
 					Handles.BeginGUI();
-					ManagerStruct.SearchTest().toolSelectionOverlayAlignment.RegisterService = (int)AdvisorDicBridge.ReflectManager(positionFlag, ivk);
+					ManagerStruct.SearchTest().toolSelectionOverlayAlignment.RegisterService = (int)ADOEditorUtility.ReflectManager(positionFlag, ivk);
 					Handles.EndGUI();
 				}
 			}
@@ -3905,8 +3905,8 @@ internal sealed class ConfigurationTestStub
 			{
 				InterruptStruct(item, "Gizmos Disabled", delegate
 				{
-					GUILayout.Label("Handles are hidden.", AdvisorDicBridge.ManageRequest()._WriterTemplate);
-					if (AdvisorDicBridge.GetManager("Enable Gizmos"))
+					GUILayout.Label("Handles are hidden.", ADOEditorUtility.ManageRequest()._WriterTemplate);
+					if (ADOEditorUtility.GetManager("Enable Gizmos"))
 					{
 						item.drawGizmos = true;
 					}
@@ -3945,9 +3945,9 @@ internal sealed class ConfigurationTestStub
 				using (new GUILayout.HorizontalScope())
 				{
 					string text = string.Concat(((!m_AnnotationConfig) ? "" : "Multi-") + (_ValueConfig ? "Editing" : (m_RepositoryConfig ? "Copying" : "Selecting")), m_RefConfig ? ":" : (candidateConfig ? " Ignore Transforms" : ((!_ExpressionConfig) ? " End Position" : " Colliders")));
-					AdvisorDicBridge.CreateManager();
+					ADOEditorUtility.CreateManager();
 					GUILayout.FlexibleSpace();
-					GUILayout.Label(text, AdvisorDicBridge.ManageRequest()._WriterTemplate);
+					GUILayout.Label(text, ADOEditorUtility.ManageRequest()._WriterTemplate);
 					_StubConfig = GUILayoutUtility.GetLastRect();
 					if (m_RefConfig)
 					{
@@ -3969,35 +3969,35 @@ internal sealed class ConfigurationTestStub
 			{
 				if (m_MockConfig)
 				{
-					GUILayout.Label("Press Enter or Escape to exit", AdvisorDicBridge.ManageRequest()._WriterTemplate);
+					GUILayout.Label("Press Enter or Escape to exit", ADOEditorUtility.ManageRequest()._WriterTemplate);
 					if (m_RefConfig || instanceConfig)
 					{
 						if (!m_AnnotationConfig)
 						{
 							if (m_RefConfig)
 							{
-								GUILayout.Label("Hold Alt to edit the curve", AdvisorDicBridge.ManageRequest()._WriterTemplate);
+								GUILayout.Label("Hold Alt to edit the curve", ADOEditorUtility.ManageRequest()._WriterTemplate);
 							}
 						}
 						else
 						{
-							GUILayout.Label("Hold Alt to edit the target physbone only", AdvisorDicBridge.ManageRequest()._WriterTemplate);
-							GUILayout.Label("Hold Shift to set the physbones to the same value", AdvisorDicBridge.ManageRequest()._WriterTemplate);
+							GUILayout.Label("Hold Alt to edit the target physbone only", ADOEditorUtility.ManageRequest()._WriterTemplate);
+							GUILayout.Label("Hold Shift to set the physbones to the same value", ADOEditorUtility.ManageRequest()._WriterTemplate);
 						}
 					}
 				}
 			}, second, connection);
 		}
 
-		private void PrepareProducer(VRCPhysBone[] first, AdvisorDicBridge.ObjectTokenizerResolver pred)
+		private void PrepareProducer(VRCPhysBone[] first, ADOEditorUtility.BoneChainTree pred)
 		{
 			_003C_003Ec__DisplayClass116_0 cfg = default(_003C_003Ec__DisplayClass116_0);
 			cfg._ListenerConfig = first;
 			cfg.m_ObserverConfig = pred._ServerDic;
-			AdvisorDicBridge.StructTemplateExpression[] array = pred._RoleDic.Where((AdvisorDicBridge.StructTemplateExpression b) => b.statusDic && !b.visitorDic).ToArray();
-			foreach (AdvisorDicBridge.StructTemplateExpression structTemplateExpression in array)
+			ADOEditorUtility.BoneNode[] array = pred._RoleDic.Where((ADOEditorUtility.BoneNode b) => b.statusDic && !b.visitorDic).ToArray();
+			foreach (ADOEditorUtility.BoneNode boneNode in array)
 			{
-				Transform setterDic = structTemplateExpression.m_SetterDic;
+				Transform setterDic = boneNode.m_SetterDic;
 				Vector3 vector = setterDic.TransformPoint(cfg.m_ObserverConfig.endpointPosition);
 				if (!cfg.m_ObserverConfig.showGizmos || !(cfg.m_ObserverConfig.boneOpacity >= 0.05f))
 				{
@@ -4021,14 +4021,14 @@ internal sealed class ConfigurationTestStub
 					direction = vector - setterDic.position;
 					if (direction.magnitude < 0.01f)
 					{
-						direction = ((structTemplateExpression.m_HelperDic == null) ? (-setterDic.forward) : (vector - structTemplateExpression.m_HelperDic.m_SetterDic.position));
+						direction = ((boneNode.m_HelperDic == null) ? (-setterDic.forward) : (vector - boneNode.m_HelperDic.m_SetterDic.position));
 					}
 				}
 				else
 				{
 					direction = serverConfig;
 				}
-				Handles.color = AdvisorDicBridge._AuthenticationTemplate;
+				Handles.color = ADOEditorUtility._AuthenticationTemplate;
 				EditorGUI.BeginChangeCheck();
 				Vector3 vector4 = Handles.Slider(vector, direction);
 				if (EditorGUI.EndChangeCheck())
@@ -4092,10 +4092,10 @@ internal sealed class ConfigurationTestStub
 			}
 		}
 
-		private static void ManageProducer(AdvisorDicBridge.ObjectTokenizerResolver key, AnimationCurve ord, Action<AdvisorDicBridge.StructTemplateExpression, float> state, bool ignoreattr2 = false)
+		private static void ManageProducer(ADOEditorUtility.BoneChainTree key, AnimationCurve ord, Action<ADOEditorUtility.BoneNode, float> state, bool ignoreattr2 = false)
 		{
 			bool flag = ord == null || ord.length == 0;
-			foreach (AdvisorDicBridge.StructTemplateExpression item in key._RoleDic)
+			foreach (ADOEditorUtility.BoneNode item in key._RoleDic)
 			{
 				float num = ((!flag) ? ord.Evaluate(item.InvokeAlgo()) : 1f);
 				if (ignoreattr2)
@@ -4106,7 +4106,7 @@ internal sealed class ConfigurationTestStub
 			}
 		}
 
-		private static void ReadProducer(float v, AdvisorDicBridge.StructTemplateExpression caller, SerializedProperty template, SerializedProperty var12, float second3 = 0f, float value4 = float.PositiveInfinity)
+		private static void ReadProducer(float v, ADOEditorUtility.BoneNode caller, SerializedProperty template, SerializedProperty var12, float second3 = 0f, float value4 = float.PositiveInfinity)
 		{
 			AnimationCurve animationCurve = ((var12.animationCurveValue != null && var12.animationCurveValue.length >= 2) ? var12.animationCurveValue : new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 1f)));
 			int num = -1;
@@ -4182,7 +4182,7 @@ internal sealed class ConfigurationTestStub
 			var12.animationCurveValue = animationCurve;
 		}
 
-		private static void ResolveProducer(VRCPhysBone[] key, AdvisorDicBridge.ObjectTokenizerResolver attr, ContainerModelDispatcher res)
+		private static void ResolveProducer(VRCPhysBone[] key, ADOEditorUtility.BoneChainTree attr, ContainerModelDispatcher res)
 		{
 			_003C_003Ec__DisplayClass120_0 CS_0024_003C_003E8__locals28 = new _003C_003Ec__DisplayClass120_0();
 			CS_0024_003C_003E8__locals28.m_UtilsConfig = key;
@@ -4205,20 +4205,20 @@ internal sealed class ConfigurationTestStub
 			Color color2 = Handles.color;
 			Handles.color = color;
 			AnimationCurve animationCurveValue = CS_0024_003C_003E8__locals28._GlobalConfig.animationCurveValue;
-			List<List<AdvisorDicBridge.StructTemplateExpression>> strategyDic = attr._StrategyDic;
+			List<List<ADOEditorUtility.BoneNode>> strategyDic = attr._StrategyDic;
 			if (CS_0024_003C_003E8__locals28.m_ReaderConfig.visitorConfig != 1)
 			{
 				Vector3 vector = Vector3.zero;
 				Vector3[][] array = new Vector3[strategyDic.Count][];
 				for (int i = 0; i < strategyDic.Count; i++)
 				{
-					List<AdvisorDicBridge.StructTemplateExpression> list = strategyDic[i];
+					List<ADOEditorUtility.BoneNode> list = strategyDic[i];
 					array[i] = new Vector3[list.Count];
 					Vector3 vector2 = Vector3.zero;
 					for (int j = 0; j < list.Count; j++)
 					{
-						AdvisorDicBridge.StructTemplateExpression structTemplateExpression = list[j];
-						Vector3 vector3 = ((j != 0) ? vector2 : structTemplateExpression.ResetAlgo());
+						ADOEditorUtility.BoneNode boneNode = list[j];
+						Vector3 vector3 = ((j != 0) ? vector2 : boneNode.ResetAlgo());
 						if (j != list.Count - 1)
 						{
 							vector2 = list[j + 1].ResetAlgo();
@@ -4229,12 +4229,12 @@ internal sealed class ConfigurationTestStub
 							vector = -vector;
 						}
 						Vector3 up = Vector3.up;
-						float num3 = structTemplateExpression.ForgotAlgo(animationCurveValue);
+						float num3 = boneNode.ForgotAlgo(animationCurveValue);
 						float num4 = CS_0024_003C_003E8__locals28.m_IdentifierConfig.floatValue * num3;
 						Vector3 vector4 = vector3 + up * (num * (num4 / CS_0024_003C_003E8__locals28.dispatcherConfig));
 						array[i][j] = vector4;
 						Handles.DrawDottedLine(vector3, vector4, 5f);
-						AdvisorDicBridge.LogoutManager(num4.ToString("F2"), vector4, num2 + 0.01f);
+						ADOEditorUtility.LogoutManager(num4.ToString("F2"), vector4, num2 + 0.01f);
 						Vector3 vector5 = Handles.Slider(vector4, up, num2, Handles.DotHandleCap, 0f);
 						if (!(vector4 == vector5))
 						{
@@ -4243,7 +4243,7 @@ internal sealed class ConfigurationTestStub
 							{
 								num5 *= -1f;
 							}
-							CS_0024_003C_003E8__locals28.SetRules(structTemplateExpression, num5);
+							CS_0024_003C_003E8__locals28.SetRules(boneNode, num5);
 						}
 					}
 				}
@@ -4255,7 +4255,7 @@ internal sealed class ConfigurationTestStub
 			}
 			else
 			{
-				ManageProducer(attr, animationCurveValue, delegate(AdvisorDicBridge.StructTemplateExpression b, float m)
+				ManageProducer(attr, animationCurveValue, delegate(ADOEditorUtility.BoneNode b, float m)
 				{
 					if (m != 0f)
 					{
@@ -4263,13 +4263,13 @@ internal sealed class ConfigurationTestStub
 						Vector4 column = objectDic.GetColumn(3);
 						float tag = CS_0024_003C_003E8__locals28.m_BridgeConfig.radius * m;
 						EditorGUI.BeginChangeCheck();
-						float num6 = AdvisorDicBridge.PublishManager(objectDic.rotation, column, tag, !CS_0024_003C_003E8__locals28.m_BridgeConfig.showGizmos, ManagerStruct.SearchTest().handleSizeMultiplier);
+						float num6 = ADOEditorUtility.PublishManager(objectDic.rotation, column, tag, !CS_0024_003C_003E8__locals28.m_BridgeConfig.showGizmos, ManagerStruct.SearchTest().handleSizeMultiplier);
 						if (EditorGUI.EndChangeCheck())
 						{
 							float delta = num6 / m - CS_0024_003C_003E8__locals28.m_BridgeConfig.radius;
 							CS_0024_003C_003E8__locals28.SetRules(b, delta);
 						}
-						AdvisorDicBridge.LogoutManager(tag.ToString("F2"), column);
+						ADOEditorUtility.LogoutManager(tag.ToString("F2"), column);
 					}
 				}, ignoreattr2: true);
 			}
@@ -4307,14 +4307,14 @@ internal sealed class ConfigurationTestStub
 		{
 			if (ruleConfig == null)
 			{
-				ruleConfig = AdvisorDicBridge.ResolveManager("VRCPhysBone");
+				ruleConfig = ADOEditorUtility.ResolveManager("VRCPhysBone");
 			}
 			if (roleConfig == null)
 			{
-				roleConfig = AdvisorDicBridge.ResolveManager("VRCPhysBoneEditor");
+				roleConfig = ADOEditorUtility.ResolveManager("VRCPhysBoneEditor");
 			}
 			listenerStruct = !readv;
-			AdvisorDicBridge.RevertManager(ruleConfig, listenerStruct ? typeof(ComparatorMethodObject) : roleConfig);
+			ADOEditorUtility.RevertManager(ruleConfig, listenerStruct ? typeof(ComparatorMethodObject) : roleConfig);
 		}
 
 		private static void ComputeProducer()
@@ -4430,12 +4430,12 @@ internal sealed class ConfigurationTestStub
 			if (!registryConfig)
 			{
 				registryConfig = true;
-				float[] array = new float[AdvisorDicBridge._BroadcasterTemplate.Count((AdvisorDicBridge.PageDic p) => p._BaseDic)];
+				float[] array = new float[ADOEditorUtility._BroadcasterTemplate.Count((ADOEditorUtility.PhysBoneParameter p) => p._BaseDic)];
 				for (int num = 0; num < array.Length; num++)
 				{
 					array[num] = 1f / (float)array.Length;
 				}
-				_InstanceStruct = SerializerTestStub.TestMapping(array);
+				_InstanceStruct = GUILayoutUtils.TestMapping(array);
 			}
 		}
 
@@ -4582,7 +4582,7 @@ internal sealed class ConfigurationTestStub
 			bool flag = policyStruct.enumValueIndex == 1;
 			int row_ord = (policyStruct.hasMultipleDifferentValues ? 2 : policyStruct.enumValueIndex);
 			using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, row_ord, AdvisorDicBridge.ManageRequest().configDic))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, row_ord, ADOEditorUtility.ManageRequest().configDic))
 			{
 				flag = GUILayout.Toggle(flag, "Advanced", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 			}
@@ -4608,9 +4608,9 @@ internal sealed class ConfigurationTestStub
 					EditorGUILayout.PropertyField(indexerConfig, second);
 				}
 				AssetProducer(broadcasterConfig, string.Empty);
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, CollectMethod() && PrintMethod() == containerModelDispatcher, AdvisorDicBridge.m_InitializerTemplate, AdvisorDicBridge.infoTemplate))
+				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, CollectMethod() && PrintMethod() == containerModelDispatcher, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 				{
-					if (AdvisorDicBridge.AwakeManager(AdvisorDicBridge.PrepareRequest().m_PrinterTemplate, AdvisorDicBridge.ManageRequest().modelDic, GUILayout.ExpandWidth(expand: false)))
+					if (ADOEditorUtility.AwakeManager(ADOEditorUtility.PrepareRequest().m_PrinterTemplate, ADOEditorUtility.ManageRequest().modelDic, GUILayout.ExpandWidth(expand: false)))
 					{
 						VerifyProducer(spec);
 					}
@@ -4632,7 +4632,7 @@ internal sealed class ConfigurationTestStub
 			{
 				EditorGUILayout.PropertyField(pred);
 				AssetProducer(util, string.Empty);
-				return ResetSystem(countconfig, AdvisorDicBridge.PrepareRequest().m_PrinterTemplate);
+				return ResetSystem(countconfig, ADOEditorUtility.PrepareRequest().m_PrinterTemplate);
 			}
 		}
 
@@ -4645,9 +4645,9 @@ internal sealed class ConfigurationTestStub
 			EditorGUILayout.CurveField(param, Color.cyan, new Rect(0f, 0f, 1f, 1f), GUIContent.none, GUILayout.MaxWidth(85f));
 			if (param.animationCurveValue == null || param.animationCurveValue.length < 2)
 			{
-				GUI.Label(GUILayoutUtility.GetLastRect(), "///////////////////////////////", AdvisorDicBridge.ManageRequest().processorTemplate);
+				GUI.Label(GUILayoutUtility.GetLastRect(), "///////////////////////////////", ADOEditorUtility.ManageRequest().processorTemplate);
 			}
-			if (updatedic && AdvisorDicBridge.AwakeManager(AdvisorDicBridge.PrepareRequest().refTemplate, GUI.skin.label, GUILayout.Width(14f)))
+			if (updatedic && ADOEditorUtility.AwakeManager(ADOEditorUtility.PrepareRequest().refTemplate, GUI.skin.label, GUILayout.Width(14f)))
 			{
 				param.animationCurveValue = new AnimationCurve();
 			}
@@ -4735,11 +4735,11 @@ internal sealed class ConfigurationTestStub
 
 		public static Func<bool> _ReponseConfig;
 
-		public static Func<UnityEngine.Object, AdvisorDicBridge.ConfigurationDic> m_ProcessorConfig;
+		public static Func<UnityEngine.Object, ADOEditorUtility.ShapeSnapshot> m_ProcessorConfig;
 
-		public static Func<UnityEngine.Object, AdvisorDicBridge.ConfigurationDic> m_SingletonConfig;
+		public static Func<UnityEngine.Object, ADOEditorUtility.ShapeSnapshot> m_SingletonConfig;
 
-		public static Func<UnityEngine.Object, AdvisorDicBridge.ConfigurationDic> _ProcConfig;
+		public static Func<UnityEngine.Object, ADOEditorUtility.ShapeSnapshot> _ProcConfig;
 
 		public static Func<bool> m_SystemModel;
 
@@ -4873,19 +4873,19 @@ internal sealed class ConfigurationTestStub
 			return decorator == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(m_Getter + record)));
 		}
 
-		internal AdvisorDicBridge.ConfigurationDic CancelRules(UnityEngine.Object t2)
+		internal ADOEditorUtility.ShapeSnapshot CancelRules(UnityEngine.Object t2)
 		{
-			return new AdvisorDicBridge.ConfigurationDic((VRCPhysBoneCollider)t2);
+			return new ADOEditorUtility.ShapeSnapshot((VRCPhysBoneCollider)t2);
 		}
 
-		internal AdvisorDicBridge.ConfigurationDic DisableRules(UnityEngine.Object t2)
+		internal ADOEditorUtility.ShapeSnapshot DisableRules(UnityEngine.Object t2)
 		{
-			return new AdvisorDicBridge.ConfigurationDic((VRCContactSender)t2);
+			return new ADOEditorUtility.ShapeSnapshot((VRCContactSender)t2);
 		}
 
-		internal AdvisorDicBridge.ConfigurationDic IncludeRules(UnityEngine.Object t2)
+		internal ADOEditorUtility.ShapeSnapshot IncludeRules(UnityEngine.Object t2)
 		{
-			return new AdvisorDicBridge.ConfigurationDic((VRCContactReceiver)t2);
+			return new ADOEditorUtility.ShapeSnapshot((VRCContactReceiver)t2);
 		}
 
 		internal bool RateRules()
@@ -4924,9 +4924,9 @@ internal sealed class ConfigurationTestStub
 			{
 				bool ordclose;
 				string tooltip = ((ordclose = ManagerStruct.SearchTest().hideToolsDuringTesting) ? "Native tools are hidden during test." : "Native tools are visible during test.");
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ordclose, AdvisorDicBridge.m_InitializerTemplate, AdvisorDicBridge.infoTemplate))
+				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ordclose, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 				{
-					if (AdvisorDicBridge.RateManager(new GUIContent(AdvisorDicBridge.PrepareRequest().repositoryTemplate)
+					if (ADOEditorUtility.RateManager(new GUIContent(ADOEditorUtility.PrepareRequest().repositoryTemplate)
 					{
 						tooltip = tooltip
 					}))
@@ -4936,7 +4936,7 @@ internal sealed class ConfigurationTestStub
 					}
 				}
 				GUILayout.FlexibleSpace();
-				GUILayout.Label("Testing", AdvisorDicBridge.ManageRequest()._WriterTemplate);
+				GUILayout.Label("Testing", ADOEditorUtility.ManageRequest()._WriterTemplate);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
 				StartStruct();
@@ -4946,25 +4946,25 @@ internal sealed class ConfigurationTestStub
 
 		internal void VisitRules()
 		{
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, AdvisorDicBridge.infoTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility.infoTemplate))
 			{
-				if (AdvisorDicBridge.GetManager("Stop Testing") || AdvisorDicBridge.SetupManager() || AdvisorDicBridge.SortManager())
+				if (ADOEditorUtility.GetManager("Stop Testing") || ADOEditorUtility.SetupManager() || ADOEditorUtility.SortManager())
 				{
 					StopSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, AdvisorDicBridge._ClientTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility._ClientTemplate))
 			{
-				if (AdvisorDicBridge.GetManager("Restart"))
+				if (ADOEditorUtility.GetManager("Restart"))
 				{
 					WriteSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Class, AdvisorDicBridge.m_InitializerTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Class, ADOEditorUtility.m_InitializerTemplate))
 			{
 				using (new EditorGUI.DisabledScope(!_Class))
 				{
-					if (!AdvisorDicBridge.GetManager("Apply All Changes"))
+					if (!ADOEditorUtility.GetManager("Apply All Changes"))
 					{
 						return;
 					}
@@ -5064,7 +5064,7 @@ internal sealed class ConfigurationTestStub
 
 		internal bool CloneRules(string p)
 		{
-			return !AdvisorDicBridge.strategyTemplate.Contains(p);
+			return !ADOEditorUtility.strategyTemplate.Contains(p);
 		}
 
 		internal bool FlushRules(VRCAvatarDescriptor a)
@@ -5832,7 +5832,7 @@ internal sealed class ConfigurationTestStub
 
 		public UnityEngine.Object[] m_RegModel;
 
-		public AdvisorDicBridge.ConfigurationDic[] messageModel;
+		public ADOEditorUtility.ShapeSnapshot[] messageModel;
 
 		public int _BridgeModel;
 
@@ -6006,7 +6006,7 @@ internal sealed class ConfigurationTestStub
 
 	private static bool _Params;
 
-	private static readonly AdvisorDicBridge.PublisherTemplate _Serializer = new AdvisorDicBridge.PublisherTemplate();
+	private static readonly ADOEditorUtility.PublisherTemplate _Serializer = new ADOEditorUtility.PublisherTemplate();
 
 	private static readonly int interceptor = GUIUtility.GetControlID("ADOTooltipDragControlID".GetHashCode(), FocusType.Passive);
 
@@ -6098,11 +6098,11 @@ internal sealed class ConfigurationTestStub
 
 	private static readonly AnimBool m_Process = new AnimBool();
 
-	private static readonly SystemTemplate _Connection = new SystemTemplate("0.11.1");
+	private static readonly SemVer _Connection = new SemVer("0.11.1");
 
 	private static readonly (string, string)[] m_Customer = new(string, string)[0];
 
-	internal static ConfigurationTestStub RestartGlobal;
+	internal static LicenseManager RestartGlobal;
 
 	private static void ReflectSystem(UnityEngine.Object instance, SerializedProperty[] result, Action serv, bool testtask2)
 	{
@@ -6140,9 +6140,9 @@ internal sealed class ConfigurationTestStub
 			}
 			if (testtask2 && serializedProperty3 != null)
 			{
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, serializedProperty3.boolValue, AdvisorDicBridge.workerTemplate, AdvisorDicBridge.m_InitializerTemplate))
+				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, serializedProperty3.boolValue, ADOEditorUtility.workerTemplate, ADOEditorUtility.m_InitializerTemplate))
 				{
-					serializedProperty3.boolValue = AdvisorDicBridge.CustomizeManager(serializedProperty3.boolValue, (!serializedProperty3.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
+					serializedProperty3.boolValue = ADOEditorUtility.CustomizeManager(serializedProperty3.boolValue, (!serializedProperty3.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 				}
 			}
 		}
@@ -6188,7 +6188,7 @@ internal sealed class ConfigurationTestStub
 				}
 				using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Factory, Color.green, Color.red))
 				{
-					_Factory = GUILayout.Toggle(_Factory, AdvisorDicBridge.PrepareRequest().m_PrinterTemplate, AdvisorDicBridge.ManageRequest().modelDic, GUILayout.Width(18f), GUILayout.Height(18f));
+					_Factory = GUILayout.Toggle(_Factory, ADOEditorUtility.PrepareRequest().m_PrinterTemplate, ADOEditorUtility.ManageRequest().modelDic, GUILayout.Width(18f), GUILayout.Height(18f));
 				}
 			}
 		}
@@ -6228,16 +6228,16 @@ internal sealed class ConfigurationTestStub
 		{
 			if (length_util == 1)
 			{
-				pool.messageModel = pool.m_RegModel.Select((UnityEngine.Object t2) => new AdvisorDicBridge.ConfigurationDic((VRCContactSender)t2)).ToArray();
+				pool.messageModel = pool.m_RegModel.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCContactSender)t2)).ToArray();
 			}
 			else
 			{
-				pool.messageModel = pool.m_RegModel.Select((UnityEngine.Object t2) => new AdvisorDicBridge.ConfigurationDic((VRCContactReceiver)t2)).ToArray();
+				pool.messageModel = pool.m_RegModel.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCContactReceiver)t2)).ToArray();
 			}
 		}
 		else
 		{
-			pool.messageModel = pool.m_RegModel.Select((UnityEngine.Object t2) => new AdvisorDicBridge.ConfigurationDic((VRCPhysBoneCollider)t2)).ToArray();
+			pool.messageModel = pool.m_RegModel.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCPhysBoneCollider)t2)).ToArray();
 		}
 		Transform interceptorDic = pool.messageModel[pool._BridgeModel].m_InterceptorDic;
 		pool._GlobalModel = AssetSystem(interceptorDic);
@@ -6408,10 +6408,10 @@ internal sealed class ConfigurationTestStub
 				return;
 			}
 		}
-		AdvisorDicBridge.ConfigurationDic[] array = pool.messageModel;
-		foreach (AdvisorDicBridge.ConfigurationDic configurationDic in array)
+		ADOEditorUtility.ShapeSnapshot[] array = pool.messageModel;
+		foreach (ADOEditorUtility.ShapeSnapshot shapeSnapshot in array)
 		{
-			configurationDic.UpdateAlgo();
+			shapeSnapshot.UpdateAlgo();
 		}
 	}
 
@@ -6473,7 +6473,7 @@ internal sealed class ConfigurationTestStub
 		EditorApplication.playModeStateChanged += ReadSystem;
 		if (m_Resolver != null)
 		{
-			AdvisorDicBridge.ConcatManager(m_Resolver.transform, stripmap: true, writetag: true, isres2: false, isv3: false, movecounter4: false, insertasset5: true);
+			ADOEditorUtility.ConcatManager(m_Resolver.transform, stripmap: true, writetag: true, isres2: false, isv3: false, movecounter4: false, insertasset5: true);
 		}
 		ComputeStruct(value, delegate
 		{
@@ -6481,9 +6481,9 @@ internal sealed class ConfigurationTestStub
 			{
 				bool ordclose;
 				string tooltip = ((ordclose = ManagerStruct.SearchTest().hideToolsDuringTesting) ? "Native tools are hidden during test." : "Native tools are visible during test.");
-				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ordclose, AdvisorDicBridge.m_InitializerTemplate, AdvisorDicBridge.infoTemplate))
+				using (new TaskServiceClass(TaskServiceClass.ColoringType.FG, ordclose, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 				{
-					if (AdvisorDicBridge.RateManager(new GUIContent(AdvisorDicBridge.PrepareRequest().repositoryTemplate)
+					if (ADOEditorUtility.RateManager(new GUIContent(ADOEditorUtility.PrepareRequest().repositoryTemplate)
 					{
 						tooltip = tooltip
 					}))
@@ -6493,7 +6493,7 @@ internal sealed class ConfigurationTestStub
 					}
 				}
 				GUILayout.FlexibleSpace();
-				GUILayout.Label("Testing", AdvisorDicBridge.ManageRequest()._WriterTemplate);
+				GUILayout.Label("Testing", ADOEditorUtility.ManageRequest()._WriterTemplate);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
 				StartStruct();
@@ -6501,25 +6501,25 @@ internal sealed class ConfigurationTestStub
 			}
 		}, delegate
 		{
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, AdvisorDicBridge.infoTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility.infoTemplate))
 			{
-				if (AdvisorDicBridge.GetManager("Stop Testing") || AdvisorDicBridge.SetupManager() || AdvisorDicBridge.SortManager())
+				if (ADOEditorUtility.GetManager("Stop Testing") || ADOEditorUtility.SetupManager() || ADOEditorUtility.SortManager())
 				{
 					StopSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, AdvisorDicBridge._ClientTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility._ClientTemplate))
 			{
-				if (AdvisorDicBridge.GetManager("Restart"))
+				if (ADOEditorUtility.GetManager("Restart"))
 				{
 					WriteSystem();
 				}
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Class, AdvisorDicBridge.m_InitializerTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, _Class, ADOEditorUtility.m_InitializerTemplate))
 			{
 				using (new EditorGUI.DisabledScope(!_Class))
 				{
-					if (AdvisorDicBridge.GetManager("Apply All Changes"))
+					if (ADOEditorUtility.GetManager("Apply All Changes"))
 					{
 						foreach (UnityEngine.Object item in merchant.Keys.ToList())
 						{
@@ -6688,8 +6688,8 @@ internal sealed class ConfigurationTestStub
 		foreach (GameObject gameObject in array)
 		{
 			GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject, gameObject.transform.position, gameObject.transform.rotation, m_Resolver.transform);
-			Dictionary<VRCPhysBone, VRCPhysBone> dictionary = AdvisorDicBridge.ConnectManager(gameObject.transform, gameObject2.transform, isrole: true, componentsToFind);
-			Dictionary<VRCPhysBoneColliderBase, VRCPhysBoneColliderBase> dictionary2 = AdvisorDicBridge.ConnectManager(gameObject.transform, gameObject2.transform, isrole: true, componentsToFind2);
+			Dictionary<VRCPhysBone, VRCPhysBone> dictionary = ADOEditorUtility.ConnectManager(gameObject.transform, gameObject2.transform, isrole: true, componentsToFind);
+			Dictionary<VRCPhysBoneColliderBase, VRCPhysBoneColliderBase> dictionary2 = ADOEditorUtility.ConnectManager(gameObject.transform, gameObject2.transform, isrole: true, componentsToFind2);
 			VRCPhysBone component = specification.GetComponent<VRCPhysBone>();
 			if (!(component != null) || !dictionary.TryGetValue(component, out var value) || !(value != null))
 			{
@@ -6824,7 +6824,7 @@ internal sealed class ConfigurationTestStub
 			}
 		}
 		EditorGUI.PropertyField(rect, arrayElementAtIndex, GUIContent.none);
-		if (GUI.Button(position2, AdvisorDicBridge.PrepareRequest().m_ProcessTemplate, AdvisorDicBridge.ManageRequest().dicDic))
+		if (GUI.Button(position2, ADOEditorUtility.PrepareRequest().m_ProcessTemplate, ADOEditorUtility.ManageRequest().dicDic))
 		{
 			key.DeleteArrayElementAtIndex(indexOf_rule);
 		}
@@ -6867,7 +6867,7 @@ internal sealed class ConfigurationTestStub
 
 	private static void VerifySystem()
 	{
-		AdvisorDicBridge.ListParam(m_Mapping, ref _Authentication, ref m_Client);
+		ADOEditorUtility.ListParam(m_Mapping, ref _Authentication, ref m_Client);
 		if (!(UnityEngine.Object)(object)m_Mapping)
 		{
 			m_Initializer = Array.Empty<string>();
@@ -6876,8 +6876,8 @@ internal sealed class ConfigurationTestStub
 		}
 		ConnectSystem();
 		_Info = ((UnityEngine.Component)(object)m_Mapping).GetComponentsInChildren<VRCContactSender>().SelectMany((VRCContactSender cs) => cs.collisionTags).Concat(((UnityEngine.Component)(object)m_Mapping).GetComponentsInChildren<VRCContactReceiver>().SelectMany((VRCContactReceiver cr) => cr.collisionTags))
-			.Except(AdvisorDicBridge.m_IndexerTemplate)
-			.Concat(AdvisorDicBridge.m_IndexerTemplate.Select((string s) => "Default/" + s))
+			.Except(ADOEditorUtility.m_IndexerTemplate)
+			.Concat(ADOEditorUtility.m_IndexerTemplate.Select((string s) => "Default/" + s))
 			.Distinct()
 			.ToArray();
 	}
@@ -6890,7 +6890,7 @@ internal sealed class ConfigurationTestStub
 				where c
 				select c).SelectMany((UnityEditor.Animations.AnimatorController c) => c.parameters)
 			select p.name into p
-			where !AdvisorDicBridge.strategyTemplate.Contains(p)
+			where !ADOEditorUtility.strategyTemplate.Contains(p)
 			select p).Distinct().ToArray();
 	}
 
@@ -7080,15 +7080,15 @@ internal sealed class ConfigurationTestStub
 		using (new GUILayout.HorizontalScope())
 		{
 			EditorGUILayout.PropertyField(asset);
-			return ResetSystem(checkord, AdvisorDicBridge.PrepareRequest().m_PrinterTemplate);
+			return ResetSystem(checkord, ADOEditorUtility.PrepareRequest().m_PrinterTemplate);
 		}
 	}
 
 	private static bool ResetSystem(bool isi, GUIContent ivk)
 	{
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, isi, AdvisorDicBridge.m_InitializerTemplate, AdvisorDicBridge.infoTemplate))
+		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, isi, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 		{
-			isi = AdvisorDicBridge.ChangeManager(isi, ivk, AdvisorDicBridge.ManageRequest().modelDic, GUILayout.Width(18f), GUILayout.Height(18f));
+			isi = ADOEditorUtility.ChangeManager(isi, ivk, ADOEditorUtility.ManageRequest().modelDic, GUILayout.Width(18f), GUILayout.Height(18f));
 			return isi;
 		}
 	}
@@ -7100,9 +7100,9 @@ internal sealed class ConfigurationTestStub
 
 	private static void VisitSystem(GUIContent key, ref bool pol, params GUILayoutOption[] options)
 	{
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, pol, AdvisorDicBridge.m_InitializerTemplate, AdvisorDicBridge.infoTemplate))
+		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, pol, ADOEditorUtility.m_InitializerTemplate, ADOEditorUtility.infoTemplate))
 		{
-			pol = AdvisorDicBridge.ChangeManager(pol, key, GUI.skin.button, options);
+			pol = ADOEditorUtility.ChangeManager(pol, key, GUI.skin.button, options);
 		}
 	}
 
@@ -7116,9 +7116,9 @@ internal sealed class ConfigurationTestStub
 		int row_ord = (asset.hasMultipleDifferentValues ? 2 : (asset.boolValue ? 1 : 0));
 		using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
 		bool boolValue;
-		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, row_ord, AdvisorDicBridge.ManageRequest().configDic))
+		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, row_ord, ADOEditorUtility.ManageRequest().configDic))
 		{
-			boolValue = AdvisorDicBridge.ChangeManager(asset.boolValue, vis, GUI.skin.button, options);
+			boolValue = ADOEditorUtility.ChangeManager(asset.boolValue, vis, GUI.skin.button, options);
 		}
 		if (changeCheckScope.changed)
 		{
@@ -7146,11 +7146,11 @@ internal sealed class ConfigurationTestStub
 			bool flag2 = res.enumValueIndex == 1 || (res.enumValueIndex != 0 && serializedProperty2.boolValue);
 			EditorGUI.BeginChangeCheck();
 			EditorGUIUtility.labelWidth = 50f;
-			using (new CandidateDic(res.hasMultipleDifferentValues || (res.enumValueIndex == 2 && serializedProperty.hasMultipleDifferentValues)))
+			using (new ShowMixedValueScope(res.hasMultipleDifferentValues || (res.enumValueIndex == 2 && serializedProperty.hasMultipleDifferentValues)))
 			{
 				flag = EditorGUILayout.Toggle("Self", flag);
 			}
-			using (new CandidateDic(res.hasMultipleDifferentValues || (res.enumValueIndex == 2 && serializedProperty2.hasMultipleDifferentValues)))
+			using (new ShowMixedValueScope(res.hasMultipleDifferentValues || (res.enumValueIndex == 2 && serializedProperty2.hasMultipleDifferentValues)))
 			{
 				flag2 = EditorGUILayout.Toggle("Others", flag2);
 			}
@@ -7226,13 +7226,13 @@ internal sealed class ConfigurationTestStub
 	{
 		using (new GUILayout.HorizontalScope())
 		{
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, producer, AdvisorDicBridge.infoTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, producer, ADOEditorUtility.infoTemplate))
 			{
 				bool isPlaying;
 				string v = ((isPlaying = Application.isPlaying) ? "Editor is in PlayMode" : ((!producer) ? "Test PhysBones in Scene" : "Stop Testing - ESC / Enter"));
 				using (new EditorGUI.DisabledScope(isPlaying))
 				{
-					if (AdvisorDicBridge.GetManager(v))
+					if (ADOEditorUtility.GetManager(v))
 					{
 						StopSystem();
 					}
@@ -7242,26 +7242,26 @@ internal sealed class ConfigurationTestStub
 			{
 				return false;
 			}
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, AdvisorDicBridge._ClientTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, ADOEditorUtility._ClientTemplate))
 			{
-				if (AdvisorDicBridge.GetManager("Restart", GUILayout.ExpandWidth(expand: false)))
+				if (ADOEditorUtility.GetManager("Restart", GUILayout.ExpandWidth(expand: false)))
 				{
 					WriteSystem();
 				}
 			}
 			UnityEngine.Object[] array = init.Where((UnityEngine.Object b) => b != null && merchant.ContainsKey(b) && m_Val[b] != null).ToArray();
 			bool flag = array.Any((UnityEngine.Object b) => merchant[b]);
-			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, AdvisorDicBridge.m_InitializerTemplate))
+			using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, flag, ADOEditorUtility.m_InitializerTemplate))
 			{
 				using (new EditorGUI.DisabledScope(!flag))
 				{
-					if (AdvisorDicBridge.GetManager("Apply Changes", GUILayout.ExpandWidth(expand: false)))
+					if (ADOEditorUtility.GetManager("Apply Changes", GUILayout.ExpandWidth(expand: false)))
 					{
 						UnityEngine.Object[] array2 = array;
 						foreach (UnityEngine.Object obj in array2)
 						{
 							UnityEngine.Object obj2 = m_Val[obj];
-							using (new MessageServiceSerializer(obj2, false, "rootTransform", "ignoreTransforms", "colliders"))
+							using (new ReflectionRestoreScope(obj2, false, "rootTransform", "ignoreTransforms", "colliders"))
 							{
 								Undo.RecordObject(obj2, "ADO - Apply Changes");
 								EditorUtility.CopySerialized(obj, obj2);
@@ -7325,7 +7325,7 @@ internal sealed class ConfigurationTestStub
 		EditorGUILayout.HelpBox("This is 'Avatar Dynamics Overhaul'. If you don't know what this is, you may have imported it from a package that shouldn't contain it. You can delete the editor script to revert back to original behaviour. Usually found in Packages > DreadScripts - Avatar Dynamics Overhaul. If this is the case, please notify the package creator about this.", MessageType.Warning);
 		using (new GUILayout.HorizontalScope())
 		{
-			if (AdvisorDicBridge.ResetManager("Locate", EditorStyles.toolbarButton))
+			if (ADOEditorUtility.ResetManager("Locate", EditorStyles.toolbarButton))
 			{
 				UnityEngine.Object obj = AssetDatabase.LoadMainAssetAtPath("Packages/com.dreadscripts.avatardynamicsoverhaul");
 				UnityEngine.Debug.Log("Found through path: " + obj);
@@ -7346,11 +7346,11 @@ internal sealed class ConfigurationTestStub
 					EditorGUIUtility.PingObject(obj);
 				}
 			}
-			if (AdvisorDicBridge.ResetManager("Info", EditorStyles.toolbarButton))
+			if (ADOEditorUtility.ResetManager("Info", EditorStyles.toolbarButton))
 			{
 				Application.OpenURL("https://linktr.ee/Dreadrith");
 			}
-			if (AdvisorDicBridge.ResetManager("Switch Editor", EditorStyles.toolbarButton))
+			if (ADOEditorUtility.ResetManager("Switch Editor", EditorStyles.toolbarButton))
 			{
 				setup();
 			}
@@ -7375,13 +7375,13 @@ internal sealed class ConfigurationTestStub
 		m_Broadcaster = EditorGUILayout.TextArea(m_Broadcaster, GUILayout.MinHeight(54f));
 		using (new GUILayout.HorizontalScope())
 		{
-			if (AdvisorDicBridge.ResetManager("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+			if (ADOEditorUtility.ResetManager("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 			{
 				_Strategy = false;
 			}
 			using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(m_Broadcaster) || m_Indexer))
 			{
-				if (AdvisorDicBridge.ResetManager("Send Feedback", EditorStyles.toolbarButton))
+				if (ADOEditorUtility.ResetManager("Send Feedback", EditorStyles.toolbarButton))
 				{
 					if (m_Broadcaster.Length > 2000)
 					{
@@ -7424,7 +7424,7 @@ internal sealed class ConfigurationTestStub
 		}
 		if (flag && (bool)ManagerStruct.SearchTest().a_VerifyOnProjectLoad)
 		{
-			AdvisorDicBridge.ExcludeAccount(delegate
+			ADOEditorUtility.ExcludeAccount(delegate
 			{
 				CreateSystem(isres: false);
 			});
@@ -7870,14 +7870,14 @@ internal sealed class ConfigurationTestStub
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(product) ? "Personal" : product), AdvisorDicBridge.ManageRequest().processorTemplate);
+				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(product) ? "Personal" : product), ADOEditorUtility.ManageRequest().processorTemplate);
 				GUILayout.FlexibleSpace();
 			}
 			if (!string.IsNullOrWhiteSpace(mapper))
 			{
 				using (new GUILayout.HorizontalScope(GUI.skin.box))
 				{
-					GUILayout.Label("Authorized For: " + mapper, AdvisorDicBridge.ManageRequest().procTemplate);
+					GUILayout.Label("Authorized For: " + mapper, ADOEditorUtility.ManageRequest().procTemplate);
 					return;
 				}
 			}
@@ -7894,7 +7894,7 @@ internal sealed class ConfigurationTestStub
 			}
 			if ((object)instance != null)
 			{
-				AdvisorDicBridge.m_RoleTemplate.ListWrapper(instance, map);
+				ADOEditorUtility.m_RoleTemplate.ListWrapper(instance, map);
 			}
 			ListStruct();
 			if (!_Advisor && !m_Consumer)
@@ -7916,7 +7916,7 @@ internal sealed class ConfigurationTestStub
 					flag &= flag2 && !_Prototype;
 					using (new EditorGUI.DisabledScope(!flag2))
 					{
-						if (AdvisorDicBridge.GetManager("Activate") || flag)
+						if (ADOEditorUtility.GetManager("Activate") || flag)
 						{
 							CloneSystem();
 						}
@@ -7925,7 +7925,7 @@ internal sealed class ConfigurationTestStub
 					return false;
 				}
 				EnableSystem("Check for License", "This will check for whether you already have a license for your device");
-				if (AdvisorDicBridge.ResetManager((!_Helper) ? "Check" : "Retry", EditorStyles.toolbarButton))
+				if (ADOEditorUtility.ResetManager((!_Helper) ? "Check" : "Retry", EditorStyles.toolbarButton))
 				{
 					CreateSystem(isres: true);
 				}
@@ -7958,7 +7958,7 @@ internal sealed class ConfigurationTestStub
 			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(!Regex.IsMatch(m_Object, "[0-9]{6}") || comparator);
 			try
 			{
-				if (AdvisorDicBridge.GetManager(comparator ? "Transferring..." : "Transfer License"))
+				if (ADOEditorUtility.GetManager(comparator ? "Transferring..." : "Transfer License"))
 				{
 					PushStruct();
 				}
@@ -7987,7 +7987,7 @@ internal sealed class ConfigurationTestStub
 			disabledScope = new EditorGUI.DisabledScope(!LogoutSystem() || m_Proxy);
 			try
 			{
-				if (AdvisorDicBridge.GetManager((!m_Proxy) ? "Send Verification Code" : "Sending Verification Code..."))
+				if (ADOEditorUtility.GetManager((!m_Proxy) ? "Send Verification Code" : "Sending Verification Code..."))
 				{
 					DefineStruct();
 				}
@@ -8002,14 +8002,14 @@ internal sealed class ConfigurationTestStub
 
 	private static void EnableSystem(string setup, string token)
 	{
-		using (new GUILayout.HorizontalScope(AdvisorDicBridge.ManageRequest()._ReponseTemplate))
+		using (new GUILayout.HorizontalScope(ADOEditorUtility.ManageRequest()._ReponseTemplate))
 		{
 			GUILayout.Label(string.Empty, GUILayout.Width(17f), GUILayout.Height(17f));
-			GUILayout.Label(setup, AdvisorDicBridge.ManageRequest()._WriterTemplate);
-			GUILayout.Label(new GUIContent(AdvisorDicBridge.PrepareRequest().m_ComparatorTemplate)
+			GUILayout.Label(setup, ADOEditorUtility.ManageRequest()._WriterTemplate);
+			GUILayout.Label(new GUIContent(ADOEditorUtility.PrepareRequest().m_ComparatorTemplate)
 			{
 				tooltip = token
-			}, AdvisorDicBridge.ManageRequest().m_ReaderTemplate, GUILayout.Width(17f), GUILayout.Height(17f));
+			}, ADOEditorUtility.ManageRequest().m_ReaderTemplate, GUILayout.Width(17f), GUILayout.Height(17f));
 		}
 	}
 
@@ -8018,12 +8018,12 @@ internal sealed class ConfigurationTestStub
 		using (new GUILayout.HorizontalScope())
 		{
 			string text = "ADOverhaulLicenseField";
-			if (AdvisorDicBridge.SortManager(text))
+			if (ADOEditorUtility.SortManager(text))
 			{
 				GUI.FocusControl(null);
 				return true;
 			}
-			if (AdvisorDicBridge.SetupManager(text))
+			if (ADOEditorUtility.SetupManager(text))
 			{
 				GUI.FocusControl(null);
 			}
@@ -8035,7 +8035,7 @@ internal sealed class ConfigurationTestStub
 				}
 				GUI.SetNextControlName(text);
 				setter = EditorGUILayout.TextField(string.Empty, setter).Trim();
-				AdvisorDicBridge.LoginManager("License Key", string.IsNullOrWhiteSpace(setter), 80f);
+				ADOEditorUtility.LoginManager("License Key", string.IsNullOrWhiteSpace(setter), 80f);
 			}
 			if (!_Prototype && ExcludeSystem() && !SearchTemplate())
 			{
@@ -8082,7 +8082,7 @@ internal sealed class ConfigurationTestStub
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.FlexibleSpace();
-			if (AdvisorDicBridge.CancelManager((!m_Callback) ? "Transfer License" : "Activate License"))
+			if (ADOEditorUtility.CancelManager((!m_Callback) ? "Transfer License" : "Activate License"))
 			{
 				m_Callback = !m_Callback;
 			}
@@ -8141,7 +8141,7 @@ internal sealed class ConfigurationTestStub
 
 	private static void SetStruct()
 	{
-		AdvisorDicBridge.ExcludeAccount(DeleteStruct);
+		ADOEditorUtility.ExcludeAccount(DeleteStruct);
 	}
 
 	private static void DeleteStruct()
@@ -8157,11 +8157,11 @@ internal sealed class ConfigurationTestStub
 	{
 		using (new TaskServiceClass(TaskServiceClass.ColoringType.BG, Color.clear))
 		{
-			if (GUILayout.Button(new GUIContent("Made By @Dreadrith ♡", "https://dreadrith.com/links"), AdvisorDicBridge.ManageRequest()._StructDic))
+			if (GUILayout.Button(new GUIContent("Made By @Dreadrith ♡", "https://dreadrith.com/links"), ADOEditorUtility.ManageRequest()._StructDic))
 			{
 				Application.OpenURL("https://dreadrith.com/links");
 			}
-			AdvisorDicBridge.IncludeManager();
+			ADOEditorUtility.IncludeManager();
 		}
 	}
 
@@ -8179,7 +8179,7 @@ internal sealed class ConfigurationTestStub
 	{
 		if (isdic)
 		{
-			Color color = ((pred == CustomLogType.Regular) ? AdvisorDicBridge.m_InitializerTemplate : ((pred != CustomLogType.Warning) ? AdvisorDicBridge.infoTemplate : AdvisorDicBridge._AuthenticationTemplate));
+			Color color = ((pred == CustomLogType.Regular) ? ADOEditorUtility.m_InitializerTemplate : ((pred != CustomLogType.Warning) ? ADOEditorUtility.infoTemplate : ADOEditorUtility._AuthenticationTemplate));
 			string message = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">[ADOverhaul]</color> " + info.Replace("\\n", "\n");
 			switch (pred)
 			{
@@ -8201,7 +8201,7 @@ internal sealed class ConfigurationTestStub
 	{
 		if (ignorecol)
 		{
-			throw new Exception("<color=#" + ColorUtility.ToHtmlStringRGB(AdvisorDicBridge.infoTemplate) + ">[ADOverhaul]</color> " + param);
+			throw new Exception("<color=#" + ColorUtility.ToHtmlStringRGB(ADOEditorUtility.infoTemplate) + ">[ADOverhaul]</color> " + param);
 		}
 	}
 
@@ -8273,15 +8273,15 @@ internal sealed class ConfigurationTestStub
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				if (AdvisorDicBridge.RateManager(AdvisorDicBridge.PrepareRequest().m_CallbackTemplate))
+				if (ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest().m_CallbackTemplate))
 				{
 					InsertStruct(map);
 				}
-				if (!ManagerStruct.SearchTest().u_updateHidden && code && AdvisorDicBridge.RateManager(AdvisorDicBridge.PrepareRequest()._ItemTemplate))
+				if (!ManagerStruct.SearchTest().u_updateHidden && code && ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest()._ItemTemplate))
 				{
 					m_Facade.target = !m_Facade.target;
 				}
-				GUILayout.Label("v" + _Connection, AdvisorDicBridge.ManageRequest().m_SystemDic, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("v" + _Connection, ADOEditorUtility.ManageRequest().m_SystemDic, GUILayout.ExpandWidth(expand: false));
 				if (setup == null)
 				{
 					GUILayout.FlexibleSpace();
@@ -8393,7 +8393,7 @@ internal sealed class ConfigurationTestStub
 		{
 			if (checkfirst)
 			{
-				AdvisorDicBridge.RemoveManager();
+				ADOEditorUtility.RemoveManager();
 			}
 			EditorGUILayout.HelpBox($"Version {ManagerStruct.SearchTest().u_updateVersion}\n--------------\n{ManagerStruct.SearchTest().u_updateMessage}", MessageType.Info);
 			bool flag = !string.IsNullOrWhiteSpace(ManagerStruct.SearchTest().u_updateLink);
@@ -8404,17 +8404,17 @@ internal sealed class ConfigurationTestStub
 				{
 					using (new EditorGUI.DisabledScope(adapter))
 					{
-						if (AdvisorDicBridge.ResetManager("Download Update", EditorStyles.toolbarButton))
+						if (ADOEditorUtility.ResetManager("Download Update", EditorStyles.toolbarButton))
 						{
 							VerifyStruct();
 						}
 					}
 				}
-				if (flag2 && AdvisorDicBridge.AwakeManager(new GUIContent("Open Changelog", ManagerStruct.SearchTest().u_updateChangelog), EditorStyles.toolbarButton))
+				if (flag2 && ADOEditorUtility.AwakeManager(new GUIContent("Open Changelog", ManagerStruct.SearchTest().u_updateChangelog), EditorStyles.toolbarButton))
 				{
 					Application.OpenURL(ManagerStruct.SearchTest().u_updateChangelog);
 				}
-				if (AdvisorDicBridge.ResetManager("Skip for Today", EditorStyles.toolbarButton))
+				if (ADOEditorUtility.ResetManager("Skip for Today", EditorStyles.toolbarButton))
 				{
 					ManagerStruct.SearchTest().u_updateHidden.ListService(useres: true);
 				}
@@ -8432,27 +8432,27 @@ internal sealed class ConfigurationTestStub
 		{
 			Rect m_MockModel = EditorGUILayout.GetControlRect(GUILayout.ExpandWidth(expand: true), GUILayout.Height(24f));
 			Rect value = m_MockModel;
-			GUI.Label(value.UpdateManager(24f, allowpool: true), AdvisorDicBridge.PrepareRequest()._InvocationTemplate);
-			GUI.Label(value, "Announcement", AdvisorDicBridge.ManageRequest().policyTemplate);
+			GUI.Label(value.UpdateManager(24f, allowpool: true), ADOEditorUtility.PrepareRequest()._InvocationTemplate);
+			GUI.Label(value, "Announcement", ADOEditorUtility.ManageRequest().policyTemplate);
 			m_Process.InsertManager(delegate
 			{
 				m_MockModel.height += 18f;
-				AdvisorDicBridge.RemoveManager();
+				ADOEditorUtility.RemoveManager();
 				EditorGUILayout.HelpBox(ManagerStruct.SearchTest().u_announcement, MessageType.Info);
 				using (new GUILayout.HorizontalScope())
 				{
-					if (!string.IsNullOrWhiteSpace(ManagerStruct.SearchTest().u_announcementLink) && AdvisorDicBridge.ResetManager(ManagerStruct.SearchTest().u_announcementLinkName, EditorStyles.toolbarButton))
+					if (!string.IsNullOrWhiteSpace(ManagerStruct.SearchTest().u_announcementLink) && ADOEditorUtility.ResetManager(ManagerStruct.SearchTest().u_announcementLinkName, EditorStyles.toolbarButton))
 					{
 						Application.OpenURL(ManagerStruct.SearchTest().u_announcementLink);
 					}
-					if (m_Invocation && AdvisorDicBridge.ResetManager("Hide", EditorStyles.toolbarButton))
+					if (m_Invocation && ADOEditorUtility.ResetManager("Hide", EditorStyles.toolbarButton))
 					{
 						ManagerStruct.SearchTest().u_announcementHidden.ListService(useres: true);
 						ManagerStruct.SearchTest().u_announcementHiddenDate.InstantiateService(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 					}
 				}
 			}, DeleteStruct);
-			if (AdvisorDicBridge.CalculateManager(m_MockModel))
+			if (ADOEditorUtility.CalculateManager(m_MockModel))
 			{
 				m_Process.target = !m_Process.target;
 			}
@@ -8467,7 +8467,7 @@ internal sealed class ConfigurationTestStub
 			ConnectStruct(iskey: false);
 			return;
 		}
-		AdvisorDicBridge.ExcludeAccount(delegate
+		ADOEditorUtility.ExcludeAccount(delegate
 		{
 			ResolveStruct(isident: false);
 		});
@@ -8559,7 +8559,7 @@ internal sealed class ConfigurationTestStub
 				ManagerStruct.SearchTest().u_announcementHidden.ListService(useres: false);
 			}
 		}
-		if (!(_Connection < new SystemTemplate(ManagerStruct.SearchTest().u_updateVersion.PublishService())))
+		if (!(_Connection < new SemVer(ManagerStruct.SearchTest().u_updateVersion.PublishService())))
 		{
 			if (!iskey)
 			{
@@ -8593,10 +8593,10 @@ internal sealed class ConfigurationTestStub
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(def, AdvisorDicBridge.ManageRequest().templateDic);
+				GUILayout.Label(def, ADOEditorUtility.ManageRequest().templateDic);
 				state?.Invoke();
 			}
-			if (AdvisorDicBridge.CalculateManager())
+			if (ADOEditorUtility.CalculateManager())
 			{
 				cust.target = !cust.target;
 				if (!ManagerStruct.SearchTest().editorAnimatedFoldouts)
@@ -8614,9 +8614,9 @@ internal sealed class ConfigurationTestStub
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				AdvisorDicBridge.CreateManager();
+				ADOEditorUtility.CreateManager();
 				GUILayout.FlexibleSpace();
-				GUILayout.Label(connection, AdvisorDicBridge.ManageRequest()._WriterTemplate);
+				GUILayout.Label(connection, ADOEditorUtility.ManageRequest()._WriterTemplate);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
 				StartStruct();
@@ -8628,30 +8628,30 @@ internal sealed class ConfigurationTestStub
 	internal static void ComputeStruct(SceneView def, Func<Rect> token, Action state, float second2, float connection3)
 	{
 		Rect ivk = def.ExcludeManager();
-		AdvisorDicBridge.PositionFlag positionFlag = ManagerStruct.SearchTest().toolOverlayAlignment.InvokeService<AdvisorDicBridge.PositionFlag>();
+		ADOEditorUtility.PositionFlag positionFlag = ManagerStruct.SearchTest().toolOverlayAlignment.InvokeService<ADOEditorUtility.PositionFlag>();
 		bool flag;
-		using (new AdvisorDicBridge.AdvisorTemplate(def, second2, connection3, positionFlag, _Serializer))
+		using (new ADOEditorUtility.AdvisorTemplate(def, second2, connection3, positionFlag, _Serializer))
 		{
 			Rect rect = token();
-			AdvisorDicBridge.CallManager(rect, MouseCursor.Pan);
-			flag = AdvisorDicBridge.DestroyManager(rect, interceptor);
+			ADOEditorUtility.CallManager(rect, MouseCursor.Pan);
+			flag = ADOEditorUtility.DestroyManager(rect, interceptor);
 			if (state != null)
 			{
-				AdvisorDicBridge.RemoveManager(2, 0);
+				ADOEditorUtility.RemoveManager(2, 0);
 				state();
 			}
 		}
 		if (flag)
 		{
 			Handles.BeginGUI();
-			ManagerStruct.SearchTest().toolOverlayAlignment.RegisterService = (int)AdvisorDicBridge.ReflectManager(positionFlag, ivk);
+			ManagerStruct.SearchTest().toolOverlayAlignment.RegisterService = (int)ADOEditorUtility.ReflectManager(positionFlag, ivk);
 			Handles.EndGUI();
 		}
 	}
 
 	internal static void StartStruct()
 	{
-		if (AdvisorDicBridge.RateManager(AdvisorDicBridge.PrepareRequest().m_ComposerTemplate))
+		if (ADOEditorUtility.RateManager(ADOEditorUtility.PrepareRequest().m_ComposerTemplate))
 		{
 			Queue.PublishTemplate();
 		}
@@ -8711,7 +8711,7 @@ internal sealed class ConfigurationTestStub
 	}
 
 	[CompilerGenerated]
-	internal static void CheckStruct(AdvisorDicBridge.ConfigurationDic var1, out float vis, out float res, ref _003C_003Ec__DisplayClass46_2 first2)
+	internal static void CheckStruct(ADOEditorUtility.ShapeSnapshot var1, out float vis, out float res, ref _003C_003Ec__DisplayClass46_2 first2)
 	{
 		vis = var1.m_ValDic + first2._DispatcherModel;
 		if (var1._DatabaseDic != 0)

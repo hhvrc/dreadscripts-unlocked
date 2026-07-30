@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul;
 
-internal class InvocationErrorStatus : EditorWindow
+internal class FloatingActionWindow : EditorWindow
 {
 	private float _ErrorTemplate;
 
@@ -32,9 +32,9 @@ internal class InvocationErrorStatus : EditorWindow
 
 	public bool m_EventTemplate = true;
 
-	private static InvocationErrorStatus _TestsTemplate;
+	private static FloatingActionWindow _TestsTemplate;
 
-	internal static InvocationErrorStatus PostFactory;
+	internal static FloatingActionWindow PostFactory;
 
 	private void VisitAccount(Action key, Action vis, float field = 100f, float selection2 = 100f, bool ignorepol3 = true, bool moveconfig4 = true, bool issecond5 = true)
 	{
@@ -56,7 +56,7 @@ internal class InvocationErrorStatus : EditorWindow
 			return;
 		}
 		Event current = Event.current;
-		using (new ProcessRulesSpec(ref methodTemplate))
+		using (new ScrollViewScope(ref methodTemplate))
 		{
 			EventType type = current.type;
 			int producerTemplate = _ProducerTemplate;
@@ -159,7 +159,7 @@ internal class InvocationErrorStatus : EditorWindow
 			}
 			_TestsTemplate = null;
 		}
-		_TestsTemplate = ScriptableObject.CreateInstance<InvocationErrorStatus>();
+		_TestsTemplate = ScriptableObject.CreateInstance<FloatingActionWindow>();
 		_TestsTemplate.VisitAccount(ord, res, caller2, map3, isresult4, outputcont5, isvisitor6);
 		_TestsTemplate.ShowUtility();
 		_TestsTemplate.position = init;

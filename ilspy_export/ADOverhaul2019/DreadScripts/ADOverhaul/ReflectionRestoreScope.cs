@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class MessageServiceSerializer : IDisposable
+internal sealed class ReflectionRestoreScope : IDisposable
 {
-	internal readonly DispatcherProducerList m_MockDic;
+	internal readonly ReflectionAccessor m_MockDic;
 
 	internal readonly Dictionary<string, object> instanceDic;
 
@@ -15,18 +15,18 @@ internal sealed class MessageServiceSerializer : IDisposable
 
 	internal bool m_ObserverDic = true;
 
-	internal static MessageServiceSerializer DefineDatabase;
+	internal static ReflectionRestoreScope DefineDatabase;
 
-	public MessageServiceSerializer(object task, params string[] valuesToRestore)
+	public ReflectionRestoreScope(object task, params string[] valuesToRestore)
 		: this(task, removecounter: true, valuesToRestore)
 	{
 	}
 
-	public MessageServiceSerializer(object param, bool removecounter, params string[] valuesToRestore)
+	public ReflectionRestoreScope(object param, bool removecounter, params string[] valuesToRestore)
 	{
-		MessageServiceSerializer _MessageDic = this;
+		ReflectionRestoreScope _MessageDic = this;
 		listenerDic = removecounter;
-		m_MockDic = new DispatcherProducerList(param);
+		m_MockDic = new ReflectionAccessor(param);
 		instanceDic = valuesToRestore.ToDictionary((string s) => s, delegate(string s)
 		{
 			object token;
