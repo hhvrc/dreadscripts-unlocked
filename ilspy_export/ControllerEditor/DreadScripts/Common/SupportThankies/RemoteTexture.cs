@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal sealed class Customer
+internal sealed class RemoteTexture
 {
 	internal enum TextureLayoutMethod
 	{
@@ -15,7 +15,7 @@ internal sealed class Customer
 		Pattern
 	}
 
-	internal struct Writer
+	internal struct TextureDisplayParams
 	{
 		internal readonly bool _Params;
 
@@ -27,22 +27,22 @@ internal sealed class Customer
 
 		internal static object CustomizeIndexer;
 
-		internal Writer(float init)
+		internal TextureDisplayParams(float init)
 			: this(Vector2.zero, init, init)
 		{
 		}
 
-		internal Writer(float def, float cfg)
+		internal TextureDisplayParams(float def, float cfg)
 			: this(Vector2.zero, def, cfg)
 		{
 		}
 
-		internal Writer(Vector2 param, float reg)
+		internal TextureDisplayParams(Vector2 param, float reg)
 			: this(param, reg, reg)
 		{
 		}
 
-		internal Writer(Vector2 i, float selection, float template)
+		internal TextureDisplayParams(Vector2 i, float selection, float template)
 		{
 			_Params = true;
 			_Listener = selection;
@@ -74,7 +74,7 @@ internal sealed class Customer
 
 	private bool order;
 
-	internal static Customer InstantiateCode;
+	internal static RemoteTexture InstantiateCode;
 
 	[SpecialName]
 	internal Texture2D ValidateWrapper()
@@ -101,7 +101,7 @@ internal sealed class Customer
 		return null;
 	}
 
-	internal Customer(string var1, bool overridesecond, string control)
+	internal RemoteTexture(string var1, bool overridesecond, string control)
 	{
 		_Identifier = var1;
 		attr = overridesecond;
@@ -134,7 +134,7 @@ internal sealed class Customer
 				_Registry = true;
 				if (!string.IsNullOrWhiteSpace(_Dispatcher))
 				{
-					Info.LoginWrapper(data, _Dispatcher);
+					EditorGuiUtils.LoginWrapper(data, _Dispatcher);
 					m_Exporter = true;
 				}
 			}
@@ -146,7 +146,7 @@ internal sealed class Customer
 		importer = false;
 	}
 
-	internal void AwakeWrapper(Rect setup, Writer vis = default(Writer))
+	internal void AwakeWrapper(Rect setup, TextureDisplayParams vis = default(TextureDisplayParams))
 	{
 		FlushWrapper(setup, TextureLayoutMethod.Pattern, vis);
 	}
@@ -156,7 +156,7 @@ internal sealed class Customer
 		FlushWrapper(setup, TextureLayoutMethod.StretchToFill);
 	}
 
-	internal void FlushWrapper(Rect spec, TextureLayoutMethod vis, Writer c = default(Writer))
+	internal void FlushWrapper(Rect spec, TextureLayoutMethod vis, TextureDisplayParams c = default(TextureDisplayParams))
 	{
 		if (!MapWrapper())
 		{
@@ -220,7 +220,7 @@ internal sealed class Customer
 		if (m_Exporter && !string.IsNullOrWhiteSpace(_Dispatcher))
 		{
 			m_Exporter = false;
-			Texture2D texture2D = Info.ReflectWrapper(_Dispatcher);
+			Texture2D texture2D = EditorGuiUtils.ReflectWrapper(_Dispatcher);
 			if (texture2D != null)
 			{
 				m_Database = texture2D;

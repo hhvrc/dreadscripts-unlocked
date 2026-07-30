@@ -133,11 +133,11 @@ internal class GlobalServer
 		{
 			using (new EditorGUI.DisabledScope(!_ProcServer))
 			{
-				if (ClassProperty.DisableQueue("Revert"))
+				if (EditorUtils.DisableQueue("Revert"))
 				{
 					AwakeContext();
 				}
-				if (ClassProperty.DisableQueue("Save"))
+				if (EditorUtils.DisableQueue("Save"))
 				{
 					InstantiateContext();
 				}
@@ -262,10 +262,55 @@ internal class GlobalServer
 	[SpecialName]
 	internal void TestContext(Enum setup, object selection)
 	{
-		string key = setup.ToString();
+		int num = 2;
+		uint num3 = default(uint);
+		string key = default(string);
 		while (true)
 		{
-			configurationServer[key] = selection;
+			int num2;
+			switch (num)
+			{
+			default:
+				_ProcServer = true;
+				num = 5;
+				break;
+			case 4:
+				goto IL_002c;
+			case 3:
+				num2 = (int)((num3 * 899230434) ^ 0x2B271009);
+				goto IL_0054;
+			case 1:
+				goto IL_004f;
+			case 2:
+				key = setup.ToString();
+				num = 1;
+				break;
+			case 5:
+				return;
+				IL_0054:
+				switch ((num3 = (uint)(num2 ^ -944865669)) % 3)
+				{
+				case 1u:
+					break;
+				case 2u:
+					goto IL_002c;
+				case 0u:
+					goto IL_004f;
+				default:
+					goto IL_007f;
+				}
+				goto default;
+				IL_007f:
+				num = 0;
+				break;
+				IL_004f:
+				num2 = -304830982;
+				goto IL_0054;
+				IL_002c:
+				configurationServer[key] = selection;
+				num = 3;
+				break;
+			}
 		}
 	}
 
@@ -288,7 +333,7 @@ internal class GlobalServer
 			object value = item.Value;
 			list.Add((key, value.ToString()));
 		}
-		string value2 = ClassProperty.InvokeList(list);
+		string value2 = EditorUtils.InvokeList(list);
 		EditorPrefs.SetString(_IteratorServer, value2);
 		_ProcServer = false;
 	}
@@ -305,12 +350,12 @@ internal class GlobalServer
 			try
 			{
 				configurationServer = new Dictionary<string, object>();
-				ClassProperty.ExporterObserver exporterObserver = new ClassProperty.ExporterObserver(ident);
+				EditorUtils.ExporterObserver exporterObserver = new EditorUtils.ExporterObserver(ident);
 				foreach (KeyValuePair<string, Type> item in _TaskServer)
 				{
 					string key = item.Key;
 					Type value = item.Value;
-					ClassProperty.RegistryObserver registryObserver = exporterObserver.UpdateError(key);
+					EditorUtils.RegistryObserver registryObserver = exporterObserver.UpdateError(key);
 					if (registryObserver.m_WriterObserver)
 					{
 						Type type = value;

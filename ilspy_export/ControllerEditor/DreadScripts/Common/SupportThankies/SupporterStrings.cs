@@ -1,6 +1,6 @@
 namespace DreadScripts.Common.SupportThankies;
 
-internal static class Test
+internal static class SupporterStrings
 {
 	internal static readonly string[] _Role = new string[13]
 	{
@@ -27,7 +27,7 @@ internal static class Test
 		"The friend we make along the way", "OwO", "W"
 	};
 
-	private static Test ChangeIndexer;
+	private static SupporterStrings ChangeIndexer;
 
 	internal static bool CalculateIndexer()
 	{

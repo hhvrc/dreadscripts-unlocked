@@ -5,19 +5,19 @@ using UnityEngine;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal class Rules
+internal class SupporterEntry
 {
 	internal readonly string m_Queue;
 
-	internal readonly List<Filter> error;
+	internal readonly List<TextFragment> error;
 
-	internal readonly List<Filter> m_Setter;
+	internal readonly List<TextFragment> m_Setter;
 
-	internal readonly List<Filter> m_Connection;
+	internal readonly List<TextFragment> m_Connection;
 
-	internal readonly Customer m_Consumer;
+	internal readonly RemoteTexture m_Consumer;
 
-	internal readonly Customer.TextureLayoutMethod adapter;
+	internal readonly RemoteTexture.TextureLayoutMethod adapter;
 
 	internal readonly Color? m_Interpreter;
 
@@ -29,32 +29,32 @@ internal class Rules
 
 	internal readonly string _Expression;
 
-	internal readonly object system = Definition.SetWrapper(1f, 1f, 1f);
+	internal readonly object system = EditorLayoutUtils.SetWrapper(global::_003CModule_003E.smethod_5<float[]>(1991865236));
 
 	internal Rect worker;
 
-	private static Rules ListCode;
+	private static SupporterEntry ListCode;
 
-	internal Rules(string spec)
+	internal SupporterEntry(string spec)
 	{
 		m_Queue = spec;
 		StartWrapper("onclick", out _Expression);
-		_Product = ((!StartWrapper("tooltip", out var col)) ? Test.decorator.DestroyWrapper() : col);
-		if (!StartWrapper("bgtype", out var col2) || !Enum.TryParse<Customer.TextureLayoutMethod>(col2, ignoreCase: true, out adapter))
+		_Product = ((!StartWrapper("tooltip", out var col)) ? SupporterStrings.decorator.DestroyWrapper() : col);
+		if (!StartWrapper("bgtype", out var col2) || !Enum.TryParse<RemoteTexture.TextureLayoutMethod>(col2, ignoreCase: true, out adapter))
 		{
-			adapter = Customer.TextureLayoutMethod.Pattern;
+			adapter = RemoteTexture.TextureLayoutMethod.Pattern;
 		}
 		if (StartWrapper("name", out var col3))
 		{
-			error = Filter.RemoveWrapper(col3);
+			error = TextFragment.RemoveWrapper(col3);
 		}
 		if (StartWrapper("prefix", out var col4))
 		{
-			m_Setter = Filter.RemoveWrapper(col4);
+			m_Setter = TextFragment.RemoveWrapper(col4);
 		}
 		if (StartWrapper("suffix", out var col5))
 		{
-			m_Connection = Filter.RemoveWrapper(col5);
+			m_Connection = TextFragment.RemoveWrapper(col5);
 		}
 		if (StartWrapper("namecolor", out var col6))
 		{
@@ -70,32 +70,32 @@ internal class Rules
 		}
 		if (StartWrapper("bgimage", out var col9))
 		{
-			m_Consumer = new Customer(col9, overridesecond: true, col9);
+			m_Consumer = new RemoteTexture(col9, overridesecond: true, col9);
 		}
 	}
 
 	internal void DefineWrapper(float v = 20f)
 	{
 		Rect wrapper = worker.GetWrapper(2f);
-		using (new Serializer(Serializer.ColoringType.General, (!m_Interpreter.HasValue) ? GUI.color : GUI.color.IncludeWrapper(m_Interpreter.Value)))
+		using (new GuiColorScope(GuiColorScope.ColoringType.General, (!m_Interpreter.HasValue) ? GUI.color : GUI.color.IncludeWrapper(m_Interpreter.Value)))
 		{
 			m_Consumer?.FlushWrapper(wrapper, adapter);
 		}
-		Info.RunWrapper(wrapper, (m_Consumer != null) ? Color.clear : (m_Interpreter ?? new Color(0f, 0f, 0f, 0.4f)), _Watcher.GetValueOrDefault(), 1f);
+		EditorGuiUtils.RunWrapper(wrapper, (m_Consumer != null) ? Color.clear : (m_Interpreter ?? new Color(0f, 0f, 0f, 0.4f)), _Watcher.GetValueOrDefault(), 1f);
 		using (new GUILayout.VerticalScope())
 		{
 			using (new GUILayout.VerticalScope())
 			{
 				GUILayout.FlexibleSpace();
-				Definition.EnableWrapper(system, null, false);
+				EditorLayoutUtils.EnableWrapper(system, null, false);
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.Space(8f);
 					if (m_Setter != null)
 					{
-						foreach (Filter item in m_Setter)
+						foreach (TextFragment item in m_Setter)
 						{
-							item.ReadWrapper(Exception.RegisterWrapper().repository, v);
+							item.ReadWrapper(SupportWindowAssets.RegisterWrapper().repository, v);
 						}
 					}
 					else
@@ -108,11 +108,11 @@ internal class Rules
 					GUILayout.FlexibleSpace();
 					if (error != null)
 					{
-						using (new Serializer(Serializer.ColoringType.General, candidate ?? GUI.color))
+						using (new GuiColorScope(GuiColorScope.ColoringType.General, candidate ?? GUI.color))
 						{
-							foreach (Filter item2 in error)
+							foreach (TextFragment item2 in error)
 							{
-								item2.ReadWrapper(Exception.RegisterWrapper().composer, v);
+								item2.ReadWrapper(SupportWindowAssets.RegisterWrapper().composer, v);
 							}
 						}
 					}
@@ -127,14 +127,14 @@ internal class Rules
 					}
 					else
 					{
-						foreach (Filter item3 in m_Connection)
+						foreach (TextFragment item3 in m_Connection)
 						{
-							item3.ReadWrapper(Exception.RegisterWrapper().m_Mapping, v);
+							item3.ReadWrapper(SupportWindowAssets.RegisterWrapper().m_Mapping, v);
 						}
 					}
 					GUILayout.Space(8f);
 				}
-				Definition.PublishWrapper();
+				EditorLayoutUtils.PublishWrapper();
 				GUILayout.FlexibleSpace();
 			}
 			if (Event.current.type == EventType.Repaint)
@@ -144,7 +144,7 @@ internal class Rules
 			GUILayout.Space(4f);
 		}
 		GUI.Label(worker, new GUIContent(string.Empty, _Product));
-		if (!string.IsNullOrWhiteSpace(_Expression) && Info.PushWrapper(worker))
+		if (!string.IsNullOrWhiteSpace(_Expression) && EditorGuiUtils.PushWrapper(worker))
 		{
 			Application.OpenURL(_Expression);
 		}

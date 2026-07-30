@@ -65,11 +65,11 @@ internal class StatusServer<T> : PopupWindowContent
 	{
 		hover = 
 		{
-			background = ClassProperty.ReflectList(new Color(0.302f, 0.302f, 0.302f))
+			background = EditorUtils.ReflectList(new Color(0.302f, 0.302f, 0.302f))
 		},
 		active = 
 		{
-			background = ClassProperty.ReflectList(new Color(0.1725f, 0.3647f, 0.5294f))
+			background = EditorUtils.ReflectList(new Color(0.1725f, 0.3647f, 0.5294f))
 		}
 	};
 
@@ -113,8 +113,8 @@ internal class StatusServer<T> : PopupWindowContent
 			{
 				if (!string.IsNullOrEmpty(_TokenServer))
 				{
-					GUILayout.Label(_TokenServer, ClassProperty.CalcError()._StructProcessor);
-					ClassProperty.MapQueue();
+					GUILayout.Label(_TokenServer, EditorUtils.CalcError()._StructProcessor);
+					EditorUtils.MapQueue();
 				}
 				if (_ModelServer)
 				{

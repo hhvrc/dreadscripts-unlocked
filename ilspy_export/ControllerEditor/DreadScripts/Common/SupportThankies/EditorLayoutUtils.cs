@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal static class Definition
+internal static class EditorLayoutUtils
 {
 	private static readonly Color reg = new Color(0.33f, 0.33f, 0.33f);
 
@@ -20,7 +20,7 @@ internal static class Definition
 
 	private static MethodInfo policy;
 
-	private static Definition PrintCode;
+	private static EditorLayoutUtils PrintCode;
 
 	[SpecialName]
 	public static Type CancelWrapper()
@@ -138,7 +138,7 @@ internal static class Definition
 	{
 		if (reg == default(Color))
 		{
-			reg = Definition.reg;
+			reg = EditorLayoutUtils.reg;
 		}
 		if (res == default(Rect))
 		{

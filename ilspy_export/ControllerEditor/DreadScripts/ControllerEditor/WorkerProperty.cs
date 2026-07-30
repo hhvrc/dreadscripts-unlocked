@@ -608,7 +608,7 @@ internal static class WorkerProperty
 		{
 			string text = "VRCAvatarDescriptor";
 			m_FilterProperty = new Dictionary<string, Type>();
-			Type type = ClassProperty.ForgotRules(text);
+			Type type = EditorUtils.ForgotRules(text);
 			if (type != null)
 			{
 				stubProperty = true;
@@ -621,7 +621,7 @@ internal static class WorkerProperty
 			{
 				return value;
 			}
-			Type type2 = ClassProperty.ForgotRules(spec);
+			Type type2 = EditorUtils.ForgotRules(spec);
 			m_FilterProperty.Add(spec, type2);
 			return type2;
 		}

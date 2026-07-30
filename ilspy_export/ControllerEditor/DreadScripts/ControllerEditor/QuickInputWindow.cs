@@ -168,7 +168,7 @@ internal class QuickInputWindow : CustomUtilityWindow<QuickInputWindow>
 					}
 					if (!m_DicPolicy && array[num])
 					{
-						GUILayout.Label(new GUIContent(ClassProperty.DestroyError().issuerProcessor), ClassProperty.CalcError().m_InstanceProcessor, GUILayout.ExpandWidth(expand: false));
+						GUILayout.Label(new GUIContent(EditorUtils.DestroyError().issuerProcessor), EditorUtils.CalcError().m_InstanceProcessor, GUILayout.ExpandWidth(expand: false));
 					}
 				}
 			}

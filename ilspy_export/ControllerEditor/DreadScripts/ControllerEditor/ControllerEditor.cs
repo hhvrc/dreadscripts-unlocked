@@ -297,6 +297,17 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private struct TestsAlgo
 	{
+		[CompilerGenerated]
+		private sealed class _003C_003Ec__DisplayClass14_0
+		{
+			public int recordAlgo;
+
+			internal void OrderDefinition(SerializedProperty p)
+			{
+				p.enumValueIndex = recordAlgo;
+			}
+		}
+
 		private readonly SerializedObject _PropertyAlgo;
 
 		private SerializedProperty m_ProcessorAlgo;
@@ -344,9 +355,55 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		private void ManageInitializer(int length_first)
 		{
+			int num = 4;
+			_003C_003Ec__DisplayClass14_0 _003C_003Ec__DisplayClass14_ = default(_003C_003Ec__DisplayClass14_0);
+			uint num3 = default(uint);
 			while (true)
 			{
-				int recordAlgo = length_first;
+				int num2;
+				switch (num)
+				{
+				case 5:
+					queueAlgo.ForEach(_003C_003Ec__DisplayClass14_.OrderDefinition);
+					num = 2;
+					break;
+				default:
+					num2 = (int)((num3 * 1612200334) ^ 0x7DDA0999);
+					goto IL_0049;
+				case 1:
+					goto IL_0066;
+				case 4:
+					_003C_003Ec__DisplayClass14_ = new _003C_003Ec__DisplayClass14_0();
+					num = 3;
+					break;
+				case 3:
+					goto IL_0081;
+				case 2:
+					return;
+					IL_0049:
+					switch ((num3 = (uint)(num2 ^ -1380365129)) % 3)
+					{
+					case 1u:
+						break;
+					case 2u:
+						goto IL_0066;
+					case 0u:
+						goto IL_0081;
+					default:
+						goto IL_0088;
+					}
+					goto case 5;
+					IL_0088:
+					num = 5;
+					break;
+					IL_0081:
+					num2 = -718050693;
+					goto IL_0049;
+					IL_0066:
+					_003C_003Ec__DisplayClass14_.recordAlgo = length_first;
+					num = 0;
+					break;
+				}
 			}
 		}
 
@@ -368,7 +425,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					GUILayout.Label("Tracking Control");
 					using (new TemplateThread(TemplateThread.ColoringType.BG, Color.red))
 					{
-						if (ClassProperty.RestartQueue(ClassProperty.CalcError().fieldProcessor, ClassProperty.CalcError().configProcessor, GUILayout.Width(25f), GUILayout.Height(20f)))
+						if (EditorUtils.RestartQueue(EditorUtils.CalcError().fieldProcessor, EditorUtils.CalcError().configProcessor, GUILayout.Width(25f), GUILayout.Height(20f)))
 						{
 							m_AlgoAnnotation.InvokeResolver(delegate(AnimatorState s)
 							{
@@ -387,7 +444,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						using (new GUILayout.HorizontalScope())
 						{
-							if (ClassProperty.CountQueue("All", GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.CountQueue("All", GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
 							{
 								int length_first = ((Event.current.button == 0) ? ((num != 1) ? 1 : 0) : ((num != 2) ? 2 : 0));
 								ManageInitializer(length_first);
@@ -404,7 +461,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						}
 					}
 				}
-				ClassProperty.MapQueue();
+				EditorUtils.MapQueue();
 				for (int num2 = 0; num2 < queueAlgo.Count; num2++)
 				{
 					SerializedProperty serializedProperty = queueAlgo[num2];
@@ -413,7 +470,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						using (new GUILayout.HorizontalScope())
 						{
-							if (ClassProperty.RestartQueue(_ErrorAlgo[num2], GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.RestartQueue(_ErrorAlgo[num2], GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
 							{
 								bool flag = Event.current.button == 0;
 								serializedProperty.enumValueIndex = ((!flag) ? ((serializedProperty.enumValueIndex != 2) ? 2 : 0) : ((serializedProperty.enumValueIndex != 1) ? 1 : 0));
@@ -561,7 +618,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal CustomerAlgo(bool appendlast, Action ord = null)
 			{
-				callbackAlgo = (string)(object)appendlast;
+				callbackAlgo = appendlast;
 				_value = appendlast;
 				m_DatabaseAlgo = ord;
 			}
@@ -607,7 +664,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				ExcludeDefinition((bool)(object)callbackAlgo);
+				ExcludeDefinition((bool)callbackAlgo);
 			}
 
 			internal static bool ComputeState()
@@ -645,7 +702,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal ExporterAlgo(float ident, Action result = null)
 			{
-				callbackAlgo = (string)(object)ident;
+				callbackAlgo = ident;
 				_value = ident;
 				identifierAlgo = result;
 			}
@@ -671,7 +728,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						dir = EditorStyles.numberField;
 					}
 					FlushDefinition(EditorGUILayout.FloatField(info, ResetDefinition(), dir, options));
-					if (havesecond && ClassProperty.CallQueue(ClassProperty.DestroyError()._CallbackProcessor))
+					if (havesecond && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 					{
 						Reset();
 					}
@@ -704,7 +761,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						int num;
 						int num2;
-						if (!ClassProperty.CallQueue(ClassProperty.DestroyError()._CallbackProcessor))
+						if (!EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 						{
 							num = 1145303574;
 							num2 = 1145303574;
@@ -750,7 +807,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				FlushDefinition((float)(object)callbackAlgo);
+				FlushDefinition((float)callbackAlgo);
 			}
 
 			public static implicit operator int(ExporterAlgo key)
@@ -893,7 +950,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal void IncludeDefinition(Vector3 config, Action ord)
 			{
-				callbackAlgo = (string)(object)config;
+				callbackAlgo = config;
 				_RegistryAlgo = ord;
 				_valueX = config.x;
 				_valueY = config.y;
@@ -921,7 +978,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					GUILayout.Label(init, GUILayout.MaxWidth(117f));
 					CreateDefinition(EditorGUILayout.Vector2Field(GUIContent.none, DeleteDefinition(), options));
-					if (GUILayout.Button(ClassProperty.DestroyError()._CallbackProcessor, ClassProperty.CalcError().m_ServiceProcessor, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (GUILayout.Button(EditorUtils.DestroyError()._CallbackProcessor, EditorUtils.CalcError().m_ServiceProcessor, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						Reset();
 					}
@@ -945,7 +1002,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				CreateDefinition((Vector3)(object)callbackAlgo);
+				CreateDefinition((Vector3)callbackAlgo);
 			}
 
 			public static implicit operator Vector2(DispatcherAlgo asset)
@@ -1007,7 +1064,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						counter2 = EditorStyles.textField;
 					}
 					ResolveDefinition((!deletehelper) ? EditorGUILayout.TextField(def, CollectDefinition(), counter2, options) : EditorGUILayout.DelayedTextField(def, CollectDefinition(), counter2, options));
-					if (setcust && ClassProperty.CallQueue(ClassProperty.DestroyError()._CallbackProcessor))
+					if (setcust && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 					{
 						Reset();
 					}
@@ -1016,7 +1073,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				ResolveDefinition(callbackAlgo);
+				ResolveDefinition((string)callbackAlgo);
 			}
 
 			public override string ToString()
@@ -1074,7 +1131,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			internal WriterAlgo(float item, float second, float state, float visitor2 = 1f, Action res3 = null)
 			{
 				Color color = new Color(item, second, state, visitor2);
-				callbackAlgo = (string)(object)color;
+				callbackAlgo = color;
 				r = item;
 				g = second;
 				b = state;
@@ -1084,7 +1141,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal WriterAlgo(Color info, Action cont = null)
 			{
-				callbackAlgo = (string)(object)info;
+				callbackAlgo = info;
 				r = info.r;
 				g = info.g;
 				b = info.b;
@@ -1102,7 +1159,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				using (new GUILayout.HorizontalScope())
 				{
 					ForgotDefinition(EditorGUILayout.ColorField(task, WriteDefinition(), options));
-					if (outputtoken && ClassProperty.CallQueue(ClassProperty.DestroyError()._CallbackProcessor))
+					if (outputtoken && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 					{
 						Reset();
 					}
@@ -1111,7 +1168,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				ForgotDefinition((Color)(object)callbackAlgo);
+				ForgotDefinition((Color)callbackAlgo);
 			}
 
 			internal static bool PostState()
@@ -1194,7 +1251,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				using (new GUILayout.HorizontalScope())
 				{
 					SortDefinition(EditorGUILayout.ObjectField(def, ChangeDefinition(), interceptorAlgo, allowSceneObjects: false, options));
-					if (isb && ClassProperty.CallQueue(ClassProperty.DestroyError()._CallbackProcessor))
+					if (isb && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 					{
 						Reset();
 					}
@@ -1246,7 +1303,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal abstract class AdvisorAlgo
 		{
-			internal string callbackAlgo;
+			internal object callbackAlgo;
 
 			private static AdvisorAlgo DisableState;
 
@@ -1562,7 +1619,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static void SetDefinition()
 		{
-			m_AdapterAlgo = new GUIStyle(ClassProperty.CalcError().algoObserver)
+			m_AdapterAlgo = new GUIStyle(EditorUtils.CalcError().algoObserver)
 			{
 				fontStyle = CallDefinition().parameterLabelFontStyle.CalculateDefinition<FontStyle>()
 			};
@@ -1629,7 +1686,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						string text = EditorJsonUtility.ToJson(fieldInfo.GetValue(CallDefinition()));
 						stringBuilder.Append(fieldInfo.Name + "[" + text + "]\u200b\u200b\u200b");
 					}
-					catch (System.Exception message)
+					catch (Exception message)
 					{
 						UnityEngine.Debug.LogError(message);
 					}
@@ -1768,7 +1825,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				res();
 			}
-			catch (System.Exception info)
+			catch (Exception info)
 			{
 				if (m_ModelAlgo)
 				{
@@ -1781,7 +1838,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 		}
 
-		private static void SearchDefinition(System.Exception info, bool isselection = false, string state = "")
+		private static void SearchDefinition(Exception info, bool isselection = false, string state = "")
 		{
 			if (!_InvocationAlgo.HasValue || m_TokenizerAlgo.Contains(_InvocationAlgo.Value))
 			{
@@ -1825,20 +1882,20 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(ClassProperty.DestroyError().ruleProcessor, ClassProperty.CalcError().broadcasterProcessor);
+				GUILayout.Label(EditorUtils.DestroyError().ruleProcessor, EditorUtils.CalcError().broadcasterProcessor);
 				GUILayout.Label("An error has occurred! Do you want to report it?", EditorStyles.boldLabel);
-				if (ClassProperty.DisableQueue("Ignore"))
+				if (EditorUtils.DisableQueue("Ignore"))
 				{
 					SetupReg(isinstance: false);
 				}
-				if (ClassProperty.DisableQueue("Find Solution"))
+				if (EditorUtils.DisableQueue("Find Solution"))
 				{
 					SetupReg(isinstance: true);
 				}
 			}
 			if (isvar1)
 			{
-				ClassProperty.MapQueue();
+				EditorUtils.MapQueue();
 			}
 		}
 
@@ -1912,7 +1969,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				if (codeAlgo)
 				{
-					if (ClassProperty.CountQueue("Cancel", EditorStyles.toolbarButton))
+					if (EditorUtils.CountQueue("Cancel", EditorStyles.toolbarButton))
 					{
 						ComputeInitializer(ignoresetup: false);
 					}
@@ -1922,7 +1979,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					if (string.IsNullOrWhiteSpace(m_AccountAlgo))
 					{
-						using (new TemplateThread(TemplateThread.ColoringType.FG, ClassProperty._WrapperProcessor))
+						using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils._WrapperProcessor))
 						{
 							GUILayout.Label("No solution Found! Please write the steps to reproduce this issue below:");
 						}
@@ -1937,13 +1994,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						}
 						using (new GUILayout.HorizontalScope())
 						{
-							if (ClassProperty.DisableQueue("Cancel", GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.DisableQueue("Cancel", GUILayout.ExpandWidth(expand: false)))
 							{
 								ComputeInitializer(ignoresetup: false);
 							}
 							using (new EditorGUI.DisabledScope(candidateAnnotation))
 							{
-								if (!ClassProperty.DisableQueue("Report Issue"))
+								if (!EditorUtils.DisableQueue("Report Issue"))
 								{
 									return;
 								}
@@ -1977,21 +2034,21 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					if (m_RefAlgo)
 					{
-						using (new TemplateThread(TemplateThread.ColoringType.FG, ClassProperty.configurationProperty))
+						using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils.configurationProperty))
 						{
 							GUILayout.Label("Solution Found!");
 						}
 					}
 					else
 					{
-						using (new TemplateThread(TemplateThread.ColoringType.FG, ClassProperty._WrapperProcessor))
+						using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils._WrapperProcessor))
 						{
 							GUILayout.Label("Known issue! Details:");
 						}
 					}
 					EditorGUILayout.Space();
 					EditorGUILayout.SelectableLabel(m_AccountAlgo, GUI.skin.label, GUILayout.ExpandHeight(expand: false));
-					if (ClassProperty.DisableQueue("Ok"))
+					if (EditorUtils.DisableQueue("Ok"))
 					{
 						ComputeInitializer(ignoresetup: false);
 					}
@@ -1999,13 +2056,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
-					GUILayout.Label(ClassProperty.DestroyError().ruleProcessor, ClassProperty.CalcError().broadcasterProcessor);
-					using (new TemplateThread(TemplateThread.ColoringType.FG, ClassProperty._ProcProperty))
+					GUILayout.Label(EditorUtils.DestroyError().ruleProcessor, EditorUtils.CalcError().broadcasterProcessor);
+					using (new TemplateThread(TemplateThread.ColoringType.FG, EditorUtils._ProcProperty))
 					{
 						GUILayout.Label("There was an issue contacting the server for a solution.");
 					}
 				}
-				if (ClassProperty.DisableQueue("Cancel"))
+				if (EditorUtils.DisableQueue("Cancel"))
 				{
 					ComputeInitializer(ignoresetup: false);
 				}
@@ -2107,7 +2164,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				_InstanceAlgo = true;
 				CountReg();
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
 				_InstanceAlgo = false;
 				_ContainerAlgo = "Failure! Exception: " + ex.Message + "\n" + ex.StackTrace;
@@ -2657,8 +2714,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			public static Func<Task> m_WorkerMapper;
 
-			private static _003C_003Ec ChangeProduct;
-
 			internal Type FindTests(ParameterInfo p)
 			{
 				return p.ParameterType;
@@ -2672,13 +2727,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			internal async Task InitTests()
 			{
 				await Task.Delay(4000);
-				ClassProperty.CountRules(delegate
+				EditorUtils.CountRules(delegate
 				{
 					try
 					{
 						ReflectReg();
 					}
-					catch (System.Exception exception)
+					catch (Exception exception)
 					{
 						UnityEngine.Debug.LogException(exception);
 					}
@@ -2695,7 +2750,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					ReflectReg();
 				}
-				catch (System.Exception exception)
+				catch (Exception exception)
 				{
 					UnityEngine.Debug.LogException(exception);
 				}
@@ -2703,11 +2758,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					_StructAlgo = false;
 				}
-			}
-
-			internal static bool CalculateProduct()
-			{
-				return ChangeProduct == null;
 			}
 		}
 
@@ -2776,7 +2826,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static void TestReg(string value, string token, MethodInfo comp = null, MethodInfo instance2 = null, MethodInfo res3 = null, string init4 = "")
 		{
-			Type type = ClassProperty.ForgotRules(value);
+			Type type = EditorUtils.ForgotRules(value);
 			if (!(type == null))
 			{
 				MapReg(type, token, comp, instance2, res3);
@@ -2811,7 +2861,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				HarmonyMethod transpiler = ((!(ident2 != null)) ? null : new HarmonyMethod(ident2));
 				DeleteReg(second3).Patch(i, prefix, postfix, transpiler);
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
 				_ProxyAlgo = true;
 				_GlobalAlgo = _GlobalAlgo + ex.Message + "\n";
@@ -2837,7 +2887,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				HarmonyMethod transpiler = ((counter2 != null) ? new HarmonyMethod(counter2) : null);
 				DeleteReg(pol3).Patch(key, prefix, postfix, transpiler);
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
 				_ProxyAlgo = true;
 				_GlobalAlgo = _GlobalAlgo + ex.Message + "\n";
@@ -2859,7 +2909,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				AddTests().Patch(cust, null, new HarmonyMethod(c));
 			}
-			catch (System.Exception exception)
+			catch (Exception exception)
 			{
 				UnityEngine.Debug.LogException(exception);
 			}
@@ -2867,11 +2917,58 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static void CloneReg(string config)
 		{
-			ProcessAlgo processAlgo = m_SchemaAlgo[config];
+			int num = 4;
+			uint num3 = default(uint);
+			ProcessAlgo processAlgo = default(ProcessAlgo);
 			while (true)
 			{
-				AddTests().Unpatch(processAlgo.m_ProducerAlgo, processAlgo.iteratorAlgo);
-				RateReg(processAlgo.m_PublisherAlgo, processAlgo.configurationAlgo, processAlgo.procAlgo, processAlgo.wrapperMapper);
+				int num2;
+				switch (num)
+				{
+				case 1:
+					num2 = (int)(num3 * 23821478) ^ -133066335;
+					goto IL_005d;
+				case 3:
+					goto IL_0058;
+				default:
+					num2 = (int)((num3 * 465626693) ^ 0x68766FE7);
+					goto IL_005d;
+				case 2:
+					goto IL_008d;
+				case 4:
+					processAlgo = m_SchemaAlgo[config];
+					num = 3;
+					break;
+				case 5:
+					return;
+					IL_005d:
+					switch ((num3 = (uint)(num2 ^ 0x5BD71B0C)) % 4)
+					{
+					case 3u:
+						break;
+					case 2u:
+						goto IL_0058;
+					case 1u:
+						goto IL_008d;
+					default:
+						goto IL_00c3;
+					case 0u:
+						return;
+					}
+					RateReg(processAlgo.m_PublisherAlgo, processAlgo.configurationAlgo, processAlgo.procAlgo, processAlgo.wrapperMapper);
+					num = 0;
+					break;
+					IL_00c3:
+					num = 5;
+					break;
+					IL_008d:
+					AddTests().Unpatch(processAlgo.m_ProducerAlgo, processAlgo.iteratorAlgo);
+					num = 1;
+					break;
+					IL_0058:
+					num2 = 519820861;
+					goto IL_005d;
+				}
 			}
 		}
 
@@ -2889,13 +2986,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					Task.Run(async delegate
 					{
 						await Task.Delay(4000);
-						ClassProperty.CountRules(delegate
+						EditorUtils.CountRules(delegate
 						{
 							try
 							{
 								ReflectReg();
 							}
-							catch (System.Exception exception)
+							catch (Exception exception)
 							{
 								UnityEngine.Debug.LogException(exception);
 							}
@@ -2906,10 +3003,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						});
 					});
 				}
-				GUILayout.Label(new GUIContent(ClassProperty.DestroyError().m_CreatorProcessor)
+				GUILayout.Label(new GUIContent(EditorUtils.DestroyError().m_CreatorProcessor)
 				{
 					tooltip = "This may happen if there were special characters in the project's path.\n\nSimple error log:\n" + _GlobalAlgo
-				}, ClassProperty.CalcError().broadcasterProcessor, GUILayout.Width(18f));
+				}, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(18f));
 				GUILayout.Label("Patching not fully successful. Some functions/patches may be missing.", GUILayout.ExpandWidth(expand: false));
 				if (_StructAlgo)
 				{
@@ -2918,11 +3015,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				if (_StateAlgo)
 				{
-					if (ClassProperty.CountQueue("Hide", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+					if (EditorUtils.CountQueue("Hide", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 					{
 						_ServiceAlgo = true;
 					}
-					if (ClassProperty.CountQueue("Retry", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+					if (EditorUtils.CountQueue("Retry", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 					{
 						ReflectReg();
 					}
@@ -3506,10 +3603,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				IncludeTests();
 			}
-			ClassProperty.MapQueue();
+			EditorUtils.MapQueue();
 			RevertAnnotation();
 			DefineVisitor();
-			ClassProperty.setterProcessor.PopHelper(this);
+			EditorUtils.setterProcessor.PopHelper(this);
 			EditorGUILayout.EndScrollView();
 		}
 
@@ -3523,7 +3620,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					GUILayout.FlexibleSpace();
 					using (new TemplateThread(TemplateThread.ColoringType.BG, ConsumerAlgo.CallDefinition().aw_active, Color.green, Color.grey))
 					{
-						ConsumerAlgo.CallDefinition().aw_active.ExcludeDefinition(ClassProperty.InvokeQueue(ConsumerAlgo.CallDefinition().aw_active, (!ConsumerAlgo.CallDefinition().aw_active) ? "Disabled" : "Enabled"));
+						ConsumerAlgo.CallDefinition().aw_active.ExcludeDefinition(EditorUtils.InvokeQueue(ConsumerAlgo.CallDefinition().aw_active, (!ConsumerAlgo.CallDefinition().aw_active) ? "Disabled" : "Enabled"));
 					}
 				}
 				if (_ClassMapper)
@@ -3598,7 +3695,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									GUILayout.FlexibleSpace();
 									using (new TemplateThread(TemplateThread.ColoringType.BG, ConsumerAlgo.CallDefinition().displayParameterType, Color.green, Color.grey))
 									{
-										ConsumerAlgo.CallDefinition().displayParameterType.ExcludeDefinition(ClassProperty.InvokeQueue(ConsumerAlgo.CallDefinition().displayParameterType, (!ConsumerAlgo.CallDefinition().displayParameterType) ? "Disabled" : "Enabled"));
+										ConsumerAlgo.CallDefinition().displayParameterType.ExcludeDefinition(EditorUtils.InvokeQueue(ConsumerAlgo.CallDefinition().displayParameterType, (!ConsumerAlgo.CallDefinition().displayParameterType) ? "Disabled" : "Enabled"));
 									}
 								}
 								using (new EditorGUI.DisabledScope(!ConsumerAlgo.CallDefinition().displayParameterType))
@@ -3671,7 +3768,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									string map = ((!(flag = ConsumerAlgo.CallDefinition().cosmeticTransitionsActive.FindDefinition())) ? "Disabled" : "Enabled");
 									using (new TemplateThread(TemplateThread.ColoringType.BG, flag, Color.green, Color.grey))
 									{
-										ConsumerAlgo.CallDefinition().cosmeticTransitionsActive.ExcludeDefinition(ClassProperty.InvokeQueue(flag, map));
+										ConsumerAlgo.CallDefinition().cosmeticTransitionsActive.ExcludeDefinition(EditorUtils.InvokeQueue(flag, map));
 									}
 								}
 								using (new EditorGUI.DisabledScope(!ConsumerAlgo.CallDefinition().cosmeticTransitionsActive))
@@ -3700,7 +3797,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									{
 										using (new ConsumerAlgo.WorkerAlgo(SortAlgo))
 										{
-											ConsumerAlgo.CallDefinition().cosmeticGraphActive.ExcludeDefinition(ClassProperty.InvokeQueue(flag2, map2));
+											ConsumerAlgo.CallDefinition().cosmeticGraphActive.ExcludeDefinition(EditorUtils.InvokeQueue(flag2, map2));
 										}
 									}
 								}
@@ -3720,8 +3817,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 												{
 													ConsumerAlgo.CallDefinition().graphBackgroundTexture.CheckDefinition("Background", false, GUILayout.Height(17f), GUILayout.ExpandWidth(expand: true));
 												}
-												ConsumerAlgo.CallDefinition().graphBackgroundIsTexture.ExcludeDefinition(ClassProperty.ExcludeQueue(ConsumerAlgo.CallDefinition().graphBackgroundIsTexture, new GUIContent("T", "Use Texture"), GUI.skin.button, GUILayout.Width(18f), GUILayout.Height(18f)));
-												if (ClassProperty.CallQueue(ClassProperty.DestroyError()._CallbackProcessor))
+												ConsumerAlgo.CallDefinition().graphBackgroundIsTexture.ExcludeDefinition(EditorUtils.ExcludeQueue(ConsumerAlgo.CallDefinition().graphBackgroundIsTexture, new GUIContent("T", "Use Texture"), GUI.skin.button, GUILayout.Width(18f), GUILayout.Height(18f)));
+												if (EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 												{
 													if (!ConsumerAlgo.CallDefinition().graphBackgroundIsTexture)
 													{
@@ -3757,7 +3854,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									string map3 = ((flag3 = ConsumerAlgo.CallDefinition().cosmeticNodesActive.FindDefinition()) ? "Enabled" : "Disabled");
 									using (new TemplateThread(TemplateThread.ColoringType.BG, flag3, Color.green, Color.grey))
 									{
-										ConsumerAlgo.CallDefinition().cosmeticNodesActive.ExcludeDefinition(ClassProperty.InvokeQueue(flag3, map3));
+										ConsumerAlgo.CallDefinition().cosmeticNodesActive.ExcludeDefinition(EditorUtils.InvokeQueue(flag3, map3));
 									}
 								}
 								using (new EditorGUI.DisabledScope(!ConsumerAlgo.CallDefinition().cosmeticNodesActive))
@@ -3786,7 +3883,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		private static void RunTests()
 		{
 			_PrototypeMapper = GUILayout.Toolbar(_PrototypeMapper, _RuleMapper, "toolbarbutton");
-			ClassProperty.MapQueue();
+			EditorUtils.MapQueue();
 			switch (_PrototypeMapper)
 			{
 			case 2:
@@ -3807,7 +3904,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				GUILayout.FlexibleSpace();
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().m_BridgeProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					if (_ObserverAnnotation == null)
 					{
@@ -3817,13 +3914,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				using (new EditorGUI.DisabledScope(!_ObserverAnnotation))
 				{
-					if (ClassProperty.RestartQueue(ClassProperty.DestroyError().m_StrategyProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+					if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 					{
 						Undo.RecordObject(ConsumerAlgo.CallDefinition().defaultTransition, "PasteSettings");
 						CustomizeAlgo(_ObserverAnnotation, ConsumerAlgo.CallDefinition().defaultTransition);
 					}
 				}
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().m_CustomerProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_CustomerProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
 				{
 					ConsumerAlgo.CallDefinition().defaultTransition = new AnimatorStateTransition();
 					DeleteTests();
@@ -3868,7 +3965,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_FactoryMapper.Update();
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(ClassProperty.DestroyError()._DatabaseProcessor, GUILayout.Width(35f), GUILayout.Height(35f));
+				GUILayout.Label(EditorUtils.DestroyError()._DatabaseProcessor, GUILayout.Width(35f), GUILayout.Height(35f));
 				using (new GUILayout.VerticalScope())
 				{
 					EditorGUILayout.PropertyField(m_Name, new GUIContent(string.Empty));
@@ -3877,7 +3974,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						EditorGUIUtility.labelWidth = 35f;
 						EditorGUILayout.PropertyField(tokenizerMapper);
 						EditorGUIUtility.labelWidth = 0f;
-						if (ClassProperty.RestartQueue(ClassProperty.DestroyError().m_CustomerProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
+						if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_CustomerProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
 						{
 							ConsumerAlgo.CallDefinition().defaultState = new AnimatorState
 							{
@@ -3972,7 +4069,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
 				m_AdvisorMapper = m_AdvisorMapper.CountPredicate(new GUIContent("Targeted Animator", "The Animator that should be targeted by default when building Masks"), true);
-				_CallbackMapper = ClassProperty.FindQueue(_CallbackMapper, new GUIContent("Always Use"), GUILayout.Width(85f));
+				_CallbackMapper = EditorUtils.FindQueue(_CallbackMapper, new GUIContent("Always Use"), GUILayout.Width(85f));
 			}
 			using (new GUILayout.VerticalScope(GUI.skin.box))
 			{
@@ -3997,7 +4094,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						}
 						using (new EditorGUI.DisabledScope(!RevertMapper()))
 						{
-							if (ClassProperty.DisableQueue("Sample From Active StateMachine"))
+							if (EditorUtils.DisableQueue("Sample From Active StateMachine"))
 							{
 								ConsumerAlgo.CallDefinition().defaultEntryPosition.CreateDefinition(RevertMapper().entryPosition);
 								ConsumerAlgo.CallDefinition().defaultAnyPosition.CreateDefinition(RevertMapper().anyStatePosition);
@@ -4007,7 +4104,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 				}
 			}
-			string value = ClassProperty.EnableRules(ConsumerAlgo.CallDefinition().saveFolder, "Generated Assets Path");
+			string value = EditorUtils.EnableRules(ConsumerAlgo.CallDefinition().saveFolder, "Generated Assets Path");
 			if (!string.IsNullOrEmpty(value))
 			{
 				ConsumerAlgo.CallDefinition().saveFolder.ResolveDefinition(value);
@@ -4085,7 +4182,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				config.FlushDefinition((float)(NodeColor)(object)EditorGUILayout.EnumPopup(attr, (NodeColor)config.ResetDefinition()));
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError()._CallbackProcessor, ClassProperty.CalcError().m_ServiceProcessor, GUILayout.Width(18f), GUILayout.Height(18f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError()._CallbackProcessor, EditorUtils.CalcError().m_ServiceProcessor, GUILayout.Width(18f), GUILayout.Height(18f)))
 				{
 					config.Reset();
 				}
@@ -4187,16 +4284,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			public string m_ProcMapper;
 
-			private static _003C_003Ec__DisplayClass11_1 CustomizeInfo;
-
 			internal bool PrepareTests(UnityEngine.AnimatorControllerParameter p2)
 			{
 				return p2.name != m_ProcMapper;
-			}
-
-			internal static bool SearchInfo()
-			{
-				return CustomizeInfo == null;
 			}
 		}
 
@@ -4222,7 +4312,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			parameterRenameWindow.m_ProxyMapper = def;
 			parameterRenameWindow._StructMapper = vis;
 			parameterRenameWindow.serviceMapper = acceptutil;
-			UnityEngine.AnimatorControllerParameter[] array = def.parameters.Where((UnityEngine.AnimatorControllerParameter p) => !ClassProperty.m_AdapterProcessor.Contains(p.name)).ToArray();
+			UnityEngine.AnimatorControllerParameter[] array = def.parameters.Where((UnityEngine.AnimatorControllerParameter p) => !EditorUtils.m_AdapterProcessor.Contains(p.name)).ToArray();
 			int num = array.Length;
 			parameterRenameWindow.globalMapper = new(UnityEngine.AnimatorControllerParameter, string)[num];
 			for (int num2 = 0; num2 < num; num2++)
@@ -4250,7 +4340,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			EditorGUI.BeginChangeCheck();
 			using (new TemplateThread(TemplateThread.ColoringType.BG, serviceMapper, Color.green, Color.grey))
 			{
-				serviceMapper = ClassProperty.AddQueue(serviceMapper, "Unique Parameters", GUI.skin.button);
+				serviceMapper = EditorUtils.AddQueue(serviceMapper, "Unique Parameters", GUI.skin.button);
 			}
 			if (EditorGUI.EndChangeCheck())
 			{
@@ -4273,7 +4363,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					if (string.IsNullOrEmpty(globalMapper[j].Item2))
 					{
 						m_DicPolicy = false;
-						GUILayout.Label(new GUIContent(ClassProperty.DestroyError().issuerProcessor.CompareHelper(), "Parameter must not be empty"), ClassProperty.CalcError().m_InstanceProcessor, GUILayout.ExpandWidth(expand: false));
+						GUILayout.Label(new GUIContent(EditorUtils.DestroyError().issuerProcessor.CompareHelper(), "Parameter must not be empty"), EditorUtils.CalcError().m_InstanceProcessor, GUILayout.ExpandWidth(expand: false));
 					}
 				}
 			}
@@ -4385,8 +4475,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			public static Func<bool, bool> _ConnectionInitializer;
 
-			internal static _003C_003Ec FillInfo;
-
 			internal bool SearchTests(AnimatorState s)
 			{
 				return s.motion as AnimationClip;
@@ -4452,11 +4540,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				return !b;
 			}
-
-			internal static bool DeleteInfo()
-			{
-				return FillInfo == null;
-			}
 		}
 
 		[CompilerGenerated]
@@ -4464,17 +4547,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			public QuickToggleWindow m_ContextInitializer;
 
-			internal static _003C_003Ec__DisplayClass18_0 RunInfo;
-
 			internal void ConcatProperty()
 			{
 				m_ContextInitializer._AlgoInitializer.LogoutThread("Target GameObjects", "The GameObjects that will be animated by the animation clip");
 				GUILayout.FlexibleSpace();
-				if (m_ContextInitializer.testsInitializer && ClassProperty.RestartQueue(InterruptTests() ? ClassProperty.DestroyError().m_ExpressionProcessor : ClassProperty.DestroyError().systemProcessor, ClassProperty.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (m_ContextInitializer.testsInitializer && EditorUtils.RestartQueue(InterruptTests() ? EditorUtils.DestroyError().m_ExpressionProcessor : EditorUtils.DestroyError().systemProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					ManageTests(!InterruptTests());
 				}
-				if (ClassProperty.RestartQueue((!RegisterTests()) ? ClassProperty.DestroyError().candidateProcessor : ClassProperty.DestroyError().productProcessor, ClassProperty.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.RestartQueue((!RegisterTests()) ? EditorUtils.DestroyError().candidateProcessor : EditorUtils.DestroyError().productProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					LogoutTests(!RegisterTests());
 				}
@@ -4526,11 +4607,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						}
 					}
 					_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty = EditorGUI.FloatField(rect5, _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty);
-					ClassProperty.FlushQueue(rect4, "Property", 180f, 15f, stripresult3: false);
-					ClassProperty.FlushQueue(rect5, "Value", 50f, 0f, stripresult3: false);
+					EditorUtils.FlushQueue(rect4, "Property", 180f, 15f, stripresult3: false);
+					EditorUtils.FlushQueue(rect5, "Value", 50f, 0f, stripresult3: false);
 					if (!flag)
 					{
-						ClassProperty.FlushQueue(rect4, "No Valid Properties", 145f);
+						EditorUtils.FlushQueue(rect4, "No Valid Properties", 145f);
 					}
 				}
 				using (new EditorGUI.DisabledScope(!_003C_003Ec__DisplayClass18_.m_RecordInitializer.ManageSerializer()))
@@ -4591,16 +4672,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				if ((bool)_003C_003Ec__DisplayClass18_.m_RecordInitializer.ManageSerializer())
 				{
-					EditorGUI.DropdownButton(rect3, GUIContent.none, FocusType.Passive, ClassProperty.CalcError().descriptorProcessor);
+					EditorGUI.DropdownButton(rect3, GUIContent.none, FocusType.Passive, EditorUtils.CalcError().descriptorProcessor);
 				}
-				ClassProperty.FlushQueue(rect2, "Target", 200f, 20f, stripresult3: false);
-				ClassProperty.AwakeRules<GameObject>(rect2, _003C_003Ec__DisplayClass18_.InsertProperty);
-				ClassProperty.ResetQueue(rect2, _003C_003Ec__DisplayClass18_.QueryProperty);
-			}
-
-			internal static bool ComputeInfo()
-			{
-				return RunInfo == null;
+				EditorUtils.FlushQueue(rect2, "Target", 200f, 20f, stripresult3: false);
+				EditorUtils.AwakeRules<GameObject>(rect2, _003C_003Ec__DisplayClass18_.InsertProperty);
+				EditorUtils.ResetQueue(rect2, _003C_003Ec__DisplayClass18_.QueryProperty);
 			}
 		}
 
@@ -4614,8 +4690,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			public _003C_003Ec__DisplayClass18_0 m_ConsumerInitializer;
 
 			public Func<GameObject, bool> adapterInitializer;
-
-			private static _003C_003Ec__DisplayClass18_1 ConnectInfo;
 
 			internal void CountProperty(int i, string s)
 			{
@@ -4651,11 +4725,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				m_ConsumerInitializer.m_ContextInitializer.Repaint();
 			}
-
-			internal static bool ViewInfo()
-			{
-				return ConnectInfo == null;
-			}
 		}
 
 		[CompilerGenerated]
@@ -4663,16 +4732,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			public StatusServer<Type>.UtilsServer interpreterInitializer;
 
-			private static _003C_003Ec__DisplayClass18_2 ChangeInfo;
-
 			internal bool AddProperty(Type vt)
 			{
 				return interpreterInitializer._ValueServer.InstantiateResolver(vt);
-			}
-
-			internal static bool CalculateInfo()
-			{
-				return ChangeInfo == null;
 			}
 		}
 
@@ -4761,11 +4823,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				m_ContextInitializer._AlgoInitializer.LogoutThread("Target GameObjects", "The GameObjects that will be animated by the animation clip");
 				GUILayout.FlexibleSpace();
-				if (m_ContextInitializer.testsInitializer && ClassProperty.RestartQueue(InterruptTests() ? ClassProperty.DestroyError().m_ExpressionProcessor : ClassProperty.DestroyError().systemProcessor, ClassProperty.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (m_ContextInitializer.testsInitializer && EditorUtils.RestartQueue(InterruptTests() ? EditorUtils.DestroyError().m_ExpressionProcessor : EditorUtils.DestroyError().systemProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					ManageTests(!InterruptTests());
 				}
-				if (ClassProperty.RestartQueue((!RegisterTests()) ? ClassProperty.DestroyError().candidateProcessor : ClassProperty.DestroyError().productProcessor, ClassProperty.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.RestartQueue((!RegisterTests()) ? EditorUtils.DestroyError().candidateProcessor : EditorUtils.DestroyError().productProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					LogoutTests(!RegisterTests());
 				}
@@ -4813,11 +4875,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						}
 					}
 					_003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty = EditorGUI.FloatField(res, _003C_003Ec__DisplayClass18_.m_RecordInitializer.m_AdapterProperty);
-					ClassProperty.FlushQueue(rect4, "Property", 180f, 15f, stripresult3: false);
-					ClassProperty.FlushQueue(res, "Value", 50f, 0f, stripresult3: false);
+					EditorUtils.FlushQueue(rect4, "Property", 180f, 15f, stripresult3: false);
+					EditorUtils.FlushQueue(res, "Value", 50f, 0f, stripresult3: false);
 					if (!flag)
 					{
-						ClassProperty.FlushQueue(rect4, "No Valid Properties", 145f);
+						EditorUtils.FlushQueue(rect4, "No Valid Properties", 145f);
 					}
 				}
 				using (new EditorGUI.DisabledScope(!_003C_003Ec__DisplayClass18_.m_RecordInitializer.ManageSerializer()))
@@ -4876,11 +4938,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				if ((bool)_003C_003Ec__DisplayClass18_.m_RecordInitializer.ManageSerializer())
 				{
-					EditorGUI.DropdownButton(item, GUIContent.none, FocusType.Passive, ClassProperty.CalcError().descriptorProcessor);
+					EditorGUI.DropdownButton(item, GUIContent.none, FocusType.Passive, EditorUtils.CalcError().descriptorProcessor);
 				}
-				ClassProperty.FlushQueue(rect2, "Target", 200f, 20f, stripresult3: false);
-				ClassProperty.AwakeRules<GameObject>(rect2, _003C_003Ec__DisplayClass18_.InsertProperty);
-				ClassProperty.ResetQueue(rect2, _003C_003Ec__DisplayClass18_.QueryProperty);
+				EditorUtils.FlushQueue(rect2, "Target", 200f, 20f, stripresult3: false);
+				EditorUtils.AwakeRules<GameObject>(rect2, _003C_003Ec__DisplayClass18_.InsertProperty);
+				EditorUtils.ResetQueue(rect2, _003C_003Ec__DisplayClass18_.QueryProperty);
 			});
 			m_ContextInitializer._AlgoInitializer.m_ErrorTests = true;
 			m_ContextInitializer.ChangeTests();
@@ -4926,11 +4988,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					propertyInitializer = EditorGUILayout.Foldout(propertyInitializer, new GUIContent($"Existing Clips ({definitionInitializer})"));
 					GUILayout.FlexibleSpace();
-					GUILayout.Label(new GUIContent(ClassProperty.DestroyError()._AccountProcessor.CompareHelper(), "Merge: Adds the properties to the existing clips on states. Creates a new clip if no clip exists.\n\nReplace: Replaces the existing clips on states with new clips and adds the properties to them."), GUILayout.Width(14f), GUILayout.Height(18f));
+					GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._AccountProcessor.CompareHelper(), "Merge: Adds the properties to the existing clips on states. Creates a new clip if no clip exists.\n\nReplace: Replaces the existing clips on states with new clips and adds the properties to them."), GUILayout.Width(14f), GUILayout.Height(18f));
 					string res = ((_InitializerInitializer == 0) ? "Merge" : ((_InitializerInitializer == 1) ? "Replace" : "Mixed"));
 					using (new TemplateThread(TemplateThread.ColoringType.BG, _InitializerInitializer, _MapperInitializer[0], _MapperInitializer[1], _MapperInitializer[2]))
 					{
-						if (ClassProperty.DisableQueue(res))
+						if (EditorUtils.DisableQueue(res))
 						{
 							switch (_InitializerInitializer)
 							{
@@ -4982,7 +5044,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							string res2 = (regInitializer[k] ? "Merge" : "Replace");
 							using (new TemplateThread(TemplateThread.ColoringType.BG, regInitializer[k], _MapperInitializer[0], _MapperInitializer[1]))
 							{
-								if (ClassProperty.DisableQueue(res2))
+								if (EditorUtils.DisableQueue(res2))
 								{
 									regInitializer[k] = !regInitializer[k];
 									ChangeTests();
@@ -5016,7 +5078,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							Undo.RecordObject(animatorState, "Set Quick Toggle Curve");
 							string i = $"{ConsumerAlgo.CallDefinition().saveFolder}/Animation Clips/{LogoutMapper().name}";
 							animationClip = new AnimationClip();
-							string path = ClassProperty.AwakeList(i, animatorState.name + ".anim", writestate: true);
+							string path = EditorUtils.AwakeList(i, animatorState.name + ".anim", writestate: true);
 							AssetDatabase.CreateAsset(animationClip, path);
 							animatorState.motion = animationClip;
 							EditorUtility.SetDirty(animatorState);
@@ -5037,7 +5099,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						if (item.RegisterSerializer())
 						{
-							animationClip2.SetCurve(AnimationUtility.CalculateTransformPath(item.ManageSerializer().transform, m_WrapperInitializer), item._RecordProperty, item.SetPage(), ClassProperty.InvokePredicate(AnimationUtility.TangentMode.Linear, (0f, item.m_AdapterProperty), (animationClip2.FindPredicate(), item.m_AdapterProperty)));
+							animationClip2.SetCurve(AnimationUtility.CalculateTransformPath(item.ManageSerializer().transform, m_WrapperInitializer), item._RecordProperty, item.SetPage(), EditorUtils.InvokePredicate(AnimationUtility.TangentMode.Linear, (0f, item.m_AdapterProperty), (animationClip2.FindPredicate(), item.m_AdapterProperty)));
 						}
 					}
 				}
@@ -5140,13 +5202,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Func<bool> m_IssuerInitializer;
 
-		public static Action<System.Exception> m_PrototypeInitializer;
+		public static Action<Exception> m_PrototypeInitializer;
 
 		public static Action m_RuleInitializer;
 
 		public static Action<FieldAlgo> singletonInitializer;
 
-		public static Action<System.Exception> _FactoryInitializer;
+		public static Action<Exception> _FactoryInitializer;
 
 		public static Func<PoolAlgo, bool> _AccountInitializer;
 
@@ -5166,7 +5228,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Action<FieldAlgo> _ParamInitializer;
 
-		public static Action<System.Exception> _ModelInitializer;
+		public static Action<Exception> _ModelInitializer;
 
 		public static Action m_TokenizerInitializer;
 
@@ -5174,7 +5236,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Action<FieldAlgo> m_ComparatorInitializer;
 
-		public static Action<System.Exception> m_ExceptionInitializer;
+		public static Action<Exception> m_ExceptionInitializer;
 
 		public static Action objectInitializer;
 
@@ -5198,7 +5260,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Action repositoryInitializer;
 
-		public static Action<System.Exception> mappingInitializer;
+		public static Action<Exception> mappingInitializer;
 
 		public static Action m_BaseInitializer;
 
@@ -5416,8 +5478,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static GenericMenu.MenuFunction2 invocationDefinition;
 
-		internal static _003C_003Ec StopInfo;
-
 		internal bool InvokeProperty()
 		{
 			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("z)lSj/1y p,A|I}oK^.}}< HC<dus8CGLPT6AdJi/Z)jj=*mX4V2# &x8Au~4ajsR# 27*Bh{F/o NM{aX4:jl4D/ N.gqjC.-kUtO'++JQF>?S+_)ieHv)O?`1EJ-w[" + m_BridgeAnnotation));
@@ -5487,7 +5547,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				fixedWidth = 100f,
 				normal = 
 				{
-					scaledBackgrounds = new Texture2D[1] { ClassProperty.LoginList(Color.black) }
+					scaledBackgrounds = new Texture2D[1] { EditorUtils.LoginList(Color.black) }
 				}
 			};
 		}
@@ -5507,7 +5567,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				fixedWidth = 200f,
 				normal = 
 				{
-					scaledBackgrounds = new Texture2D[1] { ClassProperty.LoginList(Color.black) }
+					scaledBackgrounds = new Texture2D[1] { EditorUtils.LoginList(Color.black) }
 				}
 			};
 		}
@@ -5639,10 +5699,56 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal void NewProperty()
 		{
-			systemAnnotation = false;
+			int num = 4;
+			uint num3 = default(uint);
 			while (true)
 			{
-				m_ExpressionAnnotation = false;
+				int num2;
+				switch (num)
+				{
+				case 5:
+					InsertVisitor();
+					num = 0;
+					break;
+				default:
+					return;
+				case 4:
+					systemAnnotation = false;
+					num = 3;
+					break;
+				case 1:
+					num2 = ((int)num3 * -1182591194) ^ 0x4F74DE58;
+					goto IL_0046;
+				case 2:
+					goto IL_0063;
+				case 3:
+					goto IL_0070;
+				case 0:
+					return;
+					IL_0046:
+					switch ((num3 = (uint)(num2 ^ 0x6D87232F)) % 3)
+					{
+					case 1u:
+						break;
+					case 2u:
+						goto IL_0063;
+					case 0u:
+						goto IL_0070;
+					default:
+						goto IL_0077;
+					}
+					goto case 5;
+					IL_0077:
+					num = 5;
+					break;
+					IL_0070:
+					num2 = 1619722105;
+					goto IL_0046;
+					IL_0063:
+					m_ExpressionAnnotation = false;
+					num = 1;
+					break;
+				}
 			}
 		}
 
@@ -5657,7 +5763,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return m_ParamsAnnotation == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(m_TagAnnotation + _WriterAnnotation)));
 		}
 
-		internal void CollectProperty(System.Exception exception)
+		internal void CollectProperty(Exception exception)
 		{
 			_RequestAnnotation = false;
 			listenerAnnotation = false;
@@ -5683,7 +5789,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			WriteAnnotation(assetneeded: true);
 		}
 
-		internal void VerifyProperty(System.Exception exception)
+		internal void VerifyProperty(Exception exception)
 		{
 			importerAnnotation = false;
 			FindVisitor($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
@@ -5741,7 +5847,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					serviceDefinition = response
 				};
-			}, delegate(System.Exception exception)
+			}, delegate(Exception exception)
 			{
 				m_CallbackAnnotation = false;
 				FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
@@ -5756,7 +5862,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			};
 		}
 
-		internal void RegisterProperty(System.Exception exception)
+		internal void RegisterProperty(Exception exception)
 		{
 			m_CallbackAnnotation = false;
 			FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
@@ -5777,7 +5883,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					m_IdentifierAnnotation = false;
 					WriteAnnotation(assetneeded: true);
 				});
-			}, delegate(System.Exception exception)
+			}, delegate(Exception exception)
 			{
 				_IndexerAnnotation = false;
 				FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
@@ -5804,7 +5910,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			WriteAnnotation(assetneeded: true);
 		}
 
-		internal void ManageProperty(System.Exception exception)
+		internal void ManageProperty(Exception exception)
 		{
 			_IndexerAnnotation = false;
 			FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
@@ -5863,7 +5969,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			ResetVisitor(removereference: false);
 		}
 
-		internal void PopProcessor(System.Exception exc)
+		internal void PopProcessor(Exception exc)
 		{
 			FindVisitor($"Something went wrong while checking for an update!\n\n{exc}", CustomLogType.Error);
 		}
@@ -6164,7 +6270,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal bool CollectProcessor(UnityEngine.AnimatorControllerParameter p)
 		{
-			return ClassProperty.m_AdapterProcessor.Contains(p.name);
+			return EditorUtils.m_AdapterProcessor.Contains(p.name);
 		}
 
 		internal Motion ResolveProcessor(ChildMotion c)
@@ -6385,7 +6491,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal void DisableObserver(StatusServer<string>.UtilsServer i)
 		{
 			GUILayout.Label(i._ValueServer, EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-			ClassProperty.StartQueue();
+			EditorUtils.StartQueue();
 		}
 
 		internal bool InsertObserver(string p, string s)
@@ -6406,7 +6512,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal void AddObserver(StatusServer<Type>.UtilsServer i)
 		{
 			GUILayout.Label((GUIContent)i.CloneConnection(), EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-			ClassProperty.StartQueue();
+			EditorUtils.StartQueue();
 		}
 
 		internal object[] InvokeObserver(Type type)
@@ -6449,7 +6555,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal bool[] ReadObserver(object[] values)
 		{
-			return ClassProperty.CheckRules<bool>(((string)values[0]).FlushResolver());
+			return EditorUtils.CheckRules<bool>(((string)values[0]).FlushResolver());
 		}
 
 		internal int SelectObserver(ImporterMapper c1, ImporterMapper c2)
@@ -6484,7 +6590,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal string ConnectObserver(ChildAnimatorState cs)
 		{
-			return ClassProperty.RegisterRules(cs.state.name);
+			return EditorUtils.RegisterRules(cs.state.name);
 		}
 
 		internal object CalculateObserver()
@@ -6544,19 +6650,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			CustomizeAlgo(ConsumerAlgo.CallDefinition().defaultTransition, col);
 		}
-
-		internal static bool ReflectInfo()
-		{
-			return StopInfo == null;
-		}
 	}
 
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass186_0
 	{
 		public string m_ObjectDefinition;
-
-		internal static _003C_003Ec__DisplayClass186_0 ConcatInfo;
 
 		internal string RunObserver(string key, ref _003C_003Ec__DisplayClass186_1 _003C_003Ec__DisplayClass186_1_0, ref _003C_003Ec__DisplayClass186_2 _003C_003Ec__DisplayClass186_2_0)
 		{
@@ -6569,33 +6668,144 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			LogoutAnnotation(list);
 			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
 			{
-				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
+				int num = 7;
+				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = default(_003C_003Ec__DisplayClass186_3);
+				uint num3 = default(uint);
 				while (true)
 				{
-					_003C_003Ec__DisplayClass186_.m_MerchantDefinition = this;
-					_003C_003Ec__DisplayClass186_.valueDefinition = response;
+					int num2;
+					switch (num)
+					{
+					case 8:
+						_RequestAnnotation = false;
+						num = 4;
+						break;
+					default:
+						return;
+					case 7:
+						_003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
+						num = 6;
+						break;
+					case 4:
+						m_IdentifierAnnotation = true;
+						num = 3;
+						break;
+					case 2:
+						goto IL_0056;
+					case 1:
+						_003C_003Ec__DisplayClass186_.valueDefinition = response;
+						num = 5;
+						break;
+					case 3:
+						SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
+						num = 0;
+						break;
+					case 5:
+						num2 = (int)(num3 * 2106439369) ^ -1356884480;
+						goto IL_00b4;
+					case 6:
+						goto IL_00af;
+					case 0:
+						return;
+						IL_00b4:
+						switch ((num3 = (uint)(num2 ^ -1587768776)) % 3)
+						{
+						case 1u:
+							break;
+						case 2u:
+							goto IL_0056;
+						case 0u:
+							goto IL_00af;
+						default:
+							goto IL_00cf;
+						}
+						goto case 8;
+						IL_00cf:
+						num = 8;
+						break;
+						IL_00af:
+						num2 = -1758829102;
+						goto IL_00b4;
+						IL_0056:
+						_003C_003Ec__DisplayClass186_.m_MerchantDefinition = this;
+						num = 1;
+						break;
+					}
 				}
 			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, InsertVisitor);
 		}
 
 		internal void LoginObserver(FieldAlgo response)
 		{
-			_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
+			int num = 7;
+			_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = default(_003C_003Ec__DisplayClass186_3);
+			uint num3 = default(uint);
 			while (true)
 			{
-				_003C_003Ec__DisplayClass186_.m_MerchantDefinition = this;
-				_003C_003Ec__DisplayClass186_.valueDefinition = response;
+				int num2;
+				switch (num)
+				{
+				case 8:
+					_RequestAnnotation = false;
+					num = 4;
+					break;
+				default:
+					return;
+				case 7:
+					_003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
+					num = 6;
+					break;
+				case 4:
+					m_IdentifierAnnotation = true;
+					num = 3;
+					break;
+				case 2:
+					goto IL_0056;
+				case 1:
+					_003C_003Ec__DisplayClass186_.valueDefinition = response;
+					num = 5;
+					break;
+				case 3:
+					SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
+					num = 0;
+					break;
+				case 5:
+					num2 = (int)(num3 * 2106439369) ^ -1356884480;
+					goto IL_00b4;
+				case 6:
+					goto IL_00af;
+				case 0:
+					return;
+					IL_00b4:
+					switch ((num3 = (uint)(num2 ^ -1587768776)) % 3)
+					{
+					case 1u:
+						break;
+					case 2u:
+						goto IL_0056;
+					case 0u:
+						goto IL_00af;
+					default:
+						goto IL_00cf;
+					}
+					goto case 8;
+					IL_00cf:
+					num = 8;
+					break;
+					IL_00af:
+					num2 = -1758829102;
+					goto IL_00b4;
+					IL_0056:
+					_003C_003Ec__DisplayClass186_.m_MerchantDefinition = this;
+					num = 1;
+					break;
+				}
 			}
 		}
 
 		internal void ReflectObserver(string key, string value, ref _003C_003Ec__DisplayClass186_4 _003C_003Ec__DisplayClass186_4_0, ref _003C_003Ec__DisplayClass186_5 _003C_003Ec__DisplayClass186_5_0)
 		{
 			SessionState.SetString(GetMapper(m_ObjectDefinition + key, ref _003C_003Ec__DisplayClass186_5_0), CalcMapper(value, ref _003C_003Ec__DisplayClass186_4_0));
-		}
-
-		internal static bool CollectInfo()
-		{
-			return ConcatInfo == null;
 		}
 	}
 
@@ -6619,8 +6829,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public FieldAlgo valueDefinition;
 
 		public _003C_003Ec__DisplayClass186_0 m_MerchantDefinition;
-
-		internal static _003C_003Ec__DisplayClass186_3 WriteInfo;
 
 		internal void DeleteObserver()
 		{
@@ -6685,15 +6893,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				ManageAnnotation(applyident: false);
 			}
-			catch (System.Exception exception)
+			catch (Exception exception)
 			{
 				UnityEngine.Debug.LogException(exception);
 			}
-		}
-
-		internal static bool RemoveInfo()
-		{
-			return WriteInfo == null;
 		}
 	}
 
@@ -6737,8 +6940,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public bool _FieldDefinition;
 
 		public Action m_AttributeDefinition;
-
-		internal static _003C_003Ec__DisplayClass192_0 PushInfo;
 
 		internal string CreateObserver(string property, string[] extractedValues)
 		{
@@ -6833,7 +7034,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				UpdateObserver(isCMD: true);
 				SortObserver();
 			}
-			catch (System.Exception exc)
+			catch (Exception exc)
 			{
 				ChangeObserver(isCMD: true, exc);
 			}
@@ -6875,7 +7076,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				UpdateObserver(isCMD: false);
 				SortObserver();
 			}
-			catch (System.Exception exc)
+			catch (Exception exc)
 			{
 				ChangeObserver(isCMD: false, exc);
 			}
@@ -6892,11 +7093,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			bool flag = num;
 			if ((!num || !array[2]) && (!flag || !array[3]) && (!array[2] || !array[3]))
 			{
-				throw new System.Exception("Failed to gather hardware info through " + ((!isCMD) ? "Shell" : "CMD"));
+				throw new Exception("Failed to gather hardware info through " + ((!isCMD) ? "Shell" : "CMD"));
 			}
 		}
 
-		internal void ChangeObserver(bool isCMD, System.Exception exc)
+		internal void ChangeObserver(bool isCMD, Exception exc)
 		{
 			if (!isCMD)
 			{
@@ -6957,7 +7158,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					UpdateObserver(isCMD: false);
 					SortObserver();
 				}
-				catch (System.Exception exc2)
+				catch (Exception exc2)
 				{
 					ChangeObserver(isCMD: false, exc2);
 				}
@@ -6991,11 +7192,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			CheckAnnotation();
 			m_AttributeDefinition();
 		}
-
-		internal static bool PrepareInfo()
-		{
-			return PushInfo == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -7010,16 +7206,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public string[] m_DescriptorDefinition;
 
-		internal static _003C_003Ec__DisplayClass192_3 SetupInfo;
-
 		internal bool LogoutObserver(string v)
 		{
 			return v == m_DescriptorDefinition[0];
-		}
-
-		internal static bool ExcludeInfo()
-		{
-			return SetupInfo == null;
 		}
 	}
 
@@ -7028,17 +7217,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public FieldAlgo serviceDefinition;
 
-		private static _003C_003Ec__DisplayClass239_0 InstantiateInfo;
-
 		internal void InterruptObserver()
 		{
 			m_CustomerAnnotation = serviceDefinition.InsertReg("transfer_email");
 			advisorAnnotation = true;
-		}
-
-		internal static bool RevertInfo()
-		{
-			return InstantiateInfo == null;
 		}
 	}
 
@@ -7060,8 +7242,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public Func<AnimatorCondition, bool> _VisitorReg;
 
 		public Func<AnimatorCondition, bool> m_AlgoReg;
-
-		internal static _003C_003Ec__DisplayClass285_0 ConnectParser;
 
 		internal void CompareServer(Rect targetRect)
 		{
@@ -7115,11 +7295,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return ForgotVisitor(m_ConfigurationDefinition, c, forcetag: true);
 		}
-
-		internal static bool ViewParser()
-		{
-			return ConnectParser == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -7127,16 +7302,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public AnimatorStateTransition serverReg;
 
-		internal static _003C_003Ec__DisplayClass308_0 RateParser;
-
 		internal bool InvokeServer(ChildAnimatorState c)
 		{
 			return c.state == serverReg.destinationState;
-		}
-
-		internal static bool PostParser()
-		{
-			return RateParser == null;
 		}
 	}
 
@@ -7145,16 +7313,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public string _ResolverReg;
 
-		internal static _003C_003Ec__DisplayClass370_1 LogoutParser;
-
 		internal bool VisitServer(UnityEngine.AnimatorControllerParameter p2)
 		{
 			return p2.name != _ResolverReg;
-		}
-
-		internal static bool FindParser()
-		{
-			return LogoutParser == null;
 		}
 	}
 
@@ -7164,8 +7325,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public HashSet<UnityEngine.Object> consumerReg;
 
 		public Action<AnimatorStateTransition> _AdapterReg;
-
-		internal static _003C_003Ec__DisplayClass375_0 WriteParser;
 
 		internal void ValidateServer(UnityEngine.Object o)
 		{
@@ -7268,11 +7427,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			CustomizeServer(l.stateMachine);
 		}
-
-		internal static bool RemoveParser()
-		{
-			return WriteParser == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -7282,17 +7436,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public _003C_003Ec__DisplayClass375_0 watcherReg;
 
-		internal static _003C_003Ec__DisplayClass375_1 MapParser;
-
 		internal void RunServer(ChildAnimatorStateMachine c)
 		{
 			interpreterReg.GetStateMachineTransitions(c.stateMachine).InvokeResolver(watcherReg.ValidateServer);
 			watcherReg.CustomizeServer(c.stateMachine);
-		}
-
-		internal static bool AddParser()
-		{
-			return MapParser == null;
 		}
 	}
 
@@ -7310,8 +7457,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public Action<AnimatorState> _WorkerReg;
 
 		public Action<AnimatorState> _FilterReg;
-
-		private static _003C_003Ec__DisplayClass378_0 NewParser;
 
 		internal string CloneServer(string name)
 		{
@@ -7341,13 +7486,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			string text = ((!(m is AnimationClip)) ? ".asset" : ".anim");
 			string text2 = $"{ConsumerAlgo.CallDefinition().saveFolder}/Animation Clips/{m_ProductReg.name}";
-			ClassProperty.InstantiateList(text2, overridecust: false, ClassProperty.PathOption.ForceFolder);
-			string text3 = ClassProperty.AwakeList(text2, m.name + text, writestate: true);
+			EditorUtils.InstantiateList(text2, overridecust: false, EditorUtils.PathOption.ForceFolder);
+			string text3 = EditorUtils.AwakeList(text2, m.name + text, writestate: true);
 			bool proc;
-			T val = ClassProperty.SetRules(m, text3, out proc, isinfo2: false);
+			T val = EditorUtils.SetRules(m, text3, out proc, isinfo2: false);
 			if (proc)
 			{
-				ClassProperty.InterruptPredicate(val, m_ProductReg);
+				EditorUtils.InterruptPredicate(val, m_ProductReg);
 			}
 			else
 			{
@@ -7429,11 +7574,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			s.motion = DeleteServer(s.motion);
 		}
-
-		internal static bool LoginParser()
-		{
-			return NewParser == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -7444,8 +7584,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public string m_BridgeReg;
 
 		public string m_StrategyReg;
-
-		internal static _003C_003Ec__DisplayClass379_0 PrintParser;
 
 		internal bool PushServer(string s)
 		{
@@ -7553,11 +7691,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			EditorUtility.SetDirty((AnimatorTransitionBase)t);
 		}
-
-		internal static bool ResolveParser()
-		{
-			return PrintParser == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -7568,8 +7701,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public string _DatabaseReg;
 
 		public string m_ExporterReg;
-
-		internal static _003C_003Ec__DisplayClass380_0 AssetParser;
 
 		internal bool FillServer(string s)
 		{
@@ -7630,11 +7761,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				ForgotServer(childAnimatorState.state.behaviours);
 			}
 		}
-
-		internal static bool SelectParser()
-		{
-			return AssetParser == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -7645,8 +7771,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public Action<StateMachineBehaviour[]> _AttrReg;
 
 		public AnimatorStateMachine m_DispatcherReg;
-
-		private static _003C_003Ec__DisplayClass381_0 SetupParser;
 
 		internal bool CheckServer(string s)
 		{
@@ -7739,11 +7863,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			m_DispatcherReg.RemoveAnyStateTransition(t);
 		}
-
-		internal static bool ExcludeParser()
-		{
-			return SetupParser == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -7751,11 +7870,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public string _RegistryReg;
 
-		internal static _003C_003Ec__DisplayClass382_0 ListParser;
-
 		internal string RegisterServer(string s)
 		{
-			if (string.IsNullOrEmpty(s) || ClassProperty.m_AdapterProcessor.Contains(s))
+			if (string.IsNullOrEmpty(s) || EditorUtils.m_AdapterProcessor.Contains(s))
 			{
 				return s;
 			}
@@ -7831,11 +7948,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 		}
-
-		internal static bool CalcParser()
-		{
-			return ListParser == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -7877,8 +7989,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public AnimatorStateTransition _AccountReg;
 
-		internal static _003C_003Ec__DisplayClass410_1 RateIdentifier;
-
 		internal bool SetupThread(ChildAnimatorState c)
 		{
 			return _AccountReg.destinationState == c.state;
@@ -7887,11 +7997,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal bool EnableThread(ChildAnimatorStateMachine c)
 		{
 			return _AccountReg.destinationStateMachine == c.stateMachine;
-		}
-
-		internal static bool PostIdentifier()
-		{
-			return RateIdentifier == null;
 		}
 	}
 
@@ -7907,8 +8012,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public Func<AnimatorStateTransition, bool> _InvocationReg;
 
 		public Func<AnimatorTransitionBase, bool> roleReg;
-
-		private static _003C_003Ec__DisplayClass413_0 DisableIdentifier;
 
 		internal void PopThread(List<AnimatorStateTransition> t, AnimatorState s)
 		{
@@ -7972,11 +8075,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return t.destinationState == m_DicReg[0].destinationState;
 		}
-
-		internal static bool VerifyIdentifier()
-		{
-			return DisableIdentifier == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -7986,16 +8084,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public Action<AnimatorCondition> _ModelReg;
 
-		internal static _003C_003Ec__DisplayClass413_1 ConcatIdentifier;
-
 		internal void CancelThread(AnimatorCondition c)
 		{
 			_ParamReg.AddCondition(c.mode, c.threshold, c.parameter);
-		}
-
-		internal static bool CollectIdentifier()
-		{
-			return ConcatIdentifier == null;
 		}
 	}
 
@@ -8006,16 +8097,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public Action<AnimatorCondition> decoratorReg;
 
-		internal static _003C_003Ec__DisplayClass413_2 LogoutIdentifier;
-
 		internal void CountThread(AnimatorCondition c)
 		{
 			_TokenizerReg.AddCondition(c.mode, c.threshold, c.parameter);
-		}
-
-		internal static bool FindIdentifier()
-		{
-			return LogoutIdentifier == null;
 		}
 	}
 
@@ -8026,16 +8110,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public Action<AnimatorCondition> m_ExceptionReg;
 
-		internal static _003C_003Ec__DisplayClass413_3 TestIdentifier;
-
 		internal void DisableThread(AnimatorCondition c)
 		{
 			_ComparatorReg.AddCondition(c.mode, c.threshold, c.parameter);
-		}
-
-		internal static bool IncludeIdentifier()
-		{
-			return TestIdentifier == null;
 		}
 	}
 
@@ -8044,16 +8121,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public AnimatorStateTransition _ValueReg;
 
-		private static _003C_003Ec__DisplayClass420_1 NewIdentifier;
-
 		internal bool QueryThread(ChildAnimatorState s)
 		{
 			return s.state == _ValueReg.destinationState;
-		}
-
-		internal static bool LoginIdentifier()
-		{
-			return NewIdentifier == null;
 		}
 	}
 
@@ -8062,16 +8132,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public SetterTests.InstanceTests m_MerchantReg;
 
-		private static _003C_003Ec__DisplayClass430_0 PushIdentifier;
-
 		internal void AddThread(AnimatorState s)
 		{
 			TestAlgo(m_MerchantReg.itemTests, s.AddTransition((AnimatorState)null));
-		}
-
-		internal static bool PrepareIdentifier()
-		{
-			return PushIdentifier == null;
 		}
 	}
 
@@ -8079,8 +8142,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private sealed class _003C_003Ec__DisplayClass431_0
 	{
 		public HashSet<UnityEngine.Object> authenticationReg;
-
-		private static _003C_003Ec__DisplayClass431_0 PrintIdentifier;
 
 		internal void InvokeThread(AnimatorStateTransition sel)
 		{
@@ -8120,11 +8181,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				ManageMapper().RemoveAnyStateTransition(_003C_003Ec__DisplayClass431_._ReponseReg);
 			}
 		}
-
-		internal static bool ResolveIdentifier()
-		{
-			return PrintIdentifier == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -8135,8 +8191,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public _003C_003Ec__DisplayClass431_0 m_PoolReg;
 
 		public Func<AnimatorStateTransition, bool> _ParameterReg;
-
-		internal static _003C_003Ec__DisplayClass431_1 AssetIdentifier;
 
 		internal bool FindThread(AnimatorStateTransition t)
 		{
@@ -8157,19 +8211,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return t == _ReponseReg;
 		}
-
-		internal static bool SelectIdentifier()
-		{
-			return AssetIdentifier == null;
-		}
 	}
 
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass432_0
 	{
 		public List<AnimatorTransitionBase> _ComposerReg;
-
-		internal static _003C_003Ec__DisplayClass432_0 SetupIdentifier;
 
 		internal void VisitThread(AnimatorTransitionBase t)
 		{
@@ -8213,11 +8260,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				_003C_003Ec__DisplayClass432_.mockReg.RemoveTransition(_003C_003Ec__DisplayClass432_.m_ClassReg);
 			}
 		}
-
-		internal static bool ExcludeIdentifier()
-		{
-			return SetupIdentifier == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -8227,19 +8269,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public _003C_003Ec__DisplayClass432_0 mappingReg;
 
-		internal static _003C_003Ec__DisplayClass432_1 ListIdentifier;
-
 		internal void ReadThread(AnimatorCondition c)
 		{
 			AnimatorTransitionBase animatorTransitionBase = RevertMapper().AddEntryTransition(m_RepositoryReg.destinationState);
 			EditorUtility.CopySerializedManagedFieldsOnly(m_RepositoryReg, animatorTransitionBase);
 			animatorTransitionBase.conditions = new AnimatorCondition[1] { c };
 			mappingReg._ComposerReg.Add(animatorTransitionBase);
-		}
-
-		internal static bool CalcIdentifier()
-		{
-			return ListIdentifier == null;
 		}
 	}
 
@@ -8250,20 +8285,67 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public _003C_003Ec__DisplayClass432_0 containerReg;
 
-		internal static _003C_003Ec__DisplayClass432_2 CompareIdentifier;
-
 		internal void SelectThread(AnimatorCondition c)
 		{
-			AnimatorTransitionBase dest = RevertMapper().AddAnyStateTransition(baseReg.destinationState);
+			int num = 5;
+			uint num4 = default(uint);
+			AnimatorTransitionBase animatorTransitionBase = default(AnimatorTransitionBase);
 			while (true)
 			{
-				EditorUtility.CopySerialized(baseReg, dest);
+				int num2 = num;
+				while (true)
+				{
+					int num3;
+					switch (num2)
+					{
+					case 6:
+						num3 = (int)(num4 * 2032351528) ^ -900384976;
+						goto IL_001d;
+					default:
+						EditorUtility.CopySerialized(baseReg, animatorTransitionBase);
+						num = 6;
+						break;
+					case 1:
+						goto IL_0079;
+					case 5:
+						animatorTransitionBase = RevertMapper().AddAnyStateTransition(baseReg.destinationState);
+						num2 = 4;
+						continue;
+					case 2:
+						containerReg._ComposerReg.Add(animatorTransitionBase);
+						num2 = 3;
+						continue;
+					case 4:
+						goto IL_00d3;
+					case 3:
+						return;
+						IL_001d:
+						switch ((num4 = (uint)(num3 ^ -1858540428)) % 3)
+						{
+						case 2u:
+							break;
+						case 1u:
+							goto IL_0079;
+						case 0u:
+							goto IL_00d3;
+						default:
+							goto IL_00dd;
+						}
+						goto default;
+						IL_00dd:
+						num2 = 1;
+						continue;
+						IL_00d3:
+						num3 = -1057653085;
+						goto IL_001d;
+						IL_0079:
+						animatorTransitionBase.conditions = new AnimatorCondition[1] { c };
+						num = 2;
+						break;
+					}
+					break;
+				}
 			}
-		}
-
-		internal static bool PublishIdentifier()
-		{
-			return CompareIdentifier == null;
 		}
 	}
 
@@ -8276,19 +8358,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public _003C_003Ec__DisplayClass432_0 instanceReg;
 
-		internal static _003C_003Ec__DisplayClass432_3 InstantiateIdentifier;
-
 		internal void RemoveThread(AnimatorCondition c)
 		{
 			AnimatorStateTransition animatorStateTransition = CalculateAlgo(m_ClassReg);
 			animatorStateTransition.conditions = new AnimatorCondition[1] { c };
 			mockReg.AddTransition(animatorStateTransition);
 			instanceReg._ComposerReg.Add(animatorStateTransition);
-		}
-
-		internal static bool RevertIdentifier()
-		{
-			return InstantiateIdentifier == null;
 		}
 	}
 
@@ -8297,16 +8372,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		public EditorCurveBinding parserReg;
 
-		internal static _003C_003Ec__DisplayClass483_1 FillDatabase;
-
 		internal bool MapThread(string p)
 		{
 			return p == parserReg.propertyName;
-		}
-
-		internal static bool DeleteDatabase()
-		{
-			return FillDatabase == null;
 		}
 	}
 
@@ -8317,8 +8385,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public string _PublisherReg;
 
-		internal static _003C_003Ec__DisplayClass616_0 ConcatDatabase;
-
 		internal T ReflectThread<T>(string methodName) where T : Delegate
 		{
 			return (T)Delegate.CreateDelegate(typeof(T), m_IteratorReg, _ReaderVisitor.DisableList(methodName));
@@ -8328,19 +8394,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return l._InfoMapper.name == _PublisherReg;
 		}
-
-		internal static bool CollectDatabase()
-		{
-			return ConcatDatabase == null;
-		}
 	}
 
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass670_1
 	{
 		public UnityEditor.Animations.BlendTree visitorTests;
-
-		internal static _003C_003Ec__DisplayClass670_1 MapDatabase;
 
 		internal ChildMotion CollectThread(Motion m)
 		{
@@ -8352,11 +8411,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				directBlendParameter = visitorTests.blendParameter
 			};
 		}
-
-		internal static bool AddDatabase()
-		{
-			return MapDatabase == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -8365,8 +8419,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public GUIStyle[] m_ObserverTests;
 
 		public Texture2D _ServerTests;
-
-		private static _003C_003Ec__DisplayClass73_0 CompareDatabase;
 
 		internal void AssetThread(string name, Func<GUIStyle, GUIStyle> func, bool isCosmeticOnlyStyle = false, bool hiddenFromList = false)
 		{
@@ -8411,11 +8463,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					textColor = Color.black
 				}
 			};
-		}
-
-		internal static bool PublishDatabase()
-		{
-			return CompareDatabase == null;
 		}
 	}
 
@@ -9070,7 +9117,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				for (int i = 0; i < 3; i++)
 				{
 					EditorGUI.BeginChangeCheck();
-					array[i].ExcludeDefinition(ClassProperty.AddQueue(array[i], array2[i], EditorStyles.toolbarButton));
+					array[i].ExcludeDefinition(EditorUtils.AddQueue(array[i], array2[i], EditorStyles.toolbarButton));
 					if (EditorGUI.EndChangeCheck())
 					{
 						switch (i)
@@ -9086,25 +9133,25 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 			EditorGUI.BeginDisabledGroup(!LogoutMapper());
-			using (new GUILayout.VerticalScope(ClassProperty.CalcError()._WrapperObserver))
+			using (new GUILayout.VerticalScope(EditorUtils.CalcError()._WrapperObserver))
 			{
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.Space(18f);
 					if (!(RevertMapper() != null))
 					{
-						GUILayout.Label("No Active Machine", ClassProperty.CalcError()._ClassProcessor, GUILayout.ExpandWidth(expand: true));
+						GUILayout.Label("No Active Machine", EditorUtils.CalcError()._ClassProcessor, GUILayout.ExpandWidth(expand: true));
 					}
 					else
 					{
-						GUILayout.Label(RevertMapper().name, ClassProperty.CalcError()._ClassProcessor, GUILayout.ExpandWidth(expand: true));
+						GUILayout.Label(RevertMapper().name, EditorUtils.CalcError()._ClassProcessor, GUILayout.ExpandWidth(expand: true));
 					}
 					EditorGUI.EndDisabledGroup();
-					if (ClassProperty.RestartQueue(ClassProperty.DestroyError()._DicProcessor, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)) && EditorUtility.DisplayDialog("Instructions", "Open Controller Editor's Online Manual?", "Open", "Cancel"))
+					if (EditorUtils.RestartQueue(EditorUtils.DestroyError()._DicProcessor, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)) && EditorUtility.DisplayDialog("Instructions", "Open Controller Editor's Online Manual?", "Open", "Cancel"))
 					{
 						Application.OpenURL("https://notes.sleightly.dev/ceditor");
 					}
-					if (ClassProperty.RestartQueue(ClassProperty.DestroyError()._RequestProcessor, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (EditorUtils.RestartQueue(EditorUtils.DestroyError()._RequestProcessor, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						ControllerEditorWindow.CalcTests();
 					}
@@ -9124,7 +9171,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 			EditorGUI.EndDisabledGroup();
-			ClassProperty.MapQueue();
+			EditorUtils.MapQueue();
 			ReflectVisitor();
 			IncludeAnnotation(parserAnnotation && (_Descriptor || ConsumerAlgo.CallDefinition().editingController.FindDefinition()));
 			DestroyVisitor();
@@ -9377,7 +9424,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			Selection.selectionChanged = (Action)Delegate.Combine(Selection.selectionChanged, new Action(ManageWrapper));
 			OrderAnnotation();
 			CompareAnnotation();
-			ClassProperty.DisableRules(SetAnnotation);
+			EditorUtils.DisableRules(SetAnnotation);
 			ManageWrapper();
 			PublishAnnotation();
 			_SystemVisitor = true;
@@ -9403,7 +9450,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				PrepareAlgo();
 			}
 		}
-		catch (System.Exception exception)
+		catch (Exception exception)
 		{
 			UnityEngine.Debug.LogException(exception);
 			throw;
@@ -9434,7 +9481,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		_003C_003Ec__DisplayClass73_0 CS_0024_003C_003E8__locals15 = new _003C_003Ec__DisplayClass73_0();
 		if (m_ResolverAnnotation == null)
 		{
-			m_ResolverAnnotation = (Dictionary<string, GUIStyle>)ClassProperty.FillRules("UnityEditor.Graphs.Styles, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").RestartList("m_NodeStyleCache").GetValue(null);
+			m_ResolverAnnotation = (Dictionary<string, GUIStyle>)EditorUtils.FillRules("UnityEditor.Graphs.Styles, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").RestartList("m_NodeStyleCache").GetValue(null);
 		}
 		m_ResolverAnnotation.Clear();
 		m_PolicyAnnotation.Clear();
@@ -9485,7 +9532,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			fixedWidth = 100f,
 			normal = 
 			{
-				scaledBackgrounds = new Texture2D[1] { ClassProperty.LoginList(Color.black) }
+				scaledBackgrounds = new Texture2D[1] { EditorUtils.LoginList(Color.black) }
 			}
 		}, isCosmeticOnlyStyle: true);
 		CS_0024_003C_003E8__locals15.AssetThread("ce_Note Big", (GUIStyle s) => new GUIStyle(s)
@@ -9501,7 +9548,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			fixedWidth = 200f,
 			normal = 
 			{
-				scaledBackgrounds = new Texture2D[1] { ClassProperty.LoginList(Color.black) }
+				scaledBackgrounds = new Texture2D[1] { EditorUtils.LoginList(Color.black) }
 			}
 		}, isCosmeticOnlyStyle: true);
 		CS_0024_003C_003E8__locals15.AssetThread("ce_Mini", (GUIStyle s) => new GUIStyle(s)
@@ -9902,7 +9949,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_QueueAnnotation[cust_end].LogoutInitializer(initializerAlgo);
 			_QueueAnnotation[cust_end].m_InitializerAlgo = initializerAlgo;
 		}
-		if (GUI.Button(rect, ClassProperty.DestroyError()._TagProcessor, ClassProperty.CalcError()._TemplateProcessor))
+		if (GUI.Button(rect, EditorUtils.DestroyError()._TagProcessor, EditorUtils.CalcError()._TemplateProcessor))
 		{
 			_QueueAnnotation[cust_end].PatchInitializer();
 			_QueueAnnotation.RemoveAt(cust_end);
@@ -10231,11 +10278,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static string MapAnnotation(string ident, Func<string, bool> caller)
 	{
-		if (ClassProperty.m_AdapterProcessor.Contains(ident))
+		if (EditorUtils.m_AdapterProcessor.Contains(ident))
 		{
 			return ident;
 		}
-		return ClassProperty.SortRules(ident, caller);
+		return EditorUtils.SortRules(ident, caller);
 	}
 
 	private static void ValidateAnnotation(Action<object[]> key)
@@ -10319,7 +10366,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new TemplateThread(TemplateThread.ColoringType.FG, ConsumerAlgo.CallDefinition().parameterLabelColor.WriteDefinition()))
 			{
-				ClassProperty.ConnectQueue(param, second, overridethird: true, 0f, 1f, isparam4: false, ConsumerAlgo.m_AdapterAlgo);
+				EditorUtils.ConnectQueue(param, second, overridethird: true, 0f, 1f, isparam4: false, ConsumerAlgo.m_AdapterAlgo);
 			}
 		}
 	}
@@ -10328,7 +10375,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (calci)
 		{
-			ClassProperty.MapQueue();
+			EditorUtils.MapQueue();
 		}
 	}
 
@@ -10362,7 +10409,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void ReflectAnnotation(string value)
 	{
-		using (new GUILayout.HorizontalScope(ClassProperty.CalcError()._WrapperObserver))
+		using (new GUILayout.HorizontalScope(EditorUtils.CalcError()._WrapperObserver))
 		{
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(value, EditorStyles.boldLabel);
@@ -10374,7 +10421,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (!res)
 		{
-			if (ClassProperty.CountQueue(token, EditorStyles.toolbarButton))
+			if (EditorUtils.CountQueue(token, EditorStyles.toolbarButton))
 			{
 				res.InsertDefinition();
 			}
@@ -10387,8 +10434,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				def();
 			}
 			string text = $"CollapsePart{visitor3counter}";
-			ClassProperty.CompareQueue(text, GUILayoutUtility.GetLastRect().height, EventType.Repaint);
-			if (ClassProperty.DisableQueue(string.Empty, GUILayout.Height(ClassProperty.OrderQueue(text, 0f)), GUILayout.Width(7f)))
+			EditorUtils.CompareQueue(text, GUILayoutUtility.GetLastRect().height, EventType.Repaint);
+			if (EditorUtils.DisableQueue(string.Empty, GUILayout.Height(EditorUtils.OrderQueue(text, 0f)), GUILayout.Width(7f)))
 			{
 				res.InsertDefinition();
 			}
@@ -10411,7 +10458,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			flag = Selection.activeObject == v;
 		}
-		bool num = ClassProperty.CountQueue(map, flag ? ClassProperty.CalcError().m_MockProcessor : GUI.skin.label, options);
+		bool num = EditorUtils.CountQueue(map, flag ? EditorUtils.CalcError().m_MockProcessor : GUI.skin.label, options);
 		if (num)
 		{
 			Selection.activeObject = (flag ? null : v);
@@ -10475,13 +10522,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		m_WorkerAnnotation = EditorGUILayout.TextArea(m_WorkerAnnotation, GUILayout.MinHeight(54f));
 		using (new GUILayout.HorizontalScope())
 		{
-			if (ClassProperty.CountQueue("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+			if (EditorUtils.CountQueue("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 			{
 				m_ExpressionAnnotation = false;
 			}
 			using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(m_WorkerAnnotation) || systemAnnotation))
 			{
-				if (!ClassProperty.CountQueue("Send Feedback", EditorStyles.toolbarButton))
+				if (!EditorUtils.CountQueue("Send Feedback", EditorStyles.toolbarButton))
 				{
 					return;
 				}
@@ -10494,10 +10541,56 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				systemAnnotation = true;
 				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(ChangeAnnotation, UnityEngine.Debug.LogException, null, null, delegate
 				{
-					systemAnnotation = false;
+					int num = 4;
+					uint num3 = default(uint);
 					while (true)
 					{
-						m_ExpressionAnnotation = false;
+						int num2;
+						switch (num)
+						{
+						case 5:
+							InsertVisitor();
+							num = 0;
+							break;
+						default:
+							return;
+						case 4:
+							systemAnnotation = false;
+							num = 3;
+							break;
+						case 1:
+							num2 = ((int)num3 * -1182591194) ^ 0x4F74DE58;
+							goto IL_0046;
+						case 2:
+							goto IL_0063;
+						case 3:
+							goto IL_0070;
+						case 0:
+							return;
+							IL_0046:
+							switch ((num3 = (uint)(num2 ^ 0x6D87232F)) % 3)
+							{
+							case 1u:
+								break;
+							case 2u:
+								goto IL_0063;
+							case 0u:
+								goto IL_0070;
+							default:
+								goto IL_0077;
+							}
+							goto case 5;
+							IL_0077:
+							num = 5;
+							break;
+							IL_0070:
+							num2 = 1619722105;
+							goto IL_0046;
+							IL_0063:
+							m_ExpressionAnnotation = false;
+							num = 1;
+							break;
+						}
 					}
 				});
 			}
@@ -10528,7 +10621,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		if (flag && (bool)ConsumerAlgo.CallDefinition().a_VerifyOnProjectLoad)
 		{
-			ClassProperty.CountRules(delegate
+			EditorUtils.CountRules(delegate
 			{
 				WriteAnnotation(assetneeded: false);
 			});
@@ -10614,10 +10707,69 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			LogoutAnnotation(list);
 			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
 			{
+				int num = 7;
+				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = default(_003C_003Ec__DisplayClass186_3);
+				uint num3 = default(uint);
 				while (true)
 				{
-					_003C_003Ec__DisplayClass186_0 m_MerchantDefinition = CS_0024_003C_003E8__locals9;
-					FieldAlgo valueDefinition = response;
+					int num2;
+					switch (num)
+					{
+					case 8:
+						_RequestAnnotation = false;
+						num = 4;
+						break;
+					default:
+						return;
+					case 7:
+						_003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
+						num = 6;
+						break;
+					case 4:
+						m_IdentifierAnnotation = true;
+						num = 3;
+						break;
+					case 2:
+						goto IL_0056;
+					case 1:
+						_003C_003Ec__DisplayClass186_.valueDefinition = response;
+						num = 5;
+						break;
+					case 3:
+						SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
+						num = 0;
+						break;
+					case 5:
+						num2 = (int)(num3 * 2106439369) ^ -1356884480;
+						goto IL_00b4;
+					case 6:
+						goto IL_00af;
+					case 0:
+						return;
+						IL_00b4:
+						switch ((num3 = (uint)(num2 ^ -1587768776)) % 3)
+						{
+						case 1u:
+							break;
+						case 2u:
+							goto IL_0056;
+						case 0u:
+							goto IL_00af;
+						default:
+							goto IL_00cf;
+						}
+						goto case 8;
+						IL_00cf:
+						num = 8;
+						break;
+						IL_00af:
+						num2 = -1758829102;
+						goto IL_00b4;
+						IL_0056:
+						_003C_003Ec__DisplayClass186_.m_MerchantDefinition = CS_0024_003C_003E8__locals9;
+						num = 1;
+						break;
+					}
 				}
 			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, InsertVisitor);
 		}, iscont: true);
@@ -10644,7 +10796,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					ConsumerAlgo.CallDefinition().a_HasSucceededLastVerification.ExcludeDefinition(excludeparam: true);
 					WriteAnnotation(assetneeded: true);
 				});
-			}, delegate(System.Exception exception)
+			}, delegate(Exception exception)
 			{
 				importerAnnotation = false;
 				FindVisitor($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
@@ -10791,7 +10943,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				CS_0024_003C_003E8__locals31.UpdateObserver(isCMD: true);
 				CS_0024_003C_003E8__locals31.SortObserver();
 			}
-			catch (System.Exception exc)
+			catch (Exception exc)
 			{
 				CS_0024_003C_003E8__locals31.ChangeObserver(isCMD: true, exc);
 			}
@@ -10965,14 +11117,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(m_ReaderAnnotation) ? "Personal" : m_ReaderAnnotation), ClassProperty.CalcError().annotationObserver);
+				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(m_ReaderAnnotation) ? "Personal" : m_ReaderAnnotation), EditorUtils.CalcError().annotationObserver);
 				GUILayout.FlexibleSpace();
 			}
 			if (!string.IsNullOrWhiteSpace(stubAnnotation))
 			{
 				using (new GUILayout.HorizontalScope(GUI.skin.box))
 				{
-					GUILayout.Label("Authorized For: " + stubAnnotation, ClassProperty.CalcError().algoObserver);
+					GUILayout.Label("Authorized For: " + stubAnnotation, EditorUtils.CalcError().algoObserver);
 					return;
 				}
 			}
@@ -10989,7 +11141,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			if ((object)value != null)
 			{
-				ClassProperty.setterProcessor.PopHelper(value, map);
+				EditorUtils.setterProcessor.PopHelper(value, map);
 			}
 			RemoveVisitor();
 			if (importerAnnotation || _RequestAnnotation)
@@ -11005,7 +11157,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (!m_IdentifierAnnotation || attrAnnotation)
 			{
 				SetVisitor("Check for License", "This will check for whether you already have a license for your device");
-				if (ClassProperty.CountQueue((!attrAnnotation) ? "Check" : "Retry", EditorStyles.toolbarButton))
+				if (EditorUtils.CountQueue((!attrAnnotation) ? "Check" : "Retry", EditorStyles.toolbarButton))
 				{
 					WriteAnnotation(assetneeded: true);
 				}
@@ -11021,7 +11173,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			flag &= flag2 && !m_DispatcherAnnotation;
 			using (new EditorGUI.DisabledScope(!flag2))
 			{
-				if (ClassProperty.DisableQueue("Activate") || flag)
+				if (EditorUtils.DisableQueue("Activate") || flag)
 				{
 					ForgotAnnotation();
 				}
@@ -11064,7 +11216,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			disabledScope = new EditorGUI.DisabledScope(!SetupVisitor() || m_CallbackAnnotation);
 			try
 			{
-				if (ClassProperty.DisableQueue(m_CallbackAnnotation ? "Sending Verification Code..." : "Send Verification Code"))
+				if (EditorUtils.DisableQueue(m_CallbackAnnotation ? "Sending Verification Code..." : "Send Verification Code"))
 				{
 					InitVisitor();
 				}
@@ -11082,7 +11234,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(!Regex.IsMatch(strategyAnnotation, "[0-9]{6}") || _IndexerAnnotation);
 			try
 			{
-				if (ClassProperty.DisableQueue((!_IndexerAnnotation) ? "Transfer License" : "Transferring..."))
+				if (EditorUtils.DisableQueue((!_IndexerAnnotation) ? "Transfer License" : "Transferring..."))
 				{
 					VisitVisitor();
 				}
@@ -11097,14 +11249,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void SetVisitor(string item, string cust)
 	{
-		using (new GUILayout.HorizontalScope(ClassProperty.CalcError()._WrapperObserver))
+		using (new GUILayout.HorizontalScope(EditorUtils.CalcError()._WrapperObserver))
 		{
 			GUILayout.Label(string.Empty, GUILayout.Width(17f), GUILayout.Height(17f));
-			GUILayout.Label(item, ClassProperty.CalcError()._StructProcessor);
-			GUILayout.Label(new GUIContent(ClassProperty.DestroyError()._DicProcessor)
+			GUILayout.Label(item, EditorUtils.CalcError()._StructProcessor);
+			GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._DicProcessor)
 			{
 				tooltip = cust
-			}, ClassProperty.CalcError().broadcasterProcessor, GUILayout.Width(17f), GUILayout.Height(17f));
+			}, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(17f), GUILayout.Height(17f));
 		}
 	}
 
@@ -11113,12 +11265,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			string text = "Controller EditorLicenseField";
-			if (ClassProperty.ResolveQueue(text))
+			if (EditorUtils.ResolveQueue(text))
 			{
 				GUI.FocusControl(null);
 				return true;
 			}
-			if (ClassProperty.ListQueue(text))
+			if (EditorUtils.ListQueue(text))
 			{
 				GUI.FocusControl(null);
 			}
@@ -11130,7 +11282,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				GUI.SetNextControlName(text);
 				m_BridgeAnnotation = EditorGUILayout.TextField(string.Empty, m_BridgeAnnotation).Trim();
-				ClassProperty.TestQueue("License Key", string.IsNullOrWhiteSpace(m_BridgeAnnotation), 80f);
+				EditorUtils.TestQueue("License Key", string.IsNullOrWhiteSpace(m_BridgeAnnotation), 80f);
 			}
 			if (!m_DispatcherAnnotation && EnableVisitor() && !CancelInitializer())
 			{
@@ -11177,7 +11329,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.FlexibleSpace();
-			if (ClassProperty.ComputeQueue((!facadeAnnotation) ? "Transfer License" : "Activate License"))
+			if (EditorUtils.ComputeQueue((!facadeAnnotation) ? "Transfer License" : "Activate License"))
 			{
 				facadeAnnotation = !facadeAnnotation;
 			}
@@ -11286,7 +11438,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void InsertVisitor()
 	{
-		ClassProperty.CountRules(RestartVisitor);
+		EditorUtils.CountRules(RestartVisitor);
 	}
 
 	private static void RestartVisitor()
@@ -11318,12 +11470,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				if (GUILayout.Button(new GUIContent("Made By @Dreadrith", "https://dreadrith.com/links"), ClassProperty.CalcError().m_DefinitionObserver))
+				if (GUILayout.Button(new GUIContent("Made By @Dreadrith", "https://dreadrith.com/links"), EditorUtils.CalcError().m_DefinitionObserver))
 				{
 					Application.OpenURL("https://dreadrith.com/links");
 				}
-				ClassProperty.ConcatQueue();
-				SupportThankies.ListWrapper();
+				EditorUtils.ConcatQueue();
+				SupportWindow.ListWrapper();
 			}
 		}
 	}
@@ -11342,7 +11494,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (setrule)
 		{
-			Color color = ((selection == CustomLogType.Regular) ? ClassProperty.configurationProperty : ((selection != CustomLogType.Warning) ? ClassProperty._ProcProperty : ClassProperty._WrapperProcessor));
+			Color color = ((selection == CustomLogType.Regular) ? EditorUtils.configurationProperty : ((selection != CustomLogType.Warning) ? EditorUtils._ProcProperty : EditorUtils._WrapperProcessor));
 			string message = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">[Controller Editor]</color> " + param.Replace("\\n", "\n");
 			switch (selection)
 			{
@@ -11364,7 +11516,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (haveb)
 		{
-			throw new System.Exception("<color=#" + ColorUtility.ToHtmlStringRGB(ClassProperty._ProcProperty) + ">[Controller Editor]</color> " + spec);
+			throw new Exception("<color=#" + ColorUtility.ToHtmlStringRGB(EditorUtils._ProcProperty) + ">[Controller Editor]</color> " + spec);
 		}
 	}
 
@@ -11381,7 +11533,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				LogoutAnnotation(list);
 				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate
 				{
-				}, delegate(System.Exception exception)
+				}, delegate(Exception exception)
 				{
 					m_CallbackAnnotation = false;
 					FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
@@ -11412,7 +11564,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					m_IdentifierAnnotation = false;
 					WriteAnnotation(assetneeded: true);
 				});
-			}, delegate(System.Exception exception)
+			}, delegate(Exception exception)
 			{
 				_IndexerAnnotation = false;
 				FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
@@ -11432,15 +11584,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				if (ClassProperty.CallQueue(ClassProperty.DestroyError().m_SingletonProcessor))
+				if (EditorUtils.CallQueue(EditorUtils.DestroyError().m_SingletonProcessor))
 				{
 					ReadVisitor(cont);
 				}
-				if (singletonAnnotation && !ConsumerAlgo.CallDefinition().u_updateHidden && ClassProperty.CallQueue(ClassProperty.DestroyError().m_AdvisorProcessor))
+				if (singletonAnnotation && !ConsumerAlgo.CallDefinition().u_updateHidden && EditorUtils.CallQueue(EditorUtils.DestroyError().m_AdvisorProcessor))
 				{
 					factoryAnnotation.target = !factoryAnnotation.target;
 				}
-				GUILayout.Label("v" + m_RefAnnotation, ClassProperty.CalcError()._MapperObserver, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("v" + m_RefAnnotation, EditorUtils.CalcError()._MapperObserver, GUILayout.ExpandWidth(expand: false));
 				if (item != null)
 				{
 					item();
@@ -11463,15 +11615,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 		{
-			if (ClassProperty.CallQueue(ClassProperty.DestroyError().m_SingletonProcessor))
+			if (EditorUtils.CallQueue(EditorUtils.DestroyError().m_SingletonProcessor))
 			{
 				ReadVisitor(cfg);
 			}
-			if (singletonAnnotation && !ConsumerAlgo.CallDefinition().u_updateHidden && ClassProperty.CallQueue(ClassProperty.DestroyError().m_AdvisorProcessor))
+			if (singletonAnnotation && !ConsumerAlgo.CallDefinition().u_updateHidden && EditorUtils.CallQueue(EditorUtils.DestroyError().m_AdvisorProcessor))
 			{
 				factoryAnnotation.target = !factoryAnnotation.target;
 			}
-			GUILayout.Label("v" + m_RefAnnotation, ClassProperty.CalcError().m_InitializerObserver, GUILayout.ExpandWidth(expand: false));
+			GUILayout.Label("v" + m_RefAnnotation, EditorUtils.CalcError().m_InitializerObserver, GUILayout.ExpandWidth(expand: false));
 			key?.Invoke();
 		}
 	}
@@ -11581,15 +11733,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(ClassProperty.DestroyError().indexerProcessor, GUILayout.Width(24f), GUILayout.Height(24f));
-				GUILayout.Label($"v{ConsumerAlgo.CallDefinition().u_updateVersion}", ClassProperty.CalcError().itemProcessor);
+				GUILayout.Label(EditorUtils.DestroyError().indexerProcessor, GUILayout.Width(24f), GUILayout.Height(24f));
+				GUILayout.Label($"v{ConsumerAlgo.CallDefinition().u_updateVersion}", EditorUtils.CalcError().itemProcessor);
 			}
-			if (ClassProperty.DefineQueue())
+			if (EditorUtils.DefineQueue())
 			{
 				factoryAnnotation.target = !factoryAnnotation.target;
 			}
-			ClassProperty.MapQueue();
-			GUILayout.TextArea(ConsumerAlgo.CallDefinition().u_updateMessage, ClassProperty.CalcError().m_GlobalProcessor);
+			EditorUtils.MapQueue();
+			GUILayout.TextArea(ConsumerAlgo.CallDefinition().u_updateMessage, EditorUtils.CalcError().m_GlobalProcessor);
 			bool flag = !string.IsNullOrWhiteSpace(ConsumerAlgo.CallDefinition().u_updateLink);
 			bool flag2 = !string.IsNullOrWhiteSpace(ConsumerAlgo.CallDefinition().u_updateChangelog);
 			EditorGUILayout.Space();
@@ -11599,17 +11751,17 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					using (new EditorGUI.DisabledScope(_IssuerAnnotation))
 					{
-						if (ClassProperty.CountQueue("Download Update", EditorStyles.toolbarButton))
+						if (EditorUtils.CountQueue("Download Update", EditorStyles.toolbarButton))
 						{
 							FlushVisitor();
 						}
 					}
 				}
-				if (flag2 && ClassProperty.RestartQueue(new GUIContent("Open Changelog", ConsumerAlgo.CallDefinition().u_updateChangelog), EditorStyles.toolbarButton))
+				if (flag2 && EditorUtils.RestartQueue(new GUIContent("Open Changelog", ConsumerAlgo.CallDefinition().u_updateChangelog), EditorStyles.toolbarButton))
 				{
 					Application.OpenURL(ConsumerAlgo.CallDefinition().u_updateChangelog);
 				}
-				if (ClassProperty.CountQueue("Skip for Today", EditorStyles.toolbarButton))
+				if (EditorUtils.CountQueue("Skip for Today", EditorStyles.toolbarButton))
 				{
 					ConsumerAlgo.CallDefinition().u_updateHidden.ExcludeDefinition(excludeparam: true);
 				}
@@ -11631,28 +11783,28 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			Rect taskDefinition = EditorGUILayout.GetControlRect(GUILayout.ExpandWidth(expand: true), GUILayout.Height(24f));
 			Rect def = taskDefinition;
-			GUI.Label(def.SortResolver(24f, isfield: true), ClassProperty.DestroyError().indexerProcessor);
-			GUI.Label(def, "Announcement", ClassProperty.CalcError().itemProcessor);
+			GUI.Label(def.SortResolver(24f, isfield: true), EditorUtils.DestroyError().indexerProcessor);
+			GUI.Label(def, "Announcement", EditorUtils.CalcError().itemProcessor);
 			_AccountAnnotation.SearchResolver(delegate
 			{
 				taskDefinition.height += 18f;
-				ClassProperty.MapQueue();
-				GUILayout.TextArea(ConsumerAlgo.CallDefinition().u_announcement, ClassProperty.CalcError().m_GlobalProcessor);
+				EditorUtils.MapQueue();
+				GUILayout.TextArea(ConsumerAlgo.CallDefinition().u_announcement, EditorUtils.CalcError().m_GlobalProcessor);
 				EditorGUILayout.Space();
 				using (new GUILayout.HorizontalScope())
 				{
-					if (!string.IsNullOrWhiteSpace(ConsumerAlgo.CallDefinition().u_announcementLink) && ClassProperty.CountQueue(ConsumerAlgo.CallDefinition().u_announcementLinkName, EditorStyles.toolbarButton))
+					if (!string.IsNullOrWhiteSpace(ConsumerAlgo.CallDefinition().u_announcementLink) && EditorUtils.CountQueue(ConsumerAlgo.CallDefinition().u_announcementLinkName, EditorStyles.toolbarButton))
 					{
 						Application.OpenURL(ConsumerAlgo.CallDefinition().u_announcementLink);
 					}
-					if (listenerAnnotation && ClassProperty.CountQueue("Hide", EditorStyles.toolbarButton))
+					if (listenerAnnotation && EditorUtils.CountQueue("Hide", EditorStyles.toolbarButton))
 					{
 						ConsumerAlgo.CallDefinition().u_announcementHidden.ExcludeDefinition(excludeparam: true);
 						ConsumerAlgo.CallDefinition().u_announcementHiddenDate.ResolveDefinition(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 					}
 				}
 			}, RestartVisitor);
-			if (ClassProperty.DefineQueue(taskDefinition))
+			if (EditorUtils.DefineQueue(taskDefinition))
 			{
 				_AccountAnnotation.target = !_AccountAnnotation.target;
 			}
@@ -11671,7 +11823,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			ConnectVisitor(setasset: false);
 			return;
 		}
-		ClassProperty.CountRules(delegate
+		EditorUtils.CountRules(delegate
 		{
 			ResetVisitor(removereference: false);
 		});
@@ -11718,7 +11870,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				ConsumerAlgo.CallDefinition().u_announcementHidden.ExcludeDefinition(excludeparam: false);
 			}
 			ConnectVisitor(removereference);
-		}, delegate(System.Exception exc)
+		}, delegate(Exception exc)
 		{
 			FindVisitor($"Something went wrong while checking for an update!\n\n{exc}", CustomLogType.Error);
 		}, null, null, delegate
@@ -11742,7 +11894,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				AssetDatabase.ImportAsset(text);
 				AssetDatabase.DeleteAsset(text);
 				m_ProducerDefinition.Dispose();
-				throw new System.Exception(m_ProducerDefinition.error);
+				throw new Exception(m_ProducerDefinition.error);
 			}
 			AssetDatabase.ImportPackage(text, interactive: true);
 			AssetDatabase.DeleteAsset(text);
@@ -11810,7 +11962,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			item.width = 18f;
 			using (new EditorGUI.DisabledScope(_ProcessorAnnotation.itemTests.conditions.Length == 0))
 			{
-				if (ClassProperty.QueryQueue(item, ClassProperty.DestroyError().m_BridgeProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item, EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label))
 				{
 					SortVisitor();
 				}
@@ -11819,7 +11971,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			disabledScope = new EditorGUI.DisabledScope(m_ThreadAnnotation.Count == 0);
 			try
 			{
-				if (ClassProperty.QueryQueue(item, ClassProperty.DestroyError().m_StrategyProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item, EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label))
 				{
 					RegisterVisitor();
 				}
@@ -11840,7 +11992,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				item2.width = 16f;
 				item2.x = spec.x - 3f;
 				item2.y = spec.y + 2f;
-				if (ClassProperty.QueryQueue(item2, ClassProperty.DestroyError().dispatcherProcessor, GUIStyle.none))
+				if (EditorUtils.QueryQueue(item2, EditorUtils.DestroyError().dispatcherProcessor, GUIStyle.none))
 				{
 					specification = !specification;
 					MapVisitor();
@@ -11862,7 +12014,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			disabledScope = new EditorGUI.DisabledScope((specification && _TokenAnnotation.Count == 0) || (!specification && m_CodeAnnotation.Count == 0));
 			try
 			{
-				if (ClassProperty.QueryQueue(item3, ClassProperty.DestroyError().m_BridgeProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item3, EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label))
 				{
 					SortVisitor();
 				}
@@ -11874,7 +12026,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			item3.x += 20f;
 			using (new EditorGUI.DisabledScope(m_ThreadAnnotation.Count == 0))
 			{
-				if (ClassProperty.QueryQueue(item3, ClassProperty.DestroyError().m_StrategyProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item3, EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label))
 				{
 					RegisterVisitor();
 				}
@@ -11889,7 +12041,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		item3.x += spec.width / 2f + spec.width / 8f - 25f;
 		item3.width = 15f;
 		EditorGUI.BeginDisabledGroup((!_ProcessorAnnotation.itemTests && ((specification && _TokenAnnotation.Count == 0) || (!specification && m_CodeAnnotation.Count == 0))) || (_ProcessorAnnotation.itemTests != null && _ProcessorAnnotation.itemTests.conditions.Length < 1));
-		if (ClassProperty.QueryQueue(item3, ClassProperty.DestroyError().m_ExporterProcessor, GUIStyle.none))
+		if (EditorUtils.QueryQueue(item3, EditorUtils.DestroyError().m_ExporterProcessor, GUIStyle.none))
 		{
 			if (!(_ProcessorAnnotation.itemTests != null))
 			{
@@ -11935,7 +12087,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		spec.width = 15f;
 		using (new AnnotationPolicy(iskey: false))
 		{
-			if (ClassProperty.QueryQueue(spec, new GUIContent(ClassProperty.DestroyError()._RequestProcessor)
+			if (EditorUtils.QueryQueue(spec, new GUIContent(EditorUtils.DestroyError()._RequestProcessor)
 			{
 				tooltip = "Toggles custom matching options"
 			}, GUIStyle.none))
@@ -11946,13 +12098,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		spec.x += 17f;
 		using (new EditorGUI.DisabledScope(_ProcessorAnnotation.itemTests))
 		{
-			if (ClassProperty.QueryQueue(spec, ClassProperty.DestroyError()._AttrProcessor, GUIStyle.none))
+			if (EditorUtils.QueryQueue(spec, EditorUtils.DestroyError()._AttrProcessor, GUIStyle.none))
 			{
 				ConnectAlgo();
 			}
 		}
 		spec.x += 17f;
-		if (ClassProperty.QueryQueue(spec, ClassProperty.DestroyError()._IdentifierProcessor, GUIStyle.none))
+		if (EditorUtils.QueryQueue(spec, EditorUtils.DestroyError()._IdentifierProcessor, GUIStyle.none))
 		{
 			ViewAlgo();
 		}
@@ -12045,7 +12197,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			};
 			Rect rect8 = def2.SortResolver((animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Bool) ? 50 : 100);
 			Rect rect9 = def2.SortResolver(100f);
-			if (GUI.Button(rect5, ClassProperty.DestroyError().m_ValProcessor, ClassProperty.CalcError().configProcessor))
+			if (GUI.Button(rect5, EditorUtils.DestroyError().m_ValProcessor, EditorUtils.CalcError().configProcessor))
 			{
 				IEnumerable<IEnumerable<AnimatorStateTransition>> first = RevertMapper().states.Select((ChildAnimatorState s) => s.state.transitions.Where((AnimatorStateTransition t) => t.conditions.Any((AnimatorCondition c) => ForgotVisitor(CS_0024_003C_003E8__locals43.m_ConfigurationDefinition, c, forcetag: true))));
 				List<AnimatorTransitionBase> mapperReg = new List<AnimatorTransitionBase>();
@@ -12096,7 +12248,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 				}
 			}
-			GUI.Label(rect7, ClassProperty.DestroyError().m_ValProcessor, GUIStyle.none);
+			GUI.Label(rect7, EditorUtils.DestroyError().m_ValProcessor, GUIStyle.none);
 			if (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Trigger)
 			{
 				using (new ManagerThread(globalVisitor.iteratorVisitor[1]))
@@ -12192,7 +12344,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			globalVisitor.WriteInitializer(CS_0024_003C_003E8__locals43.m_ConfigurationDefinition.threshold);
 		}
-		if (!GUI.Button(source, ClassProperty.DestroyError()._TagProcessor, ClassProperty.CalcError()._TemplateProcessor))
+		if (!GUI.Button(source, EditorUtils.DestroyError()._TagProcessor, EditorUtils.CalcError()._TemplateProcessor))
 		{
 			return;
 		}
@@ -12278,7 +12430,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				bool flag4 = false;
 				using (new GUILayout.HorizontalScope())
 				{
-					m_GlobalAnnotation = (ControllerAction)(object)EditorGUILayout.EnumPopup(m_GlobalAnnotation, GUILayout.Width(ClassProperty.PostQueue(m_GlobalAnnotation) + 28f));
+					m_GlobalAnnotation = (ControllerAction)(object)EditorGUILayout.EnumPopup(m_GlobalAnnotation, GUILayout.Width(EditorUtils.PostQueue(m_GlobalAnnotation) + 28f));
 					switch (m_GlobalAnnotation)
 					{
 					case ControllerAction.RemoveTag:
@@ -12347,14 +12499,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					if (m_GlobalAnnotation == ControllerAction.Copy)
 					{
-						m_ProcessAnnotation = (MoveMode)(object)EditorGUILayout.EnumPopup(m_ProcessAnnotation, GUILayout.Width(ClassProperty.PostQueue(m_ProcessAnnotation) + 28f));
+						m_ProcessAnnotation = (MoveMode)(object)EditorGUILayout.EnumPopup(m_ProcessAnnotation, GUILayout.Width(EditorUtils.PostQueue(m_ProcessAnnotation) + 28f));
 						if (m_ProcessAnnotation == MoveMode.LayersTaggedWith)
 						{
 							flag3 = true;
 							proxyAnnotation = EditorGUILayout.TextField(proxyAnnotation);
 						}
 						GUILayout.Label("To", GUILayout.Width(20f));
-						producerAnnotation = (MoveDestination)(object)EditorGUILayout.EnumPopup(producerAnnotation, GUILayout.Width(ClassProperty.PostQueue(producerAnnotation) + 28f));
+						producerAnnotation = (MoveDestination)(object)EditorGUILayout.EnumPopup(producerAnnotation, GUILayout.Width(EditorUtils.PostQueue(producerAnnotation) + 28f));
 						if (producerAnnotation == MoveDestination.Controller)
 						{
 							m_MethodAnnotation = (UnityEditor.Animations.AnimatorController)EditorGUILayout.ObjectField(m_MethodAnnotation, typeof(UnityEditor.Animations.AnimatorController), false);
@@ -12380,14 +12532,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						GUILayout.FlexibleSpace();
 					}
 					EditorGUI.BeginDisabledGroup((string.IsNullOrEmpty(_SchemaAnnotation) && flag) || (string.IsNullOrEmpty(m_BroadcasterAnnotation) && flag2) || (string.IsNullOrEmpty(proxyAnnotation) && flag3) || (m_GlobalAnnotation == ControllerAction.Copy && producerAnnotation == MoveDestination.Controller && !m_MethodAnnotation));
-					if (ClassProperty.CountQueue("Apply", "minibutton", GUILayout.Width(140f)))
+					if (EditorUtils.CountQueue("Apply", "minibutton", GUILayout.Width(140f)))
 					{
 						LogoutVisitor();
 					}
 					EditorGUI.EndDisabledGroup();
 				}
 				EditorGUILayout.Space();
-				ClassProperty.MapQueue();
+				EditorUtils.MapQueue();
 				EditorGUILayout.Space();
 				CustomizeVisitor();
 			}
@@ -12399,18 +12551,18 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			EditorGUI.BeginChangeCheck();
-			_Client = ClassProperty.AddQueue(_Client, "Write Defaults", "toolbarbutton");
+			_Client = EditorUtils.AddQueue(_Client, "Write Defaults", "toolbarbutton");
 			if (EditorGUI.EndChangeCheck())
 			{
 				WriteMapper();
 			}
 			EditorGUI.BeginChangeCheck();
-			m_Config = ClassProperty.AddQueue(m_Config, "Explore Controller Sub-Assets", "toolbarbutton");
+			m_Config = EditorUtils.AddQueue(m_Config, "Explore Controller Sub-Assets", "toolbarbutton");
 			if (EditorGUI.EndChangeCheck())
 			{
 				FillMapper();
 			}
-			if (ClassProperty.RestartQueue(new GUIContent("Cleanup unused Sub-Assets", "Some Controllers have residue in their Sub-Assets that may be unused, may happen when using this tool. Use this button to clean it up."), "toolbarbutton") && (bool)LogoutMapper())
+			if (EditorUtils.RestartQueue(new GUIContent("Cleanup unused Sub-Assets", "Some Controllers have residue in their Sub-Assets that may be unused, may happen when using this tool. Use this button to clean it up."), "toolbarbutton") && (bool)LogoutMapper())
 			{
 				SearchVisitor(LogoutMapper());
 				VerifyMapper();
@@ -12430,7 +12582,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				using (new GUILayout.VerticalScope())
 				{
-					if (ClassProperty.DisableQueue("Set All On"))
+					if (EditorUtils.DisableQueue("Set All On"))
 					{
 						ForgotMapper(istask: true);
 					}
@@ -12441,7 +12593,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						using (new GUILayout.HorizontalScope())
 						{
 							CreateAnnotation(item, GUILayout.ExpandWidth(expand: true));
-							if (ClassProperty.DisableQueue(">", GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.DisableQueue(">", GUILayout.ExpandWidth(expand: false)))
 							{
 								StopMapper(item, connectionreguired: false);
 							}
@@ -12451,7 +12603,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				LoginAnnotation();
 				using (new GUILayout.VerticalScope())
 				{
-					if (ClassProperty.DisableQueue("Set All Off"))
+					if (EditorUtils.DisableQueue("Set All Off"))
 					{
 						ForgotMapper(istask: false);
 					}
@@ -12461,7 +12613,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						using (new GUILayout.HorizontalScope())
 						{
-							if (ClassProperty.DisableQueue("<", GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.DisableQueue("<", GUILayout.ExpandWidth(expand: false)))
 							{
 								StopMapper(item2, connectionreguired: true);
 							}
@@ -12472,7 +12624,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 		}
-		_ModelAnnotation = GUILayout.Toolbar(_ModelAnnotation, ClassProperty.DestroyError().m_FacadeProcessor, EditorStyles.toolbarButton);
+		_ModelAnnotation = GUILayout.Toolbar(_ModelAnnotation, EditorUtils.DestroyError().m_FacadeProcessor, EditorStyles.toolbarButton);
 		switch (_ModelAnnotation)
 		{
 		case 5:
@@ -12508,18 +12660,18 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			string text = ((!string.IsNullOrEmpty(task.name)) ? task.name : task.GetType().Name);
-			if (ClassProperty.CountQueue("- " + text, (!flag) ? GUI.skin.label : ClassProperty.CalcError().m_MockProcessor))
+			if (EditorUtils.CountQueue("- " + text, (!flag) ? GUI.skin.label : EditorUtils.CalcError().m_MockProcessor))
 			{
 				Selection.activeObject = (flag ? null : task);
 			}
 			GUILayout.FlexibleSpace();
-			if (ClassProperty.RestartQueue((!task.hideFlags.HasFlag(HideFlags.HideInHierarchy)) ? ClassProperty.DestroyError()._RefProcessor : ClassProperty.DestroyError().m_StatusProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(14f), GUILayout.Height(18f)))
+			if (EditorUtils.RestartQueue((!task.hideFlags.HasFlag(HideFlags.HideInHierarchy)) ? EditorUtils.DestroyError()._RefProcessor : EditorUtils.DestroyError().m_StatusProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(14f), GUILayout.Height(18f)))
 			{
 				Undo.RecordObject(task, "Toggle Sub-Asset Visibility");
 				task.hideFlags ^= HideFlags.HideInHierarchy;
 				AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(task), ImportAssetOptions.ForceUpdate);
 			}
-			if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor) && EditorUtility.DisplayDialog("Delete", "Delete " + task.name + "?\nUse cautiously! May result in unintended behavior!", "Ok", "Cancel"))
+			if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor) && EditorUtility.DisplayDialog("Delete", "Delete " + task.name + "?\nUse cautiously! May result in unintended behavior!", "Ok", "Cancel"))
 			{
 				Undo.RecordObject(task, "Remove SubAsset");
 				AssetDatabase.RemoveObjectFromAsset(task);
@@ -12560,7 +12712,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				GUILayout.FlexibleSpace();
-				GUILayout.Label("Selected 0 States", ClassProperty.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Selected 0 States", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
 				GUILayout.FlexibleSpace();
 			}
 			EditorGUILayout.Space();
@@ -12571,7 +12723,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				GUILayout.Space(5f);
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] objects = Selection.objects;
 					objects = Selection.objects.Except(RevertMapper().states.Select((ChildAnimatorState c) => c.state)).ToArray();
@@ -12587,12 +12739,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				GUILayout.Space(18f);
 				GUILayout.FlexibleSpace();
-				if (ClassProperty.DisableQueue("Out", GUILayout.Width(34f)))
+				if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
 				{
 					GetAlgo();
 				}
-				GUILayout.Label("Selected " + num + " States", ClassProperty.CalcError()._StructProcessor, GUILayout.Width(140f));
-				if (ClassProperty.DisableQueue("In", GUILayout.Width(34f)))
+				GUILayout.Label("Selected " + num + " States", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
+				if (EditorUtils.DisableQueue("In", GUILayout.Width(34f)))
 				{
 					CalcAlgo();
 				}
@@ -12605,7 +12757,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] array = Selection.objects;
 					ArrayUtility.Remove(ref array, item.comparatorTests);
@@ -12613,7 +12765,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				using (new EditorGUI.DisabledScope(!item.comparatorTests.motion))
 				{
-					if (ClassProperty.RestartQueue(ClassProperty.DestroyError().m_RegistryProcessor, ClassProperty.CalcError().configProcessor, GUILayout.Width(17f)))
+					if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_RegistryProcessor, EditorUtils.CalcError().configProcessor, GUILayout.Width(17f)))
 					{
 						EditorGUIUtility.PingObject(item.comparatorTests.motion);
 					}
@@ -12621,15 +12773,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				using (new EditorGUI.DisabledScope(item.comparatorTests.transitions.Length < 1))
 				{
-					if (ClassProperty.DisableQueue("Out", GUILayout.Width(34f)))
+					if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(item.RegisterPolicy()).ToArray();
 					}
 				}
-				GUILayout.Label(RunAnnotation(item.comparatorTests.name, 18), ClassProperty.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label(RunAnnotation(item.comparatorTests.name, 18), EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
 				using (new EditorGUI.DisabledScope(!item.ChangePolicy().Any()))
 				{
-					if (ClassProperty.DisableQueue("In", GUILayout.Width(34f)))
+					if (EditorUtils.DisableQueue("In", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(item.ChangePolicy()).ToArray();
 					}
@@ -12642,7 +12794,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] array2 = Selection.objects;
 					for (int num3 = 0; num3 < array2.Length; num3++)
@@ -12660,7 +12812,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				using (new EditorGUI.DisabledScope(!RevertMapper() || RevertMapper().anyStateTransitions.Length < 1))
 				{
-					if (ClassProperty.DisableQueue("Out", GUILayout.Width(34f)))
+					if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(ManageMapper().anyStateTransitions.Where(delegate(AnimatorStateTransition t)
 						{
@@ -12670,10 +12822,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						})).ToArray();
 					}
 				}
-				GUILayout.Label("Any State", ClassProperty.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Any State", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
 				using (new EditorGUI.DisabledScope(disabled: true))
 				{
-					ClassProperty.DisableQueue("In", GUILayout.Width(34f));
+					EditorUtils.DisableQueue("In", GUILayout.Width(34f));
 				}
 				GUILayout.FlexibleSpace();
 				GUILayout.Space(42f);
@@ -12683,7 +12835,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope("box"))
 			{
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] array3 = Selection.objects;
 					for (int num4 = 0; num4 < array3.Length; num4++)
@@ -12701,15 +12853,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				using (new EditorGUI.DisabledScope(!RevertMapper() || RevertMapper().entryTransitions.Length == 0))
 				{
-					if (ClassProperty.DisableQueue("Out", GUILayout.Width(34f)))
+					if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(RevertMapper().entryTransitions).ToArray();
 					}
 				}
-				GUILayout.Label("Entry", ClassProperty.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Entry", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
 				using (new EditorGUI.DisabledScope(disabled: true))
 				{
-					ClassProperty.DisableQueue("In", GUILayout.Width(34f));
+					EditorUtils.DisableQueue("In", GUILayout.Width(34f));
 				}
 				GUILayout.FlexibleSpace();
 				GUILayout.Space(42f);
@@ -12719,7 +12871,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope("box"))
 			{
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] objects2 = Selection.objects;
 					for (int num5 = 0; num5 < objects2.Length; num5++)
@@ -12736,11 +12888,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.Space(21f);
 				GUILayout.FlexibleSpace();
 				EditorGUI.BeginDisabledGroup(disabled: true);
-				ClassProperty.DisableQueue("Out", GUILayout.Width(30f));
+				EditorUtils.DisableQueue("Out", GUILayout.Width(30f));
 				EditorGUI.EndDisabledGroup();
-				GUILayout.Label("Exit", ClassProperty.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Exit", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
 				EditorGUI.BeginDisabledGroup(regAnnotation.GetRules());
-				if (ClassProperty.DisableQueue("In", GUILayout.Width(30f)))
+				if (EditorUtils.DisableQueue("In", GUILayout.Width(30f)))
 				{
 					Selection.objects = Selection.objects.Concat(regAnnotation).ToArray();
 				}
@@ -12754,11 +12906,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorGUI.BeginDisabledGroup(num < 2);
 		using (new GUILayout.HorizontalScope())
 		{
-			if (ClassProperty.CountQueue("Align Vertical", "toolbarbutton"))
+			if (EditorUtils.CountQueue("Align Vertical", "toolbarbutton"))
 			{
 				CountAlgo();
 			}
-			if (ClassProperty.CountQueue("Align Horizontal", "toolbarbutton"))
+			if (EditorUtils.CountQueue("Align Horizontal", "toolbarbutton"))
 			{
 				DisableAlgo();
 			}
@@ -12767,7 +12919,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorGUI.BeginDisabledGroup(num < 1);
 		using (new GUILayout.HorizontalScope())
 		{
-			if (ClassProperty.CountQueue("Up 0.25", "toolbarbutton"))
+			if (EditorUtils.CountQueue("Up 0.25", "toolbarbutton"))
 			{
 				ChildAnimatorState[] states = RevertMapper().states;
 				for (int num6 = 0; num6 < states.Length; num6++)
@@ -12797,7 +12949,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					InterruptAlgo(wantfirst: false);
 				}
 			}
-			if (ClassProperty.CountQueue("Right 0.25", "toolbarbutton"))
+			if (EditorUtils.CountQueue("Right 0.25", "toolbarbutton"))
 			{
 				ChildAnimatorState[] states2 = RevertMapper().states;
 				for (int num7 = 0; num7 < states2.Length; num7++)
@@ -12837,7 +12989,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_Publisher.Update();
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(ClassProperty.DestroyError()._DatabaseProcessor, GUILayout.Width(35f), GUILayout.Height(35f));
+				GUILayout.Label(EditorUtils.DestroyError()._DatabaseProcessor, GUILayout.Width(35f), GUILayout.Height(35f));
 				using (new GUILayout.VerticalScope())
 				{
 					using (new ManagerThread(m_TokenizerAnnotation))
@@ -12880,7 +13032,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorGUI.BeginDisabledGroup(disabled: true);
 		using (new GUILayout.HorizontalScope())
 		{
-			GUILayout.Label(ClassProperty.DestroyError()._DatabaseProcessor, GUILayout.Height(35f), GUILayout.Width(35f));
+			GUILayout.Label(EditorUtils.DestroyError()._DatabaseProcessor, GUILayout.Height(35f), GUILayout.Width(35f));
 			using (new GUILayout.VerticalScope())
 			{
 				GUILayout.TextField("");
@@ -12940,7 +13092,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope("in bigtitle"))
 		{
 			EditorGUI.BeginDisabledGroup(m_AlgoAnnotation.Count <= 0);
-			if (ClassProperty.DisableQueue("Add Tracking to Selected States"))
+			if (EditorUtils.DisableQueue("Add Tracking to Selected States"))
 			{
 				ConcatAnnotation();
 			}
@@ -12991,7 +13143,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.FlexibleSpace();
-			if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(25f)))
+			if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(25f)))
 			{
 				Selection.objects = Selection.objects.Except(propertyAnnotation).ToArray();
 			}
@@ -13017,14 +13169,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					using (new GUILayout.HorizontalScope())
 					{
-						if (ClassProperty.RestartQueue(ClassProperty.DestroyError().importerProcessor, ClassProperty.CalcError().m_InstanceProcessor, GUILayout.Width(25f)))
+						if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(25f)))
 						{
 							UnityEngine.Object[] array = Selection.objects;
 							ArrayUtility.Remove(ref array, item.itemTests);
 							Selection.objects = array;
 						}
 						bool flag = item.itemTests == _ProcessorAnnotation.itemTests;
-						if (ClassProperty.CountQueue(item.VisitSerializer(), flag ? ClassProperty.CalcError().m_MockProcessor : GUI.skin.label, GUILayout.MinWidth(1f)))
+						if (EditorUtils.CountQueue(item.VisitSerializer(), flag ? EditorUtils.CalcError().m_MockProcessor : GUI.skin.label, GUILayout.MinWidth(1f)))
 						{
 							if (!flag)
 							{
@@ -13064,7 +13216,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.Label((!_ProcessorAnnotation.specificationTests) ? string.Empty : (_ProcessorAnnotation.VisitSerializer() + "'s Settings"), GUILayout.ExpandWidth(expand: true));
-			if ((_TestsAnnotation.Count == 1 || (bool)_ProcessorAnnotation.specificationTests) && ClassProperty.RestartQueue(ClassProperty.DestroyError().m_BridgeProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+			if ((_TestsAnnotation.Count == 1 || (bool)_ProcessorAnnotation.specificationTests) && EditorUtils.RestartQueue(EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 			{
 				if (_ObserverAnnotation == null)
 				{
@@ -13074,7 +13226,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new EditorGUI.DisabledScope(!_ObserverAnnotation))
 			{
-				if (ClassProperty.RestartQueue(ClassProperty.DestroyError().m_StrategyProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					for (int i = 0; i < _TestsAnnotation.Count; i++)
 					{
@@ -13566,7 +13718,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			UnityEditor.Animations.AnimatorController serializerReg = ((producerAnnotation != MoveDestination.Controller) ? LogoutMapper() : m_MethodAnnotation);
 			for (int i = 0; i < array.Length; i++)
 			{
-				UnityEditor.Animations.AnimatorControllerLayer animatorControllerLayer = ClassProperty.CalculatePredicate(array[i], serializerReg);
+				UnityEditor.Animations.AnimatorControllerLayer animatorControllerLayer = EditorUtils.CalculatePredicate(array[i], serializerReg);
 				if (animatorControllerLayer == null)
 				{
 					continue;
@@ -13578,7 +13730,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						_003C_003Ec__DisplayClass370_1 _003C_003Ec__DisplayClass370_ = new _003C_003Ec__DisplayClass370_1();
 						if (p != null)
 						{
-							_003C_003Ec__DisplayClass370_._ResolverReg = ((!ClassProperty.m_AdapterProcessor.Contains(p.name)) ? (p.name + _StateAnnotation) : p.name);
+							_003C_003Ec__DisplayClass370_._ResolverReg = ((!EditorUtils.m_AdapterProcessor.Contains(p.name)) ? (p.name + _StateAnnotation) : p.name);
 							if (serializerReg.parameters.All(_003C_003Ec__DisplayClass370_.VisitServer))
 							{
 								serializerReg.AddParameter(new UnityEngine.AnimatorControllerParameter
@@ -13861,8 +14013,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		_003C_003Ec__DisplayClass378_0 CS_0024_003C_003E8__locals14 = new _003C_003Ec__DisplayClass378_0();
 		CS_0024_003C_003E8__locals14.m_ProductReg = ord;
 		CS_0024_003C_003E8__locals14._CandidateReg = new Dictionary<string, string>();
-		ClassProperty.ResetPredicate(spec, CS_0024_003C_003E8__locals14.m_ProductReg, out var dir2);
-		foreach (UnityEngine.AnimatorControllerParameter item3 in spec.parameters.Where((UnityEngine.AnimatorControllerParameter p) => ClassProperty.m_AdapterProcessor.Contains(p.name)))
+		EditorUtils.ResetPredicate(spec, CS_0024_003C_003E8__locals14.m_ProductReg, out var dir2);
+		foreach (UnityEngine.AnimatorControllerParameter item3 in spec.parameters.Where((UnityEngine.AnimatorControllerParameter p) => EditorUtils.m_AdapterProcessor.Contains(p.name)))
 		{
 			CS_0024_003C_003E8__locals14.m_ProductReg.RatePredicate(item3);
 		}
@@ -14481,7 +14633,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							{
 								IEnumerable<AnimatorCondition> key = array.Where((AnimatorCondition _, int index) => index != infoReg);
 								IEnumerable<AnimatorCondition> b = animatorTransitionBase2.conditions.Where((AnimatorCondition _, int index) => index != advisorReg);
-								if (ClassProperty.CreatePredicate(key, b))
+								if (EditorUtils.CreatePredicate(key, b))
 								{
 									array[infoReg].mode = AnimatorConditionMode.NotEqual;
 									array[infoReg].threshold = Mathf.RoundToInt((array[infoReg].threshold + animatorCondition.threshold) / 2f);
@@ -15712,13 +15864,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	internal static void FillAlgo()
 	{
-		mapperVisitor = ClassProperty.FillRules("UnityEditor.AnimationWindow, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_InitializerVisitor = ClassProperty.FillRules("UnityEditorInternal.AnimationWindowState, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		definitionVisitor = ClassProperty.FillRules("UnityEditorInternal.AnimationWindowHierarchyGUI, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_RegVisitor = ClassProperty.FillRules("UnityEditor.AnimEditor, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_PropertyVisitor = ClassProperty.FillRules("UnityEditorInternal.AnimationWindowSelectionItem, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_TestsVisitor = ClassProperty.FillRules("UnityEditorInternal.AnimationWindowControl, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		m_SerializerVisitor = ClassProperty.FillRules("UnityEditorInternal.AnimationWindowHierarchyNode, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").GetField("binding", BindingFlags.Instance | BindingFlags.Public);
+		mapperVisitor = EditorUtils.FillRules("UnityEditor.AnimationWindow, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_InitializerVisitor = EditorUtils.FillRules("UnityEditorInternal.AnimationWindowState, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		definitionVisitor = EditorUtils.FillRules("UnityEditorInternal.AnimationWindowHierarchyGUI, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_RegVisitor = EditorUtils.FillRules("UnityEditor.AnimEditor, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_PropertyVisitor = EditorUtils.FillRules("UnityEditorInternal.AnimationWindowSelectionItem, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_TestsVisitor = EditorUtils.FillRules("UnityEditorInternal.AnimationWindowControl, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		m_SerializerVisitor = EditorUtils.FillRules("UnityEditorInternal.AnimationWindowHierarchyNode, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").GetField("binding", BindingFlags.Instance | BindingFlags.Public);
 		m_ProcessorVisitor = mapperVisitor.QueryList("state");
 		_ObserverVisitor = _InitializerVisitor.QueryList("activeAnimationClip");
 		serverVisitor = _InitializerVisitor.QueryList("activeRootGameObject");
@@ -15762,16 +15914,16 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (annotationVisitor == null)
 			{
 				TestInitializer(null);
-				GUILayout.Label("[Override Controller]", ClassProperty.CalcError().annotationObserver, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("[Override Controller]", EditorUtils.CalcError().annotationObserver, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
 				Rect lastRect = GUILayoutUtility.GetLastRect();
-				if (ClassProperty.DefineQueue(lastRect))
+				if (EditorUtils.DefineQueue(lastRect))
 				{
-					ClassProperty.ConcatList(annotationVisitor, typeof(UnityEditor.Animations.AnimatorController), null, null, loaddef3: true, null, null, delegate(UnityEngine.Object o)
+					EditorUtils.ConcatList(annotationVisitor, typeof(UnityEditor.Animations.AnimatorController), null, null, loaddef3: true, null, null, delegate(UnityEngine.Object o)
 					{
 						TestInitializer((UnityEditor.Animations.AnimatorController)o);
 					});
 				}
-				ClassProperty.AwakeRules(lastRect, delegate(IEnumerable<UnityEditor.Animations.AnimatorController> o)
+				EditorUtils.AwakeRules(lastRect, delegate(IEnumerable<UnityEditor.Animations.AnimatorController> o)
 				{
 					UnityEditor.Animations.AnimatorController[] source = (o as UnityEditor.Animations.AnimatorController[]) ?? o.ToArray();
 					if (source.Any())
@@ -15785,22 +15937,22 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				TestInitializer((UnityEditor.Animations.AnimatorController)EditorGUILayout.ObjectField(annotationVisitor, typeof(UnityEditor.Animations.AnimatorController), true));
 				if ((bool)annotationVisitor)
 				{
-					ClassProperty.TestQueue("Controller", iscfg: true, 80f + (float)annotationVisitor.name.Length * 6.5f, 20f, isivk3: false);
+					EditorUtils.TestQueue("Controller", iscfg: true, 80f + (float)annotationVisitor.name.Length * 6.5f, 20f, isivk3: false);
 				}
 			}
 			if (_AlgoVisitor == null)
 			{
 				_AlgoVisitor = null;
-				GUILayout.Label("[Override Root]", ClassProperty.CalcError().annotationObserver, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("[Override Root]", EditorUtils.CalcError().annotationObserver, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
 				Rect lastRect2 = GUILayoutUtility.GetLastRect();
-				if (ClassProperty.DefineQueue(lastRect2))
+				if (EditorUtils.DefineQueue(lastRect2))
 				{
-					ClassProperty.ConcatList(_AlgoVisitor, typeof(GameObject), null, null, loaddef3: true, null, null, delegate(UnityEngine.Object o)
+					EditorUtils.ConcatList(_AlgoVisitor, typeof(GameObject), null, null, loaddef3: true, null, null, delegate(UnityEngine.Object o)
 					{
 						_AlgoVisitor = (GameObject)o;
 					});
 				}
-				ClassProperty.AwakeRules(lastRect2, delegate(IEnumerable<GameObject> o)
+				EditorUtils.AwakeRules(lastRect2, delegate(IEnumerable<GameObject> o)
 				{
 					GameObject[] source = (o as GameObject[]) ?? o.ToArray();
 					if (source.Any())
@@ -15814,7 +15966,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				_AlgoVisitor = (GameObject)EditorGUILayout.ObjectField(_AlgoVisitor, typeof(GameObject), true);
 				if ((bool)_AlgoVisitor)
 				{
-					ClassProperty.TestQueue("Root", iscfg: true, 50f + (float)_AlgoVisitor.name.Length * 6.5f, 20f, isivk3: false);
+					EditorUtils.TestQueue("Root", iscfg: true, 50f + (float)_AlgoVisitor.name.Length * 6.5f, 20f, isivk3: false);
 				}
 			}
 		}
@@ -15844,7 +15996,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return;
 		}
-		ClassProperty.InstantiateRules(rect, delegate(GameObject o)
+		EditorUtils.InstantiateRules(rect, delegate(GameObject o)
 		{
 			AnimationClip setup = DefineInitializer();
 			if (!(fieldReg == null))
@@ -15886,7 +16038,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				where (b.isPPtrCurve && !AnimationUtility.GetObjectReferenceCurve(clientReg, b).GetRules()) || !AnimationUtility.GetEditorCurve(clientReg, b).keys.GetRules()
 				select b).ToArray();
 		}
-		catch (System.Exception exception)
+		catch (Exception exception)
 		{
 			UnityEngine.Debug.LogException(exception);
 			return;
@@ -15999,15 +16151,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		Transform _SpecificationReg = m_ItemReg.transform;
 		float num = (rect.width - 230f) / 2f;
 		Rect spec = new Rect(rect.xMin + num, rect.yMin + 10f, rect.width - num * 2f, rect.height - 20f);
-		ClassProperty.StartQueue(spec);
+		EditorUtils.StartQueue(spec);
 		rect = new Rect(0f, spec.y + spec.height + 4f, rect.width, EditorGUIUtility.singleLineHeight * 2f);
 		Rect rect2 = new Rect(rect);
 		rect2.height = 14f;
 		Rect rect3 = rect2;
 		using (new AnnotationPolicy(m_ItemReg == null))
 		{
-			GUI.Label(rect3, "[Drag & Drop GameObjects]", ClassProperty.CalcError()._VisitorObserver);
-			ClassProperty.AwakeRules(rect, delegate(IEnumerable<GameObject> enu)
+			GUI.Label(rect3, "[Drag & Drop GameObjects]", EditorUtils.CalcError()._VisitorObserver);
+			EditorUtils.AwakeRules(rect, delegate(IEnumerable<GameObject> enu)
 			{
 				EditorCurveBinding[] curveBindings = AnimationUtility.GetCurveBindings(m_ManagerReg);
 				Undo.RecordObject(m_ManagerReg, "[CE] Add Curve");
@@ -16124,20 +16276,114 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void PrepareAlgo()
 	{
-		rulesVisitor = ClassProperty.FillRules("UnityEditor.Graphs.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		m_QueueVisitor = ClassProperty.FillRules("UnityEditor.Graphs.Edge, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		errorVisitor = ClassProperty.FillRules("UnityEditor.Graphs.Styles, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		rulesVisitor = EditorUtils.FillRules("UnityEditor.Graphs.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		m_QueueVisitor = EditorUtils.FillRules("UnityEditor.Graphs.Edge, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		errorVisitor = EditorUtils.FillRules("UnityEditor.Graphs.Styles, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 	}
 
 	private static void AssetAlgo()
 	{
-		SpecificationAlgo.MapReg(_StatusVisitor, "get_selectedEdgeColor", SpecificationAlgo.RevertReg<Color, bool>(SelectedTransitionColorPrefix));
-		SpecificationAlgo.MapReg(_StatusVisitor, "get_defaultTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(EntryTransitionColorPrefix));
-		SpecificationAlgo.MapReg(_StatusVisitor, "get_selectorTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(BaseTransitionColorPrefix));
+		int num = 7;
+		uint num4 = default(uint);
+		Type type = default(Type);
 		while (true)
 		{
-			Type type = ClassProperty.FillRules("UnityEditor.Graphs.Slot, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-			SpecificationAlgo.CalcReg(m_QueueVisitor.GetConstructor(new Type[2] { type, type }), null, SpecificationAlgo.NewReg<Edge>(EdgeConstructorPost));
+			int num2 = num;
+			while (true)
+			{
+				int num3;
+				switch (num2)
+				{
+				case 11:
+					num3 = -1588810435;
+					goto IL_0014;
+				default:
+					SpecificationAlgo.MapReg(rulesVisitor, "get_gridMajorColor", SpecificationAlgo.RevertReg<Color, bool>(GraphGUIMajorGridColorPrefix));
+					num2 = 2;
+					break;
+				case 4:
+					num3 = (int)(num4 * 951581349) ^ -992599709;
+					goto IL_0014;
+				case 2:
+					num3 = -496835034;
+					goto IL_0014;
+				case 3:
+					num3 = -569321772;
+					goto IL_0014;
+				case 1:
+					num3 = -700389342;
+					goto IL_0014;
+				case 9:
+					num3 = -454051144;
+					goto IL_0014;
+				case 7:
+					SpecificationAlgo.MapReg(_StatusVisitor, "get_selectedEdgeColor", SpecificationAlgo.RevertReg<Color, bool>(SelectedTransitionColorPrefix));
+					num2 = 6;
+					break;
+				case 6:
+					SpecificationAlgo.MapReg(_StatusVisitor, "get_defaultTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(EntryTransitionColorPrefix));
+					num2 = 10;
+					break;
+				case 10:
+					SpecificationAlgo.MapReg(_StatusVisitor, "get_selectorTransitionColor", SpecificationAlgo.RevertReg<Color, bool>(BaseTransitionColorPrefix));
+					num2 = 8;
+					break;
+				case 8:
+					goto IL_01bb;
+				case 5:
+					return;
+					IL_0014:
+					switch ((num4 = (uint)(num3 ^ -725294010)) % 8)
+					{
+					case 7u:
+						break;
+					case 2u:
+						goto IL_00bf;
+					case 5u:
+						goto IL_01bb;
+					default:
+						goto IL_01c5;
+					case 1u:
+						goto end_IL_0075;
+					case 6u:
+						goto IL_01e9;
+					case 3u:
+						goto IL_021a;
+					case 0u:
+						goto IL_0255;
+					case 4u:
+						return;
+					}
+					goto default;
+					IL_0255:
+					SpecificationAlgo.MapReg(rulesVisitor, "get_gridMinorColor", SpecificationAlgo.RevertReg<Color, bool>(GraphGUIMinorGridColorPrefix));
+					num2 = 9;
+					break;
+					IL_021a:
+					SpecificationAlgo.ValidateReg(m_AdapterVisitor, typeof(bool), "AddNode", null, SpecificationAlgo.NewReg<Node>(AddNodePost));
+					num2 = 1;
+					break;
+					IL_01e9:
+					SpecificationAlgo.MapReg(_StatusVisitor, "DrawArrows", SpecificationAlgo.AssetReg<Vector3[]>(DrawArrowsPrefix));
+					num2 = 11;
+					break;
+					IL_01c5:
+					num2 = 5;
+					break;
+					IL_01bb:
+					num3 = -1042290705;
+					goto IL_0014;
+					IL_00bf:
+					SpecificationAlgo.CalcReg(m_QueueVisitor.GetConstructor(new Type[2] { type, type }), null, SpecificationAlgo.NewReg<Edge>(EdgeConstructorPost));
+					num2 = 4;
+					break;
+				}
+				continue;
+				end_IL_0075:
+				break;
+			}
+			type = EditorUtils.FillRules("UnityEditor.Graphs.Slot, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+			num = 3;
 		}
 	}
 
@@ -16296,7 +16542,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		if (m_SetterVisitor == null)
 		{
-			m_SetterVisitor = ClassProperty.FillRules("UnityEditor.Graphs.Styles, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").GetField("graphBackground", BindingFlags.Static | BindingFlags.Public);
+			m_SetterVisitor = EditorUtils.FillRules("UnityEditor.Graphs.Styles, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").GetField("graphBackground", BindingFlags.Static | BindingFlags.Public);
 		}
 		bool flag = !ConsumerAlgo.CallDefinition().cosmeticGraphActive;
 		GUIStyle gUIStyle = new GUIStyle();
@@ -16307,7 +16553,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				connectionVisitor = new Texture2D(1, 1);
 			}
-			connectionVisitor.SetPixel(0, 0, (!flag && (bool)ConsumerAlgo.CallDefinition().cosmeticGraphActive) ? ConsumerAlgo.CallDefinition().gridBackgroundColor.WriteDefinition() : ((Color)(object)ConsumerAlgo.CallDefinition().gridBackgroundColor.callbackAlgo));
+			connectionVisitor.SetPixel(0, 0, (!flag && (bool)ConsumerAlgo.CallDefinition().cosmeticGraphActive) ? ConsumerAlgo.CallDefinition().gridBackgroundColor.WriteDefinition() : ((Color)ConsumerAlgo.CallDefinition().gridBackgroundColor.callbackAlgo));
 			connectionVisitor.Apply();
 			background = connectionVisitor;
 		}
@@ -16321,12 +16567,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void RegisterAlgo()
 	{
-		_ConsumerVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		m_AdapterVisitor = ClassProperty.FillRules("UnityEditor.Graphs.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		m_InterpreterVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimationBlendTree.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_WatcherVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimationStateMachine.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		m_CandidateVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimationStateMachine.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		m_ProductVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_ConsumerVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		m_AdapterVisitor = EditorUtils.FillRules("UnityEditor.Graphs.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		m_InterpreterVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimationBlendTree.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_WatcherVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimationStateMachine.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		m_CandidateVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimationStateMachine.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		m_ProductVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		workerVisitor = _ConsumerVisitor.DisableList("RebuildGraph");
 		m_PrototypeVisitor = _ConsumerVisitor.DisableList("AddBreadCrumb");
 		_AdapterAnnotation = _ConsumerVisitor.DisableList("get_activeGraphGUI");
@@ -16376,7 +16622,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 				}
 			}
-			catch (System.Exception exception)
+			catch (Exception exception)
 			{
 				Selection.objects = null;
 				UnityEngine.Debug.LogException(exception);
@@ -16493,7 +16739,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			GUILayout.BeginArea(screenRect);
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				GUILayout.Label(baseAnnotation ? "Replicating Transitions" : ((!containerAnnotation) ? "Making Transitions" : "Redirecting Transitions"), ClassProperty.CalcError()._StructProcessor);
+				GUILayout.Label(baseAnnotation ? "Replicating Transitions" : ((!containerAnnotation) ? "Making Transitions" : "Redirecting Transitions"), EditorUtils.CalcError()._StructProcessor);
 			}
 			GUILayout.EndArea();
 		}
@@ -16501,9 +16747,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			if (!ConsumerAlgo.CallDefinition().hasPingedController)
 			{
-				GUI.Label(nameRect, "Click to highlight Controller", ClassProperty.CalcError().annotationObserver);
+				GUI.Label(nameRect, "Click to highlight Controller", EditorUtils.CalcError().annotationObserver);
 			}
-			if (ClassProperty.DefineQueue(nameRect))
+			if (EditorUtils.DefineQueue(nameRect))
 			{
 				EditorGUIUtility.PingObject(LogoutMapper());
 				ConsumerAlgo.CallDefinition().hasPingedController.ExcludeDefinition(excludeparam: true);
@@ -16595,8 +16841,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void ManageAlgo()
 	{
-		_ReaderVisitor = ClassProperty.FillRules("UnityEditor.Graphs.LayerControllerView, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_BridgeVisitor = ClassProperty.FillRules("UnityEditor.Graphs.LayerSettingsWindow, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_ReaderVisitor = EditorUtils.FillRules("UnityEditor.Graphs.LayerControllerView, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_BridgeVisitor = EditorUtils.FillRules("UnityEditor.Graphs.LayerSettingsWindow, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		m_StrategyVisitor = _ReaderVisitor.RestartList("m_LayerScroll");
 		_CustomerVisitor = _ReaderVisitor.DisableList("OnRemoveLayer");
 		m_DatabaseVisitor = _ReaderVisitor.DisableList("RenameEnd");
@@ -16638,10 +16884,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new TemplateThread(TemplateThread.ColoringType.FG, !ConsumerAlgo.CallDefinition().layerCompactView, Color.gray))
 			{
-				if (ClassProperty.QueryQueue(rect, new GUIContent(ClassProperty.DestroyError().m_SingletonProcessor)
+				if (EditorUtils.QueryQueue(rect, new GUIContent(EditorUtils.DestroyError().m_SingletonProcessor)
 				{
 					tooltip = "Compact View"
-				}, ClassProperty.CalcError().configProcessor))
+				}, EditorUtils.CalcError().configProcessor))
 				{
 					ConsumerAlgo.CallDefinition().layerCompactView.InsertDefinition();
 					DisableMapper();
@@ -16656,7 +16902,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new TemplateThread(TemplateThread.ColoringType.FG, !ConsumerAlgo.CallDefinition().sortCategoryViewLayers, Color.gray))
 			{
-				if (ClassProperty.QueryQueue(item, ClassProperty.DestroyError()._MappingProcessor, ClassProperty.CalcError().configProcessor))
+				if (EditorUtils.QueryQueue(item, EditorUtils.DestroyError()._MappingProcessor, EditorUtils.CalcError().configProcessor))
 				{
 					ConsumerAlgo.CallDefinition().sortCategoryViewLayers.InsertDefinition();
 					DisableMapper();
@@ -16759,12 +17005,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					EditorGUI.DrawRect(rect2 = rect2.InterruptResolver(18f), new Color(0.2f, 0.2f, 0.2f));
 				}
-				GUI.Label(rect2, index.ToString(), ClassProperty.CalcError()._VisitorObserver);
+				GUI.Label(rect2, index.ToString(), EditorUtils.CalcError()._VisitorObserver);
 			}
 			if (animatorControllerLayer.stateMachine == null)
 			{
 				float x = 20f + animatorControllerLayer.name.PushResolver();
-				GUI.Label(new Rect(x, rect.yMin + 6f, 20f, 14f), new GUIContent(ClassProperty.DestroyError().issuerProcessor)
+				GUI.Label(new Rect(x, rect.yMin + 6f, 20f, 14f), new GUIContent(EditorUtils.DestroyError().issuerProcessor)
 				{
 					tooltip = "Statemachine is Null! This layer will cause issues!"
 				});
@@ -16789,7 +17035,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						alignment = TextAnchor.MiddleCenter
 					};
 					Rect rect3 = res.PatchResolver(16f, isserv: true);
-					if (ClassProperty.QueryQueue(rect3.StopResolver(2f), ClassProperty.DestroyError()._ParamProcessor, ClassProperty.CalcError().configProcessor))
+					if (EditorUtils.QueryQueue(rect3.StopResolver(2f), EditorUtils.DestroyError()._ParamProcessor, EditorUtils.CalcError().configProcessor))
 					{
 						_ExporterVisitor.Invoke(null, new object[4]
 						{
@@ -16818,9 +17064,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					if (flag && !flag2)
 					{
-						GUI.Label(res.PatchResolver(32f, isserv: true, 2f, isvisitor3: true).StopResolver(-1f), num.ToString("F2"), ClassProperty.CalcError().algoObserver);
+						GUI.Label(res.PatchResolver(32f, isserv: true, 2f, isvisitor3: true).StopResolver(-1f), num.ToString("F2"), EditorUtils.CalcError().algoObserver);
 					}
-					if (ClassProperty.VerifyQueue())
+					if (EditorUtils.VerifyQueue())
 					{
 						CompareMapper();
 					}
@@ -16999,12 +17245,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		genericMenu.AddItem("Category Tag/[New Category]".DeleteResolver(tokenneeded: true), on: false, delegate
 		{
-			QuickInputWindow quickInputWindow = QuickInputWindow.CreateHelper("New Category", ClassProperty.CheckRules<QuickInputWindow.FieldType>(QuickInputWindow.FieldType.String), ClassProperty.CheckRules<GUIContent>("Category Name".DeleteResolver(tokenneeded: true)), delegate(object[] results)
+			QuickInputWindow quickInputWindow = QuickInputWindow.CreateHelper("New Category", EditorUtils.CheckRules<QuickInputWindow.FieldType>(QuickInputWindow.FieldType.String), EditorUtils.CheckRules<GUIContent>("Category Name".DeleteResolver(tokenneeded: true)), delegate(object[] results)
 			{
 				structReg.StartPredicate("_category:" + (string)results[0]);
 				DisableMapper();
 			}, _003C_003Ec.watcherInitializer.ReadObserver);
-			quickInputWindow.NewHelper(0, ClassProperty.ChangeRules("New Category", creatorVisitor));
+			quickInputWindow.NewHelper(0, EditorUtils.ChangeRules("New Category", creatorVisitor));
 			quickInputWindow.CollectHelper(m_ProxyReg.mousePosition);
 		});
 		genericMenu.AddSeparator("");
@@ -17082,7 +17328,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void SetMapper()
 	{
-		UnityEditor.Animations.AnimatorControllerLayer item = ClassProperty.CalculatePredicate(m_MessageVisitor.layers[m_ConfigVisitor], m_MessageVisitor);
+		UnityEditor.Animations.AnimatorControllerLayer item = EditorUtils.CalculatePredicate(m_MessageVisitor.layers[m_ConfigVisitor], m_MessageVisitor);
 		if (m_ConfigVisitor < m_MessageVisitor.layers.Length - 2)
 		{
 			UnityEditor.Animations.AnimatorControllerLayer[] array = m_MessageVisitor.layers;
@@ -17101,7 +17347,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (collectionVisitor != null)
 		{
-			UnityEditor.Animations.AnimatorControllerLayer item = ClassProperty.CalculatePredicate(collectionVisitor, m_MessageVisitor);
+			UnityEditor.Animations.AnimatorControllerLayer item = EditorUtils.CalculatePredicate(collectionVisitor, m_MessageVisitor);
 			if (m_ConfigVisitor < m_MessageVisitor.layers.Length - 2)
 			{
 				UnityEditor.Animations.AnimatorControllerLayer[] array = m_MessageVisitor.layers;
@@ -17173,8 +17419,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private static void MoveMapper()
 	{
 		string text = string.Concat(ConsumerAlgo.CallDefinition().saveFolder, "/Generated Masks/", m_MessageVisitor.name);
-		ClassProperty.RemoveList(text);
-		AvatarMask avatarMask = ClassProperty.AddRules(m_MessageVisitor);
+		EditorUtils.RemoveList(text);
+		AvatarMask avatarMask = EditorUtils.AddRules(m_MessageVisitor);
 		if ((bool)avatarMask)
 		{
 			AssetDatabase.CreateAsset(avatarMask, AssetDatabase.GenerateUniqueAssetPath(text + "/" + m_MessageVisitor.name + ".mask"));
@@ -17210,9 +17456,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private static void CancelMapper(Transform setup = null)
 	{
 		UnityEditor.Animations.AnimatorControllerLayer animatorControllerLayer = m_MessageVisitor.layers[m_ConfigVisitor];
-		AvatarMask avatarMask = ClassProperty.FindRules(animatorControllerLayer, setup);
+		AvatarMask avatarMask = EditorUtils.FindRules(animatorControllerLayer, setup);
 		string text = string.Concat(ConsumerAlgo.CallDefinition().saveFolder, "/Generated Masks/", m_MessageVisitor.name);
-		ClassProperty.RemoveList(text);
+		EditorUtils.RemoveList(text);
 		AssetDatabase.CreateAsset(avatarMask, AssetDatabase.GenerateUniqueAssetPath(text + "/" + animatorControllerLayer.name + ".mask"));
 		UnityEditor.Animations.AnimatorControllerLayer[] layers = m_MessageVisitor.layers;
 		layers[m_ConfigVisitor].avatarMask = avatarMask;
@@ -17222,8 +17468,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private static void CountMapper(Transform task)
 	{
 		string text = string.Concat(ConsumerAlgo.CallDefinition().saveFolder, "/Generated Masks/", m_MessageVisitor.name);
-		ClassProperty.RemoveList(text);
-		AvatarMask avatarMask = ClassProperty.InvokeRules(m_MessageVisitor, task);
+		EditorUtils.RemoveList(text);
+		AvatarMask avatarMask = EditorUtils.InvokeRules(m_MessageVisitor, task);
 		AssetDatabase.CreateAsset(avatarMask, AssetDatabase.GenerateUniqueAssetPath(text + "/" + m_MessageVisitor.name + ".mask"));
 		UnityEditor.Animations.AnimatorControllerLayer[] layers = m_MessageVisitor.layers;
 		layers[0].avatarMask = avatarMask;
@@ -17300,7 +17546,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			listenerVisitor = ((!text.ResetResolver()) ? (m_ParamsVisitor.CalculateTests(text) ?? m_ParamsVisitor) : m_ParamsVisitor);
 			AddMapper();
 		}
-		catch (System.Exception exception)
+		catch (Exception exception)
 		{
 			UnityEngine.Debug.LogException(exception);
 		}
@@ -17354,9 +17600,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							}
 						}
 						Rect var = def.SortResolver(visitor, isfield: true);
-						using (new TemplateThread(TemplateThread.ColoringType.BG, skipcont, ClassProperty.configurationProperty, Color.gray))
+						using (new TemplateThread(TemplateThread.ColoringType.BG, skipcont, EditorUtils.configurationProperty, Color.gray))
 						{
-							if (ClassProperty.CancelQueue(var, importerMapper.requestMapper, EditorStyles.toolbarButton))
+							if (EditorUtils.CancelQueue(var, importerMapper.requestMapper, EditorStyles.toolbarButton))
 							{
 								if (listenerVisitor == importerMapper)
 								{
@@ -17380,7 +17626,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static string[] QueryMapper(string task)
 	{
-		return task.Split(ClassProperty.CheckRules<string>(PushInitializer()), StringSplitOptions.None);
+		return task.Split(EditorUtils.CheckRules<string>(PushInitializer()), StringSplitOptions.None);
 	}
 
 	private static void AddMapper()
@@ -17519,11 +17765,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			select cs.state).ToArray();
 		HashSet<string> hashSet = new HashSet<string>(from cs in sm.states
 			where !configurationReg.Contains(cs.state)
-			select ClassProperty.RegisterRules(cs.state.name));
+			select EditorUtils.RegisterRules(cs.state.name));
 		AnimatorState[] array2 = array;
 		foreach (AnimatorState obj in array2)
 		{
-			string item = (obj.name = ClassProperty.ChangeRules(ClassProperty.RegisterRules(obj.name), hashSet));
+			string item = (obj.name = EditorUtils.ChangeRules(EditorUtils.RegisterRules(obj.name), hashSet));
 			hashSet.Add(item);
 		}
 		UnityEngine.Object[] objects = array;
@@ -17532,7 +17778,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void InstantiateMapper()
 	{
-		m_RuleVisitor = ClassProperty.FillRules("UnityEditor.GenericMenu+MenuItem, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").GetConstructor(new Type[4]
+		m_RuleVisitor = EditorUtils.FillRules("UnityEditor.GenericMenu+MenuItem, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null").GetConstructor(new Type[4]
 		{
 			typeof(GUIContent),
 			typeof(bool),
@@ -17563,20 +17809,20 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void AwakeMapper()
 	{
-		SpecificationAlgo.MapReg(typeof(GenericMenu), "ShowAsContext", null, SpecificationAlgo.NewReg((Action<object>)ShowAsContextPost));
+		SpecificationAlgo.MapReg(typeof(GenericMenu), "ShowAsContext", null, SpecificationAlgo.NewReg<object>(ShowAsContextPost));
 	}
 
-	private static void ShowAsContextPost(GenericMenu __instance)
+	private static void ShowAsContextPost(object __instance)
 	{
-		m_SingletonVisitor = __instance;
+		m_SingletonVisitor = (GenericMenu)__instance;
 	}
 
 	private static void ResetMapper()
 	{
-		_FactoryVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimationStateMachine.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_AccountVisitor = ClassProperty.FillRules("UnityEditor.Graphs.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_RefVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimationBlendTree.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		_StatusVisitor = ClassProperty.FillRules("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_FactoryVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimationStateMachine.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_AccountVisitor = EditorUtils.FillRules("UnityEditor.Graphs.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_RefVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimationBlendTree.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		_StatusVisitor = EditorUtils.FillRules("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 		roleVisitor = SetterTests.ConnectionTests._SystemTests.ChangeRecord().DisableList("MakeTransitionCallback");
 		paramVisitor = SetterTests.ConnectionTests._WorkerTests.ChangeRecord().DisableList("MakeTransitionCallback");
 		modelVisitor = SetterTests.ConnectionTests._CandidateTests.ChangeRecord().DisableList("MakeTransitionCallback");
@@ -17900,13 +18146,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		string last = $"TreeNode{n.GetInstanceID()}";
 		if (Event.current.type == EventType.Repaint)
 		{
-			ClassProperty.SearchRules(last, n.position);
+			EditorUtils.SearchRules(last, n.position);
 		}
-		Rect value = ClassProperty.OrderQueue(last, Rect.zero);
+		Rect value = EditorUtils.OrderQueue(last, Rect.zero);
 		float x = 0f;
 		value.y = 0f;
 		value.x = x;
-		ClassProperty.AwakeRules(value, delegate(IEnumerable<Motion> motions)
+		EditorUtils.AwakeRules(value, delegate(IEnumerable<Motion> motions)
 		{
 			_003C_003Ec__DisplayClass670_1 _003C_003Ec__DisplayClass670_ = new _003C_003Ec__DisplayClass670_1();
 			object value2 = codeVisitor.GetValue(n);
@@ -18124,7 +18370,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			rect.width = RegisterMapper(y);
 			Rect rect2 = rect;
 			EditorGUI.BeginChangeCheck();
-			GUIStyle style = new GUIStyle(ClassProperty.CalcError().annotationObserver)
+			GUIStyle style = new GUIStyle(EditorUtils.CalcError().annotationObserver)
 			{
 				fontSize = 7
 			};
@@ -18148,11 +18394,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			Rect res = new Rect(0f, 0f, _ReponseVisitor.x, _ReponseVisitor.y);
 			if (stateCosmeticOptions.HasFlag(ConsumerAlgo.StateCosmeticOptions.inactiveIndicators) || writeDefaultValues)
 			{
-				GUI.Label(res.PatchResolver(20f, isserv: true).ManageResolver(14f), ClassProperty.CalcError()._ClientProcessor, (!writeDefaultValues) ? ClassProperty.CalcError()._VisitorObserver : ClassProperty.CalcError()._ClassProcessor);
+				GUI.Label(res.PatchResolver(20f, isserv: true).ManageResolver(14f), EditorUtils.CalcError()._ClientProcessor, (!writeDefaultValues) ? EditorUtils.CalcError()._VisitorObserver : EditorUtils.CalcError()._ClassProcessor);
 			}
 			if (stateCosmeticOptions.HasFlag(ConsumerAlgo.StateCosmeticOptions.inactiveIndicators) || flag)
 			{
-				GUI.Label(res.PatchResolver(10f, isserv: true).ManageResolver(14f), ClassProperty.CalcError().m_AttributeProcessor, (!flag) ? ClassProperty.CalcError()._VisitorObserver : ClassProperty.CalcError()._ClassProcessor);
+				GUI.Label(res.PatchResolver(10f, isserv: true).ManageResolver(14f), EditorUtils.CalcError().m_AttributeProcessor, (!flag) ? EditorUtils.CalcError()._VisitorObserver : EditorUtils.CalcError()._ClassProcessor);
 			}
 		}
 		if (!stateCosmeticOptions.HasFlag(ConsumerAlgo.StateCosmeticOptions.quickNewClip))
@@ -18261,8 +18507,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				rect.x = -9f;
 			}
-			GUIContent content = ((!num3) ? ((!flag2) ? GUIContent.none : new GUIContent("(None)")) : new GUIContent((!flag2) ? string.Empty : ("(" + __state.motion.name + ")"), (!flag3) ? null : ((__state.motion is AnimationClip animationClip) ? ((!animationClip.isLooping) ? ClassProperty.DestroyError().m_RegistryProcessor.image : ClassProperty.DestroyError().readerProcessor.image) : ClassProperty.DestroyError().m_PrinterProcessor.image)));
-			GUI.Label(rect, content, ClassProperty.CalcError()._ClassProcessor);
+			GUIContent content = ((!num3) ? ((!flag2) ? GUIContent.none : new GUIContent("(None)")) : new GUIContent((!flag2) ? string.Empty : ("(" + __state.motion.name + ")"), (!flag3) ? null : ((__state.motion is AnimationClip animationClip) ? ((!animationClip.isLooping) ? EditorUtils.DestroyError().m_RegistryProcessor.image : EditorUtils.DestroyError().readerProcessor.image) : EditorUtils.DestroyError().m_PrinterProcessor.image)));
+			GUI.Label(rect, content, EditorUtils.CalcError()._ClassProcessor);
 		}
 		return;
 		IL_0089:
@@ -18520,7 +18766,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 		}
-		catch (System.Exception arg)
+		catch (Exception arg)
 		{
 			DestroyAnnotation($"WARNING! Automatic driver renaming failed\n{arg}");
 		}
@@ -18587,7 +18833,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				ConsumerAlgo.CallDefinition().a_HasSucceededLastVerification.ExcludeDefinition(excludeparam: true);
 				WriteAnnotation(assetneeded: true);
 			});
-		}, delegate(System.Exception exception)
+		}, delegate(Exception exception)
 		{
 			importerAnnotation = false;
 			FindVisitor($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
@@ -18672,13 +18918,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	[CompilerGenerated]
 	internal static string CreateMapper(string config)
 	{
-		return ReflectMapper(RunMapper(config), new int[7] { 3, 2, 6, 4, 2, 1, 8 });
+		return ReflectMapper(RunMapper(config), global::_003CModule_003E.smethod_3<int[]>(565931375));
 	}
 
 	[CompilerGenerated]
 	internal static string NewMapper(string config)
 	{
-		return LoginMapper(ReflectMapper(config, new int[7] { 8, 1, 2, 4, 6, 2, 3 }));
+		return LoginMapper(ReflectMapper(config, global::_003CModule_003E.smethod_1<int[]>(943980522)));
 	}
 
 	[CompilerGenerated]
@@ -18898,7 +19144,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						using (new ManagerThread(field))
 						{
 							EditorGUI.BeginChangeCheck();
-							stringValue = (string)ClassProperty.CalcError().LoginError().Invoke(null, parameters);
+							stringValue = (string)EditorUtils.CalcError().LoginError().Invoke(null, parameters);
 							if (EditorGUI.EndChangeCheck())
 							{
 								field.stringValue = stringValue;

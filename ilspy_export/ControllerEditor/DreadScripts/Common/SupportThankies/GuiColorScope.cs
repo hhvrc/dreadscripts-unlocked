@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal sealed class Serializer : IDisposable
+internal sealed class GuiColorScope : IDisposable
 {
 	internal enum ColoringType
 	{
@@ -19,7 +19,7 @@ internal sealed class Serializer : IDisposable
 
 	private bool m_Predicate;
 
-	internal static Serializer AssetCode;
+	internal static GuiColorScope AssetCode;
 
 	private void InitWrapper()
 	{
@@ -46,7 +46,7 @@ internal sealed class Serializer : IDisposable
 		}
 	}
 
-	internal Serializer(ColoringType ident, Color selection)
+	internal GuiColorScope(ColoringType ident, Color selection)
 	{
 		resolver = ident;
 		VisitWrapper(selection);

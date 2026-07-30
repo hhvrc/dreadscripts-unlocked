@@ -484,9 +484,50 @@ internal static class AdvisorDicBridge
 		public AdvisorTemplate(SceneView spec, string second, float consumer, int key2, float setup3 = 20f, PositionFlag col4 = PositionFlag.BottomRight, PublisherTemplate def5 = null)
 			: this(spec, consumer, key2 + 2, setup3, col4, def5)
 		{
+			int num = 2;
+			uint num3 = default(uint);
 			while (true)
 			{
-				GUILayout.Label(second, ManageRequest()._WriterTemplate);
+				int num2;
+				switch (num)
+				{
+				case 4:
+					RemoveManager(2, 0);
+					num = 1;
+					break;
+				default:
+					num2 = ((int)num3 * -593078698) ^ 0x4684C630;
+					goto IL_0052;
+				case 2:
+					goto IL_004d;
+				case 3:
+					goto IL_006f;
+				case 1:
+					return;
+					IL_0052:
+					switch ((num3 = (uint)(num2 ^ 0x3A654A93)) % 3)
+					{
+					case 0u:
+						break;
+					case 2u:
+						goto IL_004d;
+					case 1u:
+						goto IL_006f;
+					default:
+						goto IL_008b;
+					}
+					goto case 4;
+					IL_008b:
+					num = 4;
+					break;
+					IL_006f:
+					GUILayout.Label(second, ManageRequest()._WriterTemplate);
+					num = 0;
+					break;
+					IL_004d:
+					num2 = 1714725738;
+					goto IL_0052;
+				}
 			}
 		}
 
@@ -1630,8 +1671,6 @@ internal static class AdvisorDicBridge
 
 		public static Func<VRCAvatarDescriptor.CustomAnimLayer, RuntimeAnimatorController> m_ItemDic;
 
-		private static _003C_003Ec DefineCandidate;
-
 		internal Type RemoveAlgo(ParameterInfo p)
 		{
 			return p.ParameterType;
@@ -1651,11 +1690,6 @@ internal static class AdvisorDicBridge
 		{
 			return l.animatorController;
 		}
-
-		internal static bool ViewCandidate()
-		{
-			return DefineCandidate == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -1667,7 +1701,7 @@ internal static class AdvisorDicBridge
 
 		internal bool SetMapping(T c)
 		{
-			if (!_003C_003Ec__DisplayClass19_0<T>.NewMapping((UnityEngine.Object)c, (UnityEngine.Object)null))
+			if (!NewMapping((UnityEngine.Object)c, (UnityEngine.Object)null))
 			{
 				return false;
 			}
@@ -1677,6 +1711,11 @@ internal static class AdvisorDicBridge
 		internal bool DeleteMapping(T el)
 		{
 			return acceptConditions?.Invoke(el) ?? true;
+		}
+
+		static bool NewMapping(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 != object_1;
 		}
 
 		internal static bool InitCandidate()
@@ -1694,11 +1733,16 @@ internal static class AdvisorDicBridge
 
 		internal bool SelectMapping(T c)
 		{
-			if (!_003C_003Ec__DisplayClass20_0<T>.RunMapping((UnityEngine.Object)c, (UnityEngine.Object)null))
+			if (!RunMapping((UnityEngine.Object)c, (UnityEngine.Object)null))
 			{
 				return false;
 			}
 			return acceptConditions?.Invoke(c) ?? true;
+		}
+
+		static bool RunMapping(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 != object_1;
 		}
 
 		internal static bool ForgotCandidate()
@@ -1725,12 +1769,42 @@ internal static class AdvisorDicBridge
 				};
 				if (sp.WriteManager(_003C_003Ec__DisplayClass24_.ManageMapping) < 0)
 				{
-					int num = _003C_003Ec__DisplayClass24_0<T>.DefineMapping(sp) + 1;
-					_003C_003Ec__DisplayClass24_0<T>.PushMapping(sp, num);
-					_003C_003Ec__DisplayClass24_0<T>.InsertMapping(_003C_003Ec__DisplayClass24_0<T>.UpdateMapping(sp, num - 1), (UnityEngine.Object)_003C_003Ec__DisplayClass24_.e);
+					int num = DefineMapping(sp) + 1;
+					PushMapping(sp, num);
+					InsertMapping(UpdateMapping(sp, num - 1), (UnityEngine.Object)_003C_003Ec__DisplayClass24_.e);
 				}
 			}
-			_003C_003Ec__DisplayClass24_0<T>.ListMapping(_003C_003Ec__DisplayClass24_0<T>.PrepareMapping(sp));
+			ListMapping(PrepareMapping(sp));
+		}
+
+		static int DefineMapping(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.arraySize;
+		}
+
+		static void PushMapping(SerializedProperty serializedProperty_0, int int_0)
+		{
+			serializedProperty_0.arraySize = int_0;
+		}
+
+		static SerializedProperty UpdateMapping(SerializedProperty serializedProperty_0, int int_0)
+		{
+			return serializedProperty_0.GetArrayElementAtIndex(int_0);
+		}
+
+		static void InsertMapping(SerializedProperty serializedProperty_0, UnityEngine.Object object_0)
+		{
+			serializedProperty_0.objectReferenceValue = object_0;
+		}
+
+		static SerializedObject PrepareMapping(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.serializedObject;
+		}
+
+		static bool ListMapping(SerializedObject serializedObject_0)
+		{
+			return serializedObject_0.ApplyModifiedProperties();
 		}
 
 		internal static bool CalcDatabase()
@@ -1748,7 +1822,17 @@ internal static class AdvisorDicBridge
 
 		internal bool ManageMapping(SerializedProperty e2, int _)
 		{
-			return _003C_003Ec__DisplayClass24_1<T>.ResolveMapping(_003C_003Ec__DisplayClass24_1<T>.ReadMapping(e2), (UnityEngine.Object)e);
+			return ResolveMapping(ReadMapping(e2), (UnityEngine.Object)e);
+		}
+
+		static UnityEngine.Object ReadMapping(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.objectReferenceValue;
+		}
+
+		static bool ResolveMapping(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 == object_1;
 		}
 
 		internal static bool SortDatabase()
@@ -1775,10 +1859,25 @@ internal static class AdvisorDicBridge
 				}.ComputeMapping);
 				if (num >= 0)
 				{
-					_003C_003Ec__DisplayClass26_0<T>.ConnectMapping(sp, num);
+					ConnectMapping(sp, num);
 				}
 			}
-			_003C_003Ec__DisplayClass26_0<T>.InterruptMapping(_003C_003Ec__DisplayClass26_0<T>.CompareMapping(sp));
+			InterruptMapping(CompareMapping(sp));
+		}
+
+		static void ConnectMapping(SerializedProperty serializedProperty_0, int int_0)
+		{
+			serializedProperty_0.DeleteArrayElementAtIndex(int_0);
+		}
+
+		static SerializedObject CompareMapping(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.serializedObject;
+		}
+
+		static bool InterruptMapping(SerializedObject serializedObject_0)
+		{
+			return serializedObject_0.ApplyModifiedProperties();
 		}
 
 		internal static bool CalculateDatabase()
@@ -1796,7 +1895,17 @@ internal static class AdvisorDicBridge
 
 		internal bool ComputeMapping(SerializedProperty e2, int i)
 		{
-			return _003C_003Ec__DisplayClass26_1<T>.InitMapping(_003C_003Ec__DisplayClass26_1<T>.StartMapping(e2), (UnityEngine.Object)e);
+			return InitMapping(StartMapping(e2), (UnityEngine.Object)e);
+		}
+
+		static UnityEngine.Object StartMapping(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.objectReferenceValue;
+		}
+
+		static bool InitMapping(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 == object_1;
 		}
 
 		internal static bool LoginDatabase()
@@ -1862,7 +1971,7 @@ internal static class AdvisorDicBridge
 				{
 					obj = default(T);
 				}
-				if (_003CHandleTask_003Ed__18<T>._202B_200D_206E_202E_206D_206C_206D_206F_206D_200C_206F_206F_200C_200E_200D_206A_200C_206A_206B_200D_200F_206E_206C_206C_200E_202E_202B_206A_202E_202E_200E_206E_206F_206D_206D_202C_206F_202B_200B_206E_202E((Task)taskHandle))
+				if (smethod_0((Task)taskHandle))
 				{
 					if (onComplete != null)
 					{
@@ -1870,15 +1979,15 @@ internal static class AdvisorDicBridge
 						{
 							onComplete();
 						}
-						catch (Exception ex)
+						catch (Exception exception_)
 						{
-							_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex);
+							smethod_2(exception_);
 							throw;
 						}
 					}
-					if (!_003CHandleTask_003Ed__18<T>._206A_206B_206D_206E_202A_200B_202A_200F_200F_200F_206B_206D_206C_202E_206A_200D_202E_202D_200D_202D_206D_206F_200D_206C_206B_200B_202A_202E_200E_206B_200B_206A_206E_200F_202E_200E_200E_206D_202E((Task)taskHandle) || _003CHandleTask_003Ed__18<T>._200C_206D_200B_200E_202A_200F_206A_200D_206F_202C_202A_202D_206B_200C_206C_200D_202B_202A_206B_202B_206F_206A_202E_206A_202B_202E_206D_202B_206A_206D_200D_206A_202B_200F_202D_206C_202C_200E_202A_206B_202E((Task)taskHandle))
+					if (!smethod_3((Task)taskHandle) || smethod_4((Task)taskHandle))
 					{
-						if (!_003CHandleTask_003Ed__18<T>._206A_206B_206D_206E_202A_200B_202A_200F_200F_200F_206B_206D_206C_202E_206A_200D_202E_202D_200D_202D_206D_206F_200D_206C_206B_200B_202A_202E_200E_206B_200B_206A_206E_200F_202E_200E_200E_206D_202E((Task)taskHandle) && _003CHandleTask_003Ed__18<T>._200C_206D_200B_200E_202A_200F_206A_200D_206F_202C_202A_202D_206B_200C_206C_200D_202B_202A_206B_202B_206F_206A_202E_206A_202B_202E_206D_202B_206A_206D_200D_206A_202B_200F_202D_206C_202C_200E_202A_206B_202E((Task)taskHandle))
+						if (!smethod_3((Task)taskHandle) && smethod_4((Task)taskHandle))
 						{
 							if (OnCancelled != null)
 							{
@@ -1886,10 +1995,10 @@ internal static class AdvisorDicBridge
 								{
 									OnCancelled();
 								}
-								catch (Exception ex2)
+								catch (Exception ex)
 								{
-									_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex2);
-									throw ex2;
+									smethod_2(ex);
+									throw ex;
 								}
 							}
 						}
@@ -1899,30 +2008,30 @@ internal static class AdvisorDicBridge
 							{
 								onSuccess((T)obj);
 							}
-							catch (Exception ex3)
+							catch (Exception ex2)
 							{
-								_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex3);
-								throw ex3;
+								smethod_2(ex2);
+								throw ex2;
 							}
 						}
 					}
 					else
 					{
-						Exception ex4 = _003CHandleTask_003Ed__18<T>._206E_202B_206B_206B_202E_202A_200F_206B_202D_200B_206B_202E_202E_206C_200C_206B_202A_206A_200B_206C_206E_202E_200C_206A_202D_200E_202E_202E_202D_202D_202C_206D_202A_206A_206B_202E_206D_200C_202B_202E((Exception)_003CHandleTask_003Ed__18<T>._200B_206F_200B_200F_206D_206D_200D_202B_200E_202B_202B_206E_200C_202D_206F_206D_200B_206D_206F_200E_202E_206E_202B_206B_200D_206D_200B_206F_202A_200F_202B_200B_200C_206A_206C_200D_200E_206C_200E_200F_202E((Task)taskHandle));
+						Exception ex3 = smethod_6((Exception)smethod_5((Task)taskHandle));
 						if (onFailure == null)
 						{
-							_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex4);
+							smethod_2(ex3);
 						}
 						else
 						{
 							try
 							{
-								onFailure(ex4);
+								onFailure(ex3);
 							}
-							catch (Exception ex5)
+							catch (Exception ex4)
 							{
-								_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex5);
-								throw ex5;
+								smethod_2(ex4);
+								throw ex4;
 							}
 						}
 					}
@@ -1932,16 +2041,16 @@ internal static class AdvisorDicBridge
 						{
 							onFinale();
 						}
-						catch (Exception ex6)
+						catch (Exception ex5)
 						{
-							_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex6);
-							throw ex6;
+							smethod_2(ex5);
+							throw ex5;
 						}
 					}
 				}
 				else
 				{
-					_003CHandleTask_003Ed__18<T>._206F_200B_200B_206A_200E_206A_202B_206D_200E_200D_202E_206B_206C_206E_206F_202D_200C_202B_202B_202E_200D_206D_206A_200E_202C_200D_200B_202C_206F_206E_200D_206C_206C_202B_206D_200F_206C_202D_206A_202B_202E((object)"FATAL ERROR! Task not completed?");
+					smethod_1((object)"FATAL ERROR! Task not completed?");
 				}
 				result = (T)obj;
 			}
@@ -1971,6 +2080,41 @@ internal static class AdvisorDicBridge
 		{
 			//ILSpy generated this explicit interface implementation from .override directive in SetStateMachine
 			this.SetStateMachine(stateMachine);
+		}
+
+		static bool smethod_0(Task task_0)
+		{
+			return task_0.IsCompleted;
+		}
+
+		static void smethod_1(object object_0)
+		{
+			UnityEngine.Debug.LogError(object_0);
+		}
+
+		static void smethod_2(Exception exception_0)
+		{
+			UnityEngine.Debug.LogException(exception_0);
+		}
+
+		static bool smethod_3(Task task_0)
+		{
+			return task_0.IsFaulted;
+		}
+
+		static bool smethod_4(Task task_0)
+		{
+			return task_0.IsCanceled;
+		}
+
+		static AggregateException smethod_5(Task task_0)
+		{
+			return task_0.Exception;
+		}
+
+		static Exception smethod_6(Exception exception_0)
+		{
+			return exception_0.GetBaseException();
 		}
 	}
 
@@ -2257,8 +2401,75 @@ internal static class AdvisorDicBridge
 
 	internal static float EnableAccount(float config, float pol, float serv, float def2, float pred3)
 	{
+		int num = 4;
+		uint num4 = default(uint);
+		float num5 = default(float);
+		float num6 = default(float);
+		float num7 = default(float);
+		float num8 = default(float);
 		while (true)
 		{
+			int num2 = num;
+			while (true)
+			{
+				int num3;
+				switch (num2)
+				{
+				case 6:
+					num3 = (int)((num4 * 1017991685) ^ 0x489C18C8);
+					goto IL_0041;
+				case 2:
+					num5 = 0f - config + 3f * pol - 3f * serv + def2;
+					num2 = 6;
+					continue;
+				case 5:
+					num3 = (int)((num4 * 1550774083) ^ 0x1DADDAB1);
+					goto IL_0041;
+				default:
+					goto IL_00b8;
+				case 4:
+					goto end_IL_000d;
+				case 3:
+					goto IL_00de;
+				case 1:
+					break;
+					IL_0041:
+					switch ((num4 = (uint)(num3 ^ -1373404918)) % 4)
+					{
+					case 1u:
+						break;
+					case 2u:
+						goto IL_00b8;
+					case 0u:
+						goto IL_00de;
+					default:
+						goto IL_00e8;
+					case 3u:
+						goto end_IL_000d_2;
+					}
+					num6 = 2f * config - 5f * pol + 4f * serv - def2;
+					num2 = 2;
+					continue;
+					IL_00e8:
+					num2 = 1;
+					continue;
+					IL_00de:
+					num3 = -1983321664;
+					goto IL_0041;
+					IL_00b8:
+					num7 = serv - config;
+					num2 = 5;
+					continue;
+					end_IL_000d_2:
+					break;
+				}
+				return 0.5f * (num8 + num7 * pred3 + num6 * pred3 * pred3 + num5 * pred3 * pred3 * pred3);
+				continue;
+				end_IL_000d:
+				break;
+			}
+			num8 = 2f * pol;
+			num = 3;
 		}
 	}
 
@@ -2331,7 +2542,7 @@ internal static class AdvisorDicBridge
 		{
 			obj = default(T);
 		}
-		if (_003CHandleTask_003Ed__18<T>._202B_200D_206E_202E_206D_206C_206D_206F_206D_200C_206F_206F_200C_200E_200D_206A_200C_206A_206B_200D_200F_206E_206C_206C_200E_202E_202B_206A_202E_202E_200E_206E_206F_206D_206D_202C_206F_202B_200B_206E_202E((Task)spec))
+		if (_003CHandleTask_003Ed__18<T>.smethod_0((Task)spec))
 		{
 			if (item3 != null)
 			{
@@ -2339,15 +2550,15 @@ internal static class AdvisorDicBridge
 				{
 					item3();
 				}
-				catch (Exception ex)
+				catch (Exception exception_)
 				{
-					_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex);
+					_003CHandleTask_003Ed__18<T>.smethod_2(exception_);
 					throw;
 				}
 			}
-			if (!_003CHandleTask_003Ed__18<T>._206A_206B_206D_206E_202A_200B_202A_200F_200F_200F_206B_206D_206C_202E_206A_200D_202E_202D_200D_202D_206D_206F_200D_206C_206B_200B_202A_202E_200E_206B_200B_206A_206E_200F_202E_200E_200E_206D_202E((Task)spec) || _003CHandleTask_003Ed__18<T>._200C_206D_200B_200E_202A_200F_206A_200D_206F_202C_202A_202D_206B_200C_206C_200D_202B_202A_206B_202B_206F_206A_202E_206A_202B_202E_206D_202B_206A_206D_200D_206A_202B_200F_202D_206C_202C_200E_202A_206B_202E((Task)spec))
+			if (!_003CHandleTask_003Ed__18<T>.smethod_3((Task)spec) || _003CHandleTask_003Ed__18<T>.smethod_4((Task)spec))
 			{
-				if (!_003CHandleTask_003Ed__18<T>._206A_206B_206D_206E_202A_200B_202A_200F_200F_200F_206B_206D_206C_202E_206A_200D_202E_202D_200D_202D_206D_206F_200D_206C_206B_200B_202A_202E_200E_206B_200B_206A_206E_200F_202E_200E_200E_206D_202E((Task)spec) && _003CHandleTask_003Ed__18<T>._200C_206D_200B_200E_202A_200F_206A_200D_206F_202C_202A_202D_206B_200C_206C_200D_202B_202A_206B_202B_206F_206A_202E_206A_202B_202E_206D_202B_206A_206D_200D_206A_202B_200F_202D_206C_202C_200E_202A_206B_202E((Task)spec))
+				if (!_003CHandleTask_003Ed__18<T>.smethod_3((Task)spec) && _003CHandleTask_003Ed__18<T>.smethod_4((Task)spec))
 				{
 					if (ident2 != null)
 					{
@@ -2355,10 +2566,10 @@ internal static class AdvisorDicBridge
 						{
 							ident2();
 						}
-						catch (Exception ex2)
+						catch (Exception ex)
 						{
-							_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex2);
-							throw ex2;
+							_003CHandleTask_003Ed__18<T>.smethod_2(ex);
+							throw ex;
 						}
 					}
 				}
@@ -2368,30 +2579,30 @@ internal static class AdvisorDicBridge
 					{
 						ivk((T)obj);
 					}
-					catch (Exception ex3)
+					catch (Exception ex2)
 					{
-						_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex3);
-						throw ex3;
+						_003CHandleTask_003Ed__18<T>.smethod_2(ex2);
+						throw ex2;
 					}
 				}
 			}
 			else
 			{
-				Exception ex4 = _003CHandleTask_003Ed__18<T>._206E_202B_206B_206B_202E_202A_200F_206B_202D_200B_206B_202E_202E_206C_200C_206B_202A_206A_200B_206C_206E_202E_200C_206A_202D_200E_202E_202E_202D_202D_202C_206D_202A_206A_206B_202E_206D_200C_202B_202E((Exception)_003CHandleTask_003Ed__18<T>._200B_206F_200B_200F_206D_206D_200D_202B_200E_202B_202B_206E_200C_202D_206F_206D_200B_206D_206F_200E_202E_206E_202B_206B_200D_206D_200B_206F_202A_200F_202B_200B_200C_206A_206C_200D_200E_206C_200E_200F_202E((Task)spec));
+				Exception ex3 = _003CHandleTask_003Ed__18<T>.smethod_6((Exception)_003CHandleTask_003Ed__18<T>.smethod_5((Task)spec));
 				if (c == null)
 				{
-					_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex4);
+					_003CHandleTask_003Ed__18<T>.smethod_2(ex3);
 				}
 				else
 				{
 					try
 					{
-						c(ex4);
+						c(ex3);
 					}
-					catch (Exception ex5)
+					catch (Exception ex4)
 					{
-						_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex5);
-						throw ex5;
+						_003CHandleTask_003Ed__18<T>.smethod_2(ex4);
+						throw ex4;
 					}
 				}
 			}
@@ -2401,16 +2612,16 @@ internal static class AdvisorDicBridge
 				{
 					ident4();
 				}
-				catch (Exception ex6)
+				catch (Exception ex5)
 				{
-					_003CHandleTask_003Ed__18<T>._200C_206B_202D_202D_202B_202D_202B_200F_206F_200C_206D_206A_202C_200B_202E_200B_202B_200C_200C_200F_200B_202B_200F_202D_200C_200D_200B_200E_206F_200D_200B_206A_202D_200F_202A_206F_202C_200F_202E(ex6);
-					throw ex6;
+					_003CHandleTask_003Ed__18<T>.smethod_2(ex5);
+					throw ex5;
 				}
 			}
 		}
 		else
 		{
-			_003CHandleTask_003Ed__18<T>._206F_200B_200B_206A_200E_206A_202B_206D_200E_200D_202E_206B_206C_206E_206F_202D_200C_202B_202B_202E_200D_206D_206A_200E_202C_200D_200B_202C_206F_206E_200D_206C_206C_202B_206D_200F_206C_202D_206A_202B_202E((object)"FATAL ERROR! Task not completed?");
+			_003CHandleTask_003Ed__18<T>.smethod_1((object)"FATAL ERROR! Task not completed?");
 		}
 		return (T)obj;
 	}
@@ -3228,7 +3439,7 @@ internal static class AdvisorDicBridge
 	[SpecialName]
 	private static MethodInfo UpdateRequest()
 	{
-		return m_DefinitionTemplate ?? (m_DefinitionTemplate = ((AdvisorDicBridge)(object)typeof(EditorGUI)).QueryEvent("TextFieldDropDown", BindingFlags.Static | BindingFlags.NonPublic, (Binder)null, new Type[4]
+		return m_DefinitionTemplate ?? (m_DefinitionTemplate = QueryEvent(typeof(EditorGUI), "TextFieldDropDown", BindingFlags.Static | BindingFlags.NonPublic, (Binder)null, new Type[4]
 		{
 			typeof(Rect),
 			typeof(GUIContent),
@@ -3682,22 +3893,57 @@ internal static class AdvisorDicBridge
 
 	internal static void RevertManager(Type value, Type connection)
 	{
-		if (!(m_ValTemplate == null))
+		int num = 11;
+		IList list = default(IList);
+		while (true)
 		{
-			goto IL_002d;
+			int num2 = num;
+			while (true)
+			{
+				switch (num2)
+				{
+				case 11:
+					if (!(m_ValTemplate == null))
+					{
+						num2 = 10;
+						continue;
+					}
+					goto case 8;
+				case 8:
+					m_ValTemplate = Type.GetType("UnityEditor.CustomEditorAttributes, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+					num = 6;
+					break;
+				case 2:
+					ReflectParam();
+					num2 = 1;
+					continue;
+				case 5:
+					m_PredicateTemplate.SetValue(list[0], connection);
+					num2 = 2;
+					continue;
+				case 3:
+					m_PredicateTemplate = m_MerchantTemplate.GetField("m_InspectorType", BindingFlags.Instance | BindingFlags.Public);
+					num2 = 0;
+					continue;
+				default:
+					list = (_ClassTemplate.GetValue(null) as IDictionary)[value] as IList;
+					num2 = 5;
+					continue;
+				case 1:
+				case 9:
+					_ClassTemplate = m_ValTemplate.GetField("kSCustomMultiEditors", BindingFlags.Static | BindingFlags.NonPublic);
+					num2 = 3;
+					continue;
+				case 6:
+					m_MerchantTemplate = Type.GetType("UnityEditor.CustomEditorAttributes+MonoEditorType, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+					num = 9;
+					break;
+				case 4:
+					return;
+				}
+				break;
+			}
 		}
-		m_ValTemplate = Type.GetType("UnityEditor.CustomEditorAttributes, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		m_MerchantTemplate = Type.GetType("UnityEditor.CustomEditorAttributes+MonoEditorType, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-		goto IL_0060;
-		IL_002d:
-		IList list = (_ClassTemplate.GetValue(null) as IDictionary)[value] as IList;
-		m_PredicateTemplate.SetValue(list[0], connection);
-		ReflectParam();
-		goto IL_0060;
-		IL_0060:
-		_ClassTemplate = m_ValTemplate.GetField("kSCustomMultiEditors", BindingFlags.Static | BindingFlags.NonPublic);
-		m_PredicateTemplate = m_MerchantTemplate.GetField("m_InspectorType", BindingFlags.Instance | BindingFlags.Public);
-		goto IL_002d;
 	}
 
 	internal static void ReflectParam()
@@ -4040,9 +4286,9 @@ internal static class AdvisorDicBridge
 		}
 	}
 
-	MethodInfo QueryEvent(string info, BindingFlags pol, Binder serv, Type[] res2, ParameterModifier[] cont3)
+	static MethodInfo QueryEvent(Type type_0, string info, BindingFlags pol, Binder serv, Type[] res2, ParameterModifier[] cont3)
 	{
-		return ((Type)this).GetMethod(info, pol, serv, res2, cont3);
+		return type_0.GetMethod(info, pol, serv, res2, cont3);
 	}
 
 	internal static bool UpdateFactory()

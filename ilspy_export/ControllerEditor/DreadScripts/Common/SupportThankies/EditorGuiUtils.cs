@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal static class Info
+internal static class EditorGuiUtils
 {
 	private static Texture2D facade;
 
-	internal static Info FillIndexer;
+	internal static EditorGuiUtils FillIndexer;
 
 	internal static T DestroyWrapper<T>(this T[] ident)
 	{
@@ -115,7 +115,7 @@ internal static class Info
 				texture2D.Apply();
 				return texture2D;
 			}
-			catch (System.Exception exception)
+			catch (Exception exception)
 			{
 				Debug.LogException(exception);
 				SessionState.EraseIntArray(last);

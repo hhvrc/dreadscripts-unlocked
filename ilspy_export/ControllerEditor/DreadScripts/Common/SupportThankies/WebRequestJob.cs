@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal readonly struct Annotation : IDisposable
+internal readonly struct WebRequestJob : IDisposable
 {
 	internal readonly UnityWebRequest _Algo;
 
@@ -25,12 +25,12 @@ internal readonly struct Annotation : IDisposable
 		return true;
 	}
 
-	internal Annotation(string info, string token = null, int indexOf_util = 100)
+	internal WebRequestJob(string info, string token = null, int indexOf_util = 100)
 		: this(info, null, token, indexOf_util)
 	{
 	}
 
-	internal Annotation(string ident, Action reg, string third = null, int t2max = 100)
+	internal WebRequestJob(string ident, Action reg, string third = null, int t2max = 100)
 	{
 		if (string.IsNullOrWhiteSpace(third))
 		{

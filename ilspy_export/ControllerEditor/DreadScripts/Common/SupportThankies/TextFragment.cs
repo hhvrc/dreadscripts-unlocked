@@ -4,24 +4,24 @@ using UnityEngine;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal struct Filter
+internal struct TextFragment
 {
 	internal GUIContent _Reader;
 
-	internal Customer bridge;
+	internal RemoteTexture bridge;
 
 	internal bool strategy;
 
 	private static object CompareCode;
 
-	internal Filter(GUIContent reference)
+	internal TextFragment(GUIContent reference)
 	{
 		_Reader = reference;
 		bridge = null;
 		strategy = false;
 	}
 
-	internal Filter(Customer res)
+	internal TextFragment(RemoteTexture res)
 	{
 		_Reader = GUIContent.none;
 		bridge = res;
@@ -48,28 +48,28 @@ internal struct Filter
 		}
 		else
 		{
-			GUI.Label(spec, _Reader, Exception.RegisterWrapper().composer);
+			GUI.Label(spec, _Reader, SupportWindowAssets.RegisterWrapper().composer);
 		}
 	}
 
-	internal static List<Filter> RemoveWrapper(string spec)
+	internal static List<TextFragment> RemoveWrapper(string spec)
 	{
-		List<Filter> list = new List<Filter>();
+		List<TextFragment> list = new List<TextFragment>();
 		Match match = Regex.Match(spec, "<image=(.+?)>");
 		while (match.Success)
 		{
 			string value = match.Groups[1].Value;
 			if (match.Index > 0)
 			{
-				list.Add(new Filter(new GUIContent(spec.Substring(0, match.Index))));
+				list.Add(new TextFragment(new GUIContent(spec.Substring(0, match.Index))));
 			}
-			list.Add(new Filter(new Customer(value, overridesecond: true, value)));
+			list.Add(new TextFragment(new RemoteTexture(value, overridesecond: true, value)));
 			spec = spec.Substring(match.Index + match.Length);
 			match = Regex.Match(spec, "<image=(.+?)>");
 		}
 		if (!string.IsNullOrEmpty(spec))
 		{
-			list.Add(new Filter(new GUIContent(spec)));
+			list.Add(new TextFragment(new GUIContent(spec)));
 		}
 		return list;
 	}

@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 
-internal class MerchantPolicy
+internal class DelegateBinder
 {
 	internal delegate void ReponsePolicy(object o);
 
-	internal static Module m_AuthenticationPolicy = typeof(MerchantPolicy).Assembly.ManifestModule;
+	internal static Module m_AuthenticationPolicy = typeof(DelegateBinder).Assembly.ManifestModule;
 
-	internal static MerchantPolicy DefineClient;
+	internal static DelegateBinder DefineClient;
 
 	internal static void FillDescriptor(int typemdt)
 	{

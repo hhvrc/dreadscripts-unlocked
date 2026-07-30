@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class IssuerMethod : IDisposable
+internal sealed class ScrollViewScope : IDisposable
 {
 	private readonly bool facadeMethod;
 
-	internal static IssuerMethod CallState;
+	internal static ScrollViewScope CallState;
 
-	internal IssuerMethod(ref Vector2 i)
+	internal ScrollViewScope(ref Vector2 i)
 	{
 		try
 		{

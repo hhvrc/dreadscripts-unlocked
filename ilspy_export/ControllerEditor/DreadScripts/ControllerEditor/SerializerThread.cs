@@ -26,8 +26,6 @@ internal class SerializerThread
 
 		public static Func<ParameterInfo, Type> m_RecordThread;
 
-		private static _003C_003Ec RunStatus;
-
 		internal string FillContext(FieldInfo f)
 		{
 			return f.Name;
@@ -51,11 +49,6 @@ internal class SerializerThread
 		internal Type CheckContext(ParameterInfo p)
 		{
 			return p.ParameterType;
-		}
-
-		internal static bool ComputeStatus()
-		{
-			return RunStatus == null;
 		}
 	}
 

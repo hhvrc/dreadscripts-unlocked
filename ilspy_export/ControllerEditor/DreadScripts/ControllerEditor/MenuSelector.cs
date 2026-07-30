@@ -97,10 +97,10 @@ internal class MenuSelector : EditorWindow
 		{
 			return;
 		}
-		ClassProperty.StartQueue(spec);
-		if (GUI.Button(spec, ClassProperty.DestroyError().invocationProcessor, ClassProperty.CalcError().broadcasterProcessor))
+		EditorUtils.StartQueue(spec);
+		if (GUI.Button(spec, EditorUtils.DestroyError().invocationProcessor, EditorUtils.CalcError().broadcasterProcessor))
 		{
-			ClassProperty.ConcatList(null, typeof(VRCExpressionsMenu), null, null, loaddef3: false, null, delegate(UnityEngine.Object first)
+			EditorUtils.ConcatList(null, typeof(VRCExpressionsMenu), null, null, loaddef3: false, null, delegate(UnityEngine.Object first)
 			{
 				FindRecord(first as VRCExpressionsMenu);
 			});

@@ -24,7 +24,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ControllerEditor;
 
-internal static class ClassProperty
+internal static class EditorUtils
 {
 	internal sealed class WatcherProcessor
 	{
@@ -988,9 +988,50 @@ internal static class ClassProperty
 		public RecordObserver(SceneView res, string col, float pool = 200f, float item2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ProcessorObserver v4 = null)
 			: this(res, pool, item2 + 40f, v3, v4)
 		{
+			int num = 2;
+			uint num3 = default(uint);
 			while (true)
 			{
-				GUILayout.Label(col, CalcError()._StructProcessor);
+				int num2;
+				switch (num)
+				{
+				case 3:
+					MapQueue(2, 0);
+					num = 4;
+					break;
+				default:
+					num2 = (int)(num3 * 1612674555) ^ -904989341;
+					goto IL_004c;
+				case 1:
+					goto IL_0069;
+				case 2:
+					goto IL_0085;
+				case 4:
+					return;
+					IL_004c:
+					switch ((num3 = (uint)(num2 ^ 0x4C46B07B)) % 3)
+					{
+					case 1u:
+						break;
+					case 2u:
+						goto IL_0069;
+					case 0u:
+						goto IL_0085;
+					default:
+						goto IL_008c;
+					}
+					goto case 3;
+					IL_008c:
+					num = 3;
+					break;
+					IL_0085:
+					num2 = 1989184190;
+					goto IL_004c;
+					IL_0069:
+					GUILayout.Label(col, CalcError()._StructProcessor);
+					num = 0;
+					break;
+				}
 			}
 		}
 
@@ -1820,8 +1861,6 @@ internal static class ClassProperty
 
 		public static Func<VRCExpressionParameters.Parameter, bool> globalObserver;
 
-		internal static _003C_003Ec RunField;
-
 		internal (float, float) CalculateSetter(Keyframe k)
 		{
 			return (k.time, k.value);
@@ -1901,11 +1940,6 @@ internal static class ClassProperty
 		{
 			return p != null;
 		}
-
-		internal static bool ComputeField()
-		{
-			return RunField == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -1929,8 +1963,6 @@ internal static class ClassProperty
 	private sealed class _003C_003Ec__DisplayClass164_0
 	{
 		public Dictionary<UnityEngine.Object, RepositoryServer> m_SerializerServer;
-
-		private static _003C_003Ec__DisplayClass164_0 ListField;
 
 		internal void InterruptSetter(AnimatorStateMachine m)
 		{
@@ -1959,11 +1991,6 @@ internal static class ClassProperty
 				}
 			}
 		}
-
-		internal static bool CalcField()
-		{
-			return ListField == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -1972,8 +1999,6 @@ internal static class ClassProperty
 		public AnimatorStateMachine _PageServer;
 
 		public _003C_003Ec__DisplayClass164_0 _ResolverServer;
-
-		internal static _003C_003Ec__DisplayClass164_1 CompareField;
 
 		internal void ManageSetter(InstanceServer et)
 		{
@@ -1997,11 +2022,6 @@ internal static class ClassProperty
 				}
 				value.mockServer.Add(et.fieldServer);
 			}
-		}
-
-		internal static bool PublishField()
-		{
-			return CompareField == null;
 		}
 	}
 
@@ -2046,8 +2066,6 @@ internal static class ClassProperty
 	{
 		public ConcurrentDictionary<Transform, ConcurrentBag<Vector3>> _StubServer;
 
-		internal static _003C_003Ec__DisplayClass402_0 PushAttribute;
-
 		internal void InvokeConnection(ConcurrentDictionary<Transform, ConcurrentBag<Vector3>> bag)
 		{
 			_003C_003Ec__DisplayClass402_1 _003C_003Ec__DisplayClass402_ = new _003C_003Ec__DisplayClass402_1
@@ -2057,11 +2075,6 @@ internal static class ClassProperty
 			};
 			Parallel.ForEach(_003C_003Ec__DisplayClass402_.m_ReaderServer.Keys, _003C_003Ec__DisplayClass402_.FindConnection);
 		}
-
-		internal static bool PrepareAttribute()
-		{
-			return PushAttribute == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -2070,8 +2083,6 @@ internal static class ClassProperty
 		public ConcurrentDictionary<Transform, ConcurrentBag<Vector3>> m_ReaderServer;
 
 		public _003C_003Ec__DisplayClass402_0 _BridgeServer;
-
-		private static _003C_003Ec__DisplayClass402_1 PrintAttribute;
 
 		internal void FindConnection(Transform t)
 		{
@@ -2088,11 +2099,6 @@ internal static class ClassProperty
 				_BridgeServer._StubServer.TryAdd(t, m_ReaderServer[t]);
 			}
 		}
-
-		internal static bool ResolveAttribute()
-		{
-			return PrintAttribute == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -2100,16 +2106,9 @@ internal static class ClassProperty
 	{
 		public ConcurrentBag<Vector3> strategyServer;
 
-		internal static _003C_003Ec__DisplayClass402_2 AssetAttribute;
-
 		internal void ExcludeConnection(Vector3 v)
 		{
 			strategyServer.Add(v);
-		}
-
-		internal static bool SelectAttribute()
-		{
-			return AssetAttribute == null;
 		}
 	}
 
@@ -2129,8 +2128,6 @@ internal static class ClassProperty
 	{
 		public string _FacadeServer;
 
-		private static _003C_003Ec__DisplayClass465_1 ConnectSystem;
-
 		internal bool FlushConnection(VRCExpressionParameters.Parameter p2)
 		{
 			if (p2 != null)
@@ -2138,11 +2135,6 @@ internal static class ClassProperty
 				return p2.name == _FacadeServer;
 			}
 			return false;
-		}
-
-		internal static bool ViewSystem()
-		{
-			return ConnectSystem == null;
 		}
 	}
 
@@ -2300,7 +2292,7 @@ internal static class ClassProperty
 		"FingerMiddleR", "FingerRingR", "FingerLittleR"
 	};
 
-	private static ClassProperty RunCandidate;
+	private static EditorUtils RunCandidate;
 
 	internal static bool PrintPage(this PositionFlag ident)
 	{
@@ -2694,10 +2686,67 @@ internal static class ClassProperty
 
 	internal static void SelectResolver(this Transform item, Vector3 counter)
 	{
-		item.localScale = Vector3.one;
+		int num = 5;
+		Matrix4x4 worldToLocalMatrix = default(Matrix4x4);
+		uint num3 = default(uint);
 		while (true)
 		{
-			_ = item.worldToLocalMatrix;
+			int num2;
+			switch (num)
+			{
+			case 6:
+				item.localScale = worldToLocalMatrix.MultiplyPoint(counter);
+				num = 0;
+				break;
+			default:
+				num2 = ((int)num3 * -66799257) ^ -186578037;
+				goto IL_0075;
+			case 4:
+				goto IL_0070;
+			case 5:
+				item.localScale = Vector3.one;
+				num = 4;
+				break;
+			case 1:
+				num2 = ((int)num3 * -1307626300) ^ -1479778053;
+				goto IL_0075;
+			case 2:
+				num2 = ((int)num3 * -1383715344) ^ 0x3BE14396;
+				goto IL_0075;
+			case 3:
+				return;
+				IL_0075:
+				switch ((num3 = (uint)(num2 ^ 0x3B6B97DA)) % 5)
+				{
+				case 1u:
+					break;
+				case 2u:
+					goto IL_0039;
+				case 4u:
+					goto IL_0070;
+				case 3u:
+					goto IL_00af;
+				default:
+					goto IL_00de;
+				case 0u:
+					return;
+				}
+				goto case 6;
+				IL_00de:
+				num = 3;
+				break;
+				IL_00af:
+				worldToLocalMatrix = item.worldToLocalMatrix;
+				num = 1;
+				break;
+				IL_0070:
+				num2 = 155851025;
+				goto IL_0075;
+				IL_0039:
+				worldToLocalMatrix.SetColumn(3, new Vector4(0f, 0f, 0f, 1f));
+				num = 2;
+				break;
+			}
 		}
 	}
 
@@ -3396,53 +3445,11 @@ internal static class ClassProperty
 	{
 		if (item.isExit)
 		{
-			uint num4 = default(uint);
 			while (true)
 			{
-				IL_000a:
-				int num;
-				int num2;
 				if (!item.mute)
 				{
-					num = 924604632;
-					num2 = 924604632;
 				}
-				else
-				{
-					num = 1653767409;
-					num2 = 1653767409;
-				}
-				int num3 = num ^ (int)(num4 * 1361654938);
-				while (true)
-				{
-					switch ((num4 = (uint)(num3 ^ 0x42B7561B)) % 5)
-					{
-					case 0u:
-					case 2u:
-						goto IL_000a;
-					case 1u:
-					{
-						int num5;
-						int num6;
-						if (item.destinationState == null)
-						{
-							num5 = 2005329365;
-							num6 = 2005329365;
-						}
-						else
-						{
-							num5 = 600466514;
-							num6 = 600466514;
-						}
-						num3 = num5 ^ ((int)num4 * -1189089618);
-						continue;
-					}
-					case 3u:
-						return item.destinationStateMachine == null;
-					}
-					break;
-				}
-				break;
 			}
 		}
 		return false;
@@ -5413,7 +5420,7 @@ internal static class ClassProperty
 
 	internal static Type FillRules(string config)
 	{
-		Type? type = Type.GetType(config);
+		Type type = Type.GetType(config);
 		if (type == null)
 		{
 			throw new Exception("Type \"" + config + "\" not found.");
@@ -6677,12 +6684,35 @@ internal static class ClassProperty
 		try
 		{
 			Transform boneTransform = asset.GetBoneTransform(ispool ? HumanBodyBones.RightLowerArm : HumanBodyBones.LeftLowerArm);
-			Vector3 vector = asset.GetBoneTransform((!ispool) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand).position - boneTransform.position;
+			int num = 2;
+			Vector3 vector = default(Vector3);
+			Vector3 normalized = default(Vector3);
+			float z = default(float);
 			while (true)
 			{
-				Vector3 normalized = vector.normalized;
-				float z = Vector3.SignedAngle(b * Vector3.up, normalized, asset.transform.forward);
-				b *= Quaternion.Euler(0f, 0f, z);
+				switch (num)
+				{
+				case 2:
+				case 6:
+					vector = asset.GetBoneTransform((!ispool) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand).position - boneTransform.position;
+					num = 5;
+					continue;
+				default:
+					normalized = vector.normalized;
+					num = 4;
+					continue;
+				case 4:
+					z = Vector3.SignedAngle(b * Vector3.up, normalized, asset.transform.forward);
+					num = 3;
+					continue;
+				case 3:
+					b *= Quaternion.Euler(0f, 0f, z);
+					num = 0;
+					continue;
+				case 1:
+					break;
+				}
+				break;
 			}
 		}
 		catch
@@ -7204,7 +7234,7 @@ internal static class ClassProperty
 	internal static string ResetList(UnityEngine.Object instance, string b = "", bool forcecomp = true)
 	{
 		string assetPath = AssetDatabase.GetAssetPath(instance);
-		string? directoryName = Path.GetDirectoryName(assetPath);
+		string directoryName = Path.GetDirectoryName(assetPath);
 		if (string.IsNullOrEmpty(b))
 		{
 			b = Path.GetFileName(assetPath);
@@ -7354,7 +7384,7 @@ internal static class ClassProperty
 			{
 				dic = camera.transform.rotation;
 			}
-			float newSize = counter * Mathf.Sin(camera.fieldOfView * 0.5f * ((float)Math.PI / 180f));
+			float newSize = counter * Mathf.Sin(camera.fieldOfView * 0.5f * (MathF.PI / 180f));
 			lastActiveSceneView.LookAt(value, dic.Value, newSize, issecond3, !evaluatevis2);
 		}
 	}

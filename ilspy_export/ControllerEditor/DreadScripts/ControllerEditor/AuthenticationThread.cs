@@ -176,7 +176,7 @@ internal class AuthenticationThread : TreeView
 			rect.width = vector2.x;
 			Rect rect2 = rect;
 			rect2.x = rowRect.x + rowRect.width - vector2.x;
-			GUI.Label(rowRect, "[" + ((num6 > 1) ? (text2 + "...") : text2) + "]", ClassProperty.CalcError().algoObserver);
+			GUI.Label(rowRect, "[" + ((num6 > 1) ? (text2 + "...") : text2) + "]", EditorUtils.CalcError().algoObserver);
 		}
 	}
 
@@ -240,10 +240,61 @@ internal class AuthenticationThread : TreeView
 
 	internal void AwakeRecord(VRCExpressionsMenu instance)
 	{
-		composerThread = instance;
+		int num = 1;
+		uint num3 = default(uint);
 		while (true)
 		{
-			Reload();
+			int num2;
+			switch (num)
+			{
+			case 6:
+				Reload();
+				num = 4;
+				break;
+			case 3:
+				num2 = ((int)num3 * -2075099235) ^ 0x48D67C52;
+				goto IL_0052;
+			default:
+				goto IL_004d;
+			case 4:
+				num2 = (int)(num3 * 1981346787) ^ -1139678721;
+				goto IL_0052;
+			case 2:
+				MenuSelector.valueThread = new HashSet<VRCExpressionsMenu>(poolThread);
+				num = 3;
+				break;
+			case 1:
+				composerThread = instance;
+				num = 0;
+				break;
+			case 5:
+				return;
+				IL_0052:
+				switch ((num3 = (uint)(num2 ^ -2025489656)) % 4)
+				{
+				case 1u:
+					break;
+				case 0u:
+					goto IL_0031;
+				case 3u:
+					goto IL_004d;
+				default:
+					goto IL_00ad;
+				case 2u:
+					return;
+				}
+				goto case 6;
+				IL_00ad:
+				num = 5;
+				break;
+				IL_004d:
+				num2 = -1086412119;
+				goto IL_0052;
+				IL_0031:
+				MenuSelector.m_MerchantThread = instance;
+				num = 2;
+				break;
+			}
 		}
 	}
 

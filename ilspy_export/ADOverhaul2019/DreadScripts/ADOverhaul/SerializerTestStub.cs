@@ -65,7 +65,7 @@ internal static class SerializerTestStub
 	{
 		if (_AnnotationDic == null)
 		{
-			_AnnotationDic = ((SerializerTestStub)(object)typeof(GUILayoutUtility)).DestroyMapping("EndLayoutGroup", BindingFlags.Static | BindingFlags.NonPublic);
+			_AnnotationDic = DestroyMapping(typeof(GUILayoutUtility), "EndLayoutGroup", BindingFlags.Static | BindingFlags.NonPublic);
 		}
 		return _AnnotationDic;
 	}
@@ -159,9 +159,9 @@ internal static class SerializerTestStub
 		GUILayout.Space(dir * 3f);
 	}
 
-	MethodInfo DestroyMapping(string instance, BindingFlags vis)
+	static MethodInfo DestroyMapping(Type type_0, string instance, BindingFlags vis)
 	{
-		return ((Type)this).GetMethod(instance, vis);
+		return type_0.GetMethod(instance, vis);
 	}
 
 	internal static bool CustomizeDatabase()

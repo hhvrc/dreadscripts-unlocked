@@ -601,7 +601,11 @@ internal sealed class ConfigurationTestStub
 				errorStruct = false;
 				_TemplateStruct = "Failure! Exception: " + ex.Message + "\n" + ex.StackTrace;
 				_SystemStruct?.Close();
-				((ListServiceSerializer)(object)_SystemStruct)?.SelectTest();
+				Process systemStruct = _SystemStruct;
+				if (systemStruct != null)
+				{
+					SelectTest((System.ComponentModel.Component)systemStruct);
+				}
 				SetupDic();
 			}
 			_SystemStruct.WaitForExit();
@@ -636,9 +640,9 @@ internal sealed class ConfigurationTestStub
 			}
 		}
 
-		void SelectTest()
+		static void SelectTest(System.ComponentModel.Component component_0)
 		{
-			((System.ComponentModel.Component)this).Dispose();
+			component_0.Dispose();
 		}
 
 		internal static bool InvokeGlobal()
@@ -895,7 +899,7 @@ internal sealed class ConfigurationTestStub
 
 			internal ParamsTestStub(bool compareinit, Action cust = null)
 			{
-				m_PredicateStruct = (string)(object)compareinit;
+				m_PredicateStruct = compareinit;
 				_value = compareinit;
 				m_AuthenticationStruct = cust;
 			}
@@ -944,7 +948,7 @@ internal sealed class ConfigurationTestStub
 
 			internal override void SetupDefinition()
 			{
-				ListService((bool)(object)m_PredicateStruct);
+				ListService((bool)m_PredicateStruct);
 			}
 
 			internal static bool DeleteGlobal()
@@ -982,7 +986,7 @@ internal sealed class ConfigurationTestStub
 
 			internal ClientStruct(float last, Action selection = null)
 			{
-				m_PredicateStruct = (string)(object)last;
+				m_PredicateStruct = last;
 				_value = last;
 				m_WorkerStruct = selection;
 			}
@@ -1047,7 +1051,7 @@ internal sealed class ConfigurationTestStub
 
 			internal override void SetupDefinition()
 			{
-				VisitService((float)(object)m_PredicateStruct);
+				VisitService((float)m_PredicateStruct);
 			}
 
 			public static implicit operator int(ClientStruct param)
@@ -1189,7 +1193,7 @@ internal sealed class ConfigurationTestStub
 
 			internal void PatchService(Vector3 reference, Action result)
 			{
-				m_PredicateStruct = (string)(object)reference;
+				m_PredicateStruct = reference;
 				_ExceptionStruct = result;
 				_valueX = reference.x;
 				_valueY = reference.y;
@@ -1241,7 +1245,7 @@ internal sealed class ConfigurationTestStub
 
 			internal override void SetupDefinition()
 			{
-				LogoutService((Vector3)(object)m_PredicateStruct);
+				LogoutService((Vector3)m_PredicateStruct);
 			}
 
 			public static implicit operator Vector2(ContainerStruct first)
@@ -1291,7 +1295,7 @@ internal sealed class ConfigurationTestStub
 
 			internal override void SetupDefinition()
 			{
-				InstantiateService(m_PredicateStruct);
+				InstantiateService((string)m_PredicateStruct);
 			}
 
 			public override string ToString()
@@ -1349,7 +1353,7 @@ internal sealed class ConfigurationTestStub
 			internal InfoSpecificationProducer(float info, float map, float proc, float connection2 = 1f, Action visitor3 = null)
 			{
 				Color color = new Color(info, map, proc, connection2);
-				m_PredicateStruct = (string)(object)color;
+				m_PredicateStruct = color;
 				r = info;
 				g = map;
 				b = proc;
@@ -1359,7 +1363,7 @@ internal sealed class ConfigurationTestStub
 
 			internal InfoSpecificationProducer(Color first, Action ord = null)
 			{
-				m_PredicateStruct = (string)(object)first;
+				m_PredicateStruct = first;
 				r = first.r;
 				g = first.g;
 				b = first.b;
@@ -1386,7 +1390,7 @@ internal sealed class ConfigurationTestStub
 
 			internal override void SetupDefinition()
 			{
-				PushError((Color)(object)m_PredicateStruct);
+				PushError((Color)m_PredicateStruct);
 			}
 
 			internal static bool SetWorker()
@@ -1523,7 +1527,7 @@ internal sealed class ConfigurationTestStub
 
 		internal abstract class TokenConfigCollection
 		{
-			internal string m_PredicateStruct;
+			internal object m_PredicateStruct;
 
 			internal static TokenConfigCollection FillWorker;
 
@@ -2578,8 +2582,6 @@ internal sealed class ConfigurationTestStub
 
 			public static Func<VRCPhysBone, IEnumerable<Transform>> m_FieldConfig;
 
-			internal static _003C_003Ec PushWorker;
-
 			internal bool NewResolver()
 			{
 				using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + setter));
@@ -2740,10 +2742,206 @@ internal sealed class ConfigurationTestStub
 			{
 				return pb.GetRootTransform().GetComponentsInChildren<Transform>();
 			}
+		}
 
-			internal static bool InvokeWorker()
+		[CompilerGenerated]
+		private sealed class _003C_003Ec__DisplayClass108_0
+		{
+			public ComparatorMethodObject callbackConfig;
+
+			public bool m_FilterConfig;
+
+			internal void FlushResolver()
 			{
-				return PushWorker == null;
+				using (new GUILayout.HorizontalScope())
+				{
+					EditorGUILayout.PropertyField(dispatcherStruct, new GUIContent("Root"));
+					if (GUILayout.Button(new GUIContent("S", "Set to Self"), GUILayout.Width(18f), GUILayout.Height(18f)))
+					{
+						UnityEngine.Object[] targets = callbackConfig.targets;
+						for (int i = 0; i < targets.Length; i++)
+						{
+							VRCPhysBone vRCPhysBone = targets[i] as VRCPhysBone;
+							if ((bool)vRCPhysBone)
+							{
+								SerializedObject serializedObject = new SerializedObject(vRCPhysBone);
+								serializedObject.FindProperty("rootTransform").objectReferenceValue = vRCPhysBone.transform;
+								serializedObject.ApplyModifiedProperties();
+							}
+						}
+					}
+				}
+				ViewMethod(TestSystem(readerStruct, RestartMethod()));
+				EditorGUILayout.PropertyField(_PoolStruct);
+				using (new GUILayout.VerticalScope("box"))
+				{
+					using (new GUILayout.HorizontalScope())
+					{
+						GUILayout.Space(12f);
+						m_CollectionStruct.isExpanded = EditorGUILayout.Foldout(m_CollectionStruct.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
+						GUILayout.FlexibleSpace();
+						LogoutMethod(ResetSystem(ConcatMethod(), AdvisorDicBridge.PrepareRequest()._FacadeTemplate));
+						EditorGUI.BeginChangeCheck();
+						OrderMethod(ResetSystem(QueryMethod(), AdvisorDicBridge.PrepareRequest().codeTemplate));
+						if (EditorGUI.EndChangeCheck())
+						{
+							StartProducer();
+						}
+					}
+					if (m_CollectionStruct.isExpanded)
+					{
+						EditorGUI.indentLevel++;
+						AdvisorDicBridge.CountManager<Transform>(m_CollectionStruct);
+						EditorGUI.indentLevel--;
+					}
+				}
+			}
+
+			internal void RegisterResolver()
+			{
+				IncludeProducer(6);
+				if (m_FilterConfig)
+				{
+					MoveSystem(m_ConfigConfig, _ModelConfig);
+				}
+				using (new GUILayout.VerticalScope(GUI.skin.box))
+				{
+					using (new GUILayout.HorizontalScope())
+					{
+						GUILayout.Space(12f);
+						m_ServiceConfig.isExpanded = EditorGUILayout.Foldout(m_ServiceConfig.isExpanded, "Colliders", toggleOnLabelClick: true);
+						GUILayout.FlexibleSpace();
+						ReflectResolver(ResetSystem(RevertMethod(), AdvisorDicBridge.PrepareRequest()._FacadeTemplate));
+						EditorGUI.BeginChangeCheck();
+						PublishMethod(ResetSystem(AddMethod(), AdvisorDicBridge.PrepareRequest().codeTemplate));
+						if (EditorGUI.EndChangeCheck())
+						{
+							ComputeProducer();
+						}
+					}
+					if (m_ServiceConfig.isExpanded)
+					{
+						EditorGUI.indentLevel++;
+						AdvisorDicBridge.CountManager<VRCPhysBoneCollider>(m_ServiceConfig);
+						EditorGUI.indentLevel--;
+					}
+				}
+			}
+
+			internal void PatchResolver()
+			{
+				if (m_FilterConfig)
+				{
+					MoveSystem(eventConfig, m_TestsConfig);
+					MoveSystem(m_RequestConfig, _WrapperConfig);
+				}
+				EditorGUILayout.PropertyField(_AlgoConfig);
+				EditorGUILayout.PropertyField(_MappingConfig);
+			}
+
+			internal void CalcResolver()
+			{
+				EditorGUILayout.PropertyField(globalStruct);
+				EditorGUILayout.PropertyField(_WorkerConfig);
+				EditorGUILayout.PropertyField(exceptionConfig);
+				FillSystem();
+				using (new GUILayout.HorizontalScope())
+				{
+					if ((bool)(UnityEngine.Object)(object)m_Mapping)
+					{
+						List<string> list = new List<string>();
+						string[] initializer = m_Initializer;
+						foreach (string text in initializer)
+						{
+							int num = text.LastIndexOf("_IsGrabbed", StringComparison.Ordinal);
+							if (num < 0)
+							{
+								num = text.LastIndexOf("_Angle", StringComparison.Ordinal);
+							}
+							if (num < 0)
+							{
+								num = text.LastIndexOf("_Stretch", StringComparison.Ordinal);
+							}
+							if (num >= 0)
+							{
+								list.Add(text);
+							}
+						}
+						string[] c = list.Select(_003C_003Ec.tokenConfig.PushResolver).Distinct().ToArray();
+						string stringValue = m_ContainerConfig.stringValue;
+						using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
+						{
+							stringValue = AdvisorDicBridge.CloneManager("Parameter", stringValue, c);
+							if (changeCheckScope.changed)
+							{
+								m_ContainerConfig.stringValue = stringValue;
+							}
+						}
+						using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Mapping == null || string.IsNullOrEmpty(m_ContainerConfig.stringValue)))
+						{
+							if (AdvisorDicBridge.RateManager(AdvisorDicBridge.PrepareRequest()._ConnectionTemplate))
+							{
+								GenericMenu genericMenu = new GenericMenu();
+								using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Mapping.baseAnimationLayers.Concat(m_Mapping.specialAnimationLayers).GetEnumerator())
+								{
+									while (enumerator.MoveNext())
+									{
+										_003C_003Ec__DisplayClass108_1 _003C_003Ec__DisplayClass108_ = new _003C_003Ec__DisplayClass108_1();
+										_003C_003Ec__DisplayClass108_.proxyConfig = enumerator.Current;
+										_003C_003Ec__DisplayClass108_.comparatorConfig = _003C_003Ec__DisplayClass108_.proxyConfig.animatorController as UnityEditor.Animations.AnimatorController;
+										if (_003C_003Ec__DisplayClass108_.comparatorConfig == null)
+										{
+											continue;
+										}
+										UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.comparatorConfig.parameters;
+										AdvisorDicBridge.PageDic[] broadcasterTemplate = AdvisorDicBridge._BroadcasterTemplate;
+										for (int i = 0; i < broadcasterTemplate.Length; i++)
+										{
+											_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
+											_003C_003Ec__DisplayClass108_2.m_PrinterConfig = _003C_003Ec__DisplayClass108_;
+											_003C_003Ec__DisplayClass108_2.adapterConfig = broadcasterTemplate[i];
+											_003C_003Ec__DisplayClass108_2.m_ThreadConfig = m_ContainerConfig.stringValue + _003C_003Ec__DisplayClass108_2.adapterConfig._PrototypeDic;
+											if (!parameters.Any(_003C_003Ec__DisplayClass108_2.GetIterator))
+											{
+												genericMenu.AddItem(new GUIContent($"{_003C_003Ec__DisplayClass108_2.m_PrinterConfig.proxyConfig.type}/{_003C_003Ec__DisplayClass108_2.m_ThreadConfig}"), on: false, _003C_003Ec__DisplayClass108_2.VisitIterator);
+											}
+										}
+									}
+								}
+								genericMenu.ShowAsContext();
+							}
+						}
+					}
+					else
+					{
+						EditorGUILayout.PropertyField(m_ContainerConfig);
+					}
+				}
+				VRCPhysBone vRCPhysBone = StartIterator((Editor)callbackConfig) as VRCPhysBone;
+				if (!(vRCPhysBone != null) || !Application.isPlaying || callbackConfig.serializedObject.isEditingMultipleObjects || string.IsNullOrEmpty(vRCPhysBone.parameter))
+				{
+					return;
+				}
+				using (new EditorGUILayout.HorizontalScope())
+				{
+					SerializerTestStub.ResetMapping(_InstanceStruct, null);
+					foreach (AdvisorDicBridge.PageDic item in AdvisorDicBridge._BroadcasterTemplate.Where(_003C_003Ec.tokenConfig.UpdateResolver))
+					{
+						using (new EditorGUILayout.VerticalScope())
+						{
+							GUILayout.Label(item._PrototypeDic, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
+							SerializerTestStub.ChangeMapping();
+							GUILayout.Label(item.ChangeAlgo(vRCPhysBone));
+						}
+						SerializerTestStub.MoveMapping();
+					}
+					SerializerTestStub.AwakeMapping();
+				}
+			}
+
+			static UnityEngine.Object StartIterator(Editor editor_0)
+			{
+				return editor_0.target;
 			}
 		}
 
@@ -2753,13 +2951,6 @@ internal sealed class ConfigurationTestStub
 			public VRCAvatarDescriptor.CustomAnimLayer proxyConfig;
 
 			public UnityEditor.Animations.AnimatorController comparatorConfig;
-
-			internal static _003C_003Ec__DisplayClass108_1 InterruptWorker;
-
-			internal static bool UpdateWorker()
-			{
-				return InterruptWorker == null;
-			}
 		}
 
 		[CompilerGenerated]
@@ -2771,8 +2962,6 @@ internal sealed class ConfigurationTestStub
 
 			public _003C_003Ec__DisplayClass108_1 m_PrinterConfig;
 
-			internal static _003C_003Ec__DisplayClass108_2 ReadWorker;
-
 			internal bool GetIterator(UnityEngine.AnimatorControllerParameter p)
 			{
 				return p.name == m_ThreadConfig;
@@ -2783,11 +2972,6 @@ internal sealed class ConfigurationTestStub
 				m_PrinterConfig.comparatorConfig.LogoutAccount(m_ThreadConfig, adapterConfig._CreatorDic, 0f);
 				StopStruct($"Added {m_ThreadConfig} to {m_PrinterConfig.proxyConfig.type} ({m_PrinterConfig.comparatorConfig.name})");
 				ConnectSystem();
-			}
-
-			internal static bool PopWorker()
-			{
-				return ReadWorker == null;
 			}
 		}
 
@@ -2818,8 +3002,6 @@ internal sealed class ConfigurationTestStub
 			public SerializedObject m_CollectionConfig;
 
 			public ContainerModelDispatcher m_ReaderConfig;
-
-			private static _003C_003Ec__DisplayClass120_0 ValidateClass;
 
 			internal void CountRules(AdvisorDicBridge.StructTemplateExpression b, float m)
 			{
@@ -2904,11 +3086,6 @@ internal sealed class ConfigurationTestStub
 				action(obj);
 				serializedObject.ApplyModifiedProperties();
 			}
-
-			internal static bool InsertClass()
-			{
-				return ValidateClass == null;
-			}
 		}
 
 		[CompilerGenerated]
@@ -2918,16 +3095,9 @@ internal sealed class ConfigurationTestStub
 
 			public Action<SerializedProperty> writerConfig;
 
-			private static _003C_003Ec__DisplayClass120_1 FillClass;
-
 			internal void ManageRules(SerializedProperty sp)
 			{
 				sp.floatValue = m_PoolConfig;
-			}
-
-			internal static bool SelectClass()
-			{
-				return FillClass == null;
 			}
 		}
 
@@ -2940,17 +3110,10 @@ internal sealed class ConfigurationTestStub
 
 			public _003C_003Ec__DisplayClass120_0 _IssuerConfig;
 
-			internal static _003C_003Ec__DisplayClass120_2 CollectClass;
-
 			internal void ResolveRules(SerializedProperty sp)
 			{
 				sp.floatValue = Mathf.Clamp(sp.floatValue + _InterpreterConfig, _IssuerConfig.m_PolicyConfig, _IssuerConfig.dispatcherConfig);
 				attributeConfig = sp.floatValue;
-			}
-
-			internal static bool VerifyClass()
-			{
-				return CollectClass == null;
 			}
 		}
 
@@ -3452,7 +3615,7 @@ internal sealed class ConfigurationTestStub
 							EditorGUILayout.PropertyField(m_ContainerConfig);
 						}
 					}
-					VRCPhysBone vRCPhysBone = base.target as VRCPhysBone;
+					VRCPhysBone vRCPhysBone = _003C_003Ec__DisplayClass108_0.StartIterator((Editor)this) as VRCPhysBone;
 					if (vRCPhysBone != null && Application.isPlaying && !base.serializedObject.isEditingMultipleObjects && !string.IsNullOrEmpty(vRCPhysBone.parameter))
 					{
 						using (new EditorGUILayout.HorizontalScope())
@@ -4698,8 +4861,6 @@ internal sealed class ConfigurationTestStub
 
 		public static Func<Task> visitorModel;
 
-		internal static _003C_003Ec FlushClass;
-
 		internal bool InitRules()
 		{
 			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + setter));
@@ -5170,19 +5331,12 @@ internal sealed class ConfigurationTestStub
 			ManagerStruct.SearchTest().u_updateHidden.ListService(useres: true);
 			SetStruct();
 		}
-
-		internal static bool DestroyClass()
-		{
-			return FlushClass == null;
-		}
 	}
 
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass132_0
 	{
 		public string helperModel;
-
-		internal static _003C_003Ec__DisplayClass132_0 CreateClass;
 
 		internal void PostTokenizer()
 		{
@@ -5251,11 +5405,6 @@ internal sealed class ConfigurationTestStub
 		{
 			SessionState.SetString(AssetStruct(helperModel + key, ref _003C_003Ec__DisplayClass132_5_0), TestStruct(value, ref _003C_003Ec__DisplayClass132_4_0));
 		}
-
-		internal static bool CancelClass()
-		{
-			return CreateClass == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -5278,8 +5427,6 @@ internal sealed class ConfigurationTestStub
 		public GetterDicBridge _CreatorModel;
 
 		public _003C_003Ec__DisplayClass132_0 baseModel;
-
-		internal static _003C_003Ec__DisplayClass132_3 MapClass;
 
 		internal void CalcTokenizer()
 		{
@@ -5349,11 +5496,6 @@ internal sealed class ConfigurationTestStub
 				UnityEngine.Debug.LogException(exception);
 			}
 		}
-
-		internal static bool LogoutClass()
-		{
-			return MapClass == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -5396,8 +5538,6 @@ internal sealed class ConfigurationTestStub
 		public bool m_ProxyModel;
 
 		public Action _ComparatorModel;
-
-		internal static _003C_003Ec__DisplayClass138_0 PostClass;
 
 		internal string ConcatTokenizer(string property, string[] extractedValues)
 		{
@@ -5650,11 +5790,6 @@ internal sealed class ConfigurationTestStub
 			RegisterSystem();
 			_ComparatorModel();
 		}
-
-		internal static bool CallClass()
-		{
-			return PostClass == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -5669,16 +5804,9 @@ internal sealed class ConfigurationTestStub
 	{
 		public string[] printerModel;
 
-		internal static _003C_003Ec__DisplayClass138_3 AssetClass;
-
 		internal bool MoveSpecification(string v)
 		{
 			return v == printerModel[0];
-		}
-
-		internal static bool ConnectClass()
-		{
-			return AssetClass == null;
 		}
 	}
 
@@ -5819,23 +5947,65 @@ internal sealed class ConfigurationTestStub
 
 		public GetterDicBridge facadeModel;
 
-		private static _003C_003Ec__DisplayClass165_0 ComputeClass;
-
 		[AsyncStateMachine(typeof(AdapterMethodObject))]
 		internal Task ChangeSpecification()
 		{
-			AdapterMethodObject adapterMethodObject = default(AdapterMethodObject);
-			adapterMethodObject.connectionModel = AsyncTaskMethodBuilder.Create();
-			adapterMethodObject.customerModel = this;
+			int num = 1;
+			AdapterMethodObject stateMachine = default(AdapterMethodObject);
+			uint num3 = default(uint);
 			while (true)
 			{
-				adapterMethodObject._ProcessModel = -1;
+				int num2;
+				switch (num)
+				{
+				case 6:
+					stateMachine._ProcessModel = -1;
+					num = 4;
+					break;
+				case 2:
+					goto IL_0033;
+				case 4:
+					num2 = ((int)num3 * -1822740786) ^ 0x39FDD62B;
+					goto IL_005c;
+				case 5:
+					goto IL_0057;
+				default:
+					stateMachine.customerModel = this;
+					num = 5;
+					break;
+				case 1:
+					stateMachine.connectionModel = AsyncTaskMethodBuilder.Create();
+					num = 0;
+					break;
+				case 3:
+					{
+						return stateMachine.connectionModel.Task;
+					}
+					IL_005c:
+					switch ((num3 = (uint)(num2 ^ 0x4C4AA72B)) % 3)
+					{
+					case 2u:
+						break;
+					case 1u:
+						goto IL_0033;
+					case 0u:
+						goto IL_0057;
+					default:
+						goto IL_009e;
+					}
+					goto case 6;
+					IL_009e:
+					num = 2;
+					break;
+					IL_0057:
+					num2 = 866198723;
+					goto IL_005c;
+					IL_0033:
+					stateMachine.connectionModel.Start(ref stateMachine);
+					num = 3;
+					break;
+				}
 			}
-		}
-
-		internal static bool InitClass()
-		{
-			return ComputeClass == null;
 		}
 	}
 
@@ -5844,17 +6014,10 @@ internal sealed class ConfigurationTestStub
 	{
 		public GetterDicBridge candidateModel;
 
-		private static _003C_003Ec__DisplayClass179_0 VisitClass;
-
 		internal void RegisterSpecification()
 		{
 			visitor = candidateModel.StartTest("transfer_email");
 			_Filter = true;
-		}
-
-		internal static bool DeleteClass()
-		{
-			return VisitClass == null;
 		}
 	}
 
@@ -5918,8 +6081,6 @@ internal sealed class ConfigurationTestStub
 	{
 		public FieldInfo _AttributeModel;
 
-		internal static _003C_003Ec__DisplayClass66_0 RestartFactory;
-
 		internal async void ResolveAccount()
 		{
 			try
@@ -5955,11 +6116,6 @@ internal sealed class ConfigurationTestStub
 			{
 				UnityEngine.Debug.LogError(message);
 			}
-		}
-
-		internal static bool MoveFactory()
-		{
-			return RestartFactory == null;
 		}
 	}
 
@@ -6660,14 +6816,14 @@ internal sealed class ConfigurationTestStub
 		if (!m_System)
 		{
 			m_System = true;
-			@struct = ((ConfigurationTestStub)(object)typeof(PhysBoneManager)).RateConfig("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
-			m_Config = ((ConfigurationTestStub)(object)typeof(PhysBoneManager)).RateConfig("OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Model = ((ConfigurationTestStub)(object)typeof(VRCPhysBoneBase)).RateConfig("Start", BindingFlags.Instance | BindingFlags.NonPublic);
-			m_Template = ((ConfigurationTestStub)(object)typeof(VRCPhysBoneBase)).RateConfig("OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Dic = ((ConfigurationTestStub)(object)typeof(VRCPhysBoneBase)).RateConfig("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
-			test = ((ConfigurationTestStub)(object)typeof(VRCPhysBoneColliderBase)).RateConfig("Start", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Service = ((ConfigurationTestStub)(object)typeof(VRCPhysBoneColliderBase)).RateConfig("OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
-			error = ((ConfigurationTestStub)(object)typeof(VRCPhysBoneColliderBase)).RateConfig("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
+			@struct = RateConfig(typeof(PhysBoneManager), "LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+			m_Config = RateConfig(typeof(PhysBoneManager), "OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic);
+			_Model = RateConfig(typeof(VRCPhysBoneBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
+			m_Template = RateConfig(typeof(VRCPhysBoneBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
+			_Dic = RateConfig(typeof(VRCPhysBoneBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
+			test = RateConfig(typeof(VRCPhysBoneColliderBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
+			_Service = RateConfig(typeof(VRCPhysBoneColliderBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
+			error = RateConfig(typeof(VRCPhysBoneColliderBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
 	}
 
@@ -8166,12 +8322,61 @@ internal sealed class ConfigurationTestStub
 		CS_0024_003C_003E8__locals5.facadeModel = default(GetterDicBridge);
 		await Task.Run([AsyncStateMachine(typeof(_003C_003Ec__DisplayClass165_0.AdapterMethodObject))] () =>
 		{
-			_003C_003Ec__DisplayClass165_0.AdapterMethodObject adapterMethodObject = default(_003C_003Ec__DisplayClass165_0.AdapterMethodObject);
-			adapterMethodObject.connectionModel = AsyncTaskMethodBuilder.Create();
-			adapterMethodObject.customerModel = CS_0024_003C_003E8__locals5;
+			int num = 1;
+			_003C_003Ec__DisplayClass165_0.AdapterMethodObject stateMachine = default(_003C_003Ec__DisplayClass165_0.AdapterMethodObject);
+			uint num3 = default(uint);
 			while (true)
 			{
-				adapterMethodObject._ProcessModel = -1;
+				int num2;
+				switch (num)
+				{
+				case 6:
+					stateMachine._ProcessModel = -1;
+					num = 4;
+					break;
+				case 2:
+					goto IL_0033;
+				case 4:
+					num2 = ((int)num3 * -1822740786) ^ 0x39FDD62B;
+					goto IL_005c;
+				case 5:
+					goto IL_0057;
+				default:
+					stateMachine.customerModel = CS_0024_003C_003E8__locals5;
+					num = 5;
+					break;
+				case 1:
+					stateMachine.connectionModel = AsyncTaskMethodBuilder.Create();
+					num = 0;
+					break;
+				case 3:
+					{
+						return stateMachine.connectionModel.Task;
+					}
+					IL_005c:
+					switch ((num3 = (uint)(num2 ^ 0x4C4AA72B)) % 3)
+					{
+					case 2u:
+						break;
+					case 1u:
+						goto IL_0033;
+					case 0u:
+						goto IL_0057;
+					default:
+						goto IL_009e;
+					}
+					goto case 6;
+					IL_009e:
+					num = 2;
+					break;
+					IL_0057:
+					num2 = 866198723;
+					goto IL_005c;
+					IL_0033:
+					stateMachine.connectionModel.Start(ref stateMachine);
+					num = 3;
+					break;
+				}
 			}
 		});
 		return CS_0024_003C_003E8__locals5.facadeModel;
@@ -9094,9 +9299,9 @@ internal sealed class ConfigurationTestStub
 		return param;
 	}
 
-	MethodInfo RateConfig(string item, BindingFlags b)
+	static MethodInfo RateConfig(Type type_0, string item, BindingFlags b)
 	{
-		return ((Type)this).GetMethod(item, b);
+		return type_0.GetMethod(item, b);
 	}
 
 	internal static bool MoveGlobal()

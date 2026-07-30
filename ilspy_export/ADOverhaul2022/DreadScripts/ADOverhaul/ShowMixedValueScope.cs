@@ -3,19 +3,19 @@ using UnityEditor;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class InfoAccountCollection : IDisposable
+internal sealed class ShowMixedValueScope : IDisposable
 {
 	private readonly bool _RequestMethod;
 
-	internal static InfoAccountCollection DefineState;
+	internal static ShowMixedValueScope DefineState;
 
-	public InfoAccountCollection(bool extractdef)
+	public ShowMixedValueScope(bool extractdef)
 	{
 		_RequestMethod = EditorGUI.showMixedValue;
 		EditorGUI.showMixedValue = extractdef;
 	}
 
-	public InfoAccountCollection(SerializedProperty i)
+	public ShowMixedValueScope(SerializedProperty i)
 	{
 		_RequestMethod = EditorGUI.showMixedValue;
 		EditorGUI.showMixedValue = i.hasMultipleDifferentValues;

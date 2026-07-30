@@ -19,7 +19,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul;
 
-internal static class ExceptionSingletonStruct
+internal static class ADOEditorUtility
 {
 	[Flags]
 	internal enum PositionFlag
@@ -556,21 +556,21 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal class InterpreterSerializer
+	internal class Contents
 	{
-		internal readonly SchemaMapping _ParameterSerializer = NewVal("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
+		internal readonly CachedIcon _ParameterSerializer = NewVal("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
 
-		internal readonly SchemaMapping m_AttrSerializer = NewVal("Refresh", "ds-icon-checkForUpdate", "Check For Update");
+		internal readonly CachedIcon m_AttrSerializer = NewVal("Refresh", "ds-icon-checkForUpdate", "Check For Update");
 
-		internal readonly SchemaMapping _ObjectSerializer = NewVal("console.infoicon.sml", "ds-icon-announcement");
+		internal readonly CachedIcon _ObjectSerializer = NewVal("console.infoicon.sml", "ds-icon-announcement");
 
-		internal readonly SchemaMapping m_ServiceSerializer = NewVal("console.warnicon.sml", "ds-icon-warning");
+		internal readonly CachedIcon m_ServiceSerializer = NewVal("console.warnicon.sml", "ds-icon-warning");
 
-		internal readonly SchemaMapping reponseSerializer = NewVal("console.erroricon.sml", "ds-icon-error");
+		internal readonly CachedIcon reponseSerializer = NewVal("console.erroricon.sml", "ds-icon-error");
 
-		internal readonly SchemaMapping m_SpecificationSerializer = NewVal("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
+		internal readonly CachedIcon m_SpecificationSerializer = NewVal("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
 
-		internal readonly SchemaMapping wrapperSerializer = NewVal("_Help", "ds-icon-help");
+		internal readonly CachedIcon wrapperSerializer = NewVal("_Help", "ds-icon-help");
 
 		internal readonly GUIContent infoSerializer = ManageStatus("TestPassed", "Up to Date!");
 
@@ -628,9 +628,9 @@ internal static class ExceptionSingletonStruct
 
 		internal readonly GUIContent queueSerializer = new GUIContent("Tooltips", "Displays tooltips on how to use the current tool");
 
-		internal static InterpreterSerializer RateDescriptor;
+		internal static Contents RateDescriptor;
 
-		internal InterpreterSerializer()
+		internal Contents()
 		{
 			decoratorSerializer.tooltip = "Scene view clicks are allowed while editing.";
 			_ParamSerializer.tooltip = "Scene view clicks are ignored while editing.";
@@ -646,7 +646,7 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal class CreatorServerStub
+	internal class Styles
 	{
 		internal static readonly Color processorSerializer = new Color(0.357f, 0.357f, 0.357f);
 
@@ -815,7 +815,7 @@ internal static class ExceptionSingletonStruct
 
 		internal readonly GUIStyle utilsMethod = new GUIStyle("RL FooterButton");
 
-		internal static CreatorServerStub ChangeDescriptor;
+		internal static Styles ChangeDescriptor;
 
 		internal static bool SetupDescriptor()
 		{
@@ -838,7 +838,7 @@ internal static class ExceptionSingletonStruct
 		FocusProjectWindow
 	}
 
-	internal struct PageMethod
+	internal struct SphereHandle
 	{
 		internal string m_PropertyMethod;
 
@@ -858,19 +858,19 @@ internal static class ExceptionSingletonStruct
 
 		internal Action processMethod;
 
-		internal Func<PageMethod, float[]> _StatusMethod;
+		internal Func<SphereHandle, float[]> _StatusMethod;
 
-		internal Action<PageMethod> _ValMethod;
+		internal Action<SphereHandle> _ValMethod;
 
 		internal static object PushDescriptor;
 
-		internal static PageMethod OrderComparator(Vector3 config, string reg = "", float pool = 0.05f, int int_0 = -1, Action reference3 = null)
+		internal static SphereHandle OrderComparator(Vector3 config, string reg = "", float pool = 0.05f, int int_0 = -1, Action reference3 = null)
 		{
-			return new PageMethod
+			return new SphereHandle
 			{
 				_ValMethod = DeleteComparator,
 				_SingletonMethod = new GUIStyle(EditorStyles.boldLabel),
-				_StatusMethod = (PageMethod sc) => new float[1] { HandleUtility.DistanceToCircle(sc.m_AccountMethod, sc.serverMethod / 2f) },
+				_StatusMethod = (SphereHandle sc) => new float[1] { HandleUtility.DistanceToCircle(sc.m_AccountMethod, sc.serverMethod / 2f) },
 				m_AccountMethod = config,
 				serverMethod = pool,
 				m_PropertyMethod = reg,
@@ -889,7 +889,7 @@ internal static class ExceptionSingletonStruct
 			return _StatusMethod(this);
 		}
 
-		internal static void DeleteComparator(PageMethod v)
+		internal static void DeleteComparator(SphereHandle v)
 		{
 			Handles.SphereHandleCap(v.regMethod, v.m_AccountMethod, Quaternion.identity, v.serverMethod, EventType.Repaint);
 			if (!string.IsNullOrWhiteSpace(v.m_PropertyMethod))
@@ -904,7 +904,7 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal sealed class ParserWatcherRule
+	internal sealed class BannerDownloader
 	{
 		private Texture2D m_RefMethod;
 
@@ -924,7 +924,7 @@ internal static class ExceptionSingletonStruct
 
 		private bool m_ClientMethod;
 
-		private static ParserWatcherRule ResetDescriptor;
+		private static BannerDownloader ResetDescriptor;
 
 		[SpecialName]
 		internal Texture2D PrepareComparator()
@@ -951,7 +951,7 @@ internal static class ExceptionSingletonStruct
 			return null;
 		}
 
-		internal ParserWatcherRule(string v, bool addcol, string res, bool striplast2 = false)
+		internal BannerDownloader(string v, bool addcol, string res, bool striplast2 = false)
 		{
 			_ProductMethod = v;
 			iteratorMethod = addcol;
@@ -984,7 +984,7 @@ internal static class ExceptionSingletonStruct
 					_CollectionMethod = true;
 					if (!string.IsNullOrWhiteSpace(m_PredicateMethod))
 					{
-						SchemaMapping.ConnectComparator(data, m_PredicateMethod);
+						CachedIcon.ConnectComparator(data, m_PredicateMethod);
 						comparatorMethod = true;
 					}
 				}
@@ -1001,7 +1001,7 @@ internal static class ExceptionSingletonStruct
 			if (comparatorMethod && !string.IsNullOrWhiteSpace(m_PredicateMethod))
 			{
 				comparatorMethod = false;
-				Texture2D texture2D = SchemaMapping.InitComparator(m_PredicateMethod);
+				Texture2D texture2D = CachedIcon.InitComparator(m_PredicateMethod);
 				if (texture2D != null)
 				{
 					m_RefMethod = texture2D;
@@ -1096,15 +1096,15 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal sealed class EventMethod : IDisposable
+	internal sealed class ReadableTexture : IDisposable
 	{
 		internal bool m_RecordMethod;
 
 		internal Texture2D m_ResolverMethod;
 
-		private static EventMethod ResolveDescriptor;
+		private static ReadableTexture ResolveDescriptor;
 
-		internal EventMethod(Texture2D spec)
+		internal ReadableTexture(Texture2D spec)
 		{
 			try
 			{
@@ -1137,7 +1137,7 @@ internal static class ExceptionSingletonStruct
 			}
 		}
 
-		public static implicit operator Texture2D(EventMethod param)
+		public static implicit operator Texture2D(ReadableTexture param)
 		{
 			return param.m_ResolverMethod;
 		}
@@ -1148,7 +1148,7 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal sealed class SchemaMapping
+	internal sealed class CachedIcon
 	{
 		private bool _TagMethod = true;
 
@@ -1160,7 +1160,7 @@ internal static class ExceptionSingletonStruct
 
 		private readonly string instanceMethod;
 
-		private static SchemaMapping WriteDescriptor;
+		private static CachedIcon WriteDescriptor;
 
 		[SpecialName]
 		private GUIContent NewProduct()
@@ -1187,7 +1187,7 @@ internal static class ExceptionSingletonStruct
 			return factoryMethod;
 		}
 
-		public SchemaMapping(Texture2D last, string ivk, string proc = "")
+		public CachedIcon(Texture2D last, string ivk, string proc = "")
 		{
 			factoryMethod = last;
 			_AttributeMethod = ivk;
@@ -1260,7 +1260,7 @@ internal static class ExceptionSingletonStruct
 			SessionState.SetIntArray(vis, value);
 		}
 
-		public static implicit operator GUIContent(SchemaMapping param)
+		public static implicit operator GUIContent(CachedIcon param)
 		{
 			return param.NewProduct();
 		}
@@ -1271,7 +1271,7 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal struct TaskMethod
+	internal struct ShapeSnapshot
 	{
 		internal readonly UnityEngine.Object customerMethod;
 
@@ -1291,7 +1291,7 @@ internal static class ExceptionSingletonStruct
 
 		private static object ValidateDescriptor;
 
-		internal TaskMethod(VRCPhysBoneColliderBase ident)
+		internal ShapeSnapshot(VRCPhysBoneColliderBase ident)
 		{
 			customerMethod = ident;
 			m_DatabaseMethod = true;
@@ -1303,7 +1303,7 @@ internal static class ExceptionSingletonStruct
 			m_TestsMethod = ident.rotation;
 		}
 
-		internal TaskMethod(ContactBase var1)
+		internal ShapeSnapshot(ContactBase var1)
 		{
 			customerMethod = var1;
 			m_DatabaseMethod = false;
@@ -1347,12 +1347,74 @@ internal static class ExceptionSingletonStruct
 
 		internal void CustomizeProduct(VRCPhysBoneCollider reference)
 		{
-			reference.radius = m_ReaderMethod;
-			reference.height = m_StubMethod;
-			reference.position = _RulesMethod;
+			int num = 3;
+			uint num4 = default(uint);
 			while (true)
 			{
-				reference.rotation = m_TestsMethod;
+				int num2 = num;
+				while (true)
+				{
+					int num3;
+					switch (num2)
+					{
+					default:
+						return;
+					case 7:
+						num3 = ((int)num4 * -39859234) ^ -908515091;
+						goto IL_004c;
+					case 2:
+						num3 = -1513732898;
+						goto IL_004c;
+					case 6:
+						reference.position = _RulesMethod;
+						num2 = 7;
+						break;
+					case 4:
+						num3 = (int)((num4 * 553844865) ^ 0xE986C9D);
+						goto IL_004c;
+					case 1:
+						goto IL_0091;
+					case 5:
+						goto IL_00a7;
+					case 3:
+						reference.radius = m_ReaderMethod;
+						num2 = 2;
+						break;
+					case 0:
+						return;
+						IL_004c:
+						switch ((num4 = (uint)(num3 ^ -1801738476)) % 4)
+						{
+						case 3u:
+							break;
+						case 2u:
+							goto IL_0091;
+						case 0u:
+							goto IL_00a7;
+						case 1u:
+							goto IL_00bd;
+						default:
+							goto end_IL_000d;
+						}
+						goto case 2;
+						IL_00bd:
+						reference.rotation = m_TestsMethod;
+						num2 = 4;
+						break;
+						IL_00a7:
+						reference.shapeType = (VRCPhysBoneColliderBase.ShapeType)_CandidateMethod;
+						num2 = 0;
+						break;
+						IL_0091:
+						reference.height = m_StubMethod;
+						num2 = 6;
+						break;
+					}
+					continue;
+					end_IL_000d:
+					break;
+				}
+				num = 5;
 			}
 		}
 
@@ -1362,41 +1424,41 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal class StrategyAuthenticationFactory
+	internal class BoneChainTree
 	{
 		internal readonly VRCPhysBone definitionMethod;
 
 		internal readonly Transform m_InitializerMethod;
 
-		internal readonly List<ClientRegDic> m_TokenMethod;
+		internal readonly List<BoneNode> m_TokenMethod;
 
 		internal readonly int _GetterMethod;
 
-		internal List<List<ClientRegDic>> threadMethod;
+		internal List<List<BoneNode>> threadMethod;
 
-		private static StrategyAuthenticationFactory InvokeDescriptor;
+		private static BoneChainTree InvokeDescriptor;
 
 		[SpecialName]
 		internal IEnumerable<Matrix4x4> InterruptProduct()
 		{
-			return m_TokenMethod.Select((ClientRegDic b) => b.printerMethod);
+			return m_TokenMethod.Select((BoneNode b) => b.printerMethod);
 		}
 
-		internal StrategyAuthenticationFactory(VRCPhysBone instance)
+		internal BoneChainTree(VRCPhysBone instance)
 		{
 			definitionMethod = instance;
 			m_InitializerMethod = instance.GetRootTransform();
-			m_TokenMethod = new List<ClientRegDic>();
+			m_TokenMethod = new List<BoneNode>();
 			FillProduct(m_InitializerMethod, 0);
-			_GetterMethod = m_TokenMethod.Max((ClientRegDic b) => b.m_StrategyMethod);
+			_GetterMethod = m_TokenMethod.Max((BoneNode b) => b.m_StrategyMethod);
 		}
 
 		internal void FillProduct(Transform v, int next_cust)
 		{
 			bool flag = false;
-			ClientRegDic clientRegDic = new ClientRegDic();
-			ClientRegDic globalMethod = null;
-			ClientRegDic clientRegDic2 = null;
+			BoneNode boneNode = new BoneNode();
+			BoneNode globalMethod = null;
+			BoneNode boneNode2 = null;
 			Quaternion q = v.rotation;
 			List<Transform> list = new List<Transform>();
 			for (int i = 0; i < v.childCount; i++)
@@ -1422,7 +1484,7 @@ internal static class ExceptionSingletonStruct
 						zero /= (float)list.Count;
 						Vector3 toDirection = zero - v.position;
 						q = v.rotation * Quaternion.FromToRotation(v.up, toDirection);
-						clientRegDic2 = (globalMethod = new ClientRegDic
+						boneNode2 = (globalMethod = new BoneNode
 						{
 							m_InvocationMethod = this,
 							m_ListenerMethod = m_InitializerMethod,
@@ -1430,7 +1492,7 @@ internal static class ExceptionSingletonStruct
 							m_StrategyMethod = next_cust + 1,
 							m_RepositoryMethod = true,
 							m_DescriptorMethod = true,
-							managerMethod = clientRegDic
+							managerMethod = boneNode
 						});
 					}
 					else if (definitionMethod.multiChildType == VRCPhysBoneBase.MultiChildType.Ignore)
@@ -1450,7 +1512,7 @@ internal static class ExceptionSingletonStruct
 			{
 				Vector3 pos = v.TransformPoint(definitionMethod.endpointPosition);
 				q = v.rotation * Quaternion.FromToRotation(Vector3.up, Vector3.Normalize(definitionMethod.endpointPosition));
-				ClientRegDic obj = new ClientRegDic
+				BoneNode obj = new BoneNode
 				{
 					m_InvocationMethod = this,
 					m_ListenerMethod = m_InitializerMethod,
@@ -1458,31 +1520,31 @@ internal static class ExceptionSingletonStruct
 					m_StrategyMethod = next_cust + 1,
 					m_RepositoryMethod = true,
 					m_DescriptorMethod = true,
-					managerMethod = clientRegDic
+					managerMethod = boneNode
 				};
 				globalMethod = obj;
-				clientRegDic2 = obj;
+				boneNode2 = obj;
 			}
 			if (!flag)
 			{
-				clientRegDic.m_InvocationMethod = this;
-				clientRegDic.m_ListenerMethod = m_InitializerMethod;
-				clientRegDic.parserMethod = v;
-				clientRegDic.printerMethod = Matrix4x4.TRS(v.position, q, v.lossyScale);
-				clientRegDic.m_StrategyMethod = next_cust;
-				clientRegDic.m_DescriptorMethod = descriptorMethod;
-				clientRegDic._GlobalMethod = globalMethod;
-				ClientRegDic clientRegDic3 = m_TokenMethod.LastOrDefault();
-				if (clientRegDic3 != null && !clientRegDic3.m_DescriptorMethod && clientRegDic3._GlobalMethod == null)
+				boneNode.m_InvocationMethod = this;
+				boneNode.m_ListenerMethod = m_InitializerMethod;
+				boneNode.parserMethod = v;
+				boneNode.printerMethod = Matrix4x4.TRS(v.position, q, v.lossyScale);
+				boneNode.m_StrategyMethod = next_cust;
+				boneNode.m_DescriptorMethod = descriptorMethod;
+				boneNode._GlobalMethod = globalMethod;
+				BoneNode boneNode3 = m_TokenMethod.LastOrDefault();
+				if (boneNode3 != null && !boneNode3.m_DescriptorMethod && boneNode3._GlobalMethod == null)
 				{
-					clientRegDic3._GlobalMethod = clientRegDic;
-					clientRegDic.managerMethod = clientRegDic3;
+					boneNode3._GlobalMethod = boneNode;
+					boneNode.managerMethod = boneNode3;
 				}
-				m_TokenMethod.Add(clientRegDic);
+				m_TokenMethod.Add(boneNode);
 			}
-			if (clientRegDic2 != null)
+			if (boneNode2 != null)
 			{
-				m_TokenMethod.Add(clientRegDic2);
+				m_TokenMethod.Add(boneNode2);
 			}
 			foreach (Transform item2 in list)
 			{
@@ -1492,17 +1554,17 @@ internal static class ExceptionSingletonStruct
 
 		internal void CancelProduct()
 		{
-			HashSet<ClientRegDic> hashSet = new HashSet<ClientRegDic>();
-			threadMethod = new List<List<ClientRegDic>>();
-			foreach (ClientRegDic item in m_TokenMethod)
+			HashSet<BoneNode> hashSet = new HashSet<BoneNode>();
+			threadMethod = new List<List<BoneNode>>();
+			foreach (BoneNode item in m_TokenMethod)
 			{
 				if (!hashSet.Contains(item))
 				{
-					List<ClientRegDic> list = new List<ClientRegDic>();
-					for (ClientRegDic clientRegDic = item; clientRegDic != null; clientRegDic = clientRegDic._GlobalMethod)
+					List<BoneNode> list = new List<BoneNode>();
+					for (BoneNode boneNode = item; boneNode != null; boneNode = boneNode._GlobalMethod)
 					{
-						list.Add(clientRegDic);
-						hashSet.Add(clientRegDic);
+						list.Add(boneNode);
+						hashSet.Add(boneNode);
 					}
 					threadMethod.Add(list);
 				}
@@ -1515,9 +1577,9 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal class ClientRegDic
+	internal class BoneNode
 	{
-		internal StrategyAuthenticationFactory m_InvocationMethod;
+		internal BoneChainTree m_InvocationMethod;
 
 		internal Transform m_ListenerMethod;
 
@@ -1531,11 +1593,11 @@ internal static class ExceptionSingletonStruct
 
 		internal int m_StrategyMethod;
 
-		internal ClientRegDic _GlobalMethod;
+		internal BoneNode _GlobalMethod;
 
-		internal ClientRegDic managerMethod;
+		internal BoneNode managerMethod;
 
-		internal static ClientRegDic DefineDescriptor;
+		internal static BoneNode DefineDescriptor;
 
 		[SpecialName]
 		internal Vector3 LoginProduct()
@@ -1570,7 +1632,7 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	internal readonly struct InstanceConsumerExporter
+	internal readonly struct PhysBoneParameter
 	{
 		internal readonly string workerMethod;
 
@@ -1582,7 +1644,7 @@ internal static class ExceptionSingletonStruct
 
 		private static object CallDescriptor;
 
-		internal InstanceConsumerExporter(string setup, AnimatorControllerParameterType token, string temp)
+		internal PhysBoneParameter(string setup, AnimatorControllerParameterType token, string temp)
 		{
 			workerMethod = setup;
 			_ItemMethod = token;
@@ -1629,8 +1691,6 @@ internal static class ExceptionSingletonStruct
 
 		public static Func<VRCAvatarDescriptor.CustomAnimLayer, RuntimeAnimatorController> interpreterMethod;
 
-		internal static _003C_003Ec VerifyDescriptor;
-
 		internal Type DisableProduct(ParameterInfo p)
 		{
 			return p.ParameterType;
@@ -1650,11 +1710,6 @@ internal static class ExceptionSingletonStruct
 		{
 			return l.animatorController;
 		}
-
-		internal static bool PublishDescriptor()
-		{
-			return VerifyDescriptor == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -1666,7 +1721,7 @@ internal static class ExceptionSingletonStruct
 
 		internal bool CalculateIterator(T c)
 		{
-			if (!_003C_003Ec__DisplayClass19_0<T>.DeleteIterator((UnityEngine.Object)c, (UnityEngine.Object)null))
+			if (!DeleteIterator((UnityEngine.Object)c, (UnityEngine.Object)null))
 			{
 				return false;
 			}
@@ -1676,6 +1731,11 @@ internal static class ExceptionSingletonStruct
 		internal bool CalcIterator(T el)
 		{
 			return acceptConditions?.Invoke(el) ?? true;
+		}
+
+		static bool DeleteIterator(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 != object_1;
 		}
 
 		internal static bool PrepareState()
@@ -1693,11 +1753,16 @@ internal static class ExceptionSingletonStruct
 
 		internal bool DefineIterator(T c)
 		{
-			if (!_003C_003Ec__DisplayClass20_0<T>.DestroyIterator((UnityEngine.Object)c, (UnityEngine.Object)null))
+			if (!DestroyIterator((UnityEngine.Object)c, (UnityEngine.Object)null))
 			{
 				return false;
 			}
 			return acceptConditions?.Invoke(c) ?? true;
+		}
+
+		static bool DestroyIterator(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 != object_1;
 		}
 
 		internal static bool VisitState()
@@ -1724,12 +1789,42 @@ internal static class ExceptionSingletonStruct
 				};
 				if (sp.CompareStatus(_003C_003Ec__DisplayClass24_.MapIterator) < 0)
 				{
-					int num = _003C_003Ec__DisplayClass24_0<T>.VerifyIterator(sp) + 1;
-					_003C_003Ec__DisplayClass24_0<T>.SetIterator(sp, num);
-					_003C_003Ec__DisplayClass24_0<T>.InvokeIterator(_003C_003Ec__DisplayClass24_0<T>.SortIterator(sp, num - 1), (UnityEngine.Object)_003C_003Ec__DisplayClass24_.e);
+					int num = VerifyIterator(sp) + 1;
+					SetIterator(sp, num);
+					InvokeIterator(SortIterator(sp, num - 1), (UnityEngine.Object)_003C_003Ec__DisplayClass24_.e);
 				}
 			}
-			_003C_003Ec__DisplayClass24_0<T>.ConcatIterator(_003C_003Ec__DisplayClass24_0<T>.CustomizeIterator(sp));
+			ConcatIterator(CustomizeIterator(sp));
+		}
+
+		static int VerifyIterator(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.arraySize;
+		}
+
+		static void SetIterator(SerializedProperty serializedProperty_0, int int_0)
+		{
+			serializedProperty_0.arraySize = int_0;
+		}
+
+		static SerializedProperty SortIterator(SerializedProperty serializedProperty_0, int int_0)
+		{
+			return serializedProperty_0.GetArrayElementAtIndex(int_0);
+		}
+
+		static void InvokeIterator(SerializedProperty serializedProperty_0, UnityEngine.Object object_0)
+		{
+			serializedProperty_0.objectReferenceValue = object_0;
+		}
+
+		static SerializedObject CustomizeIterator(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.serializedObject;
+		}
+
+		static bool ConcatIterator(SerializedObject serializedObject_0)
+		{
+			return serializedObject_0.ApplyModifiedProperties();
 		}
 
 		internal static bool SetupState()
@@ -1747,7 +1842,17 @@ internal static class ExceptionSingletonStruct
 
 		internal bool MapIterator(SerializedProperty e2, int _)
 		{
-			return _003C_003Ec__DisplayClass24_1<T>.CancelIterator(_003C_003Ec__DisplayClass24_1<T>.FillIterator(e2), (UnityEngine.Object)e);
+			return CancelIterator(FillIterator(e2), (UnityEngine.Object)e);
+		}
+
+		static UnityEngine.Object FillIterator(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.objectReferenceValue;
+		}
+
+		static bool CancelIterator(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 == object_1;
 		}
 
 		internal static bool ViewState()
@@ -1774,10 +1879,25 @@ internal static class ExceptionSingletonStruct
 				}.MoveIterator);
 				if (num >= 0)
 				{
-					_003C_003Ec__DisplayClass26_0<T>.SetupIterator(sp, num);
+					SetupIterator(sp, num);
 				}
 			}
-			_003C_003Ec__DisplayClass26_0<T>.WriteIterator(_003C_003Ec__DisplayClass26_0<T>.SelectIterator(sp));
+			WriteIterator(SelectIterator(sp));
+		}
+
+		static void SetupIterator(SerializedProperty serializedProperty_0, int int_0)
+		{
+			serializedProperty_0.DeleteArrayElementAtIndex(int_0);
+		}
+
+		static SerializedObject SelectIterator(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.serializedObject;
+		}
+
+		static bool WriteIterator(SerializedObject serializedObject_0)
+		{
+			return serializedObject_0.ApplyModifiedProperties();
 		}
 
 		internal static bool SortState()
@@ -1795,7 +1915,17 @@ internal static class ExceptionSingletonStruct
 
 		internal bool MoveIterator(SerializedProperty e2, int i)
 		{
-			return _003C_003Ec__DisplayClass26_1<T>.CollectIterator(_003C_003Ec__DisplayClass26_1<T>.PublishIterator(e2), (UnityEngine.Object)e);
+			return CollectIterator(PublishIterator(e2), (UnityEngine.Object)e);
+		}
+
+		static UnityEngine.Object PublishIterator(SerializedProperty serializedProperty_0)
+		{
+			return serializedProperty_0.objectReferenceValue;
+		}
+
+		static bool CollectIterator(UnityEngine.Object object_0, UnityEngine.Object object_1)
+		{
+			return object_0 == object_1;
 		}
 
 		internal static bool FindState()
@@ -1861,9 +1991,9 @@ internal static class ExceptionSingletonStruct
 				{
 					obj = default(T);
 				}
-				if (!_003CHandleTask_003Ed__18<T>._202C_206A_200F_200D_206F_206B_200D_200B_200E_202C_202E_202A_200F_200F_200C_202E_206D_200C_202B_202E_200B_200F_202C_200B_206A_200F_202C_200E_206E_206B_206D_200D_200B_206B_206E_206E_202C_200C_202D_200C_202E((Task)taskHandle))
+				if (!smethod_0((Task)taskHandle))
 				{
-					_003CHandleTask_003Ed__18<T>._206C_206D_200B_206D_206B_206C_200F_206C_206B_202B_200B_206D_206C_200B_206E_200E_206F_202A_200E_202C_200D_206E_206D_206D_202C_200E_202C_200C_206B_206B_202E_206B_200D_206A_202A_202A_200B_202A_202A_206F_202E((object)"FATAL ERROR! Task not completed?");
+					smethod_1((object)"FATAL ERROR! Task not completed?");
 				}
 				else
 				{
@@ -1873,24 +2003,24 @@ internal static class ExceptionSingletonStruct
 						{
 							onComplete();
 						}
-						catch (Exception ex)
+						catch (Exception exception_)
 						{
-							_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex);
+							smethod_2(exception_);
 							throw;
 						}
 					}
-					if (!_003CHandleTask_003Ed__18<T>._206D_202C_202E_206D_206A_206A_202E_200D_206A_206F_206D_202A_202A_200D_202A_206D_206E_202A_206A_206B_206F_200F_206A_200C_206B_202D_200F_206D_200B_202D_200F_206F_206B_200F_202E_206F_206C_200C_200F_206A_202E((Task)taskHandle) || _003CHandleTask_003Ed__18<T>._206B_206A_200E_200C_202E_206A_200D_202B_206E_202D_200C_200D_202D_206E_206C_206B_206D_206E_200F_206D_202B_202D_200C_206E_200C_206E_206C_200D_206C_206C_206A_206C_206A_206B_206E_202E_202A_200F_200F_206A_202E((Task)taskHandle))
+					if (!smethod_3((Task)taskHandle) || smethod_4((Task)taskHandle))
 					{
-						if (_003CHandleTask_003Ed__18<T>._206D_202C_202E_206D_206A_206A_202E_200D_206A_206F_206D_202A_202A_200D_202A_206D_206E_202A_206A_206B_206F_200F_206A_200C_206B_202D_200F_206D_200B_202D_200F_206F_206B_200F_202E_206F_206C_200C_200F_206A_202E((Task)taskHandle) || !_003CHandleTask_003Ed__18<T>._206B_206A_200E_200C_202E_206A_200D_202B_206E_202D_200C_200D_202D_206E_206C_206B_206D_206E_200F_206D_202B_202D_200C_206E_200C_206E_206C_200D_206C_206C_206A_206C_206A_206B_206E_202E_202A_200F_200F_206A_202E((Task)taskHandle))
+						if (smethod_3((Task)taskHandle) || !smethod_4((Task)taskHandle))
 						{
 							try
 							{
 								onSuccess((T)obj);
 							}
-							catch (Exception ex2)
+							catch (Exception ex)
 							{
-								_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex2);
-								throw ex2;
+								smethod_2(ex);
+								throw ex;
 							}
 						}
 						else if (OnCancelled != null)
@@ -1899,30 +2029,30 @@ internal static class ExceptionSingletonStruct
 							{
 								OnCancelled();
 							}
-							catch (Exception ex3)
+							catch (Exception ex2)
 							{
-								_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex3);
-								throw ex3;
+								smethod_2(ex2);
+								throw ex2;
 							}
 						}
 					}
 					else
 					{
-						Exception ex4 = _003CHandleTask_003Ed__18<T>._206E_202A_206B_202B_202A_202C_206E_200E_206E_200E_200D_202E_206C_206F_202E_206E_202C_206B_200F_206E_200E_206D_206C_200B_200D_202B_202D_206E_200B_200F_202A_206B_202B_200F_206A_200F_206E_200B_202E_202C_202E((Exception)_003CHandleTask_003Ed__18<T>._206B_202C_200C_206C_200D_206E_206E_206B_202A_202C_202C_206F_202B_202E_200C_202B_206D_206C_200C_202E_206C_206E_206B_206E_206F_202E_200B_206B_206A_206B_202A_206E_200E_200B_200F_206D_206D_200E_202B_200E_202E((Task)taskHandle));
+						Exception ex3 = smethod_6((Exception)smethod_5((Task)taskHandle));
 						if (onFailure == null)
 						{
-							_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex4);
+							smethod_2(ex3);
 						}
 						else
 						{
 							try
 							{
-								onFailure(ex4);
+								onFailure(ex3);
 							}
-							catch (Exception ex5)
+							catch (Exception ex4)
 							{
-								_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex5);
-								throw ex5;
+								smethod_2(ex4);
+								throw ex4;
 							}
 						}
 					}
@@ -1932,10 +2062,10 @@ internal static class ExceptionSingletonStruct
 						{
 							onFinale();
 						}
-						catch (Exception ex6)
+						catch (Exception ex5)
 						{
-							_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex6);
-							throw ex6;
+							smethod_2(ex5);
+							throw ex5;
 						}
 					}
 				}
@@ -1968,6 +2098,41 @@ internal static class ExceptionSingletonStruct
 			//ILSpy generated this explicit interface implementation from .override directive in SetStateMachine
 			this.SetStateMachine(stateMachine);
 		}
+
+		static bool smethod_0(Task task_0)
+		{
+			return task_0.IsCompleted;
+		}
+
+		static void smethod_1(object object_0)
+		{
+			UnityEngine.Debug.LogError(object_0);
+		}
+
+		static void smethod_2(Exception exception_0)
+		{
+			UnityEngine.Debug.LogException(exception_0);
+		}
+
+		static bool smethod_3(Task task_0)
+		{
+			return task_0.IsFaulted;
+		}
+
+		static bool smethod_4(Task task_0)
+		{
+			return task_0.IsCanceled;
+		}
+
+		static AggregateException smethod_5(Task task_0)
+		{
+			return task_0.Exception;
+		}
+
+		static Exception smethod_6(Exception exception_0)
+		{
+			return exception_0.GetBaseException();
+		}
 	}
 
 	private static readonly Queue<Action> _IteratorSerializer = new Queue<Action>();
@@ -1996,9 +2161,9 @@ internal static class ExceptionSingletonStruct
 
 	internal static Color _FilterSerializer = new Color(1f, 0.5f, 0.7f);
 
-	internal static InterpreterSerializer factorySerializer;
+	internal static Contents factorySerializer;
 
-	internal static CreatorServerStub _AttributeSerializer;
+	internal static Styles _AttributeSerializer;
 
 	private static Mesh m_InstanceSerializer;
 
@@ -2026,7 +2191,7 @@ internal static class ExceptionSingletonStruct
 
 	internal static MethodInfo _TokenSerializer;
 
-	internal static readonly ParserWatcherRule getterSerializer = new ParserWatcherRule("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", addcol: true, "DreadBanner.png");
+	internal static readonly BannerDownloader getterSerializer = new BannerDownloader("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", addcol: true, "DreadBanner.png");
 
 	private static Texture2D m_ThreadSerializer;
 
@@ -2044,16 +2209,16 @@ internal static class ExceptionSingletonStruct
 		"FingerMiddleR", "FingerRingR", "FingerLittleR"
 	};
 
-	internal static InstanceConsumerExporter[] m_VisitorSerializer = new InstanceConsumerExporter[5]
+	internal static PhysBoneParameter[] m_VisitorSerializer = new PhysBoneParameter[5]
 	{
-		new InstanceConsumerExporter("_IsGrabbed", AnimatorControllerParameterType.Bool, "param_IsGrabbedValue"),
-		new InstanceConsumerExporter("_IsPosed", AnimatorControllerParameterType.Bool, "param_IsPosedValue"),
-		new InstanceConsumerExporter("_Stretch", AnimatorControllerParameterType.Float, "param_StretchValue"),
-		new InstanceConsumerExporter("_Squish", AnimatorControllerParameterType.Float, "param_SquishValue"),
-		new InstanceConsumerExporter("_Angle", AnimatorControllerParameterType.Float, "param_AngleValue")
+		new PhysBoneParameter("_IsGrabbed", AnimatorControllerParameterType.Bool, "param_IsGrabbedValue"),
+		new PhysBoneParameter("_IsPosed", AnimatorControllerParameterType.Bool, "param_IsPosedValue"),
+		new PhysBoneParameter("_Stretch", AnimatorControllerParameterType.Float, "param_StretchValue"),
+		new PhysBoneParameter("_Squish", AnimatorControllerParameterType.Float, "param_SquishValue"),
+		new PhysBoneParameter("_Angle", AnimatorControllerParameterType.Float, "param_AngleValue")
 	};
 
-	internal static ExceptionSingletonStruct FlushOrder;
+	internal static ADOEditorUtility FlushOrder;
 
 	internal static bool CountProcess(this PositionFlag item)
 	{
@@ -2261,11 +2426,82 @@ internal static class ExceptionSingletonStruct
 
 	internal static float ConnectProcess(Keyframe instance, Keyframe pol, float serv)
 	{
-		_ = pol.time - instance.time;
-		_ = 57.29578f * Mathf.Atan(instance.outTangent);
+		int num = 4;
+		float num5 = default(float);
+		uint num8 = default(uint);
+		float num4 = default(float);
+		float num3 = default(float);
+		float value = default(float);
+		float value2 = default(float);
 		while (true)
 		{
-			_ = 57.29578f * Mathf.Atan(pol.inTangent);
+			int num2 = num;
+			while (true)
+			{
+				int num7;
+				switch (num2)
+				{
+				case 7:
+					num5 = 57.29578f * Mathf.Atan(pol.inTangent);
+					num2 = 2;
+					continue;
+				default:
+					goto IL_004d;
+				case 6:
+					num7 = (int)((num8 * 213133787) ^ 0x5005E2BC);
+					goto IL_0072;
+				case 5:
+					goto IL_006d;
+				case 4:
+					num4 = pol.time - instance.time;
+					num2 = 3;
+					continue;
+				case 3:
+					break;
+				case 2:
+					num7 = ((int)num8 * -559947318) ^ 0x2BEDEAD5;
+					goto IL_0072;
+				case 1:
+					{
+						float instance2 = instance.value + Mathf.Tan(num3 + 180f) * num4;
+						float first = pol.value + Mathf.Tan(num5 + 180f) * num4;
+						float num6 = InitProcess(instance2, value, value2, first, serv);
+						return (InitProcess(instance2, value, value2, first, serv + 1E-05f) - num6) / 1E-05f;
+					}
+					IL_0072:
+					switch ((num8 = (uint)(num7 ^ -628465245)) % 4)
+					{
+					case 1u:
+						break;
+					case 3u:
+						goto IL_004d;
+					case 2u:
+						goto IL_006d;
+					case 0u:
+						goto IL_00d1;
+					default:
+						goto IL_00f7;
+					}
+					goto case 7;
+					IL_00f7:
+					num2 = 0;
+					continue;
+					IL_00d1:
+					value = instance.value;
+					num2 = 6;
+					continue;
+					IL_006d:
+					num7 = -648835266;
+					goto IL_0072;
+					IL_004d:
+					value2 = pol.value;
+					num2 = 1;
+					continue;
+				}
+				break;
+			}
+			num3 = 57.29578f * Mathf.Atan(instance.outTangent);
+			num = 5;
 		}
 	}
 
@@ -2325,9 +2561,9 @@ internal static class ExceptionSingletonStruct
 		{
 			obj = default(T);
 		}
-		if (!_003CHandleTask_003Ed__18<T>._202C_206A_200F_200D_206F_206B_200D_200B_200E_202C_202E_202A_200F_200F_200C_202E_206D_200C_202B_202E_200B_200F_202C_200B_206A_200F_202C_200E_206E_206B_206D_200D_200B_206B_206E_206E_202C_200C_202D_200C_202E((Task)res))
+		if (!_003CHandleTask_003Ed__18<T>.smethod_0((Task)res))
 		{
-			_003CHandleTask_003Ed__18<T>._206C_206D_200B_206D_206B_206C_200F_206C_206B_202B_200B_206D_206C_200B_206E_200E_206F_202A_200E_202C_200D_206E_206D_206D_202C_200E_202C_200C_206B_206B_202E_206B_200D_206A_202A_202A_200B_202A_202A_206F_202E((object)"FATAL ERROR! Task not completed?");
+			_003CHandleTask_003Ed__18<T>.smethod_1((object)"FATAL ERROR! Task not completed?");
 		}
 		else
 		{
@@ -2337,24 +2573,24 @@ internal static class ExceptionSingletonStruct
 				{
 					var13();
 				}
-				catch (Exception ex)
+				catch (Exception exception_)
 				{
-					_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex);
+					_003CHandleTask_003Ed__18<T>.smethod_2(exception_);
 					throw;
 				}
 			}
-			if (!_003CHandleTask_003Ed__18<T>._206D_202C_202E_206D_206A_206A_202E_200D_206A_206F_206D_202A_202A_200D_202A_206D_206E_202A_206A_206B_206F_200F_206A_200C_206B_202D_200F_206D_200B_202D_200F_206F_206B_200F_202E_206F_206C_200C_200F_206A_202E((Task)res) || _003CHandleTask_003Ed__18<T>._206B_206A_200E_200C_202E_206A_200D_202B_206E_202D_200C_200D_202D_206E_206C_206B_206D_206E_200F_206D_202B_202D_200C_206E_200C_206E_206C_200D_206C_206C_206A_206C_206A_206B_206E_202E_202A_200F_200F_206A_202E((Task)res))
+			if (!_003CHandleTask_003Ed__18<T>.smethod_3((Task)res) || _003CHandleTask_003Ed__18<T>.smethod_4((Task)res))
 			{
-				if (_003CHandleTask_003Ed__18<T>._206D_202C_202E_206D_206A_206A_202E_200D_206A_206F_206D_202A_202A_200D_202A_206D_206E_202A_206A_206B_206F_200F_206A_200C_206B_202D_200F_206D_200B_202D_200F_206F_206B_200F_202E_206F_206C_200C_200F_206A_202E((Task)res) || !_003CHandleTask_003Ed__18<T>._206B_206A_200E_200C_202E_206A_200D_202B_206E_202D_200C_200D_202D_206E_206C_206B_206D_206E_200F_206D_202B_202D_200C_206E_200C_206E_206C_200D_206C_206C_206A_206C_206A_206B_206E_202E_202A_200F_200F_206A_202E((Task)res))
+				if (_003CHandleTask_003Ed__18<T>.smethod_3((Task)res) || !_003CHandleTask_003Ed__18<T>.smethod_4((Task)res))
 				{
 					try
 					{
 						attr((T)obj);
 					}
-					catch (Exception ex2)
+					catch (Exception ex)
 					{
-						_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex2);
-						throw ex2;
+						_003CHandleTask_003Ed__18<T>.smethod_2(ex);
+						throw ex;
 					}
 				}
 				else if (task2 != null)
@@ -2363,30 +2599,30 @@ internal static class ExceptionSingletonStruct
 					{
 						task2();
 					}
-					catch (Exception ex3)
+					catch (Exception ex2)
 					{
-						_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex3);
-						throw ex3;
+						_003CHandleTask_003Ed__18<T>.smethod_2(ex2);
+						throw ex2;
 					}
 				}
 			}
 			else
 			{
-				Exception ex4 = _003CHandleTask_003Ed__18<T>._206E_202A_206B_202B_202A_202C_206E_200E_206E_200E_200D_202E_206C_206F_202E_206E_202C_206B_200F_206E_200E_206D_206C_200B_200D_202B_202D_206E_200B_200F_202A_206B_202B_200F_206A_200F_206E_200B_202E_202C_202E((Exception)_003CHandleTask_003Ed__18<T>._206B_202C_200C_206C_200D_206E_206E_206B_202A_202C_202C_206F_202B_202E_200C_202B_206D_206C_200C_202E_206C_206E_206B_206E_206F_202E_200B_206B_206A_206B_202A_206E_200E_200B_200F_206D_206D_200E_202B_200E_202E((Task)res));
+				Exception ex3 = _003CHandleTask_003Ed__18<T>.smethod_6((Exception)_003CHandleTask_003Ed__18<T>.smethod_5((Task)res));
 				if (res == null)
 				{
-					_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex4);
+					_003CHandleTask_003Ed__18<T>.smethod_2(ex3);
 				}
 				else
 				{
 					try
 					{
-						res(ex4);
+						res(ex3);
 					}
-					catch (Exception ex5)
+					catch (Exception ex4)
 					{
-						_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex5);
-						throw ex5;
+						_003CHandleTask_003Ed__18<T>.smethod_2(ex4);
+						throw ex4;
 					}
 				}
 			}
@@ -2396,10 +2632,10 @@ internal static class ExceptionSingletonStruct
 				{
 					selection4();
 				}
-				catch (Exception ex6)
+				catch (Exception ex5)
 				{
-					_003CHandleTask_003Ed__18<T>._202A_206B_202C_202D_202A_206C_206F_200D_202D_202E_206D_200D_202D_206D_206D_202C_206F_206B_206A_206C_206A_202E_206E_206F_206A_202C_200E_206B_206B_206A_206F_202E_206D_206F_200E_206B_206B_206E_202B_202D_202E(ex6);
-					throw ex6;
+					_003CHandleTask_003Ed__18<T>.smethod_2(ex5);
+					throw ex5;
 				}
 			}
 		}
@@ -3208,7 +3444,7 @@ internal static class ExceptionSingletonStruct
 	[SpecialName]
 	private static MethodInfo SortRef()
 	{
-		return _ClientSerializer ?? (_ClientSerializer = ((ExceptionSingletonStruct)(object)typeof(EditorGUI)).FlushAdapter("TextFieldDropDown", BindingFlags.Static | BindingFlags.NonPublic, (Binder)null, new Type[4]
+		return _ClientSerializer ?? (_ClientSerializer = FlushAdapter(typeof(EditorGUI), "TextFieldDropDown", BindingFlags.Static | BindingFlags.NonPublic, (Binder)null, new Type[4]
 		{
 			typeof(Rect),
 			typeof(GUIContent),
@@ -3256,15 +3492,15 @@ internal static class ExceptionSingletonStruct
 	}
 
 	[SpecialName]
-	internal static InterpreterSerializer CustomizeRef()
+	internal static Contents CustomizeRef()
 	{
-		return factorySerializer ?? (factorySerializer = new InterpreterSerializer());
+		return factorySerializer ?? (factorySerializer = new Contents());
 	}
 
 	[SpecialName]
-	internal static CreatorServerStub MapRef()
+	internal static Styles MapRef()
 	{
-		return _AttributeSerializer ?? (_AttributeSerializer = new CreatorServerStub());
+		return _AttributeSerializer ?? (_AttributeSerializer = new Styles());
 	}
 
 	internal static bool RateStatus(EventCommands ident, string connection = "", bool getc = true)
@@ -3465,7 +3701,7 @@ internal static class ExceptionSingletonStruct
 		last.SetInt("_ZTest", 8);
 	}
 
-	internal static void InitStatus(PageMethod first)
+	internal static void InitStatus(SphereHandle first)
 	{
 		Event current = Event.current;
 		first._ValMethod?.Invoke(first);
@@ -3762,8 +3998,8 @@ internal static class ExceptionSingletonStruct
 		{
 			throw new ArgumentNullException("texture");
 		}
-		using EventMethod eventMethod = new EventMethod(info);
-		Texture2D resolverMethod = eventMethod.m_ResolverMethod;
+		using ReadableTexture readableTexture = new ReadableTexture(info);
+		Texture2D resolverMethod = readableTexture.m_ResolverMethod;
 		int width = resolverMethod.width;
 		int height = resolverMethod.height;
 		int num = width;
@@ -3836,7 +4072,7 @@ internal static class ExceptionSingletonStruct
 		return m_ThreadSerializer;
 	}
 
-	internal static SchemaMapping NewVal(string asset, string ivk, string field = "")
+	internal static CachedIcon NewVal(string asset, string ivk, string field = "")
 	{
 		Texture2D last = null;
 		GUIContent gUIContent = EditorGUIUtility.IconContent(asset);
@@ -3844,13 +4080,13 @@ internal static class ExceptionSingletonStruct
 		{
 			last = DefineVal(gUIContent.image as Texture2D);
 		}
-		return new SchemaMapping(last, ivk, field);
+		return new CachedIcon(last, ivk, field);
 	}
 
 	internal static VRCContactSender CompareVal(this VRCContactReceiver init, GameObject vis)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(vis);
-		new TaskMethod(init).InvokeProduct(vRCContactSender);
+		new ShapeSnapshot(init).InvokeProduct(vRCContactSender);
 		vRCContactSender.collisionTags = init.collisionTags;
 		vRCContactSender.rootTransform = init.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
@@ -3863,7 +4099,7 @@ internal static class ExceptionSingletonStruct
 	internal static VRCContactSender VerifyVal(this VRCPhysBoneCollider res, GameObject connection)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(connection);
-		new TaskMethod(res).InvokeProduct(vRCContactSender);
+		new ShapeSnapshot(res).InvokeProduct(vRCContactSender);
 		vRCContactSender.rootTransform = res.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
 		{
@@ -3875,7 +4111,7 @@ internal static class ExceptionSingletonStruct
 	internal static VRCContactReceiver SetVal(this VRCContactSender first, GameObject result)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(result);
-		new TaskMethod(first).InvokeProduct(vRCContactReceiver);
+		new ShapeSnapshot(first).InvokeProduct(vRCContactReceiver);
 		vRCContactReceiver.collisionTags = first.collisionTags;
 		vRCContactReceiver.rootTransform = first.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
@@ -3888,20 +4124,15 @@ internal static class ExceptionSingletonStruct
 	internal static VRCContactReceiver SortVal(this VRCPhysBoneCollider param, GameObject selection)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(selection);
-		new TaskMethod(param).InvokeProduct(vRCContactReceiver);
+		new ShapeSnapshot(param).InvokeProduct(vRCContactReceiver);
 		vRCContactReceiver.rootTransform = param.rootTransform;
-		do
-		{
-			vRCContactReceiver.rootTransform = null;
-		}
-		while (vRCContactReceiver.rootTransform == vRCContactReceiver.transform);
 		return vRCContactReceiver;
 	}
 
 	internal static VRCPhysBoneCollider InvokeVal(this VRCContactReceiver setup, GameObject cfg)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cfg);
-		new TaskMethod(setup).CustomizeProduct(vRCPhysBoneCollider);
+		new ShapeSnapshot(setup).CustomizeProduct(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = setup.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -3913,7 +4144,7 @@ internal static class ExceptionSingletonStruct
 	internal static VRCPhysBoneCollider CustomizeVal(this VRCContactSender key, GameObject cont)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cont);
-		new TaskMethod(key).CustomizeProduct(vRCPhysBoneCollider);
+		new ShapeSnapshot(key).CustomizeProduct(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = key.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -3975,9 +4206,9 @@ internal static class ExceptionSingletonStruct
 		}
 	}
 
-	MethodInfo FlushAdapter(string spec, BindingFlags ord, Binder pool, Type[] ivk2, ParameterModifier[] pred3)
+	static MethodInfo FlushAdapter(Type type_0, string spec, BindingFlags ord, Binder pool, Type[] ivk2, ParameterModifier[] pred3)
 	{
-		return ((Type)this).GetMethod(spec, ord, pool, ivk2, pred3);
+		return type_0.GetMethod(spec, ord, pool, ivk2, pred3);
 	}
 
 	internal static bool OrderOrder()

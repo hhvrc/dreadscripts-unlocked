@@ -18,8 +18,6 @@ internal class QueueProperty
 
 		public static Func<string, string> productProperty;
 
-		internal static _003C_003Ec PushStruct;
-
 		internal string PublishPage(EditorCurveBinding b)
 		{
 			return b.propertyName;
@@ -29,11 +27,6 @@ internal class QueueProperty
 		{
 			return s;
 		}
-
-		internal static bool PrepareStruct()
-		{
-			return PushStruct == null;
-		}
 	}
 
 	[CompilerGenerated]
@@ -42,8 +35,6 @@ internal class QueueProperty
 		public QueueProperty expressionProperty;
 
 		public string m_SystemProperty;
-
-		private static _003C_003Ec__DisplayClass27_0 PrintStruct;
 
 		internal void ComputePage()
 		{
@@ -82,11 +73,6 @@ internal class QueueProperty
 		internal bool CallPage(string s)
 		{
 			return s == m_SystemProperty;
-		}
-
-		internal static bool ResolveStruct()
-		{
-			return PrintStruct == null;
 		}
 	}
 

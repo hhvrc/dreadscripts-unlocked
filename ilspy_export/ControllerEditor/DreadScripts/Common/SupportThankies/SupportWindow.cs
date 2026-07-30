@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal class SupportThankies : EditorWindow
+internal class SupportWindow : EditorWindow
 {
 	private static bool m_Advisor;
 
@@ -20,7 +20,7 @@ internal class SupportThankies : EditorWindow
 
 	private static GUIContent m_Prototype;
 
-	private static Rules[] rule;
+	private static SupporterEntry[] rule;
 
 	private static string m_Singleton;
 
@@ -30,15 +30,15 @@ internal class SupportThankies : EditorWindow
 
 	private static Vector2 _Ref;
 
-	private static object m_Status = Definition.SetWrapper(1f);
+	private static object m_Status = EditorLayoutUtils.SetWrapper(1f);
 
-	private static object code = Definition.SetWrapper(1f);
+	private static object code = EditorLayoutUtils.SetWrapper(1f);
 
 	private static int m_Dic = 1;
 
 	private static int _Invocation = 1;
 
-	private static SupportThankies RunIndexer;
+	private static SupportWindow RunIndexer;
 
 	[SpecialName]
 	private static bool AssetWrapper()
@@ -52,15 +52,15 @@ internal class SupportThankies : EditorWindow
 
 	private static void ResolveWrapper()
 	{
-		m_Prototype = new GUIContent(Test.m_Model.DestroyWrapper(), Test.m_Tokenizer.DestroyWrapper());
+		m_Prototype = new GUIContent(SupporterStrings.m_Model.DestroyWrapper(), SupporterStrings.m_Tokenizer.DestroyWrapper());
 	}
 
 	public static void ListWrapper()
 	{
 		Rect controlRect = EditorGUILayout.GetControlRect(false, 16f, GUIStyle.none, GUILayout.Width(16f));
 		controlRect.x -= 2f;
-		Exception.ChangeWrapper().merchant.ResetWrapper(controlRect);
-		if (Info.PushWrapper(controlRect))
+		SupportWindowAssets.ChangeWrapper().merchant.ResetWrapper(controlRect);
+		if (EditorGuiUtils.PushWrapper(controlRect))
 		{
 			VerifyWrapper();
 		}
@@ -68,7 +68,7 @@ internal class SupportThankies : EditorWindow
 
 	public static void VerifyWrapper()
 	{
-		EditorWindow.GetWindow<SupportThankies>(Test._Role.DestroyWrapper()).titleContent.image = Exception.ChangeWrapper().merchant.ValidateWrapper();
+		EditorWindow.GetWindow<SupportWindow>(SupporterStrings._Role.DestroyWrapper()).titleContent.image = SupportWindowAssets.ChangeWrapper().merchant.ValidateWrapper();
 	}
 
 	public void OnGUI()
@@ -79,16 +79,16 @@ internal class SupportThankies : EditorWindow
 		}
 		if (m_Advisor)
 		{
-			GUILayout.Label("Loading supporters...", Exception.RegisterWrapper()._Pool);
+			GUILayout.Label("Loading supporters...", SupportWindowAssets.RegisterWrapper()._Pool);
 		}
 		if (m_Indexer)
 		{
-			GUILayout.Label("Failed to load supporters.", Exception.RegisterWrapper()._Pool);
+			GUILayout.Label("Failed to load supporters.", SupportWindowAssets.RegisterWrapper()._Pool);
 			if (!string.IsNullOrWhiteSpace(issuer))
 			{
 				EditorGUILayout.HelpBox(issuer, MessageType.Error);
 			}
-			if (Info.CreateWrapper("Retry", EditorStyles.toolbarButton))
+			if (EditorGuiUtils.CreateWrapper("Retry", EditorStyles.toolbarButton))
 			{
 				PrepareWrapper();
 			}
@@ -97,7 +97,7 @@ internal class SupportThankies : EditorWindow
 		{
 			using (new GUILayout.HorizontalScope("in bigtitle"))
 			{
-				GUILayout.Label(m_Prototype, Exception.RegisterWrapper()._Pool);
+				GUILayout.Label(m_Prototype, SupportWindowAssets.RegisterWrapper()._Pool);
 			}
 			FillWrapper();
 		}
@@ -128,12 +128,12 @@ internal class SupportThankies : EditorWindow
 		if (m_Dic != num2)
 		{
 			m_Dic = num2;
-			m_Status = Definition.SetWrapper(Enumerable.Repeat(1f, num2).ToArray());
+			m_Status = EditorLayoutUtils.SetWrapper(Enumerable.Repeat(1f, num2).ToArray());
 		}
 		if (_Invocation != num3)
 		{
 			_Invocation = num3;
-			code = Definition.SetWrapper(Enumerable.Repeat(1f, num3).ToArray());
+			code = EditorLayoutUtils.SetWrapper(Enumerable.Repeat(1f, num3).ToArray());
 		}
 		GUILayout.BeginArea(_Factory);
 		_Ref = EditorGUILayout.BeginScrollView(_Ref);
@@ -141,14 +141,14 @@ internal class SupportThankies : EditorWindow
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.Space(4f);
-			Definition.EnableWrapper(m_Status, null, false);
+			EditorLayoutUtils.EnableWrapper(m_Status, null, false);
 			for (int i = 0; i < num2; i++)
 			{
 				using (new GUILayout.HorizontalScope())
 				{
 					using (new GUILayout.VerticalScope())
 					{
-						Definition.EnableWrapper(code, null, true);
+						EditorLayoutUtils.EnableWrapper(code, null, true);
 						for (int j = 0; j < num3; j++)
 						{
 							if (num4 < rule.Length)
@@ -160,7 +160,7 @@ internal class SupportThankies : EditorWindow
 								GUILayout.Label(GUIContent.none);
 							}
 						}
-						Definition.PublishWrapper();
+						EditorLayoutUtils.PublishWrapper();
 					}
 					if (i < num2 - 1)
 					{
@@ -168,7 +168,7 @@ internal class SupportThankies : EditorWindow
 					}
 				}
 			}
-			Definition.PublishWrapper();
+			EditorLayoutUtils.PublishWrapper();
 		}
 		GUILayout.EndScrollView();
 		GUILayout.EndArea();
@@ -177,10 +177,10 @@ internal class SupportThankies : EditorWindow
 	public static void WriteWrapper()
 	{
 		Rect rect = GUILayoutUtility.GetRect(100f, 200f, 16f, 32f);
-		Rect setup = Info.CalcWrapper(rect, 6.25f);
-		GUI.DrawTexture(rect, Info.CloneWrapper(Color.white), ScaleMode.StretchToFill, alphaBlend: false, 0f, new Color(0.075f, 0.765f, 1f), 0f, 8f);
-		Exception.ChangeWrapper()._Authentication.ResetWrapper(setup);
-		if (Info.PushWrapper(rect))
+		Rect setup = EditorGuiUtils.CalcWrapper(rect, 6.25f);
+		GUI.DrawTexture(rect, EditorGuiUtils.CloneWrapper(Color.white), ScaleMode.StretchToFill, alphaBlend: false, 0f, new Color(0.075f, 0.765f, 1f), 0f, 8f);
+		SupportWindowAssets.ChangeWrapper()._Authentication.ResetWrapper(setup);
+		if (EditorGuiUtils.PushWrapper(rect))
 		{
 			ForgotWrapper();
 		}
@@ -198,7 +198,7 @@ internal class SupportThankies : EditorWindow
 			return;
 		}
 		m_Advisor = true;
-		Annotation awb = new Annotation("https://storage.googleapis.com/dreadscripts-c6b62.appspot.com/Dreadscripts/Supporters.txt", "GET");
+		WebRequestJob awb = new WebRequestJob("https://storage.googleapis.com/dreadscripts-c6b62.appspot.com/Dreadscripts/Supporters.txt", "GET");
 		try
 		{
 			UnityWebRequest request = awb._Algo;
@@ -219,7 +219,7 @@ internal class SupportThankies : EditorWindow
 				CheckWrapper();
 				_Callback = true;
 			}
-			catch (System.Exception ex)
+			catch (Exception ex)
 			{
 				m_Indexer = true;
 				issuer = ex.ToString();
@@ -235,10 +235,10 @@ internal class SupportThankies : EditorWindow
 	public void CheckWrapper()
 	{
 		string[] array = m_Singleton.Split(new string[3] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-		rule = new Rules[array.Length];
+		rule = new SupporterEntry[array.Length];
 		for (int i = 0; i < array.Length; i++)
 		{
-			rule[i] = new Rules(array[i]);
+			rule[i] = new SupporterEntry(array[i]);
 		}
 		Repaint();
 	}

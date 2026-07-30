@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DreadScripts.ADOverhaul;
 
 [DefaultMember("Item")]
-internal class OrderImporterTask
+internal class ReflectionAccessor
 {
 	[Serializable]
 	[CompilerGenerated]
@@ -25,8 +25,6 @@ internal class OrderImporterTask
 		public static Func<object, Type> m_WriterMethod;
 
 		public static Func<ParameterInfo, Type> classMethod;
-
-		internal static _003C_003Ec ReadState;
 
 		internal string EnablePredicate(FieldInfo f)
 		{
@@ -52,24 +50,19 @@ internal class OrderImporterTask
 		{
 			return p.ParameterType;
 		}
-
-		internal static bool LoginState()
-		{
-			return ReadState == null;
-		}
 	}
 
-	internal static readonly Dictionary<Type, ContextSerializerConnector> m_QueueMethod = new Dictionary<Type, ContextSerializerConnector>();
+	internal static readonly Dictionary<Type, ReflectionCache> m_QueueMethod = new Dictionary<Type, ReflectionCache>();
 
 	internal readonly object processorMethod;
 
 	internal readonly Type m_TokenizerMethod;
 
-	internal readonly ContextSerializerConnector m_ExceptionMethod;
+	internal readonly ReflectionCache m_ExceptionMethod;
 
-	private static OrderImporterTask PatchState;
+	private static ReflectionAccessor PatchState;
 
-	internal OrderImporterTask(object task)
+	internal ReflectionAccessor(object task)
 	{
 		processorMethod = task;
 		m_TokenizerMethod = task.GetType();
@@ -90,7 +83,7 @@ internal class OrderImporterTask
 			}
 			value.Add(item);
 		}
-		m_ExceptionMethod = new ContextSerializerConnector
+		m_ExceptionMethod = new ReflectionCache
 		{
 			_BridgeMethod = members,
 			publisherMethod = publisherMethod,

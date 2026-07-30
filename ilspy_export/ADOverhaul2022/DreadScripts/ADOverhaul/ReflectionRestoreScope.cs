@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class AuthenticationSerializerConnector : IDisposable
+internal sealed class ReflectionRestoreScope : IDisposable
 {
-	internal readonly OrderImporterTask m_ComposerMethod;
+	internal readonly ReflectionAccessor m_ComposerMethod;
 
 	internal readonly Dictionary<string, object> annotationMethod;
 
@@ -15,18 +15,18 @@ internal sealed class AuthenticationSerializerConnector : IDisposable
 
 	internal bool callbackMethod = true;
 
-	internal static AuthenticationSerializerConnector VerifyState;
+	internal static ReflectionRestoreScope VerifyState;
 
-	public AuthenticationSerializerConnector(object instance, params string[] valuesToRestore)
+	public ReflectionRestoreScope(object instance, params string[] valuesToRestore)
 		: this(instance, wantcol: true, valuesToRestore)
 	{
 	}
 
-	public AuthenticationSerializerConnector(object i, bool wantcol, params string[] valuesToRestore)
+	public ReflectionRestoreScope(object i, bool wantcol, params string[] valuesToRestore)
 	{
-		AuthenticationSerializerConnector mappingMethod = this;
+		ReflectionRestoreScope mappingMethod = this;
 		_CodeMethod = wantcol;
-		m_ComposerMethod = new OrderImporterTask(i);
+		m_ComposerMethod = new ReflectionAccessor(i);
 		annotationMethod = valuesToRestore.ToDictionary((string s) => s, delegate(string s)
 		{
 			object pol;

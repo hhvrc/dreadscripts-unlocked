@@ -30,7 +30,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class IdentifierSerializerConnector
+internal sealed class LicenseManager
 {
 	private sealed class MessageUtilsAttribute : EditorWindow
 	{
@@ -45,7 +45,7 @@ internal sealed class IdentifierSerializerConnector
 
 		private static readonly string[] prototype = new string[2] { "Easy Dynamics", "Cosmetic" };
 
-		private static readonly ExceptionSingletonStruct.ParserWatcherRule m_Base = new ExceptionSingletonStruct.ParserWatcherRule("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", addcol: true, "DreadBanner.png");
+		private static readonly ADOEditorUtility.BannerDownloader m_Base = new ADOEditorUtility.BannerDownloader("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", addcol: true, "DreadBanner.png");
 
 		private static EasyDynamicsFunctions _Request = EasyDynamicsFunctions.EasyGrab;
 
@@ -76,7 +76,7 @@ internal sealed class IdentifierSerializerConnector
 			if (FlushConfiguration(this))
 			{
 				RevertSerializer();
-				ExceptionSingletonStruct.DisableStatus();
+				ADOEditorUtility.DisableStatus();
 				GetConfiguration();
 				SortIdentifier();
 				ConcatIdentifier();
@@ -91,7 +91,7 @@ internal sealed class IdentifierSerializerConnector
 			}
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				_Request = (EasyDynamicsFunctions)(object)EditorGUILayout.EnumPopup(ExceptionSingletonStruct.CustomizeRef()._MapperSerializer, _Request);
+				_Request = (EasyDynamicsFunctions)(object)EditorGUILayout.EnumPopup(ADOEditorUtility.CustomizeRef()._MapperSerializer, _Request);
 			}
 			EditorGUILayout.HelpBox("Under Development", MessageType.Info);
 		}
@@ -104,7 +104,7 @@ internal sealed class IdentifierSerializerConnector
 				if (_Code)
 				{
 					EditorGUI.indentLevel++;
-					RefImporterDescriptor.GetConsumer().editorAnimatedFoldouts.RunUtils(ExceptionSingletonStruct.CustomizeRef().issuerSerializer, null);
+					RefImporterDescriptor.GetConsumer().editorAnimatedFoldouts.RunUtils(ADOEditorUtility.CustomizeRef().issuerSerializer, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -116,18 +116,18 @@ internal sealed class IdentifierSerializerConnector
 					EditorGUI.indentLevel++;
 					using (new GUILayout.HorizontalScope())
 					{
-						RefImporterDescriptor.GetConsumer().onSceneNameLabels.RunUtils(ExceptionSingletonStruct.CustomizeRef()._FacadeSerializer, null);
+						RefImporterDescriptor.GetConsumer().onSceneNameLabels.RunUtils(ADOEditorUtility.CustomizeRef()._FacadeSerializer, null);
 						if ((bool)RefImporterDescriptor.GetConsumer().onSceneNameLabels)
 						{
 							RefImporterDescriptor.GetConsumer().labelColor.OrderPage(GUIContent.none, true);
 						}
 					}
-					RefImporterDescriptor.GetConsumer().generalColor.OrderPage(ExceptionSingletonStruct.CustomizeRef().annotationSerializer, true);
-					RefImporterDescriptor.GetConsumer().activeColor.OrderPage(ExceptionSingletonStruct.CustomizeRef().m_CodeSerializer, true);
-					RefImporterDescriptor.GetConsumer().inactiveColor.OrderPage(ExceptionSingletonStruct.CustomizeRef()._CallbackSerializer, true);
-					RefImporterDescriptor.GetConsumer().mixedColor.OrderPage(ExceptionSingletonStruct.CustomizeRef()._MessageSerializer, true);
-					RefImporterDescriptor.GetConsumer().selectionColor.OrderPage(ExceptionSingletonStruct.CustomizeRef().policySerializer, true);
-					RefImporterDescriptor.GetConsumer().handleSizeMultiplier.LogoutUtils(ExceptionSingletonStruct.CustomizeRef().m_RequestSerializer, true, null);
+					RefImporterDescriptor.GetConsumer().generalColor.OrderPage(ADOEditorUtility.CustomizeRef().annotationSerializer, true);
+					RefImporterDescriptor.GetConsumer().activeColor.OrderPage(ADOEditorUtility.CustomizeRef().m_CodeSerializer, true);
+					RefImporterDescriptor.GetConsumer().inactiveColor.OrderPage(ADOEditorUtility.CustomizeRef()._CallbackSerializer, true);
+					RefImporterDescriptor.GetConsumer().mixedColor.OrderPage(ADOEditorUtility.CustomizeRef()._MessageSerializer, true);
+					RefImporterDescriptor.GetConsumer().selectionColor.OrderPage(ADOEditorUtility.CustomizeRef().policySerializer, true);
+					RefImporterDescriptor.GetConsumer().handleSizeMultiplier.LogoutUtils(ADOEditorUtility.CustomizeRef().m_RequestSerializer, true, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -144,18 +144,18 @@ internal sealed class IdentifierSerializerConnector
 					RefImporterDescriptor.GetConsumer().onSceneToolSelection.RunUtils(new GUIContent("Tool Overlay", "Displays the tool selection overlay on the scene view."), null);
 					using (new EditorGUI.DisabledScope(!RefImporterDescriptor.GetConsumer().onSceneToolSelection))
 					{
-						RefImporterDescriptor.GetConsumer().toolSelectionOverlayAlignment.PrepareUtils<ExceptionSingletonStruct.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
+						RefImporterDescriptor.GetConsumer().toolSelectionOverlayAlignment.PrepareUtils<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
 				using (new GUILayout.HorizontalScope())
 				{
-					RefImporterDescriptor.GetConsumer().onSceneEditingOverlay.RunUtils(ExceptionSingletonStruct.CustomizeRef().mappingSerializer, null);
+					RefImporterDescriptor.GetConsumer().onSceneEditingOverlay.RunUtils(ADOEditorUtility.CustomizeRef().mappingSerializer, null);
 					using (new EditorGUI.DisabledScope(!RefImporterDescriptor.GetConsumer().onSceneEditingOverlay))
 					{
-						RefImporterDescriptor.GetConsumer().toolOverlayAlignment.PrepareUtils<ExceptionSingletonStruct.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
+						RefImporterDescriptor.GetConsumer().toolOverlayAlignment.PrepareUtils<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
-				RefImporterDescriptor.GetConsumer().onSceneTooltip.RunUtils(ExceptionSingletonStruct.CustomizeRef().queueSerializer, null);
+				RefImporterDescriptor.GetConsumer().onSceneTooltip.RunUtils(ADOEditorUtility.CustomizeRef().queueSerializer, null);
 				EditorGUI.indentLevel--;
 			}
 		}
@@ -287,18 +287,18 @@ internal sealed class IdentifierSerializerConnector
 			}
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(ExceptionSingletonStruct.CustomizeRef().reponseSerializer, ExceptionSingletonStruct.MapRef().m_ProducerSerializer);
+				GUILayout.Label(ADOEditorUtility.CustomizeRef().reponseSerializer, ADOEditorUtility.MapRef().m_ProducerSerializer);
 				GUILayout.Label("An error has occurred! Do you want to report it?", EditorStyles.boldLabel);
-				if (ExceptionSingletonStruct.PatchStatus("Ignore"))
+				if (ADOEditorUtility.PatchStatus("Ignore"))
 				{
 					SelectMethod(moveinstance: false);
 				}
-				if (ExceptionSingletonStruct.PatchStatus("Find Solution"))
+				if (ADOEditorUtility.PatchStatus("Find Solution"))
 				{
 					SelectMethod(moveinstance: true);
 				}
 			}
-			ExceptionSingletonStruct.DisableStatus();
+			ADOEditorUtility.DisableStatus();
 		}
 
 		internal static bool FillMethod()
@@ -371,7 +371,7 @@ internal sealed class IdentifierSerializerConnector
 			{
 				if (_Exception)
 				{
-					if (ExceptionSingletonStruct.LoginStatus("Cancel", EditorStyles.toolbarButton))
+					if (ADOEditorUtility.LoginStatus("Cancel", EditorStyles.toolbarButton))
 					{
 						RemoveSerializer(isi: false);
 					}
@@ -381,7 +381,7 @@ internal sealed class IdentifierSerializerConnector
 				{
 					if (string.IsNullOrWhiteSpace(m_Mapping))
 					{
-						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ExceptionSingletonStruct._EventSerializer))
+						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._EventSerializer))
 						{
 							GUILayout.Label("No solution Found! Please write the steps to reproduce this issue below:");
 						}
@@ -396,13 +396,13 @@ internal sealed class IdentifierSerializerConnector
 						}
 						using (new GUILayout.HorizontalScope())
 						{
-							if (ExceptionSingletonStruct.PatchStatus("Cancel", GUILayout.ExpandWidth(expand: false)))
+							if (ADOEditorUtility.PatchStatus("Cancel", GUILayout.ExpandWidth(expand: false)))
 							{
 								RemoveSerializer(isi: false);
 							}
 							using (new EditorGUI.DisabledScope(getter))
 							{
-								if (!ExceptionSingletonStruct.PatchStatus("Report Issue"))
+								if (!ADOEditorUtility.PatchStatus("Report Issue"))
 								{
 									return;
 								}
@@ -436,21 +436,21 @@ internal sealed class IdentifierSerializerConnector
 					}
 					if (!queue)
 					{
-						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ExceptionSingletonStruct._EventSerializer))
+						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._EventSerializer))
 						{
 							GUILayout.Label("Known issue! Details:");
 						}
 					}
 					else
 					{
-						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ExceptionSingletonStruct._ObserverSerializer))
+						using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._ObserverSerializer))
 						{
 							GUILayout.Label("Solution Found!");
 						}
 					}
 					EditorGUILayout.Space();
 					EditorGUILayout.SelectableLabel(m_Mapping, GUI.skin.label, GUILayout.ExpandHeight(expand: false));
-					if (ExceptionSingletonStruct.PatchStatus("Ok"))
+					if (ADOEditorUtility.PatchStatus("Ok"))
 					{
 						RemoveSerializer(isi: false);
 					}
@@ -458,13 +458,13 @@ internal sealed class IdentifierSerializerConnector
 				}
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
-					GUILayout.Label(ExceptionSingletonStruct.CustomizeRef().reponseSerializer, ExceptionSingletonStruct.MapRef().m_ProducerSerializer);
-					using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ExceptionSingletonStruct._BroadcasterSerializer))
+					GUILayout.Label(ADOEditorUtility.CustomizeRef().reponseSerializer, ADOEditorUtility.MapRef().m_ProducerSerializer);
+					using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ADOEditorUtility._BroadcasterSerializer))
 					{
 						GUILayout.Label("There was an issue contacting the server for a solution.");
 					}
 				}
-				if (ExceptionSingletonStruct.PatchStatus("Cancel"))
+				if (ADOEditorUtility.PatchStatus("Cancel"))
 				{
 					RemoveSerializer(isi: false);
 				}
@@ -606,7 +606,11 @@ internal sealed class IdentifierSerializerConnector
 				accountIdentifier = false;
 				_PageIdentifier = "Failure! Exception: " + ex.Message + "\n" + ex.StackTrace;
 				m_SerializerIdentifier?.Close();
-				((AuthenticationIdentifier)(object)m_SerializerIdentifier)?.DefineConsumer();
+				Process serializerIdentifier = m_SerializerIdentifier;
+				if (serializerIdentifier != null)
+				{
+					DefineConsumer((System.ComponentModel.Component)serializerIdentifier);
+				}
 				QueryMethod();
 			}
 			m_SerializerIdentifier.WaitForExit();
@@ -641,9 +645,9 @@ internal sealed class IdentifierSerializerConnector
 			}
 		}
 
-		void DefineConsumer()
+		static void DefineConsumer(System.ComponentModel.Component component_0)
 		{
-			((System.ComponentModel.Component)this).Dispose();
+			component_0.Dispose();
 		}
 
 		internal static bool LoginTokenizer()
@@ -900,7 +904,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal ConnectionIdentifierService(bool forcev, Action connection = null)
 			{
-				m_TestsIdentifier = (string)(object)forcev;
+				m_TestsIdentifier = forcev;
 				_value = forcev;
 				observerIdentifier = connection;
 			}
@@ -965,7 +969,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal override void QueryCollection()
 			{
-				ConcatUtils((bool)(object)m_TestsIdentifier);
+				ConcatUtils((bool)m_TestsIdentifier);
 			}
 
 			internal static bool NewTask()
@@ -1003,7 +1007,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal BroadcasterIdentifier(float i, Action counter = null)
 			{
-				m_TestsIdentifier = (string)(object)i;
+				m_TestsIdentifier = i;
 				_value = i;
 				_EventIdentifier = counter;
 			}
@@ -1015,10 +1019,59 @@ internal sealed class IdentifierSerializerConnector
 
 			internal void CancelUtils(string info, float attr, bool moverule = true, GUIStyle setup2 = null, params GUILayoutOption[] options)
 			{
-				EditorGUIUtility.labelWidth = attr;
+				int num = 3;
+				uint num3 = default(uint);
 				while (true)
 				{
-					LogoutUtils(new GUIContent(info), moverule, setup2, options);
+					int num2;
+					switch (num)
+					{
+					case 5:
+						num2 = (int)(num3 * 2134301307) ^ -2130345100;
+						goto IL_0010;
+					case 4:
+						LogoutUtils(new GUIContent(info), moverule, setup2, options);
+						num = 1;
+						break;
+					default:
+						return;
+					case 3:
+						EditorGUIUtility.labelWidth = attr;
+						num = 2;
+						break;
+					case 1:
+						num2 = ((int)num3 * -78164118) ^ 0x498694B;
+						goto IL_0010;
+					case 2:
+						goto IL_0096;
+					case 0:
+						return;
+						IL_0010:
+						switch ((num3 = (uint)(num2 ^ 0x1584FC4B)) % 4)
+						{
+						case 3u:
+							break;
+						case 2u:
+							goto IL_0066;
+						case 0u:
+							goto IL_0096;
+						default:
+							goto IL_00a0;
+						case 1u:
+							return;
+						}
+						goto case 4;
+						IL_00a0:
+						num = 0;
+						break;
+						IL_0096:
+						num2 = 1750880980;
+						goto IL_0010;
+						IL_0066:
+						EditorGUIUtility.labelWidth = 0f;
+						num = 5;
+						break;
+					}
 				}
 			}
 
@@ -1036,7 +1089,7 @@ internal sealed class IdentifierSerializerConnector
 					{
 						int num;
 						int num2;
-						if (!GUILayout.Button(ExceptionSingletonStruct.CustomizeRef()._ConfigSerializer, ExceptionSingletonStruct.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
+						if (!GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 						{
 							num = 255188901;
 							num2 = 255188901;
@@ -1087,7 +1140,7 @@ internal sealed class IdentifierSerializerConnector
 				using (new GUILayout.HorizontalScope())
 				{
 					CheckUtils(EditorGUILayout.Slider(instance, PatchUtils(), pol, consumer, options));
-					if (forcet2 && GUILayout.Button(ExceptionSingletonStruct.CustomizeRef()._ConfigSerializer, ExceptionSingletonStruct.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (forcet2 && GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
 					}
@@ -1106,7 +1159,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal override void QueryCollection()
 			{
-				CheckUtils((float)(object)m_TestsIdentifier);
+				CheckUtils((float)m_TestsIdentifier);
 			}
 
 			public static implicit operator int(BroadcasterIdentifier asset)
@@ -1251,7 +1304,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal void ManageUtils(Vector3 key, Action pol)
 			{
-				m_TestsIdentifier = (string)(object)key;
+				m_TestsIdentifier = key;
 				_ResolverIdentifier = pol;
 				_valueX = key.x;
 				_valueY = key.y;
@@ -1279,7 +1332,7 @@ internal sealed class IdentifierSerializerConnector
 				{
 					GUILayout.Label(task, GUILayout.MaxWidth(117f));
 					FindUtils(EditorGUILayout.Vector2Field(GUIContent.none, ConnectUtils(), options));
-					if (GUILayout.Button(ExceptionSingletonStruct.CustomizeRef()._ConfigSerializer, ExceptionSingletonStruct.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
 					}
@@ -1303,7 +1356,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal override void QueryCollection()
 			{
-				FindUtils((Vector3)(object)m_TestsIdentifier);
+				FindUtils((Vector3)m_TestsIdentifier);
 			}
 
 			public static implicit operator Vector2(RecordIdentifier spec)
@@ -1353,7 +1406,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal override void QueryCollection()
 			{
-				IncludeUtils(m_TestsIdentifier);
+				IncludeUtils((string)m_TestsIdentifier);
 			}
 
 			public override string ToString()
@@ -1411,7 +1464,7 @@ internal sealed class IdentifierSerializerConnector
 			internal InstanceIdentifier(float def, float vis, float dir, float token2 = 1f, Action task3 = null)
 			{
 				Color color = new Color(def, vis, dir, token2);
-				m_TestsIdentifier = (string)(object)color;
+				m_TestsIdentifier = color;
 				r = def;
 				g = vis;
 				b = dir;
@@ -1421,7 +1474,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal InstanceIdentifier(Color init, Action attr = null)
 			{
-				m_TestsIdentifier = (string)(object)init;
+				m_TestsIdentifier = init;
 				r = init.r;
 				g = init.g;
 				b = init.b;
@@ -1439,7 +1492,7 @@ internal sealed class IdentifierSerializerConnector
 				using (new GUILayout.HorizontalScope())
 				{
 					SetPage(EditorGUILayout.ColorField(key, VerifyPage(), options));
-					if (iscol && GUILayout.Button(ExceptionSingletonStruct.CustomizeRef()._ConfigSerializer, ExceptionSingletonStruct.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (iscol && GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
 					}
@@ -1448,7 +1501,7 @@ internal sealed class IdentifierSerializerConnector
 
 			internal override void QueryCollection()
 			{
-				SetPage((Color)(object)m_TestsIdentifier);
+				SetPage((Color)m_TestsIdentifier);
 			}
 
 			internal static bool ForgotTask()
@@ -1531,7 +1584,7 @@ internal sealed class IdentifierSerializerConnector
 				using (new GUILayout.HorizontalScope())
 				{
 					UpdatePage(EditorGUILayout.ObjectField(init, ForgotPage(), _HelperIdentifier, allowSceneObjects: false, options));
-					if (ispol && GUILayout.Button(ExceptionSingletonStruct.CustomizeRef()._ConfigSerializer, ExceptionSingletonStruct.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (ispol && GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
 					}
@@ -1583,7 +1636,7 @@ internal sealed class IdentifierSerializerConnector
 
 		internal abstract class WatcherSingletonManager
 		{
-			internal string m_TestsIdentifier;
+			internal object m_TestsIdentifier;
 
 			internal static WatcherSingletonManager ResolveTask;
 
@@ -1697,10 +1750,10 @@ internal sealed class IdentifierSerializerConnector
 		internal ConnectionIdentifierService hasReadColliderTestingWarning = new ConnectionIdentifierService(forcev: false);
 
 		[SerializeField]
-		internal ListenerWatcherRule toolSelectionOverlayAlignment = ListenerWatcherRule.ReadUtils(ExceptionSingletonStruct.PositionFlag.BottomLeft);
+		internal ListenerWatcherRule toolSelectionOverlayAlignment = ListenerWatcherRule.ReadUtils(ADOEditorUtility.PositionFlag.BottomLeft);
 
 		[SerializeField]
-		internal ListenerWatcherRule toolOverlayAlignment = ListenerWatcherRule.ReadUtils(ExceptionSingletonStruct.PositionFlag.BottomRight);
+		internal ListenerWatcherRule toolOverlayAlignment = ListenerWatcherRule.ReadUtils(ADOEditorUtility.PositionFlag.BottomRight);
 
 		[SerializeField]
 		internal BroadcasterIdentifier gizmoBoneOpacity = new BroadcasterIdentifier(0.5f, ComposerIdentifier.InterruptSingleton);
@@ -2089,14 +2142,14 @@ internal sealed class IdentifierSerializerConnector
 		{
 			if (m_IndexerIdentifier == null)
 			{
-				m_IndexerIdentifier = ExceptionSingletonStruct.CancelStatus("VRCContactReceiver");
+				m_IndexerIdentifier = ADOEditorUtility.CancelStatus("VRCContactReceiver");
 			}
 			if (poolIdentifier == null)
 			{
-				poolIdentifier = ExceptionSingletonStruct.CancelStatus("VRCContactReceiverEditor");
+				poolIdentifier = ADOEditorUtility.CancelStatus("VRCContactReceiverEditor");
 			}
 			_ThreadIdentifier = !insertasset;
-			ExceptionSingletonStruct.RevertStatus(m_IndexerIdentifier, (!_ThreadIdentifier) ? poolIdentifier : typeof(AttributeConsumerExporter));
+			ADOEditorUtility.RevertStatus(m_IndexerIdentifier, (!_ThreadIdentifier) ? poolIdentifier : typeof(AttributeConsumerExporter));
 		}
 
 		[CompilerGenerated]
@@ -2323,14 +2376,14 @@ internal sealed class IdentifierSerializerConnector
 		{
 			if (m_ModelIdentifier == null)
 			{
-				m_ModelIdentifier = ExceptionSingletonStruct.CancelStatus("VRCContactSender");
+				m_ModelIdentifier = ADOEditorUtility.CancelStatus("VRCContactSender");
 			}
 			if (m_ConfigIdentifier == null)
 			{
-				m_ConfigIdentifier = ExceptionSingletonStruct.CancelStatus("VRCContactSenderEditor");
+				m_ConfigIdentifier = ADOEditorUtility.CancelStatus("VRCContactSenderEditor");
 			}
 			_InterpreterIdentifier = !isinstance;
-			ExceptionSingletonStruct.RevertStatus(m_ModelIdentifier, (!_InterpreterIdentifier) ? m_ConfigIdentifier : typeof(RuleIdentifier));
+			ADOEditorUtility.RevertStatus(m_ModelIdentifier, (!_InterpreterIdentifier) ? m_ConfigIdentifier : typeof(RuleIdentifier));
 		}
 
 		[CompilerGenerated]
@@ -2482,14 +2535,14 @@ internal sealed class IdentifierSerializerConnector
 		{
 			if (m_BaseIdentifier == null)
 			{
-				m_BaseIdentifier = ExceptionSingletonStruct.CancelStatus("VRCPhysBoneCollider");
+				m_BaseIdentifier = ADOEditorUtility.CancelStatus("VRCPhysBoneCollider");
 			}
 			if (_RequestIdentifier == null)
 			{
-				_RequestIdentifier = ExceptionSingletonStruct.CancelStatus("VRCPhysBoneColliderEditor");
+				_RequestIdentifier = ADOEditorUtility.CancelStatus("VRCPhysBoneColliderEditor");
 			}
 			advisorIdentifier = !isi;
-			ExceptionSingletonStruct.RevertStatus(m_BaseIdentifier, (!advisorIdentifier) ? _RequestIdentifier : typeof(IndexerMethodBridge));
+			ADOEditorUtility.RevertStatus(m_BaseIdentifier, (!advisorIdentifier) ? _RequestIdentifier : typeof(IndexerMethodBridge));
 		}
 
 		private void EnableProperty()
@@ -2635,7 +2688,7 @@ internal sealed class IdentifierSerializerConnector
 
 			public static Func<string, string> ruleAuthentication;
 
-			public static Func<ExceptionSingletonStruct.InstanceConsumerExporter, bool> structAuthentication;
+			public static Func<ADOEditorUtility.PhysBoneParameter, bool> structAuthentication;
 
 			public static Action _InterpreterAuthentication;
 
@@ -2645,15 +2698,13 @@ internal sealed class IdentifierSerializerConnector
 
 			public static Action<VRCPhysBone> objectAuthentication;
 
-			public static Func<ExceptionSingletonStruct.ClientRegDic, bool> serviceAuthentication;
+			public static Func<ADOEditorUtility.BoneNode, bool> serviceAuthentication;
 
 			public static Func<Keyframe, float> _ReponseAuthentication;
 
-			public static Func<ExceptionSingletonStruct.InstanceConsumerExporter, bool> _SpecificationAuthentication;
+			public static Func<ADOEditorUtility.PhysBoneParameter, bool> _SpecificationAuthentication;
 
 			public static Func<VRCPhysBone, IEnumerable<Transform>> m_WrapperAuthentication;
-
-			internal static _003C_003Ec ReadTask;
 
 			internal bool DeleteParams()
 			{
@@ -2699,7 +2750,7 @@ internal sealed class IdentifierSerializerConnector
 					UpdateSingleton(ComposerIdentifier.adapterAuthentication, "X", isproc: false);
 					UpdateSingleton(_ProxyAuthentication, "Y", isproc: false);
 					UpdateSingleton(m_RefAuthentication, "Z", isproc: false);
-					if (ExceptionSingletonStruct.CallStatus(ExceptionSingletonStruct.CustomizeRef().baseSerializer, GUI.skin.label, GUILayout.Width(14f)))
+					if (ADOEditorUtility.CallStatus(ADOEditorUtility.CustomizeRef().baseSerializer, GUI.skin.label, GUILayout.Width(14f)))
 					{
 						SerializedProperty adapterAuthentication = ComposerIdentifier.adapterAuthentication;
 						SerializedProperty proxyAuthentication = _ProxyAuthentication;
@@ -2736,7 +2787,7 @@ internal sealed class IdentifierSerializerConnector
 				return s.Substring(0, s.LastIndexOf('_'));
 			}
 
-			internal bool SortParams(ExceptionSingletonStruct.InstanceConsumerExporter pbp2)
+			internal bool SortParams(ADOEditorUtility.PhysBoneParameter pbp2)
 			{
 				return pbp2._IndexerMethod;
 			}
@@ -2752,7 +2803,7 @@ internal sealed class IdentifierSerializerConnector
 				}, GUILayout.ExpandWidth(expand: false));
 				bool flag;
 				string text = ((!(flag = RefImporterDescriptor.GetConsumer().globalGizmo)) ? "Local Setting" : "Global Setting");
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ExceptionSingletonStruct._ObserverSerializer, ExceptionSingletonStruct._EventSerializer))
+				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
 				{
 					using (new RefImporterDescriptor.TestPropertyFilter(InterruptSingleton))
 					{
@@ -2788,7 +2839,7 @@ internal sealed class IdentifierSerializerConnector
 				pb.configHasUpdated = true;
 			}
 
-			internal bool FillParams(ExceptionSingletonStruct.ClientRegDic b)
+			internal bool FillParams(ADOEditorUtility.BoneNode b)
 			{
 				if (!b.m_DescriptorMethod)
 				{
@@ -2802,7 +2853,7 @@ internal sealed class IdentifierSerializerConnector
 				return k.value;
 			}
 
-			internal bool LogoutParams(ExceptionSingletonStruct.InstanceConsumerExporter p)
+			internal bool LogoutParams(ADOEditorUtility.PhysBoneParameter p)
 			{
 				return p._IndexerMethod;
 			}
@@ -2811,10 +2862,209 @@ internal sealed class IdentifierSerializerConnector
 			{
 				return pb.GetRootTransform().GetComponentsInChildren<Transform>();
 			}
+		}
 
-			internal static bool LoginTask()
+		[CompilerGenerated]
+		private sealed class _003C_003Ec__DisplayClass108_0
+		{
+			public ComposerIdentifier m_InfoAuthentication;
+
+			public bool _ModelAuthentication;
+
+			internal void InstantiateParams()
 			{
-				return ReadTask == null;
+				using (new GUILayout.HorizontalScope())
+				{
+					EditorGUILayout.PropertyField(producerIdentifier, new GUIContent("Root"));
+					if (GUILayout.Button(new GUIContent("S", "Set to Self"), GUILayout.Width(18f), GUILayout.Height(18f)))
+					{
+						UnityEngine.Object[] targets = m_InfoAuthentication.targets;
+						for (int i = 0; i < targets.Length; i++)
+						{
+							VRCPhysBone vRCPhysBone = targets[i] as VRCPhysBone;
+							if ((bool)vRCPhysBone)
+							{
+								SerializedObject serializedObject = new SerializedObject(vRCPhysBone);
+								serializedObject.FindProperty("rootTransform").objectReferenceValue = vRCPhysBone.transform;
+								serializedObject.ApplyModifiedProperties();
+							}
+						}
+					}
+				}
+				ResetAccount(SearchConfiguration(_WriterIdentifier, ResolveAccount()));
+				EditorGUILayout.PropertyField(classIdentifier);
+				using (new GUILayout.VerticalScope("box"))
+				{
+					using (new GUILayout.HorizontalScope())
+					{
+						GUILayout.Space(12f);
+						m_TemplateIdentifier.isExpanded = EditorGUILayout.Foldout(m_TemplateIdentifier.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
+						GUILayout.FlexibleSpace();
+						FindAccount(LoginConfiguration(ConnectAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+						EditorGUI.BeginChangeCheck();
+						ExcludeAccount(LoginConfiguration(FlushAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+						if (EditorGUI.EndChangeCheck())
+						{
+							PublishSingleton();
+						}
+					}
+					if (m_TemplateIdentifier.isExpanded)
+					{
+						EditorGUI.indentLevel++;
+						ADOEditorUtility.OrderStatus<Transform>(m_TemplateIdentifier);
+						EditorGUI.indentLevel--;
+					}
+				}
+			}
+
+			internal void RestartParams()
+			{
+				PostSingleton(6);
+				if (_ModelAuthentication)
+				{
+					StopConfiguration(consumerAuthentication, m_UtilsAuthentication);
+				}
+				using (new GUILayout.VerticalScope(GUI.skin.box))
+				{
+					using (new GUILayout.HorizontalScope())
+					{
+						GUILayout.Space(12f);
+						m_SingletonAuthentication.isExpanded = EditorGUILayout.Foldout(m_SingletonAuthentication.isExpanded, "Colliders", toggleOnLabelClick: true);
+						GUILayout.FlexibleSpace();
+						RunParams(LoginConfiguration(RevertAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+						EditorGUI.BeginChangeCheck();
+						CreateAccount(LoginConfiguration(ValidateAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+						if (EditorGUI.EndChangeCheck())
+						{
+							MoveSingleton();
+						}
+					}
+					if (m_SingletonAuthentication.isExpanded)
+					{
+						EditorGUI.indentLevel++;
+						ADOEditorUtility.OrderStatus<VRCPhysBoneCollider>(m_SingletonAuthentication);
+						EditorGUI.indentLevel--;
+					}
+				}
+			}
+
+			internal void ManageParams()
+			{
+				if (_ModelAuthentication)
+				{
+					while (true)
+					{
+						StopConfiguration(comparatorAuthentication, _ProductAuthentication);
+						StopConfiguration(iteratorAuthentication, m_PredicateAuthentication);
+					}
+				}
+				EditorGUILayout.PropertyField(_CollectionAuthentication);
+				EditorGUILayout.PropertyField(interceptorAuthentication);
+			}
+
+			internal void RateParams()
+			{
+				EditorGUILayout.PropertyField(_ValueIdentifier);
+				EditorGUILayout.PropertyField(resolverAuthentication);
+				EditorGUILayout.PropertyField(_FilterAuthentication);
+				PushConfiguration();
+				using (new GUILayout.HorizontalScope())
+				{
+					if ((bool)(UnityEngine.Object)(object)m_Predicate)
+					{
+						List<string> list = new List<string>();
+						string[] registry = m_Registry;
+						foreach (string text in registry)
+						{
+							int num = text.LastIndexOf("_IsGrabbed", StringComparison.Ordinal);
+							if (num < 0)
+							{
+								num = text.LastIndexOf("_Angle", StringComparison.Ordinal);
+							}
+							if (num < 0)
+							{
+								num = text.LastIndexOf("_Stretch", StringComparison.Ordinal);
+							}
+							if (num >= 0)
+							{
+								list.Add(text);
+							}
+						}
+						string[] proc = list.Select(_003C_003Ec.m_ManagerAuthentication.SetParams).Distinct().ToArray();
+						string stringValue = tagAuthentication.stringValue;
+						using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
+						{
+							stringValue = ADOEditorUtility.PopStatus("Parameter", stringValue, proc);
+							if (changeCheckScope.changed)
+							{
+								tagAuthentication.stringValue = stringValue;
+							}
+						}
+						using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Predicate == null || string.IsNullOrEmpty(tagAuthentication.stringValue)))
+						{
+							if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().m_DispatcherSerializer))
+							{
+								GenericMenu genericMenu = new GenericMenu();
+								using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Predicate.baseAnimationLayers.Concat(m_Predicate.specialAnimationLayers).GetEnumerator())
+								{
+									while (enumerator.MoveNext())
+									{
+										_003C_003Ec__DisplayClass108_1 _003C_003Ec__DisplayClass108_ = new _003C_003Ec__DisplayClass108_1();
+										_003C_003Ec__DisplayClass108_.configAuthentication = enumerator.Current;
+										_003C_003Ec__DisplayClass108_.m_MockAuthentication = _003C_003Ec__DisplayClass108_.configAuthentication.animatorController as UnityEditor.Animations.AnimatorController;
+										if (_003C_003Ec__DisplayClass108_.m_MockAuthentication == null)
+										{
+											continue;
+										}
+										UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.m_MockAuthentication.parameters;
+										ADOEditorUtility.PhysBoneParameter[] visitorSerializer = ADOEditorUtility.m_VisitorSerializer;
+										for (int i = 0; i < visitorSerializer.Length; i++)
+										{
+											_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
+											_003C_003Ec__DisplayClass108_2.advisorAuthentication = _003C_003Ec__DisplayClass108_;
+											_003C_003Ec__DisplayClass108_2._StateAuthentication = visitorSerializer[i];
+											_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.workerMethod;
+											if (!parameters.Any(_003C_003Ec__DisplayClass108_2.PatchImporter))
+											{
+												genericMenu.AddItem(new GUIContent($"{_003C_003Ec__DisplayClass108_2.advisorAuthentication.configAuthentication.type}/{_003C_003Ec__DisplayClass108_2._FieldAuthentication}"), on: false, _003C_003Ec__DisplayClass108_2.CheckImporter);
+											}
+										}
+									}
+								}
+								genericMenu.ShowAsContext();
+							}
+						}
+					}
+					else
+					{
+						EditorGUILayout.PropertyField(tagAuthentication);
+					}
+				}
+				VRCPhysBone vRCPhysBone = PublishImporter((Editor)m_InfoAuthentication) as VRCPhysBone;
+				if (!(vRCPhysBone != null) || !Application.isPlaying || m_InfoAuthentication.serializedObject.isEditingMultipleObjects || string.IsNullOrEmpty(vRCPhysBone.parameter))
+				{
+					return;
+				}
+				using (new EditorGUILayout.HorizontalScope())
+				{
+					GUILayoutUtils.LoginIterator(m_CodeIdentifier, null);
+					foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility.m_VisitorSerializer.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
+					{
+						using (new EditorGUILayout.VerticalScope())
+						{
+							GUILayout.Label(item.workerMethod, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
+							GUILayoutUtils.PrepareIterator();
+							GUILayout.Label(item.PrepareProduct(vRCPhysBone));
+						}
+						GUILayoutUtils.StopIterator();
+					}
+					GUILayoutUtils.CallIterator();
+				}
+			}
+
+			static UnityEngine.Object PublishImporter(Editor editor_0)
+			{
+				return editor_0.target;
 			}
 		}
 
@@ -2824,25 +3074,16 @@ internal sealed class IdentifierSerializerConnector
 			public VRCAvatarDescriptor.CustomAnimLayer configAuthentication;
 
 			public UnityEditor.Animations.AnimatorController m_MockAuthentication;
-
-			internal static _003C_003Ec__DisplayClass108_1 FlushTask;
-
-			internal static bool OrderTask()
-			{
-				return FlushTask == null;
-			}
 		}
 
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass108_2
 		{
-			public ExceptionSingletonStruct.InstanceConsumerExporter _StateAuthentication;
+			public ADOEditorUtility.PhysBoneParameter _StateAuthentication;
 
 			public string _FieldAuthentication;
 
 			public _003C_003Ec__DisplayClass108_1 advisorAuthentication;
-
-			internal static _003C_003Ec__DisplayClass108_2 InterruptTask;
 
 			internal bool PatchImporter(UnityEngine.AnimatorControllerParameter p)
 			{
@@ -2854,11 +3095,6 @@ internal sealed class IdentifierSerializerConnector
 				advisorAuthentication.m_MockAuthentication.FindProcess(_FieldAuthentication, _StateAuthentication._ItemMethod, 0f);
 				NewIdentifier($"Added {_FieldAuthentication} to {advisorAuthentication.configAuthentication.type} ({advisorAuthentication.m_MockAuthentication.name})");
 				SetupConfiguration();
-			}
-
-			internal static bool CheckTask()
-			{
-				return InterruptTask == null;
 			}
 		}
 
@@ -2890,9 +3126,7 @@ internal sealed class IdentifierSerializerConnector
 
 			public AlgoAuthentication _ClassAuthentication;
 
-			internal static _003C_003Ec__DisplayClass120_0 StopAnnotation;
-
-			internal void OrderServer(ExceptionSingletonStruct.ClientRegDic b, float m)
+			internal void OrderServer(ADOEditorUtility.BoneNode b, float m)
 			{
 				if (m != 0f)
 				{
@@ -2900,17 +3134,17 @@ internal sealed class IdentifierSerializerConnector
 					Vector4 column = printerMethod.GetColumn(3);
 					float comp = m_TokenizerAuthentication.radius * m;
 					EditorGUI.BeginChangeCheck();
-					float num = ExceptionSingletonStruct.CreateStatus(printerMethod.rotation, column, comp, !m_TokenizerAuthentication.showGizmos, RefImporterDescriptor.GetConsumer().handleSizeMultiplier);
+					float num = ADOEditorUtility.CreateStatus(printerMethod.rotation, column, comp, !m_TokenizerAuthentication.showGizmos, RefImporterDescriptor.GetConsumer().handleSizeMultiplier);
 					if (EditorGUI.EndChangeCheck())
 					{
 						float delta = num / m - m_TokenizerAuthentication.radius;
 						CalculateServer(b, delta);
 					}
-					ExceptionSingletonStruct.FindStatus(comp.ToString("F2"), column);
+					ADOEditorUtility.FindStatus(comp.ToString("F2"), column);
 				}
 			}
 
-			internal void CalculateServer(ExceptionSingletonStruct.ClientRegDic bone, float delta)
+			internal void CalculateServer(ADOEditorUtility.BoneNode bone, float delta)
 			{
 				Event current = Event.current;
 				bool alt = current.alt;
@@ -2975,11 +3209,6 @@ internal sealed class IdentifierSerializerConnector
 				action(obj);
 				serializedObject.ApplyModifiedProperties();
 			}
-
-			internal static bool StartAnnotation()
-			{
-				return StopAnnotation == null;
-			}
 		}
 
 		[CompilerGenerated]
@@ -2989,16 +3218,9 @@ internal sealed class IdentifierSerializerConnector
 
 			public Action<SerializedProperty> containerAuthentication;
 
-			internal static _003C_003Ec__DisplayClass120_1 ResolveAnnotation;
-
 			internal void MapServer(SerializedProperty sp)
 			{
 				sp.floatValue = dicAuthentication;
-			}
-
-			internal static bool CountAnnotation()
-			{
-				return ResolveAnnotation == null;
 			}
 		}
 
@@ -3011,17 +3233,10 @@ internal sealed class IdentifierSerializerConnector
 
 			public _003C_003Ec__DisplayClass120_0 _PublisherAuthentication;
 
-			internal static _003C_003Ec__DisplayClass120_2 WriteAnnotation;
-
 			internal void CancelServer(SerializedProperty sp)
 			{
 				sp.floatValue = Mathf.Clamp(sp.floatValue + m_SchemaAuthentication, _PublisherAuthentication.producerAuthentication, _PublisherAuthentication._TemplateAuthentication);
 				_BridgeAuthentication = sp.floatValue;
-			}
-
-			internal static bool CustomizeAnnotation()
-			{
-				return WriteAnnotation == null;
 			}
 		}
 
@@ -3045,7 +3260,7 @@ internal sealed class IdentifierSerializerConnector
 
 		private static readonly int _TokenizerIdentifier = GUIUtility.GetControlID("ADOToolSelectionDragControlID".GetHashCode(), FocusType.Passive);
 
-		private static readonly ExceptionSingletonStruct.ExporterServerStub m_ExceptionIdentifier = new ExceptionSingletonStruct.ExporterServerStub();
+		private static readonly ADOEditorUtility.ExporterServerStub m_ExceptionIdentifier = new ADOEditorUtility.ExporterServerStub();
 
 		private static SerializedProperty _ValueIdentifier;
 
@@ -3321,9 +3536,9 @@ internal sealed class IdentifierSerializerConnector
 							GUILayout.Space(12f);
 							m_TemplateIdentifier.isExpanded = EditorGUILayout.Foldout(m_TemplateIdentifier.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
 							GUILayout.FlexibleSpace();
-							FindAccount(LoginConfiguration(ConnectAccount(), ExceptionSingletonStruct.CustomizeRef().m_ExporterSerializer));
+							FindAccount(LoginConfiguration(ConnectAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
 							EditorGUI.BeginChangeCheck();
-							ExcludeAccount(LoginConfiguration(FlushAccount(), ExceptionSingletonStruct.CustomizeRef().advisorSerializer));
+							ExcludeAccount(LoginConfiguration(FlushAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
 							if (EditorGUI.EndChangeCheck())
 							{
 								PublishSingleton();
@@ -3332,7 +3547,7 @@ internal sealed class IdentifierSerializerConnector
 						if (m_TemplateIdentifier.isExpanded)
 						{
 							EditorGUI.indentLevel++;
-							ExceptionSingletonStruct.OrderStatus<Transform>(m_TemplateIdentifier);
+							ADOEditorUtility.OrderStatus<Transform>(m_TemplateIdentifier);
 							EditorGUI.indentLevel--;
 						}
 					}
@@ -3376,7 +3591,7 @@ internal sealed class IdentifierSerializerConnector
 						UpdateSingleton(adapterAuthentication, "X", isproc: false);
 						UpdateSingleton(_ProxyAuthentication, "Y", isproc: false);
 						UpdateSingleton(m_RefAuthentication, "Z", isproc: false);
-						if (ExceptionSingletonStruct.CallStatus(ExceptionSingletonStruct.CustomizeRef().baseSerializer, GUI.skin.label, GUILayout.Width(14f)))
+						if (ADOEditorUtility.CallStatus(ADOEditorUtility.CustomizeRef().baseSerializer, GUI.skin.label, GUILayout.Width(14f)))
 						{
 							SerializedProperty serializedProperty = adapterAuthentication;
 							SerializedProperty proxyAuthentication = _ProxyAuthentication;
@@ -3409,9 +3624,9 @@ internal sealed class IdentifierSerializerConnector
 							GUILayout.Space(12f);
 							m_SingletonAuthentication.isExpanded = EditorGUILayout.Foldout(m_SingletonAuthentication.isExpanded, "Colliders", toggleOnLabelClick: true);
 							GUILayout.FlexibleSpace();
-							RunParams(LoginConfiguration(RevertAccount(), ExceptionSingletonStruct.CustomizeRef().m_ExporterSerializer));
+							RunParams(LoginConfiguration(RevertAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
 							EditorGUI.BeginChangeCheck();
-							CreateAccount(LoginConfiguration(ValidateAccount(), ExceptionSingletonStruct.CustomizeRef().advisorSerializer));
+							CreateAccount(LoginConfiguration(ValidateAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
 							if (EditorGUI.EndChangeCheck())
 							{
 								MoveSingleton();
@@ -3420,7 +3635,7 @@ internal sealed class IdentifierSerializerConnector
 						if (m_SingletonAuthentication.isExpanded)
 						{
 							EditorGUI.indentLevel++;
-							ExceptionSingletonStruct.OrderStatus<VRCPhysBoneCollider>(m_SingletonAuthentication);
+							ADOEditorUtility.OrderStatus<VRCPhysBoneCollider>(m_SingletonAuthentication);
 							EditorGUI.indentLevel--;
 						}
 					}
@@ -3488,7 +3703,7 @@ internal sealed class IdentifierSerializerConnector
 							string stringValue = tagAuthentication.stringValue;
 							using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
 							{
-								stringValue = ExceptionSingletonStruct.PopStatus("Parameter", stringValue, proc);
+								stringValue = ADOEditorUtility.PopStatus("Parameter", stringValue, proc);
 								if (changeCheckScope.changed)
 								{
 									tagAuthentication.stringValue = stringValue;
@@ -3496,7 +3711,7 @@ internal sealed class IdentifierSerializerConnector
 							}
 							using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Predicate == null || string.IsNullOrEmpty(tagAuthentication.stringValue)))
 							{
-								if (ExceptionSingletonStruct.ListStatus(ExceptionSingletonStruct.CustomizeRef().m_DispatcherSerializer))
+								if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().m_DispatcherSerializer))
 								{
 									GenericMenu genericMenu = new GenericMenu();
 									using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Predicate.baseAnimationLayers.Concat(m_Predicate.specialAnimationLayers).GetEnumerator())
@@ -3509,7 +3724,7 @@ internal sealed class IdentifierSerializerConnector
 											if (!(_003C_003Ec__DisplayClass108_.m_MockAuthentication == null))
 											{
 												UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.m_MockAuthentication.parameters;
-												ExceptionSingletonStruct.InstanceConsumerExporter[] visitorSerializer = ExceptionSingletonStruct.m_VisitorSerializer;
+												ADOEditorUtility.PhysBoneParameter[] visitorSerializer = ADOEditorUtility.m_VisitorSerializer;
 												for (int i = 0; i < visitorSerializer.Length; i++)
 												{
 													_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
@@ -3533,23 +3748,23 @@ internal sealed class IdentifierSerializerConnector
 							EditorGUILayout.PropertyField(tagAuthentication);
 						}
 					}
-					VRCPhysBone vRCPhysBone = base.target as VRCPhysBone;
+					VRCPhysBone vRCPhysBone = _003C_003Ec__DisplayClass108_0.PublishImporter((Editor)this) as VRCPhysBone;
 					if (vRCPhysBone != null && Application.isPlaying && !base.serializedObject.isEditingMultipleObjects && !string.IsNullOrEmpty(vRCPhysBone.parameter))
 					{
 						using (new EditorGUILayout.HorizontalScope())
 						{
-							AdvisorMethod.LoginIterator(m_CodeIdentifier, null);
-							foreach (ExceptionSingletonStruct.InstanceConsumerExporter item in ExceptionSingletonStruct.m_VisitorSerializer.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
+							GUILayoutUtils.LoginIterator(m_CodeIdentifier, null);
+							foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility.m_VisitorSerializer.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
 							{
 								using (new EditorGUILayout.VerticalScope())
 								{
 									GUILayout.Label(item.workerMethod, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
-									AdvisorMethod.PrepareIterator();
+									GUILayoutUtils.PrepareIterator();
 									GUILayout.Label(item.PrepareProduct(vRCPhysBone));
 								}
-								AdvisorMethod.StopIterator();
+								GUILayoutUtils.StopIterator();
 							}
-							AdvisorMethod.CallIterator();
+							GUILayoutUtils.CallIterator();
 						}
 					}
 				});
@@ -3564,7 +3779,7 @@ internal sealed class IdentifierSerializerConnector
 					}, GUILayout.ExpandWidth(expand: false));
 					bool flag;
 					string text = ((!(flag = RefImporterDescriptor.GetConsumer().globalGizmo)) ? "Local Setting" : "Global Setting");
-					using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ExceptionSingletonStruct._ObserverSerializer, ExceptionSingletonStruct._EventSerializer))
+					using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
 					{
 						using (new RefImporterDescriptor.TestPropertyFilter(InterruptSingleton))
 						{
@@ -3603,22 +3818,22 @@ internal sealed class IdentifierSerializerConnector
 			if (!(vRCPhysBone == null))
 			{
 				Tools.hidden = true;
-				ExceptionSingletonStruct.StrategyAuthenticationFactory strategyAuthenticationFactory = new ExceptionSingletonStruct.StrategyAuthenticationFactory(vRCPhysBone);
-				strategyAuthenticationFactory.CancelProduct();
+				ADOEditorUtility.BoneChainTree boneChainTree = new ADOEditorUtility.BoneChainTree(vRCPhysBone);
+				boneChainTree.CancelProduct();
 				if (ResolveAccount())
 				{
-					CustomizeSingleton(_MessageIdentifier, strategyAuthenticationFactory);
+					CustomizeSingleton(_MessageIdentifier, boneChainTree);
 				}
 				if (RemoveAccount())
 				{
-					CancelSingleton(_MessageIdentifier, strategyAuthenticationFactory, CountAccount());
+					CancelSingleton(_MessageIdentifier, boneChainTree, CountAccount());
 				}
 			}
 		}
 
 		private static void VerifySingleton(SceneView task)
 		{
-			ExceptionSingletonStruct.PublishStatus();
+			ADOEditorUtility.PublishStatus();
 			ConcatSingleton();
 			SetSingleton(task);
 			if (ValidateAccount())
@@ -3630,16 +3845,16 @@ internal sealed class IdentifierSerializerConnector
 					{
 						int _ExporterAuthentication = i;
 						VRCPhysBoneCollider _CreatorAuthentication = m_MapperIdentifier[_ExporterAuthentication];
-						ExceptionSingletonStruct.PageMethod first = ExceptionSingletonStruct.PageMethod.OrderComparator(_CreatorAuthentication.transform.TransformPoint(_CreatorAuthentication.position), flag ? _CreatorAuthentication.name : string.Empty, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.05f, _Iterator + i, delegate
+						ADOEditorUtility.SphereHandle first = ADOEditorUtility.SphereHandle.OrderComparator(_CreatorAuthentication.transform.TransformPoint(_CreatorAuthentication.position), flag ? _CreatorAuthentication.name : string.Empty, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.05f, _Iterator + i, delegate
 						{
-							m_SingletonAuthentication.DestroyStatus<VRCPhysBoneCollider>(ExceptionSingletonStruct.FillVal(m_QueueIdentifier, _ExporterAuthentication), _CreatorAuthentication);
+							m_SingletonAuthentication.DestroyStatus<VRCPhysBoneCollider>(ADOEditorUtility.FillVal(m_QueueIdentifier, _ExporterAuthentication), _CreatorAuthentication);
 						});
-						first._ValMethod = delegate(ExceptionSingletonStruct.PageMethod sc2)
+						first._ValMethod = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
 							Handles.color = RefImporterDescriptor.GetConsumer().ExcludeConsumer()[m_QueueIdentifier[_ExporterAuthentication]];
-							ExceptionSingletonStruct.PageMethod.DeleteComparator(sc2);
+							ADOEditorUtility.SphereHandle.DeleteComparator(sc2);
 						};
-						ExceptionSingletonStruct.InitStatus(first);
+						ADOEditorUtility.InitStatus(first);
 					}
 				}
 			}
@@ -3652,16 +3867,16 @@ internal sealed class IdentifierSerializerConnector
 					{
 						Transform _ConnectionAuthentication = mappingIdentifier[num];
 						int m_DispatcherAuthentication = num;
-						ExceptionSingletonStruct.PageMethod first2 = ExceptionSingletonStruct.PageMethod.OrderComparator(_ConnectionAuthentication.position, (!flag2) ? string.Empty : _ConnectionAuthentication.name, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num, delegate
+						ADOEditorUtility.SphereHandle first2 = ADOEditorUtility.SphereHandle.OrderComparator(_ConnectionAuthentication.position, (!flag2) ? string.Empty : _ConnectionAuthentication.name, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num, delegate
 						{
-							m_TemplateIdentifier.DestroyStatus<Transform>(ExceptionSingletonStruct.FillVal(m_QueueIdentifier, m_DispatcherAuthentication), _ConnectionAuthentication);
+							m_TemplateIdentifier.DestroyStatus<Transform>(ADOEditorUtility.FillVal(m_QueueIdentifier, m_DispatcherAuthentication), _ConnectionAuthentication);
 						});
-						first2._ValMethod = delegate(ExceptionSingletonStruct.PageMethod sc2)
+						first2._ValMethod = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
 							Handles.color = RefImporterDescriptor.GetConsumer().ExcludeConsumer()[m_QueueIdentifier[m_DispatcherAuthentication]];
-							ExceptionSingletonStruct.PageMethod.DeleteComparator(sc2);
+							ADOEditorUtility.SphereHandle.DeleteComparator(sc2);
 						};
-						ExceptionSingletonStruct.InitStatus(first2);
+						ADOEditorUtility.InitStatus(first2);
 					}
 				}
 			}
@@ -3675,7 +3890,7 @@ internal sealed class IdentifierSerializerConnector
 					{
 						VRCPhysBone vRCPhysBone = _PolicyIdentifier[num2];
 						int _ExpressionAuthentication = num2;
-						ExceptionSingletonStruct.InitStatus(ExceptionSingletonStruct.PageMethod.OrderComparator(vRCPhysBone.transform.position, flag3 ? vRCPhysBone.name : string.Empty, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num2, delegate
+						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.OrderComparator(vRCPhysBone.transform.position, flag3 ? vRCPhysBone.name : string.Empty, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num2, delegate
 						{
 							VRCPhysBone[] messageIdentifier = _MessageIdentifier;
 							for (int j = 0; j < messageIdentifier.Length; j++)
@@ -3701,7 +3916,7 @@ internal sealed class IdentifierSerializerConnector
 					{
 						VRCPhysBone vRCPhysBone2 = _PolicyIdentifier[num3];
 						int _DecoratorAuthentication = num3;
-						ExceptionSingletonStruct.InitStatus(ExceptionSingletonStruct.PageMethod.OrderComparator(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num3, delegate
+						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.OrderComparator(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)RefImporterDescriptor.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num3, delegate
 						{
 							VRCPhysBone[] messageIdentifier = _MessageIdentifier;
 							for (int j = 0; j < messageIdentifier.Length; j++)
@@ -3723,7 +3938,7 @@ internal sealed class IdentifierSerializerConnector
 				GUIUtility.hotControl = _Iterator - 1;
 				current.Use();
 			}
-			ExceptionSingletonStruct.PrintStatus();
+			ADOEditorUtility.PrintStatus();
 		}
 
 		private static void SetSingleton(SceneView info)
@@ -3737,22 +3952,22 @@ internal sealed class IdentifierSerializerConnector
 			bool flag = num > 0;
 			if ((bool)RefImporterDescriptor.GetConsumer().onSceneToolSelection && (flag || (bool)RefImporterDescriptor.GetConsumer().onSceneToolSelectionAlwaysVisible))
 			{
-				ExceptionSingletonStruct.PositionFlag positionFlag = RefImporterDescriptor.GetConsumer().toolSelectionOverlayAlignment.RegisterUtils<ExceptionSingletonStruct.PositionFlag>();
+				ADOEditorUtility.PositionFlag positionFlag = RefImporterDescriptor.GetConsumer().toolSelectionOverlayAlignment.RegisterUtils<ADOEditorUtility.PositionFlag>();
 				bool flag2;
-				using (new ExceptionSingletonStruct.SystemSerializer(info, 250f, 34f, positionFlag, m_ExceptionIdentifier))
+				using (new ADOEditorUtility.SystemSerializer(info, 250f, 34f, positionFlag, m_ExceptionIdentifier))
 				{
 					Rect lastRect;
 					using (new GUILayout.HorizontalScope())
 					{
 						using (new EditorGUI.DisabledScope(rulesAuthentication.singletonSerializer <= 0))
 						{
-							if (ExceptionSingletonStruct.ListStatus((!RefImporterDescriptor.GetConsumer().ignoreSceneClicks) ? ExceptionSingletonStruct.CustomizeRef().decoratorSerializer : ExceptionSingletonStruct.CustomizeRef()._ParamSerializer))
+							if (ADOEditorUtility.ListStatus((!RefImporterDescriptor.GetConsumer().ignoreSceneClicks) ? ADOEditorUtility.CustomizeRef().decoratorSerializer : ADOEditorUtility.CustomizeRef()._ParamSerializer))
 							{
 								RefImporterDescriptor.GetConsumer().ignoreSceneClicks.IncludeConsumer();
 							}
 						}
 						GUILayout.FlexibleSpace();
-						GUILayout.Label("ADO Tool:", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+						GUILayout.Label("ADO Tool:", ADOEditorUtility.MapRef().m_WriterSerializer);
 						lastRect = GUILayoutUtility.GetLastRect();
 						GUIContent content = new GUIContent(m_TestsAuthentication[num]);
 						float x = GUI.skin.label.CalcSize(content).x;
@@ -3784,18 +3999,18 @@ internal sealed class IdentifierSerializerConnector
 							SceneView.RepaintAll();
 						}
 						GUILayout.FlexibleSpace();
-						if (ExceptionSingletonStruct.ListStatus(ExceptionSingletonStruct.CustomizeRef().fieldSerializer))
+						if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
 						{
 							MessageUtilsAttribute.CreateSerializer();
 						}
 					}
-					flag2 = ExceptionSingletonStruct.VisitStatus(lastRect, _TokenizerIdentifier);
-					ExceptionSingletonStruct.InsertStatus(lastRect, MouseCursor.Pan);
+					flag2 = ADOEditorUtility.VisitStatus(lastRect, _TokenizerIdentifier);
+					ADOEditorUtility.InsertStatus(lastRect, MouseCursor.Pan);
 				}
 				if (flag2)
 				{
 					Handles.BeginGUI();
-					RefImporterDescriptor.GetConsumer().toolSelectionOverlayAlignment.RestartUtils = (int)ExceptionSingletonStruct.RunStatus(positionFlag, ivk);
+					RefImporterDescriptor.GetConsumer().toolSelectionOverlayAlignment.RestartUtils = (int)ADOEditorUtility.RunStatus(positionFlag, ivk);
 					Handles.EndGUI();
 				}
 			}
@@ -3812,8 +4027,8 @@ internal sealed class IdentifierSerializerConnector
 			{
 				WriteIdentifier(first, "Gizmos Disabled", delegate
 				{
-					GUILayout.Label("Handles are hidden.", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
-					if (ExceptionSingletonStruct.PatchStatus("Enable Gizmos"))
+					GUILayout.Label("Handles are hidden.", ADOEditorUtility.MapRef().m_WriterSerializer);
+					if (ADOEditorUtility.PatchStatus("Enable Gizmos"))
 					{
 						first.drawGizmos = true;
 					}
@@ -3852,9 +4067,9 @@ internal sealed class IdentifierSerializerConnector
 				using (new GUILayout.HorizontalScope())
 				{
 					string text = string.Concat(((!m_PrototypeAuthentication) ? "" : "Multi-") + (_BaseAuthentication ? "Editing" : ((!m_RequestAuthentication) ? "Selecting" : "Copying")), _IssuerAuthentication ? ":" : (facadeAuthentication ? " Ignore Transforms" : ((!_ComposerAuthentication) ? " End Position" : " Colliders")));
-					ExceptionSingletonStruct.AssetStatus();
+					ADOEditorUtility.AssetStatus();
 					GUILayout.FlexibleSpace();
-					GUILayout.Label(text, ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+					GUILayout.Label(text, ADOEditorUtility.MapRef().m_WriterSerializer);
 					annotationAuthentication = GUILayoutUtility.GetLastRect();
 					if (_IssuerAuthentication)
 					{
@@ -3876,32 +4091,32 @@ internal sealed class IdentifierSerializerConnector
 			{
 				if (codeAuthentication)
 				{
-					GUILayout.Label("Press Enter or Escape to exit", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+					GUILayout.Label("Press Enter or Escape to exit", ADOEditorUtility.MapRef().m_WriterSerializer);
 					if (_IssuerAuthentication || callbackAuthentication)
 					{
 						if (m_PrototypeAuthentication)
 						{
-							GUILayout.Label("Hold Alt to edit the target physbone only", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
-							GUILayout.Label("Hold Shift to set the physbones to the same value", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+							GUILayout.Label("Hold Alt to edit the target physbone only", ADOEditorUtility.MapRef().m_WriterSerializer);
+							GUILayout.Label("Hold Shift to set the physbones to the same value", ADOEditorUtility.MapRef().m_WriterSerializer);
 						}
 						else if (_IssuerAuthentication)
 						{
-							GUILayout.Label("Hold Alt to edit the curve", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+							GUILayout.Label("Hold Alt to edit the curve", ADOEditorUtility.MapRef().m_WriterSerializer);
 						}
 					}
 				}
 			}, pol, ivk);
 		}
 
-		private void CustomizeSingleton(VRCPhysBone[] res, ExceptionSingletonStruct.StrategyAuthenticationFactory result)
+		private void CustomizeSingleton(VRCPhysBone[] res, ADOEditorUtility.BoneChainTree result)
 		{
 			_003C_003Ec__DisplayClass116_0 vis = default(_003C_003Ec__DisplayClass116_0);
 			vis._MessageAuthentication = res;
 			vis._PolicyAuthentication = result.definitionMethod;
-			ExceptionSingletonStruct.ClientRegDic[] array = result.m_TokenMethod.Where((ExceptionSingletonStruct.ClientRegDic b) => b.m_DescriptorMethod && !b.m_RepositoryMethod).ToArray();
-			foreach (ExceptionSingletonStruct.ClientRegDic clientRegDic in array)
+			ADOEditorUtility.BoneNode[] array = result.m_TokenMethod.Where((ADOEditorUtility.BoneNode b) => b.m_DescriptorMethod && !b.m_RepositoryMethod).ToArray();
+			foreach (ADOEditorUtility.BoneNode boneNode in array)
 			{
-				Transform parserMethod = clientRegDic.parserMethod;
+				Transform parserMethod = boneNode.parserMethod;
 				Vector3 vector = parserMethod.TransformPoint(vis._PolicyAuthentication.endpointPosition);
 				if (!vis._PolicyAuthentication.showGizmos || !(vis._PolicyAuthentication.boneOpacity >= 0.05f))
 				{
@@ -3925,14 +4140,14 @@ internal sealed class IdentifierSerializerConnector
 					direction = vector - parserMethod.position;
 					if (!(direction.magnitude >= 0.01f))
 					{
-						direction = ((clientRegDic.managerMethod == null) ? (-parserMethod.forward) : (vector - clientRegDic.managerMethod.parserMethod.position));
+						direction = ((boneNode.managerMethod == null) ? (-parserMethod.forward) : (vector - boneNode.managerMethod.parserMethod.position));
 					}
 				}
 				else
 				{
 					direction = initializerAuthentication;
 				}
-				Handles.color = ExceptionSingletonStruct._EventSerializer;
+				Handles.color = ADOEditorUtility._EventSerializer;
 				EditorGUI.BeginChangeCheck();
 				Vector3 vector4 = Handles.Slider(vector, direction);
 				if (EditorGUI.EndChangeCheck())
@@ -3999,10 +4214,10 @@ internal sealed class IdentifierSerializerConnector
 			}
 		}
 
-		private static void MapSingleton(ExceptionSingletonStruct.StrategyAuthenticationFactory def, AnimationCurve pred, Action<ExceptionSingletonStruct.ClientRegDic, float> proc, bool isinstance2 = false)
+		private static void MapSingleton(ADOEditorUtility.BoneChainTree def, AnimationCurve pred, Action<ADOEditorUtility.BoneNode, float> proc, bool isinstance2 = false)
 		{
 			bool flag = pred == null || pred.length == 0;
-			foreach (ExceptionSingletonStruct.ClientRegDic item in def.m_TokenMethod)
+			foreach (ADOEditorUtility.BoneNode item in def.m_TokenMethod)
 			{
 				float num = ((!flag) ? pred.Evaluate(item.RegisterProduct()) : 1f);
 				if (isinstance2)
@@ -4013,7 +4228,7 @@ internal sealed class IdentifierSerializerConnector
 			}
 		}
 
-		private static void FillSingleton(float last, ExceptionSingletonStruct.ClientRegDic col, SerializedProperty proc, SerializedProperty selection2, float ident3 = 0f, float item4 = float.PositiveInfinity)
+		private static void FillSingleton(float last, ADOEditorUtility.BoneNode col, SerializedProperty proc, SerializedProperty selection2, float ident3 = 0f, float item4 = float.PositiveInfinity)
 		{
 			AnimationCurve animationCurve = ((selection2.animationCurveValue != null && selection2.animationCurveValue.length >= 2) ? selection2.animationCurveValue : new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 1f)));
 			int num = -1;
@@ -4089,7 +4304,7 @@ internal sealed class IdentifierSerializerConnector
 			selection2.animationCurveValue = animationCurve;
 		}
 
-		private static void CancelSingleton(VRCPhysBone[] instance, ExceptionSingletonStruct.StrategyAuthenticationFactory result, AlgoAuthentication comp)
+		private static void CancelSingleton(VRCPhysBone[] instance, ADOEditorUtility.BoneChainTree result, AlgoAuthentication comp)
 		{
 			_003C_003Ec__DisplayClass120_0 CS_0024_003C_003E8__locals28 = new _003C_003Ec__DisplayClass120_0();
 			CS_0024_003C_003E8__locals28.exceptionAuthentication = instance;
@@ -4112,10 +4327,10 @@ internal sealed class IdentifierSerializerConnector
 			Color color2 = Handles.color;
 			Handles.color = color;
 			AnimationCurve animationCurveValue = CS_0024_003C_003E8__locals28.m_ErrorAuthentication.animationCurveValue;
-			List<List<ExceptionSingletonStruct.ClientRegDic>> threadMethod = result.threadMethod;
+			List<List<ADOEditorUtility.BoneNode>> threadMethod = result.threadMethod;
 			if (CS_0024_003C_003E8__locals28._ClassAuthentication.m_StrategyAuthentication == 1)
 			{
-				MapSingleton(result, animationCurveValue, delegate(ExceptionSingletonStruct.ClientRegDic b, float m)
+				MapSingleton(result, animationCurveValue, delegate(ADOEditorUtility.BoneNode b, float m)
 				{
 					if (m != 0f)
 					{
@@ -4123,13 +4338,13 @@ internal sealed class IdentifierSerializerConnector
 						Vector4 column = printerMethod.GetColumn(3);
 						float comp2 = CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.radius * m;
 						EditorGUI.BeginChangeCheck();
-						float num9 = ExceptionSingletonStruct.CreateStatus(printerMethod.rotation, column, comp2, !CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.showGizmos, RefImporterDescriptor.GetConsumer().handleSizeMultiplier);
+						float num9 = ADOEditorUtility.CreateStatus(printerMethod.rotation, column, comp2, !CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.showGizmos, RefImporterDescriptor.GetConsumer().handleSizeMultiplier);
 						if (EditorGUI.EndChangeCheck())
 						{
 							float delta = num9 / m - CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.radius;
 							CS_0024_003C_003E8__locals28.CalculateServer(b, delta);
 						}
-						ExceptionSingletonStruct.FindStatus(comp2.ToString("F2"), column);
+						ADOEditorUtility.FindStatus(comp2.ToString("F2"), column);
 					}
 				}, isinstance2: true);
 			}
@@ -4139,13 +4354,13 @@ internal sealed class IdentifierSerializerConnector
 				Vector3[][] array = new Vector3[threadMethod.Count][];
 				for (int num3 = 0; num3 < threadMethod.Count; num3++)
 				{
-					List<ExceptionSingletonStruct.ClientRegDic> list = threadMethod[num3];
+					List<ADOEditorUtility.BoneNode> list = threadMethod[num3];
 					array[num3] = new Vector3[list.Count];
 					Vector3 vector2 = Vector3.zero;
 					for (int num4 = 0; num4 < list.Count; num4++)
 					{
-						ExceptionSingletonStruct.ClientRegDic clientRegDic = list[num4];
-						Vector3 vector3 = ((num4 == 0) ? clientRegDic.LoginProduct() : vector2);
+						ADOEditorUtility.BoneNode boneNode = list[num4];
+						Vector3 vector3 = ((num4 == 0) ? boneNode.LoginProduct() : vector2);
 						if (num4 != list.Count - 1)
 						{
 							vector2 = list[num4 + 1].LoginProduct();
@@ -4156,12 +4371,12 @@ internal sealed class IdentifierSerializerConnector
 							vector = -vector;
 						}
 						Vector3 up = Vector3.up;
-						float num5 = clientRegDic.ForgotProduct(animationCurveValue);
+						float num5 = boneNode.ForgotProduct(animationCurveValue);
 						float num6 = CS_0024_003C_003E8__locals28.valueAuthentication.floatValue * num5;
 						Vector3 vector4 = vector3 + up * (num * (num6 / CS_0024_003C_003E8__locals28._TemplateAuthentication));
 						array[num3][num4] = vector4;
 						Handles.DrawDottedLine(vector3, vector4, 5f);
-						ExceptionSingletonStruct.FindStatus(num6.ToString("F2"), vector4, num2 + 0.01f);
+						ADOEditorUtility.FindStatus(num6.ToString("F2"), vector4, num2 + 0.01f);
 						Vector3 vector5 = Handles.Slider(vector4, up, num2, Handles.DotHandleCap, 0f);
 						if (!(vector4 == vector5))
 						{
@@ -4170,7 +4385,7 @@ internal sealed class IdentifierSerializerConnector
 							{
 								num7 *= -1f;
 							}
-							CS_0024_003C_003E8__locals28.CalculateServer(clientRegDic, num7);
+							CS_0024_003C_003E8__locals28.CalculateServer(boneNode, num7);
 						}
 					}
 				}
@@ -4214,14 +4429,14 @@ internal sealed class IdentifierSerializerConnector
 		{
 			if (m_TokenAuthentication == null)
 			{
-				m_TokenAuthentication = ExceptionSingletonStruct.CancelStatus("VRCPhysBone");
+				m_TokenAuthentication = ADOEditorUtility.CancelStatus("VRCPhysBone");
 			}
 			if (getterAuthentication == null)
 			{
-				getterAuthentication = ExceptionSingletonStruct.CancelStatus("VRCPhysBoneEditor");
+				getterAuthentication = ADOEditorUtility.CancelStatus("VRCPhysBoneEditor");
 			}
 			_CallbackIdentifier = !issetup;
-			ExceptionSingletonStruct.RevertStatus(m_TokenAuthentication, (!_CallbackIdentifier) ? getterAuthentication : typeof(ComposerIdentifier));
+			ADOEditorUtility.RevertStatus(m_TokenAuthentication, (!_CallbackIdentifier) ? getterAuthentication : typeof(ComposerIdentifier));
 		}
 
 		private static void MoveSingleton()
@@ -4337,12 +4552,12 @@ internal sealed class IdentifierSerializerConnector
 			if (!threadAuthentication)
 			{
 				threadAuthentication = true;
-				float[] array = new float[ExceptionSingletonStruct.m_VisitorSerializer.Count((ExceptionSingletonStruct.InstanceConsumerExporter p) => p._IndexerMethod)];
+				float[] array = new float[ADOEditorUtility.m_VisitorSerializer.Count((ADOEditorUtility.PhysBoneParameter p) => p._IndexerMethod)];
 				for (int num = 0; num < array.Length; num++)
 				{
 					array[num] = 1f / (float)array.Length;
 				}
-				m_CodeIdentifier = AdvisorMethod.SearchIterator(array);
+				m_CodeIdentifier = GUILayoutUtils.SearchIterator(array);
 			}
 		}
 
@@ -4486,7 +4701,7 @@ internal sealed class IdentifierSerializerConnector
 			bool flag = _ErrorIdentifier.enumValueIndex == 1;
 			int positionmap = (_ErrorIdentifier.hasMultipleDifferentValues ? 2 : _ErrorIdentifier.enumValueIndex);
 			using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, positionmap, ExceptionSingletonStruct.MapRef().m_SerializerMethod))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, positionmap, ADOEditorUtility.MapRef().m_SerializerMethod))
 			{
 				flag = GUILayout.Toggle(flag, "Advanced", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 			}
@@ -4512,9 +4727,9 @@ internal sealed class IdentifierSerializerConnector
 					EditorGUILayout.PropertyField(visitorAuthentication);
 				}
 				UpdateSingleton(invocationAuthentication, string.Empty);
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, RemoveAccount() && CountAccount() == algoAuthentication, ExceptionSingletonStruct._ObserverSerializer, ExceptionSingletonStruct._BroadcasterSerializer))
+				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, RemoveAccount() && CountAccount() == algoAuthentication, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
-					if (ExceptionSingletonStruct.CallStatus(ExceptionSingletonStruct.CustomizeRef().stateSerializer, ExceptionSingletonStruct.MapRef().methodMethod, GUILayout.ExpandWidth(expand: false)))
+					if (ADOEditorUtility.CallStatus(ADOEditorUtility.CustomizeRef().stateSerializer, ADOEditorUtility.MapRef().methodMethod, GUILayout.ExpandWidth(expand: false)))
 					{
 						LogoutSingleton(ID_key);
 					}
@@ -4536,7 +4751,7 @@ internal sealed class IdentifierSerializerConnector
 			{
 				EditorGUILayout.PropertyField(visitor);
 				UpdateSingleton(template, string.Empty);
-				return LoginConfiguration(countparam, ExceptionSingletonStruct.CustomizeRef().stateSerializer);
+				return LoginConfiguration(countparam, ADOEditorUtility.CustomizeRef().stateSerializer);
 			}
 		}
 
@@ -4549,9 +4764,9 @@ internal sealed class IdentifierSerializerConnector
 			EditorGUILayout.CurveField(i, Color.cyan, new Rect(0f, 0f, 1f, 1f), GUIContent.none, GUILayout.MaxWidth(85f));
 			if (i.animationCurveValue == null || i.animationCurveValue.length < 2)
 			{
-				GUI.Label(GUILayoutUtility.GetLastRect(), "///////////////////////////////", ExceptionSingletonStruct.MapRef().m_ProcSerializer);
+				GUI.Label(GUILayoutUtility.GetLastRect(), "///////////////////////////////", ADOEditorUtility.MapRef().m_ProcSerializer);
 			}
-			if (isproc && ExceptionSingletonStruct.CallStatus(ExceptionSingletonStruct.CustomizeRef().baseSerializer, GUI.skin.label, GUILayout.Width(14f)))
+			if (isproc && ADOEditorUtility.CallStatus(ADOEditorUtility.CustomizeRef().baseSerializer, GUI.skin.label, GUILayout.Width(14f)))
 			{
 				i.animationCurveValue = new AnimationCurve();
 			}
@@ -4641,11 +4856,11 @@ internal sealed class IdentifierSerializerConnector
 
 		public static Func<bool> identifierContext;
 
-		public static Func<UnityEngine.Object, ExceptionSingletonStruct.TaskMethod> m_AuthenticationContext;
+		public static Func<UnityEngine.Object, ADOEditorUtility.ShapeSnapshot> m_AuthenticationContext;
 
-		public static Func<UnityEngine.Object, ExceptionSingletonStruct.TaskMethod> contextContext;
+		public static Func<UnityEngine.Object, ADOEditorUtility.ShapeSnapshot> contextContext;
 
-		public static Func<UnityEngine.Object, ExceptionSingletonStruct.TaskMethod> _SerializerContext;
+		public static Func<UnityEngine.Object, ADOEditorUtility.ShapeSnapshot> _SerializerContext;
 
 		public static Func<bool> methodContext;
 
@@ -4767,8 +4982,6 @@ internal sealed class IdentifierSerializerConnector
 
 		public static Func<Task> strategyContext;
 
-		internal static _003C_003Ec InitAnnotation;
-
 		internal bool CollectServer()
 		{
 			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
@@ -4781,19 +4994,19 @@ internal sealed class IdentifierSerializerConnector
 			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
 		}
 
-		internal ExceptionSingletonStruct.TaskMethod InterruptServer(UnityEngine.Object t2)
+		internal ADOEditorUtility.ShapeSnapshot InterruptServer(UnityEngine.Object t2)
 		{
-			return new ExceptionSingletonStruct.TaskMethod((VRCPhysBoneCollider)t2);
+			return new ADOEditorUtility.ShapeSnapshot((VRCPhysBoneCollider)t2);
 		}
 
-		internal ExceptionSingletonStruct.TaskMethod ViewServer(UnityEngine.Object t2)
+		internal ADOEditorUtility.ShapeSnapshot ViewServer(UnityEngine.Object t2)
 		{
-			return new ExceptionSingletonStruct.TaskMethod((VRCContactSender)t2);
+			return new ADOEditorUtility.ShapeSnapshot((VRCContactSender)t2);
 		}
 
-		internal ExceptionSingletonStruct.TaskMethod PostServer(UnityEngine.Object t2)
+		internal ADOEditorUtility.ShapeSnapshot PostServer(UnityEngine.Object t2)
 		{
-			return new ExceptionSingletonStruct.TaskMethod((VRCContactReceiver)t2);
+			return new ADOEditorUtility.ShapeSnapshot((VRCContactReceiver)t2);
 		}
 
 		internal bool ListServer()
@@ -4832,9 +5045,9 @@ internal sealed class IdentifierSerializerConnector
 			{
 				bool ignorecaller;
 				string tooltip = ((!(ignorecaller = RefImporterDescriptor.GetConsumer().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ignorecaller, ExceptionSingletonStruct._ObserverSerializer, ExceptionSingletonStruct._BroadcasterSerializer))
+				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
-					if (ExceptionSingletonStruct.ListStatus(new GUIContent(ExceptionSingletonStruct.CustomizeRef().prototypeSerializer)
+					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
 					{
 						tooltip = tooltip
 					}))
@@ -4844,7 +5057,7 @@ internal sealed class IdentifierSerializerConnector
 					}
 				}
 				GUILayout.FlexibleSpace();
-				GUILayout.Label("Testing", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+				GUILayout.Label("Testing", ADOEditorUtility.MapRef().m_WriterSerializer);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
 				PublishIdentifier();
@@ -4854,25 +5067,25 @@ internal sealed class IdentifierSerializerConnector
 
 		internal void CheckServer()
 		{
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ExceptionSingletonStruct._BroadcasterSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
 			{
-				if (ExceptionSingletonStruct.PatchStatus("Stop Testing") || ExceptionSingletonStruct.QueryStatus() || ExceptionSingletonStruct.ComputeStatus())
+				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.QueryStatus() || ADOEditorUtility.ComputeStatus())
 				{
 					NewConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ExceptionSingletonStruct.m_RecordSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
 			{
-				if (ExceptionSingletonStruct.PatchStatus("Restart"))
+				if (ADOEditorUtility.PatchStatus("Restart"))
 				{
 					CompareConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, m_Stub, ExceptionSingletonStruct._ObserverSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
 			{
 				using (new EditorGUI.DisabledScope(!m_Stub))
 				{
-					if (!ExceptionSingletonStruct.PatchStatus("Apply All Changes"))
+					if (!ADOEditorUtility.PatchStatus("Apply All Changes"))
 					{
 						return;
 					}
@@ -4972,7 +5185,7 @@ internal sealed class IdentifierSerializerConnector
 
 		internal bool PopServer(string p)
 		{
-			return !ExceptionSingletonStruct._AlgoSerializer.Contains(p);
+			return !ADOEditorUtility._AlgoSerializer.Contains(p);
 		}
 
 		internal bool InstantiateServer(VRCAvatarDescriptor a)
@@ -5136,11 +5349,63 @@ internal sealed class IdentifierSerializerConnector
 				state = false;
 				QueryConfiguration(response, delegate
 				{
-					_Info = false;
-					m_Config = false;
+					int num = 2;
+					uint num4 = default(uint);
 					while (true)
 					{
-						_Worker = false;
+						int num2 = num;
+						while (true)
+						{
+							int num3;
+							switch (num2)
+							{
+							case 6:
+								AssetConfiguration(testkey: true);
+								num2 = 5;
+								continue;
+							case 2:
+								_Info = false;
+								num2 = 1;
+								continue;
+							case 4:
+								num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
+								goto IL_0058;
+							default:
+								goto IL_0076;
+							case 1:
+								break;
+							case 3:
+								goto IL_0097;
+							case 5:
+								return;
+								IL_0058:
+								switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
+								{
+								case 1u:
+									break;
+								case 2u:
+									goto IL_0076;
+								case 0u:
+									goto IL_0097;
+								default:
+									goto IL_009e;
+								}
+								goto case 6;
+								IL_009e:
+								num2 = 6;
+								continue;
+								IL_0097:
+								num3 = -1327699375;
+								goto IL_0058;
+								IL_0076:
+								_Worker = false;
+								num2 = 4;
+								continue;
+							}
+							break;
+						}
+						m_Config = false;
+						num = 3;
 					}
 				});
 			}, delegate(Exception exception)
@@ -5155,22 +5420,126 @@ internal sealed class IdentifierSerializerConnector
 			state = false;
 			QueryConfiguration(response, delegate
 			{
-				_Info = false;
-				m_Config = false;
+				int num = 2;
+				uint num4 = default(uint);
 				while (true)
 				{
-					_Worker = false;
+					int num2 = num;
+					while (true)
+					{
+						int num3;
+						switch (num2)
+						{
+						case 6:
+							AssetConfiguration(testkey: true);
+							num2 = 5;
+							continue;
+						case 2:
+							_Info = false;
+							num2 = 1;
+							continue;
+						case 4:
+							num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
+							goto IL_0058;
+						default:
+							goto IL_0076;
+						case 1:
+							break;
+						case 3:
+							goto IL_0097;
+						case 5:
+							return;
+							IL_0058:
+							switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
+							{
+							case 1u:
+								break;
+							case 2u:
+								goto IL_0076;
+							case 0u:
+								goto IL_0097;
+							default:
+								goto IL_009e;
+							}
+							goto case 6;
+							IL_009e:
+							num2 = 6;
+							continue;
+							IL_0097:
+							num3 = -1327699375;
+							goto IL_0058;
+							IL_0076:
+							_Worker = false;
+							num2 = 4;
+							continue;
+						}
+						break;
+					}
+					m_Config = false;
+					num = 3;
 				}
 			});
 		}
 
 		internal void RunWatcher()
 		{
-			_Info = false;
-			m_Config = false;
+			int num = 2;
+			uint num4 = default(uint);
 			while (true)
 			{
-				_Worker = false;
+				int num2 = num;
+				while (true)
+				{
+					int num3;
+					switch (num2)
+					{
+					case 6:
+						AssetConfiguration(testkey: true);
+						num2 = 5;
+						continue;
+					case 2:
+						_Info = false;
+						num2 = 1;
+						continue;
+					case 4:
+						num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
+						goto IL_0058;
+					default:
+						goto IL_0076;
+					case 1:
+						break;
+					case 3:
+						goto IL_0097;
+					case 5:
+						return;
+						IL_0058:
+						switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
+						{
+						case 1u:
+							break;
+						case 2u:
+							goto IL_0076;
+						case 0u:
+							goto IL_0097;
+						default:
+							goto IL_009e;
+						}
+						goto case 6;
+						IL_009e:
+						num2 = 6;
+						continue;
+						IL_0097:
+						num3 = -1327699375;
+						goto IL_0058;
+						IL_0076:
+						_Worker = false;
+						num2 = 4;
+						continue;
+					}
+					break;
+				}
+				m_Config = false;
+				num = 3;
 			}
 		}
 
@@ -5245,19 +5614,12 @@ internal sealed class IdentifierSerializerConnector
 			RefImporterDescriptor.GetConsumer().u_updateHidden.ConcatUtils(nores: true);
 			CalculateIdentifier();
 		}
-
-		internal static bool AwakeAnnotation()
-		{
-			return InitAnnotation == null;
-		}
 	}
 
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass132_0
 	{
 		public string itemContext;
-
-		internal static _003C_003Ec__DisplayClass132_0 CallAnnotation;
 
 		internal void EnableWatcher()
 		{
@@ -5326,11 +5688,6 @@ internal sealed class IdentifierSerializerConnector
 		{
 			SessionState.SetString(UpdateIdentifier(itemContext + key, ref _003C_003Ec__DisplayClass132_5_0), SearchIdentifier(value, ref _003C_003Ec__DisplayClass132_4_0));
 		}
-
-		internal static bool QueryAnnotation()
-		{
-			return CallAnnotation == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -5353,8 +5710,6 @@ internal sealed class IdentifierSerializerConnector
 		public ParamsIdentifier _SystemContext;
 
 		public _003C_003Ec__DisplayClass132_0 m_SetterContext;
-
-		private static _003C_003Ec__DisplayClass132_3 ReflectAnnotation;
 
 		internal void RateWatcher()
 		{
@@ -5424,11 +5779,6 @@ internal sealed class IdentifierSerializerConnector
 				UnityEngine.Debug.LogException(exception);
 			}
 		}
-
-		internal static bool CompareAnnotation()
-		{
-			return ReflectAnnotation == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -5471,8 +5821,6 @@ internal sealed class IdentifierSerializerConnector
 		public bool _ConfigContext;
 
 		public Action m_MockContext;
-
-		internal static _003C_003Ec__DisplayClass138_0 LogoutAnnotation;
 
 		internal string ConnectWatcher(string property, string[] extractedValues)
 		{
@@ -5725,11 +6073,6 @@ internal sealed class IdentifierSerializerConnector
 			RestartConfiguration();
 			m_MockContext();
 		}
-
-		internal static bool CreateAnnotation()
-		{
-			return LogoutAnnotation == null;
-		}
 	}
 
 	[StructLayout(LayoutKind.Auto)]
@@ -5744,16 +6087,9 @@ internal sealed class IdentifierSerializerConnector
 	{
 		public string[] m_AdvisorContext;
 
-		private static _003C_003Ec__DisplayClass138_3 ConnectAnnotation;
-
 		internal bool StopReg(string v)
 		{
 			return v == m_AdvisorContext[0];
-		}
-
-		internal static bool RegisterAnnotation()
-		{
-			return ConnectAnnotation == null;
 		}
 	}
 
@@ -5762,17 +6098,10 @@ internal sealed class IdentifierSerializerConnector
 	{
 		public ParamsIdentifier composerContext;
 
-		internal static _003C_003Ec__DisplayClass179_0 RateOrder;
-
 		internal void RestartReg()
 		{
 			m_Strategy = composerContext.PublishConsumer("transfer_email");
 			m_Config = true;
-		}
-
-		internal static bool NewOrder()
-		{
-			return RateOrder == null;
 		}
 	}
 
@@ -5786,7 +6115,7 @@ internal sealed class IdentifierSerializerConnector
 
 		public UnityEngine.Object[] m_ProcessorContext;
 
-		public ExceptionSingletonStruct.TaskMethod[] m_TokenizerContext;
+		public ADOEditorUtility.ShapeSnapshot[] m_TokenizerContext;
 
 		public int _ExceptionContext;
 
@@ -5836,8 +6165,6 @@ internal sealed class IdentifierSerializerConnector
 	{
 		public FieldInfo publisherContext;
 
-		private static _003C_003Ec__DisplayClass66_0 DefineOrder;
-
 		internal async void CancelProcess()
 		{
 			try
@@ -5873,11 +6200,6 @@ internal sealed class IdentifierSerializerConnector
 			{
 				UnityEngine.Debug.LogError(message);
 			}
-		}
-
-		internal static bool TestOrder()
-		{
-			return DefineOrder == null;
 		}
 	}
 
@@ -5967,7 +6289,7 @@ internal sealed class IdentifierSerializerConnector
 
 	private static bool task;
 
-	private static readonly ExceptionSingletonStruct.ExporterServerStub customer = new ExceptionSingletonStruct.ExporterServerStub();
+	private static readonly ADOEditorUtility.ExporterServerStub customer = new ADOEditorUtility.ExporterServerStub();
 
 	private static readonly int m_Database = GUIUtility.GetControlID("ADOTooltipDragControlID".GetHashCode(), FocusType.Passive);
 
@@ -6059,11 +6381,11 @@ internal sealed class IdentifierSerializerConnector
 
 	private static readonly AnimBool m_Connection = new AnimBool();
 
-	private static readonly IssuerSerializerAdapter m_Expression = new IssuerSerializerAdapter("0.11.1");
+	private static readonly SemVer m_Expression = new SemVer("0.11.1");
 
 	private static readonly (string, string)[] m_Decorator = new(string, string)[0];
 
-	private static IdentifierSerializerConnector DefineTokenizer;
+	private static LicenseManager DefineTokenizer;
 
 	private static void RunConfiguration(UnityEngine.Object res, SerializedProperty[] visitor, Action tag, bool isres2)
 	{
@@ -6101,9 +6423,9 @@ internal sealed class IdentifierSerializerConnector
 			}
 			if (isres2 && serializedProperty4 != null)
 			{
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, serializedProperty4.boolValue, ExceptionSingletonStruct.resolverSerializer, ExceptionSingletonStruct._ObserverSerializer))
+				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, serializedProperty4.boolValue, ADOEditorUtility.resolverSerializer, ADOEditorUtility._ObserverSerializer))
 				{
-					serializedProperty4.boolValue = ExceptionSingletonStruct.ChangeStatus(serializedProperty4.boolValue, (!serializedProperty4.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
+					serializedProperty4.boolValue = ADOEditorUtility.ChangeStatus(serializedProperty4.boolValue, (!serializedProperty4.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 				}
 			}
 		}
@@ -6149,7 +6471,7 @@ internal sealed class IdentifierSerializerConnector
 				}
 				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, filter, Color.green, Color.red))
 				{
-					filter = GUILayout.Toggle(filter, ExceptionSingletonStruct.CustomizeRef().stateSerializer, ExceptionSingletonStruct.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
+					filter = GUILayout.Toggle(filter, ADOEditorUtility.CustomizeRef().stateSerializer, ADOEditorUtility.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
 				}
 			}
 		}
@@ -6187,15 +6509,15 @@ internal sealed class IdentifierSerializerConnector
 		}
 		if (proc_Ptr == 0)
 		{
-			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ExceptionSingletonStruct.TaskMethod((VRCPhysBoneCollider)t2)).ToArray();
+			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCPhysBoneCollider)t2)).ToArray();
 		}
 		else if (proc_Ptr == 1)
 		{
-			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ExceptionSingletonStruct.TaskMethod((VRCContactSender)t2)).ToArray();
+			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCContactSender)t2)).ToArray();
 		}
 		else
 		{
-			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ExceptionSingletonStruct.TaskMethod((VRCContactReceiver)t2)).ToArray();
+			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCContactReceiver)t2)).ToArray();
 		}
 		Transform helperMethod = pool.m_TokenizerContext[pool._ExceptionContext].m_HelperMethod;
 		pool._ProducerContext = UpdateConfiguration(helperMethod);
@@ -6366,10 +6688,10 @@ internal sealed class IdentifierSerializerConnector
 				return;
 			}
 		}
-		ExceptionSingletonStruct.TaskMethod[] array = pool.m_TokenizerContext;
-		foreach (ExceptionSingletonStruct.TaskMethod taskMethod in array)
+		ADOEditorUtility.ShapeSnapshot[] array = pool.m_TokenizerContext;
+		foreach (ADOEditorUtility.ShapeSnapshot shapeSnapshot in array)
 		{
-			taskMethod.SortProduct();
+			shapeSnapshot.SortProduct();
 		}
 	}
 
@@ -6431,7 +6753,7 @@ internal sealed class IdentifierSerializerConnector
 		EditorApplication.playModeStateChanged += FillConfiguration;
 		if (importer != null)
 		{
-			ExceptionSingletonStruct.ConnectStatus(importer.transform, counterinstall: true, skipthird: true, readparam2: false, usecaller3: false, ismap4: false, bool_0: true);
+			ADOEditorUtility.ConnectStatus(importer.transform, counterinstall: true, skipthird: true, readparam2: false, usecaller3: false, ismap4: false, bool_0: true);
 		}
 		MoveIdentifier(init, delegate
 		{
@@ -6439,9 +6761,9 @@ internal sealed class IdentifierSerializerConnector
 			{
 				bool ignorecaller;
 				string tooltip = ((!(ignorecaller = RefImporterDescriptor.GetConsumer().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
-				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ignorecaller, ExceptionSingletonStruct._ObserverSerializer, ExceptionSingletonStruct._BroadcasterSerializer))
+				using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
-					if (ExceptionSingletonStruct.ListStatus(new GUIContent(ExceptionSingletonStruct.CustomizeRef().prototypeSerializer)
+					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
 					{
 						tooltip = tooltip
 					}))
@@ -6451,7 +6773,7 @@ internal sealed class IdentifierSerializerConnector
 					}
 				}
 				GUILayout.FlexibleSpace();
-				GUILayout.Label("Testing", ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+				GUILayout.Label("Testing", ADOEditorUtility.MapRef().m_WriterSerializer);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
 				PublishIdentifier();
@@ -6459,25 +6781,25 @@ internal sealed class IdentifierSerializerConnector
 			}
 		}, delegate
 		{
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ExceptionSingletonStruct._BroadcasterSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
 			{
-				if (ExceptionSingletonStruct.PatchStatus("Stop Testing") || ExceptionSingletonStruct.QueryStatus() || ExceptionSingletonStruct.ComputeStatus())
+				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.QueryStatus() || ADOEditorUtility.ComputeStatus())
 				{
 					NewConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ExceptionSingletonStruct.m_RecordSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
 			{
-				if (ExceptionSingletonStruct.PatchStatus("Restart"))
+				if (ADOEditorUtility.PatchStatus("Restart"))
 				{
 					CompareConfiguration();
 				}
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, m_Stub, ExceptionSingletonStruct._ObserverSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
 			{
 				using (new EditorGUI.DisabledScope(!m_Stub))
 				{
-					if (ExceptionSingletonStruct.PatchStatus("Apply All Changes"))
+					if (ADOEditorUtility.PatchStatus("Apply All Changes"))
 					{
 						foreach (UnityEngine.Object item in _Test.Keys.ToList())
 						{
@@ -6574,14 +6896,14 @@ internal sealed class IdentifierSerializerConnector
 		if (!m_Configuration)
 		{
 			m_Configuration = true;
-			_Identifier = ((IdentifierSerializerConnector)(object)typeof(PhysBoneManager)).ListAuthentication("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
-			context = ((IdentifierSerializerConnector)(object)typeof(PhysBoneManager)).ListAuthentication("OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Serializer = ((IdentifierSerializerConnector)(object)typeof(VRCPhysBoneBase)).ListAuthentication("Start", BindingFlags.Instance | BindingFlags.NonPublic);
-			method = ((IdentifierSerializerConnector)(object)typeof(VRCPhysBoneBase)).ListAuthentication("OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
-			utils = ((IdentifierSerializerConnector)(object)typeof(VRCPhysBoneBase)).ListAuthentication("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Page = ((IdentifierSerializerConnector)(object)typeof(VRCPhysBoneColliderBase)).ListAuthentication("Start", BindingFlags.Instance | BindingFlags.NonPublic);
-			property = ((IdentifierSerializerConnector)(object)typeof(VRCPhysBoneColliderBase)).ListAuthentication("OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Singleton = ((IdentifierSerializerConnector)(object)typeof(VRCPhysBoneColliderBase)).ListAuthentication("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
+			_Identifier = ListAuthentication(typeof(PhysBoneManager), "LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+			context = ListAuthentication(typeof(PhysBoneManager), "OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic);
+			_Serializer = ListAuthentication(typeof(VRCPhysBoneBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
+			method = ListAuthentication(typeof(VRCPhysBoneBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
+			utils = ListAuthentication(typeof(VRCPhysBoneBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
+			_Page = ListAuthentication(typeof(VRCPhysBoneColliderBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
+			property = ListAuthentication(typeof(VRCPhysBoneColliderBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
+			_Singleton = ListAuthentication(typeof(VRCPhysBoneColliderBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
 	}
 
@@ -6648,8 +6970,8 @@ internal sealed class IdentifierSerializerConnector
 		foreach (GameObject gameObject in server)
 		{
 			GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject, gameObject.transform.position, gameObject.transform.rotation, importer.transform);
-			Dictionary<VRCPhysBone, VRCPhysBone> dictionary = ExceptionSingletonStruct.SetupStatus(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind);
-			Dictionary<VRCPhysBoneColliderBase, VRCPhysBoneColliderBase> dictionary2 = ExceptionSingletonStruct.SetupStatus(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind2);
+			Dictionary<VRCPhysBone, VRCPhysBone> dictionary = ADOEditorUtility.SetupStatus(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind);
+			Dictionary<VRCPhysBoneColliderBase, VRCPhysBoneColliderBase> dictionary2 = ADOEditorUtility.SetupStatus(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind2);
 			VRCPhysBone component = reg.GetComponent<VRCPhysBone>();
 			if (component != null && dictionary.TryGetValue(component, out var value) && value != null)
 			{
@@ -6784,7 +7106,7 @@ internal sealed class IdentifierSerializerConnector
 			}
 		}
 		EditorGUI.PropertyField(rect, arrayElementAtIndex, GUIContent.none);
-		if (GUI.Button(position2, ExceptionSingletonStruct.CustomizeRef()._CreatorSerializer, ExceptionSingletonStruct.MapRef().utilsMethod))
+		if (GUI.Button(position2, ADOEditorUtility.CustomizeRef()._CreatorSerializer, ADOEditorUtility.MapRef().utilsMethod))
 		{
 			reference.DeleteArrayElementAtIndex(remove_FIELDAt);
 		}
@@ -6827,15 +7149,15 @@ internal sealed class IdentifierSerializerConnector
 
 	private static void LogoutConfiguration()
 	{
-		ExceptionSingletonStruct.ConcatVal(m_Predicate, ref _Observer, ref m_Broadcaster);
+		ADOEditorUtility.ConcatVal(m_Predicate, ref _Observer, ref m_Broadcaster);
 		if (!(UnityEngine.Object)(object)m_Predicate)
 		{
 			m_Registry = Array.Empty<string>();
 		}
 		SetupConfiguration();
 		m_Client = ((UnityEngine.Component)(object)m_Predicate).GetComponentsInChildren<VRCContactSender>().SelectMany((VRCContactSender cs) => cs.collisionTags).Concat(((UnityEngine.Component)(object)m_Predicate).GetComponentsInChildren<VRCContactReceiver>().SelectMany((VRCContactReceiver cr) => cr.collisionTags))
-			.Except(ExceptionSingletonStruct.m_RoleSerializer)
-			.Concat(ExceptionSingletonStruct.m_RoleSerializer.Select((string s) => "Default/" + s))
+			.Except(ADOEditorUtility.m_RoleSerializer)
+			.Concat(ADOEditorUtility.m_RoleSerializer.Select((string s) => "Default/" + s))
 			.Distinct()
 			.ToArray();
 	}
@@ -6848,7 +7170,7 @@ internal sealed class IdentifierSerializerConnector
 				where c
 				select c).SelectMany((UnityEditor.Animations.AnimatorController c) => c.parameters)
 			select p.name into p
-			where !ExceptionSingletonStruct._AlgoSerializer.Contains(p)
+			where !ADOEditorUtility._AlgoSerializer.Contains(p)
 			select p).Distinct().ToArray();
 	}
 
@@ -7038,15 +7360,15 @@ internal sealed class IdentifierSerializerConnector
 		using (new GUILayout.HorizontalScope())
 		{
 			EditorGUILayout.PropertyField(def);
-			return LoginConfiguration(testtoken, ExceptionSingletonStruct.CustomizeRef().stateSerializer);
+			return LoginConfiguration(testtoken, ADOEditorUtility.CustomizeRef().stateSerializer);
 		}
 	}
 
 	private static bool LoginConfiguration(bool movefirst, GUIContent vis)
 	{
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, movefirst, ExceptionSingletonStruct._ObserverSerializer, ExceptionSingletonStruct._BroadcasterSerializer))
+		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, movefirst, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 		{
-			movefirst = ExceptionSingletonStruct.PrepareStatus(movefirst, vis, ExceptionSingletonStruct.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
+			movefirst = ADOEditorUtility.PrepareStatus(movefirst, vis, ADOEditorUtility.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
 			return movefirst;
 		}
 	}
@@ -7058,9 +7380,9 @@ internal sealed class IdentifierSerializerConnector
 
 	private static void CheckConfiguration(GUIContent item, ref bool pol, params GUILayoutOption[] options)
 	{
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, pol, ExceptionSingletonStruct._ObserverSerializer, ExceptionSingletonStruct._BroadcasterSerializer))
+		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, pol, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 		{
-			pol = ExceptionSingletonStruct.PrepareStatus(pol, item, GUI.skin.button, options);
+			pol = ADOEditorUtility.PrepareStatus(pol, item, GUI.skin.button, options);
 		}
 	}
 
@@ -7074,9 +7396,9 @@ internal sealed class IdentifierSerializerConnector
 		int positionmap = (def.hasMultipleDifferentValues ? 2 : (def.boolValue ? 1 : 0));
 		using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
 		bool boolValue;
-		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, positionmap, ExceptionSingletonStruct.MapRef().m_SerializerMethod))
+		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, positionmap, ADOEditorUtility.MapRef().m_SerializerMethod))
 		{
-			boolValue = ExceptionSingletonStruct.PrepareStatus(def.boolValue, visitor, GUI.skin.button, options);
+			boolValue = ADOEditorUtility.PrepareStatus(def.boolValue, visitor, GUI.skin.button, options);
 		}
 		if (changeCheckScope.changed)
 		{
@@ -7104,11 +7426,11 @@ internal sealed class IdentifierSerializerConnector
 			bool flag2 = value.enumValueIndex == 1 || (value.enumValueIndex != 0 && serializedProperty2.boolValue);
 			EditorGUI.BeginChangeCheck();
 			EditorGUIUtility.labelWidth = 50f;
-			using (new InfoAccountCollection(value.hasMultipleDifferentValues || (value.enumValueIndex == 2 && serializedProperty.hasMultipleDifferentValues)))
+			using (new ShowMixedValueScope(value.hasMultipleDifferentValues || (value.enumValueIndex == 2 && serializedProperty.hasMultipleDifferentValues)))
 			{
 				flag = EditorGUILayout.Toggle("Self", flag);
 			}
-			using (new InfoAccountCollection(value.hasMultipleDifferentValues || (value.enumValueIndex == 2 && serializedProperty2.hasMultipleDifferentValues)))
+			using (new ShowMixedValueScope(value.hasMultipleDifferentValues || (value.enumValueIndex == 2 && serializedProperty2.hasMultipleDifferentValues)))
 			{
 				flag2 = EditorGUILayout.Toggle("Others", flag2);
 			}
@@ -7184,13 +7506,13 @@ internal sealed class IdentifierSerializerConnector
 	{
 		using (new GUILayout.HorizontalScope())
 		{
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, _Account, ExceptionSingletonStruct._BroadcasterSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, _Account, ADOEditorUtility._BroadcasterSerializer))
 			{
 				bool isPlaying;
 				string asset = ((isPlaying = Application.isPlaying) ? "Editor is in PlayMode" : ((!_Account) ? "Test PhysBones in Scene" : "Stop Testing - ESC / Enter"));
 				using (new EditorGUI.DisabledScope(isPlaying))
 				{
-					if (ExceptionSingletonStruct.PatchStatus(asset))
+					if (ADOEditorUtility.PatchStatus(asset))
 					{
 						NewConfiguration();
 					}
@@ -7200,26 +7522,26 @@ internal sealed class IdentifierSerializerConnector
 			{
 				return false;
 			}
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ExceptionSingletonStruct.m_RecordSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
 			{
-				if (ExceptionSingletonStruct.PatchStatus("Restart", GUILayout.ExpandWidth(expand: false)))
+				if (ADOEditorUtility.PatchStatus("Restart", GUILayout.ExpandWidth(expand: false)))
 				{
 					CompareConfiguration();
 				}
 			}
 			UnityEngine.Object[] array = param.Where((UnityEngine.Object b) => b != null && _Test.ContainsKey(b) && candidate[b] != null).ToArray();
 			bool flag = array.Any((UnityEngine.Object b) => _Test[b]);
-			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ExceptionSingletonStruct._ObserverSerializer))
+			using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer))
 			{
 				using (new EditorGUI.DisabledScope(!flag))
 				{
-					if (ExceptionSingletonStruct.PatchStatus("Apply Changes", GUILayout.ExpandWidth(expand: false)))
+					if (ADOEditorUtility.PatchStatus("Apply Changes", GUILayout.ExpandWidth(expand: false)))
 					{
 						UnityEngine.Object[] array2 = array;
 						foreach (UnityEngine.Object obj in array2)
 						{
 							UnityEngine.Object obj2 = candidate[obj];
-							using (new AuthenticationSerializerConnector(obj2, false, "rootTransform", "ignoreTransforms", "colliders"))
+							using (new ReflectionRestoreScope(obj2, false, "rootTransform", "ignoreTransforms", "colliders"))
 							{
 								Undo.RecordObject(obj2, "ADO - Apply Changes");
 								EditorUtility.CopySerialized(obj, obj2);
@@ -7283,7 +7605,7 @@ internal sealed class IdentifierSerializerConnector
 		EditorGUILayout.HelpBox("This is 'Avatar Dynamics Overhaul'. If you don't know what this is, you may have imported it from a package that shouldn't contain it. You can delete the editor script to revert back to original behaviour. Usually found in Packages > DreadScripts - Avatar Dynamics Overhaul. If this is the case, please notify the package creator about this.", MessageType.Warning);
 		using (new GUILayout.HorizontalScope())
 		{
-			if (ExceptionSingletonStruct.LoginStatus("Locate", EditorStyles.toolbarButton))
+			if (ADOEditorUtility.LoginStatus("Locate", EditorStyles.toolbarButton))
 			{
 				UnityEngine.Object obj = AssetDatabase.LoadMainAssetAtPath("Packages/com.dreadscripts.avatardynamicsoverhaul");
 				UnityEngine.Debug.Log("Found through path: " + obj);
@@ -7304,11 +7626,11 @@ internal sealed class IdentifierSerializerConnector
 					EditorUtility.DisplayDialog("Not Found", "Couldn't locate the script automatically.", "Ok");
 				}
 			}
-			if (ExceptionSingletonStruct.LoginStatus("Info", EditorStyles.toolbarButton))
+			if (ADOEditorUtility.LoginStatus("Info", EditorStyles.toolbarButton))
 			{
 				Application.OpenURL("https://linktr.ee/Dreadrith");
 			}
-			if (ExceptionSingletonStruct.LoginStatus("Switch Editor", EditorStyles.toolbarButton))
+			if (ADOEditorUtility.LoginStatus("Switch Editor", EditorStyles.toolbarButton))
 			{
 				ident();
 			}
@@ -7333,13 +7655,13 @@ internal sealed class IdentifierSerializerConnector
 		m_Invocation = EditorGUILayout.TextArea(m_Invocation, GUILayout.MinHeight(54f));
 		using (new GUILayout.HorizontalScope())
 		{
-			if (ExceptionSingletonStruct.LoginStatus("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+			if (ADOEditorUtility.LoginStatus("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 			{
 				m_Algo = false;
 			}
 			using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(m_Invocation) || role))
 			{
-				if (ExceptionSingletonStruct.LoginStatus("Send Feedback", EditorStyles.toolbarButton))
+				if (ADOEditorUtility.LoginStatus("Send Feedback", EditorStyles.toolbarButton))
 				{
 					if (m_Invocation.Length > 2000)
 					{
@@ -7382,7 +7704,7 @@ internal sealed class IdentifierSerializerConnector
 		}
 		if (flag && (bool)RefImporterDescriptor.GetConsumer().a_VerifyOnProjectLoad)
 		{
-			ExceptionSingletonStruct.AddProcess(delegate
+			ADOEditorUtility.AddProcess(delegate
 			{
 				AssetConfiguration(testkey: false);
 			});
@@ -7789,14 +8111,14 @@ internal sealed class IdentifierSerializerConnector
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(m_Printer) ? "Personal" : m_Printer), ExceptionSingletonStruct.MapRef().m_ProcSerializer);
+				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(m_Printer) ? "Personal" : m_Printer), ADOEditorUtility.MapRef().m_ProcSerializer);
 				GUILayout.FlexibleSpace();
 			}
 			if (!string.IsNullOrWhiteSpace(_Parser))
 			{
 				using (new GUILayout.HorizontalScope(GUI.skin.box))
 				{
-					GUILayout.Label("Authorized For: " + _Parser, ExceptionSingletonStruct.MapRef()._IdentifierMethod);
+					GUILayout.Label("Authorized For: " + _Parser, ADOEditorUtility.MapRef()._IdentifierMethod);
 					return;
 				}
 			}
@@ -7813,7 +8135,7 @@ internal sealed class IdentifierSerializerConnector
 			}
 			if ((object)first != null)
 			{
-				ExceptionSingletonStruct.getterSerializer.ConcatComparator(first, visitor);
+				ADOEditorUtility.getterSerializer.ConcatComparator(first, visitor);
 			}
 			ConcatIdentifier();
 			if (_Rule || _Struct)
@@ -7826,7 +8148,7 @@ internal sealed class IdentifierSerializerConnector
 				if (!_Worker || indexer)
 				{
 					InitConfiguration("Check for License", "This will check for whether you already have a license for your device");
-					if (ExceptionSingletonStruct.LoginStatus(indexer ? "Retry" : "Check", EditorStyles.toolbarButton))
+					if (ADOEditorUtility.LoginStatus(indexer ? "Retry" : "Check", EditorStyles.toolbarButton))
 					{
 						AssetConfiguration(testkey: true);
 					}
@@ -7842,7 +8164,7 @@ internal sealed class IdentifierSerializerConnector
 				flag &= flag2 && !m_Pool;
 				using (new EditorGUI.DisabledScope(!flag2))
 				{
-					if (ExceptionSingletonStruct.PatchStatus("Activate") || flag)
+					if (ADOEditorUtility.PatchStatus("Activate") || flag)
 					{
 						PopConfiguration();
 					}
@@ -7877,7 +8199,7 @@ internal sealed class IdentifierSerializerConnector
 			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(!Regex.IsMatch(descriptor, "[0-9]{6}") || state);
 			try
 			{
-				if (ExceptionSingletonStruct.PatchStatus(state ? "Transferring..." : "Transfer License"))
+				if (ADOEditorUtility.PatchStatus(state ? "Transferring..." : "Transfer License"))
 				{
 					SetIdentifier();
 				}
@@ -7916,7 +8238,7 @@ internal sealed class IdentifierSerializerConnector
 				asset = "Send Verification Code";
 				goto IL_00f3;
 				IL_00f3:
-				if (ExceptionSingletonStruct.PatchStatus((string)asset))
+				if (ADOEditorUtility.PatchStatus((string)asset))
 				{
 					VerifyIdentifier();
 					goto IL_00ee;
@@ -7932,14 +8254,14 @@ internal sealed class IdentifierSerializerConnector
 
 	private static void InitConfiguration(string var1, string ord)
 	{
-		using (new GUILayout.HorizontalScope(ExceptionSingletonStruct.MapRef()._MerchantSerializer))
+		using (new GUILayout.HorizontalScope(ADOEditorUtility.MapRef()._MerchantSerializer))
 		{
 			GUILayout.Label(string.Empty, GUILayout.Width(17f), GUILayout.Height(17f));
-			GUILayout.Label(var1, ExceptionSingletonStruct.MapRef().m_WriterSerializer);
-			GUILayout.Label(new GUIContent(ExceptionSingletonStruct.CustomizeRef()._ModelSerializer)
+			GUILayout.Label(var1, ADOEditorUtility.MapRef().m_WriterSerializer);
+			GUILayout.Label(new GUIContent(ADOEditorUtility.CustomizeRef()._ModelSerializer)
 			{
 				tooltip = ord
-			}, ExceptionSingletonStruct.MapRef().m_ProducerSerializer, GUILayout.Width(17f), GUILayout.Height(17f));
+			}, ADOEditorUtility.MapRef().m_ProducerSerializer, GUILayout.Width(17f), GUILayout.Height(17f));
 		}
 	}
 
@@ -7948,12 +8270,12 @@ internal sealed class IdentifierSerializerConnector
 		using (new GUILayout.HorizontalScope())
 		{
 			string text = "ADOverhaulLicenseField";
-			if (ExceptionSingletonStruct.ComputeStatus(text))
+			if (ADOEditorUtility.ComputeStatus(text))
 			{
 				GUI.FocusControl(null);
 				return true;
 			}
-			if (ExceptionSingletonStruct.QueryStatus(text))
+			if (ADOEditorUtility.QueryStatus(text))
 			{
 				GUI.FocusControl(null);
 			}
@@ -7965,7 +8287,7 @@ internal sealed class IdentifierSerializerConnector
 				}
 				GUI.SetNextControlName(text);
 				m_Repository = EditorGUILayout.TextField(string.Empty, m_Repository).Trim();
-				ExceptionSingletonStruct.AwakeStatus("License Key", string.IsNullOrWhiteSpace(m_Repository), 80f);
+				ADOEditorUtility.AwakeStatus("License Key", string.IsNullOrWhiteSpace(m_Repository), 80f);
 			}
 			if (!m_Pool && AddConfiguration() && !GetSerializer())
 			{
@@ -8012,7 +8334,7 @@ internal sealed class IdentifierSerializerConnector
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.FlexibleSpace();
-			if (ExceptionSingletonStruct.InterruptStatus(_Info ? "Activate License" : "Transfer License"))
+			if (ADOEditorUtility.InterruptStatus(_Info ? "Activate License" : "Transfer License"))
 			{
 				_Info = !_Info;
 			}
@@ -8071,7 +8393,7 @@ internal sealed class IdentifierSerializerConnector
 
 	private static void CalculateIdentifier()
 	{
-		ExceptionSingletonStruct.AddProcess(CalcIdentifier);
+		ADOEditorUtility.AddProcess(CalcIdentifier);
 	}
 
 	private static void CalcIdentifier()
@@ -8087,11 +8409,11 @@ internal sealed class IdentifierSerializerConnector
 	{
 		using (new TaskConsumerExporter(TaskConsumerExporter.ColoringType.BG, Color.clear))
 		{
-			if (GUILayout.Button(new GUIContent("Made By @Dreadrith ♡", "https://dreadrith.com/links"), ExceptionSingletonStruct.MapRef()._ContextMethod))
+			if (GUILayout.Button(new GUIContent("Made By @Dreadrith ♡", "https://dreadrith.com/links"), ADOEditorUtility.MapRef()._ContextMethod))
 			{
 				Application.OpenURL("https://dreadrith.com/links");
 			}
-			ExceptionSingletonStruct.PostStatus();
+			ADOEditorUtility.PostStatus();
 		}
 	}
 
@@ -8109,7 +8431,7 @@ internal sealed class IdentifierSerializerConnector
 	{
 		if (includefilter)
 		{
-			Color color = ((reg == CustomLogType.Regular) ? ExceptionSingletonStruct._ObserverSerializer : ((reg != CustomLogType.Warning) ? ExceptionSingletonStruct._BroadcasterSerializer : ExceptionSingletonStruct._EventSerializer));
+			Color color = ((reg == CustomLogType.Regular) ? ADOEditorUtility._ObserverSerializer : ((reg != CustomLogType.Warning) ? ADOEditorUtility._BroadcasterSerializer : ADOEditorUtility._EventSerializer));
 			string message = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">[ADOverhaul]</color> " + def.Replace("\\n", "\n");
 			switch (reg)
 			{
@@ -8131,7 +8453,7 @@ internal sealed class IdentifierSerializerConnector
 	{
 		if (removecust)
 		{
-			throw new Exception("<color=#" + ColorUtility.ToHtmlStringRGB(ExceptionSingletonStruct._BroadcasterSerializer) + ">[ADOverhaul]</color> " + task);
+			throw new Exception("<color=#" + ColorUtility.ToHtmlStringRGB(ADOEditorUtility._BroadcasterSerializer) + ">[ADOverhaul]</color> " + task);
 		}
 	}
 
@@ -8178,11 +8500,63 @@ internal sealed class IdentifierSerializerConnector
 				state = false;
 				QueryConfiguration(response, delegate
 				{
-					_Info = false;
-					m_Config = false;
+					int num = 2;
+					uint num4 = default(uint);
 					while (true)
 					{
-						_Worker = false;
+						int num2 = num;
+						while (true)
+						{
+							int num3;
+							switch (num2)
+							{
+							case 6:
+								AssetConfiguration(testkey: true);
+								num2 = 5;
+								continue;
+							case 2:
+								_Info = false;
+								num2 = 1;
+								continue;
+							case 4:
+								num3 = (int)((num4 * 424842727) ^ 0x1F82ED28);
+								goto IL_0058;
+							default:
+								goto IL_0076;
+							case 1:
+								break;
+							case 3:
+								goto IL_0097;
+							case 5:
+								return;
+								IL_0058:
+								switch ((num4 = (uint)(num3 ^ -448323036)) % 3)
+								{
+								case 1u:
+									break;
+								case 2u:
+									goto IL_0076;
+								case 0u:
+									goto IL_0097;
+								default:
+									goto IL_009e;
+								}
+								goto case 6;
+								IL_009e:
+								num2 = 6;
+								continue;
+								IL_0097:
+								num3 = -1327699375;
+								goto IL_0058;
+								IL_0076:
+								_Worker = false;
+								num2 = 4;
+								continue;
+							}
+							break;
+						}
+						m_Config = false;
+						num = 3;
 					}
 				});
 			}, delegate(Exception exception)
@@ -8205,15 +8579,15 @@ internal sealed class IdentifierSerializerConnector
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				if (ExceptionSingletonStruct.ListStatus(ExceptionSingletonStruct.CustomizeRef().m_SpecificationSerializer))
+				if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().m_SpecificationSerializer))
 				{
 					InvokeIdentifier(col);
 				}
-				if (!RefImporterDescriptor.GetConsumer().u_updateHidden && creator && ExceptionSingletonStruct.ListStatus(ExceptionSingletonStruct.CustomizeRef()._ParameterSerializer))
+				if (!RefImporterDescriptor.GetConsumer().u_updateHidden && creator && ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef()._ParameterSerializer))
 				{
 					dispatcher.target = !dispatcher.target;
 				}
-				GUILayout.Label("v" + m_Expression, ExceptionSingletonStruct.MapRef().m_AuthenticationMethod, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("v" + m_Expression, ADOEditorUtility.MapRef().m_AuthenticationMethod, GUILayout.ExpandWidth(expand: false));
 				if (first == null)
 				{
 					GUILayout.FlexibleSpace();
@@ -8325,7 +8699,7 @@ internal sealed class IdentifierSerializerConnector
 		{
 			if (isres)
 			{
-				ExceptionSingletonStruct.DisableStatus();
+				ADOEditorUtility.DisableStatus();
 			}
 			EditorGUILayout.HelpBox($"Version {RefImporterDescriptor.GetConsumer().u_updateVersion}\n--------------\n{RefImporterDescriptor.GetConsumer().u_updateMessage}", MessageType.Info);
 			bool flag = !string.IsNullOrWhiteSpace(RefImporterDescriptor.GetConsumer().u_updateLink);
@@ -8336,17 +8710,17 @@ internal sealed class IdentifierSerializerConnector
 				{
 					using (new EditorGUI.DisabledScope(m_Field))
 					{
-						if (ExceptionSingletonStruct.LoginStatus("Download Update", EditorStyles.toolbarButton))
+						if (ADOEditorUtility.LoginStatus("Download Update", EditorStyles.toolbarButton))
 						{
 							LogoutIdentifier();
 						}
 					}
 				}
-				if (flag2 && ExceptionSingletonStruct.CallStatus(new GUIContent("Open Changelog", RefImporterDescriptor.GetConsumer().u_updateChangelog), EditorStyles.toolbarButton))
+				if (flag2 && ADOEditorUtility.CallStatus(new GUIContent("Open Changelog", RefImporterDescriptor.GetConsumer().u_updateChangelog), EditorStyles.toolbarButton))
 				{
 					Application.OpenURL(RefImporterDescriptor.GetConsumer().u_updateChangelog);
 				}
-				if (ExceptionSingletonStruct.LoginStatus("Skip for Today", EditorStyles.toolbarButton))
+				if (ADOEditorUtility.LoginStatus("Skip for Today", EditorStyles.toolbarButton))
 				{
 					RefImporterDescriptor.GetConsumer().u_updateHidden.ConcatUtils(nores: true);
 				}
@@ -8364,27 +8738,27 @@ internal sealed class IdentifierSerializerConnector
 		{
 			Rect _CallbackContext = EditorGUILayout.GetControlRect(GUILayout.ExpandWidth(expand: true), GUILayout.Height(24f));
 			Rect setup = _CallbackContext;
-			GUI.Label(setup.SortStatus(24f, isres: true), ExceptionSingletonStruct.CustomizeRef()._ObjectSerializer);
-			GUI.Label(setup, "Announcement", ExceptionSingletonStruct.MapRef().m_ExceptionSerializer);
+			GUI.Label(setup.SortStatus(24f, isres: true), ADOEditorUtility.CustomizeRef()._ObjectSerializer);
+			GUI.Label(setup, "Announcement", ADOEditorUtility.MapRef().m_ExceptionSerializer);
 			m_Connection.InvokeStatus(delegate
 			{
 				_CallbackContext.height += 18f;
-				ExceptionSingletonStruct.DisableStatus();
+				ADOEditorUtility.DisableStatus();
 				EditorGUILayout.HelpBox(RefImporterDescriptor.GetConsumer().u_announcement, MessageType.Info);
 				using (new GUILayout.HorizontalScope())
 				{
-					if (!string.IsNullOrWhiteSpace(RefImporterDescriptor.GetConsumer().u_announcementLink) && ExceptionSingletonStruct.LoginStatus(RefImporterDescriptor.GetConsumer().u_announcementLinkName, EditorStyles.toolbarButton))
+					if (!string.IsNullOrWhiteSpace(RefImporterDescriptor.GetConsumer().u_announcementLink) && ADOEditorUtility.LoginStatus(RefImporterDescriptor.GetConsumer().u_announcementLinkName, EditorStyles.toolbarButton))
 					{
 						Application.OpenURL(RefImporterDescriptor.GetConsumer().u_announcementLink);
 					}
-					if (_Service && ExceptionSingletonStruct.LoginStatus("Hide", EditorStyles.toolbarButton))
+					if (_Service && ADOEditorUtility.LoginStatus("Hide", EditorStyles.toolbarButton))
 					{
 						RefImporterDescriptor.GetConsumer().u_announcementHidden.ConcatUtils(nores: true);
 						RefImporterDescriptor.GetConsumer().u_announcementHiddenDate.IncludeUtils(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 					}
 				}
 			}, CalcIdentifier);
-			if (ExceptionSingletonStruct.ReadStatus(_CallbackContext))
+			if (ADOEditorUtility.ReadStatus(_CallbackContext))
 			{
 				m_Connection.target = !m_Connection.target;
 			}
@@ -8396,7 +8770,7 @@ internal sealed class IdentifierSerializerConnector
 	{
 		if (!ConnectSerializer() || string.IsNullOrWhiteSpace(RefImporterDescriptor.GetConsumer().u_updateVersion.CreateUtils()))
 		{
-			ExceptionSingletonStruct.AddProcess(delegate
+			ADOEditorUtility.AddProcess(delegate
 			{
 				CancelIdentifier(isparam: false);
 			});
@@ -8493,7 +8867,7 @@ internal sealed class IdentifierSerializerConnector
 				RefImporterDescriptor.GetConsumer().u_announcementHidden.ConcatUtils(nores: false);
 			}
 		}
-		if (!(m_Expression < new IssuerSerializerAdapter(RefImporterDescriptor.GetConsumer().u_updateVersion.CreateUtils())))
+		if (!(m_Expression < new SemVer(RefImporterDescriptor.GetConsumer().u_updateVersion.CreateUtils())))
 		{
 			if (iskey)
 			{
@@ -8529,10 +8903,10 @@ internal sealed class IdentifierSerializerConnector
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(v, ExceptionSingletonStruct.MapRef()._ConsumerMethod);
+				GUILayout.Label(v, ADOEditorUtility.MapRef()._ConsumerMethod);
 				dir?.Invoke();
 			}
-			if (ExceptionSingletonStruct.ReadStatus())
+			if (ADOEditorUtility.ReadStatus())
 			{
 				caller.target = !caller.target;
 				if (!RefImporterDescriptor.GetConsumer().editorAnimatedFoldouts)
@@ -8550,9 +8924,9 @@ internal sealed class IdentifierSerializerConnector
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				ExceptionSingletonStruct.AssetStatus();
+				ADOEditorUtility.AssetStatus();
 				GUILayout.FlexibleSpace();
-				GUILayout.Label(reg, ExceptionSingletonStruct.MapRef().m_WriterSerializer);
+				GUILayout.Label(reg, ADOEditorUtility.MapRef().m_WriterSerializer);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
 				PublishIdentifier();
@@ -8564,30 +8938,30 @@ internal sealed class IdentifierSerializerConnector
 	internal static void MoveIdentifier(SceneView ident, Func<Rect> result, Action consumer, float pol2, float ivk3)
 	{
 		Rect ivk4 = ident.AddStatus();
-		ExceptionSingletonStruct.PositionFlag positionFlag = RefImporterDescriptor.GetConsumer().toolOverlayAlignment.RegisterUtils<ExceptionSingletonStruct.PositionFlag>();
+		ADOEditorUtility.PositionFlag positionFlag = RefImporterDescriptor.GetConsumer().toolOverlayAlignment.RegisterUtils<ADOEditorUtility.PositionFlag>();
 		bool flag;
-		using (new ExceptionSingletonStruct.SystemSerializer(ident, pol2, ivk3, positionFlag, customer))
+		using (new ADOEditorUtility.SystemSerializer(ident, pol2, ivk3, positionFlag, customer))
 		{
 			Rect rect = result();
-			ExceptionSingletonStruct.InsertStatus(rect, MouseCursor.Pan);
-			flag = ExceptionSingletonStruct.VisitStatus(rect, m_Database);
+			ADOEditorUtility.InsertStatus(rect, MouseCursor.Pan);
+			flag = ADOEditorUtility.VisitStatus(rect, m_Database);
 			if (consumer != null)
 			{
-				ExceptionSingletonStruct.DisableStatus(2, 0);
+				ADOEditorUtility.DisableStatus(2, 0);
 				consumer();
 			}
 		}
 		if (flag)
 		{
 			Handles.BeginGUI();
-			RefImporterDescriptor.GetConsumer().toolOverlayAlignment.RestartUtils = (int)ExceptionSingletonStruct.RunStatus(positionFlag, ivk4);
+			RefImporterDescriptor.GetConsumer().toolOverlayAlignment.RestartUtils = (int)ADOEditorUtility.RunStatus(positionFlag, ivk4);
 			Handles.EndGUI();
 		}
 	}
 
 	internal static void PublishIdentifier()
 	{
-		if (ExceptionSingletonStruct.ListStatus(ExceptionSingletonStruct.CustomizeRef().fieldSerializer))
+		if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
 		{
 			MessageUtilsAttribute.CreateSerializer();
 		}
@@ -8647,7 +9021,7 @@ internal sealed class IdentifierSerializerConnector
 	}
 
 	[CompilerGenerated]
-	internal static void PrintIdentifier(ExceptionSingletonStruct.TaskMethod key, out float counter, out float consumer, ref _003C_003Ec__DisplayClass46_2 var12)
+	internal static void PrintIdentifier(ADOEditorUtility.ShapeSnapshot key, out float counter, out float consumer, ref _003C_003Ec__DisplayClass46_2 var12)
 	{
 		counter = key.m_ReaderMethod + var12.m_WriterContext;
 		if (key._CandidateMethod != 0)
@@ -8987,9 +9361,9 @@ internal sealed class IdentifierSerializerConnector
 		return "0" + asset;
 	}
 
-	MethodInfo ListAuthentication(string setup, BindingFlags result)
+	static MethodInfo ListAuthentication(Type type_0, string setup, BindingFlags result)
 	{
-		return ((Type)this).GetMethod(setup, result);
+		return type_0.GetMethod(setup, result);
 	}
 
 	internal static bool TestTokenizer()

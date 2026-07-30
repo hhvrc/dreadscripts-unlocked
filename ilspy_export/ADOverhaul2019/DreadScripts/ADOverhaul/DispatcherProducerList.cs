@@ -26,8 +26,6 @@ internal class DispatcherProducerList
 
 		public static Func<ParameterInfo, Type> _WriterDic;
 
-		internal static _003C_003Ec PushDatabase;
-
 		internal string PostParser(FieldInfo f)
 		{
 			return f.Name;
@@ -51,11 +49,6 @@ internal class DispatcherProducerList
 		internal Type CreateParser(ParameterInfo p)
 		{
 			return p.ParameterType;
-		}
-
-		internal static bool InvokeDatabase()
-		{
-			return PushDatabase == null;
 		}
 	}
 

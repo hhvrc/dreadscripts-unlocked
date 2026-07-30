@@ -53,7 +53,7 @@ internal abstract class CustomUtilityWindow<T> : EditorWindow where T : CustomUt
 		}
 		using (new EditorGUI.DisabledScope(!m_DicPolicy))
 		{
-			if (ClassProperty.DisableQueue("Confirm"))
+			if (EditorUtils.DisableQueue("Confirm"))
 			{
 				DeleteHelper();
 			}

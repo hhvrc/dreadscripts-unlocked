@@ -146,7 +146,7 @@ internal sealed class WatcherPolicy
 
 	private void MoveHelper(Rect init)
 	{
-		if (_ExpressionPolicy != null && ClassProperty.DefineQueue(init))
+		if (_ExpressionPolicy != null && EditorUtils.DefineQueue(init))
 		{
 			_ExpressionPolicy();
 		}

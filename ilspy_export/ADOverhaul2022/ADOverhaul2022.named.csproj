@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>ADOverhaul2019</AssemblyName>
+    <AssemblyName>ADOverhaul2022</AssemblyName>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
@@ -12,10 +12,10 @@
     <RootNamespace />
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Task.Wrapper" />
-    <None Remove="Exception.Observer" />
-    <EmbeddedResource Include="Task.Wrapper" LogicalName="Task.Wrapper" />
-    <EmbeddedResource Include="Exception.Observer" LogicalName="Exception.Observer" />
+    <None Remove="Interceptor.Ref" />
+    <None Remove="Tests.Consumer" />
+    <EmbeddedResource Include="Interceptor.Ref" LogicalName="Interceptor.Ref" />
+    <EmbeddedResource Include="Tests.Consumer" LogicalName="Tests.Consumer" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="VRC.Dynamics">

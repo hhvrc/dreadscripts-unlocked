@@ -72,7 +72,7 @@ internal class ThreadTests<T>
 	{
 		if (m_PolicyTests.Count != 0 && pol_low >= 0 && pol_low < m_PolicyTests.Count)
 		{
-			if (!GUI.Button(new Rect(param.x + param.width - 28f, param.y + param.height / 2f - 8f, 32f, 18f), ClassProperty.DestroyError().m_DecoratorProcessor, ClassProperty.CalcError()._TemplateProcessor))
+			if (!GUI.Button(new Rect(param.x + param.width - 28f, param.y + param.height / 2f - 8f, 32f, 18f), EditorUtils.DestroyError().m_DecoratorProcessor, EditorUtils.CalcError()._TemplateProcessor))
 			{
 				Rect rect = new Rect(param);
 				rect.width = param.width - 29f;
@@ -121,7 +121,7 @@ internal class ThreadTests<T>
 		GUILayout.Label(def, EditorStyles.boldLabel);
 		if (!string.IsNullOrEmpty(vis))
 		{
-			GUILayout.Label(new GUIContent(ClassProperty.DestroyError()._AccountProcessor.CompareHelper(), vis), GUILayout.Width(14f), GUILayout.Height(18f));
+			GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._AccountProcessor.CompareHelper(), vis), GUILayout.Width(14f), GUILayout.Height(18f));
 		}
 	}
 
@@ -133,11 +133,11 @@ internal class ThreadTests<T>
 		}
 		if (rejectv)
 		{
-			m_QueueTests = ClassProperty.ExcludeQueue(m_QueueTests, (!m_QueueTests) ? ClassProperty.DestroyError().m_StatusProcessor : ClassProperty.DestroyError()._RefProcessor, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
+			m_QueueTests = EditorUtils.ExcludeQueue(m_QueueTests, (!m_QueueTests) ? EditorUtils.DestroyError().m_StatusProcessor : EditorUtils.DestroyError()._RefProcessor, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
 		}
 		using (new EditorGUI.DisabledScope(!m_QueueTests))
 		{
-			if (ClassProperty.RestartQueue(EditorGUIUtility.IconContent("d_ol_plus"), GUI.skin.label, GUILayout.Width(18f)))
+			if (EditorUtils.RestartQueue(EditorGUIUtility.IconContent("d_ol_plus"), GUI.skin.label, GUILayout.Width(18f)))
 			{
 				m_SerializerTests.onAddCallback(m_SerializerTests);
 			}

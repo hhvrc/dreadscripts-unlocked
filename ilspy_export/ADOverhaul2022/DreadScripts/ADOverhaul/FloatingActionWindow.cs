@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul;
 
-internal class ExpressionIdentifierService : EditorWindow
+internal class FloatingActionWindow : EditorWindow
 {
 	private float _AccountSerializer;
 
@@ -32,9 +32,9 @@ internal class ExpressionIdentifierService : EditorWindow
 
 	public bool _ComparatorSerializer = true;
 
-	private static ExpressionIdentifierService productSerializer;
+	private static FloatingActionWindow productSerializer;
 
-	internal static ExpressionIdentifierService LogoutOrder;
+	internal static FloatingActionWindow LogoutOrder;
 
 	private void CheckProcess(Action key, Action pol, float pool = 100f, float init2 = 100f, bool forcet3 = true, bool isvisitor4 = true, bool extractpol5 = true)
 	{
@@ -53,7 +53,7 @@ internal class ExpressionIdentifierService : EditorWindow
 		if (m_WatcherSerializer)
 		{
 			Event current = Event.current;
-			using (new IssuerMethod(ref m_ServerSerializer))
+			using (new ScrollViewScope(ref m_ServerSerializer))
 			{
 				EventType type = current.type;
 				int num = importerSerializer;
@@ -159,7 +159,7 @@ internal class ExpressionIdentifierService : EditorWindow
 			}
 			productSerializer = null;
 		}
-		productSerializer = ScriptableObject.CreateInstance<ExpressionIdentifierService>();
+		productSerializer = ScriptableObject.CreateInstance<FloatingActionWindow>();
 		productSerializer.CheckProcess(col, proc, item2, second3, isattr4, istask5, usecol6);
 		productSerializer.ShowUtility();
 		productSerializer.position = value;

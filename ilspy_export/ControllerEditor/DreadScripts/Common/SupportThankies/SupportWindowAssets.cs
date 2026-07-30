@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace DreadScripts.Common.SupportThankies;
 
-internal static class Exception
+internal static class SupportWindowAssets
 {
-	internal class Value
+	internal class TextureAssets
 	{
-		internal readonly Customer merchant = new Customer("https://i.imgur.com/iHszIY3.png", overridesecond: true, "ds-supporters-main");
+		internal readonly RemoteTexture merchant = new RemoteTexture("https://i.imgur.com/iHszIY3.png", overridesecond: true, "ds-supporters-main");
 
-		internal readonly Customer _Authentication = new Customer("https://i.imgur.com/FMv1R6A.png", overridesecond: true, "ds-supporters-kofi");
+		internal readonly RemoteTexture _Authentication = new RemoteTexture("https://i.imgur.com/FMv1R6A.png", overridesecond: true, "ds-supporters-kofi");
 
-		internal static Value StopIndexer;
+		internal static TextureAssets StopIndexer;
 
 		internal static bool ReflectIndexer()
 		{
@@ -20,7 +20,7 @@ internal static class Exception
 		}
 	}
 
-	internal class Reponse
+	internal class StyleAssets
 	{
 		internal readonly GUIStyle _Pool = new GUIStyle(EditorStyles.whiteLabel)
 		{
@@ -53,7 +53,7 @@ internal static class Exception
 			richText = true
 		};
 
-		private static Reponse RateIndexer;
+		private static StyleAssets RateIndexer;
 
 		internal static bool PostIndexer()
 		{
@@ -61,22 +61,22 @@ internal static class Exception
 		}
 	}
 
-	internal static Value _Object;
+	internal static TextureAssets _Object;
 
-	internal static Reponse m_Utils;
+	internal static StyleAssets m_Utils;
 
-	internal static Exception GetIndexer;
+	internal static SupportWindowAssets GetIndexer;
 
 	[SpecialName]
-	internal static Value ChangeWrapper()
+	internal static TextureAssets ChangeWrapper()
 	{
-		return _Object ?? (_Object = new Value());
+		return _Object ?? (_Object = new TextureAssets());
 	}
 
 	[SpecialName]
-	internal static Reponse RegisterWrapper()
+	internal static StyleAssets RegisterWrapper()
 	{
-		return m_Utils ?? (m_Utils = new Reponse());
+		return m_Utils ?? (m_Utils = new StyleAssets());
 	}
 
 	internal static bool VisitIndexer()

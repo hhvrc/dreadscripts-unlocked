@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace DreadScripts.ControllerEditor;
 
-internal class WriterPolicy
+internal class TemporaryTransform
 {
 	private readonly GameObject paramsPolicy;
 
 	private readonly Transform m_ListenerPolicy;
 
-	internal static WriterPolicy PrintDecorator;
+	internal static TemporaryTransform PrintDecorator;
 
-	internal WriterPolicy(Transform info)
+	internal TemporaryTransform(Transform info)
 		: this(info.position, info.rotation, info.localScale, info.parent)
 	{
 	}
 
-	internal WriterPolicy(Vector3? asset, Quaternion? vis, Vector3? rule, Transform first2)
+	internal TemporaryTransform(Vector3? asset, Quaternion? vis, Vector3? rule, Transform first2)
 	{
 		paramsPolicy = new GameObject("Mirror Transform")
 		{
@@ -36,7 +36,7 @@ internal class WriterPolicy
 		}
 	}
 
-	public static implicit operator Transform(WriterPolicy instance)
+	public static implicit operator Transform(TemporaryTransform instance)
 	{
 		return instance.m_ListenerPolicy;
 	}

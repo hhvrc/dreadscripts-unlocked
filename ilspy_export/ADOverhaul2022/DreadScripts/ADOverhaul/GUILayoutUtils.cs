@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul;
 
-internal static class AdvisorMethod
+internal static class GUILayoutUtils
 {
 	private static readonly Color exporterMethod = new Color(0.33f, 0.33f, 0.33f);
 
@@ -20,7 +20,7 @@ internal static class AdvisorMethod
 
 	private static MethodInfo _DecoratorMethod;
 
-	internal static AdvisorMethod ValidateState;
+	internal static GUILayoutUtils ValidateState;
 
 	[SpecialName]
 	public static Type RemoveIterator()
@@ -65,7 +65,7 @@ internal static class AdvisorMethod
 	{
 		if (_DecoratorMethod == null)
 		{
-			_DecoratorMethod = ((AdvisorMethod)(object)typeof(GUILayoutUtility)).VisitIterator("EndLayoutGroup", BindingFlags.Static | BindingFlags.NonPublic);
+			_DecoratorMethod = VisitIterator(typeof(GUILayoutUtility), "EndLayoutGroup", BindingFlags.Static | BindingFlags.NonPublic);
 		}
 		return _DecoratorMethod;
 	}
@@ -159,9 +159,9 @@ internal static class AdvisorMethod
 		GUILayout.Space(dic * 3f);
 	}
 
-	MethodInfo VisitIterator(string def, BindingFlags pol)
+	static MethodInfo VisitIterator(Type type_0, string def, BindingFlags pol)
 	{
-		return ((Type)this).GetMethod(def, pol);
+		return type_0.GetMethod(def, pol);
 	}
 
 	internal static bool EnableState()

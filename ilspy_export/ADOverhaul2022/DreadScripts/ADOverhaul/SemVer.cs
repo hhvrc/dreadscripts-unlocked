@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class IssuerSerializerAdapter
+internal sealed class SemVer
 {
 	[CompilerGenerated]
 	private readonly int m_ConsumerSerializer;
@@ -13,7 +13,7 @@ internal sealed class IssuerSerializerAdapter
 	[CompilerGenerated]
 	private readonly int _PageSerializer;
 
-	private static IssuerSerializerAdapter PatchOrder;
+	private static SemVer PatchOrder;
 
 	[SpecialName]
 	[CompilerGenerated]
@@ -36,14 +36,14 @@ internal sealed class IssuerSerializerAdapter
 		return _PageSerializer;
 	}
 
-	internal IssuerSerializerAdapter(int item, int startcounter, int indexOfrole)
+	internal SemVer(int item, int startcounter, int indexOfrole)
 	{
 		m_ConsumerSerializer = item;
 		utilsSerializer = startcounter;
 		_PageSerializer = indexOfrole;
 	}
 
-	internal IssuerSerializerAdapter(string spec)
+	internal SemVer(string spec)
 	{
 		string[] array = spec.Split(new char[1] { '.' });
 		m_ConsumerSerializer = int.Parse(array[0]);
@@ -51,7 +51,7 @@ internal sealed class IssuerSerializerAdapter
 		_PageSerializer = int.Parse(array[2]);
 	}
 
-	public static bool operator >(IssuerSerializerAdapter first, IssuerSerializerAdapter visitor)
+	public static bool operator >(SemVer first, SemVer visitor)
 	{
 		if (first.PrintProcess() <= visitor.PrintProcess())
 		{
@@ -72,22 +72,22 @@ internal sealed class IssuerSerializerAdapter
 		return true;
 	}
 
-	public static bool operator <(IssuerSerializerAdapter spec, IssuerSerializerAdapter attr)
+	public static bool operator <(SemVer spec, SemVer attr)
 	{
 		return attr > spec;
 	}
 
-	public static bool operator >=(IssuerSerializerAdapter item, IssuerSerializerAdapter caller)
+	public static bool operator >=(SemVer item, SemVer caller)
 	{
 		return !(item < caller);
 	}
 
-	public static bool operator <=(IssuerSerializerAdapter last, IssuerSerializerAdapter reg)
+	public static bool operator <=(SemVer last, SemVer reg)
 	{
 		return !(last > reg);
 	}
 
-	public static bool operator ==(IssuerSerializerAdapter ident, IssuerSerializerAdapter second)
+	public static bool operator ==(SemVer ident, SemVer second)
 	{
 		if (ident.PrintProcess() != second.PrintProcess() || ident.ViewProcess() != second.ViewProcess())
 		{
@@ -96,12 +96,12 @@ internal sealed class IssuerSerializerAdapter
 		return ident.ListProcess() == second.ListProcess();
 	}
 
-	public static bool operator !=(IssuerSerializerAdapter value, IssuerSerializerAdapter attr)
+	public static bool operator !=(SemVer value, SemVer attr)
 	{
 		return !(value == attr);
 	}
 
-	private bool MoveProcess(IssuerSerializerAdapter instance)
+	private bool MoveProcess(SemVer instance)
 	{
 		return this == instance;
 	}
@@ -112,11 +112,11 @@ internal sealed class IssuerSerializerAdapter
 		{
 			return true;
 		}
-		if (!(init is IssuerSerializerAdapter issuerSerializerAdapter))
+		if (!(init is SemVer semVer))
 		{
 			return false;
 		}
-		return this == issuerSerializerAdapter;
+		return this == semVer;
 	}
 
 	public override int GetHashCode()
