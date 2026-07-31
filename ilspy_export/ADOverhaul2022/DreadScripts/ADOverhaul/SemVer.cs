@@ -5,63 +5,63 @@ namespace DreadScripts.ADOverhaul;
 internal sealed class SemVer
 {
 	[CompilerGenerated]
-	private readonly int m_ConsumerSerializer;
+	private readonly int major;
 
 	[CompilerGenerated]
-	private readonly int utilsSerializer;
+	private readonly int minor;
 
 	[CompilerGenerated]
-	private readonly int _PageSerializer;
+	private readonly int patch;
 
 	[SpecialName]
 	[CompilerGenerated]
-	internal int PrintProcess()
+	internal int Major()
 	{
-		return m_ConsumerSerializer;
+		return major;
 	}
 
 	[SpecialName]
 	[CompilerGenerated]
-	internal int ViewProcess()
+	internal int Minor()
 	{
-		return utilsSerializer;
+		return minor;
 	}
 
 	[SpecialName]
 	[CompilerGenerated]
-	internal int ListProcess()
+	internal int Patch()
 	{
-		return _PageSerializer;
+		return patch;
 	}
 
 	internal SemVer(int item, int startcounter, int indexOfrole)
 	{
-		m_ConsumerSerializer = item;
-		utilsSerializer = startcounter;
-		_PageSerializer = indexOfrole;
+		major = item;
+		minor = startcounter;
+		patch = indexOfrole;
 	}
 
 	internal SemVer(string spec)
 	{
 		string[] array = spec.Split(new char[1] { '.' });
-		m_ConsumerSerializer = int.Parse(array[0]);
-		utilsSerializer = int.Parse(array[1]);
-		_PageSerializer = int.Parse(array[2]);
+		major = int.Parse(array[0]);
+		minor = int.Parse(array[1]);
+		patch = int.Parse(array[2]);
 	}
 
 	public static bool operator >(SemVer first, SemVer visitor)
 	{
-		if (first.PrintProcess() <= visitor.PrintProcess())
+		if (first.Major() <= visitor.Major())
 		{
-			if (first.PrintProcess() >= visitor.PrintProcess())
+			if (first.Major() >= visitor.Major())
 			{
-				if (first.ViewProcess() <= visitor.ViewProcess())
+				if (first.Minor() <= visitor.Minor())
 				{
-					if (first.ViewProcess() < visitor.ViewProcess())
+					if (first.Minor() < visitor.Minor())
 					{
 						return false;
 					}
-					return first.ListProcess() > visitor.ListProcess();
+					return first.Patch() > visitor.Patch();
 				}
 				return true;
 			}
@@ -87,11 +87,11 @@ internal sealed class SemVer
 
 	public static bool operator ==(SemVer ident, SemVer second)
 	{
-		if (ident.PrintProcess() != second.PrintProcess() || ident.ViewProcess() != second.ViewProcess())
+		if (ident.Major() != second.Major() || ident.Minor() != second.Minor())
 		{
 			return false;
 		}
-		return ident.ListProcess() == second.ListProcess();
+		return ident.Patch() == second.Patch();
 	}
 
 	public static bool operator !=(SemVer value, SemVer attr)
@@ -99,7 +99,7 @@ internal sealed class SemVer
 		return !(value == attr);
 	}
 
-	private bool MoveProcess(SemVer instance)
+	private bool Equals(SemVer instance)
 	{
 		return this == instance;
 	}
@@ -119,11 +119,11 @@ internal sealed class SemVer
 
 	public override int GetHashCode()
 	{
-		return (((PrintProcess() * 397) ^ ViewProcess()) * 397) ^ ListProcess();
+		return (((Major() * 397) ^ Minor()) * 397) ^ Patch();
 	}
 
 	public override string ToString()
 	{
-		return $"{PrintProcess()}.{ViewProcess()}.{ListProcess()}";
+		return $"{Major()}.{Minor()}.{Patch()}";
 	}
 }

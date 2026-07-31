@@ -4,31 +4,31 @@ namespace DreadScripts.ControllerEditor;
 
 internal struct EventWrapper
 {
-	internal readonly Event m_RegistryPolicy;
+	internal readonly Event currentEvent;
 
-	internal bool m_TagPolicy;
+	internal bool isValid;
 
 	internal static object NewDecorator;
 
-	internal void DefineHelper()
+	internal void Use()
 	{
-		m_RegistryPolicy.Use();
+		currentEvent.Use();
 	}
 
 	internal EventWrapper(Event init)
 	{
-		m_RegistryPolicy = init;
-		m_TagPolicy = true;
+		currentEvent = init;
+		isValid = true;
 	}
 
 	public static implicit operator Event(EventWrapper info)
 	{
-		return info.m_RegistryPolicy;
+		return info.currentEvent;
 	}
 
 	public static implicit operator bool(EventWrapper i)
 	{
-		return i.m_TagPolicy;
+		return i.isValid;
 	}
 
 	internal static bool LoginDecorator()

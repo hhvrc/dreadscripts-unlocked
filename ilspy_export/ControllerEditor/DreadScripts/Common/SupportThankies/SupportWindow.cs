@@ -57,7 +57,7 @@ internal class SupportWindow : EditorWindow
 	{
 		Rect controlRect = EditorGUILayout.GetControlRect(false, 16f, GUIStyle.none, GUILayout.Width(16f));
 		controlRect.x -= 2f;
-		SupportWindowAssets.ChangeWrapper().merchant.ResetWrapper(controlRect);
+		SupportWindowAssets.GetTextures().merchant.ResetWrapper(controlRect);
 		if (EditorGuiUtils.PushWrapper(controlRect))
 		{
 			VerifyWrapper();
@@ -66,7 +66,7 @@ internal class SupportWindow : EditorWindow
 
 	public static void VerifyWrapper()
 	{
-		EditorWindow.GetWindow<SupportWindow>(SupporterStrings._Role.DestroyWrapper()).titleContent.image = SupportWindowAssets.ChangeWrapper().merchant.ValidateWrapper();
+		EditorWindow.GetWindow<SupportWindow>(SupporterStrings._Role.DestroyWrapper()).titleContent.image = SupportWindowAssets.GetTextures().merchant.ValidateWrapper();
 	}
 
 	public void OnGUI()
@@ -77,11 +77,11 @@ internal class SupportWindow : EditorWindow
 		}
 		if (m_Advisor)
 		{
-			GUILayout.Label("Loading supporters...", SupportWindowAssets.RegisterWrapper()._Pool);
+			GUILayout.Label("Loading supporters...", SupportWindowAssets.GetStyles()._Pool);
 		}
 		if (m_Indexer)
 		{
-			GUILayout.Label("Failed to load supporters.", SupportWindowAssets.RegisterWrapper()._Pool);
+			GUILayout.Label("Failed to load supporters.", SupportWindowAssets.GetStyles()._Pool);
 			if (!string.IsNullOrWhiteSpace(issuer))
 			{
 				EditorGUILayout.HelpBox(issuer, MessageType.Error);
@@ -95,7 +95,7 @@ internal class SupportWindow : EditorWindow
 		{
 			using (new GUILayout.HorizontalScope("in bigtitle"))
 			{
-				GUILayout.Label(m_Prototype, SupportWindowAssets.RegisterWrapper()._Pool);
+				GUILayout.Label(m_Prototype, SupportWindowAssets.GetStyles()._Pool);
 			}
 			FillWrapper();
 		}
@@ -151,7 +151,7 @@ internal class SupportWindow : EditorWindow
 						{
 							if (num4 < rule.Length)
 							{
-								rule[num4++].DefineWrapper(v);
+								rule[num4++].DrawCard(v);
 							}
 							else
 							{
@@ -177,7 +177,7 @@ internal class SupportWindow : EditorWindow
 		Rect rect = GUILayoutUtility.GetRect(100f, 200f, 16f, 32f);
 		Rect setup = EditorGuiUtils.CalcWrapper(rect, 6.25f);
 		GUI.DrawTexture(rect, EditorGuiUtils.CloneWrapper(Color.white), ScaleMode.StretchToFill, alphaBlend: false, 0f, new Color(0.075f, 0.765f, 1f), 0f, 8f);
-		SupportWindowAssets.ChangeWrapper()._Authentication.ResetWrapper(setup);
+		SupportWindowAssets.GetTextures()._Authentication.ResetWrapper(setup);
 		if (EditorGuiUtils.PushWrapper(rect))
 		{
 			ForgotWrapper();
@@ -205,7 +205,7 @@ internal class SupportWindow : EditorWindow
 			request.timeout = 10;
 			await awb.Process();
 			m_Advisor = false;
-			if (awb.OrderWrapper())
+			if (awb.IsError())
 			{
 				m_Indexer = true;
 				issuer = request.error;

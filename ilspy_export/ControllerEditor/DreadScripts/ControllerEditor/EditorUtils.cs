@@ -533,11 +533,11 @@ internal static class EditorUtils
 	{
 		private struct ResizeZone
 		{
-			internal PositionFlag _SetterObserver;
+			internal PositionFlag position;
 
-			internal Rect connectionObserver;
+			internal Rect rect;
 
-			internal int contextObserver;
+			internal int index;
 		}
 
 		private int m_ObserverObserver;
@@ -657,51 +657,51 @@ internal static class EditorUtils
 			{
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.Left,
-					contextObserver = 0,
-					connectionObserver = new Rect(info.x - param2, info.y + param2, num, info.height - num)
+					position = PositionFlag.Left,
+					index = 0,
+					rect = new Rect(info.x - param2, info.y + param2, num, info.height - num)
 				},
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.TopLeft,
-					contextObserver = 1,
-					connectionObserver = new Rect(info.x - param2, info.y - param2, num, num)
+					position = PositionFlag.TopLeft,
+					index = 1,
+					rect = new Rect(info.x - param2, info.y - param2, num, num)
 				},
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.Top,
-					contextObserver = 2,
-					connectionObserver = new Rect(info.x + param2, info.y - param2, info.width - num, num)
+					position = PositionFlag.Top,
+					index = 2,
+					rect = new Rect(info.x + param2, info.y - param2, info.width - num, num)
 				},
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.TopRight,
-					contextObserver = 3,
-					connectionObserver = new Rect(info.x + info.width - param2, info.y - param2, num, num)
+					position = PositionFlag.TopRight,
+					index = 3,
+					rect = new Rect(info.x + info.width - param2, info.y - param2, num, num)
 				},
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.Right,
-					contextObserver = 4,
-					connectionObserver = new Rect(info.x + info.width - param2, info.y + param2, num, info.height - num)
+					position = PositionFlag.Right,
+					index = 4,
+					rect = new Rect(info.x + info.width - param2, info.y + param2, num, info.height - num)
 				},
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.BottomRight,
-					contextObserver = 5,
-					connectionObserver = new Rect(info.x + info.width - param2, info.y + info.height - param2, num, num)
+					position = PositionFlag.BottomRight,
+					index = 5,
+					rect = new Rect(info.x + info.width - param2, info.y + info.height - param2, num, num)
 				},
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.Bottom,
-					contextObserver = 6,
-					connectionObserver = new Rect(info.x + param2, info.y + info.height - param2, info.width - num, num)
+					position = PositionFlag.Bottom,
+					index = 6,
+					rect = new Rect(info.x + param2, info.y + info.height - param2, info.width - num, num)
 				},
 				new ResizeZone
 				{
-					_SetterObserver = PositionFlag.BottomLeft,
-					contextObserver = 7,
-					connectionObserver = new Rect(info.x - param2, info.y + info.height - param2, num, num)
+					position = PositionFlag.BottomLeft,
+					index = 7,
+					rect = new Rect(info.x - param2, info.y + info.height - param2, num, num)
 				}
 			};
 			bool flag = current.button == 0;
@@ -709,28 +709,28 @@ internal static class EditorUtils
 			for (int i = 0; i < array2.Length; i++)
 			{
 				ResizeZone resizeZone = array2[i];
-				if ((resizeZone._SetterObserver & pol) < resizeZone._SetterObserver)
+				if ((resizeZone.position & pol) < resizeZone.position)
 				{
 					continue;
 				}
-				PositionFlag setterObserver = resizeZone._SetterObserver;
+				PositionFlag position = resizeZone.position;
 				MouseCursor pred;
-				if (setterObserver > PositionFlag.Bottom)
+				if (position > PositionFlag.Bottom)
 				{
-					if (setterObserver > PositionFlag.TopLeft)
+					if (position > PositionFlag.TopLeft)
 					{
-						if (setterObserver == PositionFlag.BottomRight)
+						if (position == PositionFlag.BottomRight)
 						{
 							goto IL_05d0;
 						}
-						if (setterObserver != PositionFlag.BottomLeft)
+						if (position != PositionFlag.BottomLeft)
 						{
 							goto IL_0523;
 						}
 					}
-					else if (setterObserver != PositionFlag.TopRight)
+					else if (position != PositionFlag.TopRight)
 					{
-						if (setterObserver != PositionFlag.TopLeft)
+						if (position != PositionFlag.TopLeft)
 						{
 							goto IL_0523;
 						}
@@ -739,7 +739,7 @@ internal static class EditorUtils
 					pred = MouseCursor.ResizeUpRight;
 					goto IL_0526;
 				}
-				switch (setterObserver)
+				switch (position)
 				{
 				case PositionFlag.Middle:
 				case PositionFlag.Middle | PositionFlag.Right:
@@ -759,19 +759,19 @@ internal static class EditorUtils
 				pred = MouseCursor.ResizeHorizontal;
 				goto IL_0526;
 				IL_0526:
-				AwakeQueue(resizeZone.connectionObserver, pred);
-				Rect connectionObserver = resizeZone.connectionObserver;
+				AwakeQueue(resizeZone.rect, pred);
+				Rect rect = resizeZone.rect;
 				if (m_ProxyProperty)
 				{
-					connectionObserver.y += 46f;
+					rect.y += 46f;
 				}
-				if (flag && current.type == EventType.MouseDown && connectionObserver.Contains(current.mousePosition))
+				if (flag && current.type == EventType.MouseDown && rect.Contains(current.mousePosition))
 				{
 					if (current.clickCount == 2)
 					{
 						m_QueueObserver = true;
 					}
-					m_ObserverObserver = resizeZone.contextObserver;
+					m_ObserverObserver = resizeZone.index;
 					GUIUtility.hotControl = m_ThreadObserver;
 					_ServerObserver = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
@@ -781,7 +781,7 @@ internal static class EditorUtils
 			{
 				return;
 			}
-			PositionFlag setterObserver2 = array[m_ObserverObserver]._SetterObserver;
+			PositionFlag position2 = array[m_ObserverObserver].position;
 			Vector2 vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - _ServerObserver;
 			if (m_QueueObserver)
 			{
@@ -793,11 +793,11 @@ internal static class EditorUtils
 			}
 			if (vector != Vector2.zero)
 			{
-				if (setterObserver2 > PositionFlag.Bottom)
+				if (position2 > PositionFlag.Bottom)
 				{
-					if (setterObserver2 <= PositionFlag.TopLeft)
+					if (position2 <= PositionFlag.TopLeft)
 					{
-						if (setterObserver2 == PositionFlag.TopRight)
+						if (position2 == PositionFlag.TopRight)
 						{
 							pageObserver += vector.x;
 							if (!ResolveError())
@@ -813,7 +813,7 @@ internal static class EditorUtils
 								pageObserver -= vector.y;
 							}
 						}
-						else if (setterObserver2 == PositionFlag.TopLeft)
+						else if (position2 == PositionFlag.TopLeft)
 						{
 							_SerializerObserver -= vector.x;
 							if (!ResolveError())
@@ -830,9 +830,9 @@ internal static class EditorUtils
 							}
 						}
 					}
-					else if (setterObserver2 != PositionFlag.BottomRight)
+					else if (position2 != PositionFlag.BottomRight)
 					{
-						if (setterObserver2 == PositionFlag.BottomLeft)
+						if (position2 == PositionFlag.BottomLeft)
 						{
 							_SerializerObserver -= vector.x;
 							if (!ResolveError())
@@ -871,7 +871,7 @@ internal static class EditorUtils
 				}
 				else
 				{
-					switch (setterObserver2)
+					switch (position2)
 					{
 					case PositionFlag.Middle:
 					case PositionFlag.Middle | PositionFlag.Right:
@@ -984,11 +984,11 @@ internal static class EditorUtils
 
 	internal class SceneViewPanel : IDisposable
 	{
-		public readonly bool helperObserver;
+		public readonly bool widthIsPercentage;
 
-		public readonly bool _ConsumerObserver = true;
+		public readonly bool consumeMouseDown = true;
 
-		private readonly Rect m_AdapterObserver;
+		private readonly Rect area;
 
 		public SceneViewPanel(SceneView res, string col, float pool = 200f, float item2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ResizeHandle v4 = null)
 			: this(res, pool, item2 + 40f, v3, v4)
@@ -1008,26 +1008,26 @@ internal static class EditorUtils
 				width = rect.width - 8f,
 				height = rect.height - 8f
 			};
-			Rect rect2 = FillError(rect, map, serv, config2, helperObserver);
+			Rect rect2 = GetAnchoredRect(rect, map, serv, config2, widthIsPercentage);
 			if (ident3 != null)
 			{
 				rect2 = ident3.NewError(rect2, config2, field);
 				ident3.PushError(rect2, config2.CompareResolver(loadreg: true));
 			}
-			m_AdapterObserver = SetResolver(rect2);
+			area = SetResolver(rect2);
 			if (m_ProxyProperty)
 			{
-				m_AdapterObserver.y += 46f;
+				area.y += 46f;
 			}
-			GUILayout.BeginArea(m_AdapterObserver);
+			GUILayout.BeginArea(area);
 		}
 
 		public void Dispose()
 		{
-			if (_ConsumerObserver)
+			if (consumeMouseDown)
 			{
 				Event current = Event.current;
-				if (current.type == EventType.MouseDown && !m_AdapterObserver.Contains(current.mousePosition))
+				if (current.type == EventType.MouseDown && !area.Contains(current.mousePosition))
 				{
 					current.Use();
 					GUIUtility.hotControl = 0;
@@ -1037,7 +1037,7 @@ internal static class EditorUtils
 			Handles.EndGUI();
 		}
 
-		private static Rect FillError(Rect info, float token, float pool = 20f, PositionFlag ivk2 = PositionFlag.Bottom, bool testreg3 = false)
+		private static Rect GetAnchoredRect(Rect info, float token, float pool = 20f, PositionFlag ivk2 = PositionFlag.Bottom, bool testreg3 = false)
 		{
 			Rect result = info;
 			info.x += 4f;
@@ -4349,7 +4349,7 @@ internal static class EditorUtils
 			{
 				selection2(null);
 			}
-			if (eventWrapper.m_TagPolicy)
+			if (eventWrapper.isValid)
 			{
 				GUIUtility.keyboardControl = controlID;
 				if (state == null || (bool)eventWrapper.VisitHelper().ExcludeHelper() || (bool)eventWrapper.InitHelper())
@@ -4367,7 +4367,7 @@ internal static class EditorUtils
 					PrintRules("ProjectBrowser", isattr: true);
 					EditorGUIUtility.PingObject(state);
 				}
-				eventWrapper.DefineHelper();
+				eventWrapper.Use();
 			}
 			InstantiateRules(def, selection2);
 			using (new GUILayout.HorizontalScope(GUILayout.MaxWidth(90f)))
@@ -4663,7 +4663,7 @@ internal static class EditorUtils
 						if (!reg)
 						{
 							tempGameObjectHierarchy = new TempGameObjectHierarchy(item.path);
-							transform2 = tempGameObjectHierarchy.m_CollectionServer.Last().transform;
+							transform2 = tempGameObjectHierarchy.gameObjects.Last().transform;
 						}
 						else
 						{
@@ -4674,7 +4674,7 @@ internal static class EditorUtils
 							m_PredicateServer.AddTransformPath(transform2, recursive: false);
 							m_QueueServer.Add(item.path);
 						}
-						tempGameObjectHierarchy?.EnableContext();
+						tempGameObjectHierarchy?.Destroy();
 					}
 					else if (item.type == typeof(Animator) && SelectRules(item.propertyName, out visitor))
 					{
@@ -4714,8 +4714,8 @@ internal static class EditorUtils
 	internal static void VisitRules(this AvatarMask res, string connection)
 	{
 		TempGameObjectHierarchy tempGameObjectHierarchy = new TempGameObjectHierarchy(connection);
-		res.AddTransformPath(tempGameObjectHierarchy.m_CollectionServer.Last().transform);
-		tempGameObjectHierarchy.EnableContext();
+		res.AddTransformPath(tempGameObjectHierarchy.gameObjects.Last().transform);
+		tempGameObjectHierarchy.Destroy();
 	}
 
 	internal static void DefineRules(this AvatarMask v, AvatarMask token)
@@ -7260,9 +7260,9 @@ internal static class EditorUtils
 		{
 			using (ReadableTextureScope readableTextureScope = new ReadableTextureScope(ident))
 			{
-				Texture2D interpreterPolicy = readableTextureScope.m_InterpreterPolicy;
-				int width = interpreterPolicy.width;
-				int height = interpreterPolicy.height;
+				Texture2D texture = readableTextureScope.texture;
+				int width = texture.width;
+				int height = texture.height;
 				int num = width;
 				int num2 = 0;
 				int num3 = height;
@@ -7271,7 +7271,7 @@ internal static class EditorUtils
 				{
 					for (int j = 0; j < width; j++)
 					{
-						if (interpreterPolicy.GetPixel(j, i).a >= reg)
+						if (texture.GetPixel(j, i).a >= reg)
 						{
 							if (j < num)
 							{
@@ -7301,7 +7301,7 @@ internal static class EditorUtils
 					Debug.LogError("Trimmed texture has zero size.");
 					return null;
 				}
-				Color[] pixels = interpreterPolicy.GetPixels(num, num3, num5, num6);
+				Color[] pixels = texture.GetPixels(num, num3, num5, num6);
 				Texture2D texture2D = new Texture2D(num7, num8);
 				for (int k = 0; k < num8; k++)
 				{

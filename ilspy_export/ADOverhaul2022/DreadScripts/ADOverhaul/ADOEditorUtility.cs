@@ -40,11 +40,11 @@ internal static class ADOEditorUtility
 	{
 		private struct ResizeZone
 		{
-			internal PositionFlag _ItemSerializer;
+			internal PositionFlag position;
 
-			internal Rect m_IndexerSerializer;
+			internal Rect rect;
 
-			internal int poolSerializer;
+			internal int index;
 		}
 
 		private int _InvocationSerializer;
@@ -166,51 +166,51 @@ internal static class ADOEditorUtility
 			{
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.Left,
-					poolSerializer = 0,
-					m_IndexerSerializer = new Rect(ident.x - counter2, ident.y + counter2, num, ident.height - num)
+					position = PositionFlag.Left,
+					index = 0,
+					rect = new Rect(ident.x - counter2, ident.y + counter2, num, ident.height - num)
 				},
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.TopLeft,
-					poolSerializer = 1,
-					m_IndexerSerializer = new Rect(ident.x - counter2, ident.y - counter2, num, num)
+					position = PositionFlag.TopLeft,
+					index = 1,
+					rect = new Rect(ident.x - counter2, ident.y - counter2, num, num)
 				},
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.Top,
-					poolSerializer = 2,
-					m_IndexerSerializer = new Rect(ident.x + counter2, ident.y - counter2, ident.width - num, num)
+					position = PositionFlag.Top,
+					index = 2,
+					rect = new Rect(ident.x + counter2, ident.y - counter2, ident.width - num, num)
 				},
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.TopRight,
-					poolSerializer = 3,
-					m_IndexerSerializer = new Rect(ident.x + ident.width - counter2, ident.y - counter2, num, num)
+					position = PositionFlag.TopRight,
+					index = 3,
+					rect = new Rect(ident.x + ident.width - counter2, ident.y - counter2, num, num)
 				},
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.Right,
-					poolSerializer = 4,
-					m_IndexerSerializer = new Rect(ident.x + ident.width - counter2, ident.y + counter2, num, ident.height - num)
+					position = PositionFlag.Right,
+					index = 4,
+					rect = new Rect(ident.x + ident.width - counter2, ident.y + counter2, num, ident.height - num)
 				},
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.BottomRight,
-					poolSerializer = 5,
-					m_IndexerSerializer = new Rect(ident.x + ident.width - counter2, ident.y + ident.height - counter2, num, num)
+					position = PositionFlag.BottomRight,
+					index = 5,
+					rect = new Rect(ident.x + ident.width - counter2, ident.y + ident.height - counter2, num, num)
 				},
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.Bottom,
-					poolSerializer = 6,
-					m_IndexerSerializer = new Rect(ident.x + counter2, ident.y + ident.height - counter2, ident.width - num, num)
+					position = PositionFlag.Bottom,
+					index = 6,
+					rect = new Rect(ident.x + counter2, ident.y + ident.height - counter2, ident.width - num, num)
 				},
 				new ResizeZone
 				{
-					_ItemSerializer = PositionFlag.BottomLeft,
-					poolSerializer = 7,
-					m_IndexerSerializer = new Rect(ident.x - counter2, ident.y + ident.height - counter2, num, num)
+					position = PositionFlag.BottomLeft,
+					index = 7,
+					rect = new Rect(ident.x - counter2, ident.y + ident.height - counter2, num, num)
 				}
 			};
 			bool flag = current.button == 0;
@@ -226,7 +226,7 @@ internal static class ADOEditorUtility
 					{
 						return;
 					}
-					PositionFlag itemSerializer = array[_InvocationSerializer]._ItemSerializer;
+					PositionFlag position = array[_InvocationSerializer].position;
 					vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - _ListenerSerializer;
 					if (_WorkerSerializer)
 					{
@@ -240,11 +240,11 @@ internal static class ADOEditorUtility
 					{
 						goto IL_0399;
 					}
-					if (itemSerializer > PositionFlag.Bottom)
+					if (position > PositionFlag.Bottom)
 					{
-						if (itemSerializer > PositionFlag.TopLeft)
+						if (position > PositionFlag.TopLeft)
 						{
-							if (itemSerializer == PositionFlag.BottomRight)
+							if (position == PositionFlag.BottomRight)
 							{
 								_DescriptorSerializer += vector.x;
 								if (PatchRef())
@@ -263,7 +263,7 @@ internal static class ADOEditorUtility
 									globalSerializer += vector.y;
 								}
 							}
-							else if (itemSerializer == PositionFlag.BottomLeft)
+							else if (position == PositionFlag.BottomLeft)
 							{
 								m_RepositorySerializer -= vector.x;
 								if (PatchRef())
@@ -283,7 +283,7 @@ internal static class ADOEditorUtility
 								}
 							}
 						}
-						else if (itemSerializer == PositionFlag.TopRight)
+						else if (position == PositionFlag.TopRight)
 						{
 							_DescriptorSerializer += vector.x;
 							if (PatchRef())
@@ -302,7 +302,7 @@ internal static class ADOEditorUtility
 								strategySerializer -= vector.y;
 							}
 						}
-						else if (itemSerializer == PositionFlag.TopLeft)
+						else if (position == PositionFlag.TopLeft)
 						{
 							m_RepositorySerializer -= vector.x;
 							if (!PatchRef())
@@ -320,7 +320,7 @@ internal static class ADOEditorUtility
 						}
 						goto IL_0388;
 					}
-					switch (itemSerializer)
+					switch (position)
 					{
 					case PositionFlag.Middle:
 					case PositionFlag.Middle | PositionFlag.Right:
@@ -335,14 +335,14 @@ internal static class ADOEditorUtility
 				{
 					resizeZone = array2[num2];
 				}
-				if ((resizeZone._ItemSerializer & cust) < resizeZone._ItemSerializer)
+				if ((resizeZone.position & cust) < resizeZone.position)
 				{
 					goto IL_0360;
 				}
-				PositionFlag itemSerializer2 = resizeZone._ItemSerializer;
-				if (itemSerializer2 <= PositionFlag.Bottom)
+				PositionFlag position2 = resizeZone.position;
+				if (position2 <= PositionFlag.Bottom)
 				{
-					switch (itemSerializer2)
+					switch (position2)
 					{
 					case PositionFlag.Right:
 					case PositionFlag.Left:
@@ -353,20 +353,20 @@ internal static class ADOEditorUtility
 					}
 					break;
 				}
-				if (itemSerializer2 <= PositionFlag.TopLeft)
+				if (position2 <= PositionFlag.TopLeft)
 				{
-					if (itemSerializer2 == PositionFlag.TopRight)
+					if (position2 == PositionFlag.TopRight)
 					{
 						goto IL_05f3;
 					}
-					if (itemSerializer2 != PositionFlag.TopLeft)
+					if (position2 != PositionFlag.TopLeft)
 					{
 						goto IL_04c5;
 					}
 				}
-				else if (itemSerializer2 != PositionFlag.BottomRight)
+				else if (position2 != PositionFlag.BottomRight)
 				{
-					if (itemSerializer2 != PositionFlag.BottomLeft)
+					if (position2 != PositionFlag.BottomLeft)
 					{
 						goto IL_04c5;
 					}
@@ -404,19 +404,19 @@ internal static class ADOEditorUtility
 				selection = MouseCursor.ResizeUpRight;
 				goto IL_0339;
 				IL_0339:
-				InsertStatus(resizeZone.m_IndexerSerializer, selection);
-				Rect indexerSerializer = resizeZone.m_IndexerSerializer;
+				InsertStatus(resizeZone.rect, selection);
+				Rect rect = resizeZone.rect;
 				if (collectionSerializer)
 				{
-					indexerSerializer.y += 46f;
+					rect.y += 46f;
 				}
-				if (flag && current.type == EventType.MouseDown && indexerSerializer.Contains(current.mousePosition))
+				if (flag && current.type == EventType.MouseDown && rect.Contains(current.mousePosition))
 				{
 					if (current.clickCount == 2)
 					{
 						_WorkerSerializer = true;
 					}
-					_InvocationSerializer = resizeZone.poolSerializer;
+					_InvocationSerializer = resizeZone.index;
 					GUIUtility.hotControl = parserSerializer;
 					_ListenerSerializer = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
@@ -502,11 +502,11 @@ internal static class ADOEditorUtility
 
 	internal class SceneViewPanel : IDisposable
 	{
-		public readonly bool setterSerializer;
+		public readonly bool widthIsPercentage;
 
-		public readonly bool _RuleSerializer = true;
+		public readonly bool consumeMouseDown = true;
 
-		private readonly Rect m_StructSerializer;
+		private readonly Rect area;
 
 		public SceneViewPanel(SceneView ident, string result, float tag, int first2_end, float value3 = 20f, PositionFlag first4 = PositionFlag.BottomRight, ResizeHandle reference5 = null)
 			: this(ident, tag, first2_end + 2, value3, first4, reference5)
@@ -526,18 +526,18 @@ internal static class ADOEditorUtility
 				width = rect.width - 8f,
 				height = rect.height - 8f
 			};
-			Rect rect2 = RegisterRef(rect, visitor, offsetdir, res2, ord3, setterSerializer);
+			Rect rect2 = GetAnchoredRect(rect, visitor, offsetdir, res2, ord3, widthIsPercentage);
 			if (init4 != null)
 			{
 				rect2 = init4.LogoutRef(rect2, ord3, filter);
 				init4.SetupRef(rect2, ord3.ResolveProcess(evaluateivk: true));
 			}
-			m_StructSerializer = ResetProcess(rect2);
+			area = ResetProcess(rect2);
 			if (collectionSerializer)
 			{
-				m_StructSerializer.y += 46f;
+				area.y += 46f;
 			}
-			GUILayout.BeginArea(m_StructSerializer);
+			GUILayout.BeginArea(area);
 		}
 
 		public SceneViewPanel(SceneView instance, float col, float role = 20f, PositionFlag vis2 = PositionFlag.BottomRight, ResizeHandle x3 = null)
@@ -547,10 +547,10 @@ internal static class ADOEditorUtility
 
 		public void Dispose()
 		{
-			if (_RuleSerializer)
+			if (consumeMouseDown)
 			{
 				Event current = Event.current;
-				if (current.type == EventType.MouseDown && !m_StructSerializer.Contains(current.mousePosition))
+				if (current.type == EventType.MouseDown && !area.Contains(current.mousePosition))
 				{
 					current.Use();
 					GUIUtility.hotControl = 0;
@@ -560,7 +560,7 @@ internal static class ADOEditorUtility
 			Handles.EndGUI();
 		}
 
-		private static Rect RegisterRef(Rect last, float cfg, int column_dic, float reg2 = 20f, PositionFlag def3 = PositionFlag.Bottom, bool loadfirst4 = false)
+		private static Rect GetAnchoredRect(Rect last, float cfg, int column_dic, float reg2 = 20f, PositionFlag def3 = PositionFlag.Bottom, bool loadfirst4 = false)
 		{
 			Rect result = last;
 			last.x += 4f;
@@ -993,7 +993,7 @@ internal static class ADOEditorUtility
 					_CollectionMethod = true;
 					if (!string.IsNullOrWhiteSpace(m_PredicateMethod))
 					{
-						CachedIcon.ConnectComparator(data, m_PredicateMethod);
+						CachedIcon.SaveToCache(data, m_PredicateMethod);
 						comparatorMethod = true;
 					}
 				}
@@ -1010,7 +1010,7 @@ internal static class ADOEditorUtility
 			if (comparatorMethod && !string.IsNullOrWhiteSpace(m_PredicateMethod))
 			{
 				comparatorMethod = false;
-				Texture2D texture2D = CachedIcon.InitComparator(m_PredicateMethod);
+				Texture2D texture2D = CachedIcon.LoadFromCache(m_PredicateMethod);
 				if (texture2D != null)
 				{
 					m_RefMethod = texture2D;
@@ -1102,23 +1102,23 @@ internal static class ADOEditorUtility
 
 	internal sealed class ReadableTexture : IDisposable
 	{
-		internal bool m_RecordMethod;
+		internal bool isTemporary;
 
-		internal Texture2D m_ResolverMethod;
+		internal Texture2D texture;
 
 		internal ReadableTexture(Texture2D spec)
 		{
 			try
 			{
 				spec.GetPixel(0, 0);
-				m_RecordMethod = false;
-				m_ResolverMethod = spec;
+				isTemporary = false;
+				texture = spec;
 			}
 			catch
 			{
 				int width = spec.width;
 				int height = spec.height;
-				m_RecordMethod = true;
+				isTemporary = true;
 				spec.filterMode = FilterMode.Point;
 				RenderTexture temporary = RenderTexture.GetTemporary(width, height);
 				temporary.filterMode = FilterMode.Point;
@@ -1127,86 +1127,86 @@ internal static class ADOEditorUtility
 				Texture2D texture2D = new Texture2D(width, height);
 				texture2D.ReadPixels(new Rect(0f, 0f, width, height), 0, 0);
 				RenderTexture.active = null;
-				m_ResolverMethod = texture2D;
+				texture = texture2D;
 			}
 		}
 
 		public void Dispose()
 		{
-			if (m_RecordMethod)
+			if (isTemporary)
 			{
-				UnityEngine.Object.DestroyImmediate(m_ResolverMethod);
+				UnityEngine.Object.DestroyImmediate(texture);
 			}
 		}
 
 		public static implicit operator Texture2D(ReadableTexture param)
 		{
-			return param.m_ResolverMethod;
+			return param.texture;
 		}
 	}
 
 	internal sealed class CachedIcon
 	{
-		private bool _TagMethod = true;
+		private bool canResolve = true;
 
-		private GUIContent m_FilterMethod;
+		private GUIContent content;
 
-		private Texture2D factoryMethod;
+		private Texture2D texture;
 
-		private readonly string _AttributeMethod;
+		private readonly string cacheKey;
 
-		private readonly string instanceMethod;
+		private readonly string tooltip;
 
 		[SpecialName]
-		private GUIContent NewProduct()
+		private GUIContent GetContent()
 		{
-			if (m_FilterMethod.image == null && _TagMethod)
+			if (content.image == null && canResolve)
 			{
-				m_FilterMethod = new GUIContent(VerifyProduct())
+				content = new GUIContent(GetTexture())
 				{
-					tooltip = instanceMethod
+					tooltip = tooltip
 				};
 			}
-			return m_FilterMethod;
+			return content;
 		}
 
 		[SpecialName]
-		internal Texture2D VerifyProduct()
+		internal Texture2D GetTexture()
 		{
-			if (_TagMethod && factoryMethod == null)
+			if (canResolve && texture == null)
 			{
-				_TagMethod = false;
-				GetComparator();
-				_TagMethod = factoryMethod != null;
+				canResolve = false;
+				ResolveTexture();
+				canResolve = texture != null;
 			}
-			return factoryMethod;
+			return texture;
 		}
 
 		public CachedIcon(Texture2D last, string ivk, string proc = "")
 		{
-			factoryMethod = last;
-			_AttributeMethod = ivk;
-			instanceMethod = proc;
-			if (!(factoryMethod == null))
+			texture = last;
+			cacheKey = ivk;
+			tooltip = proc;
+			if (!(texture == null))
 			{
-				ConnectComparator(last.EncodeToPNG(), ivk);
+				SaveToCache(last.EncodeToPNG(), ivk);
 			}
 			else
 			{
-				GetComparator();
+				ResolveTexture();
 			}
-			m_FilterMethod = new GUIContent(last)
+			content = new GUIContent(last)
 			{
 				tooltip = proc
 			};
 		}
 
-		private void GetComparator()
+		private void ResolveTexture()
 		{
-			factoryMethod = InitComparator(_AttributeMethod);
+			texture = LoadFromCache(cacheKey);
 		}
 
-		private static byte[] FlushComparator(int[] info)
+		private static byte[] ToBytes(int[] info)
 		{
 			byte[] array = new byte[info.Length];
 			for (int i = 0; i < info.Length; i++)
@@ -1216,7 +1216,7 @@ internal static class ADOEditorUtility
 			return array;
 		}
 
-		private static int[] ExcludeComparator(byte[] asset)
+		private static int[] ToInts(byte[] asset)
 		{
 			int num = asset.Length;
 			int[] array = new int[num];
@@ -1227,14 +1227,14 @@ internal static class ADOEditorUtility
 			return array;
 		}
 
-		internal static Texture2D InitComparator(string item)
+		internal static Texture2D LoadFromCache(string item)
 		{
 			int[] intArray = SessionState.GetIntArray(item, null);
 			if (intArray != null)
 			{
 				try
 				{
-					byte[] data = FlushComparator(intArray);
+					byte[] data = ToBytes(intArray);
 					Texture2D texture2D = new Texture2D(0, 0);
 					texture2D.LoadImage(data);
 					texture2D.Apply();
@@ -1249,15 +1249,15 @@ internal static class ADOEditorUtility
 			return null;
 		}
 
-		internal static void ConnectComparator(byte[] setup, string vis)
+		internal static void SaveToCache(byte[] setup, string vis)
 		{
-			int[] value = ExcludeComparator(setup);
+			int[] value = ToInts(setup);
 			SessionState.SetIntArray(vis, value);
 		}
 
 		public static implicit operator GUIContent(CachedIcon param)
 		{
-			return param.NewProduct();
+			return param.GetContent();
 		}
 	}
 
@@ -1352,32 +1352,32 @@ internal static class ADOEditorUtility
 
 	internal class BoneChainTree
 	{
-		internal readonly VRCPhysBone definitionMethod;
+		internal readonly VRCPhysBone physBone;
 
-		internal readonly Transform m_InitializerMethod;
+		internal readonly Transform rootTransform;
 
-		internal readonly List<BoneNode> m_TokenMethod;
+		internal readonly List<BoneNode> nodes;
 
-		internal readonly int _GetterMethod;
+		internal readonly int maxDepth;
 
-		internal List<List<BoneNode>> threadMethod;
+		internal List<List<BoneNode>> chains;
 
 		[SpecialName]
-		internal IEnumerable<Matrix4x4> InterruptProduct()
+		internal IEnumerable<Matrix4x4> GetNodeMatrices()
 		{
-			return m_TokenMethod.Select((BoneNode b) => b.printerMethod);
+			return nodes.Select((BoneNode b) => b.printerMethod);
 		}
 
 		internal BoneChainTree(VRCPhysBone instance)
 		{
-			definitionMethod = instance;
-			m_InitializerMethod = instance.GetRootTransform();
-			m_TokenMethod = new List<BoneNode>();
-			FillProduct(m_InitializerMethod, 0);
-			_GetterMethod = m_TokenMethod.Max((BoneNode b) => b.m_StrategyMethod);
+			physBone = instance;
+			rootTransform = instance.GetRootTransform();
+			nodes = new List<BoneNode>();
+			BuildNodes(rootTransform, 0);
+			maxDepth = nodes.Max((BoneNode b) => b.m_StrategyMethod);
 		}
 
-		internal void FillProduct(Transform v, int next_cust)
+		internal void BuildNodes(Transform v, int next_cust)
 		{
 			bool flag = false;
 			BoneNode boneNode = new BoneNode();
@@ -1388,7 +1388,7 @@ internal static class ADOEditorUtility
 			for (int i = 0; i < v.childCount; i++)
 			{
 				Transform child = v.GetChild(i);
-				if (!definitionMethod.ignoreTransforms.Contains(child))
+				if (!physBone.ignoreTransforms.Contains(child))
 				{
 					list.Add(child);
 				}
@@ -1398,7 +1398,7 @@ internal static class ADOEditorUtility
 			{
 				if (list.Count > 1)
 				{
-					if (definitionMethod.multiChildType == VRCPhysBoneBase.MultiChildType.Average)
+					if (physBone.multiChildType == VRCPhysBoneBase.MultiChildType.Average)
 					{
 						Vector3 zero = Vector3.zero;
 						foreach (Transform item in list)
@@ -1411,7 +1411,7 @@ internal static class ADOEditorUtility
 						boneNode2 = (globalMethod = new BoneNode
 						{
 							m_InvocationMethod = this,
-							m_ListenerMethod = m_InitializerMethod,
+							m_ListenerMethod = rootTransform,
 							printerMethod = Matrix4x4.TRS(zero, q, v.lossyScale),
 							m_StrategyMethod = next_cust + 1,
 							m_RepositoryMethod = true,
@@ -1419,27 +1419,27 @@ internal static class ADOEditorUtility
 							managerMethod = boneNode
 						});
 					}
-					else if (definitionMethod.multiChildType == VRCPhysBoneBase.MultiChildType.Ignore)
+					else if (physBone.multiChildType == VRCPhysBoneBase.MultiChildType.Ignore)
 					{
 						flag = true;
 					}
 				}
 			}
-			else if (!(definitionMethod.endpointPosition != Vector3.zero))
+			else if (!(physBone.endpointPosition != Vector3.zero))
 			{
-				if (m_TokenMethod.Count != 0)
+				if (nodes.Count != 0)
 				{
-					q = m_TokenMethod[m_TokenMethod.Count - 1].printerMethod.rotation;
+					q = nodes[nodes.Count - 1].printerMethod.rotation;
 				}
 			}
 			else
 			{
-				Vector3 pos = v.TransformPoint(definitionMethod.endpointPosition);
-				q = v.rotation * Quaternion.FromToRotation(Vector3.up, Vector3.Normalize(definitionMethod.endpointPosition));
+				Vector3 pos = v.TransformPoint(physBone.endpointPosition);
+				q = v.rotation * Quaternion.FromToRotation(Vector3.up, Vector3.Normalize(physBone.endpointPosition));
 				BoneNode obj = new BoneNode
 				{
 					m_InvocationMethod = this,
-					m_ListenerMethod = m_InitializerMethod,
+					m_ListenerMethod = rootTransform,
 					printerMethod = Matrix4x4.TRS(pos, q, v.lossyScale),
 					m_StrategyMethod = next_cust + 1,
 					m_RepositoryMethod = true,
@@ -1452,45 +1452,45 @@ internal static class ADOEditorUtility
 			if (!flag)
 			{
 				boneNode.m_InvocationMethod = this;
-				boneNode.m_ListenerMethod = m_InitializerMethod;
+				boneNode.m_ListenerMethod = rootTransform;
 				boneNode.parserMethod = v;
 				boneNode.printerMethod = Matrix4x4.TRS(v.position, q, v.lossyScale);
 				boneNode.m_StrategyMethod = next_cust;
 				boneNode.m_DescriptorMethod = descriptorMethod;
 				boneNode._GlobalMethod = globalMethod;
-				BoneNode boneNode3 = m_TokenMethod.LastOrDefault();
+				BoneNode boneNode3 = nodes.LastOrDefault();
 				if (boneNode3 != null && !boneNode3.m_DescriptorMethod && boneNode3._GlobalMethod == null)
 				{
 					boneNode3._GlobalMethod = boneNode;
 					boneNode.managerMethod = boneNode3;
 				}
-				m_TokenMethod.Add(boneNode);
+				nodes.Add(boneNode);
 			}
 			if (boneNode2 != null)
 			{
-				m_TokenMethod.Add(boneNode2);
+				nodes.Add(boneNode2);
 			}
 			foreach (Transform item2 in list)
 			{
-				FillProduct(item2, next_cust + 1);
+				BuildNodes(item2, next_cust + 1);
 			}
 		}
 
-		internal void CancelProduct()
+		internal void BuildChains()
 		{
 			HashSet<BoneNode> hashSet = new HashSet<BoneNode>();
-			threadMethod = new List<List<BoneNode>>();
-			foreach (BoneNode item in m_TokenMethod)
+			chains = new List<List<BoneNode>>();
+			foreach (BoneNode node in nodes)
 			{
-				if (!hashSet.Contains(item))
+				if (!hashSet.Contains(node))
 				{
 					List<BoneNode> list = new List<BoneNode>();
-					for (BoneNode boneNode = item; boneNode != null; boneNode = boneNode._GlobalMethod)
+					for (BoneNode boneNode = node; boneNode != null; boneNode = boneNode._GlobalMethod)
 					{
 						list.Add(boneNode);
 						hashSet.Add(boneNode);
 					}
-					threadMethod.Add(list);
+					chains.Add(list);
 				}
 			}
 		}
@@ -1531,7 +1531,7 @@ internal static class ADOEditorUtility
 		[SpecialName]
 		internal float RegisterProduct()
 		{
-			return 1f / (float)m_InvocationMethod._GetterMethod * (float)m_StrategyMethod;
+			return 1f / (float)m_InvocationMethod.maxDepth * (float)m_StrategyMethod;
 		}
 
 		internal float ForgotProduct(AnimationCurve i)
@@ -1546,41 +1546,41 @@ internal static class ADOEditorUtility
 
 	internal readonly struct PhysBoneParameter
 	{
-		internal readonly string workerMethod;
+		internal readonly string suffix;
 
-		internal readonly AnimatorControllerParameterType _ItemMethod;
+		internal readonly AnimatorControllerParameterType parameterType;
 
-		internal readonly bool _IndexerMethod;
+		internal readonly bool hasBackingField;
 
-		private readonly FieldInfo poolMethod;
+		private readonly FieldInfo valueField;
 
 		private static object CallDescriptor;
 
 		internal PhysBoneParameter(string setup, AnimatorControllerParameterType token, string temp)
 		{
-			workerMethod = setup;
-			_ItemMethod = token;
-			poolMethod = ((!string.IsNullOrWhiteSpace(temp)) ? typeof(VRCPhysBoneBase).GetField(temp, BindingFlags.Instance | BindingFlags.Public) : null);
-			_IndexerMethod = poolMethod != null;
+			suffix = setup;
+			parameterType = token;
+			valueField = ((!string.IsNullOrWhiteSpace(temp)) ? typeof(VRCPhysBoneBase).GetField(temp, BindingFlags.Instance | BindingFlags.Public) : null);
+			hasBackingField = valueField != null;
 		}
 
-		internal float StopProduct(VRCPhysBoneBase config)
+		internal float GetFloat(VRCPhysBoneBase config)
 		{
-			return (float)poolMethod.GetValue(config);
+			return (float)valueField.GetValue(config);
 		}
 
-		internal bool PushProduct(VRCPhysBoneBase def)
+		internal bool GetBool(VRCPhysBoneBase def)
 		{
-			return (bool)poolMethod.GetValue(def);
+			return (bool)valueField.GetValue(def);
 		}
 
-		public string PrepareProduct(VRCPhysBoneBase last)
+		public string GetValueString(VRCPhysBoneBase last)
 		{
-			if (_ItemMethod == AnimatorControllerParameterType.Bool)
+			if (parameterType == AnimatorControllerParameterType.Bool)
 			{
-				return PushProduct(last).ToString();
+				return GetBool(last).ToString();
 			}
-			return StopProduct(last).ToString();
+			return GetFloat(last).ToString();
 		}
 
 		internal static bool QueryDescriptor()
@@ -3841,9 +3841,9 @@ internal static class ADOEditorUtility
 			throw new ArgumentNullException("texture");
 		}
 		using ReadableTexture readableTexture = new ReadableTexture(info);
-		Texture2D resolverMethod = readableTexture.m_ResolverMethod;
-		int width = resolverMethod.width;
-		int height = resolverMethod.height;
+		Texture2D texture = readableTexture.texture;
+		int width = texture.width;
+		int height = texture.height;
 		int num = width;
 		int num2 = 0;
 		int num3 = height;
@@ -3852,7 +3852,7 @@ internal static class ADOEditorUtility
 		{
 			for (int j = 0; j < width; j++)
 			{
-				if (resolverMethod.GetPixel(j, i).a >= second)
+				if (texture.GetPixel(j, i).a >= second)
 				{
 					if (j < num)
 					{
@@ -3879,7 +3879,7 @@ internal static class ADOEditorUtility
 		int num8 = num6 + consumer_max * 2;
 		if (num5 >= 1 && num6 >= 1)
 		{
-			Color[] pixels = resolverMethod.GetPixels(num, num3, num5, num6);
+			Color[] pixels = texture.GetPixels(num, num3, num5, num6);
 			Texture2D texture2D = new Texture2D(num7, num8);
 			for (int k = 0; k < num8; k++)
 			{

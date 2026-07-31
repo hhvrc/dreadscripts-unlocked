@@ -5,22 +5,22 @@ namespace DreadScripts.ControllerEditor;
 
 internal sealed class MixedValueScope : IDisposable
 {
-	private readonly bool m_ItemThread;
+	private readonly bool previousMixedValue;
 
 	public MixedValueScope(bool isinstance)
 	{
-		m_ItemThread = EditorGUI.showMixedValue;
+		previousMixedValue = EditorGUI.showMixedValue;
 		EditorGUI.showMixedValue = isinstance;
 	}
 
 	public MixedValueScope(SerializedProperty v)
 	{
-		m_ItemThread = EditorGUI.showMixedValue;
+		previousMixedValue = EditorGUI.showMixedValue;
 		EditorGUI.showMixedValue = v.hasMultipleDifferentValues;
 	}
 
 	public void Dispose()
 	{
-		EditorGUI.showMixedValue = m_ItemThread;
+		EditorGUI.showMixedValue = previousMixedValue;
 	}
 }

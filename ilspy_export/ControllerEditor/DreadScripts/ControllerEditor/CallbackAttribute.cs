@@ -4,7 +4,7 @@ namespace DreadScripts.ControllerEditor;
 
 internal abstract class CallbackAttribute : Attribute
 {
-	internal object[] m_IndexerServer;
+	internal object[] args;
 
-	internal int _IssuerServer;
+	internal int priority;
 }

@@ -52,13 +52,13 @@ internal static class SupportWindowAssets
 	internal static StyleAssets m_Utils;
 
 	[SpecialName]
-	internal static TextureAssets ChangeWrapper()
+	internal static TextureAssets GetTextures()
 	{
 		return _Object ?? (_Object = new TextureAssets());
 	}
 
 	[SpecialName]
-	internal static StyleAssets RegisterWrapper()
+	internal static StyleAssets GetStyles()
 	{
 		return m_Utils ?? (m_Utils = new StyleAssets());
 	}

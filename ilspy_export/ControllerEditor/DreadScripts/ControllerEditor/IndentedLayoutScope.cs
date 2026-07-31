@@ -5,7 +5,7 @@ namespace DreadScripts.ControllerEditor;
 
 internal sealed class IndentedLayoutScope : IDisposable
 {
-	private readonly float m_BroadcasterThread;
+	private readonly float rightPadding;
 
 	internal IndentedLayoutScope()
 		: this(10f, 10f)
@@ -24,7 +24,7 @@ internal sealed class IndentedLayoutScope : IDisposable
 
 	internal IndentedLayoutScope(float first, float col)
 	{
-		m_BroadcasterThread = col;
+		rightPadding = col;
 		GUILayout.BeginHorizontal();
 		GUILayout.BeginHorizontal(GUILayout.MaxWidth(first));
 		GUILayout.FlexibleSpace();
@@ -35,9 +35,9 @@ internal sealed class IndentedLayoutScope : IDisposable
 	public void Dispose()
 	{
 		GUILayout.EndVertical();
-		if (m_BroadcasterThread != 0f)
+		if (rightPadding != 0f)
 		{
-			GUILayout.BeginHorizontal(GUILayout.MaxWidth(m_BroadcasterThread));
+			GUILayout.BeginHorizontal(GUILayout.MaxWidth(rightPadding));
 			GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 		}

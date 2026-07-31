@@ -5,25 +5,25 @@ namespace DreadScripts.ControllerEditor;
 
 internal sealed class ChangeCallbackScope : IDisposable
 {
-	private readonly Action m_MapperPolicy;
+	private readonly Action callback;
 
-	private readonly EditorGUI.ChangeCheckScope m_InitializerPolicy;
+	private readonly EditorGUI.ChangeCheckScope changeScope;
 
 	internal ChangeCallbackScope(Action key)
 	{
-		m_MapperPolicy = key;
-		m_InitializerPolicy = new EditorGUI.ChangeCheckScope();
+		callback = key;
+		changeScope = new EditorGUI.ChangeCheckScope();
 	}
 
 	public void Dispose()
 	{
 		try
 		{
-			m_MapperPolicy();
+			callback();
 		}
 		finally
 		{
-			m_InitializerPolicy.Dispose();
+			changeScope.Dispose();
 		}
 	}
 }

@@ -7,12 +7,12 @@ internal class ControllerCallbackAttribute : CallbackAttribute
 {
 	public ControllerCallbackAttribute(int no__task = 0)
 	{
-		_IssuerServer = no__task;
+		priority = no__task;
 	}
 
 	public ControllerCallbackAttribute(object[] info, int next_col)
 	{
-		m_IndexerServer = info;
-		_IssuerServer = next_col;
+		args = info;
+		priority = next_col;
 	}
 }

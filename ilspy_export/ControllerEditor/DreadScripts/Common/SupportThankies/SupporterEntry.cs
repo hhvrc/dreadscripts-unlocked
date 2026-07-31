@@ -36,43 +36,43 @@ internal class SupporterEntry
 	internal SupporterEntry(string spec)
 	{
 		m_Queue = spec;
-		StartWrapper("onclick", out _Expression);
-		_Product = ((!StartWrapper("tooltip", out var col)) ? SupporterStrings.decorator.DestroyWrapper() : col);
-		if (!StartWrapper("bgtype", out var col2) || !Enum.TryParse<RemoteTexture.TextureLayoutMethod>(col2, ignoreCase: true, out adapter))
+		TryExtractAttribute("onclick", out _Expression);
+		_Product = ((!TryExtractAttribute("tooltip", out var col)) ? SupporterStrings.decorator.DestroyWrapper() : col);
+		if (!TryExtractAttribute("bgtype", out var col2) || !Enum.TryParse<RemoteTexture.TextureLayoutMethod>(col2, ignoreCase: true, out adapter))
 		{
 			adapter = RemoteTexture.TextureLayoutMethod.Pattern;
 		}
-		if (StartWrapper("name", out var col3))
+		if (TryExtractAttribute("name", out var col3))
 		{
-			error = TextFragment.RemoveWrapper(col3);
+			error = TextFragment.Parse(col3);
 		}
-		if (StartWrapper("prefix", out var col4))
+		if (TryExtractAttribute("prefix", out var col4))
 		{
-			m_Setter = TextFragment.RemoveWrapper(col4);
+			m_Setter = TextFragment.Parse(col4);
 		}
-		if (StartWrapper("suffix", out var col5))
+		if (TryExtractAttribute("suffix", out var col5))
 		{
-			m_Connection = TextFragment.RemoveWrapper(col5);
+			m_Connection = TextFragment.Parse(col5);
 		}
-		if (StartWrapper("namecolor", out var col6))
+		if (TryExtractAttribute("namecolor", out var col6))
 		{
 			candidate = ((!ColorUtility.TryParseHtmlString(col6, out var color)) ? ((Color?)null) : new Color?(color));
 		}
-		if (StartWrapper("bgcolor", out var col7))
+		if (TryExtractAttribute("bgcolor", out var col7))
 		{
 			m_Interpreter = (ColorUtility.TryParseHtmlString(col7, out var color2) ? new Color?(color2) : ((Color?)null));
 		}
-		if (StartWrapper("bordercolor", out var col8))
+		if (TryExtractAttribute("bordercolor", out var col8))
 		{
 			_Watcher = ((!ColorUtility.TryParseHtmlString(col8, out var color3)) ? ((Color?)null) : new Color?(color3));
 		}
-		if (StartWrapper("bgimage", out var col9))
+		if (TryExtractAttribute("bgimage", out var col9))
 		{
 			m_Consumer = new RemoteTexture(col9, overridesecond: true, col9);
 		}
 	}
 
-	internal void DefineWrapper(float v = 20f)
+	internal void DrawCard(float v = 20f)
 	{
 		Rect wrapper = worker.GetWrapper(2f);
 		using (new GuiColorScope(GuiColorScope.ColoringType.General, (!m_Interpreter.HasValue) ? GUI.color : GUI.color.IncludeWrapper(m_Interpreter.Value)))
@@ -93,7 +93,7 @@ internal class SupporterEntry
 					{
 						foreach (TextFragment item in m_Setter)
 						{
-							item.ReadWrapper(SupportWindowAssets.RegisterWrapper().repository, v);
+							item.DrawLayout(SupportWindowAssets.GetStyles().repository, v);
 						}
 					}
 					else
@@ -110,7 +110,7 @@ internal class SupporterEntry
 						{
 							foreach (TextFragment item2 in error)
 							{
-								item2.ReadWrapper(SupportWindowAssets.RegisterWrapper().composer, v);
+								item2.DrawLayout(SupportWindowAssets.GetStyles().composer, v);
 							}
 						}
 					}
@@ -127,7 +127,7 @@ internal class SupporterEntry
 					{
 						foreach (TextFragment item3 in m_Connection)
 						{
-							item3.ReadWrapper(SupportWindowAssets.RegisterWrapper().m_Mapping, v);
+							item3.DrawLayout(SupportWindowAssets.GetStyles().m_Mapping, v);
 						}
 					}
 					GUILayout.Space(8f);
@@ -148,7 +148,7 @@ internal class SupporterEntry
 		}
 	}
 
-	internal bool StartWrapper(string v, out string col)
+	internal bool TryExtractAttribute(string v, out string col)
 	{
 		string pattern = "<" + v + "=(.*?)>(?:<|$)";
 		Match match = Regex.Match(m_Queue, pattern);

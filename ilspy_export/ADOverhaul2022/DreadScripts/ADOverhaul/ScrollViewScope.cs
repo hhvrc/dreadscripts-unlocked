@@ -5,24 +5,24 @@ namespace DreadScripts.ADOverhaul;
 
 internal sealed class ScrollViewScope : IDisposable
 {
-	private readonly bool facadeMethod;
+	private readonly bool began;
 
 	internal ScrollViewScope(ref Vector2 i)
 	{
 		try
 		{
 			i = GUILayout.BeginScrollView(i);
-			facadeMethod = true;
+			began = true;
 		}
 		catch
 		{
-			facadeMethod = false;
+			began = false;
 		}
 	}
 
 	public void Dispose()
 	{
-		if (facadeMethod)
+		if (began)
 		{
 			GUILayout.EndScrollView();
 		}

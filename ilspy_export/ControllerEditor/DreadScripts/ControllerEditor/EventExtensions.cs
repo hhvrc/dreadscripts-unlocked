@@ -6,7 +6,7 @@ internal static class EventExtensions
 {
 	internal static EventWrapper QueryHelper(this EventWrapper item, Rect connection = default(Rect))
 	{
-		if (!item.m_TagPolicy)
+		if (!item.isValid)
 		{
 			return item;
 		}
@@ -14,65 +14,65 @@ internal static class EventExtensions
 		{
 			connection = GUILayoutUtility.GetLastRect();
 		}
-		item.m_TagPolicy = connection.Contains(item.m_RegistryPolicy.mousePosition);
+		item.isValid = connection.Contains(item.currentEvent.mousePosition);
 		return item;
 	}
 
 	internal static EventWrapper AddHelper(this EventWrapper key)
 	{
-		if (!key.m_TagPolicy)
+		if (!key.isValid)
 		{
 			return key;
 		}
-		key.m_TagPolicy = key.m_RegistryPolicy.type == EventType.ContextClick;
+		key.isValid = key.currentEvent.type == EventType.ContextClick;
 		return key;
 	}
 
 	internal static EventWrapper InvokeHelper(this EventWrapper config)
 	{
-		if (!config.m_TagPolicy)
+		if (!config.isValid)
 		{
 			return config;
 		}
-		config.m_TagPolicy = config.m_RegistryPolicy.type == EventType.MouseDown;
+		config.isValid = config.currentEvent.type == EventType.MouseDown;
 		return config;
 	}
 
 	internal static EventWrapper FindHelper(this EventWrapper item)
 	{
-		if (!item.m_TagPolicy)
+		if (!item.isValid)
 		{
 			return item;
 		}
-		item.m_TagPolicy = item.m_RegistryPolicy.type == EventType.MouseUp;
+		item.isValid = item.currentEvent.type == EventType.MouseUp;
 		return item;
 	}
 
 	internal static EventWrapper ExcludeHelper(this EventWrapper first)
 	{
-		if (!first.m_TagPolicy)
+		if (!first.isValid)
 		{
 			return first;
 		}
-		first.m_TagPolicy = first.m_RegistryPolicy.button == 0;
+		first.isValid = first.currentEvent.button == 0;
 		return first;
 	}
 
 	internal static EventWrapper InitHelper(this EventWrapper res)
 	{
-		if (!res.m_TagPolicy)
+		if (!res.isValid)
 		{
 			return res;
 		}
-		res.m_TagPolicy = res.m_RegistryPolicy.button == 1;
+		res.isValid = res.currentEvent.button == 1;
 		return res;
 	}
 
 	internal static EventWrapper VisitHelper(this EventWrapper def)
 	{
-		if (def.m_TagPolicy)
+		if (def.isValid)
 		{
-			def.m_TagPolicy = def.m_RegistryPolicy.clickCount == 2;
+			def.isValid = def.currentEvent.clickCount == 2;
 			return def;
 		}
 		return def;

@@ -64,7 +64,7 @@ internal sealed class LicenseManager
 		private static bool message;
 
 		[MenuItem("DreadTools/ADOverhaul", false, 6)]
-		internal static void CreateSerializer()
+		internal static void ShowWindow()
 		{
 			EditorWindow.GetWindow<ADOverhaulWindow>(utility: false, "Avatar Dynamics Overhaul", focus: true);
 		}
@@ -73,7 +73,7 @@ internal sealed class LicenseManager
 		{
 			if (FlushConfiguration(this))
 			{
-				RevertSerializer();
+				DrawSettingsGUI();
 				ADOEditorUtility.DisableStatus();
 				GetConfiguration();
 				SortIdentifier();
@@ -82,7 +82,7 @@ internal sealed class LicenseManager
 			}
 		}
 
-		private void IncludeSerializer()
+		private void DrawEasyDynamicsGUI()
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
@@ -95,7 +95,7 @@ internal sealed class LicenseManager
 			EditorGUILayout.HelpBox("Under Development", MessageType.Info);
 		}
 
-		private void RevertSerializer()
+		private void DrawSettingsGUI()
 		{
 			using (new GUILayout.VerticalScope(GUI.skin.box))
 			{
@@ -103,7 +103,7 @@ internal sealed class LicenseManager
 				if (_Code)
 				{
 					EditorGUI.indentLevel++;
-					ADOSettings.GetConsumer().editorAnimatedFoldouts.RunUtils(ADOEditorUtility.CustomizeRef().issuerSerializer, null);
+					ADOSettings.GetConsumer().editorAnimatedFoldouts.DrawContent(ADOEditorUtility.CustomizeRef().issuerSerializer, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -115,18 +115,18 @@ internal sealed class LicenseManager
 					EditorGUI.indentLevel++;
 					using (new GUILayout.HorizontalScope())
 					{
-						ADOSettings.GetConsumer().onSceneNameLabels.RunUtils(ADOEditorUtility.CustomizeRef()._FacadeSerializer, null);
+						ADOSettings.GetConsumer().onSceneNameLabels.DrawContent(ADOEditorUtility.CustomizeRef()._FacadeSerializer, null);
 						if ((bool)ADOSettings.GetConsumer().onSceneNameLabels)
 						{
-							ADOSettings.GetConsumer().labelColor.OrderPage(GUIContent.none, true);
+							ADOSettings.GetConsumer().labelColor.DrawContent(GUIContent.none, true);
 						}
 					}
-					ADOSettings.GetConsumer().generalColor.OrderPage(ADOEditorUtility.CustomizeRef().annotationSerializer, true);
-					ADOSettings.GetConsumer().activeColor.OrderPage(ADOEditorUtility.CustomizeRef().m_CodeSerializer, true);
-					ADOSettings.GetConsumer().inactiveColor.OrderPage(ADOEditorUtility.CustomizeRef()._CallbackSerializer, true);
-					ADOSettings.GetConsumer().mixedColor.OrderPage(ADOEditorUtility.CustomizeRef()._MessageSerializer, true);
-					ADOSettings.GetConsumer().selectionColor.OrderPage(ADOEditorUtility.CustomizeRef().policySerializer, true);
-					ADOSettings.GetConsumer().handleSizeMultiplier.LogoutUtils(ADOEditorUtility.CustomizeRef().m_RequestSerializer, true, null);
+					ADOSettings.GetConsumer().generalColor.DrawContent(ADOEditorUtility.CustomizeRef().annotationSerializer, true);
+					ADOSettings.GetConsumer().activeColor.DrawContent(ADOEditorUtility.CustomizeRef().m_CodeSerializer, true);
+					ADOSettings.GetConsumer().inactiveColor.DrawContent(ADOEditorUtility.CustomizeRef()._CallbackSerializer, true);
+					ADOSettings.GetConsumer().mixedColor.DrawContent(ADOEditorUtility.CustomizeRef()._MessageSerializer, true);
+					ADOSettings.GetConsumer().selectionColor.DrawContent(ADOEditorUtility.CustomizeRef().policySerializer, true);
+					ADOSettings.GetConsumer().handleSizeMultiplier.DrawFieldContent(ADOEditorUtility.CustomizeRef().m_RequestSerializer, true, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -140,21 +140,21 @@ internal sealed class LicenseManager
 				EditorGUI.indentLevel++;
 				using (new GUILayout.HorizontalScope())
 				{
-					ADOSettings.GetConsumer().onSceneToolSelection.RunUtils(new GUIContent("Tool Overlay", "Displays the tool selection overlay on the scene view."), null);
+					ADOSettings.GetConsumer().onSceneToolSelection.DrawContent(new GUIContent("Tool Overlay", "Displays the tool selection overlay on the scene view."), null);
 					using (new EditorGUI.DisabledScope(!ADOSettings.GetConsumer().onSceneToolSelection))
 					{
-						ADOSettings.GetConsumer().toolSelectionOverlayAlignment.PrepareUtils<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
+						ADOSettings.GetConsumer().toolSelectionOverlayAlignment.DrawEnumPopup<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
 				using (new GUILayout.HorizontalScope())
 				{
-					ADOSettings.GetConsumer().onSceneEditingOverlay.RunUtils(ADOEditorUtility.CustomizeRef().mappingSerializer, null);
+					ADOSettings.GetConsumer().onSceneEditingOverlay.DrawContent(ADOEditorUtility.CustomizeRef().mappingSerializer, null);
 					using (new EditorGUI.DisabledScope(!ADOSettings.GetConsumer().onSceneEditingOverlay))
 					{
-						ADOSettings.GetConsumer().toolOverlayAlignment.PrepareUtils<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
+						ADOSettings.GetConsumer().toolOverlayAlignment.DrawEnumPopup<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
-				ADOSettings.GetConsumer().onSceneTooltip.RunUtils(ADOEditorUtility.CustomizeRef().queueSerializer, null);
+				ADOSettings.GetConsumer().onSceneTooltip.DrawContent(ADOEditorUtility.CustomizeRef().queueSerializer, null);
 				EditorGUI.indentLevel--;
 			}
 		}
@@ -343,14 +343,14 @@ internal sealed class LicenseManager
 				StartConfiguration(list);
 				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 				{
-					bool flag = response.PublishConsumer("success");
-					string text = response.PublishConsumer("message");
+					bool flag = response.Item("success");
+					string text = response.Item("message");
 					processor = true;
 					if (string.IsNullOrWhiteSpace(text))
 					{
 						NewIdentifier(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
-						m_Mapping = response.PublishConsumer("solution");
-						queue = response.PublishConsumer("complete");
+						m_Mapping = response.Item("solution");
+						queue = response.Item("complete");
 					}
 				}, UnityEngine.Debug.LogException, null, null, delegate
 				{
@@ -410,8 +410,8 @@ internal sealed class LicenseManager
 								getter = true;
 								OrderIdentifier(IncludeConfiguration(list2.ToArray())).CreateProcess(delegate(JsonObject response)
 								{
-									bool flag = response.PublishConsumer("success");
-									string text = response.PublishConsumer("message");
+									bool flag = response.Item("success");
+									string text = response.Item("message");
 									if (!string.IsNullOrEmpty(text))
 									{
 										NewIdentifier(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
@@ -489,27 +489,27 @@ internal sealed class LicenseManager
 
 	private sealed class ProcessRunner
 	{
-		private readonly ProcessStartInfo m_ContextIdentifier;
+		private readonly ProcessStartInfo startInfo;
 
-		private Process m_SerializerIdentifier;
+		private Process process;
 
-		private readonly Action<string> _MethodIdentifier;
+		private readonly Action<string> onOutput;
 
-		private readonly Action consumerIdentifier;
+		private readonly Action onFailure;
 
-		private readonly bool utilsIdentifier;
+		private readonly bool ignoreFailure;
 
-		private string _PageIdentifier;
+		private string output;
 
-		private bool _PropertyIdentifier;
+		private bool callbackInvoked;
 
-		internal bool m_SingletonIdentifier;
+		internal bool isFinished;
 
-		private bool accountIdentifier;
+		private bool succeeded;
 
 		internal ProcessRunner(string i, Action<string> second, bool wantfilter = false, bool istask2 = false, Action token3 = null)
 		{
-			m_ContextIdentifier = new ProcessStartInfo((!wantfilter) ? "powershell.exe" : "cmd.exe")
+			startInfo = new ProcessStartInfo((!wantfilter) ? "powershell.exe" : "cmd.exe")
 			{
 				CreateNoWindow = true,
 				UseShellExecute = false,
@@ -518,84 +518,84 @@ internal sealed class LicenseManager
 				Arguments = "/c " + i
 			};
 			string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-			m_ContextIdentifier.WorkingDirectory = folderPath;
+			startInfo.WorkingDirectory = folderPath;
 			if (!wantfilter)
 			{
 				string text = Path.Combine(folderPath, "WindowsPowerShell", "v1.0");
 				if (Directory.Exists(text))
 				{
-					m_ContextIdentifier.WorkingDirectory = text;
+					startInfo.WorkingDirectory = text;
 				}
 			}
-			_MethodIdentifier = second;
-			consumerIdentifier = token3;
-			utilsIdentifier = istask2;
+			onOutput = second;
+			onFailure = token3;
+			ignoreFailure = istask2;
 		}
 
-		internal void ComputeMethod()
+		internal void Run()
 		{
-			_PageIdentifier = string.Empty;
-			accountIdentifier = false;
-			m_SingletonIdentifier = false;
-			_PropertyIdentifier = false;
-			m_SerializerIdentifier = new Process();
-			m_SerializerIdentifier.StartInfo = m_ContextIdentifier;
-			m_SerializerIdentifier.Start();
+			output = string.Empty;
+			succeeded = false;
+			isFinished = false;
+			callbackInvoked = false;
+			process = new Process();
+			process.StartInfo = startInfo;
+			process.Start();
 			try
 			{
 				do
 				{
-					_PageIdentifier = m_SerializerIdentifier.StandardOutput.ReadToEnd();
+					output = process.StandardOutput.ReadToEnd();
 				}
-				while (string.IsNullOrEmpty(_PageIdentifier) && !m_SerializerIdentifier.HasExited);
-				accountIdentifier = true;
-				QueryMethod();
+				while (string.IsNullOrEmpty(output) && !process.HasExited);
+				succeeded = true;
+				Complete();
 			}
 			catch (Exception ex)
 			{
-				accountIdentifier = false;
-				_PageIdentifier = "Failure! Exception: " + ex.Message + "\n" + ex.StackTrace;
-				m_SerializerIdentifier?.Close();
-				Process serializerIdentifier = m_SerializerIdentifier;
-				if (serializerIdentifier != null)
+				succeeded = false;
+				output = "Failure! Exception: " + ex.Message + "\n" + ex.StackTrace;
+				process?.Close();
+				Process obj = process;
+				if (obj != null)
 				{
-					DefineConsumer((System.ComponentModel.Component)serializerIdentifier);
+					DisposeComponent((System.ComponentModel.Component)obj);
 				}
-				QueryMethod();
+				Complete();
 			}
-			m_SerializerIdentifier.WaitForExit();
+			process.WaitForExit();
 		}
 
-		private void QueryMethod()
+		private void Complete()
 		{
-			if (_PropertyIdentifier)
+			if (callbackInvoked)
 			{
 				return;
 			}
-			_PropertyIdentifier = true;
+			callbackInvoked = true;
 			try
 			{
-				string text = _PageIdentifier.ToString();
+				string text = output.ToString();
 				if (string.IsNullOrWhiteSpace(text))
 				{
 					text = "Missing";
 				}
-				if (accountIdentifier || utilsIdentifier)
+				if (succeeded || ignoreFailure)
 				{
-					_MethodIdentifier(text);
+					onOutput(text);
 				}
 				else
 				{
-					consumerIdentifier?.Invoke();
+					onFailure?.Invoke();
 				}
 			}
 			finally
 			{
-				m_SingletonIdentifier = true;
+				isFinished = true;
 			}
 		}
 
-		static void DefineConsumer(System.ComponentModel.Component component_0)
+		static void DisposeComponent(System.ComponentModel.Component component_0)
 		{
 			component_0.Dispose();
 		}
@@ -604,23 +604,23 @@ internal sealed class LicenseManager
 	[DefaultMember("Item")]
 	internal readonly struct JsonObject
 	{
-		private readonly string m_ImporterIdentifier;
+		private readonly string raw;
 
-		private readonly Dictionary<string, JsonValue> m_ServerIdentifier;
+		private readonly Dictionary<string, JsonValue> values;
 
-		internal readonly bool _WatcherIdentifier;
+		internal readonly bool isEmpty;
 
 		internal static object LogoutTokenizer;
 
 		internal JsonObject(string v)
 		{
-			m_ImporterIdentifier = v;
+			raw = v;
 			MatchCollection matchCollection = Regex.Matches(v, "\"(.*?)\":(?:(?:\"(.*?)\")|(?:(.*?)[,}]))");
 			int count = matchCollection.Count;
 			if (count != 0)
 			{
-				_WatcherIdentifier = false;
-				m_ServerIdentifier = new Dictionary<string, JsonValue>();
+				isEmpty = false;
+				values = new Dictionary<string, JsonValue>();
 				for (int i = 0; i < count; i++)
 				{
 					Match match = matchCollection[i];
@@ -632,38 +632,38 @@ internal sealed class LicenseManager
 					}
 					if (!string.IsNullOrEmpty(value))
 					{
-						m_ServerIdentifier[value] = new JsonValue(value2);
+						values[value] = new JsonValue(value2);
 					}
 				}
 			}
 			else
 			{
-				_WatcherIdentifier = true;
-				m_ServerIdentifier = null;
+				isEmpty = true;
+				values = null;
 			}
 		}
 
 		[SpecialName]
-		internal JsonValue PublishConsumer(string res)
+		internal JsonValue Item(string res)
 		{
-			m_ServerIdentifier.TryGetValue(res, out var value);
+			values.TryGetValue(res, out var value);
 			return value;
 		}
 
 		public override string ToString()
 		{
-			return m_ImporterIdentifier;
+			return raw;
 		}
 
-		public string VerifyConsumer(bool isvalue)
+		public string ToString(bool isvalue)
 		{
 			if (isvalue)
 			{
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.AppendLine("{");
-				foreach (KeyValuePair<string, JsonValue> item in m_ServerIdentifier)
+				foreach (KeyValuePair<string, JsonValue> value in values)
 				{
-					stringBuilder.AppendLine($"{item.Key}: {item.Value},");
+					stringBuilder.AppendLine($"{value.Key}: {value.Value},");
 				}
 				stringBuilder.Append("}");
 				return stringBuilder.ToString();
@@ -679,59 +679,59 @@ internal sealed class LicenseManager
 
 	internal readonly struct JsonValue
 	{
-		internal readonly string _RegIdentifier;
+		internal readonly string raw;
 
-		internal readonly string m_ProcessIdentifier;
+		internal readonly string stringValue;
 
-		internal readonly bool _StatusIdentifier;
+		internal readonly bool boolValue;
 
-		internal readonly float _ValIdentifier;
+		internal readonly float floatValue;
 
-		internal readonly bool adapterIdentifier;
+		internal readonly bool hasValue;
 
 		internal static object FlushTokenizer;
 
 		internal JsonValue(string ident)
 		{
-			_RegIdentifier = ident;
-			adapterIdentifier = true;
+			raw = ident;
+			hasValue = true;
 			if (ident.Length > 1)
 			{
 				if (ident.StartsWith("\"") && ident.EndsWith("\""))
 				{
-					m_ProcessIdentifier = ((ident.Length != 2) ? ident.Substring(1, ident.Length - 2) : string.Empty);
+					stringValue = ((ident.Length != 2) ? ident.Substring(1, ident.Length - 2) : string.Empty);
 				}
 				else
 				{
-					m_ProcessIdentifier = ident;
+					stringValue = ident;
 				}
 			}
 			else
 			{
-				m_ProcessIdentifier = ident;
+				stringValue = ident;
 			}
-			_StatusIdentifier = m_ProcessIdentifier == "true";
-			float.TryParse(m_ProcessIdentifier, out _ValIdentifier);
+			boolValue = stringValue == "true";
+			float.TryParse(stringValue, out floatValue);
 		}
 
 		public override string ToString()
 		{
-			return m_ProcessIdentifier;
+			return stringValue;
 		}
 
 		public static implicit operator string(JsonValue setup)
 		{
-			return setup.m_ProcessIdentifier;
+			return setup.stringValue;
 		}
 
 		public static implicit operator bool(JsonValue setup)
 		{
-			return setup._StatusIdentifier;
+			return setup.boolValue;
 		}
 
 		public static implicit operator float(JsonValue spec)
 		{
-			return spec._ValIdentifier;
+			return spec.floatValue;
 		}
 
 		internal static bool OrderTokenizer()
@@ -752,57 +752,57 @@ internal sealed class LicenseManager
 	{
 		internal class SettingsChangeScope : IDisposable
 		{
-			private readonly Action collectionIdentifier;
+			private readonly Action onChanged;
 
-			private readonly bool _InterceptorIdentifier;
+			private readonly bool previousDeferred;
 
-			private readonly EditorGUI.ChangeCheckScope m_RegistryIdentifier;
+			private readonly EditorGUI.ChangeCheckScope changeCheck;
 
 			[SpecialName]
-			internal bool ValidateConsumer()
+			internal bool IsChanged()
 			{
-				return m_RegistryIdentifier.changed;
+				return changeCheck.changed;
 			}
 
 			public SettingsChangeScope(Action reference = null)
 			{
-				collectionIdentifier = reference;
-				_InterceptorIdentifier = ReflectConsumer();
+				onChanged = reference;
+				previousDeferred = ReflectConsumer();
 				ResolveConsumer(isv: true);
-				m_RegistryIdentifier = new EditorGUI.ChangeCheckScope();
+				changeCheck = new EditorGUI.ChangeCheckScope();
 			}
 
 			public void Dispose()
 			{
-				bool changed = m_RegistryIdentifier.changed;
-				m_RegistryIdentifier.Dispose();
+				bool changed = changeCheck.changed;
+				changeCheck.Dispose();
 				if (changed)
 				{
-					collectionIdentifier?.Invoke();
+					onChanged?.Invoke();
 					ForgotConsumer();
 				}
-				ResolveConsumer(_InterceptorIdentifier);
+				ResolveConsumer(previousDeferred);
 			}
 
 			public static implicit operator bool(SettingsChangeScope v)
 			{
-				return v.m_RegistryIdentifier.changed;
+				return v.changeCheck.changed;
 			}
 		}
 
 		internal class SettingsDeferScope : IDisposable
 		{
-			private readonly bool _ClientIdentifier;
+			private readonly bool previousDeferred;
 
 			public SettingsDeferScope()
 			{
-				_ClientIdentifier = ReflectConsumer();
+				previousDeferred = ReflectConsumer();
 				ResolveConsumer(isv: true);
 			}
 
 			public void Dispose()
 			{
-				ResolveConsumer(_ClientIdentifier);
+				ResolveConsumer(previousDeferred);
 			}
 		}
 
@@ -812,66 +812,66 @@ internal sealed class LicenseManager
 			[SerializeField]
 			private bool _value;
 
-			internal readonly Action observerIdentifier;
+			internal readonly Action onChange;
 
 			[SpecialName]
-			internal bool CustomizeUtils()
+			internal bool GetValue()
 			{
 				return _value;
 			}
 
 			[SpecialName]
-			internal void ConcatUtils(bool nores)
+			internal void SetValue(bool nores)
 			{
 				if (_value != nores)
 				{
 					_value = nores;
-					observerIdentifier?.Invoke();
+					onChange?.Invoke();
 					ForgotConsumer();
 				}
 			}
 
 			internal BoolSetting(bool forcev, Action connection = null)
 			{
-				m_TestsIdentifier = forcev;
+				defaultValue = forcev;
 				_value = forcev;
-				observerIdentifier = connection;
+				onChange = connection;
 			}
 
-			internal void IncludeConsumer()
+			internal void Toggle()
 			{
-				ConcatUtils(!_value);
+				SetValue(!_value);
 			}
 
-			internal void RevertConsumer(string res, GUIStyle ord = null, params GUILayoutOption[] options)
+			internal void Draw(string res, GUIStyle ord = null, params GUILayoutOption[] options)
 			{
-				RunUtils(new GUIContent(res), ord, options);
+				DrawContent(new GUIContent(res), ord, options);
 			}
 
-			internal void RunUtils(GUIContent info, GUIStyle selection = null, params GUILayoutOption[] options)
+			internal void DrawContent(GUIContent info, GUIStyle selection = null, params GUILayoutOption[] options)
 			{
 				if (selection != null)
 				{
-					ConcatUtils(EditorGUILayout.Toggle(info, CustomizeUtils(), selection, options));
+					SetValue(EditorGUILayout.Toggle(info, GetValue(), selection, options));
 				}
 				else
 				{
-					ConcatUtils(EditorGUILayout.Toggle(info, CustomizeUtils(), options));
+					SetValue(EditorGUILayout.Toggle(info, GetValue(), options));
 				}
 			}
 
-			internal void OrderUtils(string spec, string token = null, bool rejectproc = false, Color? reg2 = null, Color? config3 = null, params GUILayoutOption[] options)
+			internal void DrawButton(string spec, string token = null, bool rejectproc = false, Color? reg2 = null, Color? config3 = null, params GUILayoutOption[] options)
 			{
-				CalculateUtils((!string.IsNullOrEmpty(spec)) ? new GUIContent(spec) : GUIContent.none, (!string.IsNullOrEmpty(token)) ? new GUIContent(token) : GUIContent.none, rejectproc, reg2, config3, options);
+				DrawButtonContent((!string.IsNullOrEmpty(spec)) ? new GUIContent(spec) : GUIContent.none, (!string.IsNullOrEmpty(token)) ? new GUIContent(token) : GUIContent.none, rejectproc, reg2, config3, options);
 			}
 
-			internal void CalculateUtils(GUIContent value, GUIContent cfg = null, bool isconsumer = false, Color? cust2 = null, Color? t3 = null, params GUILayoutOption[] options)
+			internal void DrawButtonContent(GUIContent value, GUIContent cfg = null, bool isconsumer = false, Color? cust2 = null, Color? t3 = null, params GUILayoutOption[] options)
 			{
 				cust2 = cust2 ?? GUI.backgroundColor;
 				t3 = t3 ?? GUI.backgroundColor;
 				Color backgroundColor = GUI.backgroundColor;
-				GUI.backgroundColor = ((!CustomizeUtils()) ? t3.Value : cust2.Value);
-				ConcatUtils(GUILayout.Toggle(CustomizeUtils(), (!CustomizeUtils() && cfg != null) ? cfg : value, (!isconsumer) ? GUI.skin.button : EditorStyles.toolbarButton, options));
+				GUI.backgroundColor = ((!GetValue()) ? t3.Value : cust2.Value);
+				SetValue(GUILayout.Toggle(GetValue(), (!GetValue() && cfg != null) ? cfg : value, (!isconsumer) ? GUI.skin.button : EditorStyles.toolbarButton, options));
 				GUI.backgroundColor = backgroundColor;
 			}
 
@@ -882,7 +882,7 @@ internal sealed class LicenseManager
 
 			internal override void QueryCollection()
 			{
-				ConcatUtils((bool)m_TestsIdentifier);
+				SetValue((bool)defaultValue);
 			}
 		}
 
@@ -892,49 +892,49 @@ internal sealed class LicenseManager
 			[SerializeField]
 			private float _value;
 
-			internal readonly Action _EventIdentifier;
+			internal readonly Action onChanged;
 
 			[SpecialName]
-			internal float PatchUtils()
+			internal float GetValue()
 			{
 				return _value;
 			}
 
 			[SpecialName]
-			internal void CheckUtils(float task)
+			internal void SetValue(float task)
 			{
 				if (_value != task)
 				{
 					_value = task;
-					_EventIdentifier?.Invoke();
+					onChanged?.Invoke();
 					ForgotConsumer();
 				}
 			}
 
 			internal FloatSetting(float i, Action counter = null)
 			{
-				m_TestsIdentifier = i;
+				defaultValue = i;
 				_value = i;
-				_EventIdentifier = counter;
+				onChanged = counter;
 			}
 
-			internal void FillUtils(string reference, bool nopol = true, GUIStyle comp = null, params GUILayoutOption[] options)
+			internal void DrawField(string reference, bool nopol = true, GUIStyle comp = null, params GUILayoutOption[] options)
 			{
-				LogoutUtils(new GUIContent(reference), nopol, comp, options);
+				DrawFieldContent(new GUIContent(reference), nopol, comp, options);
 			}
 
-			internal void CancelUtils(string info, float attr, bool moverule = true, GUIStyle setup2 = null, params GUILayoutOption[] options)
+			internal void DrawFieldWithLabelWidth(string info, float attr, bool moverule = true, GUIStyle setup2 = null, params GUILayoutOption[] options)
 			{
 				EditorGUIUtility.labelWidth = attr;
-				LogoutUtils(new GUIContent(info), moverule, setup2, options);
+				DrawFieldContent(new GUIContent(info), moverule, setup2, options);
 				EditorGUIUtility.labelWidth = 0f;
 			}
 
-			internal void LogoutUtils(GUIContent spec, bool ispol = true, GUIStyle dir = null, params GUILayoutOption[] options)
+			internal void DrawFieldContent(GUIContent spec, bool ispol = true, GUIStyle dir = null, params GUILayoutOption[] options)
 			{
 				using (new GUILayout.HorizontalScope())
 				{
-					CheckUtils((dir != null) ? EditorGUILayout.FloatField(spec, PatchUtils(), dir, options) : EditorGUILayout.FloatField(spec, PatchUtils(), options));
+					SetValue((dir != null) ? EditorGUILayout.FloatField(spec, GetValue(), dir, options) : EditorGUILayout.FloatField(spec, GetValue(), options));
 					if (ispol && GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
@@ -942,23 +942,23 @@ internal sealed class LicenseManager
 				}
 			}
 
-			internal void SetupUtils(GUIContent config, float pol, bool removedic = true, GUIStyle col2 = null, params GUILayoutOption[] options)
+			internal void DrawFieldWithLabelWidthContent(GUIContent config, float pol, bool removedic = true, GUIStyle col2 = null, params GUILayoutOption[] options)
 			{
 				EditorGUIUtility.labelWidth = pol;
-				LogoutUtils(config, removedic, col2, options);
+				DrawFieldContent(config, removedic, col2, options);
 				EditorGUIUtility.labelWidth = 0f;
 			}
 
-			internal void SelectUtils(string item, float map, float temp, bool requiresreference2 = true, params GUILayoutOption[] options)
+			internal void DrawSlider(string item, float map, float temp, bool requiresreference2 = true, params GUILayoutOption[] options)
 			{
-				WriteUtils(new GUIContent(item), map, temp, requiresreference2, options);
+				DrawSliderContent(new GUIContent(item), map, temp, requiresreference2, options);
 			}
 
-			internal void WriteUtils(GUIContent instance, float pol, float consumer, bool forcet2 = true, params GUILayoutOption[] options)
+			internal void DrawSliderContent(GUIContent instance, float pol, float consumer, bool forcet2 = true, params GUILayoutOption[] options)
 			{
 				using (new GUILayout.HorizontalScope())
 				{
-					CheckUtils(EditorGUILayout.Slider(instance, PatchUtils(), pol, consumer, options));
+					SetValue(EditorGUILayout.Slider(instance, GetValue(), pol, consumer, options));
 					if (forcet2 && GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
@@ -966,19 +966,19 @@ internal sealed class LicenseManager
 				}
 			}
 
-			internal void MoveUtils(string def, bool isb = true, params GUILayoutOption[] options)
+			internal void DrawNormalizedSlider(string def, bool isb = true, params GUILayoutOption[] options)
 			{
-				PublishUtils(new GUIContent(def), isb, options);
+				DrawNormalizedSliderContent(new GUIContent(def), isb, options);
 			}
 
-			internal void PublishUtils(GUIContent param, bool testpred = true, params GUILayoutOption[] options)
+			internal void DrawNormalizedSliderContent(GUIContent param, bool testpred = true, params GUILayoutOption[] options)
 			{
-				WriteUtils(param, 0f, 1f, testpred, options);
+				DrawSliderContent(param, 0f, 1f, testpred, options);
 			}
 
 			internal override void QueryCollection()
 			{
-				CheckUtils((float)m_TestsIdentifier);
+				SetValue((float)defaultValue);
 			}
 
 			public static implicit operator int(FloatSetting asset)
@@ -996,15 +996,15 @@ internal sealed class LicenseManager
 		internal class EnumSetting : FloatSetting
 		{
 			[SerializeField]
-			internal int RestartUtils
+			internal int IntValue
 			{
 				get
 				{
-					return (int)PatchUtils();
+					return (int)GetValue();
 				}
 				set
 				{
-					CheckUtils(value);
+					SetValue(value);
 				}
 			}
 
@@ -1013,51 +1013,51 @@ internal sealed class LicenseManager
 			{
 			}
 
-			internal T RegisterUtils<T>() where T : Enum
+			internal T GetEnumValue<T>() where T : Enum
 			{
-				return (T)(object)RestartUtils;
+				return (T)(object)IntValue;
 			}
 
-			internal void ChangeUtils(GUIContent setup, GUIStyle map = null, params GUILayoutOption[] options)
+			internal void DrawIntFieldContent(GUIContent setup, GUIStyle map = null, params GUILayoutOption[] options)
 			{
-				RestartUtils = ((map != null) ? EditorGUILayout.IntField(setup, RestartUtils, map, options) : EditorGUILayout.IntField(setup, RestartUtils, options));
+				IntValue = ((map != null) ? EditorGUILayout.IntField(setup, IntValue, map, options) : EditorGUILayout.IntField(setup, IntValue, options));
 			}
 
-			internal void StopUtils(string first, GUIStyle ivk = null, params GUILayoutOption[] options)
+			internal void DrawIntField(string first, GUIStyle ivk = null, params GUILayoutOption[] options)
 			{
-				ChangeUtils(new GUIContent(first), ivk, options);
+				DrawIntFieldContent(new GUIContent(first), ivk, options);
 			}
 
-			internal void PushUtils<T>(GUIContent reference, bool acceptcont = false, GUIStyle dic = null, params GUILayoutOption[] options) where T : Enum
+			internal void DrawEnumPopupContent<T>(GUIContent reference, bool acceptcont = false, GUIStyle dic = null, params GUILayoutOption[] options) where T : Enum
 			{
 				if (!acceptcont)
 				{
-					RestartUtils = ((dic != null) ? ((int)(object)EditorGUILayout.EnumPopup(reference, (T)(object)RestartUtils, dic, options)) : ((int)(object)EditorGUILayout.EnumPopup(reference, (T)(object)RestartUtils, options)));
+					IntValue = ((dic != null) ? ((int)(object)EditorGUILayout.EnumPopup(reference, (T)(object)IntValue, dic, options)) : ((int)(object)EditorGUILayout.EnumPopup(reference, (T)(object)IntValue, options)));
 				}
 				else
 				{
-					RestartUtils = ((dic != null) ? ((int)(object)EditorGUILayout.EnumFlagsField(reference, (T)(object)RestartUtils, dic, options)) : ((int)(object)EditorGUILayout.EnumFlagsField(reference, (T)(object)RestartUtils, options)));
+					IntValue = ((dic != null) ? ((int)(object)EditorGUILayout.EnumFlagsField(reference, (T)(object)IntValue, dic, options)) : ((int)(object)EditorGUILayout.EnumFlagsField(reference, (T)(object)IntValue, options)));
 				}
 			}
 
-			internal void PrepareUtils<T>(string param, bool isb = false, GUIStyle temp = null, params GUILayoutOption[] options) where T : Enum
+			internal void DrawEnumPopup<T>(string param, bool isb = false, GUIStyle temp = null, params GUILayoutOption[] options) where T : Enum
 			{
-				PushUtils<T>(new GUIContent(param), isb, temp, options);
+				DrawEnumPopupContent<T>(new GUIContent(param), isb, temp, options);
 			}
 
-			internal static EnumSetting ReadUtils<T>(T last, Action selection = null) where T : Enum
+			internal static EnumSetting FromEnum<T>(T last, Action selection = null) where T : Enum
 			{
 				return new EnumSetting((int)(object)last, selection);
 			}
 
 			public static implicit operator int(EnumSetting instance)
 			{
-				return instance.RestartUtils;
+				return instance.IntValue;
 			}
 
 			public static implicit operator float(EnumSetting task)
 			{
-				return task.RestartUtils;
+				return task.IntValue;
 			}
 		}
 
@@ -1073,44 +1073,44 @@ internal sealed class LicenseManager
 			[SerializeField]
 			private float _valueZ;
 
-			internal Action _ResolverIdentifier;
+			internal Action onChanged;
 
-			internal bool _TagIdentifier;
+			internal bool isCached;
 
-			internal Vector3 filterIdentifier;
+			internal Vector3 cachedValue;
 
 			[SpecialName]
-			internal Vector3 ConnectUtils()
+			internal Vector3 GetValue()
 			{
-				if (!_TagIdentifier)
+				if (!isCached)
 				{
 					while (true)
 					{
-						_TagIdentifier = true;
-						filterIdentifier = new Vector3(_valueX, _valueY, _valueZ);
+						isCached = true;
+						cachedValue = new Vector3(_valueX, _valueY, _valueZ);
 					}
 				}
-				return filterIdentifier;
+				return cachedValue;
 			}
 
 			[SpecialName]
-			internal void FindUtils(Vector3 config)
+			internal void SetValue(Vector3 config)
 			{
-				if (filterIdentifier != config)
+				if (cachedValue != config)
 				{
-					filterIdentifier = config;
+					cachedValue = config;
 					_valueX = config.x;
 					_valueY = config.y;
 					_valueZ = config.z;
-					_ResolverIdentifier?.Invoke();
+					onChanged?.Invoke();
 					ForgotConsumer();
 				}
 			}
 
-			internal void ManageUtils(Vector3 key, Action pol)
+			internal void Initialize(Vector3 key, Action pol)
 			{
-				m_TestsIdentifier = key;
-				_ResolverIdentifier = pol;
+				defaultValue = key;
+				onChanged = pol;
 				_valueX = key.x;
 				_valueY = key.y;
 				_valueZ = key.z;
@@ -1118,25 +1118,25 @@ internal sealed class LicenseManager
 
 			internal VectorSetting(Vector3 info, Action caller = null)
 			{
-				ManageUtils(info, caller);
+				Initialize(info, caller);
 			}
 
 			internal VectorSetting(float var1, float token, float control, Action second2 = null)
 			{
-				ManageUtils(new Vector3(var1, token, control), second2);
+				Initialize(new Vector3(var1, token, control), second2);
 			}
 
 			internal VectorSetting(float config, float second, Action comp = null)
 			{
-				ManageUtils(new Vector3(config, second), comp);
+				Initialize(new Vector3(config, second), comp);
 			}
 
-			internal void RateUtils(GUIContent task, params GUILayoutOption[] options)
+			internal void DrawVector2FieldContent(GUIContent task, params GUILayoutOption[] options)
 			{
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.Label(task, GUILayout.MaxWidth(117f));
-					FindUtils(EditorGUILayout.Vector2Field(GUIContent.none, ConnectUtils(), options));
+					SetValue(EditorGUILayout.Vector2Field(GUIContent.none, GetValue(), options));
 					if (GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
@@ -1144,29 +1144,29 @@ internal sealed class LicenseManager
 				}
 			}
 
-			internal void CloneUtils(string reference, params GUILayoutOption[] options)
+			internal void DrawVector2Field(string reference, params GUILayoutOption[] options)
 			{
-				RateUtils(new GUIContent(reference), options);
+				DrawVector2FieldContent(new GUIContent(reference), options);
 			}
 
-			internal void ComputeUtils(GUIContent setup, params GUILayoutOption[] options)
+			internal void DrawVector3FieldContent(GUIContent setup, params GUILayoutOption[] options)
 			{
-				FindUtils(EditorGUILayout.Vector3Field(setup, ConnectUtils(), options));
+				SetValue(EditorGUILayout.Vector3Field(setup, GetValue(), options));
 			}
 
-			internal void QueryUtils(string key, params GUILayoutOption[] options)
+			internal void DrawVector3Field(string key, params GUILayoutOption[] options)
 			{
-				ComputeUtils(new GUIContent(key), options);
+				DrawVector3FieldContent(new GUIContent(key), options);
 			}
 
 			internal override void QueryCollection()
 			{
-				FindUtils((Vector3)m_TestsIdentifier);
+				SetValue((Vector3)defaultValue);
 			}
 
 			public static implicit operator Vector2(VectorSetting spec)
 			{
-				return spec.ConnectUtils();
+				return spec.GetValue();
 			}
 		}
 
@@ -1176,40 +1176,40 @@ internal sealed class LicenseManager
 			[SerializeField]
 			private string _value;
 
-			internal readonly Action m_AttributeIdentifier;
+			internal readonly Action onChanged;
 
 			[SpecialName]
-			internal string CreateUtils()
+			internal string GetValue()
 			{
 				return _value;
 			}
 
 			[SpecialName]
-			internal void IncludeUtils(string ident)
+			internal void SetValue(string ident)
 			{
 				if (_value != ident)
 				{
 					_value = ident;
-					m_AttributeIdentifier?.Invoke();
+					onChanged?.Invoke();
 					ForgotConsumer();
 				}
 			}
 
 			internal StringSetting(string ident = "", Action attr = null)
 			{
-				m_TestsIdentifier = ident;
+				defaultValue = ident;
 				_value = ident;
-				m_AttributeIdentifier = attr;
+				onChanged = attr;
 			}
 
 			internal override void QueryCollection()
 			{
-				IncludeUtils((string)m_TestsIdentifier);
+				SetValue((string)defaultValue);
 			}
 
 			public override string ToString()
 			{
-				return CreateUtils();
+				return GetValue();
 			}
 
 			public static implicit operator string(StringSetting setup)
@@ -1221,7 +1221,7 @@ internal sealed class LicenseManager
 		[Serializable]
 		internal class ColorSetting : SettingBase
 		{
-			internal readonly Action taskIdentifier;
+			internal readonly Action onChange;
 
 			[SerializeField]
 			private float r;
@@ -1236,53 +1236,53 @@ internal sealed class LicenseManager
 			private float a;
 
 			[SpecialName]
-			internal Color VerifyPage()
+			internal Color GetValue()
 			{
 				return new Color(r, g, b, a);
 			}
 
 			[SpecialName]
-			internal void SetPage(Color info)
+			internal void SetValue(Color info)
 			{
 				r = info.r;
 				g = info.g;
 				b = info.b;
 				a = info.a;
-				taskIdentifier?.Invoke();
+				onChange?.Invoke();
 				ForgotConsumer();
 			}
 
 			internal ColorSetting(float def, float vis, float dir, float token2 = 1f, Action task3 = null)
 			{
 				Color color = new Color(def, vis, dir, token2);
-				m_TestsIdentifier = color;
+				defaultValue = color;
 				r = def;
 				g = vis;
 				b = dir;
 				a = token2;
-				taskIdentifier = task3;
+				onChange = task3;
 			}
 
 			internal ColorSetting(Color init, Action attr = null)
 			{
-				m_TestsIdentifier = init;
+				defaultValue = init;
 				r = init.r;
 				g = init.g;
 				b = init.b;
 				a = init.a;
-				taskIdentifier = attr;
+				onChange = attr;
 			}
 
-			internal void RunPage(string v, bool appendresult = true, params GUILayoutOption[] options)
+			internal void Draw(string v, bool appendresult = true, params GUILayoutOption[] options)
 			{
-				OrderPage(new GUIContent(v), appendresult, options);
+				DrawContent(new GUIContent(v), appendresult, options);
 			}
 
-			internal void OrderPage(GUIContent key, bool iscol = true, params GUILayoutOption[] options)
+			internal void DrawContent(GUIContent key, bool iscol = true, params GUILayoutOption[] options)
 			{
 				using (new GUILayout.HorizontalScope())
 				{
-					SetPage(EditorGUILayout.ColorField(key, VerifyPage(), options));
+					SetValue(EditorGUILayout.ColorField(key, GetValue(), options));
 					if (iscol && GUILayout.Button(ADOEditorUtility.CustomizeRef()._ConfigSerializer, ADOEditorUtility.MapRef()._ClassSerializer, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						QueryCollection();
@@ -1292,7 +1292,7 @@ internal sealed class LicenseManager
 
 			internal override void QueryCollection()
 			{
-				SetPage((Color)m_TestsIdentifier);
+				SetValue((Color)defaultValue);
 			}
 		}
 
@@ -1415,7 +1415,7 @@ internal sealed class LicenseManager
 
 		internal abstract class SettingBase
 		{
-			internal object m_TestsIdentifier;
+			internal object defaultValue;
 
 			internal abstract void QueryCollection();
 		}
@@ -1516,10 +1516,10 @@ internal sealed class LicenseManager
 		internal BoolSetting hasReadColliderTestingWarning = new BoolSetting(forcev: false);
 
 		[SerializeField]
-		internal EnumSetting toolSelectionOverlayAlignment = EnumSetting.ReadUtils(ADOEditorUtility.PositionFlag.BottomLeft);
+		internal EnumSetting toolSelectionOverlayAlignment = EnumSetting.FromEnum(ADOEditorUtility.PositionFlag.BottomLeft);
 
 		[SerializeField]
-		internal EnumSetting toolOverlayAlignment = EnumSetting.ReadUtils(ADOEditorUtility.PositionFlag.BottomRight);
+		internal EnumSetting toolOverlayAlignment = EnumSetting.FromEnum(ADOEditorUtility.PositionFlag.BottomRight);
 
 		[SerializeField]
 		internal FloatSetting gizmoBoneOpacity = new FloatSetting(0.5f, PhysBoneEditor.InterruptSingleton);
@@ -1680,9 +1680,9 @@ internal sealed class LicenseManager
 		{
 			return new Color[3]
 			{
-				inactiveColor.VerifyPage(),
-				activeColor.VerifyPage(),
-				mixedColor.VerifyPage()
+				inactiveColor.GetValue(),
+				activeColor.GetValue(),
+				mixedColor.GetValue()
 			};
 		}
 	}
@@ -2520,7 +2520,7 @@ internal sealed class LicenseManager
 
 			internal bool SortParams(ADOEditorUtility.PhysBoneParameter pbp2)
 			{
-				return pbp2._IndexerMethod;
+				return pbp2.hasBackingField;
 			}
 
 			internal void InvokeParams()
@@ -2529,7 +2529,7 @@ internal sealed class LicenseManager
 				{
 					if ((bool)ADOSettings.GetConsumer().globalGizmo)
 					{
-						ADOSettings.GetConsumer().gizmosActive.ConcatUtils(m_FactoryAuthentication.boolValue);
+						ADOSettings.GetConsumer().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
 					}
 				}, GUILayout.ExpandWidth(expand: false));
 				bool flag;
@@ -2538,7 +2538,7 @@ internal sealed class LicenseManager
 				{
 					using (new ADOSettings.SettingsChangeScope(InterruptSingleton))
 					{
-						ADOSettings.GetConsumer().globalGizmo.ConcatUtils(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
+						ADOSettings.GetConsumer().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
 					}
 				}
 			}
@@ -2547,7 +2547,7 @@ internal sealed class LicenseManager
 			{
 				if ((bool)ADOSettings.GetConsumer().globalGizmo)
 				{
-					ADOSettings.GetConsumer().gizmosActive.ConcatUtils(m_FactoryAuthentication.boolValue);
+					ADOSettings.GetConsumer().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
 				}
 			}
 
@@ -2555,8 +2555,8 @@ internal sealed class LicenseManager
 			{
 				if ((bool)ADOSettings.GetConsumer().globalGizmo)
 				{
-					ADOSettings.GetConsumer().gizmoBoneOpacity.CheckUtils(EditorGUILayout.Slider("Bone Opacity", ADOSettings.GetConsumer().gizmoBoneOpacity, 0f, 1f));
-					ADOSettings.GetConsumer().gizmoLimitOpacity.CheckUtils(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.GetConsumer().gizmoLimitOpacity, 0f, 1f));
+					ADOSettings.GetConsumer().gizmoBoneOpacity.SetValue(EditorGUILayout.Slider("Bone Opacity", ADOSettings.GetConsumer().gizmoBoneOpacity, 0f, 1f));
+					ADOSettings.GetConsumer().gizmoLimitOpacity.SetValue(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.GetConsumer().gizmoLimitOpacity, 0f, 1f));
 				}
 				else
 				{
@@ -2586,7 +2586,7 @@ internal sealed class LicenseManager
 
 			internal bool LogoutParams(ADOEditorUtility.PhysBoneParameter p)
 			{
-				return p._IndexerMethod;
+				return p.hasBackingField;
 			}
 
 			internal IEnumerable<Transform> SetupParams(VRCPhysBone pb)
@@ -2754,7 +2754,7 @@ internal sealed class LicenseManager
 											_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
 											_003C_003Ec__DisplayClass108_2.advisorAuthentication = _003C_003Ec__DisplayClass108_;
 											_003C_003Ec__DisplayClass108_2._StateAuthentication = visitorSerializer[i];
-											_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.workerMethod;
+											_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.suffix;
 											if (!parameters.Any(_003C_003Ec__DisplayClass108_2.PatchImporter))
 											{
 												genericMenu.AddItem(new GUIContent($"{_003C_003Ec__DisplayClass108_2.advisorAuthentication.configAuthentication.type}/{_003C_003Ec__DisplayClass108_2._FieldAuthentication}"), on: false, _003C_003Ec__DisplayClass108_2.CheckImporter);
@@ -2783,9 +2783,9 @@ internal sealed class LicenseManager
 					{
 						using (new EditorGUILayout.VerticalScope())
 						{
-							GUILayout.Label(item.workerMethod, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
+							GUILayout.Label(item.suffix, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
 							GUILayoutUtils.PrepareIterator();
-							GUILayout.Label(item.PrepareProduct(vRCPhysBone));
+							GUILayout.Label(item.GetValueString(vRCPhysBone));
 						}
 						GUILayoutUtils.StopIterator();
 					}
@@ -2823,7 +2823,7 @@ internal sealed class LicenseManager
 
 			internal void CheckImporter()
 			{
-				advisorAuthentication.m_MockAuthentication.FindProcess(_FieldAuthentication, _StateAuthentication._ItemMethod, 0f);
+				advisorAuthentication.m_MockAuthentication.FindProcess(_FieldAuthentication, _StateAuthentication.parameterType, 0f);
 				NewIdentifier($"Added {_FieldAuthentication} to {advisorAuthentication.configAuthentication.type} ({advisorAuthentication.m_MockAuthentication.name})");
 				SetupConfiguration();
 			}
@@ -3146,67 +3146,67 @@ internal sealed class LicenseManager
 			{
 				return false;
 			}
-			return rulesAuthentication.singletonSerializer == 6;
+			return rulesAuthentication.activeIndex == 6;
 		}
 
 		[SpecialName]
 		private static bool ResolveAccount()
 		{
-			return rulesAuthentication.singletonSerializer == 1;
+			return rulesAuthentication.activeIndex == 1;
 		}
 
 		[SpecialName]
 		private static void ResetAccount(bool noinit)
 		{
-			rulesAuthentication.LoginProcess(1, noinit);
+			rulesAuthentication.SetSelected(1, noinit);
 		}
 
 		[SpecialName]
 		private static bool FlushAccount()
 		{
-			return rulesAuthentication.singletonSerializer == 2;
+			return rulesAuthentication.activeIndex == 2;
 		}
 
 		[SpecialName]
 		private static void ExcludeAccount(bool isinfo)
 		{
-			rulesAuthentication.LoginProcess(2, isinfo);
+			rulesAuthentication.SetSelected(2, isinfo);
 		}
 
 		[SpecialName]
 		private static bool ConnectAccount()
 		{
-			return rulesAuthentication.singletonSerializer == 3;
+			return rulesAuthentication.activeIndex == 3;
 		}
 
 		[SpecialName]
 		private static void FindAccount(bool updatelast)
 		{
-			rulesAuthentication.LoginProcess(3, updatelast);
+			rulesAuthentication.SetSelected(3, updatelast);
 		}
 
 		[SpecialName]
 		private static bool ValidateAccount()
 		{
-			return rulesAuthentication.singletonSerializer == 4;
+			return rulesAuthentication.activeIndex == 4;
 		}
 
 		[SpecialName]
 		private static void CreateAccount(bool loadlast)
 		{
-			rulesAuthentication.LoginProcess(4, loadlast);
+			rulesAuthentication.SetSelected(4, loadlast);
 		}
 
 		[SpecialName]
 		private static bool RevertAccount()
 		{
-			return rulesAuthentication.singletonSerializer == 5;
+			return rulesAuthentication.activeIndex == 5;
 		}
 
 		[SpecialName]
 		private static void RunParams(bool updatelast)
 		{
-			rulesAuthentication.LoginProcess(5, updatelast);
+			rulesAuthentication.SetSelected(5, updatelast);
 		}
 
 		public override void OnInspectorGUI()
@@ -3459,7 +3459,7 @@ internal sealed class LicenseManager
 													_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
 													_003C_003Ec__DisplayClass108_2.advisorAuthentication = _003C_003Ec__DisplayClass108_;
 													_003C_003Ec__DisplayClass108_2._StateAuthentication = visitorSerializer[i];
-													_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.workerMethod;
+													_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.suffix;
 													if (!parameters.Any(_003C_003Ec__DisplayClass108_2.PatchImporter))
 													{
 														genericMenu.AddItem(new GUIContent($"{_003C_003Ec__DisplayClass108_2.advisorAuthentication.configAuthentication.type}/{_003C_003Ec__DisplayClass108_2._FieldAuthentication}"), on: false, _003C_003Ec__DisplayClass108_2.CheckImporter);
@@ -3487,9 +3487,9 @@ internal sealed class LicenseManager
 							{
 								using (new EditorGUILayout.VerticalScope())
 								{
-									GUILayout.Label(item.workerMethod, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
+									GUILayout.Label(item.suffix, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
 									GUILayoutUtils.PrepareIterator();
-									GUILayout.Label(item.PrepareProduct(vRCPhysBone));
+									GUILayout.Label(item.GetValueString(vRCPhysBone));
 								}
 								GUILayoutUtils.StopIterator();
 							}
@@ -3503,7 +3503,7 @@ internal sealed class LicenseManager
 					{
 						if ((bool)ADOSettings.GetConsumer().globalGizmo)
 						{
-							ADOSettings.GetConsumer().gizmosActive.ConcatUtils(m_FactoryAuthentication.boolValue);
+							ADOSettings.GetConsumer().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
 						}
 					}, GUILayout.ExpandWidth(expand: false));
 					bool flag;
@@ -3512,15 +3512,15 @@ internal sealed class LicenseManager
 					{
 						using (new ADOSettings.SettingsChangeScope(InterruptSingleton))
 						{
-							ADOSettings.GetConsumer().globalGizmo.ConcatUtils(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
+							ADOSettings.GetConsumer().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
 						}
 					}
 				}, delegate
 				{
 					if ((bool)ADOSettings.GetConsumer().globalGizmo)
 					{
-						ADOSettings.GetConsumer().gizmoBoneOpacity.CheckUtils(EditorGUILayout.Slider("Bone Opacity", ADOSettings.GetConsumer().gizmoBoneOpacity, 0f, 1f));
-						ADOSettings.GetConsumer().gizmoLimitOpacity.CheckUtils(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.GetConsumer().gizmoLimitOpacity, 0f, 1f));
+						ADOSettings.GetConsumer().gizmoBoneOpacity.SetValue(EditorGUILayout.Slider("Bone Opacity", ADOSettings.GetConsumer().gizmoBoneOpacity, 0f, 1f));
+						ADOSettings.GetConsumer().gizmoLimitOpacity.SetValue(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.GetConsumer().gizmoLimitOpacity, 0f, 1f));
 					}
 					else
 					{
@@ -3539,7 +3539,7 @@ internal sealed class LicenseManager
 
 		private void method_0()
 		{
-			if (rulesAuthentication.singletonSerializer < 0)
+			if (rulesAuthentication.activeIndex < 0)
 			{
 				return;
 			}
@@ -3548,7 +3548,7 @@ internal sealed class LicenseManager
 			{
 				Tools.hidden = true;
 				ADOEditorUtility.BoneChainTree boneChainTree = new ADOEditorUtility.BoneChainTree(vRCPhysBone);
-				boneChainTree.CancelProduct();
+				boneChainTree.BuildChains();
 				if (ResolveAccount())
 				{
 					CustomizeSingleton(_MessageIdentifier, boneChainTree);
@@ -3568,7 +3568,7 @@ internal sealed class LicenseManager
 			if (ValidateAccount())
 			{
 				bool flag = ADOSettings.GetConsumer().onSceneNameLabels;
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, ADOSettings.GetConsumer().labelColor.VerifyPage()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, ADOSettings.GetConsumer().labelColor.GetValue()))
 				{
 					for (int i = 0; i < m_MapperIdentifier.Length; i++)
 					{
@@ -3590,7 +3590,7 @@ internal sealed class LicenseManager
 			if (FlushAccount())
 			{
 				bool flag2 = ADOSettings.GetConsumer().onSceneNameLabels;
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag2, ADOSettings.GetConsumer().labelColor.VerifyPage()))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag2, ADOSettings.GetConsumer().labelColor.GetValue()))
 				{
 					for (int num = 0; num < mappingIdentifier.Length; num++)
 					{
@@ -3612,8 +3612,8 @@ internal sealed class LicenseManager
 			if (RevertAccount())
 			{
 				bool flag3 = ADOSettings.GetConsumer().onSceneNameLabels;
-				Handles.color = ADOSettings.GetConsumer().selectionColor.VerifyPage();
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag3, ADOSettings.GetConsumer().labelColor.VerifyPage()))
+				Handles.color = ADOSettings.GetConsumer().selectionColor.GetValue();
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag3, ADOSettings.GetConsumer().labelColor.GetValue()))
 				{
 					for (int num2 = 0; num2 < _PolicyIdentifier.Length; num2++)
 					{
@@ -3638,8 +3638,8 @@ internal sealed class LicenseManager
 			if (ConnectAccount())
 			{
 				bool flag4 = ADOSettings.GetConsumer().onSceneNameLabels;
-				Handles.color = ADOSettings.GetConsumer().selectionColor.VerifyPage();
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag4, ADOSettings.GetConsumer().labelColor.VerifyPage()))
+				Handles.color = ADOSettings.GetConsumer().selectionColor.GetValue();
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag4, ADOSettings.GetConsumer().labelColor.GetValue()))
 				{
 					for (int num3 = 0; num3 < _PolicyIdentifier.Length; num3++)
 					{
@@ -3662,7 +3662,7 @@ internal sealed class LicenseManager
 				}
 			}
 			Event current = Event.current;
-			if (Tools.current != Tool.View && !current.alt && (bool)ADOSettings.GetConsumer().ignoreSceneClicks && rulesAuthentication.singletonSerializer > 0 && current.type == EventType.MouseDown && current.button == 0)
+			if (Tools.current != Tool.View && !current.alt && (bool)ADOSettings.GetConsumer().ignoreSceneClicks && rulesAuthentication.activeIndex > 0 && current.type == EventType.MouseDown && current.button == 0)
 			{
 				GUIUtility.hotControl = _Iterator - 1;
 				current.Use();
@@ -3673,7 +3673,7 @@ internal sealed class LicenseManager
 		private static void SetSingleton(SceneView info)
 		{
 			Rect ivk = info.AddStatus();
-			int num = rulesAuthentication.singletonSerializer;
+			int num = rulesAuthentication.activeIndex;
 			if (num < 0)
 			{
 				num = 0;
@@ -3681,18 +3681,18 @@ internal sealed class LicenseManager
 			bool flag = num > 0;
 			if ((bool)ADOSettings.GetConsumer().onSceneToolSelection && (flag || (bool)ADOSettings.GetConsumer().onSceneToolSelectionAlwaysVisible))
 			{
-				ADOEditorUtility.PositionFlag positionFlag = ADOSettings.GetConsumer().toolSelectionOverlayAlignment.RegisterUtils<ADOEditorUtility.PositionFlag>();
+				ADOEditorUtility.PositionFlag enumValue = ADOSettings.GetConsumer().toolSelectionOverlayAlignment.GetEnumValue<ADOEditorUtility.PositionFlag>();
 				bool flag2;
-				using (new ADOEditorUtility.SceneViewPanel(info, 250f, 34f, positionFlag, m_ExceptionIdentifier))
+				using (new ADOEditorUtility.SceneViewPanel(info, 250f, 34f, enumValue, m_ExceptionIdentifier))
 				{
 					Rect lastRect;
 					using (new GUILayout.HorizontalScope())
 					{
-						using (new EditorGUI.DisabledScope(rulesAuthentication.singletonSerializer <= 0))
+						using (new EditorGUI.DisabledScope(rulesAuthentication.activeIndex <= 0))
 						{
 							if (ADOEditorUtility.ListStatus((!ADOSettings.GetConsumer().ignoreSceneClicks) ? ADOEditorUtility.CustomizeRef().decoratorSerializer : ADOEditorUtility.CustomizeRef()._ParamSerializer))
 							{
-								ADOSettings.GetConsumer().ignoreSceneClicks.IncludeConsumer();
+								ADOSettings.GetConsumer().ignoreSceneClicks.Toggle();
 							}
 						}
 						GUILayout.FlexibleSpace();
@@ -3701,22 +3701,22 @@ internal sealed class LicenseManager
 						GUIContent content = new GUIContent(m_TestsAuthentication[num]);
 						float x = GUI.skin.label.CalcSize(content).x;
 						EditorGUI.BeginChangeCheck();
-						int singletonSerializer = EditorGUILayout.Popup(GUIContent.none, num, m_TestsAuthentication, GUILayout.Width(x + 20f));
+						int activeIndex = EditorGUILayout.Popup(GUIContent.none, num, m_TestsAuthentication, GUILayout.Width(x + 20f));
 						if (EditorGUI.EndChangeCheck())
 						{
-							rulesAuthentication.singletonSerializer = singletonSerializer;
-							if (rulesAuthentication.singletonSerializer == 0)
+							rulesAuthentication.activeIndex = activeIndex;
+							if (rulesAuthentication.activeIndex == 0)
 							{
 								SetupSingleton();
 							}
-							else if (rulesAuthentication.singletonSerializer == 6)
+							else if (rulesAuthentication.activeIndex == 6)
 							{
 								LogoutSingleton(0);
 							}
 							else
 							{
 								LogoutSingleton(-1);
-								if (rulesAuthentication.singletonSerializer > 1 && rulesAuthentication.singletonSerializer < 4)
+								if (rulesAuthentication.activeIndex > 1 && rulesAuthentication.activeIndex < 4)
 								{
 									PublishSingleton();
 								}
@@ -3730,7 +3730,7 @@ internal sealed class LicenseManager
 						GUILayout.FlexibleSpace();
 						if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
 						{
-							ADOverhaulWindow.CreateSerializer();
+							ADOverhaulWindow.ShowWindow();
 						}
 					}
 					flag2 = ADOEditorUtility.VisitStatus(lastRect, _TokenizerIdentifier);
@@ -3739,7 +3739,7 @@ internal sealed class LicenseManager
 				if (flag2)
 				{
 					Handles.BeginGUI();
-					ADOSettings.GetConsumer().toolSelectionOverlayAlignment.RestartUtils = (int)ADOEditorUtility.RunStatus(positionFlag, ivk);
+					ADOSettings.GetConsumer().toolSelectionOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk);
 					Handles.EndGUI();
 				}
 			}
@@ -3768,7 +3768,7 @@ internal sealed class LicenseManager
 
 		private static void InvokeSingleton(SceneView value)
 		{
-			if (!ADOSettings.GetConsumer().onSceneEditingOverlay || rulesAuthentication.singletonSerializer <= 0)
+			if (!ADOSettings.GetConsumer().onSceneEditingOverlay || rulesAuthentication.activeIndex <= 0)
 			{
 				return;
 			}
@@ -3841,8 +3841,8 @@ internal sealed class LicenseManager
 		{
 			_003C_003Ec__DisplayClass116_0 vis = default(_003C_003Ec__DisplayClass116_0);
 			vis._MessageAuthentication = res;
-			vis._PolicyAuthentication = result.definitionMethod;
-			ADOEditorUtility.BoneNode[] array = result.m_TokenMethod.Where((ADOEditorUtility.BoneNode b) => b.m_DescriptorMethod && !b.m_RepositoryMethod).ToArray();
+			vis._PolicyAuthentication = result.physBone;
+			ADOEditorUtility.BoneNode[] array = result.nodes.Where((ADOEditorUtility.BoneNode b) => b.m_DescriptorMethod && !b.m_RepositoryMethod).ToArray();
 			foreach (ADOEditorUtility.BoneNode boneNode in array)
 			{
 				Transform parserMethod = boneNode.parserMethod;
@@ -3904,7 +3904,7 @@ internal sealed class LicenseManager
 				return;
 			}
 			KeyCode keyCode = current.keyCode;
-			if (rulesAuthentication.singletonSerializer >= 0)
+			if (rulesAuthentication.activeIndex >= 0)
 			{
 				if (keyCode == KeyCode.Return || keyCode == KeyCode.KeypadEnter || keyCode == KeyCode.Escape)
 				{
@@ -3946,14 +3946,14 @@ internal sealed class LicenseManager
 		private static void MapSingleton(ADOEditorUtility.BoneChainTree def, AnimationCurve pred, Action<ADOEditorUtility.BoneNode, float> proc, bool isinstance2 = false)
 		{
 			bool flag = pred == null || pred.length == 0;
-			foreach (ADOEditorUtility.BoneNode item in def.m_TokenMethod)
+			foreach (ADOEditorUtility.BoneNode node in def.nodes)
 			{
-				float num = ((!flag) ? pred.Evaluate(item.RegisterProduct()) : 1f);
+				float num = ((!flag) ? pred.Evaluate(node.RegisterProduct()) : 1f);
 				if (isinstance2)
 				{
-					num *= item.CheckProduct();
+					num *= node.CheckProduct();
 				}
-				proc(item, num);
+				proc(node, num);
 			}
 		}
 
@@ -4038,7 +4038,7 @@ internal sealed class LicenseManager
 			_003C_003Ec__DisplayClass120_0 CS_0024_003C_003E8__locals28 = new _003C_003Ec__DisplayClass120_0();
 			CS_0024_003C_003E8__locals28.exceptionAuthentication = instance;
 			CS_0024_003C_003E8__locals28._ClassAuthentication = comp;
-			CS_0024_003C_003E8__locals28.m_TokenizerAuthentication = result.definitionMethod;
+			CS_0024_003C_003E8__locals28.m_TokenizerAuthentication = result.physBone;
 			if (CS_0024_003C_003E8__locals28.m_TokenizerAuthentication == null)
 			{
 				return;
@@ -4052,11 +4052,11 @@ internal sealed class LicenseManager
 			float num = ADOSettings.GetConsumer().handleSizeMultiplier;
 			float num2 = Mathf.Clamp(HandleUtility.GetHandleSize(CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.transform.position) * 0.05f * num, 0.02f * num, num * 2f);
 			_ = EditorStyles.boldLabel;
-			Color color = ADOSettings.GetConsumer().generalColor.VerifyPage();
-			Color color2 = Handles.color;
-			Handles.color = color;
+			Color value = ADOSettings.GetConsumer().generalColor.GetValue();
+			Color color = Handles.color;
+			Handles.color = value;
 			AnimationCurve animationCurveValue = CS_0024_003C_003E8__locals28.m_ErrorAuthentication.animationCurveValue;
-			List<List<ADOEditorUtility.BoneNode>> threadMethod = result.threadMethod;
+			List<List<ADOEditorUtility.BoneNode>> chains = result.chains;
 			if (CS_0024_003C_003E8__locals28._ClassAuthentication.m_StrategyAuthentication == 1)
 			{
 				MapSingleton(result, animationCurveValue, delegate(ADOEditorUtility.BoneNode b, float m)
@@ -4080,10 +4080,10 @@ internal sealed class LicenseManager
 			else
 			{
 				Vector3 vector = Vector3.zero;
-				Vector3[][] array = new Vector3[threadMethod.Count][];
-				for (int num3 = 0; num3 < threadMethod.Count; num3++)
+				Vector3[][] array = new Vector3[chains.Count][];
+				for (int num3 = 0; num3 < chains.Count; num3++)
 				{
-					List<ADOEditorUtility.BoneNode> list = threadMethod[num3];
+					List<ADOEditorUtility.BoneNode> list = chains[num3];
 					array[num3] = new Vector3[list.Count];
 					Vector3 vector2 = Vector3.zero;
 					for (int num4 = 0; num4 < list.Count; num4++)
@@ -4124,7 +4124,7 @@ internal sealed class LicenseManager
 					Handles.DrawAAPolyLine(3f * num, points);
 				}
 			}
-			Handles.color = color2;
+			Handles.color = color;
 		}
 
 		private static void LogoutSingleton(int end_v)
@@ -4132,19 +4132,19 @@ internal sealed class LicenseManager
 			if (end_v < 0 || (RemoveAccount() && m_StubAuthentication == end_v))
 			{
 				m_StubAuthentication = -1;
-				rulesAuthentication.LoginProcess(6, ispred: false);
+				rulesAuthentication.SetSelected(6, ispred: false);
 			}
 			else
 			{
 				m_StubAuthentication = end_v;
-				rulesAuthentication.SearchProcess(6);
+				rulesAuthentication.Select(6);
 			}
 			SceneView.RepaintAll();
 		}
 
 		internal static void SetupSingleton()
 		{
-			rulesAuthentication.PatchProcess();
+			rulesAuthentication.Clear();
 			m_StubAuthentication = -1;
 		}
 
@@ -4281,7 +4281,7 @@ internal sealed class LicenseManager
 			if (!threadAuthentication)
 			{
 				threadAuthentication = true;
-				float[] array = new float[ADOEditorUtility.m_VisitorSerializer.Count((ADOEditorUtility.PhysBoneParameter p) => p._IndexerMethod)];
+				float[] array = new float[ADOEditorUtility.m_VisitorSerializer.Count((ADOEditorUtility.PhysBoneParameter p) => p.hasBackingField)];
 				for (int num = 0; num < array.Length; num++)
 				{
 					array[num] = 1f / (float)array.Length;
@@ -4776,7 +4776,7 @@ internal sealed class LicenseManager
 						tooltip = tooltip
 					}))
 					{
-						ADOSettings.GetConsumer().hideToolsDuringTesting.IncludeConsumer();
+						ADOSettings.GetConsumer().hideToolsDuringTesting.Toggle();
 						Tools.hidden = false;
 					}
 				}
@@ -4968,7 +4968,7 @@ internal sealed class LicenseManager
 			QueryConfiguration(response, delegate
 			{
 				_Worker = false;
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: true);
+				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
 				AssetConfiguration(testkey: true);
 			});
 		}
@@ -4976,7 +4976,7 @@ internal sealed class LicenseManager
 		internal void RemoveServer()
 		{
 			_Worker = false;
-			ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: true);
+			ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
 			AssetConfiguration(testkey: true);
 		}
 
@@ -4988,7 +4988,7 @@ internal sealed class LicenseManager
 
 		internal bool ResolveServer(ProcessRunner p)
 		{
-			return p.m_SingletonIdentifier;
+			return p.isFinished;
 		}
 
 		internal bool ResetServer(string v)
@@ -5124,14 +5124,14 @@ internal sealed class LicenseManager
 
 		internal void DeleteWatcher()
 		{
-			ADOSettings.GetConsumer().a_VerifyOnDisplay.IncludeConsumer();
-			ADOSettings.GetConsumer().a_VerifyOnProjectLoad.ConcatUtils(nores: false);
+			ADOSettings.GetConsumer().a_VerifyOnDisplay.Toggle();
+			ADOSettings.GetConsumer().a_VerifyOnProjectLoad.SetValue(nores: false);
 		}
 
 		internal void DefineWatcher()
 		{
-			ADOSettings.GetConsumer().a_VerifyOnProjectLoad.IncludeConsumer();
-			ADOSettings.GetConsumer().a_VerifyOnDisplay.ConcatUtils(nores: false);
+			ADOSettings.GetConsumer().a_VerifyOnProjectLoad.Toggle();
+			ADOSettings.GetConsumer().a_VerifyOnDisplay.SetValue(nores: false);
 		}
 
 		internal void DestroyWatcher()
@@ -5173,7 +5173,7 @@ internal sealed class LicenseManager
 		internal async Task CustomizeWatcher()
 		{
 			await Task.Delay(3000);
-			ADOSettings.GetConsumer().u_updateHidden.ConcatUtils(nores: true);
+			ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
 			CalculateIdentifier();
 		}
 	}
@@ -5189,7 +5189,7 @@ internal sealed class LicenseManager
 			_Service = false;
 			_Reponse = false;
 			_Object = (listener = (m_Printer = string.Empty));
-			ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: false);
+			ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
 			SessionState.EraseBool(itemContext);
 			ResetConfiguration(reponse);
 		}
@@ -5218,7 +5218,7 @@ internal sealed class LicenseManager
 					_Service = false;
 					_Reponse = false;
 					_Object = (listener = (m_Printer = string.Empty));
-					ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: false);
+					ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
 					SessionState.EraseBool(itemContext);
 					ResetConfiguration(reponse);
 				}, comparesecond2: false);
@@ -5240,7 +5240,7 @@ internal sealed class LicenseManager
 				_Service = false;
 				_Reponse = false;
 				_Object = (listener = (m_Printer = string.Empty));
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: false);
+				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
 				SessionState.EraseBool(itemContext);
 				ResetConfiguration(reponse);
 			}, comparesecond2: false);
@@ -5277,7 +5277,7 @@ internal sealed class LicenseManager
 		{
 			try
 			{
-				string text = _SystemContext.PublishConsumer("date");
+				string text = _SystemContext.Item("date");
 				if (RemoveConfiguration() != text)
 				{
 					NewIdentifier("Date Mismatch! Please make sure your system's date is correct.\nLocal: " + setter + "  |  Remote: " + text, CustomLogType.Error);
@@ -5285,18 +5285,18 @@ internal sealed class LicenseManager
 					m_SetterContext.EnableWatcher();
 					return;
 				}
-				listener = _SystemContext.PublishConsumer("username");
-				m_Printer = _SystemContext.PublishConsumer("variant");
-				_Object = _SystemContext.PublishConsumer("token");
+				listener = _SystemContext.Item("username");
+				m_Printer = _SystemContext.Item("variant");
+				_Object = _SystemContext.Item("token");
 				InstantiateConfiguration();
 				RestartConfiguration();
-				string def = _SystemContext.PublishConsumer("message");
+				string def = _SystemContext.Item("message");
 				if (!_Reponse)
 				{
 					NewIdentifier(def);
 				}
 				_Service = true;
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: true);
+				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
 				EditorPrefs.SetString("No1lKII9IzcBAbihub6nCg==LK", m_Repository);
 				_003C_003Ec__DisplayClass132_4 _003C_003Ec__DisplayClass132_4_ = default(_003C_003Ec__DisplayClass132_4);
 				_003C_003Ec__DisplayClass132_4_.ruleContext = new AesManaged();
@@ -5662,7 +5662,7 @@ internal sealed class LicenseManager
 
 		internal void RestartReg()
 		{
-			m_Strategy = composerContext.PublishConsumer("transfer_email");
+			m_Strategy = composerContext.Item("transfer_email");
 			m_Config = true;
 		}
 	}
@@ -6334,7 +6334,7 @@ internal sealed class LicenseManager
 						tooltip = tooltip
 					}))
 					{
-						ADOSettings.GetConsumer().hideToolsDuringTesting.IncludeConsumer();
+						ADOSettings.GetConsumer().hideToolsDuringTesting.Toggle();
 						Tools.hidden = false;
 					}
 				}
@@ -7161,7 +7161,7 @@ internal sealed class LicenseManager
 				CompareConfiguration();
 				break;
 			case 2:
-				ADOSettings.GetConsumer().hasReadColliderTestingWarning.ConcatUtils(nores: true);
+				ADOSettings.GetConsumer().hasReadColliderTestingWarning.SetValue(nores: true);
 				break;
 			}
 		}
@@ -7293,7 +7293,7 @@ internal sealed class LicenseManager
 	private static void AssetConfiguration(bool testkey)
 	{
 		_003C_003Ec__DisplayClass132_0 CS_0024_003C_003E8__locals10 = new _003C_003Ec__DisplayClass132_0();
-		if ((!ADOSettings.GetConsumer().a_VerifyOnDisplay.CustomizeUtils() && !ADOSettings.GetConsumer().a_VerifyOnProjectLoad.CustomizeUtils() && !testkey) || (_Worker && !indexer) || _Struct)
+		if ((!ADOSettings.GetConsumer().a_VerifyOnDisplay.GetValue() && !ADOSettings.GetConsumer().a_VerifyOnProjectLoad.GetValue() && !testkey) || (_Worker && !indexer) || _Struct)
 		{
 			return;
 		}
@@ -7369,7 +7369,7 @@ internal sealed class LicenseManager
 					_Service = false;
 					_Reponse = false;
 					_Object = (listener = (m_Printer = string.Empty));
-					ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: false);
+					ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
 					SessionState.EraseBool(CS_0024_003C_003E8__locals10.itemContext);
 					ResetConfiguration(reponse);
 				}, comparesecond2: false);
@@ -7395,7 +7395,7 @@ internal sealed class LicenseManager
 				QueryConfiguration(response, delegate
 				{
 					_Worker = false;
-					ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: true);
+					ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
 					AssetConfiguration(testkey: true);
 				});
 			}, delegate(Exception exception)
@@ -7559,11 +7559,11 @@ internal sealed class LicenseManager
 
 	private static void QueryConfiguration(JsonObject i, Action selection, Action comp = null, bool comparesecond2 = true)
 	{
-		bool num = i.PublishConsumer("success");
-		string text = i.PublishConsumer("message");
-		string text2 = i.PublishConsumer("url");
+		bool num = i.Item("success");
+		string text = i.Item("message");
+		string text2 = i.Item("url");
 		bool flag = !string.IsNullOrEmpty(text2);
-		string text3 = i.PublishConsumer("url_name");
+		string text3 = i.Item("url_name");
 		if (string.IsNullOrWhiteSpace(text3))
 		{
 			text3 = "Link";
@@ -7581,8 +7581,8 @@ internal sealed class LicenseManager
 			selection?.Invoke();
 			return;
 		}
-		bool flag2 = i.PublishConsumer("wait_warn");
-		float num2 = i.PublishConsumer("wait_time");
+		bool flag2 = i.Item("wait_warn");
+		float num2 = i.Item("wait_time");
 		manager |= flag2;
 		if (!(num2 <= 0f))
 		{
@@ -8162,13 +8162,13 @@ internal sealed class LicenseManager
 			genericMenu.AddSeparator(string.Empty);
 			genericMenu.AddItem(new GUIContent("Verify/On Display"), ADOSettings.GetConsumer().a_VerifyOnDisplay, delegate
 			{
-				ADOSettings.GetConsumer().a_VerifyOnDisplay.IncludeConsumer();
-				ADOSettings.GetConsumer().a_VerifyOnProjectLoad.ConcatUtils(nores: false);
+				ADOSettings.GetConsumer().a_VerifyOnDisplay.Toggle();
+				ADOSettings.GetConsumer().a_VerifyOnProjectLoad.SetValue(nores: false);
 			});
 			genericMenu.AddItem(new GUIContent("Verify/On Project Load"), ADOSettings.GetConsumer().a_VerifyOnProjectLoad, delegate
 			{
-				ADOSettings.GetConsumer().a_VerifyOnProjectLoad.IncludeConsumer();
-				ADOSettings.GetConsumer().a_VerifyOnDisplay.ConcatUtils(nores: false);
+				ADOSettings.GetConsumer().a_VerifyOnProjectLoad.Toggle();
+				ADOSettings.GetConsumer().a_VerifyOnDisplay.SetValue(nores: false);
 			});
 		}
 		genericMenu.AddSeparator(string.Empty);
@@ -8254,7 +8254,7 @@ internal sealed class LicenseManager
 				}
 				if (ADOEditorUtility.LoginStatus("Skip for Today", EditorStyles.toolbarButton))
 				{
-					ADOSettings.GetConsumer().u_updateHidden.ConcatUtils(nores: true);
+					ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
 				}
 			}
 		}, CalcIdentifier);
@@ -8285,8 +8285,8 @@ internal sealed class LicenseManager
 					}
 					if (_Service && ADOEditorUtility.LoginStatus("Hide", EditorStyles.toolbarButton))
 					{
-						ADOSettings.GetConsumer().u_announcementHidden.ConcatUtils(nores: true);
-						ADOSettings.GetConsumer().u_announcementHiddenDate.IncludeUtils(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+						ADOSettings.GetConsumer().u_announcementHidden.SetValue(nores: true);
+						ADOSettings.GetConsumer().u_announcementHiddenDate.SetValue(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 					}
 				}
 			}, CalcIdentifier);
@@ -8300,7 +8300,7 @@ internal sealed class LicenseManager
 	[InitializeOnLoadMethod]
 	private static void MapIdentifier()
 	{
-		if (!ConnectSerializer() || string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_updateVersion.CreateUtils()))
+		if (!ConnectSerializer() || string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_updateVersion.GetValue()))
 		{
 			ADOEditorUtility.AddProcess(delegate
 			{
@@ -8333,25 +8333,25 @@ internal sealed class LicenseManager
 		})).CreateProcess(delegate(JsonObject response)
 		{
 			exporter = true;
-			string text = ADOSettings.GetConsumer().u_announcement.CreateUtils();
+			string value = ADOSettings.GetConsumer().u_announcement.GetValue();
 			using (new ADOSettings.SettingsDeferScope())
 			{
-				ADOSettings.GetConsumer().u_updateLink.IncludeUtils(response.PublishConsumer("download_link"));
-				ADOSettings.GetConsumer().u_updateMessage.IncludeUtils(response.PublishConsumer("download_message"));
-				ADOSettings.GetConsumer().u_updateChangelog.IncludeUtils(response.PublishConsumer("changelog_link"));
-				ADOSettings.GetConsumer().u_updateVersion.IncludeUtils(response.PublishConsumer("version"));
-				ADOSettings.GetConsumer().u_updateDay.IncludeUtils(RemoveConfiguration());
-				ADOSettings.GetConsumer().u_announcement.IncludeUtils(response.PublishConsumer("announcement"));
+				ADOSettings.GetConsumer().u_updateLink.SetValue(response.Item("download_link"));
+				ADOSettings.GetConsumer().u_updateMessage.SetValue(response.Item("download_message"));
+				ADOSettings.GetConsumer().u_updateChangelog.SetValue(response.Item("changelog_link"));
+				ADOSettings.GetConsumer().u_updateVersion.SetValue(response.Item("version"));
+				ADOSettings.GetConsumer().u_updateDay.SetValue(RemoveConfiguration());
+				ADOSettings.GetConsumer().u_announcement.SetValue(response.Item("announcement"));
 				if (!string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_announcement))
 				{
-					ADOSettings.GetConsumer().u_announcement.IncludeUtils(ADOSettings.GetConsumer().u_announcement.CreateUtils().Replace("\\\\n", "\n").Replace("\\n", "\n"));
+					ADOSettings.GetConsumer().u_announcement.SetValue(ADOSettings.GetConsumer().u_announcement.GetValue().Replace("\\\\n", "\n").Replace("\\n", "\n"));
 				}
-				ADOSettings.GetConsumer().u_announcementLink.IncludeUtils(response.PublishConsumer("announcement_link"));
-				ADOSettings.GetConsumer().u_announcementLinkName.IncludeUtils(response.PublishConsumer("announcement_link_name"));
+				ADOSettings.GetConsumer().u_announcementLink.SetValue(response.Item("announcement_link"));
+				ADOSettings.GetConsumer().u_announcementLinkName.SetValue(response.Item("announcement_link_name"));
 			}
-			if (text != ADOSettings.GetConsumer().u_announcement.CreateUtils())
+			if (value != ADOSettings.GetConsumer().u_announcement.GetValue())
 			{
-				ADOSettings.GetConsumer().u_announcementHidden.ConcatUtils(nores: false);
+				ADOSettings.GetConsumer().u_announcementHidden.SetValue(nores: false);
 			}
 			SetupIdentifier(isparam);
 		}, delegate(Exception exc)
@@ -8392,14 +8392,14 @@ internal sealed class LicenseManager
 		{
 			if (DateTime.TryParse(ADOSettings.GetConsumer().u_announcementHiddenDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var result))
 			{
-				ADOSettings.GetConsumer().u_announcementHidden.ConcatUtils((DateTime.UtcNow - result).TotalDays < 7.0);
+				ADOSettings.GetConsumer().u_announcementHidden.SetValue((DateTime.UtcNow - result).TotalDays < 7.0);
 			}
 			else
 			{
-				ADOSettings.GetConsumer().u_announcementHidden.ConcatUtils(nores: false);
+				ADOSettings.GetConsumer().u_announcementHidden.SetValue(nores: false);
 			}
 		}
-		if (!(m_Expression < new SemVer(ADOSettings.GetConsumer().u_updateVersion.CreateUtils())))
+		if (!(m_Expression < new SemVer(ADOSettings.GetConsumer().u_updateVersion.GetValue())))
 		{
 			if (iskey)
 			{
@@ -8407,20 +8407,20 @@ internal sealed class LicenseManager
 				Task.Run(async delegate
 				{
 					await Task.Delay(3000);
-					ADOSettings.GetConsumer().u_updateHidden.ConcatUtils(nores: true);
+					ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
 					CalculateIdentifier();
 				});
 			}
 			else
 			{
-				ADOSettings.GetConsumer().u_updateHidden.ConcatUtils(nores: true);
+				ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
 			}
 			return;
 		}
 		creator = true;
 		if (iskey)
 		{
-			ADOSettings.GetConsumer().u_updateHidden.ConcatUtils(nores: false);
+			ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: false);
 			dispatcher.target = true;
 		}
 		if (!ADOSettings.GetConsumer().u_updateHidden)
@@ -8470,9 +8470,9 @@ internal sealed class LicenseManager
 	internal static void MoveIdentifier(SceneView ident, Func<Rect> result, Action consumer, float pol2, float ivk3)
 	{
 		Rect ivk4 = ident.AddStatus();
-		ADOEditorUtility.PositionFlag positionFlag = ADOSettings.GetConsumer().toolOverlayAlignment.RegisterUtils<ADOEditorUtility.PositionFlag>();
+		ADOEditorUtility.PositionFlag enumValue = ADOSettings.GetConsumer().toolOverlayAlignment.GetEnumValue<ADOEditorUtility.PositionFlag>();
 		bool flag;
-		using (new ADOEditorUtility.SceneViewPanel(ident, pol2, ivk3, positionFlag, customer))
+		using (new ADOEditorUtility.SceneViewPanel(ident, pol2, ivk3, enumValue, customer))
 		{
 			Rect rect = result();
 			ADOEditorUtility.InsertStatus(rect, MouseCursor.Pan);
@@ -8486,7 +8486,7 @@ internal sealed class LicenseManager
 		if (flag)
 		{
 			Handles.BeginGUI();
-			ADOSettings.GetConsumer().toolOverlayAlignment.RestartUtils = (int)ADOEditorUtility.RunStatus(positionFlag, ivk4);
+			ADOSettings.GetConsumer().toolOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk4);
 			Handles.EndGUI();
 		}
 	}
@@ -8495,7 +8495,7 @@ internal sealed class LicenseManager
 	{
 		if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
 		{
-			ADOverhaulWindow.CreateSerializer();
+			ADOverhaulWindow.ShowWindow();
 		}
 	}
 
@@ -8679,7 +8679,7 @@ internal sealed class LicenseManager
 			QueryConfiguration(response, delegate
 			{
 				_Worker = false;
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.ConcatUtils(nores: true);
+				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
 				AssetConfiguration(testkey: true);
 			});
 		}, delegate(Exception exception)
@@ -8786,10 +8786,10 @@ internal sealed class LicenseManager
 				ProcessRunner[] array = reference;
 				for (int i = 0; i < array.Length; i++)
 				{
-					array[i].ComputeMethod();
+					array[i].Run();
 				}
 			}, state.Token);
-			while (!reference.All((ProcessRunner p) => p.m_SingletonIdentifier))
+			while (!reference.All((ProcessRunner p) => p.isFinished))
 			{
 				state.Token.ThrowIfCancellationRequested();
 				await Task.Delay(50, state.Token);

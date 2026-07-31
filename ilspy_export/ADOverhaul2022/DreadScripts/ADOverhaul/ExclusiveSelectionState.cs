@@ -2,78 +2,78 @@ namespace DreadScripts.ADOverhaul;
 
 internal sealed class ExclusiveSelectionState
 {
-	private bool[] _PropertySerializer;
+	private bool[] toggles;
 
-	internal int singletonSerializer = -1;
+	internal int activeIndex = -1;
 
 	internal ExclusiveSelectionState(int indexOf_def)
 	{
-		UpdateProcess(indexOf_def);
+		Resize(indexOf_def);
 	}
 
-	internal void UpdateProcess(int columninstance)
+	internal void Resize(int columninstance)
 	{
-		if (_PropertySerializer == null || _PropertySerializer.Length != columninstance)
+		if (toggles == null || toggles.Length != columninstance)
 		{
-			_PropertySerializer = new bool[columninstance];
+			toggles = new bool[columninstance];
 		}
-		if (singletonSerializer > 0)
+		if (activeIndex > 0)
 		{
-			if (singletonSerializer >= _PropertySerializer.Length)
+			if (activeIndex >= toggles.Length)
 			{
-				singletonSerializer = -1;
+				activeIndex = -1;
 			}
 			else
 			{
-				_PropertySerializer[singletonSerializer] = true;
+				toggles[activeIndex] = true;
 			}
 		}
 	}
 
-	internal void SearchProcess(int ID_i)
+	internal void Select(int ID_i)
 	{
-		if (ID_i >= 0 && ID_i < _PropertySerializer.Length && singletonSerializer != ID_i)
+		if (ID_i >= 0 && ID_i < toggles.Length && activeIndex != ID_i)
 		{
-			if (singletonSerializer >= 0)
+			if (activeIndex >= 0)
 			{
-				_PropertySerializer[singletonSerializer] = false;
+				toggles[activeIndex] = false;
 			}
-			singletonSerializer = ID_i;
-			_PropertySerializer[singletonSerializer] = true;
+			activeIndex = ID_i;
+			toggles[activeIndex] = true;
 		}
 	}
 
-	internal void LoginProcess(int sumspec, bool ispred)
+	internal void SetSelected(int sumspec, bool ispred)
 	{
-		if (sumspec < 0 || sumspec >= _PropertySerializer.Length)
+		if (sumspec < 0 || sumspec >= toggles.Length)
 		{
 			return;
 		}
-		if (singletonSerializer == sumspec)
+		if (activeIndex == sumspec)
 		{
 			if (ispred)
 			{
 				return;
 			}
-			PatchProcess();
+			Clear();
 		}
-		if (singletonSerializer >= 0 && ispred)
+		if (activeIndex >= 0 && ispred)
 		{
-			_PropertySerializer[singletonSerializer] = false;
+			toggles[activeIndex] = false;
 		}
 		if (ispred)
 		{
-			singletonSerializer = sumspec;
+			activeIndex = sumspec;
 		}
-		_PropertySerializer[sumspec] = ispred;
+		toggles[sumspec] = ispred;
 	}
 
-	internal void PatchProcess()
+	internal void Clear()
 	{
-		if (singletonSerializer >= 0)
+		if (activeIndex >= 0)
 		{
-			_PropertySerializer[singletonSerializer] = false;
-			singletonSerializer = -1;
+			toggles[activeIndex] = false;
+			activeIndex = -1;
 		}
 	}
 }

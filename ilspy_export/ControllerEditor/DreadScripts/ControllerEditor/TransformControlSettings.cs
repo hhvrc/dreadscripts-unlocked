@@ -30,19 +30,19 @@ internal struct TransformControlSettings
 	}
 
 	[SpecialName]
-	public static TransformControlSettings ValidateHelper()
+	public static TransformControlSettings PositionAndRotation()
 	{
 		return new TransformControlSettings(AxisControlSettings.m_SingletonPolicy, AxisControlSettings.m_SingletonPolicy, AxisControlSettings.accountPolicy, acceptinit2: false);
 	}
 
 	[SpecialName]
-	public static TransformControlSettings RateHelper()
+	public static TransformControlSettings PositionOnly()
 	{
 		return new TransformControlSettings(AxisControlSettings.m_SingletonPolicy, AxisControlSettings.accountPolicy, AxisControlSettings.accountPolicy);
 	}
 
 	[SpecialName]
-	public static TransformControlSettings GetHelper()
+	public static TransformControlSettings RotationOnly()
 	{
 		return new TransformControlSettings(AxisControlSettings.accountPolicy, AxisControlSettings.m_SingletonPolicy, AxisControlSettings.accountPolicy);
 	}

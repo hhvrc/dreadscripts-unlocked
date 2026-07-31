@@ -7,13 +7,13 @@ namespace DreadScripts.ADOverhaul;
 
 internal sealed class ReflectionRestoreScope : IDisposable
 {
-	internal readonly ReflectionAccessor m_ComposerMethod;
+	internal readonly ReflectionAccessor accessor;
 
-	internal readonly Dictionary<string, object> annotationMethod;
+	internal readonly Dictionary<string, object> savedValues;
 
-	internal readonly bool _CodeMethod;
+	internal readonly bool logMissingMembers;
 
-	internal bool callbackMethod = true;
+	internal bool restoreOnDispose = true;
 
 	public ReflectionRestoreScope(object instance, params string[] valuesToRestore)
 		: this(instance, wantcol: true, valuesToRestore)
@@ -23,18 +23,18 @@ internal sealed class ReflectionRestoreScope : IDisposable
 	public ReflectionRestoreScope(object i, bool wantcol, params string[] valuesToRestore)
 	{
 		ReflectionRestoreScope mappingMethod = this;
-		_CodeMethod = wantcol;
-		m_ComposerMethod = new ReflectionAccessor(i);
-		annotationMethod = valuesToRestore.ToDictionary((string s) => s, delegate(string s)
+		logMissingMembers = wantcol;
+		accessor = new ReflectionAccessor(i);
+		savedValues = valuesToRestore.ToDictionary((string s) => s, delegate(string s)
 		{
 			object pol;
 			if (!wantcol)
 			{
-				mappingMethod.m_ComposerMethod.SelectPredicate(s, out pol);
+				mappingMethod.accessor.SelectPredicate(s, out pol);
 			}
 			else
 			{
-				pol = mappingMethod.m_ComposerMethod.ReadPredicate(s);
+				pol = mappingMethod.accessor.ReadPredicate(s);
 			}
 			if (pol == null)
 			{
@@ -58,21 +58,21 @@ internal sealed class ReflectionRestoreScope : IDisposable
 
 	public void Dispose()
 	{
-		if (!callbackMethod)
+		if (!restoreOnDispose)
 		{
 			return;
 		}
-		if (!_CodeMethod)
+		if (!logMissingMembers)
 		{
-			foreach (KeyValuePair<string, object> item in annotationMethod)
+			foreach (KeyValuePair<string, object> savedValue in savedValues)
 			{
-				m_ComposerMethod.WritePredicate(item.Key, item.Value);
+				accessor.WritePredicate(savedValue.Key, savedValue.Value);
 			}
 			return;
 		}
-		foreach (KeyValuePair<string, object> item2 in annotationMethod)
+		foreach (KeyValuePair<string, object> savedValue2 in savedValues)
 		{
-			m_ComposerMethod.TestPredicate(item2.Key, item2.Value);
+			accessor.TestPredicate(savedValue2.Key, savedValue2.Value);
 		}
 	}
 }

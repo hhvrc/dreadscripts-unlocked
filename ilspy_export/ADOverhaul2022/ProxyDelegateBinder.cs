@@ -5,15 +5,15 @@ internal class ProxyDelegateBinder
 {
 	internal delegate void ProxyDelegate(object o);
 
-	internal static Module configurationConsumer = typeof(ProxyDelegateBinder).Assembly.ManifestModule;
+	internal static Module manifestModule = typeof(ProxyDelegateBinder).Assembly.ManifestModule;
 
 	internal static void LogoutRule(int typemdt)
 	{
-		Type type = configurationConsumer.ResolveType(33554432 + typemdt);
+		Type type = manifestModule.ResolveType(33554432 + typemdt);
 		FieldInfo[] fields = type.GetFields();
 		foreach (FieldInfo fieldInfo in fields)
 		{
-			MethodInfo method = (MethodInfo)configurationConsumer.ResolveMethod(fieldInfo.MetadataToken + 100663296);
+			MethodInfo method = (MethodInfo)manifestModule.ResolveMethod(fieldInfo.MetadataToken + 100663296);
 			fieldInfo.SetValue(null, (MulticastDelegate)Delegate.CreateDelegate(type, method));
 		}
 	}

@@ -5,10 +5,10 @@ namespace DreadScripts.ControllerEditor;
 
 internal class MenuControlTreeItem : TreeViewItem
 {
-	internal readonly VRCExpressionsMenu.Control classThread;
+	internal readonly VRCExpressionsMenu.Control control;
 
 	internal MenuControlTreeItem(VRCExpressionsMenu.Control param)
 	{
-		classThread = param;
+		control = param;
 	}
 }

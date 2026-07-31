@@ -6,9 +6,9 @@ namespace DreadScripts.ControllerEditor;
 
 internal class FoldoutScope : IDisposable
 {
-	private readonly bool _ConfigurationThread;
+	private readonly bool isExpanded;
 
-	private readonly IndentedLayoutScope m_ProcThread;
+	private readonly IndentedLayoutScope indentScope;
 
 	public FoldoutScope(bool vopen)
 		: this(ref vopen, iscfg: false, null)
@@ -42,23 +42,23 @@ internal class FoldoutScope : IDisposable
 		}
 		bool num = spec;
 		bool flag = num;
-		_ConfigurationThread = num;
+		isExpanded = num;
 		if (flag)
 		{
-			m_ProcThread = new IndentedLayoutScope();
+			indentScope = new IndentedLayoutScope();
 		}
 	}
 
 	public void Dispose()
 	{
-		if (_ConfigurationThread)
+		if (isExpanded)
 		{
-			m_ProcThread.Dispose();
+			indentScope.Dispose();
 		}
 	}
 
 	public static implicit operator bool(FoldoutScope last)
 	{
-		return last._ConfigurationThread;
+		return last.isExpanded;
 	}
 }

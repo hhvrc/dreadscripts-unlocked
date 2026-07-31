@@ -4,7 +4,7 @@ namespace DreadScripts.ControllerEditor;
 
 internal static class ColorHashUtils
 {
-	internal static Color ConnectHelper(string value)
+	internal static Color ColorFromString(string value)
 	{
 		int hashCode = value.GetHashCode();
 		hashCode = (hashCode >> 16) ^ (hashCode & 0xFFFF);

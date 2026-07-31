@@ -4,7 +4,7 @@ namespace DreadScripts.ControllerEditor;
 
 internal class TempGameObjectHierarchy
 {
-	internal readonly GameObject[] m_CollectionServer;
+	internal readonly GameObject[] gameObjects;
 
 	internal TempGameObjectHierarchy(string res, bool ispol = true)
 	{
@@ -13,19 +13,19 @@ internal class TempGameObjectHierarchy
 			res = "Dummy/" + res;
 		}
 		string[] array = res.Split(new char[1] { '/' });
-		m_CollectionServer = new GameObject[array.Length];
+		gameObjects = new GameObject[array.Length];
 		Transform parent = null;
 		for (int i = 0; i < array.Length; i++)
 		{
 			GameObject gameObject = new GameObject(array[i]);
 			gameObject.transform.parent = parent;
 			parent = gameObject.transform;
-			m_CollectionServer[i] = gameObject;
+			gameObjects[i] = gameObject;
 		}
 	}
 
-	internal void EnableContext()
+	internal void Destroy()
 	{
-		Object.DestroyImmediate(m_CollectionServer[0]);
+		Object.DestroyImmediate(gameObjects[0]);
 	}
 }

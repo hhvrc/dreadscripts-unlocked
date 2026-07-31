@@ -28,7 +28,7 @@ internal struct TextFragment
 		strategy = true;
 	}
 
-	internal void ReadWrapper(GUIStyle last, float b = 20f)
+	internal void DrawLayout(GUIStyle last, float b = 20f)
 	{
 		if (strategy)
 		{
@@ -40,7 +40,7 @@ internal struct TextFragment
 		}
 	}
 
-	internal void SelectWrapper(Rect spec)
+	internal void DrawRect(Rect spec)
 	{
 		if (strategy)
 		{
@@ -48,11 +48,11 @@ internal struct TextFragment
 		}
 		else
 		{
-			GUI.Label(spec, _Reader, SupportWindowAssets.RegisterWrapper().composer);
+			GUI.Label(spec, _Reader, SupportWindowAssets.GetStyles().composer);
 		}
 	}
 
-	internal static List<TextFragment> RemoveWrapper(string spec)
+	internal static List<TextFragment> Parse(string spec)
 	{
 		List<TextFragment> list = new List<TextFragment>();
 		Match match = Regex.Match(spec, "<image=(.+?)>");

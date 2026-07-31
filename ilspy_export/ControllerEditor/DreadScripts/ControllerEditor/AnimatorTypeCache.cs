@@ -370,18 +370,18 @@ internal static class AnimatorTypeCache
 	[DefaultMember("Item")]
 	internal class ExpressionsMenuBinding : SerializedObjectWrapper
 	{
-		internal readonly SerializedPropertyWrapper _ComposerProperty;
+		internal readonly SerializedPropertyWrapper controls;
 
 		internal ExpressionsMenuBinding(UnityEngine.Object spec)
 			: base(spec)
 		{
-			_ComposerProperty = SortPage("controls");
+			controls = FindProperty("controls");
 		}
 
 		[SpecialName]
-		public MenuControlBinding ViewPage(int index_spec)
+		public MenuControlBinding GetControl(int index_spec)
 		{
-			return new MenuControlBinding(_ComposerProperty.LogoutPage(index_spec));
+			return new MenuControlBinding(controls.Item(index_spec));
 		}
 	}
 
@@ -390,49 +390,49 @@ internal static class AnimatorTypeCache
 		[SpecialName]
 		internal string ResolvePage()
 		{
-			return InterruptPage("name").m_ContainerProperty.stringValue;
+			return Item("name").property.stringValue;
 		}
 
 		[SpecialName]
 		internal void ListPage(string res)
 		{
-			InterruptPage("name").m_ContainerProperty.stringValue = res;
+			Item("name").property.stringValue = res;
 		}
 
 		[SpecialName]
 		internal string FillPage()
 		{
-			return InterruptPage("parameter").InterruptPage("name").m_ContainerProperty.stringValue;
+			return Item("parameter").Item("name").property.stringValue;
 		}
 
 		[SpecialName]
 		internal void WritePage(string info)
 		{
-			InterruptPage("parameter").InterruptPage("name").m_ContainerProperty.stringValue = info;
+			Item("parameter").Item("name").property.stringValue = info;
 		}
 
 		[SpecialName]
 		internal Texture2D StopPage()
 		{
-			return (Texture2D)InterruptPage("icon").m_ContainerProperty.objectReferenceValue;
+			return (Texture2D)Item("icon").property.objectReferenceValue;
 		}
 
 		[SpecialName]
 		internal void CheckPage(Texture2D param)
 		{
-			InterruptPage("icon").m_ContainerProperty.objectReferenceValue = param;
+			Item("icon").property.objectReferenceValue = param;
 		}
 
 		[SpecialName]
 		internal ExpressionsMenuBinding AssetPage()
 		{
-			return new ExpressionsMenuBinding(InterruptPage("submenu").m_ContainerProperty.objectReferenceValue);
+			return new ExpressionsMenuBinding(Item("submenu").property.objectReferenceValue);
 		}
 
 		[SpecialName]
 		internal void UpdatePage(ExpressionsMenuBinding item)
 		{
-			InterruptPage("submenu").m_ContainerProperty.objectReferenceValue = item.targetObject;
+			Item("submenu").property.objectReferenceValue = item.targetObject;
 		}
 
 		public MenuControlBinding(SerializedProperty key)
@@ -450,37 +450,37 @@ internal static class AnimatorTypeCache
 		}
 
 		[SpecialName]
-		public SerializedPropertyWrapper SortPage(string i)
+		public new SerializedPropertyWrapper FindProperty(string i)
 		{
-			return new SerializedPropertyWrapper(FindProperty(i));
+			return new SerializedPropertyWrapper(base.FindProperty(i));
 		}
 	}
 
 	[DefaultMember("Item")]
 	internal class SerializedPropertyWrapper
 	{
-		internal readonly SerializedProperty m_ContainerProperty;
+		internal readonly SerializedProperty property;
 
 		public SerializedPropertyWrapper(SerializedProperty setup)
 		{
-			m_ContainerProperty = setup;
+			property = setup;
 		}
 
 		[SpecialName]
-		public SerializedPropertyWrapper LogoutPage(int mini)
+		public SerializedPropertyWrapper Item(int mini)
 		{
-			return new SerializedPropertyWrapper(m_ContainerProperty.GetArrayElementAtIndex(mini));
+			return new SerializedPropertyWrapper(property.GetArrayElementAtIndex(mini));
 		}
 
 		[SpecialName]
-		public SerializedPropertyWrapper InterruptPage(string instance)
+		public SerializedPropertyWrapper Item(string instance)
 		{
-			return new SerializedPropertyWrapper(m_ContainerProperty.FindPropertyRelative(instance));
+			return new SerializedPropertyWrapper(property.FindPropertyRelative(instance));
 		}
 
 		public static implicit operator SerializedProperty(SerializedPropertyWrapper last)
 		{
-			return last.m_ContainerProperty;
+			return last.property;
 		}
 	}
 

@@ -16,7 +16,7 @@ internal readonly struct WebRequestJob : IDisposable
 	internal static object NewCode;
 
 	[SpecialName]
-	internal bool OrderWrapper()
+	internal bool IsError()
 	{
 		if (!_Algo.isNetworkError)
 		{

@@ -779,25 +779,25 @@ internal static class AnimatorGraphReflection
 
 	internal readonly struct GraphSlotRef
 	{
-		public readonly Slot m_ConfigurationTests;
+		public readonly Slot slot;
 
 		private static object TestStruct;
 
 		[SpecialName]
-		public Node SelectSerializer()
+		public Node Node()
 		{
-			return m_ConfigurationTests.node;
+			return slot.node;
 		}
 
 		[SpecialName]
-		public List<GraphEdgeRef> InstantiateSerializer()
+		public List<GraphEdgeRef> Edges()
 		{
-			return new List<GraphEdgeRef>(m_ConfigurationTests.edges.Select((Edge e) => new GraphEdgeRef(e)));
+			return new List<GraphEdgeRef>(slot.edges.Select((Edge e) => new GraphEdgeRef(e)));
 		}
 
 		public GraphSlotRef(Slot param)
 		{
-			m_ConfigurationTests = param;
+			slot = param;
 		}
 
 		internal static bool IncludeStruct()

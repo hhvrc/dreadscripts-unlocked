@@ -13,21 +13,21 @@ internal class EditorPrefsConfig
 {
 	internal class PrefsChangeScope : IDisposable
 	{
-		private readonly EditorPrefsConfig m_AlgoThread;
+		private readonly EditorPrefsConfig config;
 
-		private readonly EditorGUI.ChangeCheckScope mapperThread;
+		private readonly EditorGUI.ChangeCheckScope changeCheck;
 
 		public PrefsChangeScope(EditorPrefsConfig key)
 		{
-			m_AlgoThread = key;
-			mapperThread = new EditorGUI.ChangeCheckScope();
+			config = key;
+			changeCheck = new EditorGUI.ChangeCheckScope();
 		}
 
 		public void Dispose()
 		{
-			if (mapperThread.changed)
+			if (changeCheck.changed)
 			{
-				m_AlgoThread.InstantiateContext();
+				config.InstantiateContext();
 			}
 		}
 	}

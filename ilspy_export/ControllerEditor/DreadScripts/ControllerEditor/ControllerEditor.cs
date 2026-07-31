@@ -450,57 +450,57 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal class SettingsChangeScope : IDisposable
 		{
-			private readonly Action _FilterAlgo;
+			private readonly Action onChanged;
 
-			private readonly bool stubAlgo;
+			private readonly bool previousDeferred;
 
-			private readonly EditorGUI.ChangeCheckScope m_ReaderAlgo;
+			private readonly EditorGUI.ChangeCheckScope changeCheck;
 
 			[SpecialName]
-			internal bool CountDefinition()
+			internal bool IsChanged()
 			{
-				return m_ReaderAlgo.changed;
+				return changeCheck.changed;
 			}
 
 			public SettingsChangeScope(Action ident = null)
 			{
-				_FilterAlgo = ident;
-				stubAlgo = ComputeDefinition();
+				onChanged = ident;
+				previousDeferred = ComputeDefinition();
 				MoveDefinition(isitem: true);
-				m_ReaderAlgo = new EditorGUI.ChangeCheckScope();
+				changeCheck = new EditorGUI.ChangeCheckScope();
 			}
 
 			public void Dispose()
 			{
-				bool changed = m_ReaderAlgo.changed;
-				m_ReaderAlgo.Dispose();
+				bool changed = changeCheck.changed;
+				changeCheck.Dispose();
 				if (changed)
 				{
-					_FilterAlgo?.Invoke();
+					onChanged?.Invoke();
 					LoadSettings();
 				}
-				MoveDefinition(stubAlgo);
+				MoveDefinition(previousDeferred);
 			}
 
 			public static implicit operator bool(SettingsChangeScope task)
 			{
-				return task.m_ReaderAlgo.changed;
+				return task.changeCheck.changed;
 			}
 		}
 
 		internal class SettingsDeferScope : IDisposable
 		{
-			private readonly bool _StrategyAlgo;
+			private readonly bool previousDeferred;
 
 			public SettingsDeferScope()
 			{
-				_StrategyAlgo = ComputeDefinition();
+				previousDeferred = ComputeDefinition();
 				MoveDefinition(isitem: true);
 			}
 
 			public void Dispose()
 			{
-				MoveDefinition(_StrategyAlgo);
+				MoveDefinition(previousDeferred);
 			}
 		}
 
@@ -531,7 +531,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal BoolSetting(bool appendlast, Action ord = null)
 			{
-				callbackAlgo = appendlast;
+				defaultValue = appendlast;
 				_value = appendlast;
 				m_DatabaseAlgo = ord;
 			}
@@ -577,7 +577,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				ExcludeDefinition((bool)callbackAlgo);
+				ExcludeDefinition((bool)defaultValue);
 			}
 		}
 
@@ -608,7 +608,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal FloatSetting(float ident, Action result = null)
 			{
-				callbackAlgo = ident;
+				defaultValue = ident;
 				_value = ident;
 				identifierAlgo = result;
 			}
@@ -680,7 +680,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				ClearSettings((float)callbackAlgo);
+				ClearSettings((float)defaultValue);
 			}
 
 			public static implicit operator int(FloatSetting key)
@@ -809,7 +809,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal void IncludeDefinition(Vector3 config, Action ord)
 			{
-				callbackAlgo = config;
+				defaultValue = config;
 				_RegistryAlgo = ord;
 				_valueX = config.x;
 				_valueY = config.y;
@@ -861,7 +861,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				CreateDefinition((Vector3)callbackAlgo);
+				CreateDefinition((Vector3)defaultValue);
 			}
 
 			public static implicit operator Vector2(VectorSetting asset)
@@ -898,7 +898,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal StringSetting(string last = "", Action pred = null)
 			{
-				callbackAlgo = last;
+				defaultValue = last;
 				_value = last;
 				printerAlgo = pred;
 			}
@@ -926,7 +926,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				ResolveDefinition((string)callbackAlgo);
+				ResolveDefinition((string)defaultValue);
 			}
 
 			public override string ToString()
@@ -977,7 +977,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			internal ColorSetting(float item, float second, float state, float visitor2 = 1f, Action res3 = null)
 			{
 				Color color = new Color(item, second, state, visitor2);
-				callbackAlgo = color;
+				defaultValue = color;
 				r = item;
 				g = second;
 				b = state;
@@ -987,7 +987,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal ColorSetting(Color info, Action cont = null)
 			{
-				callbackAlgo = info;
+				defaultValue = info;
 				r = info.r;
 				g = info.g;
 				b = info.b;
@@ -1014,7 +1014,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				ForgotDefinition((Color)callbackAlgo);
+				ForgotDefinition((Color)defaultValue);
 			}
 		}
 
@@ -1137,7 +1137,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal abstract class SettingBase
 		{
-			internal object callbackAlgo;
+			internal object defaultValue;
 
 			internal abstract void Reset();
 		}
@@ -1581,13 +1581,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		internal struct ErrorInfo
 		{
-			internal string comparatorAlgo;
+			internal string name;
 
-			internal ushort m_ExceptionAlgo;
+			internal ushort id;
 
-			internal ushort _ObjectAlgo;
+			internal ushort version;
 
-			internal string utilsAlgo;
+			internal string exceptionMessage;
 		}
 
 		private static string m_AccountAlgo;
@@ -1659,10 +1659,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_StatusAlgo = false;
 			_DicAlgo = new ErrorInfo
 			{
-				comparatorAlgo = _InvocationAlgo.Value.comparatorAlgo,
-				m_ExceptionAlgo = _InvocationAlgo.Value.m_ExceptionAlgo,
-				_ObjectAlgo = _InvocationAlgo.Value._ObjectAlgo,
-				utilsAlgo = info.Message
+				name = _InvocationAlgo.Value.name,
+				id = _InvocationAlgo.Value.id,
+				version = _InvocationAlgo.Value.version,
+				exceptionMessage = info.Message
 			};
 			if (isselection)
 			{
@@ -1726,9 +1726,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			_InvocationAlgo = new ErrorInfo
 			{
-				m_ExceptionAlgo = num_ident,
-				comparatorAlgo = ivk,
-				_ObjectAlgo = dir_count
+				id = num_ident,
+				name = ivk,
+				version = dir_count
 			};
 		}
 
@@ -1750,10 +1750,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				codeAlgo = true;
 				List<(string, string)> list = RegisterAnnotation("findsolution", new(string, string)[4]
 				{
-					("bug_id", _DicAlgo.Value.m_ExceptionAlgo.ToString()),
-					("bug_version", _DicAlgo.Value._ObjectAlgo.ToString()),
-					("bug_name", _DicAlgo.Value.comparatorAlgo),
-					("bug_exception", Uri.EscapeUriString(_DicAlgo.Value.utilsAlgo))
+					("bug_id", _DicAlgo.Value.id.ToString()),
+					("bug_version", _DicAlgo.Value.version.ToString()),
+					("bug_name", _DicAlgo.Value.name),
+					("bug_exception", Uri.EscapeUriString(_DicAlgo.Value.exceptionMessage))
 				});
 				LogoutAnnotation(list);
 				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
@@ -1815,10 +1815,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								}
 								List<(string, string)> list2 = RegisterAnnotation("reportbug", new(string, string)[5]
 								{
-									("bug_id", _DicAlgo.Value.m_ExceptionAlgo.ToString()),
-									("bug_version", _DicAlgo.Value._ObjectAlgo.ToString()),
-									("bug_name", _DicAlgo.Value.comparatorAlgo),
-									("bug_exception", _DicAlgo.Value.utilsAlgo),
+									("bug_id", _DicAlgo.Value.id.ToString()),
+									("bug_version", _DicAlgo.Value.version.ToString()),
+									("bug_name", _DicAlgo.Value.name),
+									("bug_exception", _DicAlgo.Value.exceptionMessage),
 									("feedback", Uri.EscapeUriString(_ProductAnnotation))
 								});
 								LogoutAnnotation(list2);
@@ -1895,7 +1895,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			if (_DicAlgo.HasValue && roleAlgo != null)
 			{
-				ManageDefinition(roleAlgo, _DicAlgo.Value.m_ExceptionAlgo, _DicAlgo.Value.comparatorAlgo, _DicAlgo.Value._ObjectAlgo);
+				ManageDefinition(roleAlgo, _DicAlgo.Value.id, _DicAlgo.Value.name, _DicAlgo.Value.version);
 			}
 			roleAlgo = null;
 			CompilationPipeline.compilationStarted -= EnableReg;
@@ -3077,7 +3077,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal void FlushTests(LayerIndexEntry res)
 		{
-			if (listenerMapper.All((LayerIndexEntry l) => l._FacadeMapper != res._FacadeMapper))
+			if (listenerMapper.All((LayerIndexEntry l) => l.layerIndex != res.layerIndex))
 			{
 				listenerMapper.Add(res);
 			}
@@ -3164,21 +3164,21 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private struct LayerIndexEntry
 	{
-		internal readonly UnityEditor.Animations.AnimatorControllerLayer _InfoMapper;
+		internal readonly UnityEditor.Animations.AnimatorControllerLayer layer;
 
-		internal readonly int _FacadeMapper;
+		internal readonly int layerIndex;
 
 		private static object NewProduct;
 
 		internal LayerIndexEntry(UnityEditor.Animations.AnimatorControllerLayer value, int next_cfg)
 		{
-			_InfoMapper = value;
-			_FacadeMapper = next_cfg;
+			layer = value;
+			layerIndex = next_cfg;
 		}
 
 		public static implicit operator UnityEditor.Animations.AnimatorControllerLayer(LayerIndexEntry asset)
 		{
-			return asset._InfoMapper;
+			return asset.layer;
 		}
 
 		internal static bool LoginProduct()
@@ -5398,7 +5398,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal int CreateProperty((MethodInfo, CallbackAttribute, bool onVerify) x)
 		{
-			return x.Item2._IssuerServer;
+			return x.Item2.priority;
 		}
 
 		internal void NewProperty()
@@ -6225,7 +6225,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal int RemoveObserver(LayerIndexEntry l1, LayerIndexEntry l2)
 		{
-			return string.Compare(l1._InfoMapper.name, l2._InfoMapper.name, StringComparison.Ordinal);
+			return string.Compare(l1.layer.name, l2.layer.name, StringComparison.Ordinal);
 		}
 
 		internal string InstantiateObserver(string n)
@@ -7885,7 +7885,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal bool DeleteThread(LayerIndexEntry l)
 		{
-			return l._InfoMapper.name == _PublisherReg;
+			return l.layer.name == _PublisherReg;
 		}
 	}
 
@@ -9984,21 +9984,21 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 		}
-		foreach (var item2 in list.OrderBy<(MethodInfo, CallbackAttribute, bool), int>(((MethodInfo, CallbackAttribute, bool onVerify) x) => x.Item2._IssuerServer))
+		foreach (var item2 in list.OrderBy<(MethodInfo, CallbackAttribute, bool), int>(((MethodInfo, CallbackAttribute, bool onVerify) x) => x.Item2.priority))
 		{
 			var (m_ComparatorDefinition, exceptionDefinition, _) = item2;
 			if (item2.Item3)
 			{
 				InterruptAnnotation(delegate
 				{
-					m_ComparatorDefinition.Invoke(null, exceptionDefinition.m_IndexerServer);
+					m_ComparatorDefinition.Invoke(null, exceptionDefinition.args);
 				});
 			}
 			else
 			{
 				PrintAnnotation(delegate
 				{
-					m_ComparatorDefinition.Invoke(null, exceptionDefinition.m_IndexerServer);
+					m_ComparatorDefinition.Invoke(null, exceptionDefinition.args);
 				});
 			}
 		}
@@ -15875,7 +15875,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				connectionVisitor = new Texture2D(1, 1);
 			}
-			connectionVisitor.SetPixel(0, 0, (!flag && (bool)EditorSettings.CallDefinition().cosmeticGraphActive) ? EditorSettings.CallDefinition().gridBackgroundColor.WriteDefinition() : ((Color)EditorSettings.CallDefinition().gridBackgroundColor.callbackAlgo));
+			connectionVisitor.SetPixel(0, 0, (!flag && (bool)EditorSettings.CallDefinition().cosmeticGraphActive) ? EditorSettings.CallDefinition().gridBackgroundColor.WriteDefinition() : ((Color)EditorSettings.CallDefinition().gridBackgroundColor.defaultValue));
 			connectionVisitor.Apply();
 			background = connectionVisitor;
 		}
@@ -16440,7 +16440,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (layerPathNode != listenerVisitor)
 			{
 				AddMapper();
-				int num = listenerVisitor.listenerMapper.FindIndex((LayerIndexEntry l) => l._InfoMapper.name == __state);
+				int num = listenerVisitor.listenerMapper.FindIndex((LayerIndexEntry l) => l.layer.name == __state);
 				if (num >= 0)
 				{
 					m_GetterVisitor.index = num;
@@ -16830,7 +16830,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				layerPathNode.paramsMapper.Sort((LayerPathNode c1, LayerPathNode c2) => string.Compare(c1.requestMapper, c2.requestMapper, StringComparison.Ordinal));
 				if ((bool)EditorSettings.CallDefinition().sortCategoryViewLayers)
 				{
-					layerPathNode.listenerMapper.Sort((LayerIndexEntry l1, LayerIndexEntry l2) => string.Compare(l1._InfoMapper.name, l2._InfoMapper.name, StringComparison.Ordinal));
+					layerPathNode.listenerMapper.Sort((LayerIndexEntry l1, LayerIndexEntry l2) => string.Compare(l1.layer.name, l2.layer.name, StringComparison.Ordinal));
 				}
 				LayerPathNode getterMapper = layerPathNode.m_GetterMapper;
 				if (getterMapper != null)
@@ -16933,7 +16933,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return;
 		}
-		CS_0024_003C_003E8__locals9._PublisherReg = ((m_GetterVisitor != null && m_GetterVisitor.CallPredicate()) ? ((LayerIndexEntry)m_GetterVisitor.list[m_GetterVisitor.index])._InfoMapper.name : "");
+		CS_0024_003C_003E8__locals9._PublisherReg = ((m_GetterVisitor != null && m_GetterVisitor.CallPredicate()) ? ((LayerIndexEntry)m_GetterVisitor.list[m_GetterVisitor.index]).layer.name : "");
 		_FacadeVisitor = CS_0024_003C_003E8__locals9.ReflectThread<ReorderableList.ElementCallbackDelegate>("OnDrawLayer");
 		_AdvisorVisitor = CS_0024_003C_003E8__locals9.ReflectThread<ReorderableList.SelectCallbackDelegate>("OnSelectLayer");
 		_CallbackVisitor = CS_0024_003C_003E8__locals9.ReflectThread<ReorderableList.SelectCallbackDelegate>("OnMouseUpLayer");
@@ -16950,7 +16950,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		};
 		if (!CS_0024_003C_003E8__locals9._PublisherReg.ResetResolver())
 		{
-			int num = listenerVisitor.listenerMapper.FindIndex((LayerIndexEntry l) => l._InfoMapper.name == CS_0024_003C_003E8__locals9._PublisherReg);
+			int num = listenerVisitor.listenerMapper.FindIndex((LayerIndexEntry l) => l.layer.name == CS_0024_003C_003E8__locals9._PublisherReg);
 			if (num >= 0)
 			{
 				m_GetterVisitor.index = num;
@@ -16962,10 +16962,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (mean_cont.CustomizeResolver(listenerVisitor.listenerMapper))
 		{
-			int facadeMapper = listenerVisitor.listenerMapper[mean_cont]._FacadeMapper;
-			if (facadeMapper.CustomizeResolver(m_InterceptorVisitor.list))
+			int layerIndex = listenerVisitor.listenerMapper[mean_cont].layerIndex;
+			if (layerIndex.CustomizeResolver(m_InterceptorVisitor.list))
 			{
-				_FacadeVisitor(last, facadeMapper, bool_0, createrule);
+				_FacadeVisitor(last, layerIndex, bool_0, createrule);
 			}
 		}
 	}
@@ -16998,7 +16998,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return (UnityEditor.Animations.AnimatorControllerLayer)m_InterceptorVisitor.list[sizelast];
 		}
-		return listenerVisitor.listenerMapper[sizelast]._InfoMapper;
+		return listenerVisitor.listenerMapper[sizelast].layer;
 	}
 
 	private static int StartMapper(bool isreference = false)
@@ -17011,7 +17011,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					return -1;
 				}
-				return listenerVisitor.listenerMapper[m_GetterVisitor.index]._FacadeMapper;
+				return listenerVisitor.listenerMapper[m_GetterVisitor.index].layerIndex;
 			}
 			return m_GetterVisitor.index;
 		}

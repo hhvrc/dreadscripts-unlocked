@@ -5,24 +5,24 @@ namespace DreadScripts.ControllerEditor;
 
 internal sealed class ScrollViewScope : IDisposable
 {
-	private readonly bool methodThread;
+	private readonly bool began;
 
 	internal ScrollViewScope(ref Vector2 first)
 	{
 		try
 		{
 			first = GUILayout.BeginScrollView(first);
-			methodThread = true;
+			began = true;
 		}
 		catch
 		{
-			methodThread = false;
+			began = false;
 		}
 	}
 
 	public void Dispose()
 	{
-		if (methodThread)
+		if (began)
 		{
 			GUILayout.EndScrollView();
 		}

@@ -57,7 +57,7 @@ internal class MenuExpressionTreeView : TreeView
 			while (stack.Count > 0)
 			{
 				MenuControlTreeItem menuControlTreeItem3 = stack.Pop();
-				VRCExpressionsMenu vRCExpressionsMenu = (flag ? composerThread : menuControlTreeItem3.classThread?.subMenu);
+				VRCExpressionsMenu vRCExpressionsMenu = (flag ? composerThread : menuControlTreeItem3.control?.subMenu);
 				flag = false;
 				if (vRCExpressionsMenu == null)
 				{
@@ -103,21 +103,21 @@ internal class MenuExpressionTreeView : TreeView
 		}
 		rowRect.x += contentIndent;
 		rowRect.width -= contentIndent;
-		VRCExpressionsMenu.Control classThread = ((MenuControlTreeItem)last.item).classThread;
-		using (new EditorGUI.DisabledScope(classThread == null || classThread.type != VRCExpressionsMenu.Control.ControlType.SubMenu))
+		VRCExpressionsMenu.Control control = ((MenuControlTreeItem)last.item).control;
+		using (new EditorGUI.DisabledScope(control == null || control.type != VRCExpressionsMenu.Control.ControlType.SubMenu))
 		{
-			bool num = classThread == null;
-			string text = ((!num) ? classThread.name : "[Missing]");
-			string tooltip = ((!num) ? classThread.type.ToString() : "Null");
+			bool num = control == null;
+			string text = ((!num) ? control.name : "[Missing]");
+			string tooltip = ((!num) ? control.type.ToString() : "Null");
 			bool disabled = false;
 			int num2;
 			int num3;
 			if (!num)
 			{
-				num2 = ((classThread.type == VRCExpressionsMenu.Control.ControlType.SubMenu) ? 1 : 0);
+				num2 = ((control.type == VRCExpressionsMenu.Control.ControlType.SubMenu) ? 1 : 0);
 				if (num2 != 0)
 				{
-					num3 = ((classThread.subMenu != null) ? 1 : 0);
+					num3 = ((control.subMenu != null) ? 1 : 0);
 					goto IL_00a4;
 				}
 			}
@@ -131,7 +131,7 @@ internal class MenuExpressionTreeView : TreeView
 			bool flag = (byte)num3 != 0;
 			if (num2 != 0)
 			{
-				int num4 = (flag ? classThread.subMenu.controls.Count : 0);
+				int num4 = (flag ? control.subMenu.controls.Count : 0);
 				int num5 = (flag ? 8 : 0);
 				text += $" ({num4}/{num5})";
 				disabled = num4 >= 8;
@@ -142,7 +142,7 @@ internal class MenuExpressionTreeView : TreeView
 			Rect position2 = new Rect(rowRect.x + vector.x + 4f, rowRect.y, rowRect.height, rowRect.height);
 			using (new EditorGUI.DisabledScope(disabled))
 			{
-				Texture2D texture2D = ((!flag) ? null : classThread.icon);
+				Texture2D texture2D = ((!flag) ? null : control.icon);
 				if (texture2D != null)
 				{
 					GUI.DrawTexture(position2, texture2D, ScaleMode.ScaleToFit);
@@ -153,7 +153,7 @@ internal class MenuExpressionTreeView : TreeView
 			{
 				return;
 			}
-			string text2 = classThread.subMenu.name;
+			string text2 = control.subMenu.name;
 			Vector2 vector2 = GUI.skin.label.CalcSize(new GUIContent("[" + text2 + "]"));
 			int num6 = 0;
 			while (true)
@@ -189,15 +189,15 @@ internal class MenuExpressionTreeView : TreeView
 		{
 			return true;
 		}
-		return ((MenuControlTreeItem)spec).classThread?.name.ToLower().Contains(caller.ToLower()) ?? false;
+		return ((MenuControlTreeItem)spec).control?.name.ToLower().Contains(caller.ToLower()) ?? false;
 	}
 
 	protected override bool CanChangeExpandedState(TreeViewItem config)
 	{
-		VRCExpressionsMenu.Control classThread = ((MenuControlTreeItem)config).classThread;
-		if (classThread != null)
+		VRCExpressionsMenu.Control control = ((MenuControlTreeItem)config).control;
+		if (control != null)
 		{
-			if (classThread.type != VRCExpressionsMenu.Control.ControlType.SubMenu || !(classThread.subMenu != null))
+			if (control.type != VRCExpressionsMenu.Control.ControlType.SubMenu || !(control.subMenu != null))
 			{
 				return base.CanChangeExpandedState(config);
 			}

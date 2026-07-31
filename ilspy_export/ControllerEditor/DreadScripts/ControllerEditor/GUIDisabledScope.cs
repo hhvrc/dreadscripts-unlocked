@@ -5,16 +5,16 @@ namespace DreadScripts.ControllerEditor;
 
 internal sealed class GUIDisabledScope : IDisposable
 {
-	private readonly bool visitorPolicy;
+	private readonly bool previousEnabled;
 
 	public GUIDisabledScope(bool iskey)
 	{
-		visitorPolicy = GUI.enabled;
+		previousEnabled = GUI.enabled;
 		GUI.enabled = !iskey;
 	}
 
 	public void Dispose()
 	{
-		GUI.enabled = visitorPolicy;
+		GUI.enabled = previousEnabled;
 	}
 }
