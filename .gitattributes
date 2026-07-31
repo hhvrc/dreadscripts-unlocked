@@ -1,4 +1,4 @@
-# Deliberately NO global `* text=auto` -- see the ilspy_export rule at the end of this file.
+# Deliberately NO global `* text=auto` -- see the decompiled/ rule at the end of this file.
 
 # ── Git LFS: genuinely binary content only ───────────────────────────────────
 # Unity is set to Force Text serialization (ProjectSettings/EditorSettings.asset,
@@ -54,9 +54,9 @@
 *.physicMaterial text merge=unityyamlmerge eol=lf
 
 # ── Left exactly as generated, and last so it wins ───────────────────────────
-# ilspy_export/ is decompiler output, byte-compared against dreadful-re's export/ by
+# decompiled/ is decompiler output, byte-compared against dreadful-re's export/ by
 # sync_public.py. Any line-ending normalisation makes the published copy differ from what the
 # decompiler emits and fails that check for a reason nobody would connect to line endings -- its
 # .resx files are CRLF. This rule is last because later rules win, so it overrides the *.cs entry
 # above for this tree only.
-ilspy_export/** -text
+decompiled/** -text
