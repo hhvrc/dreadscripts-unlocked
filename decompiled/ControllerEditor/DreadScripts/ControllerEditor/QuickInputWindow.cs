@@ -70,7 +70,7 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 					}
 					break;
 				}
-				QuickInputWindow quickInputWindow = DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.CloneHelper();
+				QuickInputWindow quickInputWindow = DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.CloneHelper(true, "");
 				quickInputWindow.titleContent.text = info;
 				quickInputWindow._ModelPolicy = array;
 				quickInputWindow.m_DecoratorPolicy = second;
@@ -103,12 +103,12 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 
 	internal Vector2 ViewHelper()
 	{
-		return new Vector2(370f, 26 * m_DecoratorPolicy.Length + 28 + ((!string.IsNullOrEmpty(invocationPolicy)) ? 38 : 0));
+		return new Vector2(370f, 26 * m_DecoratorPolicy.Length + 28 + ((!string.IsNullOrEmpty(base.invocationPolicy)) ? 38 : 0));
 	}
 
 	internal void CollectHelper(Vector2 asset)
 	{
-		LoginHelper(asset, ViewHelper());
+		base.LoginHelper(asset, ViewHelper());
 	}
 
 	void DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.OnCustomGUI()
@@ -116,7 +116,7 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 		if (_ModelPolicy != null)
 		{
 			bool[] array = m_ObjectPolicy?.Invoke(_ModelPolicy);
-			m_DicPolicy = array == null || !array.Any((bool b) => b);
+			base.m_DicPolicy = array == null || !array.Any((bool b) => b);
 			bool flag = comparatorPolicy != null;
 			for (int num = 0; num < m_DecoratorPolicy.Length; num++)
 			{
@@ -174,7 +174,7 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 						_ModelPolicy[num] = EditorGUILayout.TextField(m_TokenizerPolicy[num], (string)_ModelPolicy[num]);
 						break;
 					}
-					if (!m_DicPolicy && array[num])
+					if (!base.m_DicPolicy && array[num])
 					{
 						GUILayout.Label(new GUIContent(EditorUtils.DestroyError().issuerProcessor), EditorUtils.CalcError().m_InstanceProcessor, GUILayout.ExpandWidth(expand: false));
 					}

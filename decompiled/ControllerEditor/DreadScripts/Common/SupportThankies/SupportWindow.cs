@@ -39,7 +39,7 @@ internal class SupportWindow : EditorWindow
 	private static int _Invocation = 1;
 
 	[SpecialName]
-	private static bool AssetWrapper()
+	private static bool IsDone()
 	{
 		if (_Callback)
 		{
@@ -48,32 +48,32 @@ internal class SupportWindow : EditorWindow
 		return m_Indexer;
 	}
 
-	private static void ResolveWrapper()
+	private static void InitHeaderContent()
 	{
-		m_Prototype = new GUIContent(SupporterStrings.m_Model.DestroyWrapper(), SupporterStrings.m_Tokenizer.DestroyWrapper());
+		m_Prototype = new GUIContent(SupporterStrings.m_Model.RandomElement(), SupporterStrings.m_Tokenizer.RandomElement());
 	}
 
-	public static void ListWrapper()
+	public static void DrawButton()
 	{
 		Rect controlRect = EditorGUILayout.GetControlRect(false, 16f, GUIStyle.none, GUILayout.Width(16f));
 		controlRect.x -= 2f;
-		SupportWindowAssets.GetTextures().merchant.ResetWrapper(controlRect);
-		if (EditorGuiUtils.PushWrapper(controlRect))
+		SupportWindowAssets.GetTextures().merchant.Draw(controlRect);
+		if (EditorGuiUtils.IsClicked(controlRect))
 		{
-			VerifyWrapper();
+			Open();
 		}
 	}
 
-	public static void VerifyWrapper()
+	public static void Open()
 	{
-		EditorWindow.GetWindow<SupportWindow>(SupporterStrings._Role.DestroyWrapper()).titleContent.image = SupportWindowAssets.GetTextures().merchant.ValidateWrapper();
+		EditorWindow.GetWindow<SupportWindow>(SupporterStrings._Role.RandomElement()).titleContent.image = SupportWindowAssets.GetTextures().merchant.GetTexture();
 	}
 
 	public void OnGUI()
 	{
-		if (!AssetWrapper() && !m_Advisor)
+		if (!IsDone() && !m_Advisor)
 		{
-			StopWrapper();
+			FetchSupporters();
 		}
 		if (m_Advisor)
 		{
@@ -86,9 +86,9 @@ internal class SupportWindow : EditorWindow
 			{
 				EditorGUILayout.HelpBox(issuer, MessageType.Error);
 			}
-			if (EditorGuiUtils.CreateWrapper("Retry", EditorStyles.toolbarButton))
+			if (EditorGuiUtils.Button("Retry", EditorStyles.toolbarButton))
 			{
-				PrepareWrapper();
+				ResetState();
 			}
 		}
 		if (_Callback)
@@ -97,12 +97,12 @@ internal class SupportWindow : EditorWindow
 			{
 				GUILayout.Label(m_Prototype, SupportWindowAssets.GetStyles()._Pool);
 			}
-			FillWrapper();
+			DrawSupporters();
 		}
-		WriteWrapper();
+		DrawKofiButton();
 	}
 
-	public void FillWrapper()
+	public void DrawSupporters()
 	{
 		Event current = Event.current;
 		Rect controlRect = EditorGUILayout.GetControlRect(GUILayout.Height(60f), GUILayout.ExpandWidth(expand: true), GUILayout.ExpandHeight(expand: true));
@@ -172,26 +172,26 @@ internal class SupportWindow : EditorWindow
 		GUILayout.EndArea();
 	}
 
-	public static void WriteWrapper()
+	public static void DrawKofiButton()
 	{
 		Rect rect = GUILayoutUtility.GetRect(100f, 200f, 16f, 32f);
-		Rect setup = EditorGuiUtils.CalcWrapper(rect, 6.25f);
-		GUI.DrawTexture(rect, EditorGuiUtils.CloneWrapper(Color.white), ScaleMode.StretchToFill, alphaBlend: false, 0f, new Color(0.075f, 0.765f, 1f), 0f, 8f);
-		SupportWindowAssets.GetTextures()._Authentication.ResetWrapper(setup);
-		if (EditorGuiUtils.PushWrapper(rect))
+		Rect setup = EditorGuiUtils.FitAspectRatio(rect, 6.25f);
+		GUI.DrawTexture(rect, EditorGuiUtils.GetColorTexture(Color.white), ScaleMode.StretchToFill, alphaBlend: false, 0f, new Color(0.075f, 0.765f, 1f), 0f, 8f);
+		SupportWindowAssets.GetTextures()._Authentication.Draw(setup);
+		if (EditorGuiUtils.IsClicked(rect))
 		{
-			ForgotWrapper();
+			OpenKofi();
 		}
 	}
 
-	public static void ForgotWrapper()
+	public static void OpenKofi()
 	{
 		Application.OpenURL("https://ko-fi.com/dreadrith");
 	}
 
-	public async Task StopWrapper()
+	public async Task FetchSupporters()
 	{
-		if (AssetWrapper() || m_Advisor)
+		if (IsDone() || m_Advisor)
 		{
 			return;
 		}
@@ -214,7 +214,7 @@ internal class SupportWindow : EditorWindow
 			try
 			{
 				m_Singleton = request.downloadHandler.text;
-				CheckWrapper();
+				ParseRawData();
 				_Callback = true;
 			}
 			catch (Exception ex)
@@ -230,7 +230,7 @@ internal class SupportWindow : EditorWindow
 		}
 	}
 
-	public void CheckWrapper()
+	public void ParseRawData()
 	{
 		string[] array = m_Singleton.Split(new string[3] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 		rule = new SupporterEntry[array.Length];
@@ -243,10 +243,10 @@ internal class SupportWindow : EditorWindow
 
 	public void OnEnable()
 	{
-		ResolveWrapper();
+		InitHeaderContent();
 	}
 
-	public static void PrepareWrapper()
+	public static void ResetState()
 	{
 		m_Indexer = false;
 		_Callback = false;

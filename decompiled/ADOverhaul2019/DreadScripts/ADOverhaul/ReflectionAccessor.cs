@@ -52,23 +52,23 @@ internal class ReflectionAccessor
 		}
 	}
 
-	internal static readonly Dictionary<Type, ReflectionCache> _BridgeDic = new Dictionary<Type, ReflectionCache>();
+	internal static readonly Dictionary<Type, ReflectionCache> caches = new Dictionary<Type, ReflectionCache>();
 
-	internal readonly object utilsDic;
+	internal readonly object target;
 
-	internal readonly Type _IdentifierDic;
+	internal readonly Type type;
 
-	internal readonly ReflectionCache globalDic;
+	internal readonly ReflectionCache reflectionCache;
 
 	internal ReflectionAccessor(object param)
 	{
-		utilsDic = param;
-		_IdentifierDic = param.GetType();
-		if (_BridgeDic.TryGetValue(_IdentifierDic, out globalDic))
+		target = param;
+		type = param.GetType();
+		if (caches.TryGetValue(type, out reflectionCache))
 		{
 			return;
 		}
-		MemberInfo[] members = _IdentifierDic.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+		MemberInfo[] members = type.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 		Dictionary<string, FieldInfo> fields = members.OfType<FieldInfo>().ToDictionary((FieldInfo f) => f.Name);
 		Dictionary<string, PropertyInfo> properties = members.OfType<PropertyInfo>().ToDictionary((PropertyInfo p) => p.Name);
 		Dictionary<string, List<MethodInfo>> dictionary = new Dictionary<string, List<MethodInfo>>();
@@ -81,114 +81,114 @@ internal class ReflectionAccessor
 			}
 			value.Add(item);
 		}
-		globalDic = new ReflectionCache
+		reflectionCache = new ReflectionCache
 		{
 			members = members,
 			fields = fields,
 			properties = properties,
 			methods = dictionary
 		};
-		_BridgeDic.Add(_IdentifierDic, globalDic);
+		caches.Add(type, reflectionCache);
 	}
 
 	[SpecialName]
-	public object CalculateParser(string key)
+	public object Item(string key)
 	{
-		if (!CompareParser(key, out var token))
+		if (!TryGetValue(key, out var token))
 		{
-			Debug.LogError("Member " + key + " not found in " + _IdentifierDic.Name);
+			Debug.LogError("Member " + key + " not found in " + type.Name);
 			return null;
 		}
 		return token;
 	}
 
 	[SpecialName]
-	public void PopParser(string info, object caller)
+	public void Item(string info, object caller)
 	{
-		if (!InterruptParser(info, caller))
+		if (!TrySetValue(info, caller))
 		{
-			Debug.LogError("Member " + info + " not found in " + _IdentifierDic.Name);
+			Debug.LogError("Member " + info + " not found in " + type.Name);
 		}
 	}
 
-	public bool CompareParser(string first, out object token)
+	public bool TryGetValue(string first, out object token)
 	{
-		if (globalDic.fields.TryGetValue(first, out var value))
+		if (reflectionCache.fields.TryGetValue(first, out var value))
 		{
-			token = value.GetValue(utilsDic);
+			token = value.GetValue(target);
 			return true;
 		}
-		if (globalDic.properties.TryGetValue(first, out var value2))
+		if (reflectionCache.properties.TryGetValue(first, out var value2))
 		{
-			token = value2.GetValue(utilsDic);
+			token = value2.GetValue(target);
 			return true;
 		}
-		if (!globalDic.methods.ContainsKey(first))
+		if (!reflectionCache.methods.ContainsKey(first))
 		{
 			token = null;
 			return false;
 		}
-		token = ComputeParser(first);
+		token = Invoke(first);
 		return true;
 	}
 
-	public bool InterruptParser(string setup, object result)
+	public bool TrySetValue(string setup, object result)
 	{
-		if (!globalDic.fields.TryGetValue(setup, out var value))
+		if (!reflectionCache.fields.TryGetValue(setup, out var value))
 		{
-			if (!globalDic.properties.TryGetValue(setup, out var value2))
+			if (!reflectionCache.properties.TryGetValue(setup, out var value2))
 			{
 				return false;
 			}
-			value2.SetValue(utilsDic, result);
+			value2.SetValue(target, result);
 			return true;
 		}
-		value.SetValue(utilsDic, result);
+		value.SetValue(target, result);
 		return true;
 	}
 
-	internal object ComputeParser(string task, params object[] args)
+	internal object Invoke(string task, params object[] args)
 	{
-		return InitParser(task, null, args);
+		return Invoke(task, null, args);
 	}
 
-	internal T StartParser<T>(string key, params object[] args)
+	internal T Invoke<T>(string key, params object[] args)
 	{
-		return (T)InitParser(key, typeof(T), args);
+		return (T)Invoke(key, typeof(T), args);
 	}
 
-	private object InitParser(string spec, Type cont, params object[] args)
+	private object Invoke(string spec, Type cont, params object[] args)
 	{
-		if (!globalDic.methods.TryGetValue(spec, out var value))
+		if (!reflectionCache.methods.TryGetValue(spec, out var value))
 		{
-			Debug.LogError("Method " + spec + " not found in " + _IdentifierDic.Name);
+			Debug.LogError("Method " + spec + " not found in " + type.Name);
 		}
 		else
 		{
 			if (value.Count == 1)
 			{
-				return value[0].Invoke(utilsDic, args);
+				return value[0].Invoke(target, args);
 			}
-			if (CheckParser(value, args.Length, out var dir))
+			if (TryMatchByParameterCount(value, args.Length, out var dir))
 			{
-				return dir[0].Invoke(utilsDic, args);
+				return dir[0].Invoke(target, args);
 			}
-			if (CancelParser(dir, (from a in args
+			if (TryMatchByParameterTypes(dir, (from a in args
 				where a != null
 				select a.GetType()).ToArray(), out var comp))
 			{
-				return comp[0].Invoke(utilsDic, args);
+				return comp[0].Invoke(target, args);
 			}
-			if (cont != null && DisableParser(comp, cont, out var state))
+			if (cont != null && TryMatchByReturnType(comp, cont, out var state))
 			{
-				return state[0].Invoke(utilsDic, args);
+				return state[0].Invoke(target, args);
 			}
-			Debug.LogError("Multiple methods named " + spec + " found in " + _IdentifierDic.Name);
+			Debug.LogError("Multiple methods named " + spec + " found in " + type.Name);
 		}
 		return null;
 	}
 
-	private static bool CheckParser(IEnumerable<MethodInfo> info, int positioncaller, out MethodInfo[] dir)
+	private static bool TryMatchByParameterCount(IEnumerable<MethodInfo> info, int positioncaller, out MethodInfo[] dir)
 	{
 		dir = null;
 		if (info != null)
@@ -199,7 +199,7 @@ internal class ReflectionAccessor
 		return false;
 	}
 
-	private static bool CancelParser(IEnumerable<MethodInfo> param, Type[] b, out MethodInfo[] comp)
+	private static bool TryMatchByParameterTypes(IEnumerable<MethodInfo> param, Type[] b, out MethodInfo[] comp)
 	{
 		comp = null;
 		if (param != null)
@@ -210,7 +210,7 @@ internal class ReflectionAccessor
 		return false;
 	}
 
-	private static bool DisableParser(IEnumerable<MethodInfo> config, Type result, out MethodInfo[] state)
+	private static bool TryMatchByReturnType(IEnumerable<MethodInfo> config, Type result, out MethodInfo[] state)
 	{
 		state = null;
 		if (config != null)

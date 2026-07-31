@@ -95,7 +95,7 @@ internal sealed class RemoteTextureView
 				m_StubPolicy = true;
 				if (!string.IsNullOrWhiteSpace(_FilterPolicy))
 				{
-					CachedTextureContent.PrintRecord(data, _FilterPolicy);
+					CachedTextureContent.SaveTexture(data, _FilterPolicy);
 					_ProductPolicy = true;
 				}
 			}
@@ -112,7 +112,7 @@ internal sealed class RemoteTextureView
 		if (_ProductPolicy && !string.IsNullOrWhiteSpace(_FilterPolicy))
 		{
 			_ProductPolicy = false;
-			Texture2D texture2D = CachedTextureContent.ManageRecord(_FilterPolicy);
+			Texture2D texture2D = CachedTextureContent.LoadTexture(_FilterPolicy);
 			if (texture2D != null)
 			{
 				candidatePolicy = texture2D;

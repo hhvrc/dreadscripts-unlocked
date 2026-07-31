@@ -75,13 +75,13 @@ internal sealed class RemoteTexture
 	private bool order;
 
 	[SpecialName]
-	internal Texture2D ValidateWrapper()
+	internal Texture2D GetTexture()
 	{
 		if (_Registry)
 		{
 			if (m_Exporter && !m_Database)
 			{
-				CalculateWrapper();
+				TryLoadFromCache();
 			}
 			return m_Database;
 		}
@@ -93,7 +93,7 @@ internal sealed class RemoteTexture
 		{
 			printer = true;
 			importer = true;
-			InstantiateWrapper();
+			Download();
 			return null;
 		}
 		return null;
@@ -106,9 +106,9 @@ internal sealed class RemoteTexture
 		_Dispatcher = control;
 	}
 
-	internal void InstantiateWrapper()
+	internal void Download()
 	{
-		if (CalculateWrapper())
+		if (TryLoadFromCache())
 		{
 			return;
 		}
@@ -132,7 +132,7 @@ internal sealed class RemoteTexture
 				_Registry = true;
 				if (!string.IsNullOrWhiteSpace(_Dispatcher))
 				{
-					EditorGuiUtils.LoginWrapper(data, _Dispatcher);
+					EditorGuiUtils.SaveTextureToSession(data, _Dispatcher);
 					m_Exporter = true;
 				}
 			}
@@ -144,21 +144,21 @@ internal sealed class RemoteTexture
 		importer = false;
 	}
 
-	internal void AwakeWrapper(Rect setup, TextureDisplayParams vis = default(TextureDisplayParams))
+	internal void DrawPattern(Rect setup, TextureDisplayParams vis = default(TextureDisplayParams))
 	{
-		FlushWrapper(setup, TextureLayoutMethod.Pattern, vis);
+		Draw(setup, TextureLayoutMethod.Pattern, vis);
 	}
 
-	internal void ResetWrapper(Rect setup)
+	internal void Draw(Rect setup)
 	{
-		FlushWrapper(setup, TextureLayoutMethod.StretchToFill);
+		Draw(setup, TextureLayoutMethod.StretchToFill);
 	}
 
-	internal void FlushWrapper(Rect spec, TextureLayoutMethod vis, TextureDisplayParams c = default(TextureDisplayParams))
+	internal void Draw(Rect spec, TextureLayoutMethod vis, TextureDisplayParams c = default(TextureDisplayParams))
 	{
-		if (!MapWrapper())
+		if (!IsReady())
 		{
-			TestWrapper(spec);
+			DrawPlaceholder(spec);
 			return;
 		}
 		int num;
@@ -177,12 +177,12 @@ internal sealed class RemoteTexture
 			}
 			else
 			{
-				num2 = (num3 = ((float)ValidateWrapper().width / 256f + (float)ValidateWrapper().height / 256f) / 2f);
-				position = new Vector2((float)ValidateWrapper().width / 2f, (float)ValidateWrapper().height / 2f);
+				num2 = (num3 = ((float)GetTexture().width / 256f + (float)GetTexture().height / 256f) / 2f);
+				position = new Vector2((float)GetTexture().width / 2f, (float)GetTexture().height / 2f);
 			}
-			float x = spec.width / (float)ValidateWrapper().width * num2;
-			float y = spec.height / (float)ValidateWrapper().height * num3;
-			GUI.DrawTextureWithTexCoords(texCoords: new Rect(position, new Vector2(x, y)), position: spec, image: ValidateWrapper());
+			float x = spec.width / (float)GetTexture().width * num2;
+			float y = spec.height / (float)GetTexture().height * num3;
+			GUI.DrawTextureWithTexCoords(texCoords: new Rect(position, new Vector2(x, y)), position: spec, image: GetTexture());
 			return;
 		}
 		case TextureLayoutMethod.ScaleToFit:
@@ -196,10 +196,10 @@ internal sealed class RemoteTexture
 			break;
 		}
 		ScaleMode scaleMode = (ScaleMode)num;
-		GUI.DrawTexture(spec, ValidateWrapper(), scaleMode);
+		GUI.DrawTexture(spec, GetTexture(), scaleMode);
 	}
 
-	internal void ConnectWrapper()
+	internal void Clear()
 	{
 		if (!string.IsNullOrEmpty(_Dispatcher))
 		{
@@ -213,12 +213,12 @@ internal sealed class RemoteTexture
 		m_Exporter = true;
 	}
 
-	internal bool CalculateWrapper()
+	internal bool TryLoadFromCache()
 	{
 		if (m_Exporter && !string.IsNullOrWhiteSpace(_Dispatcher))
 		{
 			m_Exporter = false;
-			Texture2D texture2D = EditorGuiUtils.ReflectWrapper(_Dispatcher);
+			Texture2D texture2D = EditorGuiUtils.LoadTextureFromSession(_Dispatcher);
 			if (texture2D != null)
 			{
 				m_Database = texture2D;
@@ -230,16 +230,16 @@ internal sealed class RemoteTexture
 		return m_Database;
 	}
 
-	private void TestWrapper(Rect def)
+	private void DrawPlaceholder(Rect def)
 	{
 		GUI.Box(def, GUIContent.none);
 	}
 
-	internal bool MapWrapper()
+	internal bool IsReady()
 	{
 		if (!order)
 		{
-			if (!(ValidateWrapper() == null))
+			if (!(GetTexture() == null))
 			{
 				if (Event.current.type == EventType.Layout)
 				{

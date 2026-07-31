@@ -6,53 +6,53 @@ namespace DreadScripts.ControllerEditor;
 
 internal struct AnimatorTransitionRef
 {
-	internal bool _MappingServer;
+	internal bool isState;
 
-	internal AnimatorState _BaseServer;
+	internal AnimatorState state;
 
-	internal AnimatorStateMachine _ContainerServer;
+	internal AnimatorStateMachine stateMachine;
 
-	internal AnimatorStateMachine _ClassServer;
+	internal AnimatorStateMachine parentStateMachine;
 
-	internal List<AnimatorTransitionBase> mockServer;
+	internal List<AnimatorTransitionBase> incomingTransitions;
 
 	private static object AssetSystem;
 
 	[SpecialName]
-	internal AnimatorStateTransition[] CollectConnection()
+	internal AnimatorStateTransition[] StateTransitions()
 	{
-		if (_MappingServer)
+		if (isState)
 		{
-			return _BaseServer.transitions;
+			return state.transitions;
 		}
 		return null;
 	}
 
 	[SpecialName]
-	internal AnimatorTransition[] ListConnection()
+	internal AnimatorTransition[] StateMachineTransitions()
 	{
-		if (!_MappingServer)
+		if (!isState)
 		{
-			return _ClassServer.GetStateMachineTransitions(_ContainerServer);
+			return parentStateMachine.GetStateMachineTransitions(stateMachine);
 		}
 		return null;
 	}
 
 	internal AnimatorTransitionRef(AnimatorState def)
 	{
-		_BaseServer = def;
-		_ClassServer = (_ContainerServer = null);
-		mockServer = new List<AnimatorTransitionBase>();
-		_MappingServer = true;
+		state = def;
+		parentStateMachine = (stateMachine = null);
+		incomingTransitions = new List<AnimatorTransitionBase>();
+		isState = true;
 	}
 
 	internal AnimatorTransitionRef(AnimatorStateMachine key, AnimatorStateMachine second)
 	{
-		_BaseServer = null;
-		_ContainerServer = second;
-		_ClassServer = key;
-		mockServer = new List<AnimatorTransitionBase>();
-		_MappingServer = false;
+		state = null;
+		stateMachine = second;
+		parentStateMachine = key;
+		incomingTransitions = new List<AnimatorTransitionBase>();
+		isState = false;
 	}
 
 	internal static bool SelectSystem()

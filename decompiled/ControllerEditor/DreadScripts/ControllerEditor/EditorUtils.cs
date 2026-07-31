@@ -1301,93 +1301,93 @@ internal static class EditorUtils
 
 	internal struct ControllerPicker
 	{
-		internal VRCAvatarDescriptor m_ListenerObserver;
+		internal VRCAvatarDescriptor avatar;
 
-		internal VRCAvatarDescriptor.AnimLayerType _GetterObserver;
+		internal VRCAvatarDescriptor.AnimLayerType layerType;
 
-		internal bool interceptorObserver;
+		internal bool useAvatarLayer;
 
-		internal UnityEditor.Animations.AnimatorController m_CreatorObserver;
+		internal UnityEditor.Animations.AnimatorController controller;
 
-		internal ValidationResult eventObserver;
+		internal ValidationResult validation;
 
-		internal bool infoObserver;
+		internal bool allowNull;
 
 		internal static object AssetCandidate;
 
 		[SpecialName]
-		internal bool PrintError()
+		internal bool IsValid()
 		{
-			return eventObserver.isValid;
+			return validation.isValid;
 		}
 
-		internal ControllerPicker SortError(VRCAvatarDescriptor value, VRCAvatarDescriptor.AnimLayerType token, bool dorole = false)
+		internal ControllerPicker Set(VRCAvatarDescriptor value, VRCAvatarDescriptor.AnimLayerType token, bool dorole = false)
 		{
-			return RegisterError(value, token, (!(value != null)) ? null : value.ChangeList(token), dorole);
+			return Set(value, token, (!(value != null)) ? null : value.ChangeList(token), dorole);
 		}
 
-		internal ControllerPicker RegisterError(VRCAvatarDescriptor spec, VRCAvatarDescriptor.AnimLayerType connection, UnityEditor.Animations.AnimatorController pool, bool isdef2 = false)
+		internal ControllerPicker Set(VRCAvatarDescriptor spec, VRCAvatarDescriptor.AnimLayerType connection, UnityEditor.Animations.AnimatorController pool, bool isdef2 = false)
 		{
-			eventObserver = new ValidationResult(isparam: false, "Unknown Error");
-			m_ListenerObserver = spec;
-			_GetterObserver = connection;
-			interceptorObserver = true;
-			infoObserver = isdef2;
-			return LogoutError(pool, isdef2);
+			validation = new ValidationResult(isparam: false, "Unknown Error");
+			avatar = spec;
+			layerType = connection;
+			useAvatarLayer = true;
+			allowNull = isdef2;
+			return Set(pool, isdef2);
 		}
 
-		internal ControllerPicker LogoutError(UnityEditor.Animations.AnimatorController task, bool istoken = false)
+		internal ControllerPicker Set(UnityEditor.Animations.AnimatorController task, bool istoken = false)
 		{
-			eventObserver = new ValidationResult(isparam: false, "Unknown Error");
-			infoObserver = istoken;
-			m_CreatorObserver = task;
+			validation = new ValidationResult(isparam: false, "Unknown Error");
+			allowNull = istoken;
+			controller = task;
 			return this;
 		}
 
 		internal ControllerPicker Process()
 		{
-			if (!interceptorObserver || !(m_ListenerObserver == null))
+			if (!useAvatarLayer || !(avatar == null))
 			{
-				if (!(m_CreatorObserver == null) || infoObserver)
+				if (!(controller == null) || allowNull)
 				{
-					eventObserver = new ValidationResult(isparam: true, "Check is valid");
+					validation = new ValidationResult(isparam: true, "Check is valid");
 					return this;
 				}
-				eventObserver = ((!interceptorObserver) ? new ValidationResult(isparam: false, "Controller is not set (Null)") : new ValidationResult(isparam: false, $"{_GetterObserver} Controller was not found"));
+				validation = ((!useAvatarLayer) ? new ValidationResult(isparam: false, "Controller is not set (Null)") : new ValidationResult(isparam: false, $"{layerType} Controller was not found"));
 				return this;
 			}
-			eventObserver = new ValidationResult(isparam: false, "Avatar is not set (Null)");
+			validation = new ValidationResult(isparam: false, "Avatar is not set (Null)");
 			return this;
 		}
 
-		internal void PatchError(Action<UnityEditor.Animations.AnimatorController> last, string ord = null)
+		internal void Draw(Action<UnityEditor.Animations.AnimatorController> last, string ord = null)
 		{
-			VRCAvatarDescriptor listenerObserver = m_ListenerObserver;
-			bool flag = listenerObserver == null;
-			VRCAvatarDescriptor.AnimLayerType m_AdvisorObserver = _GetterObserver;
+			VRCAvatarDescriptor vRCAvatarDescriptor = avatar;
+			bool flag = vRCAvatarDescriptor == null;
+			VRCAvatarDescriptor.AnimLayerType m_AdvisorObserver = layerType;
 			string text = m_AdvisorObserver.ToString();
-			UnityEditor.Animations.AnimatorController animatorController = (flag ? null : listenerObserver.ChangeList(m_AdvisorObserver));
+			UnityEditor.Animations.AnimatorController animatorController = (flag ? null : vRCAvatarDescriptor.ChangeList(m_AdvisorObserver));
 			_ = animatorController != null;
-			bool flag2 = interceptorObserver && !flag && animatorController == m_CreatorObserver;
+			bool flag2 = useAvatarLayer && !flag && animatorController == controller;
 			if (ord == null)
 			{
-				ord = ((!interceptorObserver) ? "Target Controller" : ("Target " + text + ":"));
+				ord = ((!useAvatarLayer) ? "Target Controller" : ("Target " + text + ":"));
 			}
 			bool cfg;
-			string b = (m_CreatorObserver.CallRules(out cfg) ? ((!cfg) ? "No Controller Selected" : ((!flag2) ? "Controller Is Missing!" : ("[Avatar's " + text + " Is Missing!]"))) : ((!flag2) ? m_CreatorObserver.name : ("[Avatar's " + text + "]")));
+			string b = (controller.CallRules(out cfg) ? ((!cfg) ? "No Controller Selected" : ((!flag2) ? "Controller Is Missing!" : ("[Avatar's " + text + " Is Missing!]"))) : ((!flag2) ? controller.name : ("[Avatar's " + text + "]")));
 			ControllerPicker _FacadeObserver = this;
-			PopRules(ord, b, m_CreatorObserver, delegate(UnityEditor.Animations.AnimatorController c)
+			PopRules(ord, b, controller, delegate(UnityEditor.Animations.AnimatorController c)
 			{
-				_FacadeObserver.InterruptError(c, m_AdvisorObserver, last);
-			}, eventObserver, null, ManageError, infoObserver);
+				_FacadeObserver.OnControllerSelected(c, m_AdvisorObserver, last);
+			}, validation, null, OnControllerCreated, allowNull);
 		}
 
-		private void InterruptError(UnityEditor.Animations.AnimatorController spec, VRCAvatarDescriptor.AnimLayerType cfg, Action<UnityEditor.Animations.AnimatorController> template)
+		private void OnControllerSelected(UnityEditor.Animations.AnimatorController spec, VRCAvatarDescriptor.AnimLayerType cfg, Action<UnityEditor.Animations.AnimatorController> template)
 		{
 			template(spec);
-			if (interceptorObserver && m_ListenerObserver != null && m_ListenerObserver.ChangeList(cfg) == null)
+			if (useAvatarLayer && avatar != null && avatar.ChangeList(cfg) == null)
 			{
-				VRCAvatarDescriptor prototypeObserver = m_ListenerObserver;
+				VRCAvatarDescriptor prototypeObserver = avatar;
 				GenericMenu genericMenu = new GenericMenu();
 				genericMenu.AddItem(new GUIContent($"Set As Avatar's {cfg}?/Yes"), on: false, delegate
 				{
@@ -1397,7 +1397,7 @@ internal static class EditorUtils
 			}
 		}
 
-		private void ManageError(UnityEditor.Animations.AnimatorController def)
+		private void OnControllerCreated(UnityEditor.Animations.AnimatorController def)
 		{
 			def.AddLayer("Base Layer");
 			EditorUtility.SetDirty(def);
@@ -1977,7 +1977,7 @@ internal static class EditorUtils
 				{
 					_ResolverServer.m_SerializerServer.Add(obj, value);
 				}
-				value.mockServer.Add(et.fieldServer);
+				value.incomingTransitions.Add(et.fieldServer);
 			}
 		}
 	}
@@ -4333,7 +4333,7 @@ internal static class EditorUtils
 			GUI.DrawTexture(def.SortResolver(18f, isfield: true, 2f, iscont3: true, isattr4: false).VerifyResolver(-1f), miniTypeThumbnail);
 			if (isSet)
 			{
-				Texture image = (isValid ? DestroyError().m_CodeProcessor.image : DestroyError().issuerProcessor.CompareHelper());
+				Texture image = (isValid ? DestroyError().m_CodeProcessor.image : DestroyError().issuerProcessor.texture());
 				GUI.Label(def.PatchResolver(18f, isserv: true, 4f, isvisitor3: true, istoken4: false).VerifyResolver(-1f), isValid ? new GUIContent(image)
 				{
 					tooltip = "All Good!"
@@ -7381,12 +7381,12 @@ internal static class EditorUtils
 	internal static CachedTextureContent NewList(string value, string vis, string template = "")
 	{
 		CachedTextureContent cachedTextureContent = new CachedTextureContent(vis, template);
-		if (cachedTextureContent.CompareHelper() == null)
+		if (cachedTextureContent.texture() == null)
 		{
 			GUIContent gUIContent = EditorGUIUtility.IconContent(value);
 			if (gUIContent != null && gUIContent.image != null)
 			{
-				cachedTextureContent.SetHelper(CloneList(gUIContent.image as Texture2D));
+				cachedTextureContent.texture(CloneList(gUIContent.image as Texture2D));
 			}
 		}
 		return cachedTextureContent;
@@ -7536,7 +7536,7 @@ internal static class EditorUtils
 	internal static VRCContactSender FillList(this VRCContactReceiver res, GameObject cfg)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(cfg);
-		new PhysBoneColliderSnapshot(res).TestHelper(vRCContactSender);
+		new PhysBoneColliderSnapshot(res).Apply(vRCContactSender);
 		vRCContactSender.collisionTags = res.collisionTags;
 		vRCContactSender.rootTransform = res.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
@@ -7549,7 +7549,7 @@ internal static class EditorUtils
 	internal static VRCContactSender WriteList(this VRCPhysBoneCollider asset, GameObject selection)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(selection);
-		new PhysBoneColliderSnapshot(asset).TestHelper(vRCContactSender);
+		new PhysBoneColliderSnapshot(asset).Apply(vRCContactSender);
 		vRCContactSender.rootTransform = asset.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
 		{
@@ -7561,7 +7561,7 @@ internal static class EditorUtils
 	internal static VRCContactReceiver ForgotList(this VRCContactSender init, GameObject result)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(result);
-		new PhysBoneColliderSnapshot(init).TestHelper(vRCContactReceiver);
+		new PhysBoneColliderSnapshot(init).Apply(vRCContactReceiver);
 		vRCContactReceiver.collisionTags = init.collisionTags;
 		vRCContactReceiver.rootTransform = init.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
@@ -7574,7 +7574,7 @@ internal static class EditorUtils
 	internal static VRCContactReceiver StopList(this VRCPhysBoneCollider param, GameObject cfg)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(cfg);
-		new PhysBoneColliderSnapshot(param).TestHelper(vRCContactReceiver);
+		new PhysBoneColliderSnapshot(param).Apply(vRCContactReceiver);
 		vRCContactReceiver.rootTransform = param.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
 		{
@@ -7586,7 +7586,7 @@ internal static class EditorUtils
 	internal static VRCPhysBoneCollider CheckList(this VRCContactReceiver task, GameObject cont)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cont);
-		new PhysBoneColliderSnapshot(task).MapHelper(vRCPhysBoneCollider);
+		new PhysBoneColliderSnapshot(task).Apply(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = task.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -7598,7 +7598,7 @@ internal static class EditorUtils
 	internal static VRCPhysBoneCollider PrepareList(this VRCContactSender reference, GameObject selection)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(selection);
-		new PhysBoneColliderSnapshot(reference).MapHelper(vRCPhysBoneCollider);
+		new PhysBoneColliderSnapshot(reference).Apply(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = reference.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{

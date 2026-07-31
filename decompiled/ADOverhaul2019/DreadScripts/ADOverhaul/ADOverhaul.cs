@@ -30,7 +30,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class LicenseManager
+internal sealed class ADOverhaul
 {
 	private sealed class ADOverhaulWindow : EditorWindow
 	{
@@ -206,17 +206,17 @@ internal sealed class LicenseManager
 			return (float)(int)_Policy / 1f;
 		}
 
-		internal static void InsertDic(Action key, ushort cfg_end = 0, string helper = "", ushort indextask2 = 0, bool movepol3 = false, string ident4 = "")
+		internal static void Run(Action key, ushort cfg_end = 0, string helper = "", ushort indextask2 = 0, bool movepol3 = false, string ident4 = "")
 		{
-			PrepareDic(key, null, cfg_end, helper, indextask2, movepol3, ident4);
+			Run(key, null, cfg_end, helper, indextask2, movepol3, ident4);
 		}
 
-		internal static void PrepareDic(Action reference, Action attr, ushort length_pool = 0, string spec2 = "", ushort min_asset3 = 0, bool containscust4 = false, string instance5 = "")
+		internal static void Run(Action reference, Action attr, ushort length_pool = 0, string spec2 = "", ushort min_asset3 = 0, bool containscust4 = false, string instance5 = "")
 		{
 			global = attr;
 			if (length_pool > 0)
 			{
-				ResolveDic(length_pool, spec2, min_asset3);
+				SetContext(length_pool, spec2, min_asset3);
 			}
 			try
 			{
@@ -226,16 +226,16 @@ internal sealed class LicenseManager
 			{
 				if (!_Dispatcher)
 				{
-					ListDic(res, containscust4, instance5);
-					CompilationPipeline.compilationStarted -= InterruptDic;
-					CompilationPipeline.compilationStarted += InterruptDic;
+					HandleException(res, containscust4, instance5);
+					CompilationPipeline.compilationStarted -= OnCompilationStarted;
+					CompilationPipeline.compilationStarted += OnCompilationStarted;
 					throw;
 				}
 				throw;
 			}
 		}
 
-		private static void ListDic(Exception res, bool removecfg = false, string c = "")
+		private static void HandleException(Exception res, bool removecfg = false, string c = "")
 		{
 			if (!m_Identifier.HasValue || m_Collection.Contains(m_Identifier.Value))
 			{
@@ -258,10 +258,10 @@ internal sealed class LicenseManager
 				{
 				case 2:
 					m_Collection.Add(m_Utils.Value);
-					InterruptDic(null);
+					OnCompilationStarted(null);
 					break;
 				case 1:
-					InterruptDic(null);
+					OnCompilationStarted(null);
 					break;
 				case 0:
 					m_Collection.Add(m_Utils.Value);
@@ -271,9 +271,9 @@ internal sealed class LicenseManager
 			}
 		}
 
-		internal static void ManageDic()
+		internal static void DrawErrorPrompt()
 		{
-			if (!ReadDic())
+			if (!HasPendingError())
 			{
 				return;
 			}
@@ -283,17 +283,17 @@ internal sealed class LicenseManager
 				GUILayout.Label("An error has occurred! Do you want to report it?", EditorStyles.boldLabel);
 				if (ADOEditorUtility.GetManager("Ignore"))
 				{
-					CompareDic(calcitem: false);
+					Acknowledge(calcitem: false);
 				}
 				if (ADOEditorUtility.GetManager("Find Solution"))
 				{
-					CompareDic(calcitem: true);
+					Acknowledge(calcitem: true);
 				}
 			}
 			ADOEditorUtility.RemoveManager();
 		}
 
-		internal static bool ReadDic()
+		internal static bool HasPendingError()
 		{
 			if (!m_Utils.HasValue)
 			{
@@ -307,7 +307,7 @@ internal sealed class LicenseManager
 			return false;
 		}
 
-		internal static void ResolveDic(ushort init_X, string cust = "", ushort no__res = 0)
+		internal static void SetContext(ushort init_X, string cust = "", ushort no__res = 0)
 		{
 			m_Identifier = new ErrorInfo
 			{
@@ -317,7 +317,7 @@ internal sealed class LicenseManager
 			};
 		}
 
-		internal static void VerifyDic()
+		internal static void Reset()
 		{
 			_Importer = string.Empty;
 			_List = false;
@@ -326,7 +326,7 @@ internal sealed class LicenseManager
 			m_Identifier = null;
 		}
 
-		internal static void ConnectDic()
+		internal static void Draw()
 		{
 			CollectTemplate(m_Invocation && m_Utils.HasValue);
 			if (!m_Message)
@@ -463,9 +463,9 @@ internal sealed class LicenseManager
 			}
 		}
 
-		internal static void CompareDic(bool calcitem)
+		internal static void Acknowledge(bool calcitem)
 		{
-			if (ReadDic() && m_Utils.HasValue)
+			if (HasPendingError() && m_Utils.HasValue)
 			{
 				if (m_Collection.Contains(m_Utils.Value))
 				{
@@ -476,14 +476,14 @@ internal sealed class LicenseManager
 			}
 		}
 
-		internal static void InterruptDic(object ident)
+		internal static void OnCompilationStarted(object ident)
 		{
 			if (m_Utils.HasValue && global != null)
 			{
-				InsertDic(global, m_Utils.Value.m_Interpreter, m_Utils.Value._Writer, m_Utils.Value.m_Attribute);
+				Run(global, m_Utils.Value.m_Interpreter, m_Utils.Value._Writer, m_Utils.Value.m_Attribute);
 			}
 			global = null;
-			CompilationPipeline.compilationStarted -= InterruptDic;
+			CompilationPipeline.compilationStarted -= OnCompilationStarted;
 		}
 	}
 
@@ -2564,9 +2564,9 @@ internal sealed class LicenseManager
 
 			internal bool ReadResolver(ADOEditorUtility.BoneNode b)
 			{
-				if (b.statusDic)
+				if (b.isLeaf)
 				{
-					return !b.visitorDic;
+					return !b.isVirtual;
 				}
 				return false;
 			}
@@ -2850,11 +2850,11 @@ internal sealed class LicenseManager
 			{
 				if (m != 0f)
 				{
-					Matrix4x4 objectDic = b._ObjectDic;
-					Vector4 column = objectDic.GetColumn(3);
+					Matrix4x4 matrix = b.matrix;
+					Vector4 column = matrix.GetColumn(3);
 					float tag = m_BridgeConfig.radius * m;
 					EditorGUI.BeginChangeCheck();
-					float num = ADOEditorUtility.PublishManager(objectDic.rotation, column, tag, !m_BridgeConfig.showGizmos, ADOSettings.SearchTest().handleSizeMultiplier);
+					float num = ADOEditorUtility.PublishManager(matrix.rotation, column, tag, !m_BridgeConfig.showGizmos, ADOSettings.SearchTest().handleSizeMultiplier);
 					if (EditorGUI.EndChangeCheck())
 					{
 						float delta = num / m - m_BridgeConfig.radius;
@@ -3831,16 +3831,16 @@ internal sealed class LicenseManager
 			_003C_003Ec__DisplayClass116_0 cfg = default(_003C_003Ec__DisplayClass116_0);
 			cfg._ListenerConfig = first;
 			cfg.m_ObserverConfig = pred.physBone;
-			ADOEditorUtility.BoneNode[] array = pred.nodes.Where((ADOEditorUtility.BoneNode b) => b.statusDic && !b.visitorDic).ToArray();
+			ADOEditorUtility.BoneNode[] array = pred.nodes.Where((ADOEditorUtility.BoneNode b) => b.isLeaf && !b.isVirtual).ToArray();
 			foreach (ADOEditorUtility.BoneNode boneNode in array)
 			{
-				Transform setterDic = boneNode.m_SetterDic;
-				Vector3 vector = setterDic.TransformPoint(cfg.m_ObserverConfig.endpointPosition);
+				Transform transform = boneNode.transform;
+				Vector3 vector = transform.TransformPoint(cfg.m_ObserverConfig.endpointPosition);
 				if (!cfg.m_ObserverConfig.showGizmos || !(cfg.m_ObserverConfig.boneOpacity >= 0.05f))
 				{
-					Handles.DrawLine(setterDic.position, vector);
+					Handles.DrawLine(transform.position, vector);
 				}
-				Quaternion rotation = ((Tools.pivotRotation != PivotRotation.Global) ? setterDic.rotation : Quaternion.identity);
+				Quaternion rotation = ((Tools.pivotRotation != PivotRotation.Global) ? transform.rotation : Quaternion.identity);
 				Vector3 vector2 = Vector3.zero;
 				bool flag = false;
 				EditorGUI.BeginChangeCheck();
@@ -3855,10 +3855,10 @@ internal sealed class LicenseManager
 				if (hotControl != m_PredicateConfig)
 				{
 					m_PredicateConfig = -1;
-					direction = vector - setterDic.position;
+					direction = vector - transform.position;
 					if (direction.magnitude < 0.01f)
 					{
-						direction = ((boneNode.m_HelperDic == null) ? (-setterDic.forward) : (vector - boneNode.m_HelperDic.m_SetterDic.position));
+						direction = ((boneNode.parent == null) ? (-transform.forward) : (vector - boneNode.parent.transform.position));
 					}
 				}
 				else
@@ -3880,7 +3880,7 @@ internal sealed class LicenseManager
 				}
 				if (flag)
 				{
-					TestProducer(setterDic.InverseTransformVector(vector2 - vector), ref cfg);
+					TestProducer(transform.InverseTransformVector(vector2 - vector), ref cfg);
 				}
 			}
 		}
@@ -3934,10 +3934,10 @@ internal sealed class LicenseManager
 			bool flag = ord == null || ord.length == 0;
 			foreach (ADOEditorUtility.BoneNode node in key.nodes)
 			{
-				float num = ((!flag) ? ord.Evaluate(node.InvokeAlgo()) : 1f);
+				float num = ((!flag) ? ord.Evaluate(node.GetNormalizedDepth()) : 1f);
 				if (ignoreattr2)
 				{
-					num *= node.VisitAlgo();
+					num *= node.GetScale();
 				}
 				state(node, num);
 			}
@@ -3950,7 +3950,7 @@ internal sealed class LicenseManager
 			Keyframe[] keys = animationCurve.keys;
 			for (int i = 0; i < keys.Length; i++)
 			{
-				if (!(Math.Abs(keys[i].time - caller.InvokeAlgo()) >= 0.01f))
+				if (!(Math.Abs(keys[i].time - caller.GetNormalizedDepth()) >= 0.01f))
 				{
 					num = i;
 					break;
@@ -3959,14 +3959,14 @@ internal sealed class LicenseManager
 			float num2;
 			if (num == -1)
 			{
-				num2 = animationCurve.Evaluate(caller.InvokeAlgo());
-				num = animationCurve.AddKey(caller.InvokeAlgo(), num2);
+				num2 = animationCurve.Evaluate(caller.GetNormalizedDepth());
+				num = animationCurve.AddKey(caller.GetNormalizedDepth(), num2);
 			}
 			else
 			{
 				num2 = keys[num].value;
 			}
-			float num3 = caller.ForgotAlgo(animationCurve);
+			float num3 = caller.EvaluateCurve(animationCurve);
 			bool flag = second3 < 0f;
 			if (!(template.floatValue * num3 >= 0f))
 			{
@@ -3987,7 +3987,7 @@ internal sealed class LicenseManager
 					{
 						num5 = template.floatValue / second3;
 					}
-					animationCurve.MoveKey(num, new Keyframe(caller.InvokeAlgo(), 1f));
+					animationCurve.MoveKey(num, new Keyframe(caller.GetNormalizedDepth(), 1f));
 					for (int j = 0; j < keys.Length; j++)
 					{
 						if (j != num)
@@ -3999,12 +3999,12 @@ internal sealed class LicenseManager
 				}
 				else
 				{
-					animationCurve.MoveKey(num, new Keyframe(caller.InvokeAlgo(), flag ? (-1) : 0));
+					animationCurve.MoveKey(num, new Keyframe(caller.GetNormalizedDepth(), flag ? (-1) : 0));
 				}
 			}
 			else
 			{
-				animationCurve.MoveKey(num, new Keyframe(caller.InvokeAlgo(), num4));
+				animationCurve.MoveKey(num, new Keyframe(caller.GetNormalizedDepth(), num4));
 			}
 			float num7 = animationCurve.keys.Select((Keyframe k) => k.value).Prepend(0f).Max();
 			if (num7 < 0.8f)
@@ -4055,10 +4055,10 @@ internal sealed class LicenseManager
 					for (int j = 0; j < list.Count; j++)
 					{
 						ADOEditorUtility.BoneNode boneNode = list[j];
-						Vector3 vector3 = ((j != 0) ? vector2 : boneNode.ResetAlgo());
+						Vector3 vector3 = ((j != 0) ? vector2 : boneNode.GetPosition());
 						if (j != list.Count - 1)
 						{
-							vector2 = list[j + 1].ResetAlgo();
+							vector2 = list[j + 1].GetPosition();
 							vector = vector2 - vector3;
 						}
 						if (Vector3.Angle(Vector3.right, vector) < 90f)
@@ -4066,7 +4066,7 @@ internal sealed class LicenseManager
 							vector = -vector;
 						}
 						Vector3 up = Vector3.up;
-						float num3 = boneNode.ForgotAlgo(animationCurveValue);
+						float num3 = boneNode.EvaluateCurve(animationCurveValue);
 						float num4 = CS_0024_003C_003E8__locals28.m_IdentifierConfig.floatValue * num3;
 						Vector3 vector4 = vector3 + up * (num * (num4 / CS_0024_003C_003E8__locals28.dispatcherConfig));
 						array[i][j] = vector4;
@@ -4096,11 +4096,11 @@ internal sealed class LicenseManager
 				{
 					if (m != 0f)
 					{
-						Matrix4x4 objectDic = b._ObjectDic;
-						Vector4 column = objectDic.GetColumn(3);
+						Matrix4x4 matrix = b.matrix;
+						Vector4 column = matrix.GetColumn(3);
 						float tag = CS_0024_003C_003E8__locals28.m_BridgeConfig.radius * m;
 						EditorGUI.BeginChangeCheck();
-						float num6 = ADOEditorUtility.PublishManager(objectDic.rotation, column, tag, !CS_0024_003C_003E8__locals28.m_BridgeConfig.showGizmos, ADOSettings.SearchTest().handleSizeMultiplier);
+						float num6 = ADOEditorUtility.PublishManager(matrix.rotation, column, tag, !CS_0024_003C_003E8__locals28.m_BridgeConfig.showGizmos, ADOSettings.SearchTest().handleSizeMultiplier);
 						if (EditorGUI.EndChangeCheck())
 						{
 							float delta = num6 / m - CS_0024_003C_003E8__locals28.m_BridgeConfig.radius;
@@ -6060,9 +6060,9 @@ internal sealed class LicenseManager
 		{
 			pool.messageModel = pool.m_RegModel.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCPhysBoneCollider)t2)).ToArray();
 		}
-		Transform interceptorDic = pool.messageModel[pool._BridgeModel].m_InterceptorDic;
-		pool._GlobalModel = AssetSystem(interceptorDic);
-		int databaseDic = pool.messageModel[pool._BridgeModel]._DatabaseDic;
+		Transform rootTransform = pool.messageModel[pool._BridgeModel].rootTransform;
+		pool._GlobalModel = AssetSystem(rootTransform);
+		int shapeType = pool.messageModel[pool._BridgeModel].shapeType;
 		if (!((Func<bool>)delegate
 		{
 			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + setter));
@@ -6071,14 +6071,14 @@ internal sealed class LicenseManager
 		{
 			return;
 		}
-		Quaternion quaternion = interceptorDic.rotation * pool.messageModel[pool._BridgeModel]._PredicateDic;
-		pool.m_IdentifierModel = interceptorDic.TransformPoint(pool.messageModel[pool._BridgeModel]._ClassDic);
+		Quaternion quaternion = rootTransform.rotation * pool.messageModel[pool._BridgeModel].rotation;
+		pool.m_IdentifierModel = rootTransform.TransformPoint(pool.messageModel[pool._BridgeModel].position);
 		Vector3 vector = quaternion * Vector3.up;
-		float num = pool.messageModel[pool._BridgeModel].merchantDic * 0.5f - pool.messageModel[pool._BridgeModel].m_ValDic;
-		float num2 = pool.messageModel[pool._BridgeModel].m_ValDic * pool._GlobalModel;
+		float num = pool.messageModel[pool._BridgeModel].height * 0.5f - pool.messageModel[pool._BridgeModel].radius;
+		float num2 = pool.messageModel[pool._BridgeModel].radius * pool._GlobalModel;
 		Vector3 vector2 = num2 * vector;
-		Vector3 vector3 = pool.m_IdentifierModel + Mathf.Max(num * pool._GlobalModel, 0f) * (interceptorDic.rotation * pool.messageModel[pool._BridgeModel]._PredicateDic * Vector3.up);
-		Vector3 vector4 = pool.m_IdentifierModel - Mathf.Max(num * pool._GlobalModel, 0f) * (interceptorDic.rotation * pool.messageModel[pool._BridgeModel]._PredicateDic * Vector3.up);
+		Vector3 vector3 = pool.m_IdentifierModel + Mathf.Max(num * pool._GlobalModel, 0f) * (rootTransform.rotation * pool.messageModel[pool._BridgeModel].rotation * Vector3.up);
+		Vector3 vector4 = pool.m_IdentifierModel - Mathf.Max(num * pool._GlobalModel, 0f) * (rootTransform.rotation * pool.messageModel[pool._BridgeModel].rotation * Vector3.up);
 		pool._UtilsModel = (Event.current.shift ? 2 : (Event.current.alt ? 1 : 0));
 		pool._ParameterModel = pool._UtilsModel == 1;
 		if (descriptor)
@@ -6099,16 +6099,16 @@ internal sealed class LicenseManager
 				Vector3 vector6 = vector5 - pool.m_IdentifierModel;
 				if (flag || pool._UtilsModel != 0)
 				{
-					vector6 = interceptorDic.InverseTransformVector(vector6);
+					vector6 = rootTransform.InverseTransformVector(vector6);
 				}
 				switch (pool._UtilsModel)
 				{
 				case 2:
 				{
-					pool.messageModel[pool._BridgeModel]._ClassDic += vector6;
+					pool.messageModel[pool._BridgeModel].position += vector6;
 					for (int num4 = 0; num4 < pool.messageModel.Length; num4++)
 					{
-						pool.messageModel[num4]._ClassDic = pool.messageModel[pool._BridgeModel]._ClassDic;
+						pool.messageModel[num4].position = pool.messageModel[pool._BridgeModel].position;
 					}
 					break;
 				}
@@ -6118,21 +6118,21 @@ internal sealed class LicenseManager
 					{
 						if (!flag)
 						{
-							pool.messageModel[num3]._ClassDic += pool.messageModel[num3].m_InterceptorDic.InverseTransformVector(vector6);
+							pool.messageModel[num3].position += pool.messageModel[num3].rootTransform.InverseTransformVector(vector6);
 						}
-						else if (pool.messageModel[num3].m_ParamsDic == pool.messageModel[pool._BridgeModel].m_ParamsDic)
+						else if (pool.messageModel[num3].target == pool.messageModel[pool._BridgeModel].target)
 						{
-							pool.messageModel[pool._BridgeModel]._ClassDic += vector6;
+							pool.messageModel[pool._BridgeModel].position += vector6;
 						}
 						else
 						{
-							pool.messageModel[num3]._ClassDic += pool.messageModel[num3]._PredicateDic * Quaternion.Inverse(pool.messageModel[pool._BridgeModel]._PredicateDic) * vector6;
+							pool.messageModel[num3].position += pool.messageModel[num3].rotation * Quaternion.Inverse(pool.messageModel[pool._BridgeModel].rotation) * vector6;
 						}
 					}
 					break;
 				}
 				case 1:
-					pool.messageModel[pool._BridgeModel]._ClassDic += vector6;
+					pool.messageModel[pool._BridgeModel].position += vector6;
 					break;
 				}
 			}
@@ -6145,7 +6145,7 @@ internal sealed class LicenseManager
 		{
 			return;
 		}
-		if (_Factory && databaseDic != 0)
+		if (_Factory && shapeType != 0)
 		{
 			using EditorGUI.ChangeCheckScope changeCheckScope2 = new EditorGUI.ChangeCheckScope();
 			Quaternion quaternion2 = Handles.RotationHandle(quaternion, pool.m_IdentifierModel);
@@ -6159,7 +6159,7 @@ internal sealed class LicenseManager
 				{
 					Undo.RecordObjects(pool.m_RegModel, "Adjust Rotation");
 				}
-				Quaternion predicateDic = Quaternion.Euler((Quaternion.Inverse(interceptorDic.rotation) * quaternion2).eulerAngles);
+				Quaternion rotation = Quaternion.Euler((Quaternion.Inverse(rootTransform.rotation) * quaternion2).eulerAngles);
 				switch (pool._UtilsModel)
 				{
 				case 0:
@@ -6167,25 +6167,25 @@ internal sealed class LicenseManager
 				{
 					for (int num5 = 0; num5 < pool.messageModel.Length; num5++)
 					{
-						pool.messageModel[num5]._PredicateDic = predicateDic;
+						pool.messageModel[num5].rotation = rotation;
 					}
 					break;
 				}
 				case 1:
-					pool.messageModel[pool._BridgeModel]._PredicateDic = predicateDic;
+					pool.messageModel[pool._BridgeModel].rotation = rotation;
 					break;
 				}
 			}
 		}
-		if (m_Container && databaseDic != 2)
+		if (m_Container && shapeType != 2)
 		{
-			bool flag2 = databaseDic == 1;
+			bool flag2 = shapeType == 1;
 			_003C_003Ec__DisplayClass46_1 consumer = default(_003C_003Ec__DisplayClass46_1);
 			using (EditorGUI.ChangeCheckScope changeCheckScope3 = new EditorGUI.ChangeCheckScope())
 			{
 				Vector3 position = (flag2 ? vector3 : pool.m_IdentifierModel);
-				Quaternion rotation = (flag2 ? quaternion : Quaternion.identity);
-				consumer._PolicyModel = Handles.RadiusHandle(rotation, position, num2, handlesOnly: true) / pool._GlobalModel;
+				Quaternion rotation2 = (flag2 ? quaternion : Quaternion.identity);
+				consumer._PolicyModel = Handles.RadiusHandle(rotation2, position, num2, handlesOnly: true) / pool._GlobalModel;
 				InitStruct(changeCheckScope3.changed, ref pool, ref consumer);
 			}
 			if (flag2)
@@ -6195,7 +6195,7 @@ internal sealed class LicenseManager
 				InitStruct(changeCheckScope4.changed, ref pool, ref consumer);
 			}
 		}
-		if (_Property && databaseDic == 1)
+		if (_Property && shapeType == 1)
 		{
 			if (!((Func<bool>)delegate
 			{
@@ -6232,7 +6232,7 @@ internal sealed class LicenseManager
 		ADOEditorUtility.ShapeSnapshot[] array = pool.messageModel;
 		foreach (ADOEditorUtility.ShapeSnapshot shapeSnapshot in array)
 		{
-			shapeSnapshot.UpdateAlgo();
+			shapeSnapshot.Apply();
 		}
 	}
 
@@ -7190,7 +7190,7 @@ internal sealed class LicenseManager
 		rule = isres;
 		if (!rule && flag)
 		{
-			BugReporter.InterruptDic(null);
+			BugReporter.OnCompilationStarted(null);
 		}
 	}
 
@@ -7754,7 +7754,7 @@ internal sealed class LicenseManager
 		{
 			return true;
 		}
-		BugReporter.ConnectDic();
+		BugReporter.Draw();
 		return false;
 	}
 
@@ -8487,14 +8487,14 @@ internal sealed class LicenseManager
 			Undo.RecordObjects(visitor.m_RegModel, "Adjust Radius");
 		}
 		_003C_003Ec__DisplayClass46_2 first = default(_003C_003Ec__DisplayClass46_2);
-		first._DispatcherModel = consumer._PolicyModel - visitor.messageModel[visitor._BridgeModel].m_ValDic;
+		first._DispatcherModel = consumer._PolicyModel - visitor.messageModel[visitor._BridgeModel].radius;
 		while (true)
 		{
 			int num;
 			switch (visitor._UtilsModel)
 			{
 			case 2:
-				CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].m_ValDic, out visitor.messageModel[visitor._BridgeModel].merchantDic, ref first);
+				CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].radius, out visitor.messageModel[visitor._BridgeModel].height, ref first);
 				num = 0;
 				while (true)
 				{
@@ -8504,12 +8504,12 @@ internal sealed class LicenseManager
 					}
 					if (num != visitor._BridgeModel)
 					{
-						visitor.messageModel[num].m_ValDic = visitor.messageModel[visitor._BridgeModel].m_ValDic;
-						if (visitor.messageModel[num]._DatabaseDic == 0)
+						visitor.messageModel[num].radius = visitor.messageModel[visitor._BridgeModel].radius;
+						if (visitor.messageModel[num].shapeType == 0)
 						{
 							break;
 						}
-						visitor.messageModel[num].merchantDic += first._DispatcherModel * 2f;
+						visitor.messageModel[num].height += first._DispatcherModel * 2f;
 					}
 					num++;
 				}
@@ -8518,27 +8518,27 @@ internal sealed class LicenseManager
 			{
 				for (int i = 0; i < visitor.messageModel.Length; i++)
 				{
-					CheckStruct(visitor.messageModel[i], out visitor.messageModel[i].m_ValDic, out visitor.messageModel[i].merchantDic, ref first);
+					CheckStruct(visitor.messageModel[i], out visitor.messageModel[i].radius, out visitor.messageModel[i].height, ref first);
 				}
 				return;
 			}
 			case 1:
-				CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].m_ValDic, out visitor.messageModel[visitor._BridgeModel].merchantDic, ref first);
+				CheckStruct(visitor.messageModel[visitor._BridgeModel], out visitor.messageModel[visitor._BridgeModel].radius, out visitor.messageModel[visitor._BridgeModel].height, ref first);
 				return;
 			}
 			continue;
 			IL_0113:
-			visitor.messageModel[num].merchantDic = visitor.messageModel[num].m_ValDic * 2f;
+			visitor.messageModel[num].height = visitor.messageModel[num].radius * 2f;
 		}
 	}
 
 	[CompilerGenerated]
 	internal static void CheckStruct(ADOEditorUtility.ShapeSnapshot var1, out float vis, out float res, ref _003C_003Ec__DisplayClass46_2 first2)
 	{
-		vis = var1.m_ValDic + first2._DispatcherModel;
-		if (var1._DatabaseDic != 0)
+		vis = var1.radius + first2._DispatcherModel;
+		if (var1.shapeType != 0)
 		{
-			res = var1.merchantDic + first2._DispatcherModel * 2f;
+			res = var1.height + first2._DispatcherModel * 2f;
 		}
 		else
 		{
@@ -8569,10 +8569,10 @@ internal sealed class LicenseManager
 		{
 		case 2:
 		{
-			pool.messageModel[pool._BridgeModel].merchantDic += num;
+			pool.messageModel[pool._BridgeModel].height += num;
 			for (int j = 0; j < pool.messageModel.Length; j++)
 			{
-				pool.messageModel[j].merchantDic = pool.messageModel[pool._BridgeModel].merchantDic;
+				pool.messageModel[j].height = pool.messageModel[pool._BridgeModel].height;
 			}
 			break;
 		}
@@ -8580,12 +8580,12 @@ internal sealed class LicenseManager
 		{
 			for (int i = 0; i < pool.messageModel.Length; i++)
 			{
-				pool.messageModel[i].merchantDic += num;
+				pool.messageModel[i].height += num;
 			}
 			break;
 		}
 		case 1:
-			pool.messageModel[pool._BridgeModel].merchantDic += num;
+			pool.messageModel[pool._BridgeModel].height += num;
 			break;
 		}
 	}

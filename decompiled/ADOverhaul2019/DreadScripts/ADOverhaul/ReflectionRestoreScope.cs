@@ -30,11 +30,11 @@ internal sealed class ReflectionRestoreScope : IDisposable
 			object token;
 			if (removecounter)
 			{
-				token = _MessageDic.accessor.CalculateParser(s);
+				token = _MessageDic.accessor.Item(s);
 			}
 			else
 			{
-				_MessageDic.accessor.CompareParser(s, out token);
+				_MessageDic.accessor.TryGetValue(s, out token);
 			}
 			if (token == null)
 			{
@@ -66,13 +66,13 @@ internal sealed class ReflectionRestoreScope : IDisposable
 		{
 			foreach (KeyValuePair<string, object> savedValue in savedValues)
 			{
-				accessor.PopParser(savedValue.Key, savedValue.Value);
+				accessor.Item(savedValue.Key, savedValue.Value);
 			}
 			return;
 		}
 		foreach (KeyValuePair<string, object> savedValue2 in savedValues)
 		{
-			accessor.InterruptParser(savedValue2.Key, savedValue2.Value);
+			accessor.TrySetValue(savedValue2.Key, savedValue2.Value);
 		}
 	}
 }

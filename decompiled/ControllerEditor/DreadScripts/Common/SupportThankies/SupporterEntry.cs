@@ -37,7 +37,7 @@ internal class SupporterEntry
 	{
 		m_Queue = spec;
 		TryExtractAttribute("onclick", out _Expression);
-		_Product = ((!TryExtractAttribute("tooltip", out var col)) ? SupporterStrings.decorator.DestroyWrapper() : col);
+		_Product = ((!TryExtractAttribute("tooltip", out var col)) ? SupporterStrings.decorator.RandomElement() : col);
 		if (!TryExtractAttribute("bgtype", out var col2) || !Enum.TryParse<RemoteTexture.TextureLayoutMethod>(col2, ignoreCase: true, out adapter))
 		{
 			adapter = RemoteTexture.TextureLayoutMethod.Pattern;
@@ -74,12 +74,12 @@ internal class SupporterEntry
 
 	internal void DrawCard(float v = 20f)
 	{
-		Rect wrapper = worker.GetWrapper(2f);
-		using (new GuiColorScope(GuiColorScope.ColoringType.General, (!m_Interpreter.HasValue) ? GUI.color : GUI.color.IncludeWrapper(m_Interpreter.Value)))
+		Rect rect = worker.Shrink(2f);
+		using (new GuiColorScope(GuiColorScope.ColoringType.General, (!m_Interpreter.HasValue) ? GUI.color : GUI.color.AlphaBlend(m_Interpreter.Value)))
 		{
-			m_Consumer?.FlushWrapper(wrapper, adapter);
+			m_Consumer?.Draw(rect, adapter);
 		}
-		EditorGuiUtils.RunWrapper(wrapper, (m_Consumer != null) ? Color.clear : (m_Interpreter ?? new Color(0f, 0f, 0f, 0.4f)), _Watcher.GetValueOrDefault(), 1f);
+		EditorGuiUtils.DrawRoundedBox(rect, (m_Consumer != null) ? Color.clear : (m_Interpreter ?? new Color(0f, 0f, 0f, 0.4f)), _Watcher.GetValueOrDefault(), 1f);
 		using (new GUILayout.VerticalScope())
 		{
 			using (new GUILayout.VerticalScope())
@@ -142,7 +142,7 @@ internal class SupporterEntry
 			GUILayout.Space(4f);
 		}
 		GUI.Label(worker, new GUIContent(string.Empty, _Product));
-		if (!string.IsNullOrWhiteSpace(_Expression) && EditorGuiUtils.PushWrapper(worker))
+		if (!string.IsNullOrWhiteSpace(_Expression) && EditorGuiUtils.IsClicked(worker))
 		{
 			Application.OpenURL(_Expression);
 		}

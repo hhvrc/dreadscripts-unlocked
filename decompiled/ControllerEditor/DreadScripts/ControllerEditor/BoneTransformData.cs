@@ -5,48 +5,48 @@ namespace DreadScripts.ControllerEditor;
 
 internal class BoneTransformData
 {
-	internal PhysBoneChainData infoThread;
+	internal PhysBoneChainData chain;
 
-	internal Transform m_FacadeThread;
+	internal Transform root;
 
-	internal Transform m_AdvisorThread;
+	internal Transform transform;
 
-	internal Matrix4x4 _CallbackThread;
+	internal Matrix4x4 matrix;
 
-	internal bool indexerThread;
+	internal bool isVirtual;
 
-	internal bool issuerThread;
+	internal bool isEndBone;
 
-	internal int m_PrototypeThread;
+	internal int depth;
 
-	internal BoneTransformData m_RuleThread;
+	internal BoneTransformData child;
 
-	internal BoneTransformData m_SingletonThread;
+	internal BoneTransformData parent;
 
 	[SpecialName]
-	internal Vector3 CallRecord()
+	internal Vector3 GetPosition()
 	{
-		return _CallbackThread.GetColumn(3);
+		return matrix.GetColumn(3);
 	}
 
 	[SpecialName]
-	internal float CountRecord()
+	internal float GetMaxScale()
 	{
-		return Mathf.Max(_CallbackThread.lossyScale.x, _CallbackThread.lossyScale.y, _CallbackThread.lossyScale.z);
+		return Mathf.Max(matrix.lossyScale.x, matrix.lossyScale.y, matrix.lossyScale.z);
 	}
 
 	[SpecialName]
-	internal float InsertRecord()
+	internal float GetNormalizedDepth()
 	{
-		return 1f / (float)infoThread.maxDepth * (float)m_PrototypeThread;
+		return 1f / (float)chain.maxDepth * (float)depth;
 	}
 
-	internal float ConcatRecord(AnimationCurve item)
+	internal float EvaluateCurve(AnimationCurve item)
 	{
 		if (item == null || item.length < 2)
 		{
 			return 1f;
 		}
-		return item.Evaluate(InsertRecord());
+		return item.Evaluate(GetNormalizedDepth());
 	}
 }

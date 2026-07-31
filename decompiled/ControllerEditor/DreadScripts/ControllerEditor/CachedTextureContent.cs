@@ -7,76 +7,76 @@ namespace DreadScripts.ControllerEditor;
 
 internal sealed class CachedTextureContent
 {
-	private GUIContent _SetterPolicy;
+	private GUIContent _content;
 
-	private Texture2D _ConnectionPolicy;
+	private Texture2D _texture;
 
-	private readonly string contextPolicy;
+	private readonly string sessionKey;
 
-	private readonly string _RecordPolicy;
+	private readonly string tooltip;
 
-	private bool _HelperPolicy;
+	private bool hasTexture;
 
 	[SpecialName]
-	private GUIContent SearchRecord()
+	private GUIContent content()
 	{
-		if (_HelperPolicy && _SetterPolicy.image == null)
+		if (hasTexture && _content.image == null)
 		{
-			RegisterRecord();
+			Load();
 		}
-		return _SetterPolicy;
+		return _content;
 	}
 
 	[SpecialName]
-	private void RevertRecord(GUIContent item)
+	private void content(GUIContent item)
 	{
-		_SetterPolicy = item;
+		_content = item;
 	}
 
 	[SpecialName]
-	internal Texture2D CompareHelper()
+	internal Texture2D texture()
 	{
-		if (_HelperPolicy && _ConnectionPolicy == null)
+		if (hasTexture && _texture == null)
 		{
 			while (true)
 			{
-				RegisterRecord();
+				Load();
 			}
 		}
-		return _ConnectionPolicy;
+		return _texture;
 	}
 
 	[SpecialName]
-	internal void SetHelper(Texture2D setup)
+	internal void texture(Texture2D setup)
 	{
-		_ConnectionPolicy = setup;
-		_HelperPolicy = _ConnectionPolicy != null;
-		if (_HelperPolicy)
+		_texture = setup;
+		hasTexture = _texture != null;
+		if (hasTexture)
 		{
-			PrintRecord(setup.EncodeToPNG(), contextPolicy);
+			SaveTexture(setup.EncodeToPNG(), sessionKey);
 		}
-		LogoutRecord();
+		RebuildContent();
 	}
 
 	public CachedTextureContent(string i, string reg = "")
 	{
-		contextPolicy = i;
-		_RecordPolicy = reg;
-		RegisterRecord();
-		LogoutRecord();
+		sessionKey = i;
+		tooltip = reg;
+		Load();
+		RebuildContent();
 	}
 
-	private void RegisterRecord()
+	private void Load()
 	{
-		SetHelper(ManageRecord(contextPolicy));
+		texture(LoadTexture(sessionKey));
 	}
 
-	private void LogoutRecord()
+	private void RebuildContent()
 	{
-		RevertRecord(new GUIContent(CompareHelper(), _RecordPolicy));
+		content(new GUIContent(texture(), tooltip));
 	}
 
-	private static byte[] PatchRecord(int[] key)
+	private static byte[] ToBytes(int[] key)
 	{
 		byte[] array = new byte[key.Length];
 		for (int i = 0; i < key.Length; i++)
@@ -86,7 +86,7 @@ internal sealed class CachedTextureContent
 		return array;
 	}
 
-	private static int[] InterruptRecord(byte[] value)
+	private static int[] ToInts(byte[] value)
 	{
 		int num = value.Length;
 		int[] array = new int[num];
@@ -97,14 +97,14 @@ internal sealed class CachedTextureContent
 		return array;
 	}
 
-	internal static Texture2D ManageRecord(string task)
+	internal static Texture2D LoadTexture(string task)
 	{
 		int[] intArray = SessionState.GetIntArray(task, null);
 		if (intArray != null)
 		{
 			try
 			{
-				byte[] data = PatchRecord(intArray);
+				byte[] data = ToBytes(intArray);
 				Texture2D texture2D = new Texture2D(0, 0);
 				texture2D.LoadImage(data);
 				texture2D.Apply();
@@ -119,14 +119,14 @@ internal sealed class CachedTextureContent
 		return null;
 	}
 
-	internal static void PrintRecord(byte[] v, string b)
+	internal static void SaveTexture(byte[] v, string b)
 	{
-		int[] value = InterruptRecord(v);
+		int[] value = ToInts(v);
 		SessionState.SetIntArray(b, value);
 	}
 
 	public static implicit operator GUIContent(CachedTextureContent param)
 	{
-		return param.SearchRecord();
+		return param.content();
 	}
 }

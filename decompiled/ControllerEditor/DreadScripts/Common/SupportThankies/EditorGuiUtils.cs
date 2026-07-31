@@ -8,12 +8,12 @@ internal static class EditorGuiUtils
 {
 	private static Texture2D facade;
 
-	internal static T DestroyWrapper<T>(this T[] ident)
+	internal static T RandomElement<T>(this T[] ident)
 	{
 		return ident[UnityEngine.Random.Range(0, ident.Length)];
 	}
 
-	public static Rect GetWrapper(this Rect config, float selection)
+	public static Rect Shrink(this Rect config, float selection)
 	{
 		config.x += selection;
 		config.y += selection;
@@ -22,7 +22,7 @@ internal static class EditorGuiUtils
 		return config;
 	}
 
-	public static Rect CalcWrapper(Rect var1, float cont)
+	public static Rect FitAspectRatio(Rect var1, float cont)
 	{
 		Rect result = var1;
 		if (var1.width / var1.height > cont)
@@ -38,7 +38,7 @@ internal static class EditorGuiUtils
 		return result;
 	}
 
-	internal static Color IncludeWrapper(this Color init, Color second)
+	internal static Color AlphaBlend(this Color init, Color second)
 	{
 		float num = second.a + init.a * (1f - second.a);
 		float r = (second.r * second.a + init.r * init.a * (1f - second.a)) / num;
@@ -47,7 +47,7 @@ internal static class EditorGuiUtils
 		return new Color(r, g, b, num);
 	}
 
-	internal static Rect RunWrapper(Rect reference, Color token = default(Color), Color util = default(Color), float cfg2 = 3f)
+	internal static Rect DrawRoundedBox(Rect reference, Color token = default(Color), Color util = default(Color), float cfg2 = 3f)
 	{
 		bool flag = token != Color.clear;
 		bool flag2 = util != Color.clear;
@@ -61,11 +61,11 @@ internal static class EditorGuiUtils
 			position.height += num;
 			if (flag)
 			{
-				GUI.DrawTexture(reference, CloneWrapper(token), ScaleMode.StretchToFill, alphaBlend: false, 0f, token, 0f, 8f);
+				GUI.DrawTexture(reference, GetColorTexture(token), ScaleMode.StretchToFill, alphaBlend: false, 0f, token, 0f, 8f);
 			}
 			if (flag2)
 			{
-				GUI.DrawTexture(position, CloneWrapper(util), ScaleMode.StretchToFill, alphaBlend: false, 0f, util, cfg2, 8f);
+				GUI.DrawTexture(position, GetColorTexture(util), ScaleMode.StretchToFill, alphaBlend: false, 0f, util, cfg2, 8f);
 			}
 		}
 		Rect result = reference;
@@ -76,7 +76,7 @@ internal static class EditorGuiUtils
 		return result;
 	}
 
-	internal static Texture2D CloneWrapper(Color instance)
+	internal static Texture2D GetColorTexture(Color instance)
 	{
 		if (facade == null)
 		{
@@ -94,20 +94,20 @@ internal static class EditorGuiUtils
 		return facade;
 	}
 
-	internal static void LoginWrapper(byte[] config, string selection)
+	internal static void SaveTextureToSession(byte[] config, string selection)
 	{
-		int[] value = ViewWrapper(config);
+		int[] value = BytesToInts(config);
 		SessionState.SetIntArray(selection, value);
 	}
 
-	internal static Texture2D ReflectWrapper(string last)
+	internal static Texture2D LoadTextureFromSession(string last)
 	{
 		int[] intArray = SessionState.GetIntArray(last, null);
 		if (intArray != null)
 		{
 			try
 			{
-				byte[] data = CollectWrapper(intArray);
+				byte[] data = IntsToBytes(intArray);
 				Texture2D texture2D = new Texture2D(0, 0);
 				texture2D.LoadImage(data);
 				texture2D.Apply();
@@ -122,17 +122,17 @@ internal static class EditorGuiUtils
 		return null;
 	}
 
-	internal static bool DeleteWrapper(string init, params GUILayoutOption[] options)
+	internal static bool Button(string init, params GUILayoutOption[] options)
 	{
-		return NewWrapper(new GUIContent(init), null, options);
+		return Button(new GUIContent(init), null, options);
 	}
 
-	internal static bool CreateWrapper(string i, GUIStyle pol, params GUILayoutOption[] options)
+	internal static bool Button(string i, GUIStyle pol, params GUILayoutOption[] options)
 	{
-		return NewWrapper(new GUIContent(i), pol, options);
+		return Button(new GUIContent(i), pol, options);
 	}
 
-	internal static bool NewWrapper(GUIContent def, GUIStyle second, params GUILayoutOption[] options)
+	internal static bool Button(GUIContent def, GUIStyle second, params GUILayoutOption[] options)
 	{
 		if (second == null)
 		{
@@ -143,7 +143,7 @@ internal static class EditorGuiUtils
 		return result;
 	}
 
-	internal static bool PushWrapper(Rect var1)
+	internal static bool IsClicked(Rect var1)
 	{
 		EditorGUIUtility.AddCursorRect(var1, MouseCursor.Link);
 		Event current = Event.current;
@@ -154,7 +154,7 @@ internal static class EditorGuiUtils
 		return false;
 	}
 
-	private static int[] ViewWrapper(byte[] param)
+	private static int[] BytesToInts(byte[] param)
 	{
 		int num = param.Length;
 		int[] array = new int[num];
@@ -165,7 +165,7 @@ internal static class EditorGuiUtils
 		return array;
 	}
 
-	private static byte[] CollectWrapper(int[] first)
+	private static byte[] IntsToBytes(int[] first)
 	{
 		byte[] array = new byte[first.Length];
 		for (int i = 0; i < first.Length; i++)

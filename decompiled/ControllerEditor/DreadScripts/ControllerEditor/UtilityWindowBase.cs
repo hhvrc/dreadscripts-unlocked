@@ -6,68 +6,68 @@ namespace DreadScripts.ControllerEditor;
 
 internal abstract class UtilityWindowBase<T> : EditorWindow where T : DreadScripts.ControllerEditor.UtilityWindowBase<T>
 {
-	private static readonly PropertyInfo m_StatusPolicy = typeof(EditorWindow).GetProperty("position", BindingFlags.Instance | BindingFlags.Public);
+	private static readonly PropertyInfo positionProperty;
 
-	private T tokenPolicy;
+	private T self;
 
-	private bool _CodePolicy;
+	private bool showConfirmButton;
 
-	internal bool m_DicPolicy = true;
+	internal bool canConfirm;
 
-	internal string invocationPolicy;
+	internal string helpMessage;
 
-	private Vector2 m_RolePolicy;
+	private Vector2 scrollPosition;
 
 	internal static object CancelClient;
 
 	internal abstract string DreadScripts_002EControllerEditor_002ECustomUtilityWindow_003CDreadScripts_002EControllerEditor_002EControllerEditor_002EParameterRenameWindow_003E_002Etitle { get; }
 
-	internal static T CloneHelper(bool compareparam = true, string vis = "")
+	internal static T Create(bool compareparam = true, string vis = "")
 	{
-		ReflectHelper();
+		DreadScripts.ControllerEditor.UtilityWindowBase<T>.ReflectHelper();
 		T val = ScriptableObject.CreateInstance<T>();
 		val.titleContent.text = val.DreadScripts_002EControllerEditor_002ECustomUtilityWindow_003CDreadScripts_002EControllerEditor_002EControllerEditor_002EParameterRenameWindow_003E_002Etitle;
-		val._CodePolicy = compareparam;
-		val.tokenPolicy = val;
-		val.invocationPolicy = vis;
+		((DreadScripts.ControllerEditor.UtilityWindowBase<T>)val)._CodePolicy = compareparam;
+		((DreadScripts.ControllerEditor.UtilityWindowBase<T>)val).tokenPolicy = val;
+		((DreadScripts.ControllerEditor.UtilityWindowBase<T>)val).invocationPolicy = vis;
 		return val;
 	}
 
 	private void OnGUI()
 	{
-		if (tokenPolicy == null)
+		if (this.tokenPolicy == null)
 		{
 			Close();
 			return;
 		}
-		using (new ScrollViewScope(ref m_RolePolicy))
+		using (new ScrollViewScope(ref this.m_RolePolicy))
 		{
-			if (!string.IsNullOrEmpty(invocationPolicy))
+			if (!string.IsNullOrEmpty(this.invocationPolicy))
 			{
-				EditorGUILayout.HelpBox(invocationPolicy, MessageType.Info);
+				EditorGUILayout.HelpBox(this.invocationPolicy, MessageType.Info);
 			}
 			DreadScripts_002EControllerEditor_002ECustomUtilityWindow_003CDreadScripts_002EControllerEditor_002EControllerEditor_002EParameterRenameWindow_003E_002EOnCustomGUI();
 		}
-		if (!_CodePolicy)
+		if (!this._CodePolicy)
 		{
 			return;
 		}
-		using (new EditorGUI.DisabledScope(!m_DicPolicy))
+		using (new EditorGUI.DisabledScope(!this.m_DicPolicy))
 		{
 			if (EditorUtils.DisableQueue("Confirm"))
 			{
-				DeleteHelper();
+				this.DeleteHelper();
 			}
 		}
 	}
 
-	internal void LoginHelper(Vector2 setup, Vector2 reg)
+	internal void ShowAt(Vector2 setup, Vector2 reg)
 	{
 		ShowUtility();
 		base.position = new Rect(new Vector2(setup.x, setup.y), reg);
 	}
 
-	internal static void ReflectHelper()
+	internal static void CloseAll()
 	{
 		T[] array = Resources.FindObjectsOfTypeAll<T>();
 		foreach (T val in array)
@@ -83,7 +83,7 @@ internal abstract class UtilityWindowBase<T> : EditorWindow where T : DreadScrip
 		}
 	}
 
-	internal void DeleteHelper()
+	internal void Confirm()
 	{
 		OnCustomConfirm();
 		Close();
@@ -92,6 +92,17 @@ internal abstract class UtilityWindowBase<T> : EditorWindow where T : DreadScrip
 	internal abstract void DreadScripts_002EControllerEditor_002ECustomUtilityWindow_003CDreadScripts_002EControllerEditor_002EControllerEditor_002EParameterRenameWindow_003E_002EOnCustomGUI();
 
 	internal abstract void OnCustomConfirm();
+
+	protected UtilityWindowBase()
+	{
+		this.m_DicPolicy = true;
+		base._002Ector();
+	}
+
+	static UtilityWindowBase()
+	{
+		DreadScripts.ControllerEditor.UtilityWindowBase<T>.m_StatusPolicy = typeof(EditorWindow).GetProperty("position", BindingFlags.Instance | BindingFlags.Public);
+	}
 
 	internal static bool RestartClient()
 	{

@@ -30,7 +30,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul;
 
-internal sealed class LicenseManager
+internal sealed class ADOverhaul
 {
 	private sealed class ADOverhaulWindow : EditorWindow
 	{

@@ -121,7 +121,7 @@ internal class ReorderableListHelper<T>
 		GUILayout.Label(def, EditorStyles.boldLabel);
 		if (!string.IsNullOrEmpty(vis))
 		{
-			GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._AccountProcessor.CompareHelper(), vis), GUILayout.Width(14f), GUILayout.Height(18f));
+			GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._AccountProcessor.texture(), vis), GUILayout.Width(14f), GUILayout.Height(18f));
 		}
 	}
 

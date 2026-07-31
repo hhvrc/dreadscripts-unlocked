@@ -41,65 +41,68 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 		}
 	}
 
-	private readonly string _TokenServer;
+	private readonly string title;
 
-	private string m_CodeServer;
+	private string searchString;
 
-	internal PickerEntry[] m_DicServer;
+	internal PickerEntry[] entries;
 
-	private readonly Action<PickerEntry> invocationServer;
+	private readonly Action<PickerEntry> drawEntry;
 
-	private readonly Action<int, T> roleServer;
+	private readonly Action<int, T> onSelected;
 
-	private Func<T, string, bool> _ParamServer;
+	private Func<T, string, bool> searchFilter;
 
-	private bool _ModelServer;
+	private bool hasSearch;
 
-	private float m_TokenizerServer;
+	private float maxWidth;
 
-	private bool _DecoratorServer = true;
+	private bool isFirstFrame;
 
-	private Vector2 m_ComparatorServer;
+	private Vector2 scrollPosition;
 
-	private readonly Rect[] _ExceptionServer;
+	private readonly Rect[] entryRects;
 
-	internal readonly GUIStyle objectServer = new GUIStyle
-	{
-		hover = 
-		{
-			background = EditorUtils.ReflectList(new Color(0.302f, 0.302f, 0.302f))
-		},
-		active = 
-		{
-			background = EditorUtils.ReflectList(new Color(0.1725f, 0.3647f, 0.5294f))
-		}
-	};
+	internal readonly GUIStyle entryStyle;
 
 	private static object WriteSystem;
 
 	public SearchablePickerPopup(string param, IEnumerable<T> attr, Action<PickerEntry> third, Action<int, T> reference2)
 	{
-		_TokenServer = param;
-		roleServer = reference2;
-		invocationServer = third;
-		m_DicServer = attr.Select((T item, int i) => new PickerEntry(item, i)).ToArray();
-		_ExceptionServer = new Rect[m_DicServer.Length];
+		this._DecoratorServer = true;
+		this.objectServer = new GUIStyle
+		{
+			hover = 
+			{
+				background = EditorUtils.ReflectList(new Color(0.302f, 0.302f, 0.302f))
+			},
+			active = 
+			{
+				background = EditorUtils.ReflectList(new Color(0.1725f, 0.3647f, 0.5294f))
+			}
+		};
+		base._002Ector();
+		this._TokenServer = param;
+		this.roleServer = reference2;
+		this.invocationServer = third;
+		this.m_DicServer = attr.Select((T item, int i) => new PickerEntry(item, i)).ToArray();
+		this._ExceptionServer = new Rect[this.m_DicServer.Length];
 	}
 
-	public void GetConnection(Func<T, string, bool> key)
+	public void EnableSearch(Func<T, string, bool> key)
 	{
-		_ModelServer = true;
-		_ParamServer = key;
+		this._ModelServer = true;
+		this._ParamServer = key;
 	}
 
-	public void CalcConnection(Func<T, object> param)
+	public void SortBy(Func<T, object> param)
 	{
-		m_DicServer = ((param == null) ? m_DicServer : m_DicServer.OrderBy((PickerEntry item) => param(item._ValueServer)).ToArray());
+		this.m_DicServer = ((param == null) ? this.m_DicServer : this.m_DicServer.OrderBy((PickerEntry item) => param(item._ValueServer)).ToArray());
 	}
 
-	public void IncludeConnection(Func<T, object[]> ident)
+	public void SetExtraData(Func<T, object[]> ident)
 	{
-		PickerEntry[] dicServer = m_DicServer;
+		PickerEntry[] dicServer = this.m_DicServer;
 		foreach (PickerEntry pickerEntry in dicServer)
 		{
 			pickerEntry.m_MerchantServer = ident(pickerEntry._ValueServer);
@@ -111,60 +114,60 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 		using (new GUILayout.AreaScope(rect))
 		{
 			Event current = Event.current;
-			using (new ScrollViewScope(ref m_ComparatorServer))
+			using (new ScrollViewScope(ref this.m_ComparatorServer))
 			{
-				if (!string.IsNullOrEmpty(_TokenServer))
+				if (!string.IsNullOrEmpty(this._TokenServer))
 				{
-					GUILayout.Label(_TokenServer, EditorUtils.CalcError()._StructProcessor);
+					GUILayout.Label(this._TokenServer, EditorUtils.CalcError()._StructProcessor);
 					EditorUtils.MapQueue();
 				}
-				if (_ModelServer)
+				if (this._ModelServer)
 				{
 					EditorGUI.BeginChangeCheck();
-					if (_DecoratorServer)
+					if (this._DecoratorServer)
 					{
-						GUI.SetNextControlName(_TokenServer + "SearchBar");
+						GUI.SetNextControlName(this._TokenServer + "SearchBar");
 					}
-					m_CodeServer = EditorGUILayout.TextField(m_CodeServer, GUI.skin.GetStyle("SearchTextField"));
+					this.m_CodeServer = EditorGUILayout.TextField(this.m_CodeServer, GUI.skin.GetStyle("SearchTextField"));
 					if (EditorGUI.EndChangeCheck())
 					{
-						PickerEntry[] dicServer = m_DicServer;
+						PickerEntry[] dicServer = this.m_DicServer;
 						foreach (PickerEntry pickerEntry in dicServer)
 						{
-							pickerEntry.authenticationServer = _ParamServer(pickerEntry._ValueServer, m_CodeServer);
+							pickerEntry.authenticationServer = this._ParamServer(pickerEntry._ValueServer, this.m_CodeServer);
 						}
 					}
 				}
 				EventType type = current.type;
-				for (int j = 0; j < m_DicServer.Length; j++)
+				for (int j = 0; j < this.m_DicServer.Length; j++)
 				{
-					PickerEntry pickerEntry2 = m_DicServer[j];
+					PickerEntry pickerEntry2 = this.m_DicServer[j];
 					if (!pickerEntry2.authenticationServer)
 					{
 						continue;
 					}
-					if (!_DecoratorServer && GUI.Button(_ExceptionServer[j], string.Empty, objectServer))
+					if (!this._DecoratorServer && GUI.Button(this._ExceptionServer[j], string.Empty, this.objectServer))
 					{
-						roleServer(pickerEntry2.m_ValServer, pickerEntry2._ValueServer);
+						this.roleServer(pickerEntry2.m_ValServer, pickerEntry2._ValueServer);
 						base.editorWindow.Close();
 					}
 					using (new GUILayout.VerticalScope())
 					{
-						invocationServer(pickerEntry2);
+						this.invocationServer(pickerEntry2);
 					}
 					if (type == EventType.Repaint)
 					{
-						_ExceptionServer[j] = GUILayoutUtility.GetLastRect();
-						if (_DecoratorServer && _ExceptionServer[j].width > m_TokenizerServer)
+						this._ExceptionServer[j] = GUILayoutUtility.GetLastRect();
+						if (this._DecoratorServer && this._ExceptionServer[j].width > this.m_TokenizerServer)
 						{
-							m_TokenizerServer = _ExceptionServer[j].width;
+							this.m_TokenizerServer = this._ExceptionServer[j].width;
 						}
 					}
 				}
-				if (type == EventType.Repaint && _DecoratorServer)
+				if (type == EventType.Repaint && this._DecoratorServer)
 				{
-					_DecoratorServer = false;
-					GUI.FocusControl(_TokenServer + "SearchBar");
+					this._DecoratorServer = false;
+					GUI.FocusControl(this._TokenServer + "SearchBar");
 				}
 			}
 			if (rect.Contains(current.mousePosition))
@@ -177,14 +180,14 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 	public override Vector2 GetWindowSize()
 	{
 		Vector2 windowSize = base.GetWindowSize();
-		if (!_DecoratorServer)
+		if (!this._DecoratorServer)
 		{
-			windowSize.x = m_TokenizerServer + 21f;
+			windowSize.x = this.m_TokenizerServer + 21f;
 		}
 		return windowSize;
 	}
 
-	public void RunConnection(Rect item)
+	public void Show(Rect item)
 	{
 		PopupWindow.Show(item, this);
 	}

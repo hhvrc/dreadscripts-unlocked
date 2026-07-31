@@ -37,7 +37,7 @@ internal static class AnimatorTypeCache
 			{
 				if (_TagProperty && !validatekey)
 				{
-					_DispatcherProperty.DefinePage();
+					_DispatcherProperty.Apply();
 				}
 				_TagProperty = validatekey;
 			}
@@ -54,7 +54,7 @@ internal static class AnimatorTypeCache
 				m_RegistryProperty.FindPropertyRelative("name").stringValue = def;
 				if (!RemovePage())
 				{
-					_DispatcherProperty.DefinePage();
+					_DispatcherProperty.Apply();
 				}
 			}
 
@@ -79,7 +79,7 @@ internal static class AnimatorTypeCache
 					m_RegistryProperty.FindPropertyRelative("source").stringValue = spec;
 					while (!RemovePage())
 					{
-						_DispatcherProperty.DefinePage();
+						_DispatcherProperty.Apply();
 					}
 				}
 				catch
@@ -99,7 +99,7 @@ internal static class AnimatorTypeCache
 				m_RegistryProperty.FindPropertyRelative("value").floatValue = info;
 				if (!RemovePage())
 				{
-					_DispatcherProperty.DefinePage();
+					_DispatcherProperty.Apply();
 				}
 			}
 
@@ -115,7 +115,7 @@ internal static class AnimatorTypeCache
 				m_RegistryProperty.FindPropertyRelative("chance").floatValue = def;
 				if (!RemovePage())
 				{
-					_DispatcherProperty.DefinePage();
+					_DispatcherProperty.Apply();
 				}
 			}
 
@@ -131,7 +131,7 @@ internal static class AnimatorTypeCache
 				m_RegistryProperty.FindPropertyRelative("valueMin").floatValue = setup;
 				if (!RemovePage())
 				{
-					_DispatcherProperty.DefinePage();
+					_DispatcherProperty.Apply();
 				}
 			}
 
@@ -147,7 +147,7 @@ internal static class AnimatorTypeCache
 				m_RegistryProperty.FindPropertyRelative("valueMax").floatValue = setup;
 				if (!RemovePage())
 				{
-					_DispatcherProperty.DefinePage();
+					_DispatcherProperty.Apply();
 				}
 			}
 
@@ -161,7 +161,7 @@ internal static class AnimatorTypeCache
 			internal void NewPage(ChangeType instance)
 			{
 				m_RegistryProperty.FindPropertyRelative("type").enumValueIndex = (int)instance;
-				_DispatcherProperty.m_CustomerProperty.ApplyModifiedProperties();
+				_DispatcherProperty.serializedObject.ApplyModifiedProperties();
 			}
 
 			internal ParameterEntry(ParameterDriverBinding param, SerializedProperty b)
@@ -171,69 +171,69 @@ internal static class AnimatorTypeCache
 			}
 		}
 
-		internal StateMachineBehaviour _StrategyProperty;
+		internal StateMachineBehaviour behaviour;
 
-		internal SerializedObject m_CustomerProperty;
+		internal SerializedObject serializedObject;
 
-		internal List<ParameterEntry> m_DatabaseProperty = new List<ParameterEntry>();
+		internal List<ParameterEntry> parameters = new List<ParameterEntry>();
 
-		internal SerializedProperty m_ExporterProperty;
+		internal SerializedProperty parametersProperty;
 
-		private readonly SerializedProperty _IdentifierProperty;
+		private readonly SerializedProperty localOnlyProperty;
 
 		[SpecialName]
-		internal bool StartPage()
+		internal bool GetLocalOnly()
 		{
-			return _IdentifierProperty.boolValue;
+			return localOnlyProperty.boolValue;
 		}
 
 		[SpecialName]
-		internal void ReadPage(bool instanceinstall)
+		internal void SetLocalOnly(bool instanceinstall)
 		{
-			_IdentifierProperty.boolValue = instanceinstall;
-			DefinePage();
+			localOnlyProperty.boolValue = instanceinstall;
+			Apply();
 		}
 
 		internal ParameterDriverBinding(StateMachineBehaviour value)
 		{
-			_StrategyProperty = value;
-			m_CustomerProperty = new SerializedObject(value);
-			m_ExporterProperty = m_CustomerProperty.FindProperty("parameters");
-			_IdentifierProperty = m_CustomerProperty.FindProperty("localOnly");
-			for (int i = 0; i < m_ExporterProperty.arraySize; i++)
+			behaviour = value;
+			serializedObject = new SerializedObject(value);
+			parametersProperty = serializedObject.FindProperty("parameters");
+			localOnlyProperty = serializedObject.FindProperty("localOnly");
+			for (int i = 0; i < parametersProperty.arraySize; i++)
 			{
-				m_DatabaseProperty.Add(new ParameterEntry(this, m_ExporterProperty.GetArrayElementAtIndex(i)));
+				parameters.Add(new ParameterEntry(this, parametersProperty.GetArrayElementAtIndex(i)));
 			}
 		}
 
-		internal ParameterEntry ExcludePage(int instance_Z)
+		internal ParameterEntry GetParameter(int instance_Z)
 		{
-			return new ParameterEntry(this, m_ExporterProperty.GetArrayElementAtIndex(instance_Z));
+			return new ParameterEntry(this, parametersProperty.GetArrayElementAtIndex(instance_Z));
 		}
 
-		internal bool InitPage(int init)
+		internal bool RemoveParameter(int init)
 		{
-			m_DatabaseProperty.RemoveAt(init);
-			m_ExporterProperty.DeleteArrayElementAtIndex(init);
-			m_CustomerProperty.ApplyModifiedProperties();
-			if (m_ExporterProperty.arraySize != 0)
+			parameters.RemoveAt(init);
+			parametersProperty.DeleteArrayElementAtIndex(init);
+			serializedObject.ApplyModifiedProperties();
+			if (parametersProperty.arraySize != 0)
 			{
 				return false;
 			}
 			return true;
 		}
 
-		internal ParameterEntry VisitPage()
+		internal ParameterEntry AddParameter()
 		{
-			m_ExporterProperty.InsertArrayElementAtIndex(m_ExporterProperty.arraySize);
-			m_DatabaseProperty.Add(new ParameterEntry(this, m_ExporterProperty.GetArrayElementAtIndex(m_ExporterProperty.arraySize - 1)));
-			m_CustomerProperty.ApplyModifiedProperties();
-			return ExcludePage(m_ExporterProperty.arraySize - 1);
+			parametersProperty.InsertArrayElementAtIndex(parametersProperty.arraySize);
+			parameters.Add(new ParameterEntry(this, parametersProperty.GetArrayElementAtIndex(parametersProperty.arraySize - 1)));
+			serializedObject.ApplyModifiedProperties();
+			return GetParameter(parametersProperty.arraySize - 1);
 		}
 
-		internal void DefinePage()
+		internal void Apply()
 		{
-			m_CustomerProperty.ApplyModifiedProperties();
+			serializedObject.ApplyModifiedProperties();
 		}
 	}
 

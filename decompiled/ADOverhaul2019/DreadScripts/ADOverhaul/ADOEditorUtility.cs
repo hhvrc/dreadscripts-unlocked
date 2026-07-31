@@ -992,7 +992,7 @@ internal static class ADOEditorUtility
 					_ParserDic = true;
 					if (!string.IsNullOrWhiteSpace(mappingDic))
 					{
-						CachedIcon.ConcatWrapper(data, mappingDic);
+						CachedIcon.SaveToCache(data, mappingDic);
 						m_RequestDic = true;
 					}
 				}
@@ -1009,7 +1009,7 @@ internal static class ADOEditorUtility
 			if (m_RequestDic && !string.IsNullOrWhiteSpace(mappingDic))
 			{
 				m_RequestDic = false;
-				Texture2D texture2D = CachedIcon.EnableWrapper(mappingDic);
+				Texture2D texture2D = CachedIcon.LoadFromCache(mappingDic);
 				if (texture2D != null)
 				{
 					testsDic = texture2D;
@@ -1146,69 +1146,69 @@ internal static class ADOEditorUtility
 
 	internal sealed class CachedIcon
 	{
-		private bool m_ExceptionDic = true;
+		private bool canResolve = true;
 
-		private GUIContent _PropertyDic;
+		private GUIContent content;
 
-		private Texture2D m_DescriptorDic;
+		private Texture2D texture;
 
-		private readonly string factoryDic;
+		private readonly string cacheKey;
 
-		private readonly string m_TagDic;
+		private readonly string tooltip;
 
 		[SpecialName]
-		private GUIContent StopAlgo()
+		private GUIContent GetContent()
 		{
-			if (_PropertyDic.image == null && m_ExceptionDic)
+			if (content.image == null && canResolve)
 			{
-				_PropertyDic = new GUIContent(DefineAlgo())
+				content = new GUIContent(GetTexture())
 				{
-					tooltip = m_TagDic
+					tooltip = tooltip
 				};
 			}
-			return _PropertyDic;
+			return content;
 		}
 
 		[SpecialName]
-		internal Texture2D DefineAlgo()
+		internal Texture2D GetTexture()
 		{
-			if (m_ExceptionDic && m_DescriptorDic == null)
+			if (canResolve && texture == null)
 			{
 				while (true)
 				{
-					m_ExceptionDic = false;
-					SearchWrapper();
-					m_ExceptionDic = m_DescriptorDic != null;
+					canResolve = false;
+					ResolveTexture();
+					canResolve = texture != null;
 				}
 			}
-			return m_DescriptorDic;
+			return texture;
 		}
 
 		public CachedIcon(Texture2D i, string visitor, string template = "")
 		{
-			m_DescriptorDic = i;
-			factoryDic = visitor;
-			m_TagDic = template;
-			if (!(m_DescriptorDic == null))
+			texture = i;
+			cacheKey = visitor;
+			tooltip = template;
+			if (!(texture == null))
 			{
-				ConcatWrapper(i.EncodeToPNG(), visitor);
+				SaveToCache(i.EncodeToPNG(), visitor);
 			}
 			else
 			{
-				SearchWrapper();
+				ResolveTexture();
 			}
-			_PropertyDic = new GUIContent(i)
+			content = new GUIContent(i)
 			{
 				tooltip = template
 			};
 		}
 
-		private void SearchWrapper()
+		private void ResolveTexture()
 		{
-			m_DescriptorDic = EnableWrapper(factoryDic);
+			texture = LoadFromCache(cacheKey);
 		}
 
-		private static byte[] QueryWrapper(int[] item)
+		private static byte[] ToBytes(int[] item)
 		{
 			byte[] array = new byte[item.Length];
 			for (int i = 0; i < item.Length; i++)
@@ -1218,7 +1218,7 @@ internal static class ADOEditorUtility
 			return array;
 		}
 
-		private static int[] OrderWrapper(byte[] v)
+		private static int[] ToInts(byte[] v)
 		{
 			int num = v.Length;
 			int[] array = new int[num];
@@ -1229,14 +1229,14 @@ internal static class ADOEditorUtility
 			return array;
 		}
 
-		internal static Texture2D EnableWrapper(string item)
+		internal static Texture2D LoadFromCache(string item)
 		{
 			int[] intArray = SessionState.GetIntArray(item, null);
 			if (intArray != null)
 			{
 				try
 				{
-					byte[] data = QueryWrapper(intArray);
+					byte[] data = ToBytes(intArray);
 					Texture2D texture2D = new Texture2D(0, 0);
 					texture2D.LoadImage(data);
 					texture2D.Apply();
@@ -1251,99 +1251,99 @@ internal static class ADOEditorUtility
 			return null;
 		}
 
-		internal static void ConcatWrapper(byte[] setup, string map)
+		internal static void SaveToCache(byte[] setup, string map)
 		{
-			int[] value = OrderWrapper(setup);
+			int[] value = ToInts(setup);
 			SessionState.SetIntArray(map, value);
 		}
 
 		public static implicit operator GUIContent(CachedIcon last)
 		{
-			return last.StopAlgo();
+			return last.GetContent();
 		}
 	}
 
 	internal struct ShapeSnapshot
 	{
-		internal readonly UnityEngine.Object m_ParamsDic;
+		internal readonly UnityEngine.Object target;
 
-		internal bool serializerDic;
+		internal bool isCollider;
 
-		internal readonly Transform m_InterceptorDic;
+		internal readonly Transform rootTransform;
 
-		internal readonly int _DatabaseDic;
+		internal readonly int shapeType;
 
-		internal float m_ValDic;
+		internal float radius;
 
-		internal float merchantDic;
+		internal float height;
 
-		internal Vector3 _ClassDic;
+		internal Vector3 position;
 
-		internal Quaternion _PredicateDic;
+		internal Quaternion rotation;
 
 		internal static object GetCandidate;
 
 		internal ShapeSnapshot(VRCPhysBoneColliderBase item)
 		{
-			m_ParamsDic = item;
-			serializerDic = true;
-			m_InterceptorDic = item.GetRootTransform();
-			_DatabaseDic = (int)item.shapeType;
-			m_ValDic = item.radius;
-			merchantDic = item.height;
-			_ClassDic = item.position;
-			_PredicateDic = item.rotation;
+			target = item;
+			isCollider = true;
+			rootTransform = item.GetRootTransform();
+			shapeType = (int)item.shapeType;
+			radius = item.radius;
+			height = item.height;
+			position = item.position;
+			rotation = item.rotation;
 		}
 
 		internal ShapeSnapshot(ContactBase config)
 		{
-			m_ParamsDic = config;
-			serializerDic = false;
-			m_InterceptorDic = config.GetRootTransform();
-			_DatabaseDic = (int)config.shapeType;
-			m_ValDic = config.radius;
-			merchantDic = config.height;
-			_ClassDic = config.position;
-			_PredicateDic = config.rotation;
+			target = config;
+			isCollider = false;
+			rootTransform = config.GetRootTransform();
+			shapeType = (int)config.shapeType;
+			radius = config.radius;
+			height = config.height;
+			position = config.position;
+			rotation = config.rotation;
 		}
 
-		internal void UpdateAlgo()
+		internal void Apply()
 		{
-			if (serializerDic)
+			if (isCollider)
 			{
-				VRCPhysBoneColliderBase obj = (VRCPhysBoneColliderBase)m_ParamsDic;
-				obj.radius = m_ValDic;
-				obj.height = merchantDic;
-				obj.position = _ClassDic;
-				obj.rotation = _PredicateDic;
+				VRCPhysBoneColliderBase obj = (VRCPhysBoneColliderBase)target;
+				obj.radius = radius;
+				obj.height = height;
+				obj.position = position;
+				obj.rotation = rotation;
 			}
 			else
 			{
-				ContactBase obj2 = (ContactBase)m_ParamsDic;
-				obj2.radius = m_ValDic;
-				obj2.height = merchantDic;
-				obj2.position = _ClassDic;
-				obj2.rotation = _PredicateDic;
-				obj2.shapeType = (ContactBase.ShapeType)_DatabaseDic;
+				ContactBase obj2 = (ContactBase)target;
+				obj2.radius = radius;
+				obj2.height = height;
+				obj2.position = position;
+				obj2.rotation = rotation;
+				obj2.shapeType = (ContactBase.ShapeType)shapeType;
 			}
 		}
 
-		internal void InsertAlgo(ContactBase v)
+		internal void ApplyTo(ContactBase v)
 		{
-			v.radius = m_ValDic;
-			v.height = merchantDic;
-			v.position = _ClassDic;
-			v.rotation = _PredicateDic;
-			v.shapeType = (ContactBase.ShapeType)_DatabaseDic;
+			v.radius = radius;
+			v.height = height;
+			v.position = position;
+			v.rotation = rotation;
+			v.shapeType = (ContactBase.ShapeType)shapeType;
 		}
 
-		internal void PrepareAlgo(VRCPhysBoneCollider ident)
+		internal void ApplyTo(VRCPhysBoneCollider ident)
 		{
-			ident.radius = m_ValDic;
-			ident.height = merchantDic;
-			ident.position = _ClassDic;
-			ident.rotation = _PredicateDic;
-			ident.shapeType = (VRCPhysBoneColliderBase.ShapeType)_DatabaseDic;
+			ident.radius = radius;
+			ident.height = height;
+			ident.position = position;
+			ident.rotation = rotation;
+			ident.shapeType = (VRCPhysBoneColliderBase.ShapeType)shapeType;
 		}
 
 		internal static bool CustomizeCandidate()
@@ -1367,7 +1367,7 @@ internal static class ADOEditorUtility
 		[SpecialName]
 		internal IEnumerable<Matrix4x4> GetNodeMatrices()
 		{
-			return nodes.Select((BoneNode b) => b._ObjectDic);
+			return nodes.Select((BoneNode b) => b.matrix);
 		}
 
 		internal BoneChainTree(VRCPhysBone item)
@@ -1376,27 +1376,27 @@ internal static class ADOEditorUtility
 			rootTransform = item.GetRootTransform();
 			nodes = new List<BoneNode>();
 			BuildNodes(rootTransform, 0);
-			maxDepth = nodes.Max((BoneNode b) => b._TokenDic);
+			maxDepth = nodes.Max((BoneNode b) => b.depth);
 		}
 
 		internal void BuildNodes(Transform def, int pred_Y)
 		{
 			bool flag = false;
 			BoneNode boneNode = new BoneNode();
-			BoneNode stateDic = null;
+			BoneNode child = null;
 			BoneNode boneNode2 = null;
 			Quaternion q = def.rotation;
 			List<Transform> list = new List<Transform>();
 			for (int i = 0; i < def.childCount; i++)
 			{
-				Transform child = def.GetChild(i);
-				if (!physBone.ignoreTransforms.Contains(child))
+				Transform child2 = def.GetChild(i);
+				if (!physBone.ignoreTransforms.Contains(child2))
 				{
-					list.Add(child);
+					list.Add(child2);
 				}
 			}
-			bool statusDic;
-			if (statusDic = list.Count == 0)
+			bool isLeaf;
+			if (isLeaf = list.Count == 0)
 			{
 				if (physBone.endpointPosition != Vector3.zero)
 				{
@@ -1404,20 +1404,20 @@ internal static class ADOEditorUtility
 					q = def.rotation * Quaternion.FromToRotation(Vector3.up, Vector3.Normalize(physBone.endpointPosition));
 					BoneNode obj = new BoneNode
 					{
-						mapperDic = this,
-						productDic = rootTransform,
-						_ObjectDic = Matrix4x4.TRS(pos, q, def.lossyScale),
-						_TokenDic = pred_Y + 1,
-						visitorDic = true,
-						statusDic = true,
-						m_HelperDic = boneNode
+						tree = this,
+						rootTransform = rootTransform,
+						matrix = Matrix4x4.TRS(pos, q, def.lossyScale),
+						depth = pred_Y + 1,
+						isVirtual = true,
+						isLeaf = true,
+						parent = boneNode
 					};
-					stateDic = obj;
+					child = obj;
 					boneNode2 = obj;
 				}
 				else if (nodes.Count != 0)
 				{
-					q = nodes[nodes.Count - 1]._ObjectDic.rotation;
+					q = nodes[nodes.Count - 1].matrix.rotation;
 				}
 			}
 			else if (list.Count > 1)
@@ -1432,15 +1432,15 @@ internal static class ADOEditorUtility
 					zero /= (float)list.Count;
 					Vector3 toDirection = zero - def.position;
 					q = def.rotation * Quaternion.FromToRotation(def.up, toDirection);
-					boneNode2 = (stateDic = new BoneNode
+					boneNode2 = (child = new BoneNode
 					{
-						mapperDic = this,
-						productDic = rootTransform,
-						_ObjectDic = Matrix4x4.TRS(zero, q, def.lossyScale),
-						_TokenDic = pred_Y + 1,
-						visitorDic = true,
-						statusDic = true,
-						m_HelperDic = boneNode
+						tree = this,
+						rootTransform = rootTransform,
+						matrix = Matrix4x4.TRS(zero, q, def.lossyScale),
+						depth = pred_Y + 1,
+						isVirtual = true,
+						isLeaf = true,
+						parent = boneNode
 					});
 				}
 				else if (physBone.multiChildType == VRCPhysBoneBase.MultiChildType.Ignore)
@@ -1450,18 +1450,18 @@ internal static class ADOEditorUtility
 			}
 			if (!flag)
 			{
-				boneNode.mapperDic = this;
-				boneNode.productDic = rootTransform;
-				boneNode.m_SetterDic = def;
-				boneNode._ObjectDic = Matrix4x4.TRS(def.position, q, def.lossyScale);
-				boneNode._TokenDic = pred_Y;
-				boneNode.statusDic = statusDic;
-				boneNode.stateDic = stateDic;
+				boneNode.tree = this;
+				boneNode.rootTransform = rootTransform;
+				boneNode.transform = def;
+				boneNode.matrix = Matrix4x4.TRS(def.position, q, def.lossyScale);
+				boneNode.depth = pred_Y;
+				boneNode.isLeaf = isLeaf;
+				boneNode.child = child;
 				BoneNode boneNode3 = nodes.LastOrDefault();
-				if (boneNode3 != null && !boneNode3.statusDic && boneNode3.stateDic == null)
+				if (boneNode3 != null && !boneNode3.isLeaf && boneNode3.child == null)
 				{
-					boneNode3.stateDic = boneNode;
-					boneNode.m_HelperDic = boneNode3;
+					boneNode3.child = boneNode;
+					boneNode.parent = boneNode3;
 				}
 				nodes.Add(boneNode);
 			}
@@ -1484,7 +1484,7 @@ internal static class ADOEditorUtility
 				if (!hashSet.Contains(node))
 				{
 					List<BoneNode> list = new List<BoneNode>();
-					for (BoneNode boneNode = node; boneNode != null; boneNode = boneNode.stateDic)
+					for (BoneNode boneNode = node; boneNode != null; boneNode = boneNode.child)
 					{
 						list.Add(boneNode);
 						hashSet.Add(boneNode);
@@ -1497,49 +1497,49 @@ internal static class ADOEditorUtility
 
 	internal class BoneNode
 	{
-		internal BoneChainTree mapperDic;
+		internal BoneChainTree tree;
 
-		internal Transform productDic;
+		internal Transform rootTransform;
 
-		internal Transform m_SetterDic;
+		internal Transform transform;
 
-		internal Matrix4x4 _ObjectDic;
+		internal Matrix4x4 matrix;
 
-		internal bool visitorDic;
+		internal bool isVirtual;
 
-		internal bool statusDic;
+		internal bool isLeaf;
 
-		internal int _TokenDic;
+		internal int depth;
 
-		internal BoneNode stateDic;
+		internal BoneNode child;
 
-		internal BoneNode m_HelperDic;
+		internal BoneNode parent;
 
 		[SpecialName]
-		internal Vector3 ResetAlgo()
+		internal Vector3 GetPosition()
 		{
-			return _ObjectDic.GetColumn(3);
+			return matrix.GetColumn(3);
 		}
 
 		[SpecialName]
-		internal float VisitAlgo()
+		internal float GetScale()
 		{
-			return Mathf.Max(_ObjectDic.lossyScale.x, _ObjectDic.lossyScale.y, _ObjectDic.lossyScale.z);
+			return Mathf.Max(matrix.lossyScale.x, matrix.lossyScale.y, matrix.lossyScale.z);
 		}
 
 		[SpecialName]
-		internal float InvokeAlgo()
+		internal float GetNormalizedDepth()
 		{
-			return 1f / (float)mapperDic.maxDepth * (float)_TokenDic;
+			return 1f / (float)tree.maxDepth * (float)depth;
 		}
 
-		internal float ForgotAlgo(AnimationCurve key)
+		internal float EvaluateCurve(AnimationCurve key)
 		{
 			if (key == null || key.length < 2)
 			{
 				return 1f;
 			}
-			return key.Evaluate(InvokeAlgo());
+			return key.Evaluate(GetNormalizedDepth());
 		}
 	}
 
@@ -4037,7 +4037,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactSender WriteParam(this VRCContactReceiver def, GameObject vis)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(vis);
-		new ShapeSnapshot(def).InsertAlgo(vRCContactSender);
+		new ShapeSnapshot(def).ApplyTo(vRCContactSender);
 		vRCContactSender.collisionTags = def.collisionTags;
 		vRCContactSender.rootTransform = def.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
@@ -4050,7 +4050,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactSender DefineParam(this VRCPhysBoneCollider v, GameObject ivk)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(ivk);
-		new ShapeSnapshot(v).InsertAlgo(vRCContactSender);
+		new ShapeSnapshot(v).ApplyTo(vRCContactSender);
 		vRCContactSender.rootTransform = v.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
 		{
@@ -4062,7 +4062,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactReceiver PushParam(this VRCContactSender i, GameObject vis)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(vis);
-		new ShapeSnapshot(i).InsertAlgo(vRCContactReceiver);
+		new ShapeSnapshot(i).ApplyTo(vRCContactReceiver);
 		vRCContactReceiver.collisionTags = i.collisionTags;
 		vRCContactReceiver.rootTransform = i.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
@@ -4075,7 +4075,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactReceiver UpdateParam(this VRCPhysBoneCollider init, GameObject vis)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(vis);
-		new ShapeSnapshot(init).InsertAlgo(vRCContactReceiver);
+		new ShapeSnapshot(init).ApplyTo(vRCContactReceiver);
 		vRCContactReceiver.rootTransform = init.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
 		{
@@ -4087,7 +4087,7 @@ internal static class ADOEditorUtility
 	internal static VRCPhysBoneCollider InsertParam(this VRCContactReceiver task, GameObject cfg)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cfg);
-		new ShapeSnapshot(task).PrepareAlgo(vRCPhysBoneCollider);
+		new ShapeSnapshot(task).ApplyTo(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = task.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -4099,7 +4099,7 @@ internal static class ADOEditorUtility
 	internal static VRCPhysBoneCollider PrepareParam(this VRCContactSender first, GameObject ivk)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(ivk);
-		new ShapeSnapshot(first).PrepareAlgo(vRCPhysBoneCollider);
+		new ShapeSnapshot(first).ApplyTo(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = first.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{

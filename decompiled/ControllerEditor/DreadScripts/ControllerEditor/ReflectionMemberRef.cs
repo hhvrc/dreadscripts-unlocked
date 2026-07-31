@@ -7,71 +7,71 @@ namespace DreadScripts.ControllerEditor;
 
 internal class ReflectionMemberRef<T> where T : MemberInfo
 {
-	public readonly string m_RegPolicy;
+	public readonly string memberName;
 
-	public readonly TypeResolver _TestsPolicy;
+	public readonly TypeResolver typeResolver;
 
-	public readonly BindingFlags propertyPolicy;
+	public readonly BindingFlags bindingFlags;
 
-	public readonly Type[] processorPolicy;
+	public readonly Type[] parameterTypes;
 
-	private readonly bool observerPolicy;
+	private readonly bool matchExactSignature;
 
-	public bool _ServerPolicy;
+	public bool membersResolved;
 
-	private T[] _ThreadPolicy;
+	private T[] cachedMembers;
 
-	private bool m_PolicyPolicy;
+	private bool memberResolved;
 
-	private T m_SerializerPolicy;
+	private T cachedMember;
 
 	private static object StopDecorator;
 
 	[SpecialName]
-	public Type WriteRecord()
+	public Type GetFirstParameterType()
 	{
-		return processorPolicy[0];
+		return this.processorPolicy[0];
 	}
 
 	[SpecialName]
-	public T[] StopRecord()
+	public T[] GetMembers()
 	{
-		if (!_ServerPolicy)
+		if (!this._ServerPolicy)
 		{
-			_ServerPolicy = true;
+			this._ServerPolicy = true;
 			Type typeFromHandle = typeof(T);
 			MemberTypes type = ((typeFromHandle == typeof(FieldInfo)) ? MemberTypes.Field : ((typeFromHandle == typeof(PropertyInfo)) ? MemberTypes.Property : MemberTypes.Method));
-			_ThreadPolicy = (T[])_TestsPolicy.ResolvedType().GetMember(m_RegPolicy, type, propertyPolicy);
+			this._ThreadPolicy = (T[])this._TestsPolicy.ResolvedType().GetMember(this.m_RegPolicy, type, this.propertyPolicy);
 		}
-		return _ThreadPolicy;
+		return this._ThreadPolicy;
 	}
 
 	[SpecialName]
-	public T PrepareRecord()
+	public T GetMember()
 	{
-		if (!m_PolicyPolicy)
+		if (!this.m_PolicyPolicy)
 		{
-			m_PolicyPolicy = true;
-			if (StopRecord().Length == 0)
+			this.m_PolicyPolicy = true;
+			if (this.StopRecord().Length == 0)
 			{
 				return null;
 			}
-			if (StopRecord().Length != 1 && !(WriteRecord() == null))
+			if (this.StopRecord().Length != 1 && !(this.WriteRecord() == null))
 			{
-				foreach (MethodInfo item in StopRecord().Cast<MethodInfo>())
+				foreach (MethodInfo item in this.StopRecord().Cast<MethodInfo>())
 				{
 					ParameterInfo[] parameters = item.GetParameters();
-					if ((!observerPolicy && parameters.Any((ParameterInfo asset) => asset.ParameterType == WriteRecord())) || (observerPolicy && parameters.Select((ParameterInfo p) => p.ParameterType).SequenceEqual(processorPolicy)))
+					if ((!this.observerPolicy && parameters.Any((ParameterInfo asset) => asset.ParameterType == this.WriteRecord())) || (this.observerPolicy && parameters.Select((ParameterInfo p) => p.ParameterType).SequenceEqual(this.processorPolicy)))
 					{
-						m_SerializerPolicy = (T)(MemberInfo)item;
+						this.m_SerializerPolicy = (T)(MemberInfo)item;
 						break;
 					}
 				}
-				return m_SerializerPolicy;
+				return this.m_SerializerPolicy;
 			}
-			return m_SerializerPolicy = StopRecord()[0];
+			return this.m_SerializerPolicy = this.StopRecord()[0];
 		}
-		return m_SerializerPolicy;
+		return this.m_SerializerPolicy;
 	}
 
 	public ReflectionMemberRef(TypeResolver res, string cust, Type state = null, BindingFlags t2 = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
@@ -96,17 +96,17 @@ internal class ReflectionMemberRef<T> where T : MemberInfo
 
 	public ReflectionMemberRef(TypeResolver setup, string reg, Type[] rule, BindingFlags spec2, bool iskey3)
 	{
-		m_RegPolicy = reg;
-		_TestsPolicy = setup;
-		propertyPolicy = spec2;
-		processorPolicy = rule;
-		observerPolicy = iskey3;
+		this.m_RegPolicy = reg;
+		this._TestsPolicy = setup;
+		this.propertyPolicy = spec2;
+		this.processorPolicy = rule;
+		this.observerPolicy = iskey3;
 	}
 
 	[CompilerGenerated]
 	private bool FillRecord(ParameterInfo asset)
 	{
-		return asset.ParameterType == WriteRecord();
+		return asset.ParameterType == this.WriteRecord();
 	}
 
 	internal static bool ReflectDecorator()

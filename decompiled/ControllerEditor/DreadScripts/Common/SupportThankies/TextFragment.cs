@@ -32,7 +32,7 @@ internal struct TextFragment
 	{
 		if (strategy)
 		{
-			GUILayout.Label(bridge.ValidateWrapper(), last, GUILayout.Width(b), GUILayout.Height(b));
+			GUILayout.Label(bridge.GetTexture(), last, GUILayout.Width(b), GUILayout.Height(b));
 		}
 		else
 		{
@@ -44,7 +44,7 @@ internal struct TextFragment
 	{
 		if (strategy)
 		{
-			bridge.ResetWrapper(spec);
+			bridge.Draw(spec);
 		}
 		else
 		{

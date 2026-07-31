@@ -17,98 +17,98 @@ internal static class AnimatorGraphReflection
 {
 	internal static class TypeResolvers
 	{
-		public static readonly TypeResolver contextTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver stateMachineGraph = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver recordTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver stateMachineGraphGUI = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver helperTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver edgeGUI = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EdgeGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver consumerTests = new TypeResolver("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver animatorControllerTool = new TypeResolver("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver _AdapterTests = new TypeResolver("UnityEditor.Graphs.AnimatorControllerTool+BreadCrumbElement, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver breadCrumbElement = new TypeResolver("UnityEditor.Graphs.AnimatorControllerTool+BreadCrumbElement, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver interpreterTests = new TypeResolver("UnityEditor.Graphs.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver graph = new TypeResolver("UnityEditor.Graphs.Graph, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver _WatcherTests = new TypeResolver("UnityEditor.Graphs.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver graphGUI = new TypeResolver("UnityEditor.Graphs.GraphGUI, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver _CandidateTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.StateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver stateNode = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.StateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver m_ProductTests = new TypeResolver("UnityEditor.Graphs.AnimationBlendTree.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver blendTreeNode = new TypeResolver("UnityEditor.Graphs.AnimationBlendTree.Node, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver m_ExpressionTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.StateMachineNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver stateMachineNode = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.StateMachineNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver _SystemTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EntryNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver entryNode = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EntryNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver _WorkerTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.AnyStateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver anyStateNode = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.AnyStateNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver m_FilterTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.ExitNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver exitNode = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.ExitNode, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver m_StubTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EdgeInfo, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver edgeInfo = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EdgeInfo, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
-		public static readonly TypeResolver readerTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.TransitionEditionContext, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+		public static readonly TypeResolver transitionEditionContext = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.TransitionEditionContext, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 	}
 
 	internal static class MemberRefs
 	{
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _StrategyTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.consumerTests, "tool");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _StrategyTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.animatorControllerTool, "tool");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> customerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.consumerTests, "stateMachineGraph");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> customerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.animatorControllerTool, "stateMachineGraph");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_DatabaseTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.consumerTests, "blendTreeGraph");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_DatabaseTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.animatorControllerTool, "blendTreeGraph");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ExporterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.consumerTests, "stateMachineGraphGUI");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ExporterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.animatorControllerTool, "stateMachineGraphGUI");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_IdentifierTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.consumerTests, "blendTreeGraphGUI");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_IdentifierTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.animatorControllerTool, "blendTreeGraphGUI");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> attrTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.consumerTests, "m_BreadCrumbs");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> attrTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.animatorControllerTool, "m_BreadCrumbs");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_DispatcherTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.consumerTests, "graphDirtyCallback");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_DispatcherTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.animatorControllerTool, "graphDirtyCallback");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _RegistryTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers._AdapterTests, "m_Target");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _RegistryTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.breadCrumbElement, "m_Target");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_TagTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.contextTests, "m_ActiveStateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_TagTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateMachineGraph, "m_ActiveStateMachine");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _ImporterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.contextTests, "rootStateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _ImporterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateMachineGraph, "rootStateMachine");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_RequestTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.contextTests, "parentStateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_RequestTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateMachineGraph, "parentStateMachine");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> printerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers._WatcherTests, "selection");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> printerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.graphGUI, "selection");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_WriterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.interpreterTests, "nodes");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_WriterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.graph, "nodes");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _ParamsTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.interpreterTests, "edges");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _ParamsTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.graph, "edges");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ListenerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.contextTests, "m_EntryNode");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ListenerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateMachineGraph, "m_EntryNode");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> getterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.contextTests, "m_ExitNode");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> getterTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateMachineGraph, "m_ExitNode");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_InterceptorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.contextTests, "m_AnyStateNode");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_InterceptorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateMachineGraph, "m_AnyStateNode");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _CreatorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers._CandidateTests, "state");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _CreatorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateNode, "state");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> eventTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers._SystemTests, "m_StateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> eventTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.entryNode, "m_StateMachine");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_InfoTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.m_ExpressionTests, "stateMachine");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_InfoTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateMachineNode, "stateMachine");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_FacadeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers._CandidateTests, "m_StateMachineProxyLookup");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_FacadeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateNode, "m_StateMachineProxyLookup");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> advisorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers._CandidateTests, "m_StateMachineLookup");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> advisorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.stateNode, "m_StateMachineLookup");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> callbackTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.m_StubTests, "transitions");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> callbackTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.edgeInfo, "transitions");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> m_IndexerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.contextTests, "GetEdgeInfo");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> m_IndexerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.stateMachineGraph, "GetEdgeInfo");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> _IssuerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.contextTests, "FindNode", typeof(AnimatorState));
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> _IssuerTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.stateMachineGraph, "FindNode", typeof(AnimatorState));
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> _PrototypeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.contextTests, "FindNode", typeof(AnimatorStateMachine));
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> _PrototypeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.stateMachineGraph, "FindNode", typeof(AnimatorStateMachine));
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> m_RuleTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.m_StubTests, "HasTransition", typeof(AnimatorTransitionBase));
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo> m_RuleTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<MethodInfo>(TypeResolvers.edgeInfo, "HasTransition", typeof(AnimatorTransitionBase));
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> _SingletonTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.consumerTests, "animatorController");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> _SingletonTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.animatorControllerTool, "animatorController");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> factoryTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.recordTests, "edgeGUI");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> factoryTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.stateMachineGraphGUI, "edgeGUI");
 
-		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_AccountTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.m_StubTests, "hasMultipleTransitions");
+		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_AccountTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.edgeInfo, "hasMultipleTransitions");
 	}
 
 	internal static class GraphAccessors
@@ -384,9 +384,9 @@ internal static class AnimatorGraphReflection
 			Dictionary<AnimatorTransitionBase, GraphEdgeRef> dictionary = new Dictionary<AnimatorTransitionBase, GraphEdgeRef>();
 			foreach (GraphEdgeRef item in DestroyPolicy())
 			{
-				foreach (TransitionEditionInfo item2 in item.FindSerializer())
+				foreach (TransitionEditionInfo transition in item.GetTransitions())
 				{
-					dictionary[item2.itemTests] = item;
+					dictionary[transition.itemTests] = item;
 				}
 			}
 			return dictionary;
@@ -406,116 +406,116 @@ internal static class AnimatorGraphReflection
 			any
 		}
 
-		public bool _DecoratorTests;
+		public bool nodeResolved;
 
-		public readonly AnimatorState comparatorTests;
+		public readonly AnimatorState state;
 
-		public readonly AnimatorStateMachine m_ExceptionTests;
+		public readonly AnimatorStateMachine stateMachine;
 
-		public readonly NodeType objectTests;
+		public readonly NodeType nodeType;
 
-		public bool _UtilsTests;
+		public bool owningStateMachineResolved;
 
-		private AnimatorStateMachine _ValTests;
+		private AnimatorStateMachine cachedOwningStateMachine;
 
-		private Node valueTests;
+		private Node cachedNode;
 
 		[SpecialName]
-		public AnimatorStateMachine ListPolicy()
+		public AnimatorStateMachine OwningStateMachine()
 		{
-			if (!_UtilsTests)
+			if (!owningStateMachineResolved)
 			{
-				_UtilsTests = true;
-				_ValTests = GetOwningStateMachine(this);
+				owningStateMachineResolved = true;
+				cachedOwningStateMachine = GetOwningStateMachine(this);
 			}
-			return _ValTests;
+			return cachedOwningStateMachine;
 		}
 
 		[SpecialName]
-		public Node FillPolicy()
+		public Node Node()
 		{
-			if (_DecoratorTests || valueTests != null)
+			if (nodeResolved || cachedNode != null)
 			{
-				return valueTests;
+				return cachedNode;
 			}
-			_DecoratorTests = true;
-			switch (objectTests)
+			nodeResolved = true;
+			switch (nodeType)
 			{
 			case NodeType.any:
-				valueTests = GraphAccessors.MapPolicy().FillPolicy();
+				cachedNode = GraphAccessors.MapPolicy().Node();
 				break;
 			case NodeType.exit:
-				valueTests = GraphAccessors.CalculatePolicy().FillPolicy();
+				cachedNode = GraphAccessors.CalculatePolicy().Node();
 				break;
 			default:
-				valueTests = FindNode(m_ExceptionTests).FillPolicy();
+				cachedNode = FindNode(stateMachine).Node();
 				break;
 			case NodeType.entry:
-				valueTests = GraphAccessors.FlushPolicy().FillPolicy();
+				cachedNode = GraphAccessors.FlushPolicy().Node();
 				break;
 			case NodeType.state:
-				valueTests = FindNode(comparatorTests).FillPolicy();
+				cachedNode = FindNode(state).Node();
 				break;
 			case NodeType.tree:
 				break;
 			}
-			return valueTests;
+			return cachedNode;
 		}
 
 		[SpecialName]
-		public IEnumerable<GraphSlotRef> ForgotPolicy()
+		public IEnumerable<GraphSlotRef> Slots()
 		{
-			return FillPolicy().slots.Select((Slot s) => new GraphSlotRef(s));
+			return Node().slots.Select((Slot s) => new GraphSlotRef(s));
 		}
 
 		[SpecialName]
-		public IEnumerable<GraphEdgeRef> CheckPolicy()
+		public IEnumerable<GraphEdgeRef> InputEdges()
 		{
-			return FillPolicy().inputEdges.Select((Edge e) => new GraphEdgeRef(e));
+			return Node().inputEdges.Select((Edge e) => new GraphEdgeRef(e));
 		}
 
 		[SpecialName]
-		public IEnumerable<GraphEdgeRef> AssetPolicy()
+		public IEnumerable<GraphEdgeRef> OutputEdges()
 		{
-			return FillPolicy().outputEdges.Select((Edge e) => new GraphEdgeRef(e));
+			return Node().outputEdges.Select((Edge e) => new GraphEdgeRef(e));
 		}
 
 		[SpecialName]
-		public IEnumerable<AnimatorTransitionBase> ChangePolicy()
+		public IEnumerable<AnimatorTransitionBase> IncomingTransitions()
 		{
-			return CheckPolicy().SelectMany((GraphEdgeRef e) => from t in e.FindSerializer()
+			return InputEdges().SelectMany((GraphEdgeRef e) => from t in e.GetTransitions()
 				select t.itemTests);
 		}
 
 		[SpecialName]
-		public IEnumerable<AnimatorTransitionBase> RegisterPolicy()
+		public IEnumerable<AnimatorTransitionBase> OutgoingTransitions()
 		{
-			return AssetPolicy().SelectMany((GraphEdgeRef e) => from t in e.FindSerializer()
+			return OutputEdges().SelectMany((GraphEdgeRef e) => from t in e.GetTransitions()
 				select t.itemTests);
 		}
 
 		[SpecialName]
-		public Styles.Color PatchPolicy()
+		public Styles.Color Color()
 		{
-			return FillPolicy().color;
+			return Node().color;
 		}
 
 		[SpecialName]
-		public void InterruptPolicy(Styles.Color ident)
+		public void Color(Styles.Color ident)
 		{
-			FillPolicy().color = ident;
+			Node().color = ident;
 		}
 
 		[SpecialName]
-		public Rect PrintPolicy()
+		public Rect Position()
 		{
-			return FillPolicy().position;
+			return Node().position;
 		}
 
 		[SpecialName]
-		public void SearchPolicy(Rect last)
+		public void Position(Rect last)
 		{
-			FillPolicy().position = last;
+			Node().position = last;
 		}
 
 		public GraphNodeRef()
@@ -524,134 +524,134 @@ internal static class AnimatorGraphReflection
 
 		public GraphNodeRef(Node init)
 		{
-			_DecoratorTests = true;
-			valueTests = init;
+			nodeResolved = true;
+			cachedNode = init;
 			if (init == null)
 			{
 				return;
 			}
 			Type type = init.GetType();
-			if (type == TypeResolvers._CandidateTests.ResolvedType())
+			if (type == TypeResolvers.stateNode.ResolvedType())
 			{
-				objectTests = NodeType.state;
-				comparatorTests = (AnimatorState)MemberRefs._CreatorTests.PrepareRecord().GetValue(init);
+				nodeType = NodeType.state;
+				state = (AnimatorState)MemberRefs._CreatorTests.PrepareRecord().GetValue(init);
 			}
-			else if (!(type == TypeResolvers.m_ExpressionTests.ResolvedType()))
+			else if (!(type == TypeResolvers.stateMachineNode.ResolvedType()))
 			{
-				if (type == TypeResolvers._SystemTests.ResolvedType())
+				if (type == TypeResolvers.entryNode.ResolvedType())
 				{
-					objectTests = NodeType.entry;
+					nodeType = NodeType.entry;
 				}
-				else if (type == TypeResolvers.m_FilterTests.ResolvedType())
+				else if (type == TypeResolvers.exitNode.ResolvedType())
 				{
-					objectTests = NodeType.exit;
+					nodeType = NodeType.exit;
 				}
-				else if (!(type == TypeResolvers._WorkerTests.ResolvedType()))
+				else if (!(type == TypeResolvers.anyStateNode.ResolvedType()))
 				{
-					if (type == TypeResolvers.m_ProductTests.ResolvedType())
+					if (type == TypeResolvers.blendTreeNode.ResolvedType())
 					{
-						objectTests = NodeType.tree;
+						nodeType = NodeType.tree;
 					}
 				}
 				else
 				{
-					objectTests = NodeType.any;
+					nodeType = NodeType.any;
 				}
 			}
 			else
 			{
-				objectTests = NodeType.machine;
-				m_ExceptionTests = (AnimatorStateMachine)MemberRefs.m_InfoTests.PrepareRecord().GetValue(init);
+				nodeType = NodeType.machine;
+				stateMachine = (AnimatorStateMachine)MemberRefs.m_InfoTests.PrepareRecord().GetValue(init);
 			}
 		}
 
 		public GraphNodeRef(AnimatorState task)
 		{
-			comparatorTests = task;
-			objectTests = NodeType.state;
+			state = task;
+			nodeType = NodeType.state;
 		}
 
 		public GraphNodeRef(AnimatorStateMachine item)
 		{
-			m_ExceptionTests = item;
-			objectTests = NodeType.machine;
+			stateMachine = item;
+			nodeType = NodeType.machine;
 		}
 
 		public static implicit operator Node(GraphNodeRef reference)
 		{
-			return reference.FillPolicy();
+			return reference.Node();
 		}
 	}
 
 	internal class GraphEdgeRef
 	{
-		public readonly Edge m_ContainerTests;
+		public readonly Edge edge;
 
-		private bool m_ClassTests;
+		private bool edgeInfoCached;
 
-		private object _MockTests;
+		private object edgeInfo;
 
 		[SpecialName]
-		public GraphNodeRef ConcatSerializer()
+		public GraphNodeRef GetFromNode()
 		{
-			return new GraphNodeRef(m_ContainerTests.fromSlot.node);
+			return new GraphNodeRef(edge.fromSlot.node);
 		}
 
 		[SpecialName]
-		public GraphNodeRef CancelSerializer()
+		public GraphNodeRef GetToNode()
 		{
-			return new GraphNodeRef(m_ContainerTests.toSlot.node);
+			return new GraphNodeRef(edge.toSlot.node);
 		}
 
 		[SpecialName]
-		public GraphSlotRef DisableSerializer()
+		public GraphSlotRef GetFromSlot()
 		{
-			return new GraphSlotRef(m_ContainerTests.fromSlot);
+			return new GraphSlotRef(edge.fromSlot);
 		}
 
 		[SpecialName]
-		public GraphSlotRef RestartSerializer()
+		public GraphSlotRef GetToSlot()
 		{
-			return new GraphSlotRef(m_ContainerTests.toSlot);
+			return new GraphSlotRef(edge.toSlot);
 		}
 
 		[SpecialName]
-		private object AddSerializer()
+		private object GetEdgeInfo()
 		{
-			if (!m_ClassTests)
+			if (!edgeInfoCached)
 			{
-				m_ClassTests = true;
-				_MockTests = MemberRefs.m_IndexerTests.PrepareRecord().Invoke(GraphAccessors.CancelPolicy(), new object[1] { m_ContainerTests });
-				return _MockTests;
+				edgeInfoCached = true;
+				edgeInfo = MemberRefs.m_IndexerTests.PrepareRecord().Invoke(GraphAccessors.CancelPolicy(), new object[1] { edge });
+				return edgeInfo;
 			}
-			return _MockTests;
+			return edgeInfo;
 		}
 
-		public bool PopSerializer(AnimatorTransitionBase ident)
+		public bool HasTransition(AnimatorTransitionBase ident)
 		{
-			return (bool)MemberRefs.m_RuleTests.PrepareRecord().Invoke(AddSerializer(), new object[1] { ident });
+			return (bool)MemberRefs.m_RuleTests.PrepareRecord().Invoke(GetEdgeInfo(), new object[1] { ident });
 		}
 
-		public bool ComputeSerializer()
+		public bool HasMultipleTransitions()
 		{
-			return (bool)MemberRefs.m_AccountTests.PrepareRecord().GetValue(AddSerializer());
+			return (bool)MemberRefs.m_AccountTests.PrepareRecord().GetValue(GetEdgeInfo());
 		}
 
 		[SpecialName]
-		public IEnumerable<TransitionEditionInfo> FindSerializer()
+		public IEnumerable<TransitionEditionInfo> GetTransitions()
 		{
-			return from object setup in (IList)MemberRefs.callbackTests.PrepareRecord().GetValue(AddSerializer())
+			return from object setup in (IList)MemberRefs.callbackTests.PrepareRecord().GetValue(GetEdgeInfo())
 				select new TransitionEditionInfo(setup, this);
 		}
 
 		public GraphEdgeRef(Edge value)
 		{
-			m_ContainerTests = value;
+			edge = value;
 		}
 
 		public static implicit operator Edge(GraphEdgeRef task)
 		{
-			return task.m_ContainerTests;
+			return task.edge;
 		}
 
 		[CompilerGenerated]
@@ -663,21 +663,21 @@ internal static class AnimatorGraphReflection
 
 	internal readonly struct TransitionEditionInfo
 	{
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_FieldTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.readerTests, "m_DisplayName");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_FieldTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.transitionEditionContext, "m_DisplayName");
 
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> attributeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.readerTests, "m_FullName");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> attributeTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.transitionEditionContext, "m_FullName");
 
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ClientTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.readerTests, "sourceState");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ClientTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.transitionEditionContext, "sourceState");
 
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ConfigTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.readerTests, "sourceStateMachine");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> m_ConfigTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.transitionEditionContext, "sourceStateMachine");
 
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> descriptorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.readerTests, "ownerStateMachine");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> descriptorTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.transitionEditionContext, "ownerStateMachine");
 
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _TemplateTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.readerTests, "transition");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo> _TemplateTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<FieldInfo>(TypeResolvers.transitionEditionContext, "transition");
 
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_MessageTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.readerTests, "isAnyStateTransition");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_MessageTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.transitionEditionContext, "isAnyStateTransition");
 
-		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_CollectionTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.readerTests, "isDefaultTransition");
+		private static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_CollectionTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.transitionEditionContext, "isDefaultTransition");
 
 		public readonly object parserTests;
 
@@ -818,22 +818,22 @@ internal static class AnimatorGraphReflection
 
 	public static AnimatorStateMachine GetOwningStateMachine(AnimatorState config)
 	{
-		return (AnimatorStateMachine)MemberRefs.m_FacadeTests.PrepareRecord().GetValue(FindNode(config).FillPolicy());
+		return (AnimatorStateMachine)MemberRefs.m_FacadeTests.PrepareRecord().GetValue(FindNode(config).Node());
 	}
 
 	public static AnimatorStateMachine GetOwningStateMachine(AnimatorStateMachine spec)
 	{
-		return (AnimatorStateMachine)MemberRefs.advisorTests.PrepareRecord().GetValue(FindNode(spec).FillPolicy());
+		return (AnimatorStateMachine)MemberRefs.advisorTests.PrepareRecord().GetValue(FindNode(spec).Node());
 	}
 
 	public static AnimatorStateMachine GetOwningStateMachine(GraphNodeRef spec)
 	{
-		return spec.objectTests switch
+		return spec.nodeType switch
 		{
 			GraphNodeRef.NodeType.any => GraphAccessors.RemovePolicy(), 
-			GraphNodeRef.NodeType.entry => (AnimatorStateMachine)MemberRefs.eventTests.PrepareRecord().GetValue(spec.FillPolicy()), 
-			GraphNodeRef.NodeType.state => GetOwningStateMachine(spec.comparatorTests), 
-			GraphNodeRef.NodeType.machine => GetOwningStateMachine(spec.m_ExceptionTests), 
+			GraphNodeRef.NodeType.entry => (AnimatorStateMachine)MemberRefs.eventTests.PrepareRecord().GetValue(spec.Node()), 
+			GraphNodeRef.NodeType.state => GetOwningStateMachine(spec.state), 
+			GraphNodeRef.NodeType.machine => GetOwningStateMachine(spec.stateMachine), 
 			_ => null, 
 		};
 	}

@@ -6,85 +6,85 @@ namespace DreadScripts.ControllerEditor;
 
 internal struct PhysBoneColliderSnapshot
 {
-	internal readonly Object m_CreatorPolicy;
+	internal readonly Object source;
 
-	internal bool _EventPolicy;
+	internal bool isPhysBoneCollider;
 
-	internal readonly Transform _InfoPolicy;
+	internal readonly Transform rootTransform;
 
-	internal readonly int m_FacadePolicy;
+	internal readonly int shapeType;
 
-	internal float m_AdvisorPolicy;
+	internal float radius;
 
-	internal float callbackPolicy;
+	internal float height;
 
-	internal Vector3 _IndexerPolicy;
+	internal Vector3 position;
 
-	internal Quaternion issuerPolicy;
+	internal Quaternion rotation;
 
 	internal static object SetupDecorator;
 
 	internal PhysBoneColliderSnapshot(VRCPhysBoneColliderBase config)
 	{
-		m_CreatorPolicy = config;
-		_EventPolicy = true;
-		_InfoPolicy = config.GetRootTransform();
-		m_FacadePolicy = (int)config.shapeType;
-		m_AdvisorPolicy = config.radius;
-		callbackPolicy = config.height;
-		_IndexerPolicy = config.position;
-		issuerPolicy = config.rotation;
+		source = config;
+		isPhysBoneCollider = true;
+		rootTransform = config.GetRootTransform();
+		shapeType = (int)config.shapeType;
+		radius = config.radius;
+		height = config.height;
+		position = config.position;
+		rotation = config.rotation;
 	}
 
 	internal PhysBoneColliderSnapshot(ContactBase first)
 	{
-		m_CreatorPolicy = first;
-		_EventPolicy = false;
-		_InfoPolicy = first.GetRootTransform();
-		m_FacadePolicy = (int)first.shapeType;
-		m_AdvisorPolicy = first.radius;
-		callbackPolicy = first.height;
-		_IndexerPolicy = first.position;
-		issuerPolicy = first.rotation;
+		source = first;
+		isPhysBoneCollider = false;
+		rootTransform = first.GetRootTransform();
+		shapeType = (int)first.shapeType;
+		radius = first.radius;
+		height = first.height;
+		position = first.position;
+		rotation = first.rotation;
 	}
 
-	internal void CalculateHelper()
+	internal void Apply()
 	{
-		if (!_EventPolicy)
+		if (!isPhysBoneCollider)
 		{
-			ContactBase obj = (ContactBase)m_CreatorPolicy;
-			obj.radius = m_AdvisorPolicy;
-			obj.height = callbackPolicy;
-			obj.position = _IndexerPolicy;
-			obj.rotation = issuerPolicy;
-			obj.shapeType = (ContactBase.ShapeType)m_FacadePolicy;
+			ContactBase obj = (ContactBase)source;
+			obj.radius = radius;
+			obj.height = height;
+			obj.position = position;
+			obj.rotation = rotation;
+			obj.shapeType = (ContactBase.ShapeType)shapeType;
 		}
 		else
 		{
-			VRCPhysBoneColliderBase obj2 = (VRCPhysBoneColliderBase)m_CreatorPolicy;
-			obj2.radius = m_AdvisorPolicy;
-			obj2.height = callbackPolicy;
-			obj2.position = _IndexerPolicy;
-			obj2.rotation = issuerPolicy;
+			VRCPhysBoneColliderBase obj2 = (VRCPhysBoneColliderBase)source;
+			obj2.radius = radius;
+			obj2.height = height;
+			obj2.position = position;
+			obj2.rotation = rotation;
 		}
 	}
 
-	internal void TestHelper(ContactBase first)
+	internal void Apply(ContactBase first)
 	{
-		first.radius = m_AdvisorPolicy;
-		first.height = callbackPolicy;
-		first.position = _IndexerPolicy;
-		first.rotation = issuerPolicy;
-		first.shapeType = (ContactBase.ShapeType)m_FacadePolicy;
+		first.radius = radius;
+		first.height = height;
+		first.position = position;
+		first.rotation = rotation;
+		first.shapeType = (ContactBase.ShapeType)shapeType;
 	}
 
-	internal void MapHelper(VRCPhysBoneCollider config)
+	internal void Apply(VRCPhysBoneCollider config)
 	{
-		config.radius = m_AdvisorPolicy;
-		config.height = callbackPolicy;
-		config.position = _IndexerPolicy;
-		config.rotation = issuerPolicy;
-		config.shapeType = (VRCPhysBoneColliderBase.ShapeType)m_FacadePolicy;
+		config.radius = radius;
+		config.height = height;
+		config.position = position;
+		config.rotation = rotation;
+		config.shapeType = (VRCPhysBoneColliderBase.ShapeType)shapeType;
 	}
 
 	internal static bool ExcludeDecorator()
