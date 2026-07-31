@@ -1,0 +1,18 @@
+{
+  "name": "com.dreadscripts.unlocked",
+  "displayName": "DreadScripts - Unlocked",
+  "version": "0.1.0",
+  "description": "Restored builds of two discontinued DreadScripts Unity Editor tools, Controller Editor and Avatar Dynamics Overhaul, reconstructed from the shipped assemblies after the vendor's license server was permanently shut down. The two tools shared most of their code, so they are consolidated here as one package. The original tools are the work of Dreadrith; this package is a community restoration and is not affiliated with or endorsed by DreadScripts.",
+  "unity": "2019.4",
+  "type": "tool",
+  "author": {
+    "name": "dreadscripts-unlocked contributors",
+    "url": "https://github.com/hhvrc/dreadscripts-unlocked"
+  },
+  "gitDependencies": {},
+  "vpmDependencies": {
+    "com.vrchat.avatars": "^3.0.0"
+  },
+  "legacyFolders": {},
+  "legacyFiles": {}
+}

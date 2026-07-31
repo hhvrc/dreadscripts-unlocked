@@ -1,0 +1,62 @@
+# Deliberately NO global `* text=auto` -- see the ilspy_export rule at the end of this file.
+
+# ── Git LFS: genuinely binary content only ───────────────────────────────────
+# Unity is set to Force Text serialization (ProjectSettings/EditorSettings.asset,
+# m_SerializationMode: 2), so .asset/.controller/.anim/.mask/.meta are all YAML. They stay out of
+# LFS deliberately: as text they diff and merge, and putting them in LFS would make every template
+# change an opaque binary blob.
+#
+# Note for anyone cloning: these types need git-lfs installed. Without it you get small text
+# pointer files in place of the real ones, and Unity fails in confusing ways rather than loudly.
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.dylib filter=lfs diff=lfs merge=lfs -text
+*.a filter=lfs diff=lfs merge=lfs -text
+*.unitypackage filter=lfs diff=lfs merge=lfs -text
+
+# Images
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.ico filter=lfs diff=lfs merge=lfs -text
+
+# Audio / video
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.aif filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+
+# Models / fonts
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.obj filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.otf filter=lfs diff=lfs merge=lfs -text
+
+# ── Unity YAML: text, and merged with Unity's own tool where configured ──────
+*.cs text diff=csharp
+*.meta text eol=lf
+*.asset text merge=unityyamlmerge eol=lf
+*.prefab text merge=unityyamlmerge eol=lf
+*.unity text merge=unityyamlmerge eol=lf
+*.controller text merge=unityyamlmerge eol=lf
+*.anim text merge=unityyamlmerge eol=lf
+*.mask text merge=unityyamlmerge eol=lf
+*.mat text merge=unityyamlmerge eol=lf
+*.physicMaterial text merge=unityyamlmerge eol=lf
+
+# ── Left exactly as generated, and last so it wins ───────────────────────────
+# ilspy_export/ is decompiler output, byte-compared against dreadful-re's export/ by
+# sync_public.py. Any line-ending normalisation makes the published copy differ from what the
+# decompiler emits and fails that check for a reason nobody would connect to line endings -- its
+# .resx files are CRLF. This rule is last because later rules win, so it overrides the *.cs entry
+# above for this tree only.
+ilspy_export/** -text
