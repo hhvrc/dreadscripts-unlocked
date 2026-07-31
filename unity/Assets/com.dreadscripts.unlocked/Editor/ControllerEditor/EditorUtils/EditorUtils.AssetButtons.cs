@@ -11,10 +11,8 @@
 // button drives. The plain button primitives they are built on (IconButton and friends) live in
 // EditorUtils.Buttons.cs and are not repeated here.
 //
-// Not ported from this region, and noted rather than added because they belong to other partials:
-//   CloneResolver / LoginResolver (lines 2766 / 2781), the rich-text log colouriser and its Debug
-//   wrapper. The single call site below inlines the same warning tint instead; see the comment
-//   there.
+// The one warning below goes through the rich-text logging family -- CloneResolver / LoginResolver
+// at lines 2766 / 2781, ported as Colorize / Log -- which lives in EditorUtils.Logging.cs.
 //
 // These members write to disk, so for the record: the only thing created is the one asset the user
 // names in the save panel, at the path they chose, via AssetDatabase.CreateAsset. Nothing is
@@ -91,10 +89,7 @@ namespace DreadScripts.ControllerEditor
             {
                 // GetProjectRelativePath returns an empty string for anything outside the project, so
                 // this catches both "elsewhere on disk" and "inside the project but outside Assets".
-                //
-                // The original routes this through the shared log colouriser, which is not ported
-                // yet; the warning tint is inlined to keep that member out of this file.
-                Debug.LogWarning("<color=#" + ColorUtility.ToHtmlStringRGB(warningColor) + ">Path must be in the Assets folder!</color>");
+                "Path must be in the Assets folder!".Colorize(LogType.Warning).Log(LogType.Warning);
                 return;
             }
 

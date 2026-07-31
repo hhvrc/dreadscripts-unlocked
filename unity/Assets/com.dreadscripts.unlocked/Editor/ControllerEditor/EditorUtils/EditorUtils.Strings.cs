@@ -1,17 +1,18 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+//   static UpdateRules   -> TryMakeNameUnique,    line 5468
+//   static ChangeRules   -> MakeNameUnique,       line 5474
 //   static SortRules     -> MakeNameUnique,       line 5480
 //   static RegisterRules -> StripNumberSuffix,    line 5497
 //   static LogoutRules   -> TryGetTrailingNumber, line 5502
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
-// Deliberately not ported here: the two thin callers that sit immediately above this region,
-// UpdateRules (line 5468, "make unique and report whether that changed the name") and ChangeRules
-// (line 5474, "make unique against a set of taken names"). They add no numbering logic of their
-// own -- both just call SortRules -- and were left out only to avoid colliding with a concurrent
-// port of the neighbouring region. Anyone adding them should put them in this file.
+// ChangeRules and SortRules are ported as overloads of one name: they are the same operation, one
+// taking the set of names already in use and the other the predicate that decides availability.
+// Nothing from the region is left unported.
 
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace DreadScripts.ControllerEditor
@@ -34,6 +35,37 @@ namespace DreadScripts.ControllerEditor
 
         /// <summary>Matches a run of digits at the end of a name, with or without a separator.</summary>
         private const string TrailingNumberPattern = "(?=.*)(\\d+)$";
+
+        /// <summary>
+        /// Makes <paramref name="name"/> unique and reports whether that changed it, which is what a
+        /// rename field needs: the new name to show, and whether anything has to be written back.
+        /// </summary>
+        /// <param name="uniqueName">
+        /// The accepted name, which is <paramref name="name"/> itself when it was already free.
+        /// </param>
+        /// <returns>True when the name had to be renumbered.</returns>
+        internal static bool TryMakeNameUnique(string name, Func<string, bool> isAvailable, out string uniqueName)
+        {
+            uniqueName = MakeNameUnique(name, isAvailable);
+            return uniqueName != name;
+        }
+
+        /// <summary>
+        /// Returns <paramref name="name"/> if it is not among <paramref name="takenNames"/>, and
+        /// otherwise the first "&lt;name&gt; &lt;number&gt;" variant that is not.
+        /// </summary>
+        /// <param name="takenNames">
+        /// The names already in use. A <see cref="HashSet{T}"/> is used as given rather than copied,
+        /// so a caller that built one with a case-insensitive comparer gets case-insensitive
+        /// matching; any other sequence is copied into a set with the default, case-sensitive
+        /// comparer. Case sensitivity is therefore the caller's choice, expressed by the collection
+        /// it passes.
+        /// </param>
+        internal static string MakeNameUnique(string name, IEnumerable<string> takenNames)
+        {
+            HashSet<string> taken = (takenNames as HashSet<string>) ?? new HashSet<string>(takenNames);
+            return MakeNameUnique(name, candidate => !taken.Contains(candidate));
+        }
 
         /// <summary>
         /// Returns <paramref name="name"/> if <paramref name="isAvailable"/> accepts it, and

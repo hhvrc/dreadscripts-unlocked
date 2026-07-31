@@ -444,7 +444,9 @@ namespace DreadScripts.ControllerEditor
             }
             catch (Exception e)
             {
-                Debug.LogError($"Failed to load settings from {prefsKey}:\n{e}");
+                // Logged untinted, unlike most of the tool's console output: the original passes
+                // this straight to Log without the Colorize step its other error paths use.
+                $"Failed to load settings from {prefsKey}:\n{e}".Log(LogType.Error);
                 LoadDefaults();
             }
 

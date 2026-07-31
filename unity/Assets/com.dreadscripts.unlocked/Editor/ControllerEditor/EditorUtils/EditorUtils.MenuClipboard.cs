@@ -8,6 +8,11 @@
 //     Set(List<Control>, VRCExpressionsMenu)                           -> Set, line 1662
 //     Set(int, VRCExpressionsMenu)                                     -> Set, line 1674
 //     Process()                                                        -> Process, line 1681
+//     onMenuSelected (private field)                                   -> onMenuSelected, line 1607
+//     Draw(Action<VRCExpressionsMenu>, bool, string)                   -> Draw, line 1726
+//     DrawCounter()                                                    -> DrawCounter, line 1735
+//     OnMenuSelected(VRCExpressionsMenu)                               -> OnMenuSelected, line 1753
+//     OnMenuCreated(VRCExpressionsMenu)                                -> OnMenuCreated, line 1768
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
@@ -15,24 +20,15 @@
 // level deeper than EditorUtils' own), so it is ported as a nested type on this partial rather
 // than as a file-level type.
 //
-// Deliberately not ported yet -- the GUI half of the struct, because every helper it needs is
-// still unported and the package has to keep compiling. Named here so the next pass can find
-// them:
-//   Draw(Action<VRCExpressionsMenu>, bool, string), line 1726 -- the object-field row. Needs
-//     EditorUtils.PopRules/ComputeRules (the generic labelled asset field, line 4302) and
-//     EditorUtils.CallRules (line 4427, the "is it null vs. is it a destroyed/missing asset"
-//     test that picks the placeholder text).
-//   DrawCounter(), line 1735 -- the "3/8, remaining 5" tally drawn inside that row, tinted green
-//     or yellow. Needs EditorUtils.configurationProperty and EditorUtils._WrapperProcessor
-//     (lines 2178/2182, the green/yellow pair) which EditorUtils.Colors.cs does not carry yet.
-//     It ends in MenuSelector.Open(targetMenu, OnMenuSelected, controlsToAdd), already ported.
-//   OnMenuSelected(VRCExpressionsMenu), line 1753 -- forwards to the caller's callback and then,
-//     if the avatar has no main menu at all, offers to make the picked one it. Needs
-//     EditorUtils.ReadError (line 8263, assigns VRCAvatarDescriptor.expressionsMenu and keeps
-//     customExpressions in step).
-//   OnMenuCreated(VRCExpressionsMenu), line 1768 -- gives a freshly created menu asset an empty
-//     controls list. Only reachable through Draw, so it is held back with it.
-//   private Action<VRCExpressionsMenu> onMenuSelected, line 1607 -- Draw's callback slot.
+// The GUI half was held back on the first pass because none of the EditorUtils members it calls
+// existed yet. They all do now, and it maps as:
+//   PopRules / ComputeRules, line 4302 -> EditorUtils.AssetField<T>, EditorUtils.Fields.cs
+//   CallRules, line 4427               -> EditorUtils.IsMissing,     EditorUtils.Fields.cs
+//   configurationProperty / _WrapperProcessor, lines 2178/2182
+//                                      -> validColor / warningColor, EditorUtils.Colors.cs
+//   ReadError, line 8263               -> EditorUtils.SetExpressionsMenu,
+//                                         EditorUtils.AvatarDescriptor.cs
+//   MenuSelector.InvokeRecord          -> MenuSelector.Open, MenuSelector.cs
 //
 // Also not ported: the static field CancelField (line 1609) and RestartField() (line 1777), which
 // returns "CancelField == null". Nothing anywhere assigns the field or calls the method, and the
@@ -40,8 +36,11 @@
 // this is obfuscator scaffolding rather than behaviour -- an always-true method over a field that
 // is always null.
 
+using System;
 using System.Collections.Generic;
+using DreadScripts.Common;
 using UnityEditor;
+using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 
@@ -101,6 +100,12 @@ namespace DreadScripts.ControllerEditor
             internal bool isWithinLimit;
 
             internal ValidationResult validation;
+
+            /// <summary>
+            /// The caller's pick callback, handed over by <see cref="Draw"/> and raised from
+            /// <see cref="OnMenuSelected"/>.
+            /// </summary>
+            private Action<VRCExpressionsMenu> onMenuSelected;
 
             /// <summary>
             /// Whether the last <see cref="Process"/> passed. False before Process has ever run,
@@ -256,6 +261,123 @@ namespace DreadScripts.ControllerEditor
                     ? new ValidationResult(true, "Adding Controls Validated")
                     : new ValidationResult(false, $"Adding {controlsToAdd} controls to {targetMenu.name} would exceed the 8 controls limit", 4);
                 return this;
+            }
+
+            /// <summary>
+            /// Draws the "Target Menu:" row: an asset field over <see cref="targetMenu"/>, the slot
+            /// tally, and the buttons that pick or create a menu.
+            /// </summary>
+            /// <param name="onSelected">
+            /// Raised with whatever the user picks, including null when the field is cleared. The
+            /// caller owns the storage -- neither this method nor the field writes
+            /// <see cref="targetMenu"/> back.
+            /// </param>
+            /// <param name="allowNull">Whether the field may be emptied.</param>
+            /// <remarks>
+            /// Call <see cref="Process"/> before this: the badge comes from
+            /// <see cref="validation"/> and the tally from the slot counts, and neither is filled in
+            /// until Process has run.
+            ///
+            /// <paramref name="onSelected"/> is stored in the field rather than passed down, because
+            /// what the asset field is given is <see cref="OnMenuSelected"/>, which wraps it. The
+            /// assignment has to come first for another reason too: taking a delegate over a struct's
+            /// instance method boxes a *copy* of the struct, so the three method groups below capture
+            /// this state as it stands at that moment and never see a later change to it.
+            /// </remarks>
+            internal void Draw(Action<VRCExpressionsMenu> onSelected, bool allowNull = false, string label = "Target Menu:")
+            {
+                onMenuSelected = onSelected;
+
+                bool isAvatarMainMenu = useAvatar && avatar != null && avatar.expressionsMenu == targetMenu;
+
+                // The field shows a description of the situation rather than the asset's name, so a
+                // menu that is merely unset reads differently from one whose asset has been deleted,
+                // and the avatar's own main menu is called out wherever it appears.
+                string valueText = targetMenu.IsMissing(out bool isDestroyed)
+                    ? (isDestroyed
+                        ? (isAvatarMainMenu ? "[Avatar's Menu Is Missing!]" : "Menu Is Missing!")
+                        : "No Menu Selected")
+                    : (isAvatarMainMenu ? "[Avatar's Main Menu]" : targetMenu.name);
+
+                AssetField(label, valueText, targetMenu, OnMenuSelected, validation, DrawCounter, OnMenuCreated, allowNull);
+            }
+
+            /// <summary>
+            /// The "3/8" tally and the tree-view picker button, drawn in the asset field's right-hand
+            /// group.
+            /// </summary>
+            /// <remarks>
+            /// The tooltip carries <see cref="remainingSlots"/>, which goes negative once the batch no
+            /// longer fits and is the only place the size of the overrun is shown.
+            /// </remarks>
+            private void DrawCounter()
+            {
+                using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, validColor, warningColor))
+                {
+                    GUILayout.Label(new GUIContent($"{controlsToAdd}/{availableSlots}", $"Remaining: {remainingSlots}"),
+                        styles.noteRight, GUILayout.ExpandWidth(expand: false));
+                }
+
+                // The selector opens on the current target, so with none set there is no tree to
+                // browse and the button is disabled rather than hidden.
+                using (new EditorGUI.DisabledScope(targetMenu == null))
+                {
+                    if (Button(new GUIContent(contents.sceneHierarchy) { tooltip = "Select Menu From TreeView" }, styles.iconButton))
+                    {
+                        MenuSelector.Open(targetMenu, OnMenuSelected, controlsToAdd);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Forwards the user's pick to the caller, then offers to make it the avatar's main menu
+            /// if the avatar has none.
+            /// </summary>
+            /// <remarks>
+            /// The offer is a context menu with a single "Yes" item and no "No": dismissing it by
+            /// clicking away is the decline. That is how the original behaves.
+            ///
+            /// Accepting calls <see cref="SetExpressionsMenu"/>, which writes the descriptor and marks
+            /// it dirty without registering an <see cref="Undo"/> -- so the assignment cannot be taken
+            /// back with Ctrl+Z. It only fires when the slot was empty, so nothing is displaced here,
+            /// but the method itself does not track a menu it replaces.
+            ///
+            /// The descriptor is copied into a local because a lambda cannot capture a field of
+            /// <c>this</c> on a struct.
+            /// </remarks>
+            private void OnMenuSelected(VRCExpressionsMenu menu)
+            {
+                onMenuSelected(menu);
+
+                if (useAvatar && avatar != null && avatar.expressionsMenu == null)
+                {
+                    VRCAvatarDescriptor descriptor = avatar;
+                    GenericMenu offer = new GenericMenu();
+                    offer.AddItem(new GUIContent("Set As Avatar's Main Menu?/Yes"), on: false, delegate
+                    {
+                        descriptor.SetExpressionsMenu(menu);
+                    });
+                    offer.ShowAsContext();
+                }
+            }
+
+            /// <summary>
+            /// Gives a menu asset the user just created through the field an empty controls list.
+            /// </summary>
+            /// <remarks>
+            /// Same repair as the <see cref="Set(VRCExpressionsMenu, VRCExpressionsMenu)"/> overload
+            /// performs on a source menu, and for the same reason: a menu asset saved before it ever
+            /// held a control has a null list, and everything downstream -- including
+            /// <see cref="Process"/>, which reads <c>targetMenu.controls.Count</c> unguarded -- assumes
+            /// there is one.
+            /// </remarks>
+            private void OnMenuCreated(VRCExpressionsMenu menu)
+            {
+                if (menu.controls == null)
+                {
+                    menu.controls = new List<VRCExpressionsMenu.Control>();
+                    EditorUtility.SetDirty(menu);
+                }
             }
         }
     }

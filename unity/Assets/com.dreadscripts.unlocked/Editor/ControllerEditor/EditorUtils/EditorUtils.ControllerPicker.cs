@@ -3,29 +3,32 @@
 //   enum   PlaneAxis        -> PlaneAxis,        line 1294
 //   struct ControllerPicker -> ControllerPicker, line 1302
 //     IsValid()             -> IsValid (property; [SpecialName] in the decompilation)
+//     Set(descriptor, layerType, allowNull)             -> Set, line 1324
 //     Set(descriptor, layerType, controller, allowNull) -> Set, line 1329
 //     Set(controller, allowNull)                        -> Set, line 1339
 //     Process()                                         -> Process, line 1347
+//     Draw(onSelected, label)                           -> Draw, line 1363
+//     OnControllerSelected(...)                         -> OnControllerSelected, line 1385
 //     OnControllerCreated(controller)                   -> OnControllerCreated, line 1400
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
-// Deliberately unported, each because it calls an EditorUtils member that has not been ported yet:
-//   Set(descriptor, layerType, allowNull), line 1324 -- needs the VRCAvatarDescriptor ->
-//     AnimatorController lookup (decompiled ChangeList, line 7647).
-//   Draw(onSelected, label), line 1363 -- needs the shared object-picker row (decompiled PopRules /
-//     ComputeRules, line 4302) and the destroyed-object test (decompiled CallRules, line 4427).
-//   OnControllerSelected(...), line 1385 -- only reachable from Draw, and needs ChangeList plus the
-//     layer assignment (decompiled SortList, line 7656).
-// The state machine below -- what the picker holds and how it validates -- is complete; only the
-// IMGUI row and the avatar-layer convenience overload are outstanding.
+// The three members that the first pass on this file left out are ported now that what they call
+// exists. They reach the rest of EditorUtils as:
+//   ChangeList, line 7647 -> GetPlayableLayerController, EditorUtils.AvatarDescriptor.cs
+//   SortList,   line 7656 -> SetPlayableLayerController, EditorUtils.AvatarDescriptor.cs
+//   PopRules,   line 4302 -> AssetField<T>,              EditorUtils.Fields.cs
+//   CallRules,  line 4427 -> IsMissing,                  EditorUtils.Fields.cs
+// The type is complete apart from the note below.
 //
 // Deliberately unported: the AssetCandidate / SelectCandidate() pair, line 1316 and 1406. That is
 // an obfuscator-injected null check on an always-null static with no callers, the same shape as
 // LoginCandidate/PublishCandidate on the neighbouring types.
 
+using System;
 using UnityEditor;
 using UnityEditor.Animations;
+using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 
 namespace DreadScripts.ControllerEditor
@@ -113,6 +116,21 @@ namespace DreadScripts.ControllerEditor
             }
 
             /// <summary>
+            /// Points the picker at whatever controller <paramref name="avatar"/> currently has on
+            /// its <paramref name="layerType"/> layer.
+            /// </summary>
+            /// <remarks>
+            /// A null avatar is not an error here: the picker is still put into avatar-layer mode
+            /// with an empty controller, and <see cref="Process"/> is left to report the missing
+            /// avatar. That lets a window bind its pickers before an avatar has been chosen.
+            /// </remarks>
+            internal ControllerPicker Set(VRCAvatarDescriptor avatar, VRCAvatarDescriptor.AnimLayerType layerType,
+                bool allowNull = false)
+            {
+                return Set(avatar, layerType, avatar != null ? avatar.GetPlayableLayerController(layerType) : null, allowNull);
+            }
+
+            /// <summary>
             /// Points the picker at a controller belonging to <paramref name="avatar"/>'s
             /// <paramref name="layerType"/> layer.
             /// </summary>
@@ -171,6 +189,104 @@ namespace DreadScripts.ControllerEditor
 
                 validation = new ValidationResult(true, "Check is valid");
                 return this;
+            }
+
+            /// <summary>
+            /// Draws the picker as a labelled asset row.
+            /// </summary>
+            /// <param name="onSelected">
+            /// Raised with the asset the user picked, or with null when the field is cleared. The
+            /// picker owns no storage of its own -- it never writes the pick back into
+            /// <see cref="controller"/> -- so the caller must apply the value and re-<see cref="Set"/>
+            /// the picker for the next frame to show it.
+            /// </param>
+            /// <param name="label">
+            /// Overrides the generated row label, which is otherwise the layer's name in avatar-layer
+            /// mode and "Target Controller" outside it.
+            /// </param>
+            /// <remarks>
+            /// The text drawn inside the field is not the asset's name whenever something more useful
+            /// can be said: an empty field says so, a reference to a deleted asset says so, and a
+            /// controller that is still the avatar's own layer controller is shown as
+            /// "[Avatar's FX]" rather than by name -- bracketed, because it names where the controller
+            /// came from rather than what it is called. Once the user picks something else, that stops
+            /// matching the descriptor and the row falls back to the asset name, which is the visible
+            /// signal that the selection has diverged from the avatar.
+            /// </remarks>
+            internal void Draw(Action<AnimatorController> onSelected, string label = null)
+            {
+                bool avatarIsMissing = avatar == null;
+                VRCAvatarDescriptor.AnimLayerType layerType = this.layerType;
+                string layerName = layerType.ToString();
+
+                AnimatorController assignedController = avatarIsMissing ? null : avatar.GetPlayableLayerController(layerType);
+                bool isAvatarsController = useAvatarLayer && !avatarIsMissing && assignedController == controller;
+
+                if (label == null)
+                {
+                    label = useAvatarLayer ? "Target " + layerName + ":" : "Target Controller";
+                }
+
+                string valueText;
+                if (controller.IsMissing(out bool isDestroyed))
+                {
+                    valueText = !isDestroyed
+                        ? "No Controller Selected"
+                        : isAvatarsController
+                            ? "[Avatar's " + layerName + " Is Missing!]"
+                            : "Controller Is Missing!";
+                }
+                else
+                {
+                    valueText = isAvatarsController ? "[Avatar's " + layerName + "]" : controller.name;
+                }
+
+                // A struct's `this` cannot be captured by a lambda, so the callback closes over a copy.
+                // The copy is only ever read, so the divergence does not matter: OnControllerSelected
+                // consults useAvatarLayer and avatar, and neither can change between this frame's Draw
+                // and the pick it produces.
+                ControllerPicker self = this;
+
+                AssetField(label, valueText, controller, delegate(AnimatorController picked)
+                {
+                    self.OnControllerSelected(picked, layerType, onSelected);
+                }, validation, null, OnControllerCreated, allowNull);
+            }
+
+            /// <summary>
+            /// Forwards a freshly picked controller to the owner, then offers to store it on the
+            /// avatar as well.
+            /// </summary>
+            /// <remarks>
+            /// The offer is only made when the layer is currently empty, so this never proposes to
+            /// overwrite a controller the avatar already has -- the case where the user picking a
+            /// different controller for the tool most likely did not mean to re-rig the avatar.
+            ///
+            /// Accepting it calls <see cref="SetPlayableLayerController"/>, which writes the descriptor
+            /// and marks it dirty <em>without</em> registering an <see cref="Undo"/>: the assignment
+            /// cannot be taken back with Ctrl+Z. That is the original behaviour and is left as-is.
+            ///
+            /// The menu is a context menu rather than a dialog because it must not block: this runs
+            /// from inside the object picker's selection callback, mid-OnGUI.
+            /// </remarks>
+            private void OnControllerSelected(AnimatorController controller, VRCAvatarDescriptor.AnimLayerType layerType,
+                Action<AnimatorController> onSelected)
+            {
+                onSelected(controller);
+
+                if (useAvatarLayer && avatar != null && avatar.GetPlayableLayerController(layerType) == null)
+                {
+                    // Copied out of the struct for the same reason as in Draw: the menu item runs long
+                    // after this call returns, so it cannot close over a field of `this`.
+                    VRCAvatarDescriptor avatar = this.avatar;
+
+                    GenericMenu menu = new GenericMenu();
+                    menu.AddItem(new GUIContent($"Set As Avatar's {layerType}?/Yes"), on: false, delegate
+                    {
+                        avatar.SetPlayableLayerController(layerType, controller);
+                    });
+                    menu.ShowAsContext();
+                }
             }
 
             /// <summary>
