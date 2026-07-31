@@ -34,8 +34,6 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 
 	private readonly Dictionary<int, Type> m_UtilsPolicy = new Dictionary<int, Type>();
 
-	private static QuickInputWindow FillClient;
-
 	string DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.title => string.Empty;
 
 	internal static QuickInputWindow CreateHelper(string info, FieldType[] second, GUIContent[] dic, Action<object[]> map2, Func<object[], bool[]> second3 = null)
@@ -197,10 +195,5 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 	internal override void OnCustomConfirm()
 	{
 		exceptionPolicy(_ModelPolicy);
-	}
-
-	internal static bool DeleteClient()
-	{
-		return (object)FillClient == null;
 	}
 }

@@ -20,8 +20,6 @@ internal class MenuExpressionTreeView : TreeView
 
 	internal Action<VRCExpressionsMenu> repositoryThread;
 
-	internal static MenuExpressionTreeView NewStatus;
-
 	internal MenuExpressionTreeView(VRCExpressionsMenu asset)
 		: base(new TreeViewState())
 	{
@@ -244,10 +242,5 @@ internal class MenuExpressionTreeView : TreeView
 		Reload();
 		MenuSelector.m_MerchantThread = instance;
 		MenuSelector.valueThread = new HashSet<VRCExpressionsMenu>(poolThread);
-	}
-
-	internal static bool LoginStatus()
-	{
-		return NewStatus == null;
 	}
 }

@@ -19,8 +19,6 @@ internal static class AvatarDescriptorHelper
 
 	internal static Action<int> identifierThread;
 
-	private static AvatarDescriptorHelper DefineStatus;
-
 	[SpecialName]
 	public static VRCAvatarDescriptor SearchContext()
 	{
@@ -184,10 +182,5 @@ internal static class AvatarDescriptorHelper
 	public static bool PrintContext(this VRCAvatarDescriptor def)
 	{
 		return def.baseAnimationLayers.Length > 3;
-	}
-
-	internal static bool EnableStatus()
-	{
-		return DefineStatus == null;
 	}
 }

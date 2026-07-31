@@ -13,8 +13,6 @@ internal sealed class SemVer
 	[CompilerGenerated]
 	private readonly int modelTemplate;
 
-	internal static SemVer SetupFactory;
-
 	[SpecialName]
 	[CompilerGenerated]
 	internal int CheckAccount()
@@ -127,10 +125,5 @@ internal sealed class SemVer
 	public override string ToString()
 	{
 		return $"{CheckAccount()}.{DisableAccount()}.{RateAccount()}";
-	}
-
-	internal static bool QueryFactory()
-	{
-		return (object)SetupFactory == null;
 	}
 }

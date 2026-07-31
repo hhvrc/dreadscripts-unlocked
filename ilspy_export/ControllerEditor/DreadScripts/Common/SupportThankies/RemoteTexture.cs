@@ -74,8 +74,6 @@ internal sealed class RemoteTexture
 
 	private bool order;
 
-	internal static RemoteTexture InstantiateCode;
-
 	[SpecialName]
 	internal Texture2D ValidateWrapper()
 	{
@@ -252,10 +250,5 @@ internal sealed class RemoteTexture
 			return false;
 		}
 		return true;
-	}
-
-	internal static bool RevertCode()
-	{
-		return InstantiateCode == null;
 	}
 }

@@ -60,8 +60,6 @@ internal class ReflectionAccessor
 
 	internal readonly ReflectionCache globalDic;
 
-	internal static ReflectionAccessor SetupDatabase;
-
 	internal ReflectionAccessor(object param)
 	{
 		utilsDic = param;
@@ -71,8 +69,8 @@ internal class ReflectionAccessor
 			return;
 		}
 		MemberInfo[] members = _IdentifierDic.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-		Dictionary<string, FieldInfo> contextDic = members.OfType<FieldInfo>().ToDictionary((FieldInfo f) => f.Name);
-		Dictionary<string, PropertyInfo> schemaDic = members.OfType<PropertyInfo>().ToDictionary((PropertyInfo p) => p.Name);
+		Dictionary<string, FieldInfo> fields = members.OfType<FieldInfo>().ToDictionary((FieldInfo f) => f.Name);
+		Dictionary<string, PropertyInfo> properties = members.OfType<PropertyInfo>().ToDictionary((PropertyInfo p) => p.Name);
 		Dictionary<string, List<MethodInfo>> dictionary = new Dictionary<string, List<MethodInfo>>();
 		foreach (MethodInfo item in members.OfType<MethodInfo>())
 		{
@@ -85,10 +83,10 @@ internal class ReflectionAccessor
 		}
 		globalDic = new ReflectionCache
 		{
-			_WatcherDic = members,
-			_ContextDic = contextDic,
-			m_SchemaDic = schemaDic,
-			m_ReponseDic = dictionary
+			members = members,
+			fields = fields,
+			properties = properties,
+			methods = dictionary
 		};
 		_BridgeDic.Add(_IdentifierDic, globalDic);
 	}
@@ -115,17 +113,17 @@ internal class ReflectionAccessor
 
 	public bool CompareParser(string first, out object token)
 	{
-		if (globalDic._ContextDic.TryGetValue(first, out var value))
+		if (globalDic.fields.TryGetValue(first, out var value))
 		{
 			token = value.GetValue(utilsDic);
 			return true;
 		}
-		if (globalDic.m_SchemaDic.TryGetValue(first, out var value2))
+		if (globalDic.properties.TryGetValue(first, out var value2))
 		{
 			token = value2.GetValue(utilsDic);
 			return true;
 		}
-		if (!globalDic.m_ReponseDic.ContainsKey(first))
+		if (!globalDic.methods.ContainsKey(first))
 		{
 			token = null;
 			return false;
@@ -136,9 +134,9 @@ internal class ReflectionAccessor
 
 	public bool InterruptParser(string setup, object result)
 	{
-		if (!globalDic._ContextDic.TryGetValue(setup, out var value))
+		if (!globalDic.fields.TryGetValue(setup, out var value))
 		{
-			if (!globalDic.m_SchemaDic.TryGetValue(setup, out var value2))
+			if (!globalDic.properties.TryGetValue(setup, out var value2))
 			{
 				return false;
 			}
@@ -161,7 +159,7 @@ internal class ReflectionAccessor
 
 	private object InitParser(string spec, Type cont, params object[] args)
 	{
-		if (!globalDic.m_ReponseDic.TryGetValue(spec, out var value))
+		if (!globalDic.methods.TryGetValue(spec, out var value))
 		{
 			Debug.LogError("Method " + spec + " not found in " + _IdentifierDic.Name);
 		}
@@ -221,10 +219,5 @@ internal class ReflectionAccessor
 			return state.Length == 1;
 		}
 		return false;
-	}
-
-	internal static bool QueryDatabase()
-	{
-		return SetupDatabase == null;
 	}
 }

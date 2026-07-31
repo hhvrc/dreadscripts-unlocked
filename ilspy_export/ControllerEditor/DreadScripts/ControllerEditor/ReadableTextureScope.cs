@@ -9,8 +9,6 @@ internal sealed class ReadableTextureScope : IDisposable
 
 	internal Texture2D m_InterpreterPolicy;
 
-	private static ReadableTextureScope ConcatDecorator;
-
 	internal ReadableTextureScope(Texture2D config)
 	{
 		try
@@ -47,10 +45,5 @@ internal sealed class ReadableTextureScope : IDisposable
 	public static implicit operator Texture2D(ReadableTextureScope spec)
 	{
 		return spec.m_InterpreterPolicy;
-	}
-
-	internal static bool CollectDecorator()
-	{
-		return ConcatDecorator == null;
 	}
 }

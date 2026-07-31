@@ -6,8 +6,6 @@ internal sealed class ExclusiveSelectionState
 
 	internal int serviceTemplate = -1;
 
-	internal static ExclusiveSelectionState PushFactory;
-
 	internal ExclusiveSelectionState(int max_def)
 	{
 		AssetAccount(max_def);
@@ -77,10 +75,5 @@ internal sealed class ExclusiveSelectionState
 			m_DicTemplate[serviceTemplate] = false;
 			serviceTemplate = -1;
 		}
-	}
-
-	internal static bool InvokeFactory()
-	{
-		return PushFactory == null;
 	}
 }

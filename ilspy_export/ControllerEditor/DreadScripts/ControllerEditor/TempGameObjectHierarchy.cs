@@ -6,8 +6,6 @@ internal class TempGameObjectHierarchy
 {
 	internal readonly GameObject[] m_CollectionServer;
 
-	private static TempGameObjectHierarchy CompareSystem;
-
 	internal TempGameObjectHierarchy(string res, bool ispol = true)
 	{
 		if (ispol)
@@ -29,10 +27,5 @@ internal class TempGameObjectHierarchy
 	internal void EnableContext()
 	{
 		Object.DestroyImmediate(m_CollectionServer[0]);
-	}
-
-	internal static bool PublishSystem()
-	{
-		return CompareSystem == null;
 	}
 }

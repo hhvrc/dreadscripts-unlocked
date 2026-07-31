@@ -20,8 +20,6 @@ internal static class EditorLayoutUtils
 
 	private static MethodInfo policy;
 
-	private static EditorLayoutUtils PrintCode;
-
 	[SpecialName]
 	public static Type CancelWrapper()
 	{
@@ -157,10 +155,5 @@ internal static class EditorLayoutUtils
 		first.height = consumer;
 		EditorGUI.DrawRect(first, cust);
 		GUILayout.Space(consumer * 3f);
-	}
-
-	internal static bool ResolveCode()
-	{
-		return PrintCode == null;
 	}
 }

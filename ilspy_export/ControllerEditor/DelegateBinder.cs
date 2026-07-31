@@ -7,8 +7,6 @@ internal class DelegateBinder
 
 	internal static Module m_AuthenticationPolicy = typeof(DelegateBinder).Assembly.ManifestModule;
 
-	internal static DelegateBinder DefineClient;
-
 	internal static void FillDescriptor(int typemdt)
 	{
 		Type type = m_AuthenticationPolicy.ResolveType(33554432 + typemdt);
@@ -18,10 +16,5 @@ internal class DelegateBinder
 			MethodInfo method = (MethodInfo)m_AuthenticationPolicy.ResolveMethod(fieldInfo.MetadataToken + 100663296);
 			fieldInfo.SetValue(null, (MulticastDelegate)Delegate.CreateDelegate(type, method));
 		}
-	}
-
-	internal static bool EnableClient()
-	{
-		return DefineClient == null;
 	}
 }

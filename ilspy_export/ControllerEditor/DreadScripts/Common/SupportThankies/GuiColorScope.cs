@@ -19,9 +19,7 @@ internal sealed class GuiColorScope : IDisposable
 
 	private bool m_Predicate;
 
-	internal static GuiColorScope AssetCode;
-
-	private void InitWrapper()
+	private void Capture()
 	{
 		m_Predicate = true;
 		m_Page[0] = GUI.backgroundColor;
@@ -29,9 +27,9 @@ internal sealed class GuiColorScope : IDisposable
 		m_Page[2] = GUI.color;
 	}
 
-	private void VisitWrapper(Color asset)
+	private void ApplyColor(Color asset)
 	{
-		InitWrapper();
+		Capture();
 		if (resolver.HasFlag(ColoringType.BG))
 		{
 			GUI.backgroundColor = asset;
@@ -49,7 +47,7 @@ internal sealed class GuiColorScope : IDisposable
 	internal GuiColorScope(ColoringType ident, Color selection)
 	{
 		resolver = ident;
-		VisitWrapper(selection);
+		ApplyColor(selection);
 	}
 
 	public void Dispose()
@@ -69,10 +67,5 @@ internal sealed class GuiColorScope : IDisposable
 				GUI.color = m_Page[2];
 			}
 		}
-	}
-
-	internal static bool SelectCode()
-	{
-		return AssetCode == null;
 	}
 }

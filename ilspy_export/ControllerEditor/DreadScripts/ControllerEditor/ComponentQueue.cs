@@ -99,8 +99,6 @@ internal class ComponentQueue
 		typeof(Renderer)
 	};
 
-	internal static ComponentQueue NewStruct;
-
 	[SpecialName]
 	public bool RegisterSerializer()
 	{
@@ -276,10 +274,5 @@ internal class ComponentQueue
 	private bool SortSerializer(Type i)
 	{
 		return _RecordProperty.InstantiateResolver(i);
-	}
-
-	internal static bool LoginStruct()
-	{
-		return NewStruct == null;
 	}
 }

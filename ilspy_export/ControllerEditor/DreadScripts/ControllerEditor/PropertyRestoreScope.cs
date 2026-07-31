@@ -15,8 +15,6 @@ internal sealed class PropertyRestoreScope : IDisposable
 
 	internal bool m_GlobalThread = true;
 
-	private static PropertyRestoreScope CustomizeDecorator;
-
 	public PropertyRestoreScope(object config, params string[] valuesToRestore)
 		: this(config, iscfg: true, valuesToRestore)
 	{
@@ -76,10 +74,5 @@ internal sealed class PropertyRestoreScope : IDisposable
 		{
 			m_StructThread.ReflectContext(item2.Key, item2.Value);
 		}
-	}
-
-	internal static bool SearchDecorator()
-	{
-		return CustomizeDecorator == null;
 	}
 }

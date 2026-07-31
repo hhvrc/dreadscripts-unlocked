@@ -67,8 +67,6 @@ internal static class ADOEditorUtility
 
 		private bool _WorkerSerializer;
 
-		internal static ResizeHandle ConnectOrder;
-
 		[SpecialName]
 		public bool PatchRef()
 		{
@@ -500,11 +498,6 @@ internal static class ADOEditorUtility
 			}
 			return 0.5f;
 		}
-
-		internal static bool RegisterOrder()
-		{
-			return ConnectOrder == null;
-		}
 	}
 
 	internal class SceneViewPanel : IDisposable
@@ -514,8 +507,6 @@ internal static class ADOEditorUtility
 		public readonly bool _RuleSerializer = true;
 
 		private readonly Rect m_StructSerializer;
-
-		internal static SceneViewPanel InstantiateDescriptor;
 
 		public SceneViewPanel(SceneView ident, string result, float tag, int first2_end, float value3 = 20f, PositionFlag first4 = PositionFlag.BottomRight, ResizeHandle reference5 = null)
 			: this(ident, tag, first2_end + 2, value3, first4, reference5)
@@ -587,11 +578,6 @@ internal static class ADOEditorUtility
 			result.width = num;
 			result.height = num2;
 			return result;
-		}
-
-		internal static bool VisitDescriptor()
-		{
-			return InstantiateDescriptor == null;
 		}
 	}
 
@@ -667,8 +653,6 @@ internal static class ADOEditorUtility
 
 		internal readonly GUIContent queueSerializer = new GUIContent("Tooltips", "Displays tooltips on how to use the current tool");
 
-		internal static Contents RateDescriptor;
-
 		internal Contents()
 		{
 			decoratorSerializer.tooltip = "Scene view clicks are allowed while editing.";
@@ -677,11 +661,6 @@ internal static class ADOEditorUtility
 			m_ExporterSerializer.tooltip = "Copy from another component of the same type";
 			advisorSerializer.tooltip = "Select through the scene view";
 			stateSerializer.tooltip = "Edit through the scene view";
-		}
-
-		internal static bool NewDescriptor()
-		{
-			return RateDescriptor == null;
 		}
 	}
 
@@ -853,13 +832,6 @@ internal static class ADOEditorUtility
 		};
 
 		internal readonly GUIStyle utilsMethod = new GUIStyle("RL FooterButton");
-
-		internal static Styles ChangeDescriptor;
-
-		internal static bool SetupDescriptor()
-		{
-			return ChangeDescriptor == null;
-		}
 	}
 
 	internal enum EventCommands
@@ -962,8 +934,6 @@ internal static class ADOEditorUtility
 		private bool registryMethod;
 
 		private bool m_ClientMethod;
-
-		private static BannerDownloader ResetDescriptor;
 
 		[SpecialName]
 		internal Texture2D PrepareComparator()
@@ -1128,11 +1098,6 @@ internal static class ADOEditorUtility
 			}
 			return true;
 		}
-
-		internal static bool ForgotDescriptor()
-		{
-			return ResetDescriptor == null;
-		}
 	}
 
 	internal sealed class ReadableTexture : IDisposable
@@ -1140,8 +1105,6 @@ internal static class ADOEditorUtility
 		internal bool m_RecordMethod;
 
 		internal Texture2D m_ResolverMethod;
-
-		private static ReadableTexture ResolveDescriptor;
 
 		internal ReadableTexture(Texture2D spec)
 		{
@@ -1180,11 +1143,6 @@ internal static class ADOEditorUtility
 		{
 			return param.m_ResolverMethod;
 		}
-
-		internal static bool CountDescriptor()
-		{
-			return ResolveDescriptor == null;
-		}
 	}
 
 	internal sealed class CachedIcon
@@ -1198,8 +1156,6 @@ internal static class ADOEditorUtility
 		private readonly string _AttributeMethod;
 
 		private readonly string instanceMethod;
-
-		private static CachedIcon WriteDescriptor;
 
 		[SpecialName]
 		private GUIContent NewProduct()
@@ -1303,11 +1259,6 @@ internal static class ADOEditorUtility
 		{
 			return param.NewProduct();
 		}
-
-		internal static bool CustomizeDescriptor()
-		{
-			return WriteDescriptor == null;
-		}
 	}
 
 	internal struct ShapeSnapshot
@@ -1410,8 +1361,6 @@ internal static class ADOEditorUtility
 		internal readonly int _GetterMethod;
 
 		internal List<List<BoneNode>> threadMethod;
-
-		private static BoneChainTree InvokeDescriptor;
 
 		[SpecialName]
 		internal IEnumerable<Matrix4x4> InterruptProduct()
@@ -1545,11 +1494,6 @@ internal static class ADOEditorUtility
 				}
 			}
 		}
-
-		internal static bool ConcatDescriptor()
-		{
-			return InvokeDescriptor == null;
-		}
 	}
 
 	internal class BoneNode
@@ -1571,8 +1515,6 @@ internal static class ADOEditorUtility
 		internal BoneNode _GlobalMethod;
 
 		internal BoneNode managerMethod;
-
-		internal static BoneNode DefineDescriptor;
 
 		[SpecialName]
 		internal Vector3 LoginProduct()
@@ -1599,11 +1541,6 @@ internal static class ADOEditorUtility
 				return i.Evaluate(RegisterProduct());
 			}
 			return 1f;
-		}
-
-		internal static bool TestDescriptor()
-		{
-			return DefineDescriptor == null;
 		}
 	}
 
@@ -2192,8 +2129,6 @@ internal static class ADOEditorUtility
 		new PhysBoneParameter("_Squish", AnimatorControllerParameterType.Float, "param_SquishValue"),
 		new PhysBoneParameter("_Angle", AnimatorControllerParameterType.Float, "param_AngleValue")
 	};
-
-	internal static ADOEditorUtility FlushOrder;
 
 	internal static bool CountProcess(this PositionFlag item)
 	{
@@ -4123,10 +4058,5 @@ internal static class ADOEditorUtility
 	static MethodInfo FlushAdapter(Type type_0, string spec, BindingFlags ord, Binder pool, Type[] ivk2, ParameterModifier[] pred3)
 	{
 		return type_0.GetMethod(spec, ord, pool, ivk2, pred3);
-	}
-
-	internal static bool OrderOrder()
-	{
-		return FlushOrder == null;
 	}
 }

@@ -15,8 +15,6 @@ internal sealed class ReflectionRestoreScope : IDisposable
 
 	internal bool m_ObserverDic = true;
 
-	internal static ReflectionRestoreScope DefineDatabase;
-
 	public ReflectionRestoreScope(object task, params string[] valuesToRestore)
 		: this(task, removecounter: true, valuesToRestore)
 	{
@@ -76,10 +74,5 @@ internal sealed class ReflectionRestoreScope : IDisposable
 		{
 			m_MockDic.InterruptParser(item2.Key, item2.Value);
 		}
-	}
-
-	internal static bool ViewDatabase()
-	{
-		return DefineDatabase == null;
 	}
 }

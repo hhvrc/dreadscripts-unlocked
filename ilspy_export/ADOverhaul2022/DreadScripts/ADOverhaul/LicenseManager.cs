@@ -63,8 +63,6 @@ internal sealed class LicenseManager
 
 		private static bool message;
 
-		internal static ADOverhaulWindow CallTokenizer;
-
 		[MenuItem("DreadTools/ADOverhaul", false, 6)]
 		internal static void CreateSerializer()
 		{
@@ -165,11 +163,6 @@ internal sealed class LicenseManager
 		{
 			PrintConfiguration(ref m_Predicate, ref _Collection, LogoutConfiguration);
 		}
-
-		internal static bool QueryTokenizer()
-		{
-			return (object)CallTokenizer == null;
-		}
 	}
 
 	private static class BugReporter
@@ -206,8 +199,6 @@ internal sealed class LicenseManager
 		internal static bool m_Writer;
 
 		internal static readonly HashSet<ErrorInfo> m_Class = new HashSet<ErrorInfo>();
-
-		internal static BugReporter CalculateTokenizer;
 
 		[SpecialName]
 		private static float VisitMethod()
@@ -494,11 +485,6 @@ internal sealed class LicenseManager
 			producer = null;
 			CompilationPipeline.compilationStarted -= WriteMethod;
 		}
-
-		internal static bool MoveTokenizer()
-		{
-			return CalculateTokenizer == null;
-		}
 	}
 
 	private sealed class ProcessRunner
@@ -520,8 +506,6 @@ internal sealed class LicenseManager
 		internal bool m_SingletonIdentifier;
 
 		private bool accountIdentifier;
-
-		private static ProcessRunner ReadTokenizer;
 
 		internal ProcessRunner(string i, Action<string> second, bool wantfilter = false, bool istask2 = false, Action token3 = null)
 		{
@@ -614,11 +598,6 @@ internal sealed class LicenseManager
 		static void DefineConsumer(System.ComponentModel.Component component_0)
 		{
 			component_0.Dispose();
-		}
-
-		internal static bool LoginTokenizer()
-		{
-			return ReadTokenizer == null;
 		}
 	}
 
@@ -779,8 +758,6 @@ internal sealed class LicenseManager
 
 			private readonly EditorGUI.ChangeCheckScope m_RegistryIdentifier;
 
-			internal static SettingsChangeScope CancelTask;
-
 			[SpecialName]
 			internal bool ValidateConsumer()
 			{
@@ -811,18 +788,11 @@ internal sealed class LicenseManager
 			{
 				return v.m_RegistryIdentifier.changed;
 			}
-
-			internal static bool PrepareTask()
-			{
-				return CancelTask == null;
-			}
 		}
 
 		internal class SettingsDeferScope : IDisposable
 		{
 			private readonly bool _ClientIdentifier;
-
-			private static SettingsDeferScope InstantiateTask;
 
 			public SettingsDeferScope()
 			{
@@ -834,11 +804,6 @@ internal sealed class LicenseManager
 			{
 				ResolveConsumer(_ClientIdentifier);
 			}
-
-			internal static bool VisitTask()
-			{
-				return InstantiateTask == null;
-			}
 		}
 
 		[Serializable]
@@ -848,8 +813,6 @@ internal sealed class LicenseManager
 			private bool _value;
 
 			internal readonly Action observerIdentifier;
-
-			internal static BoolSetting RateTask;
 
 			[SpecialName]
 			internal bool CustomizeUtils()
@@ -921,11 +884,6 @@ internal sealed class LicenseManager
 			{
 				ConcatUtils((bool)m_TestsIdentifier);
 			}
-
-			internal static bool NewTask()
-			{
-				return RateTask == null;
-			}
 		}
 
 		[Serializable]
@@ -935,8 +893,6 @@ internal sealed class LicenseManager
 			private float _value;
 
 			internal readonly Action _EventIdentifier;
-
-			private static FloatSetting ChangeTask;
 
 			[SpecialName]
 			internal float PatchUtils()
@@ -1034,18 +990,11 @@ internal sealed class LicenseManager
 			{
 				return reference._value;
 			}
-
-			internal static bool SetupTask()
-			{
-				return ChangeTask == null;
-			}
 		}
 
 		[Serializable]
 		internal class EnumSetting : FloatSetting
 		{
-			private static EnumSetting PopTask;
-
 			[SerializeField]
 			internal int RestartUtils
 			{
@@ -1110,11 +1059,6 @@ internal sealed class LicenseManager
 			{
 				return task.RestartUtils;
 			}
-
-			internal static bool ViewTask()
-			{
-				return PopTask == null;
-			}
 		}
 
 		[Serializable]
@@ -1134,8 +1078,6 @@ internal sealed class LicenseManager
 			internal bool _TagIdentifier;
 
 			internal Vector3 filterIdentifier;
-
-			internal static VectorSetting PushTask;
 
 			[SpecialName]
 			internal Vector3 ConnectUtils()
@@ -1226,11 +1168,6 @@ internal sealed class LicenseManager
 			{
 				return spec.ConnectUtils();
 			}
-
-			internal static bool SortTask()
-			{
-				return PushTask == null;
-			}
 		}
 
 		[Serializable]
@@ -1240,8 +1177,6 @@ internal sealed class LicenseManager
 			private string _value;
 
 			internal readonly Action m_AttributeIdentifier;
-
-			internal static StringSetting CloneTask;
 
 			[SpecialName]
 			internal string CreateUtils()
@@ -1281,11 +1216,6 @@ internal sealed class LicenseManager
 			{
 				return setup._value;
 			}
-
-			internal static bool FindTask()
-			{
-				return CloneTask == null;
-			}
 		}
 
 		[Serializable]
@@ -1304,8 +1234,6 @@ internal sealed class LicenseManager
 
 			[SerializeField]
 			private float a;
-
-			internal static ColorSetting ResetTask;
 
 			[SpecialName]
 			internal Color VerifyPage()
@@ -1366,11 +1294,6 @@ internal sealed class LicenseManager
 			{
 				SetPage((Color)m_TestsIdentifier);
 			}
-
-			internal static bool ForgotTask()
-			{
-				return ResetTask == null;
-			}
 		}
 
 		[Serializable]
@@ -1393,8 +1316,6 @@ internal sealed class LicenseManager
 			private bool m_StubIdentifier;
 
 			private UnityEngine.Object rulesIdentifier;
-
-			private static ObjectReferenceSetting StopTask;
 
 			[SpecialName]
 			internal UnityEngine.Object ForgotPage()
@@ -1490,36 +1411,18 @@ internal sealed class LicenseManager
 			{
 				return init.ForgotPage();
 			}
-
-			internal static bool StartTask()
-			{
-				return StopTask == null;
-			}
 		}
 
 		internal abstract class SettingBase
 		{
 			internal object m_TestsIdentifier;
 
-			internal static SettingBase ResolveTask;
-
 			internal abstract void QueryCollection();
-
-			internal static bool CountTask()
-			{
-				return ResolveTask == null;
-			}
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
 		internal class NonSerializedSettingAttribute : Attribute
 		{
-			private static NonSerializedSettingAttribute WriteTask;
-
-			internal static bool CustomizeTask()
-			{
-				return WriteTask == null;
-			}
 		}
 
 		private static bool _ProxyIdentifier;
@@ -1644,8 +1547,6 @@ internal sealed class LicenseManager
 
 		[SerializeField]
 		internal ColorSetting selectionColor = new ColorSetting(1f, 0.65f, 0f);
-
-		internal static ADOSettings ConnectTokenizer;
 
 		[SpecialName]
 		internal static bool ReflectConsumer()
@@ -1784,11 +1685,6 @@ internal sealed class LicenseManager
 				mixedColor.VerifyPage()
 			};
 		}
-
-		internal static bool RegisterTokenizer()
-		{
-			return ConnectTokenizer == null;
-		}
 	}
 
 	private sealed class ContactReceiverEditor : Editor
@@ -1833,8 +1729,6 @@ internal sealed class LicenseManager
 		private static Type m_IndexerIdentifier;
 
 		private static Type poolIdentifier;
-
-		internal static ContactReceiverEditor InvokeTask;
 
 		public override void OnInspectorGUI()
 		{
@@ -2060,11 +1954,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool ConcatTask()
-		{
-			return (object)InvokeTask == null;
-		}
 	}
 
 	private sealed class ContactSenderEditor : Editor
@@ -2096,8 +1985,6 @@ internal sealed class LicenseManager
 		private static Type m_ModelIdentifier;
 
 		private static Type m_ConfigIdentifier;
-
-		private static ContactSenderEditor DefineTask;
 
 		public override void OnInspectorGUI()
 		{
@@ -2269,11 +2156,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool TestTask()
-		{
-			return (object)DefineTask == null;
-		}
 	}
 
 	private sealed class PhysBoneColliderEditor : Editor
@@ -2304,8 +2186,6 @@ internal sealed class LicenseManager
 		private static Type m_BaseIdentifier;
 
 		private static Type _RequestIdentifier;
-
-		internal static PhysBoneColliderEditor VerifyTask;
 
 		public override void OnInspectorGUI()
 		{
@@ -2473,11 +2353,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool PublishTask()
-		{
-			return (object)VerifyTask == null;
-		}
 	}
 
 	private sealed class PhysBoneEditor : Editor
@@ -2504,8 +2379,6 @@ internal sealed class LicenseManager
 
 			internal readonly bool _GlobalAuthentication;
 
-			private static AlgoAuthentication PatchTask;
-
 			internal AlgoAuthentication(SerializedProperty res, SerializedProperty token, float temp = 0f, float token2 = 1f, int info3 = 0)
 				: this(res?.displayName, res, token, temp, token2, info3)
 			{
@@ -2523,11 +2396,6 @@ internal sealed class LicenseManager
 				repositoryAuthentication = visitor2;
 				_DescriptorAuthentication = attr3;
 				m_StrategyAuthentication = def4_length;
-			}
-
-			internal static bool RemoveTask()
-			{
-				return PatchTask == null;
 			}
 		}
 
@@ -3260,8 +3128,6 @@ internal sealed class LicenseManager
 		private static Type getterAuthentication;
 
 		private static bool threadAuthentication;
-
-		private static PhysBoneEditor ReflectTask;
 
 		[SpecialName]
 		private static AlgoAuthentication CountAccount()
@@ -4702,11 +4568,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool CompareTask()
-		{
-			return (object)ReflectTask == null;
-		}
 	}
 
 	[Serializable]
@@ -6085,8 +5946,6 @@ internal sealed class LicenseManager
 	private static readonly SemVer m_Expression = new SemVer("0.11.1");
 
 	private static readonly (string, string)[] m_Decorator = new(string, string)[0];
-
-	private static LicenseManager DefineTokenizer;
 
 	private static void RunConfiguration(UnityEngine.Object res, SerializedProperty[] visitor, Action tag, bool isres2)
 	{
@@ -9037,10 +8896,5 @@ internal sealed class LicenseManager
 	static MethodInfo ListAuthentication(Type type_0, string setup, BindingFlags result)
 	{
 		return type_0.GetMethod(setup, result);
-	}
-
-	internal static bool TestTokenizer()
-	{
-		return DefineTokenizer == null;
 	}
 }

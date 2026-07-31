@@ -123,8 +123,6 @@ internal class _003CModule_003E
 
 		internal Stream stream_0;
 
-		internal static Class0 StopCode;
-
 		internal void method_0(Stream stream)
 		{
 			stream_0 = stream;
@@ -175,11 +173,6 @@ internal class _003CModule_003E
 		internal Class0()
 		{
 		}
-
-		internal static bool ReflectCode()
-		{
-			return StopCode == null;
-		}
 	}
 
 	internal class Class1
@@ -197,8 +190,6 @@ internal class _003CModule_003E
 			internal Struct1 struct1_2 = new Struct1(8);
 
 			internal uint uint_0;
-
-			internal static Class2 DefineCode;
 
 			internal void method_0(uint numPosStates)
 			{
@@ -239,11 +230,6 @@ internal class _003CModule_003E
 
 			internal Class2()
 			{
-			}
-
-			internal static bool EnableCode()
-			{
-				return DefineCode == null;
 			}
 		}
 
@@ -315,8 +301,6 @@ internal class _003CModule_003E
 
 			internal uint uint_0;
 
-			private static Class3 DisableCode;
-
 			internal void method_0(int numPosBits, int numPrevBits)
 			{
 				if (struct2_0 == null || int_1 != numPrevBits || int_0 != numPosBits)
@@ -360,11 +344,6 @@ internal class _003CModule_003E
 			internal Class3()
 			{
 			}
-
-			internal static bool VerifyCode()
-			{
-				return DisableCode == null;
-			}
 		}
 
 		internal readonly Struct0[] struct0_0 = new Struct0[192];
@@ -402,8 +381,6 @@ internal class _003CModule_003E
 		internal Struct1 struct1_1 = new Struct1(4);
 
 		internal uint uint_2;
-
-		internal static Class1 RateCode;
 
 		internal Class1()
 		{
@@ -601,11 +578,6 @@ internal class _003CModule_003E
 			}
 			return len;
 		}
-
-		internal static bool PostCode()
-		{
-			return RateCode == null;
-		}
 	}
 
 	internal class Class4
@@ -619,8 +591,6 @@ internal class _003CModule_003E
 		internal uint uint_1;
 
 		internal uint uint_2;
-
-		internal static Class4 LogoutCode;
 
 		internal void method_0(uint windowSize)
 		{
@@ -709,11 +679,6 @@ internal class _003CModule_003E
 		internal Class4()
 		{
 		}
-
-		internal static bool FindCode()
-		{
-			return LogoutCode == null;
-		}
 	}
 
 	internal struct Struct3
@@ -789,8 +754,6 @@ internal class _003CModule_003E
 	internal static Assembly assembly_0;
 
 	internal static Struct5 struct5_0/* Not supported: data(94 48 E5 3F EC B7 E6 79 FC 78 C5 3D 65 57 E6 72 37 E4 E0 6A 02 73 1C 95 E8 A7 A7 06 89 21 11 0A DE 9C E6 8C 12 A4 2C B1 27 DC 1C 3D 8D 4B 65 76 3C C1 9E 6B 84 43 0F 4B F5 96 C4 25 84 B8 20 42 BF 80 0E 1D A9 49 A7 83 4F 21 4A 4F 61 5E 66 1D 0D 88 BE AF 56 76 C0 3D CF B6 AD 5A 16 AE 40 B3 62 F9 16 AD 09 6E F4 61 38 CE BB DC AC 72 AF 51 DC 99 E4 6A 0D 37 C4 37 DD 29 95 28 D0 9B 4A AA CE 9C 64 82 32 BE D1 46 98 3B 94 9D 83 4F 7B AA 81 E8 66 93 D6 E5 86 56 79 92 89 67 55 70 1E FB 1C CA 67 95 92 B5 BB F6 A5 8C 52 E9 59 A4 6D 25 39 D9 8F 78 77 27 23 EB 9D 97 50 17 2F F3 23 1A 3B C7 96 40 26 24 CC 08 4D 0F 00 59 57 1C EB 1B 8F 43 93 E5 1D FB F6 0B 0F 6F D3 B6 A2 AF 10 C1 FB D5 E1 02 CD ED 40 B0 16 37 D1 BB 59 A1 54 CB BC 0B 34 3B D4 55 26 52 F8 EF 5B BF E1 2A 8D 32 E1 DE 37 B7 E2 85 E8 23 36 F1 DA 09 02 EE A0 D0 BB 05 7B CD 37 B4 93 1B EE DA 2A 4A C9 1C E0 FC 0A 4F A6 59 9A 5F 9A 19 2C EE 7F A5 CF E8 70 04 64 46 66 CD 33 AA 41 C8 5B 6D AA B7 98 64 6B 7E D2 7C A8 F1 88 23 60 82 23 51 9C 7F F0 01 A9 7F 2C 08 C5 64 9E B2 4D 3C 92 E3 47 9D C5 B3 99 06 45 E0 20 A4 1C 7F 1E 1E 50 CE C1 02 7E 12 B7 92 E4 F2 98 74 D8 48 27 49 E6 86 E9 42 F7 1A D4 74 51 80 03 1F F7 00 EE AF 50 82 F9 F5 46 47 26 68 9E 93 FC B5 D3 5B 40 35 92 E3 47 9D C5 B3 99 06 45 E0 20 A4 1C 7F 1E 1E 50 CE C1 02 7E 12 B7 92 E4 F2 98 74 D8 48 27 49 E6 86 E9 42 F7 1A D4 74) */;
-
-	private static global::_003CModule_003E ConnectCode;
 
 	static _003CModule_003E()
 	{
@@ -1445,10 +1408,5 @@ internal class _003CModule_003E
 			return null;
 		}
 		return assembly_0;
-	}
-
-	internal static bool ViewCode()
-	{
-		return ConnectCode == null;
 	}
 }

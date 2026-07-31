@@ -23,8 +23,6 @@ internal class BoneTransformData
 
 	internal BoneTransformData m_SingletonThread;
 
-	internal static BoneTransformData TestStatus;
-
 	[SpecialName]
 	internal Vector3 CallRecord()
 	{
@@ -50,10 +48,5 @@ internal class BoneTransformData
 			return 1f;
 		}
 		return item.Evaluate(InsertRecord());
-	}
-
-	internal static bool IncludeStatus()
-	{
-		return TestStatus == null;
 	}
 }

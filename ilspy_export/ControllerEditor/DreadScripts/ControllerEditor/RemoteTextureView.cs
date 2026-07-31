@@ -28,8 +28,6 @@ internal sealed class RemoteTextureView
 
 	private bool m_StrategyPolicy;
 
-	private static RemoteTextureView LogoutDecorator;
-
 	[SpecialName]
 	internal Texture2D CountHelper()
 	{
@@ -205,10 +203,5 @@ internal sealed class RemoteTextureView
 			return true;
 		}
 		return true;
-	}
-
-	internal static bool FindDecorator()
-	{
-		return LogoutDecorator == null;
 	}
 }

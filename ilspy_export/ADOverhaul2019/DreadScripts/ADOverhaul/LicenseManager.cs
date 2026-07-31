@@ -63,8 +63,6 @@ internal sealed class LicenseManager
 
 		private static bool _Parameter;
 
-		private static ADOverhaulWindow CreateGlobal;
-
 		[MenuItem("DreadTools/ADOverhaul", false, 6)]
 		internal static void PublishTemplate()
 		{
@@ -165,11 +163,6 @@ internal sealed class LicenseManager
 		{
 			CheckSystem(ref m_Mapping, ref m_Definition, VerifySystem);
 		}
-
-		internal static bool CancelGlobal()
-		{
-			return (object)CreateGlobal == null;
-		}
 	}
 
 	private static class BugReporter
@@ -206,8 +199,6 @@ internal sealed class LicenseManager
 		internal static bool _Dispatcher;
 
 		internal static readonly HashSet<ErrorInfo> m_Collection = new HashSet<ErrorInfo>();
-
-		internal static BugReporter PrepareGlobal;
 
 		[SpecialName]
 		private static float DestroyDic()
@@ -494,11 +485,6 @@ internal sealed class LicenseManager
 			global = null;
 			CompilationPipeline.compilationStarted -= InterruptDic;
 		}
-
-		internal static bool InstantiateGlobal()
-		{
-			return PrepareGlobal == null;
-		}
 	}
 
 	private sealed class ProcessRunner
@@ -520,8 +506,6 @@ internal sealed class LicenseManager
 		internal bool _ServiceStruct;
 
 		private bool errorStruct;
-
-		private static ProcessRunner PushGlobal;
 
 		internal ProcessRunner(string info, Action<string> second, bool iscontrol = false, bool iscust2 = false, Action v3 = null)
 		{
@@ -614,11 +598,6 @@ internal sealed class LicenseManager
 		static void SelectTest(System.ComponentModel.Component component_0)
 		{
 			component_0.Dispose();
-		}
-
-		internal static bool InvokeGlobal()
-		{
-			return PushGlobal == null;
 		}
 	}
 
@@ -779,8 +758,6 @@ internal sealed class LicenseManager
 
 			private readonly EditorGUI.ChangeCheckScope m_InitializerStruct;
 
-			internal static SettingsChangeScope ComputeGlobal;
-
 			[SpecialName]
 			internal bool AddTest()
 			{
@@ -811,18 +788,11 @@ internal sealed class LicenseManager
 			{
 				return init.m_InitializerStruct.changed;
 			}
-
-			internal static bool InitGlobal()
-			{
-				return ComputeGlobal == null;
-			}
 		}
 
 		internal class SettingsDeferScope : IDisposable
 		{
 			private readonly bool m_InfoStruct;
-
-			internal static SettingsDeferScope EnableGlobal;
 
 			public SettingsDeferScope()
 			{
@@ -834,11 +804,6 @@ internal sealed class LicenseManager
 			{
 				RestartTest(m_InfoStruct);
 			}
-
-			internal static bool ForgotGlobal()
-			{
-				return EnableGlobal == null;
-			}
 		}
 
 		[Serializable]
@@ -848,8 +813,6 @@ internal sealed class LicenseManager
 			private bool _value;
 
 			internal readonly Action m_AuthenticationStruct;
-
-			private static BoolSetting VisitGlobal;
 
 			[SpecialName]
 			internal bool PrepareService()
@@ -921,11 +884,6 @@ internal sealed class LicenseManager
 			{
 				ListService((bool)m_PredicateStruct);
 			}
-
-			internal static bool DeleteGlobal()
-			{
-				return VisitGlobal == null;
-			}
 		}
 
 		[Serializable]
@@ -935,8 +893,6 @@ internal sealed class LicenseManager
 			private float _value;
 
 			internal readonly Action m_WorkerStruct;
-
-			private static FloatSetting RevertGlobal;
 
 			[SpecialName]
 			internal float GetService()
@@ -1034,18 +990,11 @@ internal sealed class LicenseManager
 			{
 				return item._value;
 			}
-
-			internal static bool CalcWorker()
-			{
-				return RevertGlobal == null;
-			}
 		}
 
 		[Serializable]
 		internal class EnumSetting : FloatSetting
 		{
-			private static EnumSetting AwakeWorker;
-
 			[SerializeField]
 			internal int RegisterService
 			{
@@ -1110,11 +1059,6 @@ internal sealed class LicenseManager
 			{
 				return last.RegisterService;
 			}
-
-			internal static bool SortWorker()
-			{
-				return AwakeWorker == null;
-			}
 		}
 
 		[Serializable]
@@ -1134,8 +1078,6 @@ internal sealed class LicenseManager
 			internal bool propertyStruct;
 
 			internal Vector3 _DescriptorStruct;
-
-			internal static VectorSetting NewWorker;
 
 			[SpecialName]
 			internal Vector3 ConcatService()
@@ -1223,11 +1165,6 @@ internal sealed class LicenseManager
 			{
 				return first.ConcatService();
 			}
-
-			internal static bool CalculateWorker()
-			{
-				return NewWorker == null;
-			}
 		}
 
 		[Serializable]
@@ -1237,8 +1174,6 @@ internal sealed class LicenseManager
 			private string _value;
 
 			internal readonly Action m_TagStruct;
-
-			internal static StringSetting TestWorker;
 
 			[SpecialName]
 			internal string PublishService()
@@ -1278,11 +1213,6 @@ internal sealed class LicenseManager
 			{
 				return v._value;
 			}
-
-			internal static bool LoginWorker()
-			{
-				return TestWorker == null;
-			}
 		}
 
 		[Serializable]
@@ -1301,8 +1231,6 @@ internal sealed class LicenseManager
 
 			[SerializeField]
 			private float a;
-
-			internal static ColorSetting FindWorker;
 
 			[SpecialName]
 			internal Color DefineError()
@@ -1363,11 +1291,6 @@ internal sealed class LicenseManager
 			{
 				PushError((Color)m_PredicateStruct);
 			}
-
-			internal static bool SetWorker()
-			{
-				return FindWorker == null;
-			}
 		}
 
 		[Serializable]
@@ -1390,8 +1313,6 @@ internal sealed class LicenseManager
 			private bool m_MerchantStruct;
 
 			private UnityEngine.Object m_ClassStruct;
-
-			private static ObjectReferenceSetting ValidateWorker;
 
 			[SpecialName]
 			internal UnityEngine.Object ForgotError()
@@ -1487,36 +1408,18 @@ internal sealed class LicenseManager
 			{
 				return init.ForgotError();
 			}
-
-			internal static bool InsertWorker()
-			{
-				return ValidateWorker == null;
-			}
 		}
 
 		internal abstract class SettingBase
 		{
 			internal object m_PredicateStruct;
 
-			internal static SettingBase FillWorker;
-
 			internal abstract void SetupDefinition();
-
-			internal static bool SelectWorker()
-			{
-				return FillWorker == null;
-			}
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
 		internal class NonSerializedSettingAttribute : Attribute
 		{
-			internal static NonSerializedSettingAttribute CollectWorker;
-
-			internal static bool VerifyWorker()
-			{
-				return CollectWorker == null;
-			}
 		}
 
 		private static bool _ParamStruct;
@@ -1641,8 +1544,6 @@ internal sealed class LicenseManager
 
 		[SerializeField]
 		internal ColorSetting selectionColor = new ColorSetting(1f, 0.65f, 0f);
-
-		private static ADOSettings AssetGlobal;
 
 		[SpecialName]
 		internal static bool ValidateTest()
@@ -1781,11 +1682,6 @@ internal sealed class LicenseManager
 				mixedColor.DefineError()
 			};
 		}
-
-		internal static bool ConnectGlobal()
-		{
-			return AssetGlobal == null;
-		}
 	}
 
 	private sealed class ContactReceiverEditor : Editor
@@ -1830,8 +1726,6 @@ internal sealed class LicenseManager
 		private static Type _CreatorStruct;
 
 		private static Type m_BaseStruct;
-
-		private static ContactReceiverEditor CloneWorker;
 
 		public override void OnInspectorGUI()
 		{
@@ -2054,11 +1948,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool ListWorker()
-		{
-			return (object)CloneWorker == null;
-		}
 	}
 
 	private sealed class ContactSenderEditor : Editor
@@ -2090,8 +1979,6 @@ internal sealed class LicenseManager
 		private static Type _ComparatorStruct;
 
 		private static Type _AdapterStruct;
-
-		private static ContactSenderEditor RestartWorker;
 
 		public override void OnInspectorGUI()
 		{
@@ -2260,11 +2147,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool MoveWorker()
-		{
-			return (object)RestartWorker == null;
-		}
 	}
 
 	private sealed class PhysBoneColliderEditor : Editor
@@ -2295,8 +2177,6 @@ internal sealed class LicenseManager
 		private static Type m_RefStruct;
 
 		private static Type candidateStruct;
-
-		internal static PhysBoneColliderEditor DefineWorker;
 
 		public override void OnInspectorGUI()
 		{
@@ -2465,11 +2345,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool ViewWorker()
-		{
-			return (object)DefineWorker == null;
-		}
 	}
 
 	private sealed class PhysBoneEditor : Editor
@@ -2496,8 +2371,6 @@ internal sealed class LicenseManager
 
 			internal readonly bool _StatusConfig;
 
-			private static ContainerModelDispatcher SetupWorker;
-
 			internal ContainerModelDispatcher(SerializedProperty setup, SerializedProperty cont, float res = 0f, float item2 = 1f, int column_second3 = 0)
 				: this(setup?.displayName, setup, cont, res, item2, column_second3)
 			{
@@ -2515,11 +2388,6 @@ internal sealed class LicenseManager
 				_SetterConfig = map2;
 				_ObjectConfig = ident3;
 				visitorConfig = int_0;
-			}
-
-			internal static bool QueryWorker()
-			{
-				return SetupWorker == null;
 			}
 		}
 
@@ -3249,8 +3117,6 @@ internal sealed class LicenseManager
 		private static Type roleConfig;
 
 		private static bool registryConfig;
-
-		internal static PhysBoneEditor MapWorker;
 
 		[SpecialName]
 		private static ContainerModelDispatcher PrintMethod()
@@ -4680,11 +4546,6 @@ internal sealed class LicenseManager
 		{
 			return base.target;
 		}
-
-		internal static bool LogoutWorker()
-		{
-			return (object)MapWorker == null;
-		}
 	}
 
 	[Serializable]
@@ -6063,8 +5924,6 @@ internal sealed class LicenseManager
 	private static readonly SemVer _Connection = new SemVer("0.11.1");
 
 	private static readonly (string, string)[] m_Customer = new(string, string)[0];
-
-	internal static LicenseManager RestartGlobal;
 
 	private static void ReflectSystem(UnityEngine.Object instance, SerializedProperty[] result, Action serv, bool testtask2)
 	{
@@ -9017,10 +8876,5 @@ internal sealed class LicenseManager
 	static MethodInfo RateConfig(Type type_0, string item, BindingFlags b)
 	{
 		return type_0.GetMethod(item, b);
-	}
-
-	internal static bool MoveGlobal()
-	{
-		return RestartGlobal == null;
 	}
 }

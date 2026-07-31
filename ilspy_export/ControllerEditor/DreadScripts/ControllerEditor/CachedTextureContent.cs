@@ -17,8 +17,6 @@ internal sealed class CachedTextureContent
 
 	private bool _HelperPolicy;
 
-	private static CachedTextureContent DisableDecorator;
-
 	[SpecialName]
 	private GUIContent SearchRecord()
 	{
@@ -130,10 +128,5 @@ internal sealed class CachedTextureContent
 	public static implicit operator GUIContent(CachedTextureContent param)
 	{
 		return param.SearchRecord();
-	}
-
-	internal static bool VerifyDecorator()
-	{
-		return DisableDecorator == null;
 	}
 }

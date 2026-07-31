@@ -58,21 +58,19 @@ internal class ReflectionAccessor
 
 	internal readonly Type m_TokenizerMethod;
 
-	internal readonly ReflectionCache m_ExceptionMethod;
-
-	private static ReflectionAccessor PatchState;
+	internal readonly ReflectionCache reflectionCache;
 
 	internal ReflectionAccessor(object task)
 	{
 		processorMethod = task;
 		m_TokenizerMethod = task.GetType();
-		if (m_QueueMethod.TryGetValue(m_TokenizerMethod, out m_ExceptionMethod))
+		if (m_QueueMethod.TryGetValue(m_TokenizerMethod, out reflectionCache))
 		{
 			return;
 		}
 		MemberInfo[] members = m_TokenizerMethod.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-		Dictionary<string, FieldInfo> publisherMethod = members.OfType<FieldInfo>().ToDictionary((FieldInfo f) => f.Name);
-		Dictionary<string, PropertyInfo> merchantMethod = members.OfType<PropertyInfo>().ToDictionary((PropertyInfo p) => p.Name);
+		Dictionary<string, FieldInfo> fields = members.OfType<FieldInfo>().ToDictionary((FieldInfo f) => f.Name);
+		Dictionary<string, PropertyInfo> properties = members.OfType<PropertyInfo>().ToDictionary((PropertyInfo p) => p.Name);
 		Dictionary<string, List<MethodInfo>> dictionary = new Dictionary<string, List<MethodInfo>>();
 		foreach (MethodInfo item in members.OfType<MethodInfo>())
 		{
@@ -83,14 +81,14 @@ internal class ReflectionAccessor
 			}
 			value.Add(item);
 		}
-		m_ExceptionMethod = new ReflectionCache
+		reflectionCache = new ReflectionCache
 		{
-			_BridgeMethod = members,
-			publisherMethod = publisherMethod,
-			m_MerchantMethod = merchantMethod,
-			_ProcMethod = dictionary
+			members = members,
+			fields = fields,
+			properties = properties,
+			methods = dictionary
 		};
-		m_QueueMethod.Add(m_TokenizerMethod, m_ExceptionMethod);
+		m_QueueMethod.Add(m_TokenizerMethod, reflectionCache);
 	}
 
 	[SpecialName]
@@ -115,11 +113,11 @@ internal class ReflectionAccessor
 
 	public bool SelectPredicate(string key, out object pol)
 	{
-		if (!m_ExceptionMethod.publisherMethod.TryGetValue(key, out var value))
+		if (!reflectionCache.fields.TryGetValue(key, out var value))
 		{
-			if (!m_ExceptionMethod.m_MerchantMethod.TryGetValue(key, out var value2))
+			if (!reflectionCache.properties.TryGetValue(key, out var value2))
 			{
-				if (m_ExceptionMethod._ProcMethod.ContainsKey(key))
+				if (reflectionCache.methods.ContainsKey(key))
 				{
 					pol = MovePredicate(key);
 					return true;
@@ -136,9 +134,9 @@ internal class ReflectionAccessor
 
 	public bool WritePredicate(string param, object second)
 	{
-		if (!m_ExceptionMethod.publisherMethod.TryGetValue(param, out var value))
+		if (!reflectionCache.fields.TryGetValue(param, out var value))
 		{
-			if (!m_ExceptionMethod.m_MerchantMethod.TryGetValue(param, out var value2))
+			if (!reflectionCache.properties.TryGetValue(param, out var value2))
 			{
 				return false;
 			}
@@ -160,7 +158,7 @@ internal class ReflectionAccessor
 
 	private object CollectPredicate(string ident, Type second, params object[] args)
 	{
-		if (m_ExceptionMethod._ProcMethod.TryGetValue(ident, out var value))
+		if (reflectionCache.methods.TryGetValue(ident, out var value))
 		{
 			if (value.Count == 1)
 			{
@@ -220,10 +218,5 @@ internal class ReflectionAccessor
 		}
 		proc = ident.Where((MethodInfo m) => m.ReturnType == second).ToArray();
 		return proc.Length == 1;
-	}
-
-	internal static bool RemoveState()
-	{
-		return PatchState == null;
 	}
 }

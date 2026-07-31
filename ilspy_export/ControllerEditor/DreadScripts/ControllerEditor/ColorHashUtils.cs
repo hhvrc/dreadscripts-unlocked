@@ -4,8 +4,6 @@ namespace DreadScripts.ControllerEditor;
 
 internal static class ColorHashUtils
 {
-	internal static ColorHashUtils AssetDecorator;
-
 	internal static Color ConnectHelper(string value)
 	{
 		int hashCode = value.GetHashCode();
@@ -15,10 +13,5 @@ internal static class ColorHashUtils
 		float s = 0.7f + (float)((hashCode >> 8) & 0x7F) / 255f * 0.3f;
 		float v = 0.8f + (float)((hashCode >> 16) & 0x7F) / 255f * 0.2f;
 		return Color.HSVToRGB(h, s, v);
-	}
-
-	internal static bool SelectDecorator()
-	{
-		return AssetDecorator == null;
 	}
 }

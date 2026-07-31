@@ -7,8 +7,6 @@ internal sealed class GUIDisabledScope : IDisposable
 {
 	private readonly bool visitorPolicy;
 
-	private static GUIDisabledScope ChangeDecorator;
-
 	public GUIDisabledScope(bool iskey)
 	{
 		visitorPolicy = GUI.enabled;
@@ -18,10 +16,5 @@ internal sealed class GUIDisabledScope : IDisposable
 	public void Dispose()
 	{
 		GUI.enabled = visitorPolicy;
-	}
-
-	internal static bool CalculateDecorator()
-	{
-		return ChangeDecorator == null;
 	}
 }

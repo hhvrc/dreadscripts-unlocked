@@ -46,13 +46,6 @@ internal static class AnimatorGraphReflection
 		public static readonly TypeResolver m_StubTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.EdgeInfo, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
 		public static readonly TypeResolver readerTests = new TypeResolver("UnityEditor.Graphs.AnimationStateMachine.TransitionEditionContext, UnityEditor.Graphs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-
-		private static TypeResolvers RunStruct;
-
-		internal static bool ComputeStruct()
-		{
-			return RunStruct == null;
-		}
 	}
 
 	internal static class MemberRefs
@@ -116,20 +109,11 @@ internal static class AnimatorGraphReflection
 		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> factoryTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.recordTests, "edgeGUI");
 
 		public static readonly DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo> m_AccountTests = new DreadScripts.ControllerEditor.ReflectionMemberRef<PropertyInfo>(TypeResolvers.m_StubTests, "hasMultipleTransitions");
-
-		private static MemberRefs ConnectStruct;
-
-		internal static bool ViewStruct()
-		{
-			return ConnectStruct == null;
-		}
 	}
 
 	internal static class GraphAccessors
 	{
 		private static EditorWindow _StatusTests;
-
-		private static GraphAccessors ChangeStruct;
 
 		[SpecialName]
 		public static EditorWindow PopPolicy()
@@ -407,11 +391,6 @@ internal static class AnimatorGraphReflection
 			}
 			return dictionary;
 		}
-
-		internal static bool CalculateStruct()
-		{
-			return ChangeStruct == null;
-		}
 	}
 
 	internal class GraphNodeRef
@@ -440,8 +419,6 @@ internal static class AnimatorGraphReflection
 		private AnimatorStateMachine _ValTests;
 
 		private Node valueTests;
-
-		internal static GraphNodeRef RateStruct;
 
 		[SpecialName]
 		public AnimatorStateMachine ListPolicy()
@@ -604,11 +581,6 @@ internal static class AnimatorGraphReflection
 		{
 			return reference.FillPolicy();
 		}
-
-		internal static bool PostStruct()
-		{
-			return RateStruct == null;
-		}
 	}
 
 	internal class GraphEdgeRef
@@ -618,8 +590,6 @@ internal static class AnimatorGraphReflection
 		private bool m_ClassTests;
 
 		private object _MockTests;
-
-		private static GraphEdgeRef ConcatStruct;
 
 		[SpecialName]
 		public GraphNodeRef ConcatSerializer()
@@ -688,11 +658,6 @@ internal static class AnimatorGraphReflection
 		private TransitionEditionInfo MoveSerializer(object setup)
 		{
 			return new TransitionEditionInfo(setup, this);
-		}
-
-		internal static bool CollectStruct()
-		{
-			return ConcatStruct == null;
 		}
 	}
 
@@ -841,8 +806,6 @@ internal static class AnimatorGraphReflection
 		}
 	}
 
-	private static AnimatorGraphReflection FillStruct;
-
 	public static GraphNodeRef RevertThread(AnimatorState i)
 	{
 		return new GraphNodeRef((Node)MemberRefs._IssuerTests.PrepareRecord().Invoke(GraphAccessors.CancelPolicy(), new object[1] { i }));
@@ -873,10 +836,5 @@ internal static class AnimatorGraphReflection
 			GraphNodeRef.NodeType.machine => SetPolicy(spec.m_ExceptionTests), 
 			_ => null, 
 		};
-	}
-
-	internal static bool DeleteStruct()
-	{
-		return FillStruct == null;
 	}
 }

@@ -19,8 +19,6 @@ internal class PhysBoneChainData
 
 	internal List<List<BoneTransformData>> _ListenerThread;
 
-	private static PhysBoneChainData ConcatStatus;
-
 	[SpecialName]
 	internal IEnumerable<Matrix4x4> PublishRecord()
 	{
@@ -152,10 +150,5 @@ internal class PhysBoneChainData
 				_ListenerThread.Add(list);
 			}
 		}
-	}
-
-	internal static bool CollectStatus()
-	{
-		return ConcatStatus == null;
 	}
 }

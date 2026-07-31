@@ -20,8 +20,6 @@ internal static class GUILayoutUtils
 
 	private static MethodInfo _DecoratorMethod;
 
-	internal static GUILayoutUtils ValidateState;
-
 	[SpecialName]
 	public static Type RemoveIterator()
 	{
@@ -162,10 +160,5 @@ internal static class GUILayoutUtils
 	static MethodInfo VisitIterator(Type type_0, string def, BindingFlags pol)
 	{
 		return type_0.GetMethod(def, pol);
-	}
-
-	internal static bool EnableState()
-	{
-		return ValidateState == null;
 	}
 }

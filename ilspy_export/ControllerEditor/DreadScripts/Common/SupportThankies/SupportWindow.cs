@@ -38,8 +38,6 @@ internal class SupportWindow : EditorWindow
 
 	private static int _Invocation = 1;
 
-	private static SupportWindow RunIndexer;
-
 	[SpecialName]
 	private static bool AssetWrapper()
 	{
@@ -254,10 +252,5 @@ internal class SupportWindow : EditorWindow
 		_Callback = false;
 		m_Advisor = false;
 		issuer = null;
-	}
-
-	internal static bool ComputeIndexer()
-	{
-		return (object)RunIndexer == null;
 	}
 }

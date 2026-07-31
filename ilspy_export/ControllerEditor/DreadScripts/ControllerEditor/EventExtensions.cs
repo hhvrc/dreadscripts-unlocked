@@ -4,8 +4,6 @@ namespace DreadScripts.ControllerEditor;
 
 internal static class EventExtensions
 {
-	private static EventExtensions MapDecorator;
-
 	internal static EventWrapper QueryHelper(this EventWrapper item, Rect connection = default(Rect))
 	{
 		if (!item.m_TagPolicy)
@@ -78,10 +76,5 @@ internal static class EventExtensions
 			return def;
 		}
 		return def;
-	}
-
-	internal static bool AddDecorator()
-	{
-		return MapDecorator == null;
 	}
 }

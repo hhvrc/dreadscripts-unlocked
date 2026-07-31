@@ -116,8 +116,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal readonly bool[] iteratorVisitor = new bool[3];
 
-		internal static ConditionMultiEditor ConcatIndexer;
-
 		internal ConditionMultiEditor(AnimatorTransitionBase asset, int ivk_low)
 		{
 			_TaskVisitor = false;
@@ -231,11 +229,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				iteratorVisitor[i] |= !item[i];
 			}
 		}
-
-		internal static bool CollectIndexer()
-		{
-			return ConcatIndexer == null;
-		}
 	}
 
 	private class BehaviourPropertyMultiEditor
@@ -245,8 +238,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal AnimatorTypeCache.ParameterDriverBinding.ParameterEntry m_InitializerAlgo;
 
 		internal List<(AnimatorTypeCache.ParameterDriverBinding, int)> definitionAlgo;
-
-		private static BehaviourPropertyMultiEditor NewIndexer;
 
 		internal BehaviourPropertyMultiEditor(AnimatorTypeCache.ParameterDriverBinding asset, int cust)
 		{
@@ -287,11 +278,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					});
 				}
 			}
-		}
-
-		internal static bool LoginIndexer()
-		{
-			return NewIndexer == null;
 		}
 	}
 
@@ -470,8 +456,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			private readonly EditorGUI.ChangeCheckScope m_ReaderAlgo;
 
-			private static SettingsChangeScope CancelState;
-
 			[SpecialName]
 			internal bool CountDefinition()
 			{
@@ -502,18 +486,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				return task.m_ReaderAlgo.changed;
 			}
-
-			internal static bool RestartState()
-			{
-				return CancelState == null;
-			}
 		}
 
 		internal class SettingsDeferScope : IDisposable
 		{
 			private readonly bool _StrategyAlgo;
-
-			private static SettingsDeferScope FillState;
 
 			public SettingsDeferScope()
 			{
@@ -525,11 +502,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				MoveDefinition(_StrategyAlgo);
 			}
-
-			internal static bool DeleteState()
-			{
-				return FillState == null;
-			}
 		}
 
 		[Serializable]
@@ -539,8 +511,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			private bool _value;
 
 			internal readonly Action m_DatabaseAlgo;
-
-			private static BoolSetting RunState;
 
 			[SpecialName]
 			internal bool FindDefinition()
@@ -609,11 +579,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				ExcludeDefinition((bool)callbackAlgo);
 			}
-
-			internal static bool ComputeState()
-			{
-				return RunState == null;
-			}
 		}
 
 		[Serializable]
@@ -624,16 +589,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal readonly Action identifierAlgo;
 
-			private static FloatSetting ConnectState;
-
 			[SpecialName]
-			internal float ResetDefinition()
+			internal float SaveSettings()
 			{
 				return _value;
 			}
 
 			[SpecialName]
-			internal void FlushDefinition(float reference)
+			internal void ClearSettings(float reference)
 			{
 				if (_value != reference)
 				{
@@ -670,7 +633,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						dir = EditorStyles.numberField;
 					}
-					FlushDefinition(EditorGUILayout.FloatField(info, ResetDefinition(), dir, options));
+					ClearSettings(EditorGUILayout.FloatField(info, SaveSettings(), dir, options));
 					if (havesecond && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
 					{
 						Reset();
@@ -694,7 +657,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				using (new GUILayout.HorizontalScope())
 				{
-					FlushDefinition(EditorGUILayout.Slider(last, ResetDefinition(), cfg, temp, options));
+					ClearSettings(EditorGUILayout.Slider(last, SaveSettings(), cfg, temp, options));
 					if (compareconfig2)
 					{
 						while (EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
@@ -717,7 +680,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal override void Reset()
 			{
-				FlushDefinition((float)callbackAlgo);
+				ClearSettings((float)callbackAlgo);
 			}
 
 			public static implicit operator int(FloatSetting key)
@@ -729,28 +692,21 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				return item._value;
 			}
-
-			internal static bool ViewState()
-			{
-				return ConnectState == null;
-			}
 		}
 
 		[Serializable]
 		internal class EnumSetting : FloatSetting
 		{
-			private static EnumSetting ChangeState;
-
 			[SerializeField]
 			internal int CalcDefinition
 			{
 				get
 				{
-					return (int)ResetDefinition();
+					return (int)SaveSettings();
 				}
 				set
 				{
-					FlushDefinition(value);
+					ClearSettings(value);
 				}
 			}
 
@@ -806,11 +762,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				return var1.CalcDefinition;
 			}
-
-			internal static bool CalculateState()
-			{
-				return ChangeState == null;
-			}
 		}
 
 		[Serializable]
@@ -830,8 +781,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			internal bool _TagAlgo;
 
 			internal Vector3 importerAlgo;
-
-			private static VectorSetting GetState;
 
 			[SpecialName]
 			internal Vector3 DeleteDefinition()
@@ -919,11 +868,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				return asset.DeleteDefinition();
 			}
-
-			internal static bool VisitState()
-			{
-				return GetState == null;
-			}
 		}
 
 		[Serializable]
@@ -933,8 +877,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			private string _value;
 
 			internal readonly Action printerAlgo;
-
-			private static StringSetting StopState;
 
 			[SpecialName]
 			internal string CollectDefinition()
@@ -996,11 +938,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				return res._value;
 			}
-
-			internal static bool ReflectState()
-			{
-				return StopState == null;
-			}
 		}
 
 		[Serializable]
@@ -1019,8 +956,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			[SerializeField]
 			private float a;
-
-			private static ColorSetting RateState;
 
 			[SpecialName]
 			internal Color WriteDefinition()
@@ -1081,11 +1016,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				ForgotDefinition((Color)callbackAlgo);
 			}
-
-			internal static bool PostState()
-			{
-				return RateState == null;
-			}
 		}
 
 		[Serializable]
@@ -1108,8 +1038,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			private bool m_InfoAlgo;
 
 			private UnityEngine.Object m_FacadeAlgo;
-
-			internal static ObjectReferenceSetting DefineState;
 
 			[SpecialName]
 			internal UnityEngine.Object ChangeDefinition()
@@ -1205,36 +1133,18 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				return last.ChangeDefinition();
 			}
-
-			internal static bool EnableState()
-			{
-				return DefineState == null;
-			}
 		}
 
 		internal abstract class SettingBase
 		{
 			internal object callbackAlgo;
 
-			private static SettingBase DisableState;
-
 			internal abstract void Reset();
-
-			internal static bool VerifyState()
-			{
-				return DisableState == null;
-			}
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
 		internal class NonSerializedSettingAttribute : Attribute
 		{
-			internal static NonSerializedSettingAttribute ConcatState;
-
-			internal static bool CollectState()
-			{
-				return ConcatState == null;
-			}
 		}
 
 		[SerializeField]
@@ -1526,8 +1436,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		[SerializeField]
 		internal BoolSetting a_HasSucceededLastVerification = new BoolSetting(appendlast: false);
 
-		private static EditorSettings RegisterState;
-
 		internal static void SetDefinition()
 		{
 			m_AdapterAlgo = new GUIStyle(EditorUtils.CalcError().algoObserver)
@@ -1563,7 +1471,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			if (m_ExpressionAlgo == null)
 			{
-				SaveSettings();
+				EnableDefinition();
 			}
 			return m_ExpressionAlgo;
 		}
@@ -1607,7 +1515,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 		}
 
-		private static void SaveSettings()
+		private static void EnableDefinition()
 		{
 			string text = string.Empty;
 			if (EditorPrefs.HasKey("yOk0XCnENLMO6DIF8cYpSg==SettingsJSON"))
@@ -1648,7 +1556,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 		}
 
-		internal static void ClearSettings()
+		internal static void PublishDefinition()
 		{
 			if (EditorUtility.DisplayDialog("Clearing Settings", "Are you sure you want to clear the settings?", "Clear", "Cancel"))
 			{
@@ -1666,11 +1574,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			_SystemAlgo?.Invoke();
 			LoadSettings();
-		}
-
-		internal static bool FlushState()
-		{
-			return RegisterState == null;
 		}
 	}
 
@@ -1708,8 +1611,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal static bool m_ModelAlgo;
 
 		internal static readonly HashSet<ErrorInfo> m_TokenizerAlgo = new HashSet<ErrorInfo>();
-
-		internal static BugReporter TestState;
 
 		[SpecialName]
 		private static float PublishReg()
@@ -1869,7 +1770,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}, UnityEngine.Debug.LogException, null, null, delegate
 				{
 					codeAlgo = false;
-					InsertVisitor();
+					DrawLicenseInfo();
 				});
 			}
 			SetVisitor(codeAlgo ? "Finding a solution..." : "Bug Reporter", "If you have found a bug, please report it here!\nNote that the report is not anonymous. Abuse may result in blacklisting.");
@@ -1934,7 +1835,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								{
 									ComputeInitializer(ignoresetup: false);
 									candidateAnnotation = false;
-									InsertVisitor();
+									DrawLicenseInfo();
 								});
 								return;
 							}
@@ -1999,11 +1900,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			roleAlgo = null;
 			CompilationPipeline.compilationStarted -= EnableReg;
 		}
-
-		internal static bool IncludeState()
-		{
-			return TestState == null;
-		}
 	}
 
 	private sealed class ProcessRunner
@@ -2025,8 +1921,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal bool m_MockAlgo;
 
 		private bool _InstanceAlgo;
-
-		internal static ProcessRunner NewState;
 
 		internal ProcessRunner(string var1, Action<string> col, bool isfield = false, bool containscol2 = false, Action token3 = null)
 		{
@@ -2110,11 +2004,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				m_MockAlgo = true;
 			}
-		}
-
-		internal static bool LoginState()
-		{
-			return NewState == null;
 		}
 	}
 
@@ -2317,8 +2206,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	internal static class MotionEmbedMenu
 	{
-		internal static MotionEmbedMenu FillProduct;
-
 		[MenuItem("CONTEXT/AnimatorState/Motion/Embed", true)]
 		private static bool QueryReg(MenuCommand item)
 		{
@@ -2510,11 +2397,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			return Path.GetFileNameWithoutExtension(AssetDatabase.GenerateUniqueAssetPath(directoryName + "/" + cont + extension));
 		}
-
-		internal static bool DeleteProduct()
-		{
-			return FillProduct == null;
-		}
 	}
 
 	internal static class HarmonyPatchManager
@@ -2689,8 +2571,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal static string _GlobalAlgo;
 
 		internal static readonly (Action, bool)[] _TaskAlgo = new(Action, bool)[1] { (RevertWrapper, false) };
-
-		internal static HarmonyPatchManager RunProduct;
 
 		[SpecialName]
 		internal static Harmony AddTests()
@@ -3134,11 +3014,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			return info.Method;
 		}
-
-		internal static bool ComputeProduct()
-		{
-			return RunProduct == null;
-		}
 	}
 
 	private enum LayerViewViewType
@@ -3161,8 +3036,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal readonly List<LayerIndexEntry> listenerMapper = new List<LayerIndexEntry>();
 
 		internal LayerPathNode m_GetterMapper;
-
-		private static LayerPathNode TestProduct;
 
 		[SpecialName]
 		internal string CustomizeTests()
@@ -3286,11 +3159,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		private static string ValidateTests(string item)
 		{
 			return Regex.Replace(item, "^Root" + Regex.Escape(PushInitializer()) + "?", "");
-		}
-
-		internal static bool IncludeProduct()
-		{
-			return TestProduct == null;
 		}
 	}
 
@@ -3430,8 +3298,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		private static bool _ParserMapper;
 
-		internal static ControllerEditorWindow PushProduct;
-
 		[SpecialName]
 		internal static bool PushTests()
 		{
@@ -3465,7 +3331,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				IncludeTests();
 			}
 			EditorUtils.MapQueue();
-			DrawLicenseInfo();
+			RevertAnnotation();
 			DefineVisitor();
 			EditorUtils.setterProcessor.PopHelper(this);
 			EditorGUILayout.EndScrollView();
@@ -3939,7 +3805,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					using (new IndentedLayoutScope())
 					{
-						EditorSettings.CallDefinition().defaultLayerWeight.FlushDefinition(EditorGUILayout.Slider("Default Layer Weight", EditorSettings.CallDefinition().defaultLayerWeight, 0f, 1f));
+						EditorSettings.CallDefinition().defaultLayerWeight.ClearSettings(EditorGUILayout.Slider("Default Layer Weight", EditorSettings.CallDefinition().defaultLayerWeight, 0f, 1f));
 						EditorSettings.CallDefinition().defaultLayerMask.CheckDefinition("Default Layer Mask", false);
 						using (new EditorGUILayout.HorizontalScope(GUI.skin.box))
 						{
@@ -4045,17 +3911,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				config.FlushDefinition((float)(NodeColor)(object)EditorGUILayout.EnumPopup(attr, (NodeColor)config.ResetDefinition()));
+				config.ClearSettings((float)(NodeColor)(object)EditorGUILayout.EnumPopup(attr, (NodeColor)config.SaveSettings()));
 				if (EditorUtils.RestartQueue(EditorUtils.DestroyError()._CallbackProcessor, EditorUtils.CalcError().m_ServiceProcessor, GUILayout.Width(18f), GUILayout.Height(18f)))
 				{
 					config.Reset();
 				}
 			}
-		}
-
-		internal static bool PrepareProduct()
-		{
-			return (object)PushProduct == null;
 		}
 	}
 
@@ -4066,8 +3927,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		public string _ItemMapper = "";
 
 		private bool _SpecificationMapper = true;
-
-		internal static MotionRenamerWindow AssetProduct;
 
 		public void OnGUI()
 		{
@@ -4134,11 +3993,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			Close();
 		}
-
-		internal static bool SelectProduct()
-		{
-			return (object)AssetProduct == null;
-		}
 	}
 
 	internal class ParameterRenameWindow : DreadScripts.ControllerEditor.UtilityWindowBase<ParameterRenameWindow>
@@ -4165,8 +4019,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		private int stateMapper;
 
 		internal (UnityEngine.AnimatorControllerParameter, string)[] globalMapper;
-
-		internal static ParameterRenameWindow ListProduct;
 
 		string DreadScripts.ControllerEditor.UtilityWindowBase<ParameterRenameWindow>.title => "Parameter Rename";
 
@@ -4299,11 +4151,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal Vector2 FillTests()
 		{
 			return new Vector2(350f, 60f + (float)globalMapper.Length * (EditorGUIUtility.singleLineHeight + 7f));
-		}
-
-		internal static bool CalcProduct()
-		{
-			return (object)ListProduct == null;
 		}
 	}
 
@@ -4634,8 +4481,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			new GUIContent("Component Index", "Which component to toggle. -1 is GameObject. 0 is Transform (Not toggleable)"),
 			new GUIContent("Enabled", "What the toggled state is when animated")
 		};
-
-		internal static QuickToggleWindow CancelInfo;
 
 		string DreadScripts.ControllerEditor.UtilityWindowBase<QuickToggleWindow>.title => "CEditor QuickToggle";
 
@@ -4984,11 +4829,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal void SortTests(Vector2 instance)
 		{
 			LoginHelper(instance, UpdateTests());
-		}
-
-		internal static bool RestartInfo()
-		{
-			return (object)CancelInfo == null;
 		}
 	}
 
@@ -5565,7 +5405,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			systemAnnotation = false;
 			m_ExpressionAnnotation = false;
-			InsertVisitor();
+			DrawLicenseInfo();
 		}
 
 		internal void PushProperty()
@@ -5669,7 +5509,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				m_CallbackAnnotation = false;
 				FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-			}, null, null, InsertVisitor);
+			}, null, null, DrawLicenseInfo);
 		}
 
 		internal void SortProperty(JsonObject response)
@@ -5707,7 +5547,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				_IndexerAnnotation = false;
 				FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-			}, null, null, InsertVisitor);
+			}, null, null, DrawLicenseInfo);
 		}
 
 		internal void PatchProperty(JsonObject response)
@@ -5797,14 +5637,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal void ComputeProcessor()
 		{
 			_PrototypeAnnotation = false;
-			InsertVisitor();
+			DrawLicenseInfo();
 		}
 
 		internal async Task MoveProcessor()
 		{
 			await Task.Delay(3000);
 			EditorSettings.CallDefinition().u_updateHidden.ExcludeDefinition(excludeparam: true);
-			InsertVisitor();
+			DrawLicenseInfo();
 		}
 
 		internal bool ConcatProcessor()
@@ -6496,7 +6336,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				_RequestAnnotation = false;
 				m_IdentifierAnnotation = true;
 				SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
-			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, InsertVisitor);
+			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, DrawLicenseInfo);
 		}
 
 		internal void LoginObserver(JsonObject response)
@@ -6854,7 +6694,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				_RequestAnnotation = false;
 				importerAnnotation = false;
-				InsertVisitor();
+				DrawLicenseInfo();
 				return;
 			}
 			_MockDefinition = new CancellationTokenSource();
@@ -8657,8 +8497,6 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static MethodInfo m_SpecificationVisitor;
 
-	internal static ControllerEditor DefineIndexer;
-
 	private static void PatchWrapper()
 	{
 		if (m_Base != null)
@@ -10203,7 +10041,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						systemAnnotation = false;
 						m_ExpressionAnnotation = false;
-						InsertVisitor();
+						DrawLicenseInfo();
 					});
 				}
 			}
@@ -10226,7 +10064,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private static void VerifyAnnotation()
 	{
 		ResolveAnnotation();
-		bool flag = ReadLicenseKey();
+		bool flag = AssetAnnotation();
 		if (!EditorSettings.CallDefinition().a_HasSucceededLastVerification)
 		{
 			m_IdentifierAnnotation = true;
@@ -10243,7 +10081,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void FillAnnotation()
 	{
-		if (!m_DispatcherAnnotation && (bool)EditorSettings.CallDefinition().a_VerifyOnDisplay && ReadLicenseKey())
+		if (!m_DispatcherAnnotation && (bool)EditorSettings.CallDefinition().a_VerifyOnDisplay && AssetAnnotation())
 		{
 			WriteAnnotation(assetneeded: false);
 		}
@@ -10314,7 +10152,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			ManageAnnotation(applyident: true);
 			RestartVisitor();
 		}
-		SaveLicenseInfo(delegate
+		UpdateAnnotation(delegate
 		{
 			List<(string, string)> list = RegisterAnnotation("verifylicense");
 			LogoutAnnotation(list);
@@ -10326,19 +10164,19 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				_RequestAnnotation = false;
 				m_IdentifierAnnotation = true;
 				SortAnnotation(_003C_003Ec__DisplayClass186_.valueDefinition, _003C_003Ec__DisplayClass186_.DeleteObserver, SearchAnnotation, t2stop: false);
-			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, InsertVisitor);
+			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, DrawLicenseInfo);
 		}, iscont: true);
 	}
 
 	private static void ForgotAnnotation()
 	{
 		importerAnnotation = true;
-		if (!SetupVisitor())
+		if (!SaveLicenseInfo())
 		{
 			FindVisitor("Invalid License Key!", CustomLogType.Error);
 			return;
 		}
-		SaveLicenseInfo(delegate
+		UpdateAnnotation(delegate
 		{
 			List<(string, string)> list = RegisterAnnotation("activatelicense");
 			LogoutAnnotation(list);
@@ -10355,7 +10193,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				importerAnnotation = false;
 				FindVisitor($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
-			}, null, null, InsertVisitor);
+			}, null, null, DrawLicenseInfo);
 		}, iscont: true);
 	}
 
@@ -10405,7 +10243,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	private static bool ReadLicenseKey()
+	private static bool AssetAnnotation()
 	{
 		if (!string.IsNullOrWhiteSpace(m_BridgeAnnotation))
 		{
@@ -10419,7 +10257,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		return !(m_IdentifierAnnotation = string.IsNullOrWhiteSpace(m_BridgeAnnotation));
 	}
 
-	private static void SaveLicenseInfo(Action item, bool iscont = false)
+	private static void UpdateAnnotation(Action item, bool iscont = false)
 	{
 		_003C_003Ec__DisplayClass192_0 CS_0024_003C_003E8__locals31 = new _003C_003Ec__DisplayClass192_0();
 		CS_0024_003C_003E8__locals31._FieldDefinition = iscont;
@@ -10666,7 +10504,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		return text;
 	}
 
-	private static void DrawLicenseInfo()
+	private static void RevertAnnotation()
 	{
 		using (new GUILayout.HorizontalScope())
 		{
@@ -10719,7 +10557,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				return false;
 			}
 			SetVisitor("Enter your license key", "Enter the license key you received with your purchase here. If your license was already activated, click on 'Transfer License'. For support, contact @Dreadrith.");
-			bool flag = PostVisitor(isinit: false);
+			bool flag = ReadLicenseKey(isinit: false);
 			if (DisableInitializer().Length > 0)
 			{
 				EditorGUILayout.HelpBox(DisableInitializer(), MessageType.Error);
@@ -10758,7 +10596,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(m_CallbackAnnotation);
 			try
 			{
-				PostVisitor(isinit: true);
+				ReadLicenseKey(isinit: true);
 			}
 			finally
 			{
@@ -10768,7 +10606,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				EditorGUILayout.HelpBox(DisableInitializer(), MessageType.Error);
 			}
-			disabledScope = new EditorGUI.DisabledScope(!SetupVisitor() || m_CallbackAnnotation);
+			disabledScope = new EditorGUI.DisabledScope(!SaveLicenseInfo() || m_CallbackAnnotation);
 			try
 			{
 				if (EditorUtils.DisableQueue(m_CallbackAnnotation ? "Sending Verification Code..." : "Send Verification Code"))
@@ -10815,7 +10653,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	private static bool PostVisitor(bool isinit)
+	private static bool ReadLicenseKey(bool isinit)
 	{
 		using (new GUILayout.HorizontalScope())
 		{
@@ -10848,7 +10686,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		return false;
 	}
 
-	private static bool SetupVisitor()
+	private static bool SaveLicenseInfo()
 	{
 		if (!facadeAnnotation)
 		{
@@ -10991,7 +10829,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		return CountVisitor("https://us-central1-dreadscripts-c6b62.cloudfunctions.net/receiveCommand", info);
 	}
 
-	private static void InsertVisitor()
+	private static void DrawLicenseInfo()
 	{
 		EditorUtils.CountRules(RestartVisitor);
 	}
@@ -11082,7 +10920,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 		case 0:
 			m_CallbackAnnotation = true;
-			SaveLicenseInfo(delegate
+			UpdateAnnotation(delegate
 			{
 				List<(string, string)> list = RegisterAnnotation("transferlicenserequest");
 				LogoutAnnotation(list);
@@ -11096,7 +10934,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					m_CallbackAnnotation = false;
 					FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-				}, null, null, InsertVisitor);
+				}, null, null, DrawLicenseInfo);
 			}, iscont: true);
 			break;
 		case 1:
@@ -11108,7 +10946,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private static void VisitVisitor()
 	{
 		_IndexerAnnotation = true;
-		SaveLicenseInfo(delegate
+		UpdateAnnotation(delegate
 		{
 			List<(string, string)> list = RegisterAnnotation("transferlicenseconfirm");
 			list.Add(("verification_code", strategyAnnotation));
@@ -11127,7 +10965,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				_IndexerAnnotation = false;
 				FindVisitor($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-			}, null, null, InsertVisitor);
+			}, null, null, DrawLicenseInfo);
 		}, iscont: true);
 	}
 
@@ -11435,7 +11273,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}, null, null, delegate
 		{
 			_PrototypeAnnotation = false;
-			InsertVisitor();
+			DrawLicenseInfo();
 		});
 	}
 
@@ -11483,7 +11321,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					await Task.Delay(3000);
 					EditorSettings.CallDefinition().u_updateHidden.ExcludeDefinition(excludeparam: true);
-					InsertVisitor();
+					DrawLicenseInfo();
 				});
 			}
 			else
@@ -15919,7 +15757,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			Vector2 a = UpdateAlgo(vector, vector2);
 			float magnitude = vector3.magnitude;
 			float num = Vector2.Distance(a, vector2);
-			float num2 = EditorSettings.CallDefinition().arrowLerpRatio.ResetDefinition();
+			float num2 = EditorSettings.CallDefinition().arrowLerpRatio.SaveSettings();
 			if (m_HelperVisitor && m_ContextVisitor.Contains(vector2))
 			{
 				_ExpressionVisitor = true;
@@ -16092,7 +15930,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		bool flag = EditorSettings.CallDefinition().animateInboundEdges;
 		bool flag2 = EditorSettings.CallDefinition().animateOutboundEdges;
 		bool flag3 = flag && flag2;
-		m_RecordVisitor = EditorSettings.CallDefinition().arrowLerpRatio.ResetDefinition() != 0f;
+		m_RecordVisitor = EditorSettings.CallDefinition().arrowLerpRatio.SaveSettings() != 0f;
 		m_HelperVisitor = (flag || flag2) && !m_MapperAnnotation.CalcRules();
 		if (m_HelperVisitor)
 		{
@@ -17319,7 +17157,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		AnimatorGraphReflection.GraphNodeRef graphNodeRef = AnimatorGraphReflection.RevertThread(state2);
 		if ((bool)EditorSettings.CallDefinition().cosmeticNodesActive)
 		{
-			graphNodeRef.FillPolicy().color = (Styles.Color)EditorSettings.CallDefinition().normalStateNodeColor.ResetDefinition();
+			graphNodeRef.FillPolicy().color = (Styles.Color)EditorSettings.CallDefinition().normalStateNodeColor.SaveSettings();
 		}
 		string[] array = InvokeAlgo(state2);
 		foreach (string text in array)
@@ -17335,7 +17173,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if ((bool)EditorSettings.CallDefinition().cosmeticNodesActive)
 		{
-			AnimatorGraphReflection.OrderPolicy(subStateMachine.stateMachine).FillPolicy().color = (Styles.Color)EditorSettings.CallDefinition().machineStateNodeColor.ResetDefinition();
+			AnimatorGraphReflection.OrderPolicy(subStateMachine.stateMachine).FillPolicy().color = (Styles.Color)EditorSettings.CallDefinition().machineStateNodeColor.SaveSettings();
 		}
 	}
 
@@ -17343,12 +17181,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if ((bool)EditorSettings.CallDefinition().cosmeticNodesActive)
 		{
-			AnimatorGraphReflection.GraphAccessors.FlushPolicy().InterruptPolicy((Styles.Color)EditorSettings.CallDefinition().entryStateNodeColor.ResetDefinition());
-			AnimatorGraphReflection.GraphAccessors.CalculatePolicy().InterruptPolicy((Styles.Color)EditorSettings.CallDefinition().exitStateNodeColor.ResetDefinition());
-			AnimatorGraphReflection.GraphAccessors.MapPolicy().InterruptPolicy((Styles.Color)EditorSettings.CallDefinition().anyStateNodeColor.ResetDefinition());
+			AnimatorGraphReflection.GraphAccessors.FlushPolicy().InterruptPolicy((Styles.Color)EditorSettings.CallDefinition().entryStateNodeColor.SaveSettings());
+			AnimatorGraphReflection.GraphAccessors.CalculatePolicy().InterruptPolicy((Styles.Color)EditorSettings.CallDefinition().exitStateNodeColor.SaveSettings());
+			AnimatorGraphReflection.GraphAccessors.MapPolicy().InterruptPolicy((Styles.Color)EditorSettings.CallDefinition().anyStateNodeColor.SaveSettings());
 			if ((bool)ManageMapper().defaultState)
 			{
-				AnimatorGraphReflection.RevertThread(ManageMapper().defaultState).FillPolicy().color = (Styles.Color)EditorSettings.CallDefinition().defaultStateNodeColor.ResetDefinition();
+				AnimatorGraphReflection.RevertThread(ManageMapper().defaultState).FillPolicy().color = (Styles.Color)EditorSettings.CallDefinition().defaultStateNodeColor.SaveSettings();
 			}
 		}
 	}
@@ -18309,7 +18147,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			importerAnnotation = false;
 			FindVisitor($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
-		}, null, null, InsertVisitor);
+		}, null, null, DrawLicenseInfo);
 	}
 
 	[CompilerGenerated]
@@ -18693,10 +18531,5 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	internal static float RegisterMapper(float def)
 	{
 		return (float)def.ToString().Length * 4f + 4f;
-	}
-
-	internal static bool EnableIndexer()
-	{
-		return (object)DefineIndexer == null;
 	}
 }

@@ -17,8 +17,6 @@ internal class EditorPrefsConfig
 
 		private readonly EditorGUI.ChangeCheckScope mapperThread;
 
-		internal static PrefsChangeScope CustomizeStatus;
-
 		public PrefsChangeScope(EditorPrefsConfig key)
 		{
 			m_AlgoThread = key;
@@ -31,11 +29,6 @@ internal class EditorPrefsConfig
 			{
 				m_AlgoThread.InstantiateContext();
 			}
-		}
-
-		internal static bool SearchStatus()
-		{
-			return CustomizeStatus == null;
 		}
 	}
 
@@ -56,8 +49,6 @@ internal class EditorPrefsConfig
 	internal bool _WrapperThread;
 
 	private readonly HashSet<string> _AnnotationThread = new HashSet<string>();
-
-	internal static EditorPrefsConfig RegisterStatus;
 
 	internal EditorPrefsConfig(string info, Dictionary<Enum, Type> pol, Dictionary<Enum, object> proc, Dictionary<Enum, string> item2 = null, Action reference3 = null)
 		: this(info, pol.ToDictionary((KeyValuePair<Enum, Type> kvp) => kvp.Key.ToString(), (KeyValuePair<Enum, Type> kvp) => kvp.Value), proc.ToDictionary((KeyValuePair<Enum, object> kvp) => kvp.Key.ToString(), (KeyValuePair<Enum, object> kvp) => kvp.Value), item2?.ToDictionary((KeyValuePair<Enum, string> kvp) => kvp.Key.ToString(), (KeyValuePair<Enum, string> kvp) => kvp.Value), reference3)
@@ -352,10 +343,5 @@ internal class EditorPrefsConfig
 			}
 		}
 		_ProcServer = false;
-	}
-
-	internal static bool FlushStatus()
-	{
-		return RegisterStatus == null;
 	}
 }

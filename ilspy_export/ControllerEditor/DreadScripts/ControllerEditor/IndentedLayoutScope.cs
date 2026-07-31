@@ -7,8 +7,6 @@ internal sealed class IndentedLayoutScope : IDisposable
 {
 	private readonly float m_BroadcasterThread;
 
-	internal static IndentedLayoutScope RegisterDecorator;
-
 	internal IndentedLayoutScope()
 		: this(10f, 10f)
 	{
@@ -44,10 +42,5 @@ internal sealed class IndentedLayoutScope : IDisposable
 			GUILayout.EndHorizontal();
 		}
 		GUILayout.EndHorizontal();
-	}
-
-	internal static bool FlushDecorator()
-	{
-		return RegisterDecorator == null;
 	}
 }

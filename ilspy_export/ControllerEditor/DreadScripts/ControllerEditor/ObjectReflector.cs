@@ -60,8 +60,6 @@ internal class ObjectReflector
 
 	internal readonly TypeReflectionData m_RulesThread;
 
-	private static ObjectReflector FillStatus;
-
 	internal ObjectReflector(object key)
 	{
 		m_ResolverThread = key;
@@ -221,10 +219,5 @@ internal class ObjectReflector
 		}
 		c = asset.Where((MethodInfo m) => m.ReturnType == cont).ToArray();
 		return c.Length == 1;
-	}
-
-	internal static bool DeleteStatus()
-	{
-		return FillStatus == null;
 	}
 }

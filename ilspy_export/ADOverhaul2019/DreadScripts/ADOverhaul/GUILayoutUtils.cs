@@ -20,8 +20,6 @@ internal static class GUILayoutUtils
 
 	private static MethodInfo _AnnotationDic;
 
-	internal static GUILayoutUtils GetDatabase;
-
 	[SpecialName]
 	public static Type CollectMapping()
 	{
@@ -162,10 +160,5 @@ internal static class GUILayoutUtils
 	static MethodInfo DestroyMapping(Type type_0, string instance, BindingFlags vis)
 	{
 		return type_0.GetMethod(instance, vis);
-	}
-
-	internal static bool CustomizeDatabase()
-	{
-		return GetDatabase == null;
 	}
 }

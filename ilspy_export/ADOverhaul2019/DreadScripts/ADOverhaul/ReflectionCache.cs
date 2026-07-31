@@ -5,11 +5,11 @@ namespace DreadScripts.ADOverhaul;
 
 internal struct ReflectionCache
 {
-	internal MemberInfo[] _WatcherDic;
+	internal MemberInfo[] members;
 
-	internal Dictionary<string, FieldInfo> _ContextDic;
+	internal Dictionary<string, FieldInfo> fields;
 
-	internal Dictionary<string, PropertyInfo> m_SchemaDic;
+	internal Dictionary<string, PropertyInfo> properties;
 
-	internal Dictionary<string, List<MethodInfo>> m_ReponseDic;
+	internal Dictionary<string, List<MethodInfo>> methods;
 }

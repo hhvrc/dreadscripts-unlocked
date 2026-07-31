@@ -26,11 +26,4 @@ internal static class SupporterStrings
 		"Had to bribe them with snacks", "Not a bot", "Can beat Goku", "Makes the best coffee", "Makes a mean applepie", "They're behind you.", "Why would they do this?", "They're cool at parties", "Might be the impostor", "The peak of human evolution",
 		"The friend we make along the way", "OwO", "W"
 	};
-
-	private static SupporterStrings ChangeIndexer;
-
-	internal static bool CalculateIndexer()
-	{
-		return ChangeIndexer == null;
-	}
 }

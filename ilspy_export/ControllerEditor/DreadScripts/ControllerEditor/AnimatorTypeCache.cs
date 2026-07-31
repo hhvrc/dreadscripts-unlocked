@@ -26,8 +26,6 @@ internal static class AnimatorTypeCache
 
 			private bool _TagProperty;
 
-			internal static ParameterEntry ListStruct;
-
 			[SpecialName]
 			internal bool RemovePage()
 			{
@@ -171,11 +169,6 @@ internal static class AnimatorTypeCache
 				_DispatcherProperty = param;
 				m_RegistryProperty = b;
 			}
-
-			internal static bool CalcStruct()
-			{
-				return ListStruct == null;
-			}
 		}
 
 		internal StateMachineBehaviour _StrategyProperty;
@@ -187,8 +180,6 @@ internal static class AnimatorTypeCache
 		internal SerializedProperty m_ExporterProperty;
 
 		private readonly SerializedProperty _IdentifierProperty;
-
-		private static ParameterDriverBinding SetupStruct;
 
 		[SpecialName]
 		internal bool StartPage()
@@ -243,11 +234,6 @@ internal static class AnimatorTypeCache
 		internal void DefinePage()
 		{
 			m_CustomerProperty.ApplyModifiedProperties();
-		}
-
-		internal static bool ExcludeStruct()
-		{
-			return SetupStruct == null;
 		}
 	}
 
@@ -335,8 +321,6 @@ internal static class AnimatorTypeCache
 
 		internal SerializedProperty m_PoolProperty = new SerializedObject((UnityEngine.Object)null).FindProperty("collider_fingerIndexL");
 
-		private static AvatarDescriptorBinding InstantiateStruct;
-
 		internal AvatarDescriptorBinding(Component def)
 		{
 			_RequestProperty = def;
@@ -381,19 +365,12 @@ internal static class AnimatorTypeCache
 			_ReponseProperty = _PrinterProperty.FindProperty("collider_fingerRingR");
 			m_PoolProperty = _PrinterProperty.FindProperty("collider_fingerLittleR");
 		}
-
-		internal static bool RevertStruct()
-		{
-			return InstantiateStruct == null;
-		}
 	}
 
 	[DefaultMember("Item")]
 	internal class ExpressionsMenuBinding : SerializedObjectWrapper
 	{
 		internal readonly SerializedPropertyWrapper _ComposerProperty;
-
-		private static ExpressionsMenuBinding RegisterCandidate;
 
 		internal ExpressionsMenuBinding(UnityEngine.Object spec)
 			: base(spec)
@@ -406,17 +383,10 @@ internal static class AnimatorTypeCache
 		{
 			return new MenuControlBinding(_ComposerProperty.LogoutPage(index_spec));
 		}
-
-		internal static bool FlushCandidate()
-		{
-			return RegisterCandidate == null;
-		}
 	}
 
 	internal class MenuControlBinding : SerializedPropertyWrapper
 	{
-		private static MenuControlBinding CustomizeCandidate;
-
 		[SpecialName]
 		internal string ResolvePage()
 		{
@@ -469,18 +439,11 @@ internal static class AnimatorTypeCache
 			: base(key)
 		{
 		}
-
-		internal static bool SearchCandidate()
-		{
-			return CustomizeCandidate == null;
-		}
 	}
 
 	[DefaultMember("Item")]
 	internal class SerializedObjectWrapper : SerializedObject
 	{
-		internal static SerializedObjectWrapper CancelCandidate;
-
 		internal SerializedObjectWrapper(UnityEngine.Object info)
 			: base(info)
 		{
@@ -491,19 +454,12 @@ internal static class AnimatorTypeCache
 		{
 			return new SerializedPropertyWrapper(FindProperty(i));
 		}
-
-		internal static bool RestartCandidate()
-		{
-			return CancelCandidate == null;
-		}
 	}
 
 	[DefaultMember("Item")]
 	internal class SerializedPropertyWrapper
 	{
 		internal readonly SerializedProperty m_ContainerProperty;
-
-		internal static SerializedPropertyWrapper FillCandidate;
 
 		public SerializedPropertyWrapper(SerializedProperty setup)
 		{
@@ -526,11 +482,6 @@ internal static class AnimatorTypeCache
 		{
 			return last.m_ContainerProperty;
 		}
-
-		internal static bool DeleteCandidate()
-		{
-			return FillCandidate == null;
-		}
 	}
 
 	private static Dictionary<string, Type> m_FilterProperty;
@@ -538,8 +489,6 @@ internal static class AnimatorTypeCache
 	private static bool stubProperty;
 
 	private static bool readerProperty;
-
-	internal static AnimatorTypeCache AssetStruct;
 
 	[SpecialName]
 	internal static Type CountPage()
@@ -594,10 +543,5 @@ internal static class AnimatorTypeCache
 			return type2;
 		}
 		return null;
-	}
-
-	internal static bool SelectStruct()
-	{
-		return AssetStruct == null;
 	}
 }

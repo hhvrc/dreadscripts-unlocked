@@ -43,8 +43,6 @@ internal class RenameOverlayWrapper
 
 	internal Action<bool> _RulesProperty;
 
-	private static RenameOverlayWrapper MapStruct;
-
 	private static void FlushSerializer()
 	{
 		if (_VisitorProperty)
@@ -229,10 +227,5 @@ internal class RenameOverlayWrapper
 	{
 		object obj = RateSerializer();
 		_PropertyProperty.Invoke(obj, null);
-	}
-
-	internal static bool AddStruct()
-	{
-		return MapStruct == null;
 	}
 }

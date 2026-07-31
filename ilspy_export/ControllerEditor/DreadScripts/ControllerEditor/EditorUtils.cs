@@ -228,16 +228,9 @@ internal static class EditorUtils
 
 		internal readonly GUIContent _MappingProcessor = PushQueue("AlphabeticalSorting", "Sort");
 
-		private static WatcherProcessor ConnectCandidate;
-
 		internal WatcherProcessor()
 		{
 			m_FacadeProcessor = new GUIContent[6] { m_WriterProcessor, _DatabaseProcessor, _ListenerProcessor, m_PrinterProcessor, m_ParamsProcessor, m_RegistryProcessor };
-		}
-
-		internal static bool ViewCandidate()
-		{
-			return ConnectCandidate == null;
 		}
 	}
 
@@ -493,8 +486,6 @@ internal static class EditorUtils
 			}
 		};
 
-		private static BaseProcessor ChangeCandidate;
-
 		[SpecialName]
 		internal MethodInfo LoginError()
 		{
@@ -520,11 +511,6 @@ internal static class EditorUtils
 					textColor = ((!EditorGUIUtility.isProSkin) ? PushList(91f) : Color.gray)
 				}
 			};
-		}
-
-		internal static bool CalculateCandidate()
-		{
-			return ChangeCandidate == null;
 		}
 	}
 
@@ -573,8 +559,6 @@ internal static class EditorUtils
 		private bool _RulesObserver;
 
 		private bool m_QueueObserver;
-
-		internal static ResizeHandle RateCandidate;
 
 		[SpecialName]
 		public bool ResolveError()
@@ -996,11 +980,6 @@ internal static class EditorUtils
 			}
 			return 0.5f;
 		}
-
-		internal static bool PostCandidate()
-		{
-			return RateCandidate == null;
-		}
 	}
 
 	internal class SceneViewPanel : IDisposable
@@ -1010,8 +989,6 @@ internal static class EditorUtils
 		public readonly bool _ConsumerObserver = true;
 
 		private readonly Rect m_AdapterObserver;
-
-		internal static SceneViewPanel DisableCandidate;
 
 		public SceneViewPanel(SceneView res, string col, float pool = 200f, float item2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ResizeHandle v4 = null)
 			: this(res, pool, item2 + 40f, v3, v4)
@@ -1077,11 +1054,6 @@ internal static class EditorUtils
 			result.width = num;
 			result.height = pool;
 			return result;
-		}
-
-		internal static bool VerifyCandidate()
-		{
-			return DisableCandidate == null;
 		}
 	}
 
@@ -2276,8 +2248,6 @@ internal static class EditorUtils
 		"FootL", "FingerL", "FingerIndexL", "FingerMiddleL", "FingerRingL", "FingerLittleL", "HandR", "FootR", "FingerR", "FingerIndexR",
 		"FingerMiddleR", "FingerRingR", "FingerLittleR"
 	};
-
-	private static EditorUtils RunCandidate;
 
 	internal static bool PrintPage(this PositionFlag ident)
 	{
@@ -8540,10 +8510,5 @@ internal static class EditorUtils
 		def[num].animatorController = map._WriterServer;
 		EditorUtility.SetDirty(map._ParamsServer);
 		return true;
-	}
-
-	internal static bool ComputeCandidate()
-	{
-		return RunCandidate == null;
 	}
 }

@@ -7,8 +7,6 @@ internal sealed class ScrollViewScope : IDisposable
 {
 	private readonly bool facadeMethod;
 
-	internal static ScrollViewScope CallState;
-
 	internal ScrollViewScope(ref Vector2 i)
 	{
 		try
@@ -28,10 +26,5 @@ internal sealed class ScrollViewScope : IDisposable
 		{
 			GUILayout.EndScrollView();
 		}
-	}
-
-	internal static bool QueryState()
-	{
-		return CallState == null;
 	}
 }

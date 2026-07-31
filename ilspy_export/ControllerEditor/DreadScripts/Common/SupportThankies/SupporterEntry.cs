@@ -33,8 +33,6 @@ internal class SupporterEntry
 
 	internal Rect worker;
 
-	private static SupporterEntry ListCode;
-
 	internal SupporterEntry(string spec)
 	{
 		m_Queue = spec;
@@ -157,10 +155,5 @@ internal class SupporterEntry
 		bool success = match.Success;
 		col = (success ? match.Groups[1].Value : null);
 		return success;
-	}
-
-	internal static bool CalcCode()
-	{
-		return ListCode == null;
 	}
 }

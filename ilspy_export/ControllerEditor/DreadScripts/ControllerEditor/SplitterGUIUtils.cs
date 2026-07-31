@@ -20,8 +20,6 @@ internal static class SplitterGUIUtils
 
 	private static MethodInfo m_DescriptorThread;
 
-	private static SplitterGUIUtils AssetStatus;
-
 	[SpecialName]
 	public static Type IncludeRecord()
 	{
@@ -157,10 +155,5 @@ internal static class SplitterGUIUtils
 		def.height = helper;
 		EditorGUI.DrawRect(def, selection);
 		GUILayout.Space(helper * 3f);
-	}
-
-	internal static bool SelectStatus()
-	{
-		return AssetStatus == null;
 	}
 }

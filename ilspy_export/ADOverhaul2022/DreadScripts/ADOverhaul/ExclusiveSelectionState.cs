@@ -6,8 +6,6 @@ internal sealed class ExclusiveSelectionState
 
 	internal int singletonSerializer = -1;
 
-	internal static ExclusiveSelectionState ReadOrder;
-
 	internal ExclusiveSelectionState(int indexOf_def)
 	{
 		UpdateProcess(indexOf_def);
@@ -77,10 +75,5 @@ internal sealed class ExclusiveSelectionState
 			_PropertySerializer[singletonSerializer] = false;
 			singletonSerializer = -1;
 		}
-	}
-
-	internal static bool LoginOrder()
-	{
-		return ReadOrder == null;
 	}
 }

@@ -15,8 +15,6 @@ internal sealed class ReflectionRestoreScope : IDisposable
 
 	internal bool callbackMethod = true;
 
-	internal static ReflectionRestoreScope VerifyState;
-
 	public ReflectionRestoreScope(object instance, params string[] valuesToRestore)
 		: this(instance, wantcol: true, valuesToRestore)
 	{
@@ -76,10 +74,5 @@ internal sealed class ReflectionRestoreScope : IDisposable
 		{
 			m_ComposerMethod.TestPredicate(item2.Key, item2.Value);
 		}
-	}
-
-	internal static bool PublishState()
-	{
-		return VerifyState == null;
 	}
 }

@@ -34,8 +34,6 @@ internal class AutoSizedPopupWindow : EditorWindow
 
 	private static AutoSizedPopupWindow comparatorThread;
 
-	internal static AutoSizedPopupWindow WriteStatus;
-
 	private void QueryRecord(Action value, Action col, float pool = 100f, float reference2 = 100f, bool countinfo3 = true, bool isspec4 = true, bool rejectinfo5 = true)
 	{
 		codeThread = value;
@@ -160,10 +158,5 @@ internal class AutoSizedPopupWindow : EditorWindow
 		comparatorThread.QueryRecord(cont, temp, col2, param3, isselection4, dores5, isreference6);
 		comparatorThread.ShowUtility();
 		comparatorThread.position = task;
-	}
-
-	internal static bool RemoveStatus()
-	{
-		return (object)WriteStatus == null;
 	}
 }

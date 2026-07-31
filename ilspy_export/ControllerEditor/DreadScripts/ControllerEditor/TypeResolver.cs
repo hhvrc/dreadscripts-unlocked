@@ -13,8 +13,6 @@ internal class TypeResolver
 
 	private Type queuePolicy;
 
-	private static TypeResolver DefineDecorator;
-
 	[SpecialName]
 	public Type ChangeRecord()
 	{
@@ -44,10 +42,5 @@ internal class TypeResolver
 		queuePolicy = value;
 		resolverPolicy = value.FullName;
 		m_RulesPolicy = true;
-	}
-
-	internal static bool EnableDecorator()
-	{
-		return DefineDecorator == null;
 	}
 }

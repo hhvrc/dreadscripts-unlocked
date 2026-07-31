@@ -7,8 +7,6 @@ internal sealed class ShowMixedValueScope : IDisposable
 {
 	private readonly bool _RequestMethod;
 
-	internal static ShowMixedValueScope DefineState;
-
 	public ShowMixedValueScope(bool extractdef)
 	{
 		_RequestMethod = EditorGUI.showMixedValue;
@@ -24,10 +22,5 @@ internal sealed class ShowMixedValueScope : IDisposable
 	public void Dispose()
 	{
 		EditorGUI.showMixedValue = _RequestMethod;
-	}
-
-	internal static bool TestState()
-	{
-		return DefineState == null;
 	}
 }

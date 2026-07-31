@@ -19,8 +19,6 @@ internal sealed class GUIColorScope : IDisposable
 
 	private bool m_ParserThread;
 
-	internal static GUIColorScope SetupStatus;
-
 	private void CollectRecord()
 	{
 		m_ParserThread = true;
@@ -94,10 +92,5 @@ internal sealed class GUIColorScope : IDisposable
 				GUI.color = _MessageThread[2];
 			}
 		}
-	}
-
-	internal static bool ExcludeStatus()
-	{
-		return SetupStatus == null;
 	}
 }

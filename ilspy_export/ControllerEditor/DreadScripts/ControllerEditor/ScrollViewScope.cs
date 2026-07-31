@@ -7,8 +7,6 @@ internal sealed class ScrollViewScope : IDisposable
 {
 	private readonly bool methodThread;
 
-	internal static ScrollViewScope InstantiateStatus;
-
 	internal ScrollViewScope(ref Vector2 first)
 	{
 		try
@@ -28,10 +26,5 @@ internal sealed class ScrollViewScope : IDisposable
 		{
 			GUILayout.EndScrollView();
 		}
-	}
-
-	internal static bool RevertStatus()
-	{
-		return InstantiateStatus == null;
 	}
 }

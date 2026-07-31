@@ -22,8 +22,6 @@ internal class MenuSelector : EditorWindow
 
 	internal static VRCExpressionsMenu m_MerchantThread;
 
-	internal static MenuSelector MapStatus;
-
 	[SpecialName]
 	private VRCExpressionsMenu DefineRecord()
 	{
@@ -131,10 +129,5 @@ internal class MenuSelector : EditorWindow
 	private void VisitRecord(UnityEngine.Object first)
 	{
 		FindRecord(first as VRCExpressionsMenu);
-	}
-
-	internal static bool AddStatus()
-	{
-		return (object)MapStatus == null;
 	}
 }

@@ -13,34 +13,32 @@ internal sealed class GUIColorScope : IDisposable
 		All = 7
 	}
 
-	private readonly Color[] valueDic = new Color[3];
+	private readonly Color[] savedColors = new Color[3];
 
-	private readonly ColoringType _RepositoryDic;
+	private readonly ColoringType channels;
 
-	private bool m_RefDic;
+	private bool captured;
 
-	internal static GUIColorScope CloneDatabase;
-
-	private void ExcludeMapping()
+	private void Capture()
 	{
-		m_RefDic = true;
-		valueDic[0] = GUI.backgroundColor;
-		valueDic[1] = GUI.contentColor;
-		valueDic[2] = GUI.color;
+		captured = true;
+		savedColors[0] = GUI.backgroundColor;
+		savedColors[1] = GUI.contentColor;
+		savedColors[2] = GUI.color;
 	}
 
-	private void AddMapping(Color ident)
+	private void ApplyColor(Color ident)
 	{
-		ExcludeMapping();
-		if (_RepositoryDic.HasFlag(ColoringType.BG))
+		Capture();
+		if (channels.HasFlag(ColoringType.BG))
 		{
 			GUI.backgroundColor = ident;
 		}
-		if (_RepositoryDic.HasFlag(ColoringType.FG))
+		if (channels.HasFlag(ColoringType.FG))
 		{
 			GUI.contentColor = ident;
 		}
-		if (_RepositoryDic.HasFlag(ColoringType.General))
+		if (channels.HasFlag(ColoringType.General))
 		{
 			GUI.color = ident;
 		}
@@ -48,56 +46,51 @@ internal sealed class GUIColorScope : IDisposable
 
 	internal GUIColorScope(ColoringType first, Color reg)
 	{
-		_RepositoryDic = first;
-		AddMapping(reg);
+		channels = first;
+		ApplyColor(reg);
 	}
 
 	internal GUIColorScope(ColoringType item, bool removeb, Color control)
 	{
-		_RepositoryDic = item;
+		channels = item;
 		if (removeb)
 		{
-			AddMapping(control);
+			ApplyColor(control);
 		}
 	}
 
 	internal GUIColorScope(ColoringType i, bool ordclose, Color util, Color vis2)
 	{
-		_RepositoryDic = i;
-		AddMapping(ordclose ? util : vis2);
+		channels = i;
+		ApplyColor(ordclose ? util : vis2);
 	}
 
 	internal GUIColorScope(ColoringType key, int row_ord, params Color[] colors)
 	{
-		_RepositoryDic = key;
+		channels = key;
 		if (row_ord >= 0)
 		{
-			ExcludeMapping();
-			AddMapping(colors[row_ord]);
+			Capture();
+			ApplyColor(colors[row_ord]);
 		}
 	}
 
 	public void Dispose()
 	{
-		if (m_RefDic)
+		if (captured)
 		{
-			if (_RepositoryDic.HasFlag(ColoringType.BG))
+			if (channels.HasFlag(ColoringType.BG))
 			{
-				GUI.backgroundColor = valueDic[0];
+				GUI.backgroundColor = savedColors[0];
 			}
-			if (_RepositoryDic.HasFlag(ColoringType.FG))
+			if (channels.HasFlag(ColoringType.FG))
 			{
-				GUI.contentColor = valueDic[1];
+				GUI.contentColor = savedColors[1];
 			}
-			if (_RepositoryDic.HasFlag(ColoringType.General))
+			if (channels.HasFlag(ColoringType.General))
 			{
-				GUI.color = valueDic[2];
+				GUI.color = savedColors[2];
 			}
 		}
-	}
-
-	internal static bool ListDatabase()
-	{
-		return CloneDatabase == null;
 	}
 }

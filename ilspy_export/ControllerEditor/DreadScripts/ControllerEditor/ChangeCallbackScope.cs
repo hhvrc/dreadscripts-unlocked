@@ -9,8 +9,6 @@ internal sealed class ChangeCallbackScope : IDisposable
 
 	private readonly EditorGUI.ChangeCheckScope m_InitializerPolicy;
 
-	internal static ChangeCallbackScope GetDecorator;
-
 	internal ChangeCallbackScope(Action key)
 	{
 		m_MapperPolicy = key;
@@ -27,10 +25,5 @@ internal sealed class ChangeCallbackScope : IDisposable
 		{
 			m_InitializerPolicy.Dispose();
 		}
-	}
-
-	internal static bool VisitDecorator()
-	{
-		return GetDecorator == null;
 	}
 }

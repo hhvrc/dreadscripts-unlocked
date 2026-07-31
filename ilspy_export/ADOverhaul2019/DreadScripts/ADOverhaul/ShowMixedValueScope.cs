@@ -7,8 +7,6 @@ internal sealed class ShowMixedValueScope : IDisposable
 {
 	private readonly bool m_ExpressionDic;
 
-	internal static ShowMixedValueScope RestartDatabase;
-
 	public ShowMixedValueScope(bool isv)
 	{
 		m_ExpressionDic = EditorGUI.showMixedValue;
@@ -24,10 +22,5 @@ internal sealed class ShowMixedValueScope : IDisposable
 	public void Dispose()
 	{
 		EditorGUI.showMixedValue = m_ExpressionDic;
-	}
-
-	internal static bool MoveDatabase()
-	{
-		return RestartDatabase == null;
 	}
 }

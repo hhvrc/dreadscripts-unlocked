@@ -13,8 +13,6 @@ internal sealed class SemVer
 	[CompilerGenerated]
 	private readonly int _PageSerializer;
 
-	private static SemVer PatchOrder;
-
 	[SpecialName]
 	[CompilerGenerated]
 	internal int PrintProcess()
@@ -127,10 +125,5 @@ internal sealed class SemVer
 	public override string ToString()
 	{
 		return $"{PrintProcess()}.{ViewProcess()}.{ListProcess()}";
-	}
-
-	internal static bool RemoveOrder()
-	{
-		return (object)PatchOrder == null;
 	}
 }

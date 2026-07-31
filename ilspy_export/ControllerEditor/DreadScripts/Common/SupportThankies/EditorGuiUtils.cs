@@ -8,8 +8,6 @@ internal static class EditorGuiUtils
 {
 	private static Texture2D facade;
 
-	internal static EditorGuiUtils FillIndexer;
-
 	internal static T DestroyWrapper<T>(this T[] ident)
 	{
 		return ident[UnityEngine.Random.Range(0, ident.Length)];
@@ -175,10 +173,5 @@ internal static class EditorGuiUtils
 			array[i] = (byte)first[i];
 		}
 		return array;
-	}
-
-	internal static bool DeleteIndexer()
-	{
-		return FillIndexer == null;
 	}
 }

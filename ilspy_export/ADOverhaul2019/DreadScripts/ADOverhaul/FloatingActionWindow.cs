@@ -34,8 +34,6 @@ internal class FloatingActionWindow : EditorWindow
 
 	private static FloatingActionWindow _TestsTemplate;
 
-	internal static FloatingActionWindow PostFactory;
-
 	private void VisitAccount(Action key, Action vis, float field = 100f, float selection2 = 100f, bool ignorepol3 = true, bool moveconfig4 = true, bool issecond5 = true)
 	{
 		_IteratorTemplate = key;
@@ -163,10 +161,5 @@ internal class FloatingActionWindow : EditorWindow
 		_TestsTemplate.VisitAccount(ord, res, caller2, map3, isresult4, outputcont5, isvisitor6);
 		_TestsTemplate.ShowUtility();
 		_TestsTemplate.position = init;
-	}
-
-	internal static bool CallFactory()
-	{
-		return (object)PostFactory == null;
 	}
 }

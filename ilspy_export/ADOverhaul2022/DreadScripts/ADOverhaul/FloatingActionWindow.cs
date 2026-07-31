@@ -34,8 +34,6 @@ internal class FloatingActionWindow : EditorWindow
 
 	private static FloatingActionWindow productSerializer;
 
-	internal static FloatingActionWindow LogoutOrder;
-
 	private void CheckProcess(Action key, Action pol, float pool = 100f, float init2 = 100f, bool forcet3 = true, bool isvisitor4 = true, bool extractpol5 = true)
 	{
 		_RegSerializer = key;
@@ -163,10 +161,5 @@ internal class FloatingActionWindow : EditorWindow
 		productSerializer.CheckProcess(col, proc, item2, second3, isattr4, istask5, usecol6);
 		productSerializer.ShowUtility();
 		productSerializer.position = value;
-	}
-
-	internal static bool CreateOrder()
-	{
-		return (object)LogoutOrder == null;
 	}
 }

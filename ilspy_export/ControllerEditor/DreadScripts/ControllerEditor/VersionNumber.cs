@@ -13,8 +13,6 @@ internal sealed class VersionNumber
 	[CompilerGenerated]
 	private readonly int m_RefServer;
 
-	private static VersionNumber TestSystem;
-
 	[SpecialName]
 	[CompilerGenerated]
 	internal int TestConnection()
@@ -127,10 +125,5 @@ internal sealed class VersionNumber
 	public override string ToString()
 	{
 		return $"{TestConnection()}.{ValidateConnection()}.{RateConnection()}";
-	}
-
-	internal static bool IncludeSystem()
-	{
-		return (object)TestSystem == null;
 	}
 }

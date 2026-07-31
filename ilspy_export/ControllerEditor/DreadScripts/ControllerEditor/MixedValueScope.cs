@@ -7,8 +7,6 @@ internal sealed class MixedValueScope : IDisposable
 {
 	private readonly bool m_ItemThread;
 
-	internal static MixedValueScope CompareStatus;
-
 	public MixedValueScope(bool isinstance)
 	{
 		m_ItemThread = EditorGUI.showMixedValue;
@@ -24,10 +22,5 @@ internal sealed class MixedValueScope : IDisposable
 	public void Dispose()
 	{
 		EditorGUI.showMixedValue = m_ItemThread;
-	}
-
-	internal static bool PublishStatus()
-	{
-		return CompareStatus == null;
 	}
 }

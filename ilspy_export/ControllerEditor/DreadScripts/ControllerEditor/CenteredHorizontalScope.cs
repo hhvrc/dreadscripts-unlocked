@@ -6,8 +6,6 @@ namespace DreadScripts.ControllerEditor;
 
 internal class CenteredHorizontalScope : IDisposable
 {
-	private static CenteredHorizontalScope ConnectDecorator;
-
 	public CenteredHorizontalScope()
 	{
 		EditorGUILayout.BeginHorizontal();
@@ -24,10 +22,5 @@ internal class CenteredHorizontalScope : IDisposable
 	{
 		GUILayout.FlexibleSpace();
 		EditorGUILayout.EndHorizontal();
-	}
-
-	internal static bool ViewDecorator()
-	{
-		return ConnectDecorator == null;
 	}
 }

@@ -8,8 +8,6 @@ internal class TemporaryTransform
 
 	private readonly Transform m_ListenerPolicy;
 
-	internal static TemporaryTransform PrintDecorator;
-
 	internal TemporaryTransform(Transform info)
 		: this(info.position, info.rotation, info.localScale, info.parent)
 	{
@@ -39,10 +37,5 @@ internal class TemporaryTransform
 	public static implicit operator Transform(TemporaryTransform instance)
 	{
 		return instance.m_ListenerPolicy;
-	}
-
-	internal static bool ResolveDecorator()
-	{
-		return PrintDecorator == null;
 	}
 }

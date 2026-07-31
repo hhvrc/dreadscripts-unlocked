@@ -13,34 +13,32 @@ internal sealed class GUIColorScope : IDisposable
 		All = 7
 	}
 
-	private readonly Color[] _ParamMethod = new Color[3];
+	private readonly Color[] savedColors = new Color[3];
 
-	private readonly ColoringType m_PrototypeMethod;
+	private readonly ColoringType channels;
 
-	private bool m_BaseMethod;
+	private bool captured;
 
-	private static GUIColorScope InvokeState;
-
-	private void AddIterator()
+	private void Capture()
 	{
-		m_BaseMethod = true;
-		_ParamMethod[0] = GUI.backgroundColor;
-		_ParamMethod[1] = GUI.contentColor;
-		_ParamMethod[2] = GUI.color;
+		captured = true;
+		savedColors[0] = GUI.backgroundColor;
+		savedColors[1] = GUI.contentColor;
+		savedColors[2] = GUI.color;
 	}
 
-	private void ValidateIterator(Color def)
+	private void ApplyColor(Color def)
 	{
-		AddIterator();
-		if (m_PrototypeMethod.HasFlag(ColoringType.BG))
+		Capture();
+		if (channels.HasFlag(ColoringType.BG))
 		{
 			GUI.backgroundColor = def;
 		}
-		if (m_PrototypeMethod.HasFlag(ColoringType.FG))
+		if (channels.HasFlag(ColoringType.FG))
 		{
 			GUI.contentColor = def;
 		}
-		if (m_PrototypeMethod.HasFlag(ColoringType.General))
+		if (channels.HasFlag(ColoringType.General))
 		{
 			GUI.color = def;
 		}
@@ -48,56 +46,51 @@ internal sealed class GUIColorScope : IDisposable
 
 	internal GUIColorScope(ColoringType setup, Color token)
 	{
-		m_PrototypeMethod = setup;
-		ValidateIterator(token);
+		channels = setup;
+		ApplyColor(token);
 	}
 
 	internal GUIColorScope(ColoringType res, bool comparepred, Color c)
 	{
-		m_PrototypeMethod = res;
+		channels = res;
 		if (comparepred)
 		{
-			ValidateIterator(c);
+			ApplyColor(c);
 		}
 	}
 
 	internal GUIColorScope(ColoringType v, bool ignorecaller, Color util, Color map2)
 	{
-		m_PrototypeMethod = v;
-		ValidateIterator(ignorecaller ? util : map2);
+		channels = v;
+		ApplyColor(ignorecaller ? util : map2);
 	}
 
 	internal GUIColorScope(ColoringType i, int positionmap, params Color[] colors)
 	{
-		m_PrototypeMethod = i;
+		channels = i;
 		if (positionmap >= 0)
 		{
-			AddIterator();
-			ValidateIterator(colors[positionmap]);
+			Capture();
+			ApplyColor(colors[positionmap]);
 		}
 	}
 
 	public void Dispose()
 	{
-		if (m_BaseMethod)
+		if (captured)
 		{
-			if (m_PrototypeMethod.HasFlag(ColoringType.BG))
+			if (channels.HasFlag(ColoringType.BG))
 			{
-				GUI.backgroundColor = _ParamMethod[0];
+				GUI.backgroundColor = savedColors[0];
 			}
-			if (m_PrototypeMethod.HasFlag(ColoringType.FG))
+			if (channels.HasFlag(ColoringType.FG))
 			{
-				GUI.contentColor = _ParamMethod[1];
+				GUI.contentColor = savedColors[1];
 			}
-			if (m_PrototypeMethod.HasFlag(ColoringType.General))
+			if (channels.HasFlag(ColoringType.General))
 			{
-				GUI.color = _ParamMethod[2];
+				GUI.color = savedColors[2];
 			}
 		}
-	}
-
-	internal static bool ConcatState()
-	{
-		return InvokeState == null;
 	}
 }

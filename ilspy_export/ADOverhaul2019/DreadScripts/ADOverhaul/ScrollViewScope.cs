@@ -7,8 +7,6 @@ internal sealed class ScrollViewScope : IDisposable
 {
 	private readonly bool m_StubDic;
 
-	internal static ScrollViewScope CreateDatabase;
-
 	internal ScrollViewScope(ref Vector2 spec)
 	{
 		try
@@ -28,10 +26,5 @@ internal sealed class ScrollViewScope : IDisposable
 		{
 			GUILayout.EndScrollView();
 		}
-	}
-
-	internal static bool CancelDatabase()
-	{
-		return CreateDatabase == null;
 	}
 }

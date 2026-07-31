@@ -10,8 +10,6 @@ internal sealed class SelectionPool
 
 	internal Action composerServer;
 
-	private static SelectionPool PrintSystem;
-
 	internal SelectionPool(int setup, Action cfg = null)
 	{
 		CreateConnection(setup);
@@ -85,10 +83,5 @@ internal sealed class SelectionPool
 			m_ParameterServer = -1;
 			composerServer?.Invoke();
 		}
-	}
-
-	internal static bool ResolveSystem()
-	{
-		return PrintSystem == null;
 	}
 }

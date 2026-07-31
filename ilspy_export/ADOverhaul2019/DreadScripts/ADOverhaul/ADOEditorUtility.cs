@@ -67,8 +67,6 @@ internal static class ADOEditorUtility
 
 		private bool pageTemplate;
 
-		private static ResizeHandle AssetFactory;
-
 		[SpecialName]
 		public bool GetRequest()
 		{
@@ -499,11 +497,6 @@ internal static class ADOEditorUtility
 			}
 			return 0.5f;
 		}
-
-		internal static bool ConnectFactory()
-		{
-			return AssetFactory == null;
-		}
 	}
 
 	internal class SceneViewPanel : IDisposable
@@ -513,8 +506,6 @@ internal static class ADOEditorUtility
 		public readonly bool _AttrTemplate = true;
 
 		private readonly Rect _RecordTemplate;
-
-		private static SceneViewPanel EnableFactory;
 
 		public SceneViewPanel(SceneView spec, string second, float consumer, int key2, float setup3 = 20f, PositionFlag col4 = PositionFlag.BottomRight, ResizeHandle def5 = null)
 			: this(spec, consumer, key2 + 2, setup3, col4, def5)
@@ -586,11 +577,6 @@ internal static class ADOEditorUtility
 			result2.width = num;
 			result2.height = num2;
 			return result2;
-		}
-
-		internal static bool ForgotFactory()
-		{
-			return EnableFactory == null;
 		}
 	}
 
@@ -666,8 +652,6 @@ internal static class ADOEditorUtility
 
 		internal readonly GUIContent bridgeTemplate = new GUIContent("Tooltips", "Displays tooltips on how to use the current tool");
 
-		private static Contents VisitFactory;
-
 		internal Contents()
 		{
 			_AnnotationTemplate.tooltip = "Scene view clicks are allowed while editing.";
@@ -676,11 +660,6 @@ internal static class ADOEditorUtility
 			_FacadeTemplate.tooltip = "Copy from another component of the same type";
 			codeTemplate.tooltip = "Select through the scene view";
 			m_PrinterTemplate.tooltip = "Edit through the scene view";
-		}
-
-		internal static bool DeleteFactory()
-		{
-			return VisitFactory == null;
 		}
 	}
 
@@ -852,13 +831,6 @@ internal static class ADOEditorUtility
 		};
 
 		internal readonly GUIStyle dicDic = new GUIStyle("RL FooterButton");
-
-		internal static Styles RevertFactory;
-
-		internal static bool CalcCandidate()
-		{
-			return RevertFactory == null;
-		}
 	}
 
 	internal enum EventCommands
@@ -961,8 +933,6 @@ internal static class ADOEditorUtility
 		private bool _InitializerDic;
 
 		private bool m_InfoDic;
-
-		internal static BannerDownloader FindCandidate;
 
 		[SpecialName]
 		internal Texture2D ChangeWrapper()
@@ -1127,11 +1097,6 @@ internal static class ADOEditorUtility
 			}
 			return true;
 		}
-
-		internal static bool SetCandidate()
-		{
-			return FindCandidate == null;
-		}
 	}
 
 	internal sealed class ReadableTexture : IDisposable
@@ -1139,8 +1104,6 @@ internal static class ADOEditorUtility
 		internal bool workerDic;
 
 		internal Texture2D m_ContainerDic;
-
-		private static ReadableTexture FillCandidate;
 
 		internal ReadableTexture(Texture2D param)
 		{
@@ -1179,11 +1142,6 @@ internal static class ADOEditorUtility
 		{
 			return ident.m_ContainerDic;
 		}
-
-		internal static bool SelectCandidate()
-		{
-			return FillCandidate == null;
-		}
 	}
 
 	internal sealed class CachedIcon
@@ -1197,8 +1155,6 @@ internal static class ADOEditorUtility
 		private readonly string factoryDic;
 
 		private readonly string m_TagDic;
-
-		private static CachedIcon CollectCandidate;
 
 		[SpecialName]
 		private GUIContent StopAlgo()
@@ -1305,11 +1261,6 @@ internal static class ADOEditorUtility
 		{
 			return last.StopAlgo();
 		}
-
-		internal static bool VerifyCandidate()
-		{
-			return CollectCandidate == null;
-		}
 	}
 
 	internal struct ShapeSnapshot
@@ -1412,8 +1363,6 @@ internal static class ADOEditorUtility
 		internal readonly int registryDic;
 
 		internal List<List<BoneNode>> _StrategyDic;
-
-		internal static BoneChainTree CloneCandidate;
 
 		[SpecialName]
 		internal IEnumerable<Matrix4x4> CancelAlgo()
@@ -1544,11 +1493,6 @@ internal static class ADOEditorUtility
 				}
 			}
 		}
-
-		internal static bool ListCandidate()
-		{
-			return CloneCandidate == null;
-		}
 	}
 
 	internal class BoneNode
@@ -1570,8 +1514,6 @@ internal static class ADOEditorUtility
 		internal BoneNode stateDic;
 
 		internal BoneNode m_HelperDic;
-
-		internal static BoneNode RestartCandidate;
 
 		[SpecialName]
 		internal Vector3 ResetAlgo()
@@ -1598,11 +1540,6 @@ internal static class ADOEditorUtility
 				return 1f;
 			}
 			return key.Evaluate(InvokeAlgo());
-		}
-
-		internal static bool MoveCandidate()
-		{
-			return RestartCandidate == null;
 		}
 	}
 
@@ -2194,8 +2131,6 @@ internal static class ADOEditorUtility
 		new PhysBoneParameter("_Squish", AnimatorControllerParameterType.Float, "param_SquishValue"),
 		new PhysBoneParameter("_Angle", AnimatorControllerParameterType.Float, "param_AngleValue")
 	};
-
-	internal static ADOEditorUtility InterruptFactory;
 
 	internal static bool PrintAccount(this PositionFlag setup)
 	{
@@ -4229,10 +4164,5 @@ internal static class ADOEditorUtility
 	static MethodInfo QueryEvent(Type type_0, string info, BindingFlags pol, Binder serv, Type[] res2, ParameterModifier[] cont3)
 	{
 		return type_0.GetMethod(info, pol, serv, res2, cont3);
-	}
-
-	internal static bool UpdateFactory()
-	{
-		return InterruptFactory == null;
 	}
 }

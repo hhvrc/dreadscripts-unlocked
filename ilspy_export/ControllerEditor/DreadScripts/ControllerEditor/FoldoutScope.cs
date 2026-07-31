@@ -10,8 +10,6 @@ internal class FoldoutScope : IDisposable
 
 	private readonly IndentedLayoutScope m_ProcThread;
 
-	private static FoldoutScope RunDecorator;
-
 	public FoldoutScope(bool vopen)
 		: this(ref vopen, iscfg: false, null)
 	{
@@ -62,10 +60,5 @@ internal class FoldoutScope : IDisposable
 	public static implicit operator bool(FoldoutScope last)
 	{
 		return last._ConfigurationThread;
-	}
-
-	internal static bool ComputeDecorator()
-	{
-		return RunDecorator == null;
 	}
 }
