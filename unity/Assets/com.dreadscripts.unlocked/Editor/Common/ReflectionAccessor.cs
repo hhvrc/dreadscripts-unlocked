@@ -126,9 +126,11 @@ namespace DreadScripts.Common
         /// <summary>Writes a field or property. Returns false if no member of that name exists.</summary>
         public bool TrySetValue(string name, object value)
         {
-            // The shipped build fell through from the property branch into an unconditional
-            // FieldInfo.SetValue, so writing to a property threw NullReferenceException instead of
-            // setting it. Each branch returns on its own here.
+            // The ADOverhaul build fell through from the property branch into an unconditional
+            // FieldInfo.SetValue on the failed out-var, so writing to a property threw
+            // NullReferenceException instead of setting it. ControllerEditor's own copy of this
+            // helper (ObjectReflector.ReflectContext) returns from each branch and is correct; the
+            // behaviour below follows that one. Each branch returns on its own here.
             if (cache.fields.TryGetValue(name, out var field))
             {
                 field.SetValue(target, value);

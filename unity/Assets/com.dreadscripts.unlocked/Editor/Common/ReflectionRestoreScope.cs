@@ -64,6 +64,11 @@ namespace DreadScripts.Common
             // List<T>(IEnumerable<T>) constructor, which reflection rejects for any T other than
             // object, so this branch always threw. Filling an empty list element by element does
             // what was meant and works for every T.
+            //
+            // The shipped condition also tested `|| genericTypeDefinition == typeof(Array)`, which
+            // is dropped here: Array is not a generic type, so GetGenericTypeDefinition() can never
+            // equal it and the disjunct was unreachable. Arrays therefore fall through to the
+            // by-reference return below, in the shipped build as here.
             Type type = value.GetType();
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {

@@ -2,6 +2,13 @@
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/FloatingActionWindow.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/AutoSizedPopupWindow.cs
+//
+// Deliberately narrowed signature: the shipped entry point was
+//   Open(Rect, Action, Action, float = 100, float = 100, bool = true, bool = true, bool = true)
+// whose trailing five arguments were stored into fields that no code in either assembly ever
+// reads, alongside a sixth such field that is never even written. Show(Rect, Action, Action)
+// drops them. The shipped Open has no call sites in either assembly, so nothing depended on the
+// wider signature.
 
 using System;
 using UnityEditor;
