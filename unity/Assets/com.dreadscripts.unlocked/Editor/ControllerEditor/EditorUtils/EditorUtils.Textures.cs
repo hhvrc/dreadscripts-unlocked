@@ -1,11 +1,13 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
-//   static CloneList -> TrimTransparentBorder, lines 7424-7494
+//   static CloneList   -> TrimTransparentBorder, lines 7424-7494
+//   static ReflectList -> ColorTexture,          line 7339
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 // Audit status: VERIFIED against export
 //
-// Partial in progress: the remaining texture helpers in the outer class body (solid-colour
-// textures, the readback used by the colour picker) have not been ported yet.
+// Partial in progress: the remaining texture helpers in the outer class body -- the shared
+// single-pixel scratch texture (LoginList, line 7324), the bordered/sized swatches (DeleteList and
+// CreateList, lines 7349-7354) and the readback used by the colour picker -- are not ported yet.
 
 using System;
 using UnityEngine;
@@ -14,6 +16,32 @@ namespace DreadScripts.ControllerEditor
 {
     internal static partial class EditorUtils
     {
+        /// <summary>
+        /// A 1x1 texture of a single colour, for use as a flat GUIStyle background.
+        /// </summary>
+        /// <remarks>
+        /// Point filtering and no anisotropy because the texture is always stretched over a rect and
+        /// there is nothing to interpolate; leaving the defaults would cost mip generation for a
+        /// single pixel.
+        /// <para>
+        /// Every call allocates a new texture and nothing owns the result, so a caller that invokes
+        /// this per frame leaks one texture per frame. The shipped build had no cache here and this
+        /// port keeps that behaviour; call it once from a field or style initialiser, not from OnGUI.
+        /// </para>
+        /// </remarks>
+        internal static Texture2D ColorTexture(Color color)
+        {
+            Texture2D texture = new Texture2D(1, 1, TextureFormat.RGBA32, mipChain: false)
+            {
+                filterMode = FilterMode.Point,
+                anisoLevel = 0
+            };
+
+            texture.SetPixel(0, 0, color);
+            texture.Apply();
+            return texture;
+        }
+
         /// <summary>
         /// Crops a texture to the bounding box of its non-transparent pixels, leaving a border of
         /// <paramref name="padding"/> transparent pixels.
