@@ -7,64 +7,64 @@ namespace DreadScripts.ControllerEditor;
 
 internal class RenameOverlayWrapper
 {
-	private static bool _VisitorProperty;
+	private static bool initialized;
 
-	private static Type m_AlgoProperty;
+	private static Type renameOverlayType;
 
-	private static MethodInfo m_MapperProperty;
+	private static MethodInfo beginRenameMethod;
 
-	private static MethodInfo initializerProperty;
+	private static MethodInfo endRenameMethod;
 
-	private static MethodInfo definitionProperty;
+	private static MethodInfo isRenamingMethod;
 
-	private static MethodInfo m_RegProperty;
+	private static MethodInfo onGUIMethod;
 
-	private static MethodInfo _TestsProperty;
+	private static MethodInfo onEventMethod;
 
-	private static MethodInfo _PropertyProperty;
+	private static MethodInfo clearMethod;
 
-	private static FieldInfo _ProcessorProperty;
+	private static FieldInfo editFieldRectField;
 
-	private static FieldInfo _ObserverProperty;
+	private static FieldInfo userAcceptedRenameField;
 
-	private static FieldInfo _ServerProperty;
+	private static FieldInfo originalNameField;
 
-	private static FieldInfo _ThreadProperty;
+	private static FieldInfo nameField;
 
-	private static FieldInfo _PolicyProperty;
+	private static FieldInfo userDataField;
 
-	private static FieldInfo m_SerializerProperty;
+	private static FieldInfo isWaitingForDelayField;
 
-	private object pageProperty;
+	private object instance;
 
-	private bool m_ResolverProperty;
+	private bool instanceResolved;
 
-	private readonly Func<object> m_PredicateProperty;
+	private readonly Func<object> instanceGetter;
 
-	internal Action<bool> _RulesProperty;
+	internal Action<bool> onEndRename;
 
-	private static void FlushSerializer()
+	private static void EnsureInitialized()
 	{
-		if (_VisitorProperty)
+		if (initialized)
 		{
 			return;
 		}
-		_VisitorProperty = true;
+		initialized = true;
 		try
 		{
-			m_AlgoProperty = EditorUtils.FillRules("UnityEditor.RenameOverlay, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-			m_MapperProperty = m_AlgoProperty.GetMethod("BeginRename");
-			initializerProperty = m_AlgoProperty.GetMethod("EndRename");
-			definitionProperty = m_AlgoProperty.GetMethod("IsRenaming");
-			m_RegProperty = m_AlgoProperty.GetMethod("OnGUI", new Type[1] { typeof(GUIStyle) });
-			_TestsProperty = m_AlgoProperty.GetMethod("OnEvent");
-			_PropertyProperty = m_AlgoProperty.GetMethod("Clear");
-			_ProcessorProperty = m_AlgoProperty.RestartList("m_EditFieldRect");
-			_ObserverProperty = m_AlgoProperty.RestartList("m_UserAcceptedRename");
-			_ServerProperty = m_AlgoProperty.RestartList("m_OriginalName");
-			_ThreadProperty = m_AlgoProperty.RestartList("m_Name");
-			_PolicyProperty = m_AlgoProperty.RestartList("m_UserData");
-			m_SerializerProperty = m_AlgoProperty.RestartList("m_IsWaitingForDelay");
+			renameOverlayType = EditorUtils.FillRules("UnityEditor.RenameOverlay, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+			beginRenameMethod = renameOverlayType.GetMethod("BeginRename");
+			endRenameMethod = renameOverlayType.GetMethod("EndRename");
+			isRenamingMethod = renameOverlayType.GetMethod("IsRenaming");
+			onGUIMethod = renameOverlayType.GetMethod("OnGUI", new Type[1] { typeof(GUIStyle) });
+			onEventMethod = renameOverlayType.GetMethod("OnEvent");
+			clearMethod = renameOverlayType.GetMethod("Clear");
+			editFieldRectField = renameOverlayType.RestartList("m_EditFieldRect");
+			userAcceptedRenameField = renameOverlayType.RestartList("m_UserAcceptedRename");
+			originalNameField = renameOverlayType.RestartList("m_OriginalName");
+			nameField = renameOverlayType.RestartList("m_Name");
+			userDataField = renameOverlayType.RestartList("m_UserData");
+			isWaitingForDelayField = renameOverlayType.RestartList("m_IsWaitingForDelay");
 		}
 		catch (Exception)
 		{
@@ -75,157 +75,157 @@ internal class RenameOverlayWrapper
 
 	internal RenameOverlayWrapper()
 	{
-		FlushSerializer();
-		DestroySerializer(Activator.CreateInstance(m_AlgoProperty));
+		EnsureInitialized();
+		Instance(Activator.CreateInstance(renameOverlayType));
 	}
 
 	internal RenameOverlayWrapper(object value)
 	{
-		FlushSerializer();
-		DestroySerializer(value);
+		EnsureInitialized();
+		Instance(value);
 	}
 
 	internal RenameOverlayWrapper(Func<object> i)
 	{
-		m_PredicateProperty = i;
+		instanceGetter = i;
 	}
 
-	internal object ConnectSerializer()
+	internal object ResolveInstance()
 	{
-		FlushSerializer();
-		pageProperty = m_PredicateProperty?.Invoke();
-		m_ResolverProperty = true;
-		return pageProperty;
+		EnsureInitialized();
+		instance = instanceGetter?.Invoke();
+		instanceResolved = true;
+		return instance;
 	}
 
 	[SpecialName]
-	internal object RateSerializer()
+	internal object Instance()
 	{
-		if (pageProperty != null || m_ResolverProperty)
+		if (instance != null || instanceResolved)
 		{
-			return pageProperty;
+			return instance;
 		}
-		FlushSerializer();
-		ConnectSerializer();
-		return pageProperty;
+		EnsureInitialized();
+		ResolveInstance();
+		return instance;
 	}
 
 	[SpecialName]
-	internal void DestroySerializer(object reference)
+	internal void Instance(object reference)
 	{
-		pageProperty = reference;
+		instance = reference;
 	}
 
 	[SpecialName]
-	internal Rect CalcSerializer()
+	internal Rect EditFieldRect()
 	{
-		return (Rect)_ProcessorProperty.GetValue(RateSerializer());
+		return (Rect)editFieldRectField.GetValue(Instance());
 	}
 
 	[SpecialName]
-	internal void IncludeSerializer(Rect def)
+	internal void EditFieldRect(Rect def)
 	{
-		_ProcessorProperty.SetValue(RateSerializer(), def);
+		editFieldRectField.SetValue(Instance(), def);
 	}
 
 	[SpecialName]
-	internal bool CloneSerializer()
+	internal bool UserAcceptedRename()
 	{
-		return (bool)_ObserverProperty.GetValue(RateSerializer());
+		return (bool)userAcceptedRenameField.GetValue(Instance());
 	}
 
 	[SpecialName]
-	internal bool ReflectSerializer()
+	internal bool IsRenaming()
 	{
-		object obj = RateSerializer();
-		return (bool)definitionProperty.Invoke(obj, null);
+		object obj = Instance();
+		return (bool)isRenamingMethod.Invoke(obj, null);
 	}
 
 	[SpecialName]
-	internal int CreateSerializer()
+	internal int UserData()
 	{
-		return (int)_PolicyProperty.GetValue(RateSerializer());
+		return (int)userDataField.GetValue(Instance());
 	}
 
 	[SpecialName]
-	internal void NewSerializer(int key_Position)
+	internal void UserData(int key_Position)
 	{
-		_PolicyProperty.SetValue(RateSerializer(), key_Position);
+		userDataField.SetValue(Instance(), key_Position);
 	}
 
 	[SpecialName]
-	internal bool ViewSerializer()
+	internal bool IsWaitingForDelay()
 	{
-		return (bool)m_SerializerProperty.GetValue(RateSerializer());
+		return (bool)isWaitingForDelayField.GetValue(Instance());
 	}
 
 	[SpecialName]
-	internal void CollectSerializer(bool containslast)
+	internal void IsWaitingForDelay(bool containslast)
 	{
-		m_SerializerProperty.SetValue(RateSerializer(), containslast);
+		isWaitingForDelayField.SetValue(Instance(), containslast);
 	}
 
 	[SpecialName]
-	internal string ListSerializer()
+	internal string Name()
 	{
-		return (string)_ThreadProperty.GetValue(RateSerializer());
+		return (string)nameField.GetValue(Instance());
 	}
 
 	[SpecialName]
-	internal void VerifySerializer(string key)
+	internal void Name(string key)
 	{
-		_ThreadProperty.SetValue(RateSerializer(), key);
+		nameField.SetValue(Instance(), key);
 	}
 
 	[SpecialName]
-	internal string WriteSerializer()
+	internal string OriginalName()
 	{
-		return (string)_ServerProperty.GetValue(RateSerializer());
+		return (string)originalNameField.GetValue(Instance());
 	}
 
-	internal bool CalculateSerializer(Rect first, string ivk, int minhelper, float map2)
+	internal bool BeginRename(Rect first, string ivk, int minhelper, float map2)
 	{
-		bool result = TestSerializer(ivk, minhelper, map2);
-		object obj = RateSerializer();
-		_ProcessorProperty.SetValue(obj, first);
+		bool result = BeginRename(ivk, minhelper, map2);
+		object obj = Instance();
+		editFieldRectField.SetValue(obj, first);
 		return result;
 	}
 
-	internal bool TestSerializer(string task, int indexvisitor, float helper)
+	internal bool BeginRename(string task, int indexvisitor, float helper)
 	{
-		object obj = RateSerializer();
-		return (bool)m_MapperProperty.Invoke(obj, new object[3] { task, indexvisitor, helper });
+		object obj = Instance();
+		return (bool)beginRenameMethod.Invoke(obj, new object[3] { task, indexvisitor, helper });
 	}
 
-	internal void MapSerializer(bool isconfig, bool iscfg = true)
+	internal void EndRename(bool isconfig, bool iscfg = true)
 	{
-		if (ReflectSerializer())
+		if (IsRenaming())
 		{
-			object obj = RateSerializer();
-			initializerProperty.Invoke(obj, new object[1] { isconfig });
-			_RulesProperty?.Invoke(isconfig);
+			object obj = Instance();
+			endRenameMethod.Invoke(obj, new object[1] { isconfig });
+			onEndRename?.Invoke(isconfig);
 			if (iscfg)
 			{
-				CustomizeSerializer();
+				Clear();
 			}
 		}
 	}
 
 	internal bool OnGUI(GUIStyle textFieldStyle = null)
 	{
-		object obj = RateSerializer();
-		return (bool)m_RegProperty.Invoke(obj, new object[1] { textFieldStyle });
+		object obj = Instance();
+		return (bool)onGUIMethod.Invoke(obj, new object[1] { textFieldStyle });
 	}
 
-	internal bool ValidateSerializer()
+	internal bool OnEvent()
 	{
-		object obj = RateSerializer();
-		return (bool)_TestsProperty.Invoke(obj, null);
+		object obj = Instance();
+		return (bool)onEventMethod.Invoke(obj, null);
 	}
 
-	internal void CustomizeSerializer()
+	internal void Clear()
 	{
-		object obj = RateSerializer();
-		_PropertyProperty.Invoke(obj, null);
+		object obj = Instance();
+		clearMethod.Invoke(obj, null);
 	}
 }

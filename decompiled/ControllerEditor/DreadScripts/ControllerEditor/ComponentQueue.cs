@@ -38,35 +38,35 @@ internal class ComponentQueue
 
 		internal void ComputePage()
 		{
-			if (expressionProperty.RevertSerializer() != -1)
+			if (expressionProperty.ComponentIndex() != -1)
 			{
-				expressionProperty.m_HelperProperty = (from b in AnimationUtility.GetAnimatableBindings(expressionProperty.ManageSerializer(), expressionProperty.ManageSerializer())
-					where b.type == expressionProperty._RecordProperty
+				expressionProperty.propertyNames = (from b in AnimationUtility.GetAnimatableBindings(expressionProperty.GameObject(), expressionProperty.GameObject())
+					where b.type == expressionProperty.targetType
 					select b).Select(_003C_003Ec.m_WatcherProperty.PublishPage).OrderBy(_003C_003Ec.m_WatcherProperty.PopPage).ToArray();
 			}
 			else
 			{
-				expressionProperty.m_HelperProperty = new string[1] { "m_IsActive" };
+				expressionProperty.propertyNames = new string[1] { "m_IsActive" };
 			}
-			if (expressionProperty._ConsumerProperty >= expressionProperty.m_HelperProperty.Length)
+			if (expressionProperty.propertyIndex >= expressionProperty.propertyNames.Length)
 			{
-				expressionProperty._ConsumerProperty = Mathf.Max(0, expressionProperty.m_HelperProperty.Length - 1);
+				expressionProperty.propertyIndex = Mathf.Max(0, expressionProperty.propertyNames.Length - 1);
 			}
 		}
 
 		internal bool MovePage(EditorCurveBinding b)
 		{
-			return b.type == expressionProperty._RecordProperty;
+			return b.type == expressionProperty.targetType;
 		}
 
 		internal bool ConcatPage()
 		{
-			int num = expressionProperty.m_HelperProperty.FindResolver((string s) => s == m_SystemProperty);
+			int num = expressionProperty.propertyNames.FindResolver((string s) => s == m_SystemProperty);
 			if (num < 0)
 			{
 				return false;
 			}
-			expressionProperty._ConsumerProperty = num;
+			expressionProperty.propertyIndex = num;
 			return true;
 		}
 
@@ -76,23 +76,23 @@ internal class ComponentQueue
 		}
 	}
 
-	private GameObject errorProperty;
+	private GameObject gameObject;
 
-	public Component[] m_SetterProperty;
+	public Component[] components;
 
-	public int _ConnectionProperty = -1;
+	public int componentIndex = -1;
 
-	public UnityEngine.Object contextProperty;
+	public UnityEngine.Object target;
 
-	public Type _RecordProperty;
+	public Type targetType;
 
-	public string[] m_HelperProperty;
+	public string[] propertyNames;
 
-	public int _ConsumerProperty;
+	public int propertyIndex;
 
-	public float m_AdapterProperty = 1f;
+	public float value = 1f;
 
-	internal static readonly Type[] _InterpreterProperty = new Type[3]
+	internal static readonly Type[] toggleableTypes = new Type[3]
 	{
 		typeof(GameObject),
 		typeof(Behaviour),
@@ -100,179 +100,179 @@ internal class ComponentQueue
 	};
 
 	[SpecialName]
-	public bool RegisterSerializer()
+	public bool IsValid()
 	{
-		if ((bool)errorProperty && _ConnectionProperty < m_SetterProperty.Length)
+		if ((bool)gameObject && componentIndex < components.Length)
 		{
-			return _ConsumerProperty < m_HelperProperty.Length;
+			return propertyIndex < propertyNames.Length;
 		}
 		return false;
 	}
 
 	[SpecialName]
-	public bool PatchSerializer()
+	public bool IsOn()
 	{
-		return m_AdapterProperty > 0f;
+		return value > 0f;
 	}
 
 	[SpecialName]
-	internal GameObject ManageSerializer()
+	internal GameObject GameObject()
 	{
-		return errorProperty;
+		return gameObject;
 	}
 
 	[SpecialName]
-	internal void PrintSerializer(GameObject def)
+	internal void GameObject(GameObject def)
 	{
-		if (errorProperty != def)
+		if (gameObject != def)
 		{
-			errorProperty = def;
-			PrepareSerializer();
+			gameObject = def;
+			Refresh();
 		}
 	}
 
 	[SpecialName]
-	public int RevertSerializer()
+	public int ComponentIndex()
 	{
-		return _ConnectionProperty;
+		return componentIndex;
 	}
 
 	[SpecialName]
-	public void OrderPage(int param)
+	public void ComponentIndex(int param)
 	{
-		if (_ConnectionProperty != param)
+		if (componentIndex != param)
 		{
-			_ConnectionProperty = param;
-			UpdateSerializer();
-			ChangeSerializer();
+			componentIndex = param;
+			WrapComponentIndex();
+			UpdateTarget();
 		}
 	}
 
 	[SpecialName]
-	public string SetPage()
+	public string PropertyName()
 	{
-		if (!m_HelperProperty.Any() || _ConsumerProperty >= m_HelperProperty.Length)
+		if (!propertyNames.Any() || propertyIndex >= propertyNames.Length)
 		{
 			return string.Empty;
 		}
-		return m_HelperProperty[_ConsumerProperty];
+		return propertyNames[propertyIndex];
 	}
 
 	public ComponentQueue()
 	{
-		m_HelperProperty = Array.Empty<string>();
-		m_SetterProperty = Array.Empty<Component>();
+		propertyNames = Array.Empty<string>();
+		components = Array.Empty<Component>();
 	}
 
 	public ComponentQueue(GameObject def)
 	{
-		PrintSerializer(def);
-		m_AdapterProperty = (def.activeSelf ? 1 : 0);
-		AssetSerializer();
-		ChangeSerializer();
+		GameObject(def);
+		value = (def.activeSelf ? 1 : 0);
+		RefreshComponents();
+		UpdateTarget();
 	}
 
-	public void StopSerializer(bool hasparam)
+	public void Next(bool hasparam)
 	{
 		do
 		{
-			int param = RevertSerializer() + 1;
-			OrderPage(param);
+			int param = ComponentIndex() + 1;
+			ComponentIndex(param);
 		}
-		while (hasparam && !SetupPage());
+		while (hasparam && !IsToggleable());
 	}
 
-	public void CheckSerializer(bool isreference)
+	public void Previous(bool isreference)
 	{
 		do
 		{
-			int param = RevertSerializer() - 1;
-			OrderPage(param);
+			int param = ComponentIndex() - 1;
+			ComponentIndex(param);
 		}
-		while (isreference && !SetupPage());
+		while (isreference && !IsToggleable());
 	}
 
-	private void PrepareSerializer()
+	private void Refresh()
 	{
-		AssetSerializer();
-		if ((bool)errorProperty)
+		RefreshComponents();
+		if ((bool)gameObject)
 		{
-			for (int i = 0; i < m_SetterProperty.Length; i++)
+			for (int i = 0; i < components.Length; i++)
 			{
-				if (m_SetterProperty[i].GetType() == _RecordProperty)
+				if (components[i].GetType() == targetType)
 				{
-					OrderPage(i);
-					ChangeSerializer();
+					ComponentIndex(i);
+					UpdateTarget();
 					return;
 				}
 			}
-			_ConnectionProperty = -1;
-			ChangeSerializer();
+			componentIndex = -1;
+			UpdateTarget();
 		}
 		else
 		{
-			ChangeSerializer();
+			UpdateTarget();
 		}
 	}
 
-	private void AssetSerializer()
+	private void RefreshComponents()
 	{
-		m_SetterProperty = (ManageSerializer() ? ManageSerializer().GetComponents<Component>() : Array.Empty<Component>());
+		components = (GameObject() ? GameObject().GetComponents<Component>() : Array.Empty<Component>());
 	}
 
-	private void UpdateSerializer()
+	private void WrapComponentIndex()
 	{
-		if (m_SetterProperty == null || _ConnectionProperty >= m_SetterProperty.Length)
+		if (components == null || componentIndex >= components.Length)
 		{
-			AssetSerializer();
+			RefreshComponents();
 		}
-		if (_ConnectionProperty >= m_SetterProperty.Length)
+		if (componentIndex >= components.Length)
 		{
-			_ConnectionProperty = -1;
+			componentIndex = -1;
 		}
-		else if (_ConnectionProperty < -1)
+		else if (componentIndex < -1)
 		{
-			_ConnectionProperty = m_SetterProperty.Length - 1;
+			componentIndex = components.Length - 1;
 		}
 	}
 
-	private void ChangeSerializer()
+	private void UpdateTarget()
 	{
 		_003C_003Ec__DisplayClass27_0 _003C_003Ec__DisplayClass27_ = new _003C_003Ec__DisplayClass27_0();
 		_003C_003Ec__DisplayClass27_.expressionProperty = this;
-		contextProperty = ((!ManageSerializer()) ? null : ((RevertSerializer() != -1) ? ((UnityEngine.Object)m_SetterProperty[RevertSerializer()]) : ((UnityEngine.Object)ManageSerializer())));
-		Type recordProperty = _RecordProperty;
-		_RecordProperty = (contextProperty ? contextProperty.GetType() : null);
-		if (!contextProperty || recordProperty == _RecordProperty)
+		target = ((!GameObject()) ? null : ((ComponentIndex() != -1) ? ((UnityEngine.Object)components[ComponentIndex()]) : ((UnityEngine.Object)GameObject())));
+		Type type = targetType;
+		targetType = (target ? target.GetType() : null);
+		if (!target || type == targetType)
 		{
 			return;
 		}
-		if (m_HelperProperty == null || _ConsumerProperty >= m_HelperProperty.Length || RevertSerializer() == -1)
+		if (propertyNames == null || propertyIndex >= propertyNames.Length || ComponentIndex() == -1)
 		{
 			_003C_003Ec__DisplayClass27_.ComputePage();
 			return;
 		}
-		_003C_003Ec__DisplayClass27_.m_SystemProperty = m_HelperProperty[_ConsumerProperty];
+		_003C_003Ec__DisplayClass27_.m_SystemProperty = propertyNames[propertyIndex];
 		_003C_003Ec__DisplayClass27_.ComputePage();
-		if (m_HelperProperty.Length != 0 && !_003C_003Ec__DisplayClass27_.ConcatPage())
+		if (propertyNames.Length != 0 && !_003C_003Ec__DisplayClass27_.ConcatPage())
 		{
 			_003C_003Ec__DisplayClass27_.m_SystemProperty = ((_003C_003Ec__DisplayClass27_.m_SystemProperty == "m_IsActive") ? "m_Enabled" : ((_003C_003Ec__DisplayClass27_.m_SystemProperty == "m_Enabled") ? "m_IsActive" : string.Empty));
 			if (!_003C_003Ec__DisplayClass27_.ConcatPage())
 			{
-				_ConsumerProperty = 0;
+				propertyIndex = 0;
 			}
 		}
 	}
 
 	[SpecialName]
-	private bool SetupPage()
+	private bool IsToggleable()
 	{
-		return _InterpreterProperty.Any((Type i) => _RecordProperty.InstantiateResolver(i));
+		return toggleableTypes.Any((Type i) => targetType.InstantiateResolver(i));
 	}
 
 	[CompilerGenerated]
-	private bool SortSerializer(Type i)
+	private bool IsToggleable(Type i)
 	{
-		return _RecordProperty.InstantiateResolver(i);
+		return targetType.InstantiateResolver(i);
 	}
 }

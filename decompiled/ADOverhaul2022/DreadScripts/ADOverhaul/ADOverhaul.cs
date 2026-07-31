@@ -45,9 +45,9 @@ internal sealed class ADOverhaul
 
 		private static readonly string[] prototype = new string[2] { "Easy Dynamics", "Cosmetic" };
 
-		private static readonly ADOEditorUtility.BannerDownloader m_Base = new ADOEditorUtility.BannerDownloader("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", addcol: true, "DreadBanner.png");
+		private static readonly ADOEditorUtility.BannerDownloader banner = new ADOEditorUtility.BannerDownloader("https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png", addcol: true, "DreadBanner.png");
 
-		private static EasyDynamicsFunctions _Request = EasyDynamicsFunctions.EasyGrab;
+		private static EasyDynamicsFunctions selectedFunction = EasyDynamicsFunctions.EasyGrab;
 
 		private static bool m_Issuer;
 
@@ -57,11 +57,11 @@ internal sealed class ADOverhaul
 
 		private static bool m_Annotation;
 
-		private static bool _Code;
+		private static bool editorFoldout;
 
-		private static bool m_Callback;
+		private static bool handlesFoldout;
 
-		private static bool message;
+		private static bool overlayFoldout;
 
 		[MenuItem("DreadTools/ADOverhaul", false, 6)]
 		internal static void ShowWindow()
@@ -78,7 +78,7 @@ internal sealed class ADOverhaul
 				GetConfiguration();
 				SortIdentifier();
 				ConcatIdentifier();
-				m_Base.Draw(this);
+				banner.Draw(this);
 			}
 		}
 
@@ -90,7 +90,7 @@ internal sealed class ADOverhaul
 			}
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				_Request = (EasyDynamicsFunctions)(object)EditorGUILayout.EnumPopup(ADOEditorUtility.CustomizeRef()._MapperSerializer, _Request);
+				selectedFunction = (EasyDynamicsFunctions)(object)EditorGUILayout.EnumPopup(ADOEditorUtility.CustomizeRef()._MapperSerializer, selectedFunction);
 			}
 			EditorGUILayout.HelpBox("Under Development", MessageType.Info);
 		}
@@ -99,8 +99,8 @@ internal sealed class ADOverhaul
 		{
 			using (new GUILayout.VerticalScope(GUI.skin.box))
 			{
-				_Code = EditorGUILayout.Foldout(_Code, "Editor", toggleOnLabelClick: true);
-				if (_Code)
+				editorFoldout = EditorGUILayout.Foldout(editorFoldout, "Editor", toggleOnLabelClick: true);
+				if (editorFoldout)
 				{
 					EditorGUI.indentLevel++;
 					ADOSettings.Instance().editorAnimatedFoldouts.DrawContent(ADOEditorUtility.CustomizeRef().issuerSerializer, null);
@@ -109,8 +109,8 @@ internal sealed class ADOverhaul
 			}
 			using (new GUILayout.VerticalScope(GUI.skin.box))
 			{
-				m_Callback = EditorGUILayout.Foldout(m_Callback, "Handles", toggleOnLabelClick: true);
-				if (m_Callback)
+				handlesFoldout = EditorGUILayout.Foldout(handlesFoldout, "Handles", toggleOnLabelClick: true);
+				if (handlesFoldout)
 				{
 					EditorGUI.indentLevel++;
 					using (new GUILayout.HorizontalScope())
@@ -132,8 +132,8 @@ internal sealed class ADOverhaul
 			}
 			using (new GUILayout.VerticalScope(GUI.skin.box))
 			{
-				message = EditorGUILayout.Foldout(message, "Overlay", toggleOnLabelClick: true);
-				if (!message)
+				overlayFoldout = EditorGUILayout.Foldout(overlayFoldout, "Overlay", toggleOnLabelClick: true);
+				if (!overlayFoldout)
 				{
 					return;
 				}
@@ -169,36 +169,36 @@ internal sealed class ADOverhaul
 	{
 		internal struct ErrorInfo
 		{
-			internal string order;
+			internal string name;
 
-			internal ushort _Container;
+			internal ushort id;
 
-			internal ushort schema;
+			internal ushort version;
 
-			internal string _Bridge;
+			internal string exceptionMessage;
 		}
 
-		private static string m_Mapping;
+		private static string solution;
 
-		private static bool queue;
+		private static bool solutionComplete;
 
-		private static bool processor;
+		private static bool responseReceived;
 
-		private static bool _Tokenizer;
+		private static bool requestSent;
 
-		private static bool _Exception;
+		private static bool isSearching;
 
-		private static ErrorInfo? m_Value;
+		private static ErrorInfo? pendingError;
 
-		private static ErrorInfo? error;
+		private static ErrorInfo? errorContext;
 
-		private static Action producer;
+		private static Action retryAction;
 
 		private static ushort template;
 
-		internal static bool m_Writer;
+		internal static bool suppressReporting;
 
-		internal static readonly HashSet<ErrorInfo> m_Class = new HashSet<ErrorInfo>();
+		internal static readonly HashSet<ErrorInfo> handledErrors = new HashSet<ErrorInfo>();
 
 		[SpecialName]
 		private static float VisitMethod()
@@ -213,7 +213,7 @@ internal sealed class ADOverhaul
 
 		internal static void Run(Action task, Action selection, ushort filter_high = 0, string info2 = "", ushort no__reg3 = 0, bool requirest4 = false, string ivk5 = "")
 		{
-			producer = selection;
+			retryAction = selection;
 			if (filter_high > 0)
 			{
 				SetContext(filter_high, info2, no__reg3);
@@ -224,7 +224,7 @@ internal sealed class ADOverhaul
 			}
 			catch (Exception param)
 			{
-				if (m_Writer)
+				if (suppressReporting)
 				{
 					throw;
 				}
@@ -237,34 +237,34 @@ internal sealed class ADOverhaul
 
 		private static void CaptureException(Exception param, bool getcfg = false, string serv = "")
 		{
-			if (!error.HasValue || m_Class.Contains(error.Value))
+			if (!errorContext.HasValue || handledErrors.Contains(errorContext.Value))
 			{
 				return;
 			}
-			m_Mapping = string.Empty;
-			queue = false;
-			_Tokenizer = false;
-			processor = false;
-			m_Value = new ErrorInfo
+			solution = string.Empty;
+			solutionComplete = false;
+			requestSent = false;
+			responseReceived = false;
+			pendingError = new ErrorInfo
 			{
-				order = error.Value.order,
-				_Container = error.Value._Container,
-				schema = error.Value.schema,
-				_Bridge = param.Message
+				name = errorContext.Value.name,
+				id = errorContext.Value.id,
+				version = errorContext.Value.version,
+				exceptionMessage = param.Message
 			};
 			if (getcfg)
 			{
 				switch (EditorUtility.DisplayDialogComplex("Error!", string.IsNullOrWhiteSpace(serv) ? "An error has occurred! Do you want to try to find a solution for it?" : serv, "Find Solution", "Close", "Ignore"))
 				{
 				case 2:
-					m_Class.Add(m_Value.Value);
+					handledErrors.Add(pendingError.Value);
 					OnCompilationStarted(null);
 					break;
 				case 1:
 					OnCompilationStarted(null);
 					break;
 				case 0:
-					m_Class.Add(m_Value.Value);
+					handledErrors.Add(pendingError.Value);
 					RemoveSerializer(isi: true);
 					break;
 				}
@@ -295,11 +295,11 @@ internal sealed class ADOverhaul
 
 		internal static bool HasPendingReport()
 		{
-			if (m_Value.HasValue)
+			if (pendingError.HasValue)
 			{
-				if (m_Class.Contains(m_Value.Value))
+				if (handledErrors.Contains(pendingError.Value))
 				{
-					m_Value = null;
+					pendingError = null;
 					return false;
 				}
 				return true;
@@ -309,59 +309,59 @@ internal sealed class ADOverhaul
 
 		internal static void SetContext(ushort version_item, string ivk = "", ushort idx_util = 0)
 		{
-			error = new ErrorInfo
+			errorContext = new ErrorInfo
 			{
-				_Container = version_item,
-				order = ivk,
-				schema = idx_util
+				id = version_item,
+				name = ivk,
+				version = idx_util
 			};
 		}
 
 		internal static void Reset()
 		{
-			m_Mapping = string.Empty;
-			queue = false;
-			m_Writer = false;
+			solution = string.Empty;
+			solutionComplete = false;
+			suppressReporting = false;
 			template = 0;
-			error = null;
+			errorContext = null;
 		}
 
 		internal static void DrawWindow()
 		{
-			RemoveSerializer(_Service && m_Value.HasValue);
-			if (!_Tokenizer)
+			RemoveSerializer(_Service && pendingError.HasValue);
+			if (!requestSent)
 			{
-				_Tokenizer = true;
-				_Exception = true;
+				requestSent = true;
+				isSearching = true;
 				List<(string, string)> list = CountConfiguration("findsolution", new(string, string)[4]
 				{
-					("bug_id", m_Value.Value._Container.ToString()),
-					("bug_version", m_Value.Value.schema.ToString()),
-					("bug_name", m_Value.Value.order),
-					("bug_exception", Uri.EscapeUriString(m_Value.Value._Bridge))
+					("bug_id", pendingError.Value.id.ToString()),
+					("bug_version", pendingError.Value.version.ToString()),
+					("bug_name", pendingError.Value.name),
+					("bug_exception", Uri.EscapeUriString(pendingError.Value.exceptionMessage))
 				});
 				StartConfiguration(list);
 				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 				{
 					bool flag = response.Item("success");
 					string text = response.Item("message");
-					processor = true;
+					responseReceived = true;
 					if (string.IsNullOrWhiteSpace(text))
 					{
 						NewIdentifier(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
-						m_Mapping = response.Item("solution");
-						queue = response.Item("complete");
+						solution = response.Item("solution");
+						solutionComplete = response.Item("complete");
 					}
 				}, UnityEngine.Debug.LogException, null, null, delegate
 				{
-					_Exception = false;
+					isSearching = false;
 					CalculateIdentifier();
 				});
 			}
-			InitConfiguration((!_Exception) ? "Bug Reporter" : "Finding a solution...", "If you have found a bug, please report it here!\nNote that the report is not anonymous. Abuse may result in blacklisting.");
+			InitConfiguration((!isSearching) ? "Bug Reporter" : "Finding a solution...", "If you have found a bug, please report it here!\nNote that the report is not anonymous. Abuse may result in blacklisting.");
 			using (new GUILayout.VerticalScope(EditorStyles.helpBox))
 			{
-				if (_Exception)
+				if (isSearching)
 				{
 					if (ADOEditorUtility.LoginStatus("Cancel", EditorStyles.toolbarButton))
 					{
@@ -369,9 +369,9 @@ internal sealed class ADOverhaul
 					}
 					return;
 				}
-				if (processor)
+				if (responseReceived)
 				{
-					if (string.IsNullOrWhiteSpace(m_Mapping))
+					if (string.IsNullOrWhiteSpace(solution))
 					{
 						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._EventSerializer))
 						{
@@ -382,7 +382,7 @@ internal sealed class ADOverhaul
 						{
 							thread = thread.Substring(0, 2000);
 						}
-						if (!string.IsNullOrWhiteSpace(m_Mapping))
+						if (!string.IsNullOrWhiteSpace(solution))
 						{
 							return;
 						}
@@ -400,10 +400,10 @@ internal sealed class ADOverhaul
 								}
 								List<(string, string)> list2 = CountConfiguration("reportbug", new(string, string)[5]
 								{
-									("bug_id", m_Value.Value._Container.ToString()),
-									("bug_version", m_Value.Value.schema.ToString()),
-									("bug_name", m_Value.Value.order),
-									("bug_exception", m_Value.Value._Bridge),
+									("bug_id", pendingError.Value.id.ToString()),
+									("bug_version", pendingError.Value.version.ToString()),
+									("bug_name", pendingError.Value.name),
+									("bug_exception", pendingError.Value.exceptionMessage),
 									("feedback", Uri.EscapeUriString(thread))
 								});
 								StartConfiguration(list2);
@@ -426,7 +426,7 @@ internal sealed class ADOverhaul
 							}
 						}
 					}
-					if (!queue)
+					if (!solutionComplete)
 					{
 						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._EventSerializer))
 						{
@@ -441,7 +441,7 @@ internal sealed class ADOverhaul
 						}
 					}
 					EditorGUILayout.Space();
-					EditorGUILayout.SelectableLabel(m_Mapping, GUI.skin.label, GUILayout.ExpandHeight(expand: false));
+					EditorGUILayout.SelectableLabel(solution, GUI.skin.label, GUILayout.ExpandHeight(expand: false));
 					if (ADOEditorUtility.PatchStatus("Ok"))
 					{
 						RemoveSerializer(isi: false);
@@ -465,24 +465,24 @@ internal sealed class ADOverhaul
 
 		internal static void Respond(bool moveinstance)
 		{
-			if (HasPendingReport() && m_Value.HasValue)
+			if (HasPendingReport() && pendingError.HasValue)
 			{
-				if (m_Class.Contains(m_Value.Value))
+				if (handledErrors.Contains(pendingError.Value))
 				{
-					m_Value = null;
+					pendingError = null;
 				}
 				RemoveSerializer(moveinstance);
-				m_Class.Add(m_Value.Value);
+				handledErrors.Add(pendingError.Value);
 			}
 		}
 
 		internal static void OnCompilationStarted(object asset)
 		{
-			if (m_Value.HasValue && producer != null)
+			if (pendingError.HasValue && retryAction != null)
 			{
-				Run(producer, m_Value.Value._Container, m_Value.Value.order, m_Value.Value.schema);
+				Run(retryAction, pendingError.Value.id, pendingError.Value.name, pendingError.Value.version);
 			}
-			producer = null;
+			retryAction = null;
 			CompilationPipeline.compilationStarted -= OnCompilationStarted;
 		}
 	}

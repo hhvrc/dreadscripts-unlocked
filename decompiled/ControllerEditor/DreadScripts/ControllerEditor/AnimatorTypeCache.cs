@@ -239,131 +239,131 @@ internal static class AnimatorTypeCache
 
 	internal class AvatarDescriptorBinding
 	{
-		private Component _RequestProperty;
+		private Component descriptor;
 
-		private SerializedObject _PrinterProperty;
+		private SerializedObject serializedObject;
 
-		internal SerializedProperty writerProperty;
+		internal SerializedProperty viewPositionProperty;
 
-		internal SerializedProperty _ParamsProperty;
+		internal SerializedProperty animationsProperty;
 
-		internal SerializedProperty listenerProperty;
+		internal SerializedProperty scaleIPDProperty;
 
-		internal SerializedProperty _GetterProperty;
+		internal SerializedProperty lipSyncProperty;
 
-		internal SerializedProperty interceptorProperty;
+		internal SerializedProperty lipSyncJawBoneProperty;
 
-		internal SerializedProperty creatorProperty;
+		internal SerializedProperty lipSyncJawClosedProperty;
 
-		internal SerializedProperty m_EventProperty;
+		internal SerializedProperty lipSyncJawOpenProperty;
 
-		internal SerializedProperty m_InfoProperty;
+		internal SerializedProperty visemeSkinnedMeshProperty;
 
-		internal SerializedProperty _FacadeProperty;
+		internal SerializedProperty mouthOpenBlendShapeNameProperty;
 
-		internal SerializedProperty m_AdvisorProperty;
+		internal SerializedProperty visemeBlendShapesProperty;
 
-		internal SerializedProperty _CallbackProperty;
+		internal SerializedProperty unityVersionProperty;
 
-		internal SerializedProperty indexerProperty;
+		internal SerializedProperty portraitCameraPositionOffsetProperty;
 
-		internal SerializedProperty _IssuerProperty;
+		internal SerializedProperty portraitCameraRotationOffsetProperty;
 
-		internal SerializedProperty _PrototypeProperty;
+		internal SerializedProperty customExpressionsProperty;
 
-		internal SerializedProperty _RuleProperty;
+		internal SerializedProperty expressionsMenuProperty;
 
-		internal SerializedProperty _SingletonProperty;
+		internal SerializedProperty expressionParametersProperty;
 
-		internal SerializedProperty m_FactoryProperty;
+		internal SerializedProperty enableEyeLookProperty;
 
-		internal SerializedProperty m_AccountProperty;
+		internal SerializedProperty customEyeLookSettingsProperty;
 
-		internal SerializedProperty _RefProperty;
+		internal SerializedProperty customizeAnimationLayersProperty;
 
-		internal SerializedProperty statusProperty;
+		internal SerializedProperty baseAnimationLayersProperty;
 
-		internal SerializedProperty tokenProperty;
+		internal SerializedProperty specialAnimationLayersProperty;
 
-		internal SerializedProperty _CodeProperty;
+		internal SerializedProperty animationPresetProperty;
 
-		internal SerializedProperty dicProperty;
+		internal SerializedProperty animationHashSetProperty;
 
-		internal SerializedProperty m_InvocationProperty;
+		internal SerializedProperty autoFootstepsProperty;
 
-		internal SerializedProperty _RoleProperty;
+		internal SerializedProperty autoLocomotionProperty;
 
-		internal SerializedProperty paramProperty;
+		internal SerializedProperty colliderHeadProperty;
 
-		internal SerializedProperty _ModelProperty;
+		internal SerializedProperty colliderTorsoProperty;
 
-		internal SerializedProperty _TokenizerProperty;
+		internal SerializedProperty colliderFootRProperty;
 
-		internal SerializedProperty decoratorProperty;
+		internal SerializedProperty colliderFootLProperty;
 
-		internal SerializedProperty comparatorProperty;
+		internal SerializedProperty colliderHandRProperty;
 
-		internal SerializedProperty _ExceptionProperty;
+		internal SerializedProperty colliderHandLProperty;
 
-		internal SerializedProperty _ObjectProperty;
+		internal SerializedProperty colliderFingerIndexLProperty;
 
-		internal SerializedProperty _UtilsProperty;
+		internal SerializedProperty colliderFingerMiddleLProperty;
 
-		internal SerializedProperty _ValProperty;
+		internal SerializedProperty colliderFingerRingLProperty;
 
-		internal SerializedProperty m_ValueProperty;
+		internal SerializedProperty colliderFingerLittleLProperty;
 
-		internal SerializedProperty _MerchantProperty;
+		internal SerializedProperty colliderFingerIndexRProperty;
 
-		internal SerializedProperty authenticationProperty;
+		internal SerializedProperty colliderFingerMiddleRProperty;
 
-		internal SerializedProperty _ReponseProperty;
+		internal SerializedProperty colliderFingerRingRProperty;
 
-		internal SerializedProperty m_PoolProperty = new SerializedObject((UnityEngine.Object)null).FindProperty("collider_fingerIndexL");
+		internal SerializedProperty colliderFingerLittleRProperty = new SerializedObject((UnityEngine.Object)null).FindProperty("collider_fingerIndexL");
 
 		internal AvatarDescriptorBinding(Component def)
 		{
-			_RequestProperty = def;
-			_PrinterProperty = new SerializedObject(def);
-			writerProperty = _PrinterProperty.FindProperty("ViewPosition");
-			_ParamsProperty = _PrinterProperty.FindProperty("Animations");
-			listenerProperty = _PrinterProperty.FindProperty("ScaleIPD");
-			_GetterProperty = _PrinterProperty.FindProperty("lipSync");
-			interceptorProperty = _PrinterProperty.FindProperty("lipSyncJawBone");
-			creatorProperty = _PrinterProperty.FindProperty("lipSyncJawClosed");
-			m_EventProperty = _PrinterProperty.FindProperty("lipSyncJawOpen");
-			m_InfoProperty = _PrinterProperty.FindProperty("VisemeSkinnedMesh");
-			_FacadeProperty = _PrinterProperty.FindProperty("MouthOpenBlendShapeName");
-			m_AdvisorProperty = _PrinterProperty.FindProperty("VisemeBlendShapes");
-			_CallbackProperty = _PrinterProperty.FindProperty("unityVersion");
-			indexerProperty = _PrinterProperty.FindProperty("portraitCameraPositionOffset");
-			_IssuerProperty = _PrinterProperty.FindProperty("portraitCameraRotationOffset");
-			_PrototypeProperty = _PrinterProperty.FindProperty("customExpressions");
-			_RuleProperty = _PrinterProperty.FindProperty("expressionsMenu");
-			_SingletonProperty = _PrinterProperty.FindProperty("expressionParameters");
-			m_FactoryProperty = _PrinterProperty.FindProperty("enableEyeLook");
-			m_AccountProperty = _PrinterProperty.FindProperty("customEyeLookSettings");
-			_RefProperty = _PrinterProperty.FindProperty("customizeAnimationLayers");
-			statusProperty = _PrinterProperty.FindProperty("baseAnimationLayers");
-			tokenProperty = _PrinterProperty.FindProperty("specialAnimationLayers");
-			_CodeProperty = _PrinterProperty.FindProperty("AnimationPreset");
-			dicProperty = _PrinterProperty.FindProperty("animationHashSet");
-			m_InvocationProperty = _PrinterProperty.FindProperty("autoFootsteps");
-			_RoleProperty = _PrinterProperty.FindProperty("autoLocomotion");
-			paramProperty = _PrinterProperty.FindProperty("collider_head");
-			_ModelProperty = _PrinterProperty.FindProperty("collider_torso");
-			_TokenizerProperty = _PrinterProperty.FindProperty("collider_footR");
-			decoratorProperty = _PrinterProperty.FindProperty("collider_footL");
-			comparatorProperty = _PrinterProperty.FindProperty("collider_handR");
-			_ExceptionProperty = _PrinterProperty.FindProperty("collider_handL");
-			_ObjectProperty = _PrinterProperty.FindProperty("collider_fingerIndexL");
-			_UtilsProperty = _PrinterProperty.FindProperty("collider_fingerMiddleL");
-			_ValProperty = _PrinterProperty.FindProperty("collider_fingerRingL");
-			m_ValueProperty = _PrinterProperty.FindProperty("collider_fingerLittleL");
-			_MerchantProperty = _PrinterProperty.FindProperty("collider_fingerIndexR");
-			authenticationProperty = _PrinterProperty.FindProperty("collider_fingerMiddleR");
-			_ReponseProperty = _PrinterProperty.FindProperty("collider_fingerRingR");
-			m_PoolProperty = _PrinterProperty.FindProperty("collider_fingerLittleR");
+			descriptor = def;
+			serializedObject = new SerializedObject(def);
+			viewPositionProperty = serializedObject.FindProperty("ViewPosition");
+			animationsProperty = serializedObject.FindProperty("Animations");
+			scaleIPDProperty = serializedObject.FindProperty("ScaleIPD");
+			lipSyncProperty = serializedObject.FindProperty("lipSync");
+			lipSyncJawBoneProperty = serializedObject.FindProperty("lipSyncJawBone");
+			lipSyncJawClosedProperty = serializedObject.FindProperty("lipSyncJawClosed");
+			lipSyncJawOpenProperty = serializedObject.FindProperty("lipSyncJawOpen");
+			visemeSkinnedMeshProperty = serializedObject.FindProperty("VisemeSkinnedMesh");
+			mouthOpenBlendShapeNameProperty = serializedObject.FindProperty("MouthOpenBlendShapeName");
+			visemeBlendShapesProperty = serializedObject.FindProperty("VisemeBlendShapes");
+			unityVersionProperty = serializedObject.FindProperty("unityVersion");
+			portraitCameraPositionOffsetProperty = serializedObject.FindProperty("portraitCameraPositionOffset");
+			portraitCameraRotationOffsetProperty = serializedObject.FindProperty("portraitCameraRotationOffset");
+			customExpressionsProperty = serializedObject.FindProperty("customExpressions");
+			expressionsMenuProperty = serializedObject.FindProperty("expressionsMenu");
+			expressionParametersProperty = serializedObject.FindProperty("expressionParameters");
+			enableEyeLookProperty = serializedObject.FindProperty("enableEyeLook");
+			customEyeLookSettingsProperty = serializedObject.FindProperty("customEyeLookSettings");
+			customizeAnimationLayersProperty = serializedObject.FindProperty("customizeAnimationLayers");
+			baseAnimationLayersProperty = serializedObject.FindProperty("baseAnimationLayers");
+			specialAnimationLayersProperty = serializedObject.FindProperty("specialAnimationLayers");
+			animationPresetProperty = serializedObject.FindProperty("AnimationPreset");
+			animationHashSetProperty = serializedObject.FindProperty("animationHashSet");
+			autoFootstepsProperty = serializedObject.FindProperty("autoFootsteps");
+			autoLocomotionProperty = serializedObject.FindProperty("autoLocomotion");
+			colliderHeadProperty = serializedObject.FindProperty("collider_head");
+			colliderTorsoProperty = serializedObject.FindProperty("collider_torso");
+			colliderFootRProperty = serializedObject.FindProperty("collider_footR");
+			colliderFootLProperty = serializedObject.FindProperty("collider_footL");
+			colliderHandRProperty = serializedObject.FindProperty("collider_handR");
+			colliderHandLProperty = serializedObject.FindProperty("collider_handL");
+			colliderFingerIndexLProperty = serializedObject.FindProperty("collider_fingerIndexL");
+			colliderFingerMiddleLProperty = serializedObject.FindProperty("collider_fingerMiddleL");
+			colliderFingerRingLProperty = serializedObject.FindProperty("collider_fingerRingL");
+			colliderFingerLittleLProperty = serializedObject.FindProperty("collider_fingerLittleL");
+			colliderFingerIndexRProperty = serializedObject.FindProperty("collider_fingerIndexR");
+			colliderFingerMiddleRProperty = serializedObject.FindProperty("collider_fingerMiddleR");
+			colliderFingerRingRProperty = serializedObject.FindProperty("collider_fingerRingR");
+			colliderFingerLittleRProperty = serializedObject.FindProperty("collider_fingerLittleR");
 		}
 	}
 

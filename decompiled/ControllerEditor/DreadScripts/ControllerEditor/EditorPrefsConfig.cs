@@ -27,28 +27,28 @@ internal class EditorPrefsConfig
 		{
 			if (changeCheck.changed)
 			{
-				config.InstantiateContext();
+				config.Save();
 			}
 		}
 	}
 
-	internal readonly Dictionary<string, Type> _TaskServer;
+	internal readonly Dictionary<string, Type> settingTypes;
 
-	internal readonly Dictionary<string, object> _ProcessServer;
+	internal readonly Dictionary<string, object> defaultValues;
 
-	internal readonly Dictionary<string, string> _ProducerServer;
+	internal readonly Dictionary<string, string> tooltips;
 
-	internal readonly string _IteratorServer;
+	internal readonly string prefsKey;
 
-	internal readonly Action publisherServer;
+	internal readonly Action drawAction;
 
-	internal IDictionary<string, object> configurationServer;
+	internal IDictionary<string, object> values;
 
-	internal bool _ProcServer;
+	internal bool isDirty;
 
-	internal bool _WrapperThread;
+	internal bool hasTooltips;
 
-	private readonly HashSet<string> _AnnotationThread = new HashSet<string>();
+	private readonly HashSet<string> hiddenKeys = new HashSet<string>();
 
 	internal EditorPrefsConfig(string info, Dictionary<Enum, Type> pol, Dictionary<Enum, object> proc, Dictionary<Enum, string> item2 = null, Action reference3 = null)
 		: this(info, pol.ToDictionary((KeyValuePair<Enum, Type> kvp) => kvp.Key.ToString(), (KeyValuePair<Enum, Type> kvp) => kvp.Value), proc.ToDictionary((KeyValuePair<Enum, object> kvp) => kvp.Key.ToString(), (KeyValuePair<Enum, object> kvp) => kvp.Value), item2?.ToDictionary((KeyValuePair<Enum, string> kvp) => kvp.Key.ToString(), (KeyValuePair<Enum, string> kvp) => kvp.Value), reference3)
@@ -57,37 +57,37 @@ internal class EditorPrefsConfig
 
 	internal EditorPrefsConfig(string reference, Dictionary<string, Type> pol, Dictionary<string, object> state, Dictionary<string, string> ident2 = null, Action pred3 = null)
 	{
-		_IteratorServer = reference;
-		publisherServer = pred3 ?? new Action(InsertContext);
-		_TaskServer = pol;
-		_ProcessServer = state;
-		_ProducerServer = ident2;
-		_WrapperThread = ident2 != null;
-		AwakeContext();
+		prefsKey = reference;
+		drawAction = pred3 ?? new Action(DrawDefault);
+		settingTypes = pol;
+		defaultValues = state;
+		tooltips = ident2;
+		hasTooltips = ident2 != null;
+		Load();
 	}
 
-	internal void DisableContext()
+	internal void Draw()
 	{
-		publisherServer();
+		drawAction();
 	}
 
-	internal void InsertContext()
+	internal void DrawDefault()
 	{
-		KeyValuePair<string, object>[] array = configurationServer.Select((KeyValuePair<string, object> kvp) => kvp).ToArray();
+		KeyValuePair<string, object>[] array = values.Select((KeyValuePair<string, object> kvp) => kvp).ToArray();
 		EditorGUI.BeginChangeCheck();
 		KeyValuePair<string, object>[] array2 = array;
 		for (int num = 0; num < array2.Length; num++)
 		{
 			KeyValuePair<string, object> keyValuePair = array2[num];
 			string key = keyValuePair.Key;
-			if (_AnnotationThread.Contains(key))
+			if (hiddenKeys.Contains(key))
 			{
 				continue;
 			}
 			object value = keyValuePair.Value;
 			string value2;
-			GUIContent label = new GUIContent(ObjectNames.NicifyVariableName(key), (!_WrapperThread || !_ProducerServer.TryGetValue(key, out value2)) ? string.Empty : value2);
-			if (!_TaskServer.TryGetValue(key, out var value3))
+			GUIContent label = new GUIContent(ObjectNames.NicifyVariableName(key), (!hasTooltips || !tooltips.TryGetValue(key, out value2)) ? string.Empty : value2);
+			if (!settingTypes.TryGetValue(key, out var value3))
 			{
 				continue;
 			}
@@ -98,111 +98,111 @@ internal class EditorPrefsConfig
 			}
 			if (type == typeof(bool))
 			{
-				configurationServer[key] = EditorGUILayout.Toggle(label, (bool)value);
+				values[key] = EditorGUILayout.Toggle(label, (bool)value);
 			}
 			else if (!(type == typeof(int)))
 			{
 				if (type == typeof(float))
 				{
-					configurationServer[key] = EditorGUILayout.FloatField(label, (float)value);
+					values[key] = EditorGUILayout.FloatField(label, (float)value);
 				}
 				else if (type == typeof(string))
 				{
-					configurationServer[key] = EditorGUILayout.TextField(label, (string)value);
+					values[key] = EditorGUILayout.TextField(label, (string)value);
 				}
 			}
 			else
 			{
-				configurationServer[key] = EditorGUILayout.IntField(label, (int)value);
+				values[key] = EditorGUILayout.IntField(label, (int)value);
 			}
 		}
 		if (EditorGUI.EndChangeCheck())
 		{
-			_ProcServer = true;
+			isDirty = true;
 		}
 		using (new GUILayout.HorizontalScope())
 		{
-			using (new EditorGUI.DisabledScope(!_ProcServer))
+			using (new EditorGUI.DisabledScope(!isDirty))
 			{
 				if (EditorUtils.DisableQueue("Revert"))
 				{
-					AwakeContext();
+					Load();
 				}
 				if (EditorUtils.DisableQueue("Save"))
 				{
-					InstantiateContext();
+					Save();
 				}
 			}
 		}
 	}
 
-	internal void RestartContext(string ident)
+	internal void Hide(string ident)
 	{
-		_AnnotationThread.Add(ident);
+		hiddenKeys.Add(ident);
 	}
 
-	internal void QueryContext(params string[] keys)
+	internal void Hide(params string[] keys)
 	{
-		_AnnotationThread.UnionWith(keys);
+		hiddenKeys.UnionWith(keys);
 	}
 
-	internal void AddContext(Enum info)
+	internal void Hide(Enum info)
 	{
-		QueryContext(info.ToString());
+		Hide(new string[1] { info.ToString() });
 	}
 
-	internal void InvokeContext(params Enum[] keys)
+	internal void Hide(params Enum[] keys)
 	{
-		QueryContext(keys.Select((Enum k) => k.ToString()).ToArray());
+		Hide(keys.Select((Enum k) => k.ToString()).ToArray());
 	}
 
-	internal void FindContext(string res)
+	internal void Show(string res)
 	{
-		_AnnotationThread.Remove(res);
+		hiddenKeys.Remove(res);
 	}
 
-	internal void ExcludeContext(params string[] keys)
+	internal void Show(params string[] keys)
 	{
-		_AnnotationThread.ExceptWith(keys);
+		hiddenKeys.ExceptWith(keys);
 	}
 
-	internal void InitContext(Enum info)
+	internal void Show(Enum info)
 	{
-		FindContext(info.ToString());
+		Show(info.ToString());
 	}
 
-	internal void VisitContext(params Enum[] keys)
+	internal void Show(params Enum[] keys)
 	{
-		ExcludeContext(keys.Select((Enum k) => k.ToString()).ToArray());
+		Show(keys.Select((Enum k) => k.ToString()).ToArray());
 	}
 
-	private void DefineContext()
+	private void LoadDefaults()
 	{
-		configurationServer = new Dictionary<string, object>();
-		foreach (string key in _TaskServer.Keys)
+		values = new Dictionary<string, object>();
+		foreach (string key in settingTypes.Keys)
 		{
-			StartContext(key);
+			LoadDefault(key);
 		}
-		_ProcServer = false;
+		isDirty = false;
 	}
 
-	private void StartContext(string info)
+	private void LoadDefault(string info)
 	{
-		if (_TaskServer.TryGetValue(info, out var value))
+		if (settingTypes.TryGetValue(info, out var value))
 		{
 			object cust;
-			if (_ProcessServer != null && _ProcessServer.TryGetValue(info, out var value2))
+			if (defaultValues != null && defaultValues.TryGetValue(info, out var value2))
 			{
-				configurationServer[info] = value2;
+				values[info] = value2;
 			}
-			else if (ReadContext(value, out cust))
+			else if (TryGetDefaultValue(value, out cust))
 			{
-				configurationServer[info] = cust;
+				values[info] = cust;
 			}
 		}
 	}
 
-	private bool ReadContext(Type v, out object cust)
+	private bool TryGetDefaultValue(Type v, out object cust)
 	{
 		cust = null;
 		if ((object)v != null)
@@ -232,73 +232,73 @@ internal class EditorPrefsConfig
 	}
 
 	[SpecialName]
-	internal object ResetContext(string config)
+	internal object Item(string config)
 	{
-		return configurationServer[config];
+		return values[config];
 	}
 
 	[SpecialName]
-	internal void FlushContext(string instance, object selection)
+	internal void Item(string instance, object selection)
 	{
-		configurationServer[instance] = selection;
-		_ProcServer = true;
+		values[instance] = selection;
+		isDirty = true;
 	}
 
 	[SpecialName]
-	internal object CalculateContext(Enum asset)
+	internal object Item(Enum asset)
 	{
-		return configurationServer[asset.ToString()];
+		return values[asset.ToString()];
 	}
 
 	[SpecialName]
-	internal void TestContext(Enum setup, object selection)
+	internal void Item(Enum setup, object selection)
 	{
 		string key = setup.ToString();
-		configurationServer[key] = selection;
-		_ProcServer = true;
+		values[key] = selection;
+		isDirty = true;
 	}
 
-	internal T SelectContext<T>(string first)
+	internal T GetValue<T>(string first)
 	{
-		return (T)configurationServer[first];
+		return (T)values[first];
 	}
 
-	internal T RemoveContext<T>(Enum init)
+	internal T GetValue<T>(Enum init)
 	{
-		return (T)configurationServer[init.ToString()];
+		return (T)values[init.ToString()];
 	}
 
-	internal void InstantiateContext()
+	internal void Save()
 	{
 		List<(string, string)> list = new List<(string, string)>();
-		foreach (KeyValuePair<string, object> item in configurationServer)
+		foreach (KeyValuePair<string, object> value3 in values)
 		{
-			string key = item.Key;
-			object value = item.Value;
+			string key = value3.Key;
+			object value = value3.Value;
 			list.Add((key, value.ToString()));
 		}
 		string value2 = EditorUtils.InvokeList(list);
-		EditorPrefs.SetString(_IteratorServer, value2);
-		_ProcServer = false;
+		EditorPrefs.SetString(prefsKey, value2);
+		isDirty = false;
 	}
 
-	internal void AwakeContext()
+	internal void Load()
 	{
-		if (!EditorPrefs.HasKey(_IteratorServer))
+		if (!EditorPrefs.HasKey(prefsKey))
 		{
-			DefineContext();
+			LoadDefaults();
 		}
 		else
 		{
-			string ident = EditorPrefs.GetString(_IteratorServer);
+			string ident = EditorPrefs.GetString(prefsKey);
 			try
 			{
-				configurationServer = new Dictionary<string, object>();
+				values = new Dictionary<string, object>();
 				EditorUtils.ExporterObserver exporterObserver = new EditorUtils.ExporterObserver(ident);
-				foreach (KeyValuePair<string, Type> item in _TaskServer)
+				foreach (KeyValuePair<string, Type> settingType in settingTypes)
 				{
-					string key = item.Key;
-					Type value = item.Value;
+					string key = settingType.Key;
+					Type value = settingType.Value;
 					EditorUtils.RegistryObserver registryObserver = exporterObserver.UpdateError(key);
 					if (registryObserver.m_WriterObserver)
 					{
@@ -313,35 +313,35 @@ internal class EditorPrefsConfig
 							{
 								if (type == typeof(float))
 								{
-									configurationServer[key] = registryObserver._PrinterObserver;
+									values[key] = registryObserver._PrinterObserver;
 								}
 								else if (type == typeof(string))
 								{
-									configurationServer[key] = registryObserver.importerObserver;
+									values[key] = registryObserver.importerObserver;
 								}
 							}
 							else
 							{
-								configurationServer[key] = (int)registryObserver._PrinterObserver;
+								values[key] = (int)registryObserver._PrinterObserver;
 							}
 						}
 						else
 						{
-							configurationServer[key] = registryObserver._RequestObserver;
+							values[key] = registryObserver._RequestObserver;
 						}
 					}
 					else
 					{
-						StartContext(key);
+						LoadDefault(key);
 					}
 				}
 			}
 			catch (Exception arg)
 			{
-				$"Failed to load settings from {_IteratorServer}:\n{arg}".LoginResolver(LogType.Error);
-				DefineContext();
+				$"Failed to load settings from {prefsKey}:\n{arg}".LoginResolver(LogType.Error);
+				LoadDefaults();
 			}
 		}
-		_ProcServer = false;
+		isDirty = false;
 	}
 }

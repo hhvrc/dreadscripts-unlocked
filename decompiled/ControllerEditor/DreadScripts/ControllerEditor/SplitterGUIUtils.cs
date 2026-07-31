@@ -8,84 +8,84 @@ namespace DreadScripts.ControllerEditor;
 
 internal static class SplitterGUIUtils
 {
-	private static readonly Color instanceThread = new Color(0.33f, 0.33f, 0.33f);
+	private static readonly Color defaultLineColor = new Color(0.33f, 0.33f, 0.33f);
 
-	public static Type fieldThread;
+	public static Type splitterGUILayoutType;
 
-	private static Type _AttributeThread;
+	private static Type splitterStateType;
 
-	private static ConstructorInfo _ClientThread;
+	private static ConstructorInfo splitterStateConstructor;
 
-	private static MethodInfo configThread;
+	private static MethodInfo beginSplitMethod;
 
-	private static MethodInfo m_DescriptorThread;
+	private static MethodInfo endLayoutGroupMethod;
 
 	[SpecialName]
-	public static Type IncludeRecord()
+	public static Type SplitterGUILayoutType()
 	{
-		return fieldThread ?? (fieldThread = Type.GetType("UnityEditor.SplitterGUILayout, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"));
+		return splitterGUILayoutType ?? (splitterGUILayoutType = Type.GetType("UnityEditor.SplitterGUILayout, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"));
 	}
 
 	[SpecialName]
-	public static Type CloneRecord()
+	public static Type SplitterStateType()
 	{
-		return _AttributeThread ?? (_AttributeThread = Type.GetType("UnityEditor.SplitterState, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"));
+		return splitterStateType ?? (splitterStateType = Type.GetType("UnityEditor.SplitterState, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"));
 	}
 
 	[SpecialName]
-	public static ConstructorInfo ReflectRecord()
+	public static ConstructorInfo SplitterStateConstructor()
 	{
-		if (_ClientThread == null)
+		if (splitterStateConstructor == null)
 		{
-			_ClientThread = CloneRecord().GetConstructor(new Type[1] { typeof(float[]) });
+			splitterStateConstructor = SplitterStateType().GetConstructor(new Type[1] { typeof(float[]) });
 		}
-		return _ClientThread;
+		return splitterStateConstructor;
 	}
 
 	[SpecialName]
-	public static MethodInfo CreateRecord()
+	public static MethodInfo BeginSplitMethod()
 	{
-		if (configThread == null)
+		if (beginSplitMethod == null)
 		{
-			configThread = IncludeRecord().GetMethod("BeginSplit", new Type[4]
+			beginSplitMethod = SplitterGUILayoutType().GetMethod("BeginSplit", new Type[4]
 			{
-				CloneRecord(),
+				SplitterStateType(),
 				typeof(GUIStyle),
 				typeof(bool),
 				typeof(GUILayoutOption[])
 			});
 		}
-		return configThread;
+		return beginSplitMethod;
 	}
 
 	[SpecialName]
-	public static MethodInfo PushRecord()
+	public static MethodInfo EndLayoutGroupMethod()
 	{
-		if (m_DescriptorThread == null)
+		if (endLayoutGroupMethod == null)
 		{
-			m_DescriptorThread = typeof(GUILayoutUtility).GetMethod("EndLayoutGroup", BindingFlags.Static | BindingFlags.NonPublic);
+			endLayoutGroupMethod = typeof(GUILayoutUtility).GetMethod("EndLayoutGroup", BindingFlags.Static | BindingFlags.NonPublic);
 		}
-		return m_DescriptorThread;
+		return endLayoutGroupMethod;
 	}
 
-	public static object ConnectRecord(params float[] relativeSizes)
+	public static object CreateSplitterState(params float[] relativeSizes)
 	{
-		return ReflectRecord().Invoke(new object[1] { relativeSizes });
+		return SplitterStateConstructor().Invoke(new object[1] { relativeSizes });
 	}
 
-	public static void CalculateRecord(object info, GUIStyle b = null, params GUILayoutOption[] options)
+	public static void BeginHorizontalSplit(object info, GUIStyle b = null, params GUILayoutOption[] options)
 	{
-		MapRecord(info, b, isres: false, options);
+		BeginSplit(info, b, isres: false, options);
 	}
 
-	public static void TestRecord(object reference, GUIStyle pred = null, params GUILayoutOption[] options)
+	public static void BeginVerticalSplit(object reference, GUIStyle pred = null, params GUILayoutOption[] options)
 	{
-		MapRecord(reference, pred, isres: true, options);
+		BeginSplit(reference, pred, isres: true, options);
 	}
 
-	public static void MapRecord(object param, GUIStyle connection = null, bool isres = true, params GUILayoutOption[] options)
+	public static void BeginSplit(object param, GUIStyle connection = null, bool isres = true, params GUILayoutOption[] options)
 	{
-		CreateRecord().Invoke(null, new object[4]
+		BeginSplitMethod().Invoke(null, new object[4]
 		{
 			param,
 			connection ?? GUIStyle.none,
@@ -94,28 +94,28 @@ internal static class SplitterGUIUtils
 		});
 	}
 
-	public static void ValidateRecord()
+	public static void EndSplit()
 	{
-		PushRecord().Invoke(null, null);
+		EndLayoutGroupMethod().Invoke(null, null);
 	}
 
-	public static void CustomizeRecord(string reference)
+	public static void DrawTitle(string reference)
 	{
-		RateRecord(new GUIContent(reference));
+		DrawTitle(new GUIContent(reference));
 	}
 
-	public static void RateRecord(GUIContent param)
+	public static void DrawTitle(GUIContent param)
 	{
 		EditorGUILayout.LabelField(param, EditorStyles.boldLabel);
-		GetRecord();
+		DrawHorizontalLine();
 		GUILayout.Space(7f);
 	}
 
-	public static void DestroyRecord(Rect value = default(Rect), Color visitor = default(Color))
+	public static void DrawVerticalLine(Rect value = default(Rect), Color visitor = default(Color))
 	{
 		if (visitor == default(Color))
 		{
-			visitor = instanceThread;
+			visitor = defaultLineColor;
 		}
 		if (value == default(Rect))
 		{
@@ -126,11 +126,11 @@ internal static class SplitterGUIUtils
 		EditorGUI.DrawRect(value, visitor);
 	}
 
-	public static void GetRecord(Color setup = default(Color))
+	public static void DrawHorizontalLine(Color setup = default(Color))
 	{
 		if (setup == default(Color))
 		{
-			setup = instanceThread;
+			setup = defaultLineColor;
 		}
 		float height = 1.5f;
 		Rect controlRect = EditorGUILayout.GetControlRect(GUILayout.Height(3.5f));
@@ -141,11 +141,11 @@ internal static class SplitterGUIUtils
 		EditorGUI.DrawRect(controlRect, setup);
 	}
 
-	public static void CalcRecord(Rect def = default(Rect), Color selection = default(Color), float helper = 1.5f)
+	public static void DrawUnderline(Rect def = default(Rect), Color selection = default(Color), float helper = 1.5f)
 	{
 		if (selection == default(Color))
 		{
-			selection = instanceThread;
+			selection = defaultLineColor;
 		}
 		if (def == default(Rect))
 		{

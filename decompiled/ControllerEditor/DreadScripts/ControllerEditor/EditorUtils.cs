@@ -1411,152 +1411,152 @@ internal static class EditorUtils
 
 	internal struct ParameterCostTracker
 	{
-		internal VRCAvatarDescriptor _SingletonObserver;
+		internal VRCAvatarDescriptor avatar;
 
-		internal bool _FactoryObserver;
+		internal bool useAvatar;
 
-		internal VRCExpressionParameters accountObserver;
+		internal VRCExpressionParameters parameters;
 
-		internal int m_RefObserver;
+		internal int availableCost;
 
-		internal int statusObserver;
+		internal int requestedCost;
 
-		internal int _TokenObserver;
+		internal int remainingCost;
 
-		internal bool m_CodeObserver;
+		internal bool isWithinLimit;
 
-		internal bool _DicObserver;
+		internal bool allowNull;
 
-		internal ValidationResult m_InvocationObserver;
+		internal ValidationResult validation;
 
-		internal List<(string, int)> roleObserver;
+		internal List<(string, int)> costs;
 
-		internal string _ParamObserver;
+		internal string tooltip;
 
 		internal static object CompareCandidate;
 
 		[SpecialName]
-		internal bool CountSetter()
+		internal bool IsValid()
 		{
-			return m_InvocationObserver.isValid;
+			return validation.isValid;
 		}
 
-		internal void CompareSetter(VRCAvatarDescriptor ident, VRCExpressionParameters pred, bool comparedic = false)
+		internal void Set(VRCAvatarDescriptor ident, VRCExpressionParameters pred, bool comparedic = false)
 		{
-			_SingletonObserver = ident;
-			_FactoryObserver = true;
-			SetSetter(pred);
+			avatar = ident;
+			useAvatar = true;
+			Set(pred);
 		}
 
-		internal void SetSetter(VRCExpressionParameters task, bool iscust = false)
+		internal void Set(VRCExpressionParameters task, bool iscust = false)
 		{
-			accountObserver = task;
-			PostSetter();
+			parameters = task;
+			Set();
 		}
 
-		internal void PostSetter(bool isasset = false)
+		internal void Set(bool isasset = false)
 		{
-			roleObserver = new List<(string, int)>();
-			_ParamObserver = string.Empty;
-			m_InvocationObserver = new ValidationResult(isparam: false, "Unknown Error", -1);
-			_DicObserver = isasset;
+			costs = new List<(string, int)>();
+			tooltip = string.Empty;
+			validation = new ValidationResult(isparam: false, "Unknown Error", -1);
+			allowNull = isasset;
 		}
 
-		internal void SetupSetter(string def, IEnumerable<VRCExpressionParameters> selection, bool excludeproc = true)
+		internal void AddCost(string def, IEnumerable<VRCExpressionParameters> selection, bool excludeproc = true)
 		{
 			if (excludeproc)
 			{
-				PopSetter(def, selection.Sum((VRCExpressionParameters p) => p.CalcTotalCost()));
+				AddCost(def, selection.Sum((VRCExpressionParameters p) => p.CalcTotalCost()));
 			}
 		}
 
-		internal void EnableSetter(string def, VRCExpressionParameters col, bool hasfilter = true)
+		internal void AddCost(string def, VRCExpressionParameters col, bool hasfilter = true)
 		{
 			if (hasfilter)
 			{
-				PopSetter(def, col.CalcTotalCost());
+				AddCost(def, col.CalcTotalCost());
 			}
 		}
 
-		internal void PublishSetter(string res, IEnumerable<VRCExpressionParameters.Parameter> map, bool appendfield = true)
+		internal void AddCost(string res, IEnumerable<VRCExpressionParameters.Parameter> map, bool appendfield = true)
 		{
 			if (appendfield)
 			{
-				PopSetter(res, map.Sum((VRCExpressionParameters.Parameter p) => VRCExpressionParameters.TypeCost(p.valueType)));
+				AddCost(res, map.Sum((VRCExpressionParameters.Parameter p) => VRCExpressionParameters.TypeCost(p.valueType)));
 			}
 		}
 
-		internal void PopSetter(string res, int length_counter, bool isfield = true)
+		internal void AddCost(string res, int length_counter, bool isfield = true)
 		{
 			if (isfield)
 			{
-				roleObserver.Add((res, length_counter));
+				costs.Add((res, length_counter));
 			}
 		}
 
 		internal void Process(bool willCreateIfNull = false)
 		{
-			if (!_FactoryObserver || !(_SingletonObserver == null))
+			if (!useAvatar || !(avatar == null))
 			{
-				if (!(accountObserver == null))
+				if (!(parameters == null))
 				{
-					m_RefObserver = accountObserver.InterruptList(includesecond: true, willCreateIfNull);
-					statusObserver = roleObserver.Sum(((string, int) c) => c.Item2);
-					_TokenObserver = m_RefObserver - statusObserver;
-					m_CodeObserver = _TokenObserver >= 0;
-					m_InvocationObserver = ((!m_CodeObserver) ? new ValidationResult(isparam: false, $"Adding {statusObserver} bits of parameters would exceed the maximum parameters memory of ${RunError()}", 2) : new ValidationResult(isparam: true, "Success"));
-					_ParamObserver = $"Remaining: {_TokenObserver}\n" + string.Join("\n", roleObserver.Select(((string, int) c) => c.Item1));
+					availableCost = parameters.InterruptList(includesecond: true, willCreateIfNull);
+					requestedCost = costs.Sum(((string, int) c) => c.Item2);
+					remainingCost = availableCost - requestedCost;
+					isWithinLimit = remainingCost >= 0;
+					validation = ((!isWithinLimit) ? new ValidationResult(isparam: false, $"Adding {requestedCost} bits of parameters would exceed the maximum parameters memory of ${RunError()}", 2) : new ValidationResult(isparam: true, "Success"));
+					tooltip = $"Remaining: {remainingCost}\n" + string.Join("\n", costs.Select(((string, int) c) => c.Item1));
 				}
 				else
 				{
-					m_CodeObserver = false;
-					m_InvocationObserver = new ValidationResult(isparam: false, "Expression Parameters is not set (Null)", 1);
+					isWithinLimit = false;
+					validation = new ValidationResult(isparam: false, "Expression Parameters is not set (Null)", 1);
 				}
 			}
 			else
 			{
-				m_CodeObserver = false;
-				m_InvocationObserver = new ValidationResult(isparam: false, "Avatar is not set (Null)");
+				isWithinLimit = false;
+				validation = new ValidationResult(isparam: false, "Avatar is not set (Null)");
 			}
 		}
 
-		internal void ComputeSetter(Action<VRCExpressionParameters> spec, string connection = "Target Parameters:")
+		internal void Draw(Action<VRCExpressionParameters> spec, string connection = "Target Parameters:")
 		{
-			bool flag = _FactoryObserver && _SingletonObserver != null && _SingletonObserver.expressionParameters == accountObserver;
+			bool flag = useAvatar && avatar != null && avatar.expressionParameters == parameters;
 			bool cfg;
-			string b = (accountObserver.CallRules(out cfg) ? ((!cfg) ? "No Parameters Selected" : ((!flag) ? "Parameters Are Missing!" : "[Avatar's Parameters Are Missing!]")) : ((!(_FactoryObserver && flag)) ? accountObserver.name : "[Avatar's Parameters]"));
+			string b = (parameters.CallRules(out cfg) ? ((!cfg) ? "No Parameters Selected" : ((!flag) ? "Parameters Are Missing!" : "[Avatar's Parameters Are Missing!]")) : ((!(useAvatar && flag)) ? parameters.name : "[Avatar's Parameters]"));
 			ParameterCostTracker objectObserver = this;
-			PopRules(connection, b, accountObserver, delegate(VRCExpressionParameters p)
+			PopRules(connection, b, parameters, delegate(VRCExpressionParameters p)
 			{
-				objectObserver.CallSetter(p, spec);
-			}, m_InvocationObserver, ConcatSetter, CancelSetter, _DicObserver);
+				objectObserver.OnParametersSelected(p, spec);
+			}, validation, DrawCounter, OnParametersCreated, allowNull);
 		}
 
-		internal void MoveSetter()
+		internal void DrawWarning()
 		{
-			if (!CountSetter())
+			if (!IsValid())
 			{
 				GUILayout.Label(new GUIContent(DestroyError().issuerProcessor)
 				{
-					tooltip = m_InvocationObserver.message
+					tooltip = validation.message
 				}, CalcError().broadcasterProcessor);
 			}
 		}
 
-		private void ConcatSetter()
+		private void DrawCounter()
 		{
-			using (new GUIColorScope(GUIColorScope.ColoringType.FG, m_CodeObserver, configurationProperty, _WrapperProcessor))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, configurationProperty, _WrapperProcessor))
 			{
-				GUILayout.Label(new GUIContent($"{statusObserver}/{m_RefObserver}", _ParamObserver), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label(new GUIContent($"{requestedCost}/{availableCost}", tooltip), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
 			}
 		}
 
-		private void CallSetter(VRCExpressionParameters last, Action<VRCExpressionParameters> connection)
+		private void OnParametersSelected(VRCExpressionParameters last, Action<VRCExpressionParameters> connection)
 		{
 			connection(last);
-			if (_FactoryObserver && _SingletonObserver != null && _SingletonObserver.expressionParameters == null)
+			if (useAvatar && avatar != null && avatar.expressionParameters == null)
 			{
-				VRCAvatarDescriptor valueObserver = _SingletonObserver;
+				VRCAvatarDescriptor valueObserver = avatar;
 				GenericMenu genericMenu = new GenericMenu();
 				genericMenu.AddItem(new GUIContent("Set As Avatar's Parameters?/Yes"), on: false, delegate
 				{
@@ -1566,7 +1566,7 @@ internal static class EditorUtils
 			}
 		}
 
-		private void CancelSetter(VRCExpressionParameters reference)
+		private void OnParametersCreated(VRCExpressionParameters reference)
 		{
 			reference.parameters = Array.Empty<VRCExpressionParameters.Parameter>();
 			EditorUtility.SetDirty(reference);
@@ -1580,72 +1580,72 @@ internal static class EditorUtils
 
 	internal struct MenuClipboardState
 	{
-		internal VRCAvatarDescriptor authenticationObserver;
+		internal VRCAvatarDescriptor avatar;
 
-		internal bool reponseObserver;
+		internal bool useAvatar;
 
-		internal VRCExpressionsMenu m_PoolObserver;
+		internal VRCExpressionsMenu targetMenu;
 
-		internal VRCExpressionsMenu m_ParameterObserver;
+		internal VRCExpressionsMenu sourceMenu;
 
-		internal bool _ComposerObserver;
+		internal bool useSourceMenu;
 
-		internal List<VRCExpressionsMenu.Control> _RepositoryObserver;
+		internal List<VRCExpressionsMenu.Control> sourceControls;
 
-		internal bool m_MappingObserver;
+		internal bool useSourceControls;
 
-		internal int _BaseObserver;
+		internal int controlsToAdd;
 
-		internal int m_ContainerObserver;
+		internal int availableSlots;
 
-		internal int _ClassObserver;
+		internal int remainingSlots;
 
-		internal bool _MockObserver;
+		internal bool isWithinLimit;
 
-		internal ValidationResult _InstanceObserver;
+		internal ValidationResult validation;
 
-		private Action<VRCExpressionsMenu> _FieldObserver;
+		private Action<VRCExpressionsMenu> onMenuSelected;
 
 		private static object CancelField;
 
 		[SpecialName]
-		internal bool ResetSetter()
+		internal bool IsValid()
 		{
-			return _InstanceObserver.isValid;
+			return validation.isValid;
 		}
 
-		internal MenuClipboardState ExcludeSetter(VRCAvatarDescriptor def, VRCExpressionsMenu token, VRCExpressionsMenu serv = null)
+		internal MenuClipboardState Set(VRCAvatarDescriptor def, VRCExpressionsMenu token, VRCExpressionsMenu serv = null)
 		{
-			authenticationObserver = def;
-			reponseObserver = true;
-			return DefineSetter(token, serv);
+			avatar = def;
+			useAvatar = true;
+			return Set(token, serv);
 		}
 
-		internal MenuClipboardState InitSetter(VRCAvatarDescriptor last, List<VRCExpressionsMenu.Control> cfg, VRCExpressionsMenu temp = null)
+		internal MenuClipboardState Set(VRCAvatarDescriptor last, List<VRCExpressionsMenu.Control> cfg, VRCExpressionsMenu temp = null)
 		{
-			authenticationObserver = last;
-			reponseObserver = true;
-			_RepositoryObserver = cfg;
-			m_MappingObserver = true;
+			avatar = last;
+			useAvatar = true;
+			sourceControls = cfg;
+			useSourceControls = true;
 			if (cfg != null)
 			{
-				return ReadSetter(cfg.Count, temp);
+				return Set(cfg.Count, temp);
 			}
-			m_PoolObserver = temp;
+			targetMenu = temp;
 			return this;
 		}
 
-		internal MenuClipboardState VisitSetter(VRCAvatarDescriptor task, int bend, VRCExpressionsMenu template = null)
+		internal MenuClipboardState Set(VRCAvatarDescriptor task, int bend, VRCExpressionsMenu template = null)
 		{
-			authenticationObserver = task;
-			reponseObserver = true;
-			return ReadSetter(bend, template);
+			avatar = task;
+			useAvatar = true;
+			return Set(bend, template);
 		}
 
-		internal MenuClipboardState DefineSetter(VRCExpressionsMenu last, VRCExpressionsMenu ivk = null)
+		internal MenuClipboardState Set(VRCExpressionsMenu last, VRCExpressionsMenu ivk = null)
 		{
-			m_ParameterObserver = last;
-			_ComposerObserver = true;
+			sourceMenu = last;
+			useSourceMenu = true;
 			if (last.controls == null)
 			{
 				last.controls = new List<VRCExpressionsMenu.Control>();
@@ -1653,109 +1653,109 @@ internal static class EditorUtils
 			}
 			if (last != null)
 			{
-				return StartSetter(last.controls, ivk);
+				return Set(last.controls, ivk);
 			}
-			m_PoolObserver = ivk;
+			targetMenu = ivk;
 			return this;
 		}
 
-		internal MenuClipboardState StartSetter(List<VRCExpressionsMenu.Control> first, VRCExpressionsMenu cust = null)
+		internal MenuClipboardState Set(List<VRCExpressionsMenu.Control> first, VRCExpressionsMenu cust = null)
 		{
-			_RepositoryObserver = first;
-			m_MappingObserver = true;
+			sourceControls = first;
+			useSourceControls = true;
 			if (first == null)
 			{
-				m_PoolObserver = cust;
+				targetMenu = cust;
 				return this;
 			}
-			return ReadSetter(first.Count, cust);
+			return Set(first.Count, cust);
 		}
 
-		internal MenuClipboardState ReadSetter(int position_ident, VRCExpressionsMenu second)
+		internal MenuClipboardState Set(int position_ident, VRCExpressionsMenu second)
 		{
-			_BaseObserver = position_ident;
-			m_PoolObserver = second;
+			controlsToAdd = position_ident;
+			targetMenu = second;
 			return this;
 		}
 
 		internal MenuClipboardState Process()
 		{
-			if (reponseObserver && authenticationObserver == null)
+			if (useAvatar && avatar == null)
 			{
-				_MockObserver = false;
-				_InstanceObserver = (false, "Avatar is not set (Null)");
+				isWithinLimit = false;
+				validation = (false, "Avatar is not set (Null)");
 				return this;
 			}
-			if (_ComposerObserver && m_ParameterObserver == null)
+			if (useSourceMenu && sourceMenu == null)
 			{
-				_MockObserver = false;
-				_InstanceObserver = new ValidationResult(isparam: false, "Source Menu is not set (Null)")
+				isWithinLimit = false;
+				validation = new ValidationResult(isparam: false, "Source Menu is not set (Null)")
 				{
 					errorCode = 1
 				};
 				return this;
 			}
-			if (m_MappingObserver && _RepositoryObserver == null)
+			if (useSourceControls && sourceControls == null)
 			{
-				_MockObserver = false;
-				_InstanceObserver = new ValidationResult(isparam: false, "Source Controls are null")
+				isWithinLimit = false;
+				validation = new ValidationResult(isparam: false, "Source Controls are null")
 				{
 					errorCode = 2
 				};
 				return this;
 			}
-			if (!(m_PoolObserver == null))
+			if (!(targetMenu == null))
 			{
-				m_ContainerObserver = 8 - m_PoolObserver.controls.Count;
-				_ClassObserver = m_ContainerObserver - _BaseObserver;
-				_MockObserver = _ClassObserver >= 0;
-				_InstanceObserver = ((!_MockObserver) ? new ValidationResult(isparam: false, $"Adding {_BaseObserver} controls to {m_PoolObserver.name} would exceed the 8 controls limit")
+				availableSlots = 8 - targetMenu.controls.Count;
+				remainingSlots = availableSlots - controlsToAdd;
+				isWithinLimit = remainingSlots >= 0;
+				validation = ((!isWithinLimit) ? new ValidationResult(isparam: false, $"Adding {controlsToAdd} controls to {targetMenu.name} would exceed the 8 controls limit")
 				{
 					errorCode = 4
 				} : new ValidationResult(isparam: true, "Adding Controls Validated"));
 				return this;
 			}
-			_MockObserver = false;
-			_InstanceObserver = new ValidationResult(isparam: false, "Target Menu is not set (Null)")
+			isWithinLimit = false;
+			validation = new ValidationResult(isparam: false, "Target Menu is not set (Null)")
 			{
 				errorCode = 3
 			};
 			return this;
 		}
 
-		internal void SelectSetter(Action<VRCExpressionsMenu> value, bool nocol = false, string filter = "Target Menu:")
+		internal void Draw(Action<VRCExpressionsMenu> value, bool nocol = false, string filter = "Target Menu:")
 		{
-			_FieldObserver = value;
-			bool flag = reponseObserver && authenticationObserver != null && authenticationObserver.expressionsMenu == m_PoolObserver;
+			onMenuSelected = value;
+			bool flag = useAvatar && avatar != null && avatar.expressionsMenu == targetMenu;
 			bool cfg;
-			string b = (m_PoolObserver.CallRules(out cfg) ? ((!cfg) ? "No Menu Selected" : ((!flag) ? "Menu Is Missing!" : "[Avatar's Menu Is Missing!]")) : ((!flag) ? m_PoolObserver.name : "[Avatar's Main Menu]"));
-			PopRules(filter, b, m_PoolObserver, InstantiateSetter, _InstanceObserver, RemoveSetter, AwakeSetter, nocol);
+			string b = (targetMenu.CallRules(out cfg) ? ((!cfg) ? "No Menu Selected" : ((!flag) ? "Menu Is Missing!" : "[Avatar's Menu Is Missing!]")) : ((!flag) ? targetMenu.name : "[Avatar's Main Menu]"));
+			PopRules(filter, b, targetMenu, OnMenuSelected, validation, DrawCounter, OnMenuCreated, nocol);
 		}
 
-		private void RemoveSetter()
+		private void DrawCounter()
 		{
-			using (new GUIColorScope(GUIColorScope.ColoringType.FG, _MockObserver, configurationProperty, _WrapperProcessor))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, configurationProperty, _WrapperProcessor))
 			{
-				GUILayout.Label(new GUIContent($"{_BaseObserver}/{m_ContainerObserver}", $"Remaining: {_ClassObserver}"), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label(new GUIContent($"{controlsToAdd}/{availableSlots}", $"Remaining: {remainingSlots}"), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
 			}
-			using (new EditorGUI.DisabledScope(m_PoolObserver == null))
+			using (new EditorGUI.DisabledScope(targetMenu == null))
 			{
 				if (RestartQueue(new GUIContent(DestroyError().m_ComposerProcessor)
 				{
 					tooltip = "Select Menu From TreeView"
 				}, CalcError().broadcasterProcessor))
 				{
-					MenuSelector.InvokeRecord(m_PoolObserver, InstantiateSetter, _BaseObserver);
+					MenuSelector.InvokeRecord(targetMenu, OnMenuSelected, controlsToAdd);
 				}
 			}
 		}
 
-		private void InstantiateSetter(VRCExpressionsMenu info)
+		private void OnMenuSelected(VRCExpressionsMenu info)
 		{
-			_FieldObserver(info);
-			if (reponseObserver && authenticationObserver != null && authenticationObserver.expressionsMenu == null)
+			onMenuSelected(info);
+			if (useAvatar && avatar != null && avatar.expressionsMenu == null)
 			{
-				VRCAvatarDescriptor m_ClientObserver = authenticationObserver;
+				VRCAvatarDescriptor m_ClientObserver = avatar;
 				GenericMenu genericMenu = new GenericMenu();
 				genericMenu.AddItem(new GUIContent("Set As Avatar's Main Menu?/Yes"), on: false, delegate
 				{
@@ -1765,7 +1765,7 @@ internal static class EditorUtils
 			}
 		}
 
-		private void AwakeSetter(VRCExpressionsMenu init)
+		private void OnMenuCreated(VRCExpressionsMenu init)
 		{
 			if (init.controls == null)
 			{

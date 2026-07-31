@@ -47,80 +47,80 @@ internal static class ADOEditorUtility
 			internal int index;
 		}
 
-		private int _InvocationSerializer;
+		private int activeZoneIndex;
 
-		private Vector2 _ListenerSerializer = Vector2.zero;
+		private Vector2 lastMousePosition = Vector2.zero;
 
-		private readonly int parserSerializer = GUIUtility.GetControlID("ResizeStateControlID".GetHashCode(), FocusType.Passive);
+		private readonly int controlID = GUIUtility.GetControlID("ResizeStateControlID".GetHashCode(), FocusType.Passive);
 
-		public Action m_PrinterSerializer;
+		public Action onResized;
 
-		public float m_RepositorySerializer;
+		public float leftOffset;
 
-		public float _DescriptorSerializer;
+		public float rightOffset;
 
-		public float strategySerializer;
+		public float topOffset;
 
-		public float globalSerializer;
+		public float bottomOffset;
 
-		private bool _ManagerSerializer;
+		private bool uniformResize;
 
-		private bool _WorkerSerializer;
+		private bool pendingReset;
 
 		[SpecialName]
-		public bool PatchRef()
+		public bool GetUniformResize()
 		{
-			return _ManagerSerializer;
+			return uniformResize;
 		}
 
 		[SpecialName]
-		public void CheckRef(bool injectvar1)
+		public void SetUniformResize(bool injectvar1)
 		{
-			if (_ManagerSerializer == injectvar1)
+			if (uniformResize == injectvar1)
 			{
 				return;
 			}
-			_ManagerSerializer = injectvar1;
+			uniformResize = injectvar1;
 			if (!injectvar1)
 			{
 				return;
 			}
-			if (m_RepositorySerializer == 0f)
+			if (leftOffset == 0f)
 			{
-				if (_DescriptorSerializer != 0f)
+				if (rightOffset != 0f)
 				{
-					m_RepositorySerializer = _DescriptorSerializer;
+					leftOffset = rightOffset;
 				}
-				else if (strategySerializer != 0f)
+				else if (topOffset != 0f)
 				{
-					globalSerializer = strategySerializer;
+					bottomOffset = topOffset;
 				}
-				else if (globalSerializer != 0f)
+				else if (bottomOffset != 0f)
 				{
-					strategySerializer = globalSerializer;
+					topOffset = bottomOffset;
 				}
 			}
 			else
 			{
-				_DescriptorSerializer = m_RepositorySerializer;
+				rightOffset = leftOffset;
 			}
 		}
 
 		public ResizeHandle(bool islast = false)
 		{
-			_ManagerSerializer = islast;
+			uniformResize = islast;
 		}
 
-		public void CancelRef()
+		public void ResetSize()
 		{
-			m_RepositorySerializer = 0f;
-			_DescriptorSerializer = 0f;
-			strategySerializer = 0f;
-			globalSerializer = 0f;
-			m_PrinterSerializer?.Invoke();
+			leftOffset = 0f;
+			rightOffset = 0f;
+			topOffset = 0f;
+			bottomOffset = 0f;
+			onResized?.Invoke();
 		}
 
-		public Rect LogoutRef(Rect last, PositionFlag map = PositionFlag.Middle, Rect filter = default(Rect))
+		public Rect GetResizedRect(Rect last, PositionFlag map = PositionFlag.Middle, Rect filter = default(Rect))
 		{
 			if (filter == default(Rect))
 			{
@@ -129,10 +129,10 @@ internal static class ADOEditorUtility
 			bool flag = filter.x != -1f && filter.width != -1f;
 			bool flag2 = filter.y != -1f && filter.height != -1f;
 			float num = 10f;
-			float num2 = last.width + m_RepositorySerializer + _DescriptorSerializer;
-			float num3 = last.height + strategySerializer + globalSerializer;
-			float num4 = last.x - (num2 - last.width) * SelectRef(map);
-			float num5 = last.y - (last.height + strategySerializer + globalSerializer - last.height) * WriteRef(map);
+			float num2 = last.width + leftOffset + rightOffset;
+			float num3 = last.height + topOffset + bottomOffset;
+			float num4 = last.x - (num2 - last.width) * GetHorizontalPivot(map);
+			float num5 = last.y - (last.height + topOffset + bottomOffset - last.height) * GetVerticalPivot(map);
 			last.x = (flag ? Mathf.Clamp(num4, filter.x, filter.x + filter.width - num) : num4);
 			last.width = ((!flag) ? num2 : Mathf.Clamp(num2, num, filter.width - last.x));
 			last.y = (flag2 ? Mathf.Clamp(num5, filter.y, filter.y + filter.height - num) : num5);
@@ -140,10 +140,10 @@ internal static class ADOEditorUtility
 			return last;
 		}
 
-		public void SetupRef(Rect ident, PositionFlag cust = PositionFlag.Right | PositionFlag.Left, PositionFlag c = PositionFlag.Middle, float counter2 = 4f)
+		public void HandleResize(Rect ident, PositionFlag cust = PositionFlag.Right | PositionFlag.Left, PositionFlag c = PositionFlag.Middle, float counter2 = 4f)
 		{
 			Event current = Event.current;
-			if (_WorkerSerializer)
+			if (pendingReset)
 			{
 				goto IL_000e;
 			}
@@ -151,13 +151,13 @@ internal static class ADOEditorUtility
 			IL_000e:
 			if (current.type == EventType.MouseUp)
 			{
-				if (GUIUtility.hotControl == parserSerializer)
+				if (GUIUtility.hotControl == controlID)
 				{
 					GUIUtility.hotControl = 0;
 				}
-				CancelRef();
+				ResetSize();
 				current.Use();
-				_WorkerSerializer = false;
+				pendingReset = false;
 			}
 			goto IL_003e;
 			IL_003e:
@@ -222,19 +222,19 @@ internal static class ADOEditorUtility
 				Vector2 vector;
 				if (num2 >= array2.Length)
 				{
-					if (current.type != EventType.MouseDrag || GUIUtility.hotControl != parserSerializer)
+					if (current.type != EventType.MouseDrag || GUIUtility.hotControl != controlID)
 					{
 						return;
 					}
-					PositionFlag position = array[_InvocationSerializer].position;
-					vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - _ListenerSerializer;
-					if (_WorkerSerializer)
+					PositionFlag position = array[activeZoneIndex].position;
+					vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - lastMousePosition;
+					if (pendingReset)
 					{
 						if (!(vector.sqrMagnitude > new Vector2(15f, 15f).sqrMagnitude))
 						{
 							return;
 						}
-						_WorkerSerializer = false;
+						pendingReset = false;
 					}
 					if (!(vector != Vector2.zero))
 					{
@@ -246,76 +246,76 @@ internal static class ADOEditorUtility
 						{
 							if (position == PositionFlag.BottomRight)
 							{
-								_DescriptorSerializer += vector.x;
-								if (PatchRef())
+								rightOffset += vector.x;
+								if (GetUniformResize())
 								{
 									if (!c.HasFlag(PositionFlag.Top))
 									{
-										strategySerializer += vector.x;
+										topOffset += vector.x;
 									}
 									else
 									{
-										globalSerializer += vector.x;
+										bottomOffset += vector.x;
 									}
 								}
 								else
 								{
-									globalSerializer += vector.y;
+									bottomOffset += vector.y;
 								}
 							}
 							else if (position == PositionFlag.BottomLeft)
 							{
-								m_RepositorySerializer -= vector.x;
-								if (PatchRef())
+								leftOffset -= vector.x;
+								if (GetUniformResize())
 								{
 									if (c.HasFlag(PositionFlag.Bottom))
 									{
-										strategySerializer += vector.x;
+										topOffset += vector.x;
 									}
 									else
 									{
-										globalSerializer += vector.x;
+										bottomOffset += vector.x;
 									}
 								}
 								else
 								{
-									globalSerializer += vector.y;
+									bottomOffset += vector.y;
 								}
 							}
 						}
 						else if (position == PositionFlag.TopRight)
 						{
-							_DescriptorSerializer += vector.x;
-							if (PatchRef())
+							rightOffset += vector.x;
+							if (GetUniformResize())
 							{
 								if (c.HasFlag(PositionFlag.Left))
 								{
-									_DescriptorSerializer -= vector.y;
+									rightOffset -= vector.y;
 								}
 								else
 								{
-									m_RepositorySerializer -= vector.y;
+									leftOffset -= vector.y;
 								}
 							}
 							else
 							{
-								strategySerializer -= vector.y;
+								topOffset -= vector.y;
 							}
 						}
 						else if (position == PositionFlag.TopLeft)
 						{
-							m_RepositorySerializer -= vector.x;
-							if (!PatchRef())
+							leftOffset -= vector.x;
+							if (!GetUniformResize())
 							{
-								strategySerializer -= vector.y;
+								topOffset -= vector.y;
 							}
 							else if (!c.HasFlag(PositionFlag.Bottom))
 							{
-								globalSerializer -= vector.x;
+								bottomOffset -= vector.x;
 							}
 							else
 							{
-								strategySerializer -= vector.x;
+								topOffset -= vector.x;
 							}
 						}
 						goto IL_0388;
@@ -378,21 +378,21 @@ internal static class ADOEditorUtility
 				selection = MouseCursor.Arrow;
 				goto IL_0339;
 				IL_05a3:
-				_DescriptorSerializer += vector.x;
-				if (PatchRef())
+				rightOffset += vector.x;
+				if (GetUniformResize())
 				{
 					if (c.HasFlag(PositionFlag.Bottom))
 					{
-						strategySerializer += vector.x;
+						topOffset += vector.x;
 					}
 					else
 					{
-						globalSerializer += vector.x;
+						bottomOffset += vector.x;
 					}
 				}
 				goto IL_0388;
 				IL_0399:
-				_ListenerSerializer = GUIUtility.GUIToScreenPoint(current.mousePosition);
+				lastMousePosition = GUIUtility.GUIToScreenPoint(current.mousePosition);
 				return;
 				IL_0360:
 				num2++;
@@ -414,28 +414,28 @@ internal static class ADOEditorUtility
 				{
 					if (current.clickCount == 2)
 					{
-						_WorkerSerializer = true;
+						pendingReset = true;
 					}
-					_InvocationSerializer = resizeZone.index;
-					GUIUtility.hotControl = parserSerializer;
-					_ListenerSerializer = GUIUtility.GUIToScreenPoint(current.mousePosition);
+					activeZoneIndex = resizeZone.index;
+					GUIUtility.hotControl = controlID;
+					lastMousePosition = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
 				}
 				goto IL_0360;
 				IL_0388:
-				m_PrinterSerializer?.Invoke();
+				onResized?.Invoke();
 				goto IL_0399;
 				IL_068b:
-				m_RepositorySerializer -= vector.x;
-				if (PatchRef())
+				leftOffset -= vector.x;
+				if (GetUniformResize())
 				{
 					if (c.HasFlag(PositionFlag.Bottom))
 					{
-						strategySerializer -= vector.x;
+						topOffset -= vector.x;
 					}
 					else
 					{
-						globalSerializer -= vector.x;
+						bottomOffset -= vector.x;
 					}
 				}
 				goto IL_0388;
@@ -443,7 +443,7 @@ internal static class ADOEditorUtility
 			goto IL_000e;
 		}
 
-		public static float SelectRef(PositionFlag def, bool wantresult = false)
+		public static float GetHorizontalPivot(PositionFlag def, bool wantresult = false)
 		{
 			if (wantresult)
 			{
@@ -470,7 +470,7 @@ internal static class ADOEditorUtility
 			return 0.5f;
 		}
 
-		public static float WriteRef(PositionFlag i, bool excludemap = false)
+		public static float GetVerticalPivot(PositionFlag i, bool excludemap = false)
 		{
 			bool flag = i.RemoveProcess();
 			bool flag2 = i.ReflectProcess();
@@ -529,8 +529,8 @@ internal static class ADOEditorUtility
 			Rect rect2 = GetAnchoredRect(rect, visitor, offsetdir, res2, ord3, widthIsPercentage);
 			if (init4 != null)
 			{
-				rect2 = init4.LogoutRef(rect2, ord3, filter);
-				init4.SetupRef(rect2, ord3.ResolveProcess(evaluateivk: true));
+				rect2 = init4.GetResizedRect(rect2, ord3, filter);
+				init4.HandleResize(rect2, ord3.ResolveProcess(evaluateivk: true));
 			}
 			area = ResetProcess(rect2);
 			if (collectionSerializer)
