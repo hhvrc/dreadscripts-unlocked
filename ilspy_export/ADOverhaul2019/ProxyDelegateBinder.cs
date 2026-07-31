@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 
-internal class ConsumerDicBridge
+internal class ProxyDelegateBinder
 {
-	internal delegate void StatusTokenizerResolver(object o);
+	internal delegate void ProxyDelegate(object o);
 
-	internal static Module m_ProcessorDic = typeof(ConsumerDicBridge).Assembly.ManifestModule;
+	internal static Module m_ProcessorDic = typeof(ProxyDelegateBinder).Assembly.ManifestModule;
 
-	internal static ConsumerDicBridge RevertDatabase;
+	internal static ProxyDelegateBinder RevertDatabase;
 
 	internal static void PostQueue(int typemdt)
 	{

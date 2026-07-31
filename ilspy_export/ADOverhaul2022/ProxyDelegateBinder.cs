@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 
-internal class ModelAccountCollection
+internal class ProxyDelegateBinder
 {
-	internal delegate void ComparatorImporterDescriptor(object o);
+	internal delegate void ProxyDelegate(object o);
 
-	internal static Module configurationConsumer = typeof(ModelAccountCollection).Assembly.ManifestModule;
+	internal static Module configurationConsumer = typeof(ProxyDelegateBinder).Assembly.ManifestModule;
 
-	internal static ModelAccountCollection ChangeRule;
+	internal static ProxyDelegateBinder ChangeRule;
 
 	internal static void LogoutRule(int typemdt)
 	{
