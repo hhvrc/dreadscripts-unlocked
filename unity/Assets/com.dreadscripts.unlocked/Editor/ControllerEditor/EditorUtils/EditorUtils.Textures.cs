@@ -10,6 +10,7 @@
 // CreateList, lines 7349-7354) and the readback used by the colour picker -- are not ported yet.
 
 using System;
+using DreadScripts.Common;
 using UnityEngine;
 
 namespace DreadScripts.ControllerEditor

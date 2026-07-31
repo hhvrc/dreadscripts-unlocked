@@ -13,7 +13,8 @@
 // differing only in alignment and two extra properties. They are folded onto a shared Note()
 // factory here, matching how ControllerEditor's table expresses the same five styles.
 //
-// PARTIAL PORT. The Color[3] toggle-state palette is left out; see the note at its position below.
+// The Color[3] toggle-state palette is ported; its three entries are the shared palette statics in
+// ADOEditorUtility.Colors.cs rather than literals repeated here.
 //
 // Overlap with ControllerEditor's EditorUtils.Styles (documented, deliberately NOT shared —
 // consolidating the two products' tables is a separate decision):
@@ -172,15 +173,17 @@ namespace DreadScripts.ADOverhaul
             };
 
             // ── Toggle-state palette ────────────────────────────────────────────────────────
-            // NOT YET PORTED. The shipped table carried a Color[3] indexed by a tri-state toggle
-            // (0 = off, 1 = on, 2 = mixed) and handed to GUIColorScope as the button background:
-            //
-            //   toggleStateColors = { red, green, yellow }
-            //
-            // The three entries are ADOEditorUtility's shared palette statics (decompiled lines
-            // 2062-2066: green 0.56/0.94/0.47, red 1/0.25/0.25, yellow 0.99/0.95/0), which belong
-            // with the rest of that palette rather than in the style table. Restore this field once
-            // the palette region is ported.
+
+            /// <summary>
+            /// Button backgrounds for a tri-state toggle, indexed 0 = off, 1 = on, 2 = mixed.
+            /// </summary>
+            /// <remarks>
+            /// Passed straight to the GUIColorScope overload that takes an index and a
+            /// colour array, so callers reduce a serialized property to one of the three indices and
+            /// let the scope pick. Mixed is yellow rather than a blend, so that a multi-selection
+            /// disagreeing about a value reads as something needing attention.
+            /// </remarks>
+            internal readonly Color[] toggleStateColors = { errorColor, validColor, warningColor };
 
             /// <summary>The shared shape of the small italic annotation styles.</summary>
             private static GUIStyle Note(TextAnchor alignment)

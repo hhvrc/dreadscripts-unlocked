@@ -15,7 +15,9 @@
 // freshly constructed and unread in between, so the result is the same object state without the
 // second pass.
 //
-// PARTIAL PORT. The seven CachedIcon entries are left out; see the note at their position below.
+// The seven CachedIcon entries are ported; their names come from the session key each one caches
+// under (`ds-icon-updateAvailable` -> updateAvailable), which is the only surviving description of
+// what they are.
 //
 // Overlap with ControllerEditor's EditorUtils.Contents (documented, deliberately NOT shared —
 // consolidating the two products' tables is a separate decision):
@@ -24,7 +26,8 @@
 //   identical icon name, tooltip added here: edit, settings (CE: settingsGear),
 //     select (CE: selectable), copyFromComponent (CE: eyeDropper), pickable, notPickable
 //   same icon, different tooltip: reset (CE: restoreDefaults, "Restore Defaults")
-//   the pending CachedIcon entries overlap CE's cached icons too — noted inline.
+//   identical cached icon and session key: updateAvailable, announcement, warning, error,
+//     hamburgerMenu, help. ADOverhaul only: checkForUpdate.
 
 using UnityEditor;
 using UnityEngine;
@@ -49,23 +52,18 @@ namespace DreadScripts.ADOverhaul
         internal class Contents
         {
             // ── Session-cached icons ────────────────────────────────────────────────────────
-            // NOT YET PORTED. These seven were `CachedIcon` fields built by the decompiled
-            // `NewVal(icon, sessionKey, tooltip)` helper, which trims the transparent border off a
-            // built-in icon and keeps the result in SessionState. Restoring them needs two pieces
-            // of ADOverhaul infrastructure that has not been ported yet: the `CachedIcon` type
-            // (decompiled lines 1148-1262) and the border-trimming helper `DefineVal`. They are
-            // listed here so the restoration is mechanical once those land — the first, third,
-            // fourth, fifth, sixth and seventh are byte-for-byte the same entries as
-            // ControllerEditor's contents.updateAvailable / announcement / warning / error /
-            // hamburgerMenu / help:
-            //
-            //   updateAvailable  NewVal("CollabConflict Icon",      "ds-icon-updateAvailable", "Update Available")
-            //   checkForUpdate   NewVal("Refresh",                  "ds-icon-checkForUpdate",  "Check For Update")
-            //   announcement     NewVal("console.infoicon.sml",     "ds-icon-announcement")
-            //   warning          NewVal("console.warnicon.sml",     "ds-icon-warning")
-            //   error            NewVal("console.erroricon.sml",    "ds-icon-error")
-            //   hamburgerMenu    NewVal("VerticalLayoutGroup Icon", "ds-icon-hamMenu")
-            //   help             NewVal("_Help",                    "ds-icon-help")
+            // Trimmed copies of built-in icons rather than the icons themselves, so they fill the
+            // tool's tight toolbar rows; see TrimmedIcon. All but checkForUpdate are byte-for-byte
+            // the same entries as ControllerEditor's contents.updateAvailable / announcement /
+            // warning / error / hamburgerMenu / help, down to the session keys — the two products
+            // share one session cache when both are installed.
+            internal readonly CachedIcon updateAvailable = TrimmedIcon("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
+            internal readonly CachedIcon checkForUpdate = TrimmedIcon("Refresh", "ds-icon-checkForUpdate", "Check For Update");
+            internal readonly CachedIcon announcement = TrimmedIcon("console.infoicon.sml", "ds-icon-announcement");
+            internal readonly CachedIcon warning = TrimmedIcon("console.warnicon.sml", "ds-icon-warning");
+            internal readonly CachedIcon error = TrimmedIcon("console.erroricon.sml", "ds-icon-error");
+            internal readonly CachedIcon hamburgerMenu = TrimmedIcon("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
+            internal readonly CachedIcon help = TrimmedIcon("_Help", "ds-icon-help");
 
             // ── Toolbar and window chrome ───────────────────────────────────────────────────
             internal readonly GUIContent upToDate = IconContent("TestPassed", "Up to Date!");
