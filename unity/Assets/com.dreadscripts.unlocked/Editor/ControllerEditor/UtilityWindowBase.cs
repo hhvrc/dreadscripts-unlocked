@@ -124,10 +124,7 @@ namespace DreadScripts.ControllerEditor
 
             using (new EditorGUI.DisabledScope(!canConfirm))
             {
-                // EditorUtils has not been ported yet, so this still carries the decompiler's name
-                // for it. It is a layout button returning true on click, and needs renaming when
-                // EditorUtils lands.
-                if (EditorUtils.DisableQueue("Confirm"))
+                if (EditorUtils.Button("Confirm"))
                 {
                     Confirm();
                 }
