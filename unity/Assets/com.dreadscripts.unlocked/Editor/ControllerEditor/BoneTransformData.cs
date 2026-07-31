@@ -17,7 +17,7 @@ namespace DreadScripts.ControllerEditor
         internal PhysBoneChainData chain;
 
         /// <summary>Root of the chain, the same for every bone in it.</summary>
-        internal Transform rootTransform;
+        internal Transform root;
 
         /// <summary>The scene transform this bone stands for, or null when <see cref="isVirtual"/>.</summary>
         internal Transform transform;

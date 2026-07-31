@@ -1,0 +1,108 @@
+// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneColliderSnapshot.cs
+
+using UnityEngine;
+using VRC.Dynamics;
+using VRC.SDK3.Dynamics.PhysBone.Components;
+
+namespace DreadScripts.ControllerEditor
+{
+    /// <summary>
+    /// The shape of a PhysBone collider or an avatar contact, captured so it can be put back or
+    /// copied onto another component.
+    /// </summary>
+    /// <remarks>
+    /// PhysBone colliders and contacts have the same shape fields but no common base that exposes
+    /// them, and their <c>ShapeType</c> enums are two distinct types. The snapshot keeps the shape as
+    /// an <see cref="int"/> and casts on the way out, which is what lets one type serve both.
+    /// </remarks>
+    internal struct PhysBoneColliderSnapshot
+    {
+        /// <summary>The component this was captured from.</summary>
+        internal readonly Object source;
+
+        /// <summary>
+        /// True when <see cref="source"/> is a <see cref="VRCPhysBoneColliderBase"/>, false when it
+        /// is a <see cref="ContactBase"/>. Decides which enum the shape is cast back to.
+        /// </summary>
+        internal bool isPhysBoneCollider;
+
+        internal readonly Transform rootTransform;
+
+        /// <summary>Held untyped; see the note on the class.</summary>
+        internal readonly int shapeType;
+
+        internal float radius;
+
+        internal float height;
+
+        internal Vector3 position;
+
+        internal Quaternion rotation;
+
+        internal PhysBoneColliderSnapshot(VRCPhysBoneColliderBase collider)
+        {
+            source = collider;
+            isPhysBoneCollider = true;
+            rootTransform = collider.GetRootTransform();
+            shapeType = (int)collider.shapeType;
+            radius = collider.radius;
+            height = collider.height;
+            position = collider.position;
+            rotation = collider.rotation;
+        }
+
+        internal PhysBoneColliderSnapshot(ContactBase contact)
+        {
+            source = contact;
+            isPhysBoneCollider = false;
+            rootTransform = contact.GetRootTransform();
+            shapeType = (int)contact.shapeType;
+            radius = contact.radius;
+            height = contact.height;
+            position = contact.position;
+            rotation = contact.rotation;
+        }
+
+        /// <summary>Writes the snapshot back onto the component it came from.</summary>
+        internal void Restore()
+        {
+            if (isPhysBoneCollider)
+            {
+                VRCPhysBoneColliderBase collider = (VRCPhysBoneColliderBase)source;
+                collider.radius = radius;
+                collider.height = height;
+                collider.position = position;
+                collider.rotation = rotation;
+
+                // The shipped build restored every field but this one on the PhysBone path, so a
+                // shape change made between capture and restore survived the rollback. The contact
+                // path and ApplyTo below both restore it.
+                collider.shapeType = (VRCPhysBoneColliderBase.ShapeType)shapeType;
+            }
+            else
+            {
+                ApplyTo((ContactBase)source);
+            }
+        }
+
+        /// <summary>Copies the captured shape onto another contact.</summary>
+        internal void ApplyTo(ContactBase contact)
+        {
+            contact.radius = radius;
+            contact.height = height;
+            contact.position = position;
+            contact.rotation = rotation;
+            contact.shapeType = (ContactBase.ShapeType)shapeType;
+        }
+
+        /// <summary>Copies the captured shape onto another PhysBone collider.</summary>
+        internal void ApplyTo(VRCPhysBoneCollider collider)
+        {
+            collider.radius = radius;
+            collider.height = height;
+            collider.position = position;
+            collider.rotation = rotation;
+            collider.shapeType = (VRCPhysBoneColliderBase.ShapeType)shapeType;
+        }
+    }
+}

@@ -122,7 +122,7 @@ namespace DreadScripts.ControllerEditor
             if (!skipThisBone)
             {
                 bone.chain = this;
-                bone.rootTransform = rootTransform;
+                bone.root = rootTransform;
                 bone.transform = transform;
                 bone.matrix = Matrix4x4.TRS(transform.position, rotation, transform.lossyScale);
                 bone.depth = depth;
@@ -157,7 +157,7 @@ namespace DreadScripts.ControllerEditor
             return new BoneTransformData
             {
                 chain = this,
-                rootTransform = rootTransform,
+                root = rootTransform,
                 matrix = Matrix4x4.TRS(position, rotation, scale),
                 depth = depth,
                 isVirtual = true,
