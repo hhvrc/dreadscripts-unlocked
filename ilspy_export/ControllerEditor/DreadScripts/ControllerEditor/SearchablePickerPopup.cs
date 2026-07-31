@@ -9,7 +9,7 @@ namespace DreadScripts.ControllerEditor;
 
 internal class SearchablePickerPopup<T> : PopupWindowContent
 {
-	internal class UtilsServer
+	internal class PickerEntry
 	{
 		internal readonly int m_ValServer;
 
@@ -27,7 +27,7 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 			return m_MerchantServer[0];
 		}
 
-		internal UtilsServer(T spec, int cust_size)
+		internal PickerEntry(T spec, int cust_size)
 		{
 			_ValueServer = spec;
 			m_ValServer = cust_size;
@@ -43,9 +43,9 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 
 	private string m_CodeServer;
 
-	internal UtilsServer[] m_DicServer;
+	internal PickerEntry[] m_DicServer;
 
-	private readonly Action<UtilsServer> invocationServer;
+	private readonly Action<PickerEntry> invocationServer;
 
 	private readonly Action<int, T> roleServer;
 
@@ -75,12 +75,12 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 
 	private static object WriteSystem;
 
-	public SearchablePickerPopup(string param, IEnumerable<T> attr, Action<UtilsServer> third, Action<int, T> reference2)
+	public SearchablePickerPopup(string param, IEnumerable<T> attr, Action<PickerEntry> third, Action<int, T> reference2)
 	{
 		_TokenServer = param;
 		roleServer = reference2;
 		invocationServer = third;
-		m_DicServer = attr.Select((T item, int i) => new UtilsServer(item, i)).ToArray();
+		m_DicServer = attr.Select((T item, int i) => new PickerEntry(item, i)).ToArray();
 		_ExceptionServer = new Rect[m_DicServer.Length];
 	}
 
@@ -92,15 +92,15 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 
 	public void CalcConnection(Func<T, object> param)
 	{
-		m_DicServer = ((param == null) ? m_DicServer : m_DicServer.OrderBy((UtilsServer item) => param(item._ValueServer)).ToArray());
+		m_DicServer = ((param == null) ? m_DicServer : m_DicServer.OrderBy((PickerEntry item) => param(item._ValueServer)).ToArray());
 	}
 
 	public void IncludeConnection(Func<T, object[]> ident)
 	{
-		UtilsServer[] dicServer = m_DicServer;
-		foreach (UtilsServer utilsServer in dicServer)
+		PickerEntry[] dicServer = m_DicServer;
+		foreach (PickerEntry pickerEntry in dicServer)
 		{
-			utilsServer.m_MerchantServer = ident(utilsServer._ValueServer);
+			pickerEntry.m_MerchantServer = ident(pickerEntry._ValueServer);
 		}
 	}
 
@@ -126,29 +126,29 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 					m_CodeServer = EditorGUILayout.TextField(m_CodeServer, GUI.skin.GetStyle("SearchTextField"));
 					if (EditorGUI.EndChangeCheck())
 					{
-						UtilsServer[] dicServer = m_DicServer;
-						foreach (UtilsServer utilsServer in dicServer)
+						PickerEntry[] dicServer = m_DicServer;
+						foreach (PickerEntry pickerEntry in dicServer)
 						{
-							utilsServer.authenticationServer = _ParamServer(utilsServer._ValueServer, m_CodeServer);
+							pickerEntry.authenticationServer = _ParamServer(pickerEntry._ValueServer, m_CodeServer);
 						}
 					}
 				}
 				EventType type = current.type;
 				for (int j = 0; j < m_DicServer.Length; j++)
 				{
-					UtilsServer utilsServer2 = m_DicServer[j];
-					if (!utilsServer2.authenticationServer)
+					PickerEntry pickerEntry2 = m_DicServer[j];
+					if (!pickerEntry2.authenticationServer)
 					{
 						continue;
 					}
 					if (!_DecoratorServer && GUI.Button(_ExceptionServer[j], string.Empty, objectServer))
 					{
-						roleServer(utilsServer2.m_ValServer, utilsServer2._ValueServer);
+						roleServer(pickerEntry2.m_ValServer, pickerEntry2._ValueServer);
 						base.editorWindow.Close();
 					}
 					using (new GUILayout.VerticalScope())
 					{
-						invocationServer(utilsServer2);
+						invocationServer(pickerEntry2);
 					}
 					if (type == EventType.Repaint)
 					{

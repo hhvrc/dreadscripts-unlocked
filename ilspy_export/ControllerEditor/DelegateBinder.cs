@@ -3,7 +3,7 @@ using System.Reflection;
 
 internal class DelegateBinder
 {
-	internal delegate void ReponsePolicy(object o);
+	internal delegate void ProxyDelegate(object o);
 
 	internal static Module m_AuthenticationPolicy = typeof(DelegateBinder).Assembly.ManifestModule;
 

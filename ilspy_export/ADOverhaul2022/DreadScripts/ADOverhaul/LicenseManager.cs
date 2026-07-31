@@ -350,7 +350,7 @@ internal sealed class LicenseManager
 					("bug_exception", Uri.EscapeUriString(m_Value.Value._Bridge))
 				});
 				StartConfiguration(list);
-				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 				{
 					bool flag = response.PublishConsumer("success");
 					string text = response.PublishConsumer("message");
@@ -417,7 +417,7 @@ internal sealed class LicenseManager
 								});
 								StartConfiguration(list2);
 								getter = true;
-								OrderIdentifier(IncludeConfiguration(list2.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+								OrderIdentifier(IncludeConfiguration(list2.ToArray())).CreateProcess(delegate(JsonObject response)
 								{
 									bool flag = response.PublishConsumer("success");
 									string text = response.PublishConsumer("message");
@@ -623,17 +623,17 @@ internal sealed class LicenseManager
 	}
 
 	[DefaultMember("Item")]
-	internal readonly struct ParamsIdentifier
+	internal readonly struct JsonObject
 	{
 		private readonly string m_ImporterIdentifier;
 
-		private readonly Dictionary<string, PageUtilsWatcher> m_ServerIdentifier;
+		private readonly Dictionary<string, JsonValue> m_ServerIdentifier;
 
 		internal readonly bool _WatcherIdentifier;
 
 		internal static object LogoutTokenizer;
 
-		internal ParamsIdentifier(string v)
+		internal JsonObject(string v)
 		{
 			m_ImporterIdentifier = v;
 			MatchCollection matchCollection = Regex.Matches(v, "\"(.*?)\":(?:(?:\"(.*?)\")|(?:(.*?)[,}]))");
@@ -641,7 +641,7 @@ internal sealed class LicenseManager
 			if (count != 0)
 			{
 				_WatcherIdentifier = false;
-				m_ServerIdentifier = new Dictionary<string, PageUtilsWatcher>();
+				m_ServerIdentifier = new Dictionary<string, JsonValue>();
 				for (int i = 0; i < count; i++)
 				{
 					Match match = matchCollection[i];
@@ -653,7 +653,7 @@ internal sealed class LicenseManager
 					}
 					if (!string.IsNullOrEmpty(value))
 					{
-						m_ServerIdentifier[value] = new PageUtilsWatcher(value2);
+						m_ServerIdentifier[value] = new JsonValue(value2);
 					}
 				}
 			}
@@ -665,7 +665,7 @@ internal sealed class LicenseManager
 		}
 
 		[SpecialName]
-		internal PageUtilsWatcher PublishConsumer(string res)
+		internal JsonValue PublishConsumer(string res)
 		{
 			m_ServerIdentifier.TryGetValue(res, out var value);
 			return value;
@@ -682,7 +682,7 @@ internal sealed class LicenseManager
 			{
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.AppendLine("{");
-				foreach (KeyValuePair<string, PageUtilsWatcher> item in m_ServerIdentifier)
+				foreach (KeyValuePair<string, JsonValue> item in m_ServerIdentifier)
 				{
 					stringBuilder.AppendLine($"{item.Key}: {item.Value},");
 				}
@@ -698,7 +698,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	internal readonly struct PageUtilsWatcher
+	internal readonly struct JsonValue
 	{
 		internal readonly string _RegIdentifier;
 
@@ -712,7 +712,7 @@ internal sealed class LicenseManager
 
 		internal static object FlushTokenizer;
 
-		internal PageUtilsWatcher(string ident)
+		internal JsonValue(string ident)
 		{
 			_RegIdentifier = ident;
 			adapterIdentifier = true;
@@ -740,17 +740,17 @@ internal sealed class LicenseManager
 			return m_ProcessIdentifier;
 		}
 
-		public static implicit operator string(PageUtilsWatcher setup)
+		public static implicit operator string(JsonValue setup)
 		{
 			return setup.m_ProcessIdentifier;
 		}
 
-		public static implicit operator bool(PageUtilsWatcher setup)
+		public static implicit operator bool(JsonValue setup)
 		{
 			return setup._StatusIdentifier;
 		}
 
-		public static implicit operator float(PageUtilsWatcher spec)
+		public static implicit operator float(JsonValue spec)
 		{
 			return spec._ValIdentifier;
 		}
@@ -4787,7 +4787,7 @@ internal sealed class LicenseManager
 
 		public static Action m_ResolverContext;
 
-		public static Action<ParamsIdentifier> _TagContext;
+		public static Action<JsonObject> _TagContext;
 
 		public static Action<Exception> filterContext;
 
@@ -4807,7 +4807,7 @@ internal sealed class LicenseManager
 
 		public static Func<bool> _CandidateContext;
 
-		public static Action<ParamsIdentifier> readerContext;
+		public static Action<JsonObject> readerContext;
 
 		public static Action<Exception> stubContext;
 
@@ -4815,7 +4815,7 @@ internal sealed class LicenseManager
 
 		public static Action _TestsContext;
 
-		public static Action<ParamsIdentifier> definitionContext;
+		public static Action<JsonObject> definitionContext;
 
 		public static Action<Exception> _InitializerContext;
 
@@ -5101,7 +5101,7 @@ internal sealed class LicenseManager
 			NewIdentifier($"Something went wrong while verifying license:\n\n{exception}", CustomLogType.Error);
 		}
 
-		internal void StartServer(ParamsIdentifier response)
+		internal void StartServer(JsonObject response)
 		{
 			_Rule = false;
 			QueryConfiguration(response, delegate
@@ -5171,7 +5171,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = CountConfiguration("transferlicenserequest");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0
 				{
@@ -5186,7 +5186,7 @@ internal sealed class LicenseManager
 			}, null, null, CalculateIdentifier);
 		}
 
-		internal void ValidateServer(ParamsIdentifier response)
+		internal void ValidateServer(JsonObject response)
 		{
 			_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0
 			{
@@ -5207,7 +5207,7 @@ internal sealed class LicenseManager
 			List<(string, string)> list = CountConfiguration("transferlicenseconfirm");
 			list.Add(("verification_code", descriptor));
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 			{
 				state = false;
 				QueryConfiguration(response, delegate
@@ -5224,7 +5224,7 @@ internal sealed class LicenseManager
 			}, null, null, CalculateIdentifier);
 		}
 
-		internal void RevertServer(ParamsIdentifier response)
+		internal void RevertServer(JsonObject response)
 		{
 			state = false;
 			QueryConfiguration(response, delegate
@@ -5342,7 +5342,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = CountConfiguration("verifylicense");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3
 				{
@@ -5364,7 +5364,7 @@ internal sealed class LicenseManager
 			}, _003C_003Ec.m_ProcAuthentication.CountServer, null, null, CalculateIdentifier);
 		}
 
-		internal void VisitWatcher(ParamsIdentifier response)
+		internal void VisitWatcher(JsonObject response)
 		{
 			_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3
 			{
@@ -5408,7 +5408,7 @@ internal sealed class LicenseManager
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass132_3
 	{
-		public ParamsIdentifier _SystemContext;
+		public JsonObject _SystemContext;
 
 		public _003C_003Ec__DisplayClass132_0 m_SetterContext;
 
@@ -5797,7 +5797,7 @@ internal sealed class LicenseManager
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass179_0
 	{
-		public ParamsIdentifier composerContext;
+		public JsonObject composerContext;
 
 		internal void RestartReg()
 		{
@@ -7497,7 +7497,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = CountConfiguration("verifylicense");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3();
 				_003C_003Ec__DisplayClass132_.m_SetterContext = CS_0024_003C_003E8__locals10;
@@ -7530,7 +7530,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = CountConfiguration("activatelicense");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 			{
 				_Rule = false;
 				QueryConfiguration(response, delegate
@@ -7693,12 +7693,12 @@ internal sealed class LicenseManager
 		}, CS_0024_003C_003E8__locals31._InfoContext);
 	}
 
-	private static void ComputeConfiguration(ParamsIdentifier init)
+	private static void ComputeConfiguration(JsonObject init)
 	{
 		QueryConfiguration(init, null);
 	}
 
-	private static void QueryConfiguration(ParamsIdentifier i, Action selection, Action comp = null, bool comparesecond2 = true)
+	private static void QueryConfiguration(JsonObject i, Action selection, Action comp = null, bool comparesecond2 = true)
 	{
 		bool num = i.PublishConsumer("success");
 		string text = i.PublishConsumer("message");
@@ -8088,9 +8088,9 @@ internal sealed class LicenseManager
 		return httpWebRequest;
 	}
 
-	private static async Task<ParamsIdentifier> RunIdentifier(string setup, string vis)
+	private static async Task<JsonObject> RunIdentifier(string setup, string vis)
 	{
-		ParamsIdentifier _DispatcherContext = default(ParamsIdentifier);
+		JsonObject _DispatcherContext = default(JsonObject);
 		await Task.Run(async delegate
 		{
 			HttpWebRequest httpWebRequest = RevertConfiguration(setup);
@@ -8102,12 +8102,12 @@ internal sealed class LicenseManager
 			StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
 			string v = await streamReader.ReadToEndAsync();
 			streamReader.Dispose();
-			_DispatcherContext = new ParamsIdentifier(v);
+			_DispatcherContext = new JsonObject(v);
 		});
 		return _DispatcherContext;
 	}
 
-	private static Task<ParamsIdentifier> OrderIdentifier(string first)
+	private static Task<JsonObject> OrderIdentifier(string first)
 	{
 		return RunIdentifier("https://us-central1-dreadscripts-c6b62.cloudfunctions.net/receiveCommand", first);
 	}
@@ -8195,7 +8195,7 @@ internal sealed class LicenseManager
 			{
 				List<(string, string)> list = CountConfiguration("transferlicenserequest");
 				StartConfiguration(list);
-				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 				{
 					_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0();
 					_003C_003Ec__DisplayClass179_.composerContext = response;
@@ -8222,7 +8222,7 @@ internal sealed class LicenseManager
 			List<(string, string)> list = CountConfiguration("transferlicenseconfirm");
 			list.Add(("verification_code", descriptor));
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 			{
 				state = false;
 				QueryConfiguration(response, delegate
@@ -8471,7 +8471,7 @@ internal sealed class LicenseManager
 			("command", "getdownloadinfo"),
 			("product_id", "No1lKII9IzcBAbihub6nCg=="),
 			("version", m_Expression.ToString())
-		})).CreateProcess(delegate(ParamsIdentifier response)
+		})).CreateProcess(delegate(JsonObject response)
 		{
 			exporter = true;
 			string text = ADOSettings.GetConsumer().u_announcement.CreateUtils();
@@ -8814,7 +8814,7 @@ internal sealed class LicenseManager
 	{
 		List<(string, string)> list = CountConfiguration("activatelicense");
 		StartConfiguration(list);
-		OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(ParamsIdentifier response)
+		OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
 		{
 			_Rule = false;
 			QueryConfiguration(response, delegate

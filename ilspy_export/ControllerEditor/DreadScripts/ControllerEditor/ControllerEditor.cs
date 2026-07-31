@@ -1855,7 +1855,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					("bug_exception", Uri.EscapeUriString(_DicAlgo.Value.utilsAlgo))
 				});
 				LogoutAnnotation(list);
-				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 				{
 					bool flag = response.InsertReg("success");
 					string text = response.InsertReg("message");
@@ -1922,7 +1922,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								});
 								LogoutAnnotation(list2);
 								candidateAnnotation = true;
-								DisableVisitor(CallVisitor(list2.ToArray())).QueryRules(delegate(FieldAlgo response)
+								DisableVisitor(CallVisitor(list2.ToArray())).QueryRules(delegate(JsonObject response)
 								{
 									bool flag = response.InsertReg("success");
 									string text = response.InsertReg("message");
@@ -2119,17 +2119,17 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	}
 
 	[DefaultMember("Item")]
-	internal readonly struct FieldAlgo
+	internal readonly struct JsonObject
 	{
 		private readonly string _AttributeAlgo;
 
-		private readonly Dictionary<string, DescriptorAlgo> _ClientAlgo;
+		private readonly Dictionary<string, JsonValue> _ClientAlgo;
 
 		internal readonly bool _ConfigAlgo;
 
 		private static object PushState;
 
-		internal FieldAlgo(string i)
+		internal JsonObject(string i)
 		{
 			_AttributeAlgo = i;
 			MatchCollection matchCollection = Regex.Matches(i, "\"(.*?)\":(?:(?:\"(.*?)\")|(?:(.*?)[,}]))");
@@ -2137,7 +2137,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (count != 0)
 			{
 				_ConfigAlgo = false;
-				_ClientAlgo = new Dictionary<string, DescriptorAlgo>();
+				_ClientAlgo = new Dictionary<string, JsonValue>();
 				for (int j = 0; j < count; j++)
 				{
 					Match match = matchCollection[j];
@@ -2149,7 +2149,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					if (!string.IsNullOrEmpty(value))
 					{
-						_ClientAlgo[value] = new DescriptorAlgo(value2);
+						_ClientAlgo[value] = new JsonValue(value2);
 					}
 				}
 			}
@@ -2161,7 +2161,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 
 		[SpecialName]
-		internal DescriptorAlgo InsertReg(string ident)
+		internal JsonValue InsertReg(string ident)
 		{
 			_ClientAlgo.TryGetValue(ident, out var value);
 			return value;
@@ -2180,7 +2180,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			StringBuilder stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("{");
-			foreach (KeyValuePair<string, DescriptorAlgo> item in _ClientAlgo)
+			foreach (KeyValuePair<string, JsonValue> item in _ClientAlgo)
 			{
 				stringBuilder.AppendLine($"{item.Key}: {item.Value},");
 			}
@@ -2194,7 +2194,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	internal readonly struct DescriptorAlgo
+	internal readonly struct JsonValue
 	{
 		internal readonly string templateAlgo;
 
@@ -2208,7 +2208,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static object PrintState;
 
-		internal DescriptorAlgo(string last)
+		internal JsonValue(string last)
 		{
 			templateAlgo = last;
 			m_ManagerAlgo = true;
@@ -2236,17 +2236,17 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return m_MessageAlgo;
 		}
 
-		public static implicit operator string(DescriptorAlgo var1)
+		public static implicit operator string(JsonValue var1)
 		{
 			return var1.m_MessageAlgo;
 		}
 
-		public static implicit operator bool(DescriptorAlgo key)
+		public static implicit operator bool(JsonValue key)
 		{
 			return key.m_CollectionAlgo;
 		}
 
-		public static implicit operator float(DescriptorAlgo key)
+		public static implicit operator float(JsonValue key)
 		{
 			return key._ParserAlgo;
 		}
@@ -4317,19 +4317,19 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			public static Func<AnimatorState, bool> serverInitializer;
 
-			public static Func<GameObject, QueueProperty> m_ThreadInitializer;
+			public static Func<GameObject, ComponentQueue> m_ThreadInitializer;
 
-			public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer> policyInitializer;
+			public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<string>.PickerEntry> policyInitializer;
 
 			public static Func<string, string, bool> m_SerializerInitializer;
 
 			public static Func<Component, Type> m_PageInitializer;
 
-			public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer> _ResolverInitializer;
+			public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry> _ResolverInitializer;
 
 			public static Func<Type, object[]> predicateInitializer;
 
-			public static Func<GameObject, QueueProperty> rulesInitializer;
+			public static Func<GameObject, ComponentQueue> rulesInitializer;
 
 			public static Func<AnimatorState, bool> queueInitializer;
 
@@ -4344,12 +4344,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				return s.motion as AnimationClip;
 			}
 
-			internal QueueProperty RevertTests(GameObject o)
+			internal ComponentQueue RevertTests(GameObject o)
 			{
-				return new QueueProperty(o);
+				return new ComponentQueue(o);
 			}
 
-			internal void OrderProperty(DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer i)
+			internal void OrderProperty(DreadScripts.ControllerEditor.SearchablePickerPopup<string>.PickerEntry i)
 			{
 				GUILayout.Label(i._ValueServer);
 			}
@@ -4364,7 +4364,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				return c.GetType();
 			}
 
-			internal void PostProperty(DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer item)
+			internal void PostProperty(DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry item)
 			{
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
@@ -4380,9 +4380,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				};
 			}
 
-			internal QueueProperty EnableProperty(GameObject o)
+			internal ComponentQueue EnableProperty(GameObject o)
 			{
-				return new QueueProperty(o);
+				return new ComponentQueue(o);
 			}
 
 			internal bool PublishProperty(AnimatorState s)
@@ -4428,7 +4428,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 			internal void CallProperty(ReorderableList r)
 			{
-				m_ContextInitializer.annotationInitializer.Add(new QueueProperty());
+				m_ContextInitializer.annotationInitializer.Add(new ComponentQueue());
 			}
 
 			internal void CancelProperty(Rect rect, int index, bool active, bool focused)
@@ -4488,14 +4488,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							searchablePickerPopup2.IncludeConnection(_003C_003Ec.observerInitializer.SetupProperty);
 							if (!EditorSettings.CallDefinition().advancedQuickToggle)
 							{
-								DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer[] dicServer = searchablePickerPopup2.m_DicServer;
+								DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry[] dicServer = searchablePickerPopup2.m_DicServer;
 								for (int i = 0; i < dicServer.Length; i++)
 								{
 									_003C_003Ec__DisplayClass18_2 _003C_003Ec__DisplayClass18_2 = new _003C_003Ec__DisplayClass18_2
 									{
 										interpreterInitializer = dicServer[i]
 									};
-									if (!QueueProperty._InterpreterProperty.Any(_003C_003Ec__DisplayClass18_2.AddProperty))
+									if (!ComponentQueue._InterpreterProperty.Any(_003C_003Ec__DisplayClass18_2.AddProperty))
 									{
 										_003C_003Ec__DisplayClass18_2.interpreterInitializer.authenticationServer = false;
 									}
@@ -4547,7 +4547,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass18_1
 		{
-			public QueueProperty m_RecordInitializer;
+			public ComponentQueue m_RecordInitializer;
 
 			public int _HelperInitializer;
 
@@ -4594,7 +4594,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass18_2
 		{
-			public DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer interpreterInitializer;
+			public DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry interpreterInitializer;
 
 			internal bool AddProperty(Type vt)
 			{
@@ -4604,11 +4604,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		private Transform m_WrapperInitializer;
 
-		private List<QueueProperty> annotationInitializer;
+		private List<ComponentQueue> annotationInitializer;
 
 		private List<AnimatorState> _VisitorInitializer;
 
-		private DreadScripts.ControllerEditor.ReorderableListHelper<QueueProperty> _AlgoInitializer;
+		private DreadScripts.ControllerEditor.ReorderableListHelper<ComponentQueue> _AlgoInitializer;
 
 		private static readonly Color[] _MapperInitializer = new Color[3]
 		{
@@ -4681,9 +4681,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			m_ContextInitializer.definitionInitializer = i.Count((AnimatorState s) => s.motion as AnimationClip);
 			m_ContextInitializer.testsInitializer = m_ContextInitializer.definitionInitializer > 0;
 			m_ContextInitializer.m_WrapperInitializer = second;
-			m_ContextInitializer.annotationInitializer = new List<QueueProperty>(template.Select((GameObject o) => new QueueProperty(o)));
+			m_ContextInitializer.annotationInitializer = new List<ComponentQueue>(template.Select((GameObject o) => new ComponentQueue(o)));
 			_003C_003Ec__DisplayClass18_0 CS_0024_003C_003E8__locals0;
-			m_ContextInitializer._AlgoInitializer = new DreadScripts.ControllerEditor.ReorderableListHelper<QueueProperty>(delegate
+			m_ContextInitializer._AlgoInitializer = new DreadScripts.ControllerEditor.ReorderableListHelper<ComponentQueue>(delegate
 			{
 				m_ContextInitializer._AlgoInitializer.LogoutThread("Target GameObjects", "The GameObjects that will be animated by the animation clip");
 				GUILayout.FlexibleSpace();
@@ -4698,7 +4698,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				m_ContextInitializer._AlgoInitializer.PatchThread(rejectv: false, writeattr: false);
 			}, m_ContextInitializer.annotationInitializer, delegate
 			{
-				m_ContextInitializer.annotationInitializer.Add(new QueueProperty());
+				m_ContextInitializer.annotationInitializer.Add(new ComponentQueue());
 			}, delegate(Rect rect, int index, bool active, bool focused)
 			{
 				_003C_003Ec__DisplayClass18_1 _003C_003Ec__DisplayClass18_ = new _003C_003Ec__DisplayClass18_1();
@@ -4756,12 +4756,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							searchablePickerPopup2.IncludeConnection(_003C_003Ec.observerInitializer.SetupProperty);
 							if (!EditorSettings.CallDefinition().advancedQuickToggle)
 							{
-								DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer[] dicServer = searchablePickerPopup2.m_DicServer;
+								DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry[] dicServer = searchablePickerPopup2.m_DicServer;
 								for (int k = 0; k < dicServer.Length; k++)
 								{
 									_003C_003Ec__DisplayClass18_2 _003C_003Ec__DisplayClass18_2 = new _003C_003Ec__DisplayClass18_2();
 									_003C_003Ec__DisplayClass18_2.interpreterInitializer = dicServer[k];
-									if (!QueueProperty._InterpreterProperty.Any(_003C_003Ec__DisplayClass18_2.AddProperty))
+									if (!ComponentQueue._InterpreterProperty.Any(_003C_003Ec__DisplayClass18_2.AddProperty))
 									{
 										_003C_003Ec__DisplayClass18_2.interpreterInitializer.authenticationServer = false;
 									}
@@ -4814,7 +4814,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				if (i.All((AnimatorState s) => s.name.IndexOf("on", StringComparison.OrdinalIgnoreCase) >= 0))
 				{
-					foreach (QueueProperty item2 in m_ContextInitializer.annotationInitializer)
+					foreach (ComponentQueue item2 in m_ContextInitializer.annotationInitializer)
 					{
 						item2.m_AdapterProperty = 1f;
 					}
@@ -4822,7 +4822,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			else
 			{
-				foreach (QueueProperty item3 in m_ContextInitializer.annotationInitializer)
+				foreach (ComponentQueue item3 in m_ContextInitializer.annotationInitializer)
 				{
 					item3.m_AdapterProperty = 0f;
 				}
@@ -4959,7 +4959,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				AnimationClip[] array2 = (AnimationClip[])array;
 				foreach (AnimationClip animationClip2 in array2)
 				{
-					foreach (QueueProperty item in annotationInitializer)
+					foreach (ComponentQueue item in annotationInitializer)
 					{
 						if (item.RegisterSerializer())
 						{
@@ -5070,7 +5070,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Action m_RuleInitializer;
 
-		public static Action<FieldAlgo> singletonInitializer;
+		public static Action<JsonObject> singletonInitializer;
 
 		public static Action<Exception> _FactoryInitializer;
 
@@ -5090,7 +5090,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Func<bool> roleInitializer;
 
-		public static Action<FieldAlgo> _ParamInitializer;
+		public static Action<JsonObject> _ParamInitializer;
 
 		public static Action<Exception> _ModelInitializer;
 
@@ -5098,7 +5098,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Action _DecoratorInitializer;
 
-		public static Action<FieldAlgo> m_ComparatorInitializer;
+		public static Action<JsonObject> m_ComparatorInitializer;
 
 		public static Action<Exception> m_ExceptionInitializer;
 
@@ -5288,7 +5288,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Func<Material, Shader> m_TagDefinition;
 
-		public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer> importerDefinition;
+		public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<string>.PickerEntry> importerDefinition;
 
 		public static Func<string, string, bool> _RequestDefinition;
 
@@ -5296,7 +5296,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		public static Func<Type, bool> _WriterDefinition;
 
-		public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer> paramsDefinition;
+		public static Action<DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry> paramsDefinition;
 
 		public static Func<Type, object[]> m_ListenerDefinition;
 
@@ -5587,7 +5587,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			FindVisitor($"Something went wrong while verifying license:\n\n{exception}", CustomLogType.Error);
 		}
 
-		internal void ResolveProperty(FieldAlgo response)
+		internal void ResolveProperty(JsonObject response)
 		{
 			importerAnnotation = false;
 			SortAnnotation(response, delegate
@@ -5657,7 +5657,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			List<(string, string)> list = RegisterAnnotation("transferlicenserequest");
 			LogoutAnnotation(list);
-			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass239_0 _003C_003Ec__DisplayClass239_ = new _003C_003Ec__DisplayClass239_0
 				{
@@ -5672,7 +5672,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}, null, null, InsertVisitor);
 		}
 
-		internal void SortProperty(FieldAlgo response)
+		internal void SortProperty(JsonObject response)
 		{
 			_003C_003Ec__DisplayClass239_0 _003C_003Ec__DisplayClass239_ = new _003C_003Ec__DisplayClass239_0
 			{
@@ -5693,7 +5693,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			List<(string, string)> list = RegisterAnnotation("transferlicenseconfirm");
 			list.Add(("verification_code", strategyAnnotation));
 			LogoutAnnotation(list);
-			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 			{
 				_IndexerAnnotation = false;
 				SortAnnotation(response, delegate
@@ -5710,7 +5710,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}, null, null, InsertVisitor);
 		}
 
-		internal void PatchProperty(FieldAlgo response)
+		internal void PatchProperty(JsonObject response)
 		{
 			_IndexerAnnotation = false;
 			SortAnnotation(response, delegate
@@ -6308,7 +6308,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return m.shader;
 		}
 
-		internal void DisableObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<string>.UtilsServer i)
+		internal void DisableObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<string>.PickerEntry i)
 		{
 			GUILayout.Label(i._ValueServer, EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
 			EditorUtils.StartQueue();
@@ -6329,7 +6329,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			return VerifyVisitor(t);
 		}
 
-		internal void AddObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.UtilsServer i)
+		internal void AddObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry i)
 		{
 			GUILayout.Label((GUIContent)i.CloneConnection(), EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
 			EditorUtils.StartQueue();
@@ -6486,7 +6486,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			List<(string, string)> list = RegisterAnnotation("verifylicense");
 			LogoutAnnotation(list);
-			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3
 				{
@@ -6499,7 +6499,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}, _003C_003Ec.watcherInitializer.CollectProperty, null, null, InsertVisitor);
 		}
 
-		internal void LoginObserver(FieldAlgo response)
+		internal void LoginObserver(JsonObject response)
 		{
 			_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3
 			{
@@ -6534,7 +6534,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass186_3
 	{
-		public FieldAlgo valueDefinition;
+		public JsonObject valueDefinition;
 
 		public _003C_003Ec__DisplayClass186_0 m_MerchantDefinition;
 
@@ -6923,7 +6923,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass239_0
 	{
-		public FieldAlgo serviceDefinition;
+		public JsonObject serviceDefinition;
 
 		internal void InterruptObserver()
 		{
@@ -10318,7 +10318,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			List<(string, string)> list = RegisterAnnotation("verifylicense");
 			LogoutAnnotation(list);
-			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass186_3 _003C_003Ec__DisplayClass186_ = new _003C_003Ec__DisplayClass186_3();
 				_003C_003Ec__DisplayClass186_.m_MerchantDefinition = CS_0024_003C_003E8__locals9;
@@ -10342,7 +10342,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			List<(string, string)> list = RegisterAnnotation("activatelicense");
 			LogoutAnnotation(list);
-			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 			{
 				importerAnnotation = false;
 				SortAnnotation(response, delegate
@@ -10505,12 +10505,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}, CS_0024_003C_003E8__locals31._MockDefinition);
 	}
 
-	private static void ChangeAnnotation(FieldAlgo v)
+	private static void ChangeAnnotation(JsonObject v)
 	{
 		SortAnnotation(v, null);
 	}
 
-	private static void SortAnnotation(FieldAlgo key, Action token, Action serv = null, bool t2stop = true)
+	private static void SortAnnotation(JsonObject key, Action token, Action serv = null, bool t2stop = true)
 	{
 		bool num = key.InsertReg("success");
 		string text = key.InsertReg("message");
@@ -10967,9 +10967,9 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		return httpWebRequest;
 	}
 
-	private static async Task<FieldAlgo> CountVisitor(string reference, string caller)
+	private static async Task<JsonObject> CountVisitor(string reference, string caller)
 	{
-		FieldAlgo collectionDefinition = default(FieldAlgo);
+		JsonObject collectionDefinition = default(JsonObject);
 		await Task.Run(async delegate
 		{
 			HttpWebRequest httpWebRequest = CancelVisitor(reference);
@@ -10981,12 +10981,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
 			string i = await streamReader.ReadToEndAsync();
 			streamReader.Dispose();
-			collectionDefinition = new FieldAlgo(i);
+			collectionDefinition = new JsonObject(i);
 		});
 		return collectionDefinition;
 	}
 
-	private static Task<FieldAlgo> DisableVisitor(string info)
+	private static Task<JsonObject> DisableVisitor(string info)
 	{
 		return CountVisitor("https://us-central1-dreadscripts-c6b62.cloudfunctions.net/receiveCommand", info);
 	}
@@ -11086,7 +11086,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				List<(string, string)> list = RegisterAnnotation("transferlicenserequest");
 				LogoutAnnotation(list);
-				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+				DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 				{
 					_003C_003Ec__DisplayClass239_0 _003C_003Ec__DisplayClass239_ = new _003C_003Ec__DisplayClass239_0();
 					_003C_003Ec__DisplayClass239_.serviceDefinition = response;
@@ -11113,7 +11113,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			List<(string, string)> list = RegisterAnnotation("transferlicenseconfirm");
 			list.Add(("verification_code", strategyAnnotation));
 			LogoutAnnotation(list);
-			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+			DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 			{
 				_IndexerAnnotation = false;
 				SortAnnotation(response, delegate
@@ -11405,7 +11405,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			("command", "getdownloadinfo"),
 			("product_id", "yOk0XCnENLMO6DIF8cYpSg=="),
 			("version", m_RefAnnotation.ToString())
-		})).QueryRules(delegate(FieldAlgo response)
+		})).QueryRules(delegate(JsonObject response)
 		{
 			_RuleAnnotation = true;
 			string text = EditorSettings.CallDefinition().u_announcement.CollectDefinition();
@@ -18296,7 +18296,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		List<(string, string)> list = RegisterAnnotation("activatelicense");
 		LogoutAnnotation(list);
-		DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(FieldAlgo response)
+		DisableVisitor(CallVisitor(list.ToArray())).QueryRules(delegate(JsonObject response)
 		{
 			importerAnnotation = false;
 			SortAnnotation(response, delegate

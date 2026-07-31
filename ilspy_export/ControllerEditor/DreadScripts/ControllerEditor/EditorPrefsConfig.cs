@@ -11,15 +11,15 @@ namespace DreadScripts.ControllerEditor;
 [DefaultMember("Item")]
 internal class EditorPrefsConfig
 {
-	internal class VisitorThread : IDisposable
+	internal class PrefsChangeScope : IDisposable
 	{
 		private readonly EditorPrefsConfig m_AlgoThread;
 
 		private readonly EditorGUI.ChangeCheckScope mapperThread;
 
-		internal static VisitorThread CustomizeStatus;
+		internal static PrefsChangeScope CustomizeStatus;
 
-		public VisitorThread(EditorPrefsConfig key)
+		public PrefsChangeScope(EditorPrefsConfig key)
 		{
 			m_AlgoThread = key;
 			mapperThread = new EditorGUI.ChangeCheckScope();

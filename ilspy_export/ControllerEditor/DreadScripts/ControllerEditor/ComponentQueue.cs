@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DreadScripts.ControllerEditor;
 
-internal class QueueProperty
+internal class ComponentQueue
 {
 	[Serializable]
 	[CompilerGenerated]
@@ -32,7 +32,7 @@ internal class QueueProperty
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass27_0
 	{
-		public QueueProperty expressionProperty;
+		public ComponentQueue expressionProperty;
 
 		public string m_SystemProperty;
 
@@ -99,7 +99,7 @@ internal class QueueProperty
 		typeof(Renderer)
 	};
 
-	internal static QueueProperty NewStruct;
+	internal static ComponentQueue NewStruct;
 
 	[SpecialName]
 	public bool RegisterSerializer()
@@ -160,13 +160,13 @@ internal class QueueProperty
 		return m_HelperProperty[_ConsumerProperty];
 	}
 
-	public QueueProperty()
+	public ComponentQueue()
 	{
 		m_HelperProperty = Array.Empty<string>();
 		m_SetterProperty = Array.Empty<Component>();
 	}
 
-	public QueueProperty(GameObject def)
+	public ComponentQueue(GameObject def)
 	{
 		PrintSerializer(def);
 		m_AdapterProperty = (def.activeSelf ? 1 : 0);

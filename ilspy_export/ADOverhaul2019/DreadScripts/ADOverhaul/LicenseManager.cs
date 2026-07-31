@@ -350,7 +350,7 @@ internal sealed class LicenseManager
 					("bug_exception", Uri.EscapeUriString(m_Utils.Value.issuer))
 				});
 				FindSystem(list);
-				CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+				CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 				{
 					bool flag = response.StartTest("success");
 					string text = response.StartTest("message");
@@ -453,7 +453,7 @@ internal sealed class LicenseManager
 						});
 						FindSystem(list2);
 						_Role = true;
-						CountStruct(InstantiateSystem(list2.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+						CountStruct(InstantiateSystem(list2.ToArray())).PublishAccount(delegate(JsonObject response)
 						{
 							bool flag = response.StartTest("success");
 							string text = response.StartTest("message");
@@ -623,17 +623,17 @@ internal sealed class LicenseManager
 	}
 
 	[DefaultMember("Item")]
-	internal readonly struct GetterDicBridge
+	internal readonly struct JsonObject
 	{
 		private readonly string _TaskStruct;
 
-		private readonly Dictionary<string, ResolverStruct> producerStruct;
+		private readonly Dictionary<string, JsonValue> producerStruct;
 
 		internal readonly bool m_MethodStruct;
 
 		private static object PostGlobal;
 
-		internal GetterDicBridge(string def)
+		internal JsonObject(string def)
 		{
 			_TaskStruct = def;
 			MatchCollection matchCollection = Regex.Matches(def, "\"(.*?)\":(?:(?:\"(.*?)\")|(?:(.*?)[,}]))");
@@ -641,7 +641,7 @@ internal sealed class LicenseManager
 			if (count != 0)
 			{
 				m_MethodStruct = false;
-				producerStruct = new Dictionary<string, ResolverStruct>();
+				producerStruct = new Dictionary<string, JsonValue>();
 				for (int i = 0; i < count; i++)
 				{
 					Match match = matchCollection[i];
@@ -653,7 +653,7 @@ internal sealed class LicenseManager
 					}
 					if (!string.IsNullOrEmpty(value))
 					{
-						producerStruct[value] = new ResolverStruct(value2);
+						producerStruct[value] = new JsonValue(value2);
 					}
 				}
 			}
@@ -665,7 +665,7 @@ internal sealed class LicenseManager
 		}
 
 		[SpecialName]
-		internal ResolverStruct StartTest(string reference)
+		internal JsonValue StartTest(string reference)
 		{
 			producerStruct.TryGetValue(reference, out var value);
 			return value;
@@ -682,7 +682,7 @@ internal sealed class LicenseManager
 			{
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.AppendLine("{");
-				foreach (KeyValuePair<string, ResolverStruct> item in producerStruct)
+				foreach (KeyValuePair<string, JsonValue> item in producerStruct)
 				{
 					stringBuilder.AppendLine($"{item.Key}: {item.Value},");
 				}
@@ -698,7 +698,7 @@ internal sealed class LicenseManager
 		}
 	}
 
-	internal readonly struct ResolverStruct
+	internal readonly struct JsonValue
 	{
 		internal readonly string m_IteratorStruct;
 
@@ -712,7 +712,7 @@ internal sealed class LicenseManager
 
 		internal static object InterruptGlobal;
 
-		internal ResolverStruct(string def)
+		internal JsonValue(string def)
 		{
 			m_IteratorStruct = def;
 			_AccountStruct = true;
@@ -740,17 +740,17 @@ internal sealed class LicenseManager
 			return _RulesStruct;
 		}
 
-		public static implicit operator string(ResolverStruct first)
+		public static implicit operator string(JsonValue first)
 		{
 			return first._RulesStruct;
 		}
 
-		public static implicit operator bool(ResolverStruct param)
+		public static implicit operator bool(JsonValue param)
 		{
 			return param.m_TokenizerStruct;
 		}
 
-		public static implicit operator float(ResolverStruct first)
+		public static implicit operator float(JsonValue first)
 		{
 			return first.specificationStruct;
 		}
@@ -4765,7 +4765,7 @@ internal sealed class LicenseManager
 
 		public static Action m_ClientModel;
 
-		public static Action<GetterDicBridge> m_WorkerModel;
+		public static Action<JsonObject> m_WorkerModel;
 
 		public static Action<Exception> _ContainerModel;
 
@@ -4785,7 +4785,7 @@ internal sealed class LicenseManager
 
 		public static Func<bool> _SerializerModel;
 
-		public static Action<GetterDicBridge> _InterceptorModel;
+		public static Action<JsonObject> _InterceptorModel;
 
 		public static Action<Exception> m_DatabaseModel;
 
@@ -4793,7 +4793,7 @@ internal sealed class LicenseManager
 
 		public static Action _MerchantModel;
 
-		public static Action<GetterDicBridge> classModel;
+		public static Action<JsonObject> classModel;
 
 		public static Action<Exception> _PredicateModel;
 
@@ -5079,7 +5079,7 @@ internal sealed class LicenseManager
 			StopStruct($"Something went wrong while verifying license:\n\n{exception}", CustomLogType.Error);
 		}
 
-		internal void FindRules(GetterDicBridge response)
+		internal void FindRules(JsonObject response)
 		{
 			_Advisor = false;
 			SetupSystem(response, delegate
@@ -5149,7 +5149,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = PrintSystem("transferlicenserequest");
 			FindSystem(list);
-			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0
 				{
@@ -5164,7 +5164,7 @@ internal sealed class LicenseManager
 			}, null, null, SetStruct);
 		}
 
-		internal void AddRules(GetterDicBridge response)
+		internal void AddRules(JsonObject response)
 		{
 			_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0
 			{
@@ -5185,7 +5185,7 @@ internal sealed class LicenseManager
 			List<(string, string)> list = PrintSystem("transferlicenseconfirm");
 			list.Add(("verification_code", m_Object));
 			FindSystem(list);
-			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 			{
 				comparator = false;
 				SetupSystem(response, delegate
@@ -5202,7 +5202,7 @@ internal sealed class LicenseManager
 			}, null, null, SetStruct);
 		}
 
-		internal void RevertRules(GetterDicBridge response)
+		internal void RevertRules(JsonObject response)
 		{
 			comparator = false;
 			SetupSystem(response, delegate
@@ -5320,7 +5320,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = PrintSystem("verifylicense");
 			FindSystem(list);
-			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3
 				{
@@ -5342,7 +5342,7 @@ internal sealed class LicenseManager
 			}, _003C_003Ec._ContextConfig.PrintRules, null, null, SetStruct);
 		}
 
-		internal void DestroyTokenizer(GetterDicBridge response)
+		internal void DestroyTokenizer(JsonObject response)
 		{
 			_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3
 			{
@@ -5386,7 +5386,7 @@ internal sealed class LicenseManager
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass132_3
 	{
-		public GetterDicBridge _CreatorModel;
+		public JsonObject _CreatorModel;
 
 		public _003C_003Ec__DisplayClass132_0 baseModel;
 
@@ -5775,7 +5775,7 @@ internal sealed class LicenseManager
 	[CompilerGenerated]
 	private sealed class _003C_003Ec__DisplayClass179_0
 	{
-		public GetterDicBridge candidateModel;
+		public JsonObject candidateModel;
 
 		internal void RegisterSpecification()
 		{
@@ -7472,7 +7472,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = PrintSystem("verifylicense");
 			FindSystem(list);
-			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3();
 				_003C_003Ec__DisplayClass132_.baseModel = CS_0024_003C_003E8__locals10;
@@ -7505,7 +7505,7 @@ internal sealed class LicenseManager
 		{
 			List<(string, string)> list = PrintSystem("activatelicense");
 			FindSystem(list);
-			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 			{
 				_Advisor = false;
 				SetupSystem(response, delegate
@@ -7668,12 +7668,12 @@ internal sealed class LicenseManager
 		}, CS_0024_003C_003E8__locals31.m_CallbackModel);
 	}
 
-	private static void SortSystem(GetterDicBridge var1)
+	private static void SortSystem(JsonObject var1)
 	{
 		SetupSystem(var1, null);
 	}
 
-	private static void SetupSystem(GetterDicBridge asset, Action caller, Action role = null, bool isres2 = true)
+	private static void SetupSystem(JsonObject asset, Action caller, Action role = null, bool isres2 = true)
 	{
 		bool num = asset.StartTest("success");
 		string text = asset.StartTest("message");
@@ -8070,9 +8070,9 @@ internal sealed class LicenseManager
 		return httpWebRequest;
 	}
 
-	private static async Task<GetterDicBridge> ReflectStruct(string i, string col)
+	private static async Task<JsonObject> ReflectStruct(string i, string col)
 	{
-		GetterDicBridge facadeModel = default(GetterDicBridge);
+		JsonObject facadeModel = default(JsonObject);
 		await Task.Run(async delegate
 		{
 			HttpWebRequest httpWebRequest = RevertSystem(i);
@@ -8084,12 +8084,12 @@ internal sealed class LicenseManager
 			StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream());
 			string def = await streamReader.ReadToEndAsync();
 			streamReader.Dispose();
-			facadeModel = new GetterDicBridge(def);
+			facadeModel = new JsonObject(def);
 		});
 		return facadeModel;
 	}
 
-	private static Task<GetterDicBridge> CountStruct(string param)
+	private static Task<JsonObject> CountStruct(string param)
 	{
 		return ReflectStruct("https://us-central1-dreadscripts-c6b62.cloudfunctions.net/receiveCommand", param);
 	}
@@ -8174,7 +8174,7 @@ internal sealed class LicenseManager
 			{
 				List<(string, string)> list = PrintSystem("transferlicenserequest");
 				FindSystem(list);
-				CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+				CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 				{
 					_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0();
 					_003C_003Ec__DisplayClass179_.candidateModel = response;
@@ -8198,7 +8198,7 @@ internal sealed class LicenseManager
 			List<(string, string)> list = PrintSystem("transferlicenseconfirm");
 			list.Add(("verification_code", m_Object));
 			FindSystem(list);
-			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+			CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 			{
 				comparator = false;
 				SetupSystem(response, delegate
@@ -8445,7 +8445,7 @@ internal sealed class LicenseManager
 			("command", "getdownloadinfo"),
 			("product_id", "No1lKII9IzcBAbihub6nCg=="),
 			("version", _Connection.ToString())
-		})).PublishAccount(delegate(GetterDicBridge response)
+		})).PublishAccount(delegate(JsonObject response)
 		{
 			m_Composer = true;
 			string text = ADOSettings.SearchTest().u_announcement.PublishService();
@@ -8794,7 +8794,7 @@ internal sealed class LicenseManager
 	{
 		List<(string, string)> list = PrintSystem("activatelicense");
 		FindSystem(list);
-		CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(GetterDicBridge response)
+		CountStruct(InstantiateSystem(list.ToArray())).PublishAccount(delegate(JsonObject response)
 		{
 			_Advisor = false;
 			SetupSystem(response, delegate
