@@ -176,7 +176,7 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 					}
 					if (!canConfirm && array[num])
 					{
-						GUILayout.Label(new GUIContent(EditorUtils.DestroyError().issuerProcessor), EditorUtils.CalcError().m_InstanceProcessor, GUILayout.ExpandWidth(expand: false));
+						GUILayout.Label(new GUIContent(EditorUtils.contents().warning), EditorUtils.styles().centeredIcon, GUILayout.ExpandWidth(expand: false));
 					}
 				}
 			}

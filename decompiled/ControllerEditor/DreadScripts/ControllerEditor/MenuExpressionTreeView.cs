@@ -174,7 +174,7 @@ internal class MenuExpressionTreeView : TreeView
 			rect.width = vector2.x;
 			Rect rect2 = rect;
 			rect2.x = rowRect.x + rowRect.width - vector2.x;
-			GUI.Label(rowRect, "[" + ((num6 > 1) ? (text2 + "...") : text2) + "]", EditorUtils.CalcError().algoObserver);
+			GUI.Label(rowRect, "[" + ((num6 > 1) ? (text2 + "...") : text2) + "]", EditorUtils.styles().noteRight);
 		}
 	}
 

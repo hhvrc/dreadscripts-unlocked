@@ -54,7 +54,7 @@ internal abstract class UtilityWindowBase<T> : EditorWindow where T : DreadScrip
 		}
 		using (new EditorGUI.DisabledScope(!canConfirm))
 		{
-			if (EditorUtils.DisableQueue("Confirm"))
+			if (EditorUtils.Button("Confirm"))
 			{
 				Confirm();
 			}

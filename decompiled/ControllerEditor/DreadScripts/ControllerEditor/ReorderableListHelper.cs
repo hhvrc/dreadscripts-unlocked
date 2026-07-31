@@ -72,7 +72,7 @@ internal class ReorderableListHelper<T>
 	{
 		if (list.Count != 0 && pol_low >= 0 && pol_low < list.Count)
 		{
-			if (!GUI.Button(new Rect(param.x + param.width - 28f, param.y + param.height / 2f - 8f, 32f, 18f), EditorUtils.DestroyError().m_DecoratorProcessor, EditorUtils.CalcError()._TemplateProcessor))
+			if (!GUI.Button(new Rect(param.x + param.width - 28f, param.y + param.height / 2f - 8f, 32f, 18f), EditorUtils.contents().removeSelection, EditorUtils.styles().footerButton))
 			{
 				Rect rect = new Rect(param);
 				rect.width = param.width - 29f;
@@ -121,7 +121,7 @@ internal class ReorderableListHelper<T>
 		GUILayout.Label(def, EditorStyles.boldLabel);
 		if (!string.IsNullOrEmpty(vis))
 		{
-			GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._AccountProcessor.texture(), vis), GUILayout.Width(14f), GUILayout.Height(18f));
+			GUILayout.Label(new GUIContent(EditorUtils.contents().help.texture(), vis), GUILayout.Width(14f), GUILayout.Height(18f));
 		}
 	}
 
@@ -131,11 +131,11 @@ internal class ReorderableListHelper<T>
 		{
 			if (rejectv)
 			{
-				expanded = EditorUtils.ExcludeQueue(expanded, (!expanded) ? EditorUtils.DestroyError().m_StatusProcessor : EditorUtils.DestroyError()._RefProcessor, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
+				expanded = EditorUtils.ToggleButton(expanded, (!expanded) ? EditorUtils.contents().hidden : EditorUtils.contents().visible, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
 			}
 			using (new EditorGUI.DisabledScope(!expanded))
 			{
-				if (EditorUtils.RestartQueue(EditorGUIUtility.IconContent("d_ol_plus"), GUI.skin.label, GUILayout.Width(18f)))
+				if (EditorUtils.Button(EditorGUIUtility.IconContent("d_ol_plus"), GUI.skin.label, GUILayout.Width(18f)))
 				{
 					reorderableList.onAddCallback(reorderableList);
 				}

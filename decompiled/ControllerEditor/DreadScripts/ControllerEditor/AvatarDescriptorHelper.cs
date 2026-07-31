@@ -153,7 +153,7 @@ internal static class AvatarDescriptorHelper
 					return false;
 				}
 				EditorGUILayout.HelpBox("Your Avatar's Action playable layer is set as FX. This is an uncommon bug.", MessageType.Error);
-				if (EditorUtils.DisableQueue("Fix"))
+				if (EditorUtils.Button("Fix"))
 				{
 					vRCAvatarDescriptor.baseAnimationLayers[3].type = VRCAvatarDescriptor.AnimLayerType.Action;
 					EditorUtility.SetDirty(vRCAvatarDescriptor);

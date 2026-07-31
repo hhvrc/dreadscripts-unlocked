@@ -95,8 +95,8 @@ internal class MenuSelector : EditorWindow
 		{
 			return;
 		}
-		EditorUtils.StartQueue(spec);
-		if (GUI.Button(spec, EditorUtils.DestroyError().invocationProcessor, EditorUtils.CalcError().broadcasterProcessor))
+		EditorUtils.AddLinkCursor(spec);
+		if (GUI.Button(spec, EditorUtils.contents().selectFolder, EditorUtils.styles().iconButton))
 		{
 			EditorUtils.ConcatList(null, typeof(VRCExpressionsMenu), null, null, loaddef3: false, null, delegate(UnityEngine.Object first)
 			{

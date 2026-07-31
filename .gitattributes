@@ -1,5 +1,14 @@
 # Deliberately NO global `* text=auto` -- see the decompiled/ rule at the end of this file.
 
+# ── unity/: CRLF for everything, except where Unity itself uses LF ────────────
+# The Unity project is edited from Windows, so pin unity/ to CRLF and stop core.autocrlf from
+# producing a phantom whole-tree diff. Placed FIRST on purpose: the LFS binary rules and the Unity
+# YAML `eol=lf` rules below both override it, which is exactly the "unless Unity's spec differs"
+# carve-out -- Unity's serialiser writes .meta and its YAML assets (.asset/.prefab/.unity/.controller
+# /.anim/.mask/.mat/.physicMaterial) with LF and rewrites them on the next serialise, so forcing CRLF
+# there would churn on every save. text=auto so an unlisted binary under unity/ is still left alone.
+unity/** text=auto eol=crlf
+
 # ── Git LFS: genuinely binary content only ───────────────────────────────────
 # Unity is set to Force Text serialization (ProjectSettings/EditorSettings.asset,
 # m_SerializationMode: 2), so .asset/.controller/.anim/.mask/.meta are all YAML. They stay out of

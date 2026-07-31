@@ -26,224 +26,224 @@ namespace DreadScripts.ControllerEditor;
 
 internal static class EditorUtils
 {
-	internal sealed class WatcherProcessor
+	internal sealed class Contents
 	{
-		internal readonly GUIContent candidateProcessor = new GUIContent(EditorGUIUtility.IconContent("Prefab Icon"))
+		internal readonly GUIContent simpleMode = new GUIContent(EditorGUIUtility.IconContent("Prefab Icon"))
 		{
 			tooltip = "Simple Mode"
 		};
 
-		internal readonly GUIContent productProcessor = new GUIContent(EditorGUIUtility.IconContent("GameObject Icon"))
+		internal readonly GUIContent advancedMode = new GUIContent(EditorGUIUtility.IconContent("GameObject Icon"))
 		{
 			tooltip = "Advanced Mode"
 		};
 
-		internal readonly GUIContent m_ExpressionProcessor = new GUIContent(EditorGUIUtility.IconContent("NetworkStartPosition Icon"))
+		internal readonly GUIContent defaultMergeClip = new GUIContent(EditorGUIUtility.IconContent("NetworkStartPosition Icon"))
 		{
 			tooltip = "Default Merge Clip"
 		};
 
-		internal readonly GUIContent systemProcessor = new GUIContent(EditorGUIUtility.IconContent("CompositeCollider2D Icon"))
+		internal readonly GUIContent defaultReplaceClip = new GUIContent(EditorGUIUtility.IconContent("CompositeCollider2D Icon"))
 		{
 			tooltip = "Default Replace Clip"
 		};
 
-		internal readonly GUIContent workerProcessor = EditorGUIUtility.IconContent("curvekeyframesemiselectedoverlay");
+		internal readonly GUIContent keyframeSemiSelected = EditorGUIUtility.IconContent("curvekeyframesemiselectedoverlay");
 
-		internal readonly GUIContent _FilterProcessor = EditorGUIUtility.IconContent("curvekeyframeweighted");
+		internal readonly GUIContent keyframeWeighted = EditorGUIUtility.IconContent("curvekeyframeweighted");
 
-		internal readonly GUIContent stubProcessor = new GUIContent(EditorGUIUtility.IconContent("EditCollider"))
+		internal readonly GUIContent linear = new GUIContent(EditorGUIUtility.IconContent("EditCollider"))
 		{
 			tooltip = "Linear"
 		};
 
-		internal readonly GUIContent readerProcessor = new GUIContent(EditorGUIUtility.IconContent("preAudioLoopOff"))
+		internal readonly GUIContent loopingClip = new GUIContent(EditorGUIUtility.IconContent("preAudioLoopOff"))
 		{
 			tooltip = "Looping Clip"
 		};
 
-		internal readonly GUIContent m_BridgeProcessor = new GUIContent(EditorGUIUtility.IconContent("SaveActive"))
+		internal readonly GUIContent copy = new GUIContent(EditorGUIUtility.IconContent("SaveActive"))
 		{
 			tooltip = "Copy"
 		};
 
-		internal readonly GUIContent m_StrategyProcessor = new GUIContent(EditorGUIUtility.IconContent("Clipboard"))
+		internal readonly GUIContent paste = new GUIContent(EditorGUIUtility.IconContent("Clipboard"))
 		{
 			tooltip = "Paste"
 		};
 
-		internal readonly GUIContent m_CustomerProcessor = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
+		internal readonly GUIContent restoreDefaults = new GUIContent(EditorGUIUtility.IconContent("Refresh"))
 		{
 			tooltip = "Restore Defaults"
 		};
 
-		internal readonly GUIContent _DatabaseProcessor = new GUIContent(EditorGUIUtility.IconContent("AnimatorState Icon"))
+		internal readonly GUIContent animatorStates = new GUIContent(EditorGUIUtility.IconContent("AnimatorState Icon"))
 		{
 			tooltip = "Animator States"
 		};
 
-		internal readonly GUIContent m_ExporterProcessor = new GUIContent(EditorGUIUtility.IconContent("UnityEditor.VersionControl"))
+		internal readonly GUIContent switchLayer = new GUIContent(EditorGUIUtility.IconContent("UnityEditor.VersionControl"))
 		{
 			tooltip = "Switch"
 		};
 
-		internal readonly GUIContent _IdentifierProcessor = new GUIContent(EditorGUIUtility.IconContent("BlendTree Icon"))
+		internal readonly GUIContent separate = new GUIContent(EditorGUIUtility.IconContent("BlendTree Icon"))
 		{
 			tooltip = "Separate"
 		};
 
-		internal readonly GUIContent _AttrProcessor = new GUIContent(EditorGUIUtility.IconContent("AnimatorStateTransition Icon"))
+		internal readonly GUIContent merge = new GUIContent(EditorGUIUtility.IconContent("AnimatorStateTransition Icon"))
 		{
 			tooltip = "Merge"
 		};
 
-		internal readonly GUIContent dispatcherProcessor = new GUIContent(EditorGUIUtility.IconContent("Animation.Record"))
+		internal readonly GUIContent shared = new GUIContent(EditorGUIUtility.IconContent("Animation.Record"))
 		{
 			tooltip = "Shared?"
 		};
 
-		internal readonly GUIContent m_RegistryProcessor = new GUIContent(EditorGUIUtility.IconContent("Animation.Play"))
+		internal readonly GUIContent animationClip = new GUIContent(EditorGUIUtility.IconContent("Animation.Play"))
 		{
 			tooltip = "Animation Clip"
 		};
 
-		internal readonly GUIContent _TagProcessor = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"))
+		internal readonly GUIContent removeCondition = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"))
 		{
 			tooltip = "Remove Condition"
 		};
 
-		internal readonly GUIContent importerProcessor = new GUIContent(EditorGUIUtility.IconContent("winbtn_win_close"))
+		internal readonly GUIContent deselect = new GUIContent(EditorGUIUtility.IconContent("winbtn_win_close"))
 		{
 			tooltip = "Deselect"
 		};
 
-		internal readonly GUIContent _RequestProcessor = new GUIContent(EditorGUIUtility.IconContent("_Popup"))
+		internal readonly GUIContent settings = new GUIContent(EditorGUIUtility.IconContent("_Popup"))
 		{
 			tooltip = "Settings"
 		};
 
-		internal readonly GUIContent m_PrinterProcessor = new GUIContent(EditorGUIUtility.IconContent("BlendTree Icon"))
+		internal readonly GUIContent blendTrees = new GUIContent(EditorGUIUtility.IconContent("BlendTree Icon"))
 		{
 			tooltip = "BlendTrees"
 		};
 
-		internal readonly GUIContent m_WriterProcessor = new GUIContent(EditorGUIUtility.IconContent("AnimatorStateMachine Icon"))
+		internal readonly GUIContent stateMachines = new GUIContent(EditorGUIUtility.IconContent("AnimatorStateMachine Icon"))
 		{
 			tooltip = "StateMachines"
 		};
 
-		internal readonly GUIContent m_ParamsProcessor = new GUIContent(EditorGUIUtility.IconContent("dll Script Icon"))
+		internal readonly GUIContent stateMachineBehaviours = new GUIContent(EditorGUIUtility.IconContent("dll Script Icon"))
 		{
 			tooltip = "StateMachine Behaviors"
 		};
 
-		internal readonly GUIContent _ListenerProcessor = new GUIContent(EditorGUIUtility.IconContent("AnimatorStateTransition Icon"))
+		internal readonly GUIContent transitions = new GUIContent(EditorGUIUtility.IconContent("AnimatorStateTransition Icon"))
 		{
 			tooltip = "Transitions"
 		};
 
-		internal readonly Texture _GetterProcessor = EditorGUIUtility.IconContent("BodySilhouette").image;
+		internal readonly Texture bodySilhouette = EditorGUIUtility.IconContent("BodySilhouette").image;
 
-		internal readonly Texture m_InterceptorProcessor = EditorGUIUtility.IconContent("TreeEditor.Trash").image;
+		internal readonly Texture trash = EditorGUIUtility.IconContent("TreeEditor.Trash").image;
 
-		internal readonly GUIContent m_CreatorProcessor = new GUIContent(EditorGUIUtility.IconContent("CollabError"))
+		internal readonly GUIContent invalidPattern = new GUIContent(EditorGUIUtility.IconContent("CollabError"))
 		{
 			tooltip = "Invalid Pattern"
 		};
 
-		internal readonly GUIContent _EventProcessor = EditorGUIUtility.IconContent("FolderOpened Icon");
+		internal readonly GUIContent folderOpened = EditorGUIUtility.IconContent("FolderOpened Icon");
 
-		internal readonly GUIContent infoProcessor = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"))
+		internal readonly GUIContent removeElement = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"))
 		{
 			tooltip = "Remove element from list"
 		};
 
-		internal readonly GUIContent[] m_FacadeProcessor;
+		internal readonly GUIContent[] animatorElementTypes;
 
-		internal readonly CachedTextureContent m_AdvisorProcessor = NewList("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
+		internal readonly CachedTextureContent updateAvailable = CachedIcon("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
 
-		internal readonly CachedTextureContent _CallbackProcessor = NewList("Refresh", "ds-icon-refresh", "Reset");
+		internal readonly CachedTextureContent reset = CachedIcon("Refresh", "ds-icon-refresh", "Reset");
 
-		internal readonly CachedTextureContent indexerProcessor = NewList("console.infoicon.sml", "ds-icon-announcement");
+		internal readonly CachedTextureContent announcement = CachedIcon("console.infoicon.sml", "ds-icon-announcement");
 
-		internal readonly CachedTextureContent issuerProcessor = NewList("console.warnicon.sml", "ds-icon-warning");
+		internal readonly CachedTextureContent warning = CachedIcon("console.warnicon.sml", "ds-icon-warning");
 
-		internal readonly CachedTextureContent prototypeProcessor = NewList("console.warnicon.inactive.sml", "ds-icon-note");
+		internal readonly CachedTextureContent note = CachedIcon("console.warnicon.inactive.sml", "ds-icon-note");
 
-		internal readonly CachedTextureContent ruleProcessor = NewList("console.erroricon.sml", "ds-icon-error");
+		internal readonly CachedTextureContent error = CachedIcon("console.erroricon.sml", "ds-icon-error");
 
-		internal readonly CachedTextureContent m_SingletonProcessor = NewList("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
+		internal readonly CachedTextureContent hamburgerMenu = CachedIcon("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
 
-		internal readonly CachedTextureContent _FactoryProcessor = NewList("Lightmapping", "ds-icon-light", "Ping");
+		internal readonly CachedTextureContent ping = CachedIcon("Lightmapping", "ds-icon-light", "Ping");
 
-		internal readonly CachedTextureContent _AccountProcessor = NewList("_Help", "ds-icon-help");
+		internal readonly CachedTextureContent help = CachedIcon("_Help", "ds-icon-help");
 
-		internal readonly CachedTextureContent _RefProcessor = NewList("scenevis_visible_hover", "ds-icon-visible", "Visible");
+		internal readonly CachedTextureContent visible = CachedIcon("scenevis_visible_hover", "ds-icon-visible", "Visible");
 
-		internal readonly CachedTextureContent m_StatusProcessor = NewList("scenevis_hidden_hover", "ds-icon-hidden", "Hidden");
+		internal readonly CachedTextureContent hidden = CachedIcon("scenevis_hidden_hover", "ds-icon-hidden", "Hidden");
 
-		internal readonly CachedTextureContent m_TokenProcessor = NewList("Mirror", "ds-icon-mirror", "Mirror");
+		internal readonly CachedTextureContent mirror = CachedIcon("Mirror", "ds-icon-mirror", "Mirror");
 
-		internal readonly GUIContent m_CodeProcessor = PushQueue("TestPassed", "Up to Date!");
+		internal readonly GUIContent upToDate = IconContent("TestPassed", "Up to Date!");
 
-		internal readonly GUIContent _DicProcessor = PushQueue("UnityEditor.InspectorWindow");
+		internal readonly GUIContent inspectorWindow = IconContent("UnityEditor.InspectorWindow");
 
-		internal readonly GUIContent invocationProcessor = PushQueue("FolderOpened Icon", "Select a folder");
+		internal readonly GUIContent selectFolder = IconContent("FolderOpened Icon", "Select a folder");
 
-		internal readonly GUIContent roleProcessor = PushQueue("editicon.sml");
+		internal readonly GUIContent edit = IconContent("editicon.sml");
 
-		internal readonly GUIContent _ParamProcessor = PushQueue("settings");
+		internal readonly GUIContent settingsGear = IconContent("settings");
 
-		internal readonly GUIContent m_ModelProcessor = PushQueue("Selectable Icon");
+		internal readonly GUIContent selectable = IconContent("Selectable Icon");
 
-		internal readonly GUIContent m_TokenizerProcessor = PushQueue("eyeDropper.Large");
+		internal readonly GUIContent eyeDropper = IconContent("eyeDropper.Large");
 
-		internal readonly GUIContent m_DecoratorProcessor = PushQueue("Toolbar Minus", "Remove selection from list");
+		internal readonly GUIContent removeSelection = IconContent("Toolbar Minus", "Remove selection from list");
 
-		internal readonly GUIContent m_ComparatorProcessor = PushQueue("CollabCreate Icon");
+		internal readonly GUIContent create = IconContent("CollabCreate Icon");
 
-		internal readonly GUIContent exceptionProcessor = PushQueue("d_CreateAddNew@2x");
+		internal readonly GUIContent addNew = IconContent("d_CreateAddNew@2x");
 
-		internal readonly GUIContent _ObjectProcessor = PushQueue("IN LockButton");
+		internal readonly GUIContent lockOff = IconContent("IN LockButton");
 
-		internal readonly GUIContent _UtilsProcessor = PushQueue("IN LockButton on");
+		internal readonly GUIContent lockOn = IconContent("IN LockButton on");
 
-		internal readonly GUIContent m_ValProcessor = PushQueue("d_scenepicking_pickable_hover@2x");
+		internal readonly GUIContent pickable = IconContent("d_scenepicking_pickable_hover@2x");
 
-		internal readonly GUIContent _ValueProcessor = PushQueue("d_scenepicking_notpickable@2x");
+		internal readonly GUIContent notPickable = IconContent("d_scenepicking_notpickable@2x");
 
-		internal readonly GUIContent m_MerchantProcessor = PushQueue("d_CustomTool@2x");
+		internal readonly GUIContent customTool = IconContent("d_CustomTool@2x");
 
-		internal readonly GUIContent authenticationProcessor = PushQueue("winbtn_win_close");
+		internal readonly GUIContent close = IconContent("winbtn_win_close");
 
-		internal readonly GUIContent _ReponseProcessor = PushQueue("Search Icon");
+		internal readonly GUIContent search = IconContent("Search Icon");
 
-		internal readonly GUIContent _PoolProcessor = PushQueue("BlendTree Icon");
+		internal readonly GUIContent blendTree = IconContent("BlendTree Icon");
 
-		internal readonly GUIContent parameterProcessor = PushQueue("UnityEditor.FindDependencies");
+		internal readonly GUIContent findDependencies = IconContent("UnityEditor.FindDependencies");
 
-		internal readonly GUIContent m_ComposerProcessor = PushQueue("UnityEditor.SceneHierarchyWindow");
+		internal readonly GUIContent sceneHierarchy = IconContent("UnityEditor.SceneHierarchyWindow");
 
-		internal readonly GUIContent repositoryProcessor = PushQueue("Collab.FolderAdded");
+		internal readonly GUIContent folderAdded = IconContent("Collab.FolderAdded");
 
-		internal readonly GUIContent _MappingProcessor = PushQueue("AlphabeticalSorting", "Sort");
+		internal readonly GUIContent sort = IconContent("AlphabeticalSorting", "Sort");
 
-		internal WatcherProcessor()
+		internal Contents()
 		{
-			m_FacadeProcessor = new GUIContent[6] { m_WriterProcessor, _DatabaseProcessor, _ListenerProcessor, m_PrinterProcessor, m_ParamsProcessor, m_RegistryProcessor };
+			animatorElementTypes = new GUIContent[6] { stateMachines, animatorStates, transitions, blendTrees, stateMachineBehaviours, animationClip };
 		}
 	}
 
-	internal class BaseProcessor
+	internal class Styles
 	{
-		internal MethodInfo m_ContainerProcessor;
+		internal MethodInfo textFieldDropDown;
 
-		internal readonly GUIStyle _ClassProcessor = new GUIStyle(EditorStyles.miniLabel)
+		internal readonly GUIStyle centeredMiniLabel = new GUIStyle(EditorStyles.miniLabel)
 		{
 			alignment = TextAnchor.MiddleCenter
 		};
 
-		internal readonly GUIStyle m_MockProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle linkLabel = new GUIStyle(GUI.skin.label)
 		{
 			normal = 
 			{
@@ -255,70 +255,70 @@ internal static class EditorUtils
 			}
 		};
 
-		internal readonly GUIStyle m_InstanceProcessor = new GUIStyle
+		internal readonly GUIStyle centeredIcon = new GUIStyle
 		{
 			margin = new RectOffset(4, 4, 4, 4),
 			alignment = TextAnchor.MiddleCenter
 		};
 
-		internal readonly GUIContent fieldProcessor = new GUIContent(EditorGUIUtility.IconContent("TreeEditor.Trash"))
+		internal readonly GUIContent remove = new GUIContent(EditorGUIUtility.IconContent("TreeEditor.Trash"))
 		{
 			tooltip = "Remove"
 		};
 
-		internal readonly GUIContent m_AttributeProcessor = new GUIContent("B", "Behaviours");
+		internal readonly GUIContent behaviours = new GUIContent("B", "Behaviours");
 
-		internal readonly GUIContent _ClientProcessor = new GUIContent("WD", "Write Defaults");
+		internal readonly GUIContent writeDefaults = new GUIContent("WD", "Write Defaults");
 
-		internal readonly GUIStyle configProcessor = new GUIStyle
+		internal readonly GUIStyle paddedBox = new GUIStyle
 		{
 			padding = new RectOffset(2, 2, 2, 2),
 			margin = new RectOffset()
 		};
 
-		internal readonly GUIStyle descriptorProcessor = new GUIStyle(GUI.skin.GetStyle("DropDownButton"))
+		internal readonly GUIStyle dropDownButton = new GUIStyle(GUI.skin.GetStyle("DropDownButton"))
 		{
 			alignment = TextAnchor.MiddleLeft,
 			contentOffset = new Vector2(2.5f, 0f),
 			fixedHeight = 0f
 		};
 
-		internal readonly GUIStyle _TemplateProcessor = GUI.skin.GetStyle("RL FooterButton");
+		internal readonly GUIStyle footerButton = GUI.skin.GetStyle("RL FooterButton");
 
-		internal readonly GUIStyle messageProcessor;
+		internal readonly GUIStyle inlineNoteRight;
 
-		internal readonly GUIStyle m_CollectionProcessor;
+		internal readonly GUIStyle inlineNoteLeft;
 
-		internal static readonly Color m_ParserProcessor = new Color(0.357f, 0.357f, 0.357f);
+		internal static readonly Color lightSkinNoteColor = new Color(0.357f, 0.357f, 0.357f);
 
-		internal readonly GUILayoutOption[] managerProcessor = new GUILayoutOption[2]
+		internal readonly GUILayoutOption[] iconButtonSize = new GUILayoutOption[2]
 		{
 			GUILayout.Width(EditorGUIUtility.singleLineHeight),
 			GUILayout.Height(EditorGUIUtility.singleLineHeight)
 		};
 
-		internal readonly GUIStyle itemProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle title = new GUIStyle(GUI.skin.label)
 		{
 			fontStyle = FontStyle.Bold,
 			fontSize = 18,
 			alignment = TextAnchor.MiddleLeft
 		};
 
-		internal readonly GUIStyle _SpecificationProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle subtitle = new GUIStyle(GUI.skin.label)
 		{
 			fontStyle = FontStyle.Bold,
 			fontSize = 14,
 			alignment = TextAnchor.MiddleLeft
 		};
 
-		internal readonly GUIStyle methodProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle boldLabel = new GUIStyle(GUI.skin.label)
 		{
 			fontStyle = FontStyle.Bold,
 			fontSize = 12,
 			alignment = TextAnchor.MiddleLeft
 		};
 
-		internal readonly GUIStyle schemaProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle centeredTitle = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleCenter,
 			richText = true,
@@ -326,83 +326,83 @@ internal static class EditorUtils
 			fontSize = 18
 		};
 
-		internal readonly GUIStyle broadcasterProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle iconButton = new GUIStyle(GUI.skin.label)
 		{
 			padding = new RectOffset(1, 1, 1, 1),
 			fixedWidth = 18f,
 			fixedHeight = 18f
 		};
 
-		internal readonly GUIStyle _ProxyProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle centeredRichLabel = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleCenter,
 			richText = true
 		};
 
-		internal readonly GUIStyle _StructProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle centeredBoldRichLabel = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleCenter,
 			fontStyle = FontStyle.Bold,
 			richText = true
 		};
 
-		internal readonly GUIStyle m_ServiceProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle tightLabel = new GUIStyle(GUI.skin.label)
 		{
 			padding = new RectOffset(),
 			margin = new RectOffset(1, 1, 1, 1)
 		};
 
-		internal readonly GUIStyle m_StateProcessor = new GUIStyle(GUI.skin.button)
+		internal readonly GUIStyle compactButton = new GUIStyle(GUI.skin.button)
 		{
 			padding = new RectOffset(0, 0, 2, 2)
 		};
 
-		internal readonly GUIStyle m_GlobalProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle wrappedRichLabel = new GUIStyle(GUI.skin.label)
 		{
 			richText = true,
 			wordWrap = true
 		};
 
-		internal readonly GUIStyle m_TaskProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle wrappedBoldRichLabel = new GUIStyle(GUI.skin.label)
 		{
 			fontStyle = FontStyle.Bold,
 			richText = true,
 			wordWrap = true
 		};
 
-		internal readonly GUIStyle _ProcessProcessor = new GUIStyle(GUI.skin.button)
+		internal readonly GUIStyle largeButton = new GUIStyle(GUI.skin.button)
 		{
 			fontSize = 14,
 			fixedHeight = 30f
 		};
 
-		internal readonly GUIStyle m_ProducerProcessor = new GUIStyle(GUI.skin.button)
+		internal readonly GUIStyle hugeButton = new GUIStyle(GUI.skin.button)
 		{
 			fontSize = 18,
 			fixedHeight = 40f,
 			fontStyle = FontStyle.Bold
 		};
 
-		internal readonly GUIStyle _IteratorProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle toggleLabel = new GUIStyle(GUI.skin.label)
 		{
 			name = "Toggle"
 		};
 
-		internal readonly GUIStyle _PublisherProcessor = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle richLabel = new GUIStyle(GUI.skin.label)
 		{
 			richText = true
 		};
 
-		internal readonly GUIStyle m_ConfigurationProcessor = new GUIStyle(GUI.skin.textArea)
+		internal readonly GUIStyle richTextArea = new GUIStyle(GUI.skin.textArea)
 		{
 			richText = true
 		};
 
-		internal readonly GUIStyle procProcessor = "AssetLabel";
+		internal readonly GUIStyle assetLabel = "AssetLabel";
 
-		internal readonly GUIStyle _WrapperObserver = "in bigtitle";
+		internal readonly GUIStyle bigTitleBackground = "in bigtitle";
 
-		internal readonly GUIStyle annotationObserver = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle noteLeft = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleLeft,
 			fontStyle = FontStyle.Italic,
@@ -410,11 +410,11 @@ internal static class EditorUtils
 			fontSize = 11,
 			normal = 
 			{
-				textColor = ((!EditorGUIUtility.isProSkin) ? m_ParserProcessor : Color.gray)
+				textColor = ((!EditorGUIUtility.isProSkin) ? lightSkinNoteColor : Color.gray)
 			}
 		};
 
-		internal readonly GUIStyle _VisitorObserver = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle noteCenter = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleCenter,
 			fontStyle = FontStyle.Italic,
@@ -422,11 +422,11 @@ internal static class EditorUtils
 			fontSize = 11,
 			normal = 
 			{
-				textColor = (EditorGUIUtility.isProSkin ? Color.gray : m_ParserProcessor)
+				textColor = (EditorGUIUtility.isProSkin ? Color.gray : lightSkinNoteColor)
 			}
 		};
 
-		internal readonly GUIStyle algoObserver = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle noteRight = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleRight,
 			fontStyle = FontStyle.Italic,
@@ -434,11 +434,11 @@ internal static class EditorUtils
 			fontSize = 11,
 			normal = 
 			{
-				textColor = ((!EditorGUIUtility.isProSkin) ? m_ParserProcessor : Color.gray)
+				textColor = ((!EditorGUIUtility.isProSkin) ? lightSkinNoteColor : Color.gray)
 			}
 		};
 
-		internal readonly GUIStyle _MapperObserver = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle noteLeftTight = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleLeft,
 			fontStyle = FontStyle.Italic,
@@ -446,19 +446,19 @@ internal static class EditorUtils
 			fontSize = 11,
 			normal = 
 			{
-				textColor = ((!EditorGUIUtility.isProSkin) ? m_ParserProcessor : Color.gray)
+				textColor = ((!EditorGUIUtility.isProSkin) ? lightSkinNoteColor : Color.gray)
 			},
 			contentOffset = new Vector2(-3f, 1.5f)
 		};
 
-		internal readonly GUIStyle m_InitializerObserver = new GUIStyle(EditorStyles.miniLabel)
+		internal readonly GUIStyle miniNote = new GUIStyle(EditorStyles.miniLabel)
 		{
 			alignment = TextAnchor.MiddleLeft,
 			richText = true,
 			contentOffset = new Vector2(-3f, 3f)
 		};
 
-		internal readonly GUIStyle m_DefinitionObserver = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle linkNote = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleLeft,
 			fontStyle = FontStyle.Italic,
@@ -466,7 +466,7 @@ internal static class EditorUtils
 			fontSize = 11,
 			normal = 
 			{
-				textColor = (EditorGUIUtility.isProSkin ? Color.gray : m_ParserProcessor)
+				textColor = (EditorGUIUtility.isProSkin ? Color.gray : lightSkinNoteColor)
 			},
 			name = "Toggle",
 			hover = 
@@ -475,40 +475,40 @@ internal static class EditorUtils
 			}
 		};
 
-		internal readonly GUIStyle m_RegObserver = new GUIStyle(GUI.skin.label)
+		internal readonly GUIStyle accentLinkLabel = new GUIStyle(GUI.skin.label)
 		{
 			alignment = TextAnchor.MiddleLeft,
 			richText = true,
 			name = "Toggle",
 			hover = 
 			{
-				textColor = m_AlgoProcessor
+				textColor = accentColor
 			}
 		};
 
 		[SpecialName]
-		internal MethodInfo LoginError()
+		internal MethodInfo TextFieldDropDown()
 		{
-			return m_ContainerProcessor ?? (m_ContainerProcessor = typeof(EditorGUILayout).GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).First((MethodInfo m) => m.Name == "TextFieldDropDown" && m.GetParameters().Length == 3));
+			return textFieldDropDown ?? (textFieldDropDown = typeof(EditorGUILayout).GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic).First((MethodInfo m) => m.Name == "TextFieldDropDown" && m.GetParameters().Length == 3));
 		}
 
-		internal BaseProcessor()
+		internal Styles()
 		{
-			messageProcessor = new GUIStyle(algoObserver)
+			inlineNoteRight = new GUIStyle(noteRight)
 			{
 				contentOffset = new Vector2(-2.5f, 0f),
 				normal = 
 				{
-					textColor = ((!EditorGUIUtility.isProSkin) ? PushList(91f) : Color.gray)
+					textColor = ((!EditorGUIUtility.isProSkin) ? Grey(91f) : Color.gray)
 				}
 			};
-			m_CollectionProcessor = new GUIStyle(messageProcessor)
+			inlineNoteLeft = new GUIStyle(inlineNoteRight)
 			{
 				alignment = TextAnchor.MiddleLeft,
 				contentOffset = new Vector2(2.5f, 0f),
 				normal = 
 				{
-					textColor = ((!EditorGUIUtility.isProSkin) ? PushList(91f) : Color.gray)
+					textColor = ((!EditorGUIUtility.isProSkin) ? Grey(91f) : Color.gray)
 				}
 			};
 		}
@@ -759,9 +759,9 @@ internal static class EditorUtils
 				pred = MouseCursor.ResizeHorizontal;
 				goto IL_0526;
 				IL_0526:
-				AwakeQueue(resizeZone.rect, pred);
+				AddCursorRect(resizeZone.rect, pred);
 				Rect rect = resizeZone.rect;
-				if (m_ProxyProperty)
+				if (isUnity2022)
 				{
 					rect.y += 46f;
 				}
@@ -993,7 +993,7 @@ internal static class EditorUtils
 		public SceneViewPanel(SceneView res, string col, float pool = 200f, float item2 = 20f, PositionFlag v3 = PositionFlag.BottomRight, ResizeHandle v4 = null)
 			: this(res, pool, item2 + 40f, v3, v4)
 		{
-			GUILayout.Label(col, CalcError()._StructProcessor);
+			GUILayout.Label(col, styles().centeredBoldRichLabel);
 			MapQueue(2, 0);
 		}
 
@@ -1015,7 +1015,7 @@ internal static class EditorUtils
 				ident3.DoResizeHandles(rect2, config2.CompareResolver(loadreg: true));
 			}
 			area = SetResolver(rect2);
-			if (m_ProxyProperty)
+			if (isUnity2022)
 			{
 				area.y += 46f;
 			}
@@ -1536,10 +1536,10 @@ internal static class EditorUtils
 		{
 			if (!IsValid())
 			{
-				GUILayout.Label(new GUIContent(DestroyError().issuerProcessor)
+				GUILayout.Label(new GUIContent(contents().warning)
 				{
 					tooltip = validation.message
-				}, CalcError().broadcasterProcessor);
+				}, styles().iconButton);
 			}
 		}
 
@@ -1547,7 +1547,7 @@ internal static class EditorUtils
 		{
 			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, configurationProperty, _WrapperProcessor))
 			{
-				GUILayout.Label(new GUIContent($"{requestedCost}/{availableCost}", tooltip), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label(new GUIContent($"{requestedCost}/{availableCost}", tooltip), styles().noteRight, GUILayout.ExpandWidth(expand: false));
 			}
 		}
 
@@ -1736,14 +1736,14 @@ internal static class EditorUtils
 		{
 			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, configurationProperty, _WrapperProcessor))
 			{
-				GUILayout.Label(new GUIContent($"{controlsToAdd}/{availableSlots}", $"Remaining: {remainingSlots}"), CalcError().algoObserver, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label(new GUIContent($"{controlsToAdd}/{availableSlots}", $"Remaining: {remainingSlots}"), styles().noteRight, GUILayout.ExpandWidth(expand: false));
 			}
 			using (new EditorGUI.DisabledScope(targetMenu == null))
 			{
-				if (RestartQueue(new GUIContent(DestroyError().m_ComposerProcessor)
+				if (Button(new GUIContent(contents().sceneHierarchy)
 				{
 					tooltip = "Select Menu From TreeView"
-				}, CalcError().broadcasterProcessor))
+				}, styles().iconButton))
 				{
 					MenuSelector.InvokeRecord(targetMenu, OnMenuSelected, controlsToAdd);
 				}
@@ -2153,17 +2153,17 @@ internal static class EditorUtils
 
 	private static readonly Queue<Action> _SchemaProperty = new Queue<Action>();
 
-	internal static readonly string m_BroadcasterProperty = Application.unityVersion;
+	internal static readonly string unityVersion = Application.unityVersion;
 
-	internal static readonly bool m_ProxyProperty = m_BroadcasterProperty.Contains("2022");
+	internal static readonly bool isUnity2022 = unityVersion.Contains("2022");
 
 	private static Dictionary<string, Type> structProperty;
 
 	private static Dictionary<string, object> serviceProperty;
 
-	private static readonly Stack<(Rect, MouseCursor)> stateProperty = new Stack<(Rect, MouseCursor)>();
+	private static readonly Stack<(Rect, MouseCursor)> deferredCursorRects = new Stack<(Rect, MouseCursor)>();
 
-	private static bool globalProperty;
+	private static bool deferringCursorRects;
 
 	private static MethodInfo m_TaskProperty;
 
@@ -2185,13 +2185,13 @@ internal static class EditorUtils
 
 	internal static Color visitorProcessor = new Color(1f, 0.65f, 0f);
 
-	internal static Color m_AlgoProcessor = new Color(1f, 0.5f, 0.7f);
+	internal static Color accentColor = new Color(1f, 0.5f, 0.7f);
 
 	internal static Color m_MapperProcessor = new Color(0.3f, 0.7f, 1f);
 
-	internal static WatcherProcessor _InitializerProcessor;
+	internal static Contents contentsInstance;
 
-	internal static BaseProcessor _DefinitionProcessor;
+	internal static Styles stylesInstance;
 
 	private static Mesh regProcessor;
 
@@ -4252,7 +4252,7 @@ internal static class EditorUtils
 		{
 			EditorGUILayout.PrefixLabel(pol);
 			EditorGUILayout.SelectableLabel(asset, EditorStyles.objectField, GUILayout.Height(16f), GUILayout.ExpandWidth(expand: true));
-			if (CallQueue(DestroyError().invocationProcessor))
+			if (CallQueue(contents().selectFolder))
 			{
 				string text = asset;
 				if (!text.StartsWith("Assets"))
@@ -4281,7 +4281,7 @@ internal static class EditorUtils
 			}
 			using (new EditorGUI.DisabledScope(!AssetDatabase.IsValidFolder(asset)))
 			{
-				if (CallQueue(DestroyError()._FactoryProcessor))
+				if (CallQueue(contents().ping))
 				{
 					EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(asset));
 				}
@@ -4318,7 +4318,7 @@ internal static class EditorUtils
 			using (new GUILayout.HorizontalScope(EditorStyles.objectField, GUILayout.ExpandHeight(expand: true)))
 			{
 				GUIColorScope gUIColorScope = ((!isSet) ? null : new GUIColorScope(GUIColorScope.ColoringType.FG, isValid, configurationProperty, _WrapperProcessor));
-				GUILayout.Label(attr, CalcError()._StructProcessor);
+				GUILayout.Label(attr, styles().centeredBoldRichLabel);
 				if (isSet)
 				{
 					gUIColorScope.Dispose();
@@ -4333,16 +4333,16 @@ internal static class EditorUtils
 			GUI.DrawTexture(def.SortResolver(18f, isfield: true, 2f, iscont3: true, isattr4: false).VerifyResolver(-1f), miniTypeThumbnail);
 			if (isSet)
 			{
-				Texture image = (isValid ? DestroyError().m_CodeProcessor.image : DestroyError().issuerProcessor.texture());
+				Texture image = (isValid ? contents().upToDate.image : contents().warning.texture());
 				GUI.Label(def.PatchResolver(18f, isserv: true, 4f, isvisitor3: true, istoken4: false).VerifyResolver(-1f), isValid ? new GUIContent(image)
 				{
 					tooltip = "All Good!"
 				} : new GUIContent(image)
 				{
 					tooltip = pol3.message
-				}, CalcError().broadcasterProcessor);
+				}, styles().iconButton);
 			}
-			StartQueue(def);
+			AddLinkCursor(def);
 			EventWrapper eventWrapper = new EventWrapper(Event.current).IsMouseDown().InRect(def);
 			int controlID = GUIUtility.GetControlID(FocusType.Keyboard, def);
 			if (containstask6 && GUIUtility.keyboardControl == controlID && VerifyQueue())
@@ -4384,7 +4384,7 @@ internal static class EditorUtils
 		if (instance != null)
 		{
 			string name = typeof(T).Name;
-			if (CallQueue(new GUIContent(DestroyError().invocationProcessor)
+			if (CallQueue(new GUIContent(contents().selectFolder)
 			{
 				tooltip = "Select from Project"
 			}))
@@ -4400,7 +4400,7 @@ internal static class EditorUtils
 			string text = "New " + name;
 			using (new EditorGUI.DisabledScope(disabled: false))
 			{
-				if (CallQueue(new GUIContent(DestroyError().repositoryProcessor)
+				if (CallQueue(new GUIContent(contents().folderAdded)
 				{
 					tooltip = "Create " + text
 				}))
@@ -4870,7 +4870,7 @@ internal static class EditorUtils
 
 	internal static PositionFlag ResetRules(PositionFlag key, Rect vis, PositionFlag util = PositionFlag.All)
 	{
-		AwakeQueue(vis, MouseCursor.Pan);
+		AddCursorRect(vis, MouseCursor.Pan);
 		float num = vis.width / 3f;
 		float num2 = vis.height / 3f;
 		foreach (PositionFlag item in PositionFlag.All.CancelPredicate())
@@ -4946,7 +4946,7 @@ internal static class EditorUtils
 					using (new GUILayout.HorizontalScope())
 					{
 						EditorGUILayout.PropertyField(arrayElementAtIndex, GUIContent.none);
-						if (RestartQueue(DestroyError().m_DecoratorProcessor, CalcError().broadcasterProcessor))
+						if (Button(contents().removeSelection, styles().iconButton))
 						{
 							init.DeleteArrayElementAtIndex(i);
 						}
@@ -4961,7 +4961,7 @@ internal static class EditorUtils
 		}
 		Rect controlRect = EditorGUILayout.GetControlRect(GUILayout.ExpandWidth(expand: true));
 		GUIContent content = ((!hasMultipleDifferentValues) ? new GUIContent("[Drag And Drop Or Click Here]") : new GUIContent("Editing Multiple Lists", "Editing multiple lists with different values is not supported."));
-		GUI.Label(controlRect, content, CalcError()._VisitorObserver);
+		GUI.Label(controlRect, content, styles().noteCenter);
 		if (hasMultipleDifferentValues)
 		{
 			return;
@@ -5627,28 +5627,28 @@ internal static class EditorUtils
 		return cust.CalcSize(res.CreateResolver()).x;
 	}
 
-	internal static void EnableQueue()
+	internal static void BeginDeferredCursorRects()
 	{
 		if (Event.current.type == EventType.Repaint)
 		{
-			globalProperty = true;
-			PublishQueue();
+			deferringCursorRects = true;
+			ClearDeferredCursorRects();
 		}
 	}
 
-	internal static void PublishQueue()
+	internal static void ClearDeferredCursorRects()
 	{
-		stateProperty.Clear();
+		deferredCursorRects.Clear();
 	}
 
-	internal static void PopQueue()
+	internal static void EndDeferredCursorRects()
 	{
 		if (Event.current.type == EventType.Repaint)
 		{
-			globalProperty = false;
-			while (stateProperty.Count > 0)
+			deferringCursorRects = false;
+			while (deferredCursorRects.Count > 0)
 			{
-				var (screenRect, mouse) = stateProperty.Pop();
+				var (screenRect, mouse) = deferredCursorRects.Pop();
 				EditorGUIUtility.AddCursorRect(GUIUtility.ScreenToGUIRect(screenRect), mouse);
 			}
 		}
@@ -5669,7 +5669,7 @@ internal static class EditorUtils
 		{
 			using (new GUIColorScope(GUIColorScope.ColoringType.FG, cont.Value))
 			{
-				bool result = RestartQueue(item, CalcError()._IteratorProcessor, GUILayout.ExpandWidth(expand: false));
+				bool result = Button(item, styles().toggleLabel, GUILayout.ExpandWidth(expand: false));
 				ConcatQueue(cont);
 				return result;
 			}
@@ -5704,8 +5704,8 @@ internal static class EditorUtils
 		{
 			consumer = EditorGUIUtility.singleLineHeight;
 		}
-		bool result = GUILayout.Button(setup, CalcError().broadcasterProcessor, GUILayout.Width(cust), GUILayout.Height(consumer));
-		StartQueue();
+		bool result = GUILayout.Button(setup, styles().iconButton, GUILayout.Width(cust), GUILayout.Height(consumer));
+		AddLinkCursor();
 		return result;
 	}
 
@@ -5714,24 +5714,24 @@ internal static class EditorUtils
 		return QueryQueue(var1, new GUIContent(counter), control);
 	}
 
-	internal static bool CountQueue(string info, GUIStyle result = null, params GUILayoutOption[] options)
+	internal static bool Button(string info, GUIStyle result = null, params GUILayoutOption[] options)
 	{
-		return RestartQueue(new GUIContent(info), result, options);
+		return Button(new GUIContent(info), result, options);
 	}
 
-	internal static bool DisableQueue(string res, params GUILayoutOption[] options)
+	internal static bool Button(string res, params GUILayoutOption[] options)
 	{
-		return RestartQueue(new GUIContent(res), null, options);
+		return Button(new GUIContent(res), null, options);
 	}
 
-	internal static bool InsertQueue(GUIContent var1, params GUILayoutOption[] options)
+	internal static bool Button(GUIContent var1, params GUILayoutOption[] options)
 	{
-		return RestartQueue(var1, null, options);
+		return Button(var1, null, options);
 	}
 
-	internal static bool RestartQueue(GUIContent item, GUIStyle selection = null, params GUILayoutOption[] options)
+	internal static bool Button(GUIContent item, GUIStyle selection = null, params GUILayoutOption[] options)
 	{
-		return ExcludeQueue(isfirst: false, item, selection, options);
+		return ToggleButton(isfirst: false, item, selection, options);
 	}
 
 	internal static bool QueryQueue(Rect item, GUIContent second, GUIStyle helper = null)
@@ -5741,33 +5741,33 @@ internal static class EditorUtils
 			helper = GUI.skin.button;
 		}
 		bool result = GUI.Button(item, second, helper);
-		StartQueue(item);
+		AddLinkCursor(item);
 		return result;
 	}
 
-	internal static bool AddQueue(bool extractparam, string vis, GUIStyle control = null, params GUILayoutOption[] options)
+	internal static bool ToggleButton(bool extractparam, string vis, GUIStyle control = null, params GUILayoutOption[] options)
 	{
-		return ExcludeQueue(extractparam, new GUIContent(vis), control, options);
+		return ToggleButton(extractparam, new GUIContent(vis), control, options);
 	}
 
-	internal static bool InvokeQueue(bool isident, string map, params GUILayoutOption[] options)
+	internal static bool ToggleButton(bool isident, string map, params GUILayoutOption[] options)
 	{
-		return ExcludeQueue(isident, new GUIContent(map), null, options);
+		return ToggleButton(isident, new GUIContent(map), null, options);
 	}
 
-	internal static bool FindQueue(bool isident, GUIContent reg, params GUILayoutOption[] options)
+	internal static bool ToggleButton(bool isident, GUIContent reg, params GUILayoutOption[] options)
 	{
-		return ExcludeQueue(isident, reg, null, options);
+		return ToggleButton(isident, reg, null, options);
 	}
 
-	internal static bool ExcludeQueue(bool isfirst, GUIContent visitor, GUIStyle consumer = null, params GUILayoutOption[] options)
+	internal static bool ToggleButton(bool isfirst, GUIContent visitor, GUIStyle consumer = null, params GUILayoutOption[] options)
 	{
 		if (consumer == null)
 		{
 			consumer = GUI.skin.button;
 		}
 		bool result = GUILayout.Toggle(isfirst, visitor, consumer, options);
-		StartQueue();
+		AddLinkCursor();
 		return result;
 	}
 
@@ -5783,7 +5783,7 @@ internal static class EditorUtils
 			tag = GUI.skin.button;
 		}
 		bool flag = GUILayout.Toggle(writevalue, cust, tag, options);
-		StartQueue();
+		AddLinkCursor();
 		return writevalue != flag;
 	}
 
@@ -5793,7 +5793,7 @@ internal static class EditorUtils
 		{
 			v = GUILayoutUtility.GetLastRect();
 		}
-		StartQueue(v);
+		AddLinkCursor(v);
 		Event current = Event.current;
 		if (current.type != EventType.MouseDown || current.button != 0)
 		{
@@ -5802,7 +5802,7 @@ internal static class EditorUtils
 		return v.Contains(current.mousePosition);
 	}
 
-	internal static void StartQueue(Rect spec = default(Rect), bool containsvisitor = false)
+	internal static void AddLinkCursor(Rect spec = default(Rect), bool containsvisitor = false)
 	{
 		if (Event.current.type == EventType.Repaint)
 		{
@@ -5810,7 +5810,7 @@ internal static class EditorUtils
 			{
 				spec = GUILayoutUtility.GetLastRect();
 			}
-			AwakeQueue(spec, MouseCursor.Link, containsvisitor);
+			AddCursorRect(spec, MouseCursor.Link, containsvisitor);
 		}
 	}
 
@@ -5863,19 +5863,19 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static void AwakeQueue(Rect ident, MouseCursor pred, bool hascontrol = false)
+	internal static void AddCursorRect(Rect ident, MouseCursor pred, bool hascontrol = false)
 	{
 		if (!GUI.enabled && !hascontrol)
 		{
 			return;
 		}
-		if (globalProperty)
+		if (deferringCursorRects)
 		{
-			if (m_ProxyProperty)
+			if (isUnity2022)
 			{
 				ident.y += 46f;
 			}
-			stateProperty.Push((GUIUtility.GUIToScreenRect(ident), pred));
+			deferredCursorRects.Push((GUIUtility.GUIToScreenRect(ident), pred));
 		}
 		else if (Event.current.type == EventType.Repaint)
 		{
@@ -5916,7 +5916,7 @@ internal static class EditorUtils
 			{
 				key.x += pred3 + 2.5f;
 			}
-			GUI.Label(key, caller, pol5 ?? ((!isparam4) ? CalcError().algoObserver : CalcError().annotationObserver));
+			GUI.Label(key, caller, pol5 ?? ((!isparam4) ? styles().noteRight : styles().noteLeft));
 		}
 	}
 
@@ -6029,7 +6029,7 @@ internal static class EditorUtils
 	{
 		using (new EditorGUI.DisabledScope(instance == null))
 		{
-			if (CallQueue(new GUIContent(DestroyError()._FactoryProcessor)
+			if (CallQueue(new GUIContent(contents().ping)
 			{
 				tooltip = "Ping in Project window"
 			}, 10f))
@@ -6224,7 +6224,7 @@ internal static class EditorUtils
 		return util;
 	}
 
-	internal static GUIContent PushQueue(string config, string selection = null)
+	internal static GUIContent IconContent(string config, string selection = null)
 	{
 		return new GUIContent(EditorGUIUtility.IconContent(config))
 		{
@@ -6233,15 +6233,15 @@ internal static class EditorUtils
 	}
 
 	[SpecialName]
-	internal static WatcherProcessor DestroyError()
+	internal static Contents contents()
 	{
-		return _InitializerProcessor ?? (_InitializerProcessor = new WatcherProcessor());
+		return contentsInstance ?? (contentsInstance = new Contents());
 	}
 
 	[SpecialName]
-	internal static BaseProcessor CalcError()
+	internal static Styles styles()
 	{
-		return _DefinitionProcessor ?? (_DefinitionProcessor = new BaseProcessor());
+		return stylesInstance ?? (stylesInstance = new Styles());
 	}
 
 	internal static bool ViewQueue(EventCommands setup, string result = "", bool consumerinstall = true)
@@ -6475,14 +6475,14 @@ internal static class EditorUtils
 
 	internal static Rect RegisterQueue(Rect ident)
 	{
-		if (!m_ProxyProperty)
+		if (!isUnity2022)
 		{
 			while (true)
 			{
 				ident.y += 40f;
 			}
 		}
-		ident.height -= (m_ProxyProperty ? 27f : 21f);
+		ident.height -= (isUnity2022 ? 27f : 21f);
 		return ident;
 	}
 
@@ -7254,7 +7254,7 @@ internal static class EditorUtils
 		return param + third * num;
 	}
 
-	private static Texture2D CloneList(Texture2D ident, float reg = 0.2f, int position_dic = 1)
+	private static Texture2D TrimTransparentBorder(Texture2D ident, float reg = 0.2f, int position_dic = 1)
 	{
 		if (!(ident == null))
 		{
@@ -7378,7 +7378,7 @@ internal static class EditorUtils
 		return texture2D;
 	}
 
-	internal static CachedTextureContent NewList(string value, string vis, string template = "")
+	internal static CachedTextureContent CachedIcon(string value, string vis, string template = "")
 	{
 		CachedTextureContent cachedTextureContent = new CachedTextureContent(vis, template);
 		if (cachedTextureContent.texture() == null)
@@ -7386,13 +7386,13 @@ internal static class EditorUtils
 			GUIContent gUIContent = EditorGUIUtility.IconContent(value);
 			if (gUIContent != null && gUIContent.image != null)
 			{
-				cachedTextureContent.texture(CloneList(gUIContent.image as Texture2D));
+				cachedTextureContent.texture(TrimTransparentBorder(gUIContent.image as Texture2D));
 			}
 		}
 		return cachedTextureContent;
 	}
 
-	internal static Color PushList(float i)
+	internal static Color Grey(float i)
 	{
 		if (i > 1f)
 		{

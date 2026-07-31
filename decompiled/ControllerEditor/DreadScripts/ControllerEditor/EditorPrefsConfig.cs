@@ -124,11 +124,11 @@ internal class EditorPrefsConfig
 		{
 			using (new EditorGUI.DisabledScope(!isDirty))
 			{
-				if (EditorUtils.DisableQueue("Revert"))
+				if (EditorUtils.Button("Revert"))
 				{
 					Load();
 				}
-				if (EditorUtils.DisableQueue("Save"))
+				if (EditorUtils.Button("Save"))
 				{
 					Save();
 				}

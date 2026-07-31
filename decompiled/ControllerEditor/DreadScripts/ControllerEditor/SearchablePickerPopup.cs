@@ -113,7 +113,7 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 			{
 				if (!string.IsNullOrEmpty(title))
 				{
-					GUILayout.Label(title, EditorUtils.CalcError()._StructProcessor);
+					GUILayout.Label(title, EditorUtils.styles().centeredBoldRichLabel);
 					EditorUtils.MapQueue();
 				}
 				if (hasSearch)

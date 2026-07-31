@@ -354,7 +354,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					GUILayout.Label("Tracking Control");
 					using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.red))
 					{
-						if (EditorUtils.RestartQueue(EditorUtils.CalcError().fieldProcessor, EditorUtils.CalcError().configProcessor, GUILayout.Width(25f), GUILayout.Height(20f)))
+						if (EditorUtils.Button(EditorUtils.styles().remove, EditorUtils.styles().paddedBox, GUILayout.Width(25f), GUILayout.Height(20f)))
 						{
 							m_AlgoAnnotation.InvokeResolver(delegate(AnimatorState s)
 							{
@@ -373,7 +373,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						using (new GUILayout.HorizontalScope())
 						{
-							if (EditorUtils.CountQueue("All", GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.Button("All", GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
 							{
 								int all = ((Event.current.button == 0) ? ((num != 1) ? 1 : 0) : ((num != 2) ? 2 : 0));
 								SetAll(all);
@@ -399,7 +399,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						using (new GUILayout.HorizontalScope())
 						{
-							if (EditorUtils.RestartQueue(labels[num2], GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.Button(labels[num2], GUI.skin.label, GUILayout.ExpandWidth(expand: false)))
 							{
 								bool flag = Event.current.button == 0;
 								serializedProperty.enumValueIndex = ((!flag) ? ((serializedProperty.enumValueIndex != 2) ? 2 : 0) : ((serializedProperty.enumValueIndex != 1) ? 1 : 0));
@@ -634,7 +634,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						dir = EditorStyles.numberField;
 					}
 					SetValue(EditorGUILayout.FloatField(info, GetValue(), dir, options));
-					if (havesecond && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
+					if (havesecond && EditorUtils.CallQueue(EditorUtils.contents().reset))
 					{
 						Reset();
 					}
@@ -660,7 +660,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					SetValue(EditorGUILayout.Slider(last, GetValue(), cfg, temp, options));
 					if (compareconfig2)
 					{
-						while (EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
+						while (EditorUtils.CallQueue(EditorUtils.contents().reset))
 						{
 							Reset();
 						}
@@ -837,7 +837,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					GUILayout.Label(init, GUILayout.MaxWidth(117f));
 					CreateDefinition(EditorGUILayout.Vector2Field(GUIContent.none, DeleteDefinition(), options));
-					if (GUILayout.Button(EditorUtils.DestroyError()._CallbackProcessor, EditorUtils.CalcError().m_ServiceProcessor, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (GUILayout.Button(EditorUtils.contents().reset, EditorUtils.styles().tightLabel, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						Reset();
 					}
@@ -917,7 +917,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						counter2 = EditorStyles.textField;
 					}
 					SetValue((!deletehelper) ? EditorGUILayout.TextField(def, GetValue(), counter2, options) : EditorGUILayout.DelayedTextField(def, GetValue(), counter2, options));
-					if (setcust && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
+					if (setcust && EditorUtils.CallQueue(EditorUtils.contents().reset))
 					{
 						Reset();
 					}
@@ -1005,7 +1005,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				using (new GUILayout.HorizontalScope())
 				{
 					SetValue(EditorGUILayout.ColorField(task, GetValue(), options));
-					if (outputtoken && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
+					if (outputtoken && EditorUtils.CallQueue(EditorUtils.contents().reset))
 					{
 						Reset();
 					}
@@ -1090,7 +1090,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				using (new GUILayout.HorizontalScope())
 				{
 					SetValue(EditorGUILayout.ObjectField(def, GetValue(), objectType, allowSceneObjects: false, options));
-					if (isb && EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
+					if (isb && EditorUtils.CallQueue(EditorUtils.contents().reset))
 					{
 						Reset();
 					}
@@ -1438,7 +1438,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 		internal static void RebuildParameterLabelStyle()
 		{
-			parameterLabelStyle = new GUIStyle(EditorUtils.CalcError().algoObserver)
+			parameterLabelStyle = new GUIStyle(EditorUtils.styles().noteRight)
 			{
 				fontStyle = GetInstance().parameterLabelFontStyle.GetEnumValue<FontStyle>()
 			};
@@ -1691,13 +1691,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(EditorUtils.DestroyError().ruleProcessor, EditorUtils.CalcError().broadcasterProcessor);
+				GUILayout.Label(EditorUtils.contents().error, EditorUtils.styles().iconButton);
 				GUILayout.Label("An error has occurred! Do you want to report it?", EditorStyles.boldLabel);
-				if (EditorUtils.DisableQueue("Ignore"))
+				if (EditorUtils.Button("Ignore"))
 				{
 					SetupReg(isinstance: false);
 				}
-				if (EditorUtils.DisableQueue("Find Solution"))
+				if (EditorUtils.Button("Find Solution"))
 				{
 					SetupReg(isinstance: true);
 				}
@@ -1778,7 +1778,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				if (codeAlgo)
 				{
-					if (EditorUtils.CountQueue("Cancel", EditorStyles.toolbarButton))
+					if (EditorUtils.Button("Cancel", EditorStyles.toolbarButton))
 					{
 						ComputeInitializer(ignoresetup: false);
 					}
@@ -1803,13 +1803,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						}
 						using (new GUILayout.HorizontalScope())
 						{
-							if (EditorUtils.DisableQueue("Cancel", GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.Button("Cancel", GUILayout.ExpandWidth(expand: false)))
 							{
 								ComputeInitializer(ignoresetup: false);
 							}
 							using (new EditorGUI.DisabledScope(candidateAnnotation))
 							{
-								if (!EditorUtils.DisableQueue("Report Issue"))
+								if (!EditorUtils.Button("Report Issue"))
 								{
 									return;
 								}
@@ -1857,7 +1857,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					EditorGUILayout.Space();
 					EditorGUILayout.SelectableLabel(m_AccountAlgo, GUI.skin.label, GUILayout.ExpandHeight(expand: false));
-					if (EditorUtils.DisableQueue("Ok"))
+					if (EditorUtils.Button("Ok"))
 					{
 						ComputeInitializer(ignoresetup: false);
 					}
@@ -1865,13 +1865,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
-					GUILayout.Label(EditorUtils.DestroyError().ruleProcessor, EditorUtils.CalcError().broadcasterProcessor);
+					GUILayout.Label(EditorUtils.contents().error, EditorUtils.styles().iconButton);
 					using (new GUIColorScope(GUIColorScope.ColoringType.FG, EditorUtils._ProcProperty))
 					{
 						GUILayout.Label("There was an issue contacting the server for a solution.");
 					}
 				}
-				if (EditorUtils.DisableQueue("Cancel"))
+				if (EditorUtils.Button("Cancel"))
 				{
 					ComputeInitializer(ignoresetup: false);
 				}
@@ -2744,10 +2744,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						});
 					});
 				}
-				GUILayout.Label(new GUIContent(EditorUtils.DestroyError().m_CreatorProcessor)
+				GUILayout.Label(new GUIContent(EditorUtils.contents().invalidPattern)
 				{
 					tooltip = "This may happen if there were special characters in the project's path.\n\nSimple error log:\n" + _GlobalAlgo
-				}, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(18f));
+				}, EditorUtils.styles().iconButton, GUILayout.Width(18f));
 				GUILayout.Label("Patching not fully successful. Some functions/patches may be missing.", GUILayout.ExpandWidth(expand: false));
 				if (_StructAlgo)
 				{
@@ -2756,11 +2756,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				if (_StateAlgo)
 				{
-					if (EditorUtils.CountQueue("Hide", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+					if (EditorUtils.Button("Hide", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 					{
 						_ServiceAlgo = true;
 					}
-					if (EditorUtils.CountQueue("Retry", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+					if (EditorUtils.Button("Retry", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 					{
 						ReflectReg();
 					}
@@ -3347,7 +3347,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					GUILayout.FlexibleSpace();
 					using (new GUIColorScope(GUIColorScope.ColoringType.BG, EditorSettings.GetInstance().aw_active, Color.green, Color.grey))
 					{
-						EditorSettings.GetInstance().aw_active.SetValue(EditorUtils.InvokeQueue(EditorSettings.GetInstance().aw_active, (!EditorSettings.GetInstance().aw_active) ? "Disabled" : "Enabled"));
+						EditorSettings.GetInstance().aw_active.SetValue(EditorUtils.ToggleButton(EditorSettings.GetInstance().aw_active, (!EditorSettings.GetInstance().aw_active) ? "Disabled" : "Enabled"));
 					}
 				}
 				if (_ClassMapper)
@@ -3422,7 +3422,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									GUILayout.FlexibleSpace();
 									using (new GUIColorScope(GUIColorScope.ColoringType.BG, EditorSettings.GetInstance().displayParameterType, Color.green, Color.grey))
 									{
-										EditorSettings.GetInstance().displayParameterType.SetValue(EditorUtils.InvokeQueue(EditorSettings.GetInstance().displayParameterType, (!EditorSettings.GetInstance().displayParameterType) ? "Disabled" : "Enabled"));
+										EditorSettings.GetInstance().displayParameterType.SetValue(EditorUtils.ToggleButton(EditorSettings.GetInstance().displayParameterType, (!EditorSettings.GetInstance().displayParameterType) ? "Disabled" : "Enabled"));
 									}
 								}
 								using (new EditorGUI.DisabledScope(!EditorSettings.GetInstance().displayParameterType))
@@ -3495,7 +3495,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									string map = ((!(value = EditorSettings.GetInstance().cosmeticTransitionsActive.GetValue())) ? "Disabled" : "Enabled");
 									using (new GUIColorScope(GUIColorScope.ColoringType.BG, value, Color.green, Color.grey))
 									{
-										EditorSettings.GetInstance().cosmeticTransitionsActive.SetValue(EditorUtils.InvokeQueue(value, map));
+										EditorSettings.GetInstance().cosmeticTransitionsActive.SetValue(EditorUtils.ToggleButton(value, map));
 									}
 								}
 								using (new EditorGUI.DisabledScope(!EditorSettings.GetInstance().cosmeticTransitionsActive))
@@ -3524,7 +3524,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									{
 										using (new EditorSettings.SettingsChangeScope(SortAlgo))
 										{
-											EditorSettings.GetInstance().cosmeticGraphActive.SetValue(EditorUtils.InvokeQueue(value2, map2));
+											EditorSettings.GetInstance().cosmeticGraphActive.SetValue(EditorUtils.ToggleButton(value2, map2));
 										}
 									}
 								}
@@ -3544,8 +3544,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 												{
 													EditorSettings.GetInstance().graphBackgroundTexture.Draw("Background", false, GUILayout.Height(17f), GUILayout.ExpandWidth(expand: true));
 												}
-												EditorSettings.GetInstance().graphBackgroundIsTexture.SetValue(EditorUtils.ExcludeQueue(EditorSettings.GetInstance().graphBackgroundIsTexture, new GUIContent("T", "Use Texture"), GUI.skin.button, GUILayout.Width(18f), GUILayout.Height(18f)));
-												if (EditorUtils.CallQueue(EditorUtils.DestroyError()._CallbackProcessor))
+												EditorSettings.GetInstance().graphBackgroundIsTexture.SetValue(EditorUtils.ToggleButton(EditorSettings.GetInstance().graphBackgroundIsTexture, new GUIContent("T", "Use Texture"), GUI.skin.button, GUILayout.Width(18f), GUILayout.Height(18f)));
+												if (EditorUtils.CallQueue(EditorUtils.contents().reset))
 												{
 													if (!EditorSettings.GetInstance().graphBackgroundIsTexture)
 													{
@@ -3581,7 +3581,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 									string map3 = ((value3 = EditorSettings.GetInstance().cosmeticNodesActive.GetValue()) ? "Enabled" : "Disabled");
 									using (new GUIColorScope(GUIColorScope.ColoringType.BG, value3, Color.green, Color.grey))
 									{
-										EditorSettings.GetInstance().cosmeticNodesActive.SetValue(EditorUtils.InvokeQueue(value3, map3));
+										EditorSettings.GetInstance().cosmeticNodesActive.SetValue(EditorUtils.ToggleButton(value3, map3));
 									}
 								}
 								using (new EditorGUI.DisabledScope(!EditorSettings.GetInstance().cosmeticNodesActive))
@@ -3631,7 +3631,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				GUILayout.FlexibleSpace();
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.Button(EditorUtils.contents().copy, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					if (_ObserverAnnotation == null)
 					{
@@ -3641,13 +3641,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				using (new EditorGUI.DisabledScope(!_ObserverAnnotation))
 				{
-					if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+					if (EditorUtils.Button(EditorUtils.contents().paste, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 					{
 						Undo.RecordObject(EditorSettings.GetInstance().defaultTransition, "PasteSettings");
 						CustomizeAlgo(_ObserverAnnotation, EditorSettings.GetInstance().defaultTransition);
 					}
 				}
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_CustomerProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
+				if (EditorUtils.Button(EditorUtils.contents().restoreDefaults, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
 				{
 					EditorSettings.GetInstance().defaultTransition = new AnimatorStateTransition();
 					DeleteTests();
@@ -3692,7 +3692,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_FactoryMapper.Update();
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(EditorUtils.DestroyError()._DatabaseProcessor, GUILayout.Width(35f), GUILayout.Height(35f));
+				GUILayout.Label(EditorUtils.contents().animatorStates, GUILayout.Width(35f), GUILayout.Height(35f));
 				using (new GUILayout.VerticalScope())
 				{
 					EditorGUILayout.PropertyField(m_Name, new GUIContent(string.Empty));
@@ -3701,7 +3701,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						EditorGUIUtility.labelWidth = 35f;
 						EditorGUILayout.PropertyField(tokenizerMapper);
 						EditorGUIUtility.labelWidth = 0f;
-						if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_CustomerProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
+						if (EditorUtils.Button(EditorUtils.contents().restoreDefaults, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
 						{
 							EditorSettings.GetInstance().defaultState = new AnimatorState
 							{
@@ -3796,7 +3796,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
 				m_AdvisorMapper = m_AdvisorMapper.CountPredicate(new GUIContent("Targeted Animator", "The Animator that should be targeted by default when building Masks"), true);
-				_CallbackMapper = EditorUtils.FindQueue(_CallbackMapper, new GUIContent("Always Use"), GUILayout.Width(85f));
+				_CallbackMapper = EditorUtils.ToggleButton(_CallbackMapper, new GUIContent("Always Use"), GUILayout.Width(85f));
 			}
 			using (new GUILayout.VerticalScope(GUI.skin.box))
 			{
@@ -3821,7 +3821,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						}
 						using (new EditorGUI.DisabledScope(!RevertMapper()))
 						{
-							if (EditorUtils.DisableQueue("Sample From Active StateMachine"))
+							if (EditorUtils.Button("Sample From Active StateMachine"))
 							{
 								EditorSettings.GetInstance().defaultEntryPosition.CreateDefinition(RevertMapper().entryPosition);
 								EditorSettings.GetInstance().defaultAnyPosition.CreateDefinition(RevertMapper().anyStatePosition);
@@ -3912,7 +3912,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				config.SetValue((float)(NodeColor)(object)EditorGUILayout.EnumPopup(attr, (NodeColor)config.GetValue()));
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError()._CallbackProcessor, EditorUtils.CalcError().m_ServiceProcessor, GUILayout.Width(18f), GUILayout.Height(18f)))
+				if (EditorUtils.Button(EditorUtils.contents().reset, EditorUtils.styles().tightLabel, GUILayout.Width(18f), GUILayout.Height(18f)))
 				{
 					config.Reset();
 				}
@@ -4056,7 +4056,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			EditorGUI.BeginChangeCheck();
 			using (new GUIColorScope(GUIColorScope.ColoringType.BG, serviceMapper, Color.green, Color.grey))
 			{
-				serviceMapper = EditorUtils.AddQueue(serviceMapper, "Unique Parameters", GUI.skin.button);
+				serviceMapper = EditorUtils.ToggleButton(serviceMapper, "Unique Parameters", GUI.skin.button);
 			}
 			if (EditorGUI.EndChangeCheck())
 			{
@@ -4079,7 +4079,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					if (string.IsNullOrEmpty(globalMapper[j].Item2))
 					{
 						canConfirm = false;
-						GUILayout.Label(new GUIContent(EditorUtils.DestroyError().issuerProcessor.texture(), "Parameter must not be empty"), EditorUtils.CalcError().m_InstanceProcessor, GUILayout.ExpandWidth(expand: false));
+						GUILayout.Label(new GUIContent(EditorUtils.contents().warning.texture(), "Parameter must not be empty"), EditorUtils.styles().centeredIcon, GUILayout.ExpandWidth(expand: false));
 					}
 				}
 			}
@@ -4262,11 +4262,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				m_ContextInitializer._AlgoInitializer.DrawTitle("Target GameObjects", "The GameObjects that will be animated by the animation clip");
 				GUILayout.FlexibleSpace();
-				if (m_ContextInitializer.testsInitializer && EditorUtils.RestartQueue(InterruptTests() ? EditorUtils.DestroyError().m_ExpressionProcessor : EditorUtils.DestroyError().systemProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (m_ContextInitializer.testsInitializer && EditorUtils.Button(InterruptTests() ? EditorUtils.contents().defaultMergeClip : EditorUtils.contents().defaultReplaceClip, EditorUtils.styles().iconButton, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					ManageTests(!InterruptTests());
 				}
-				if (EditorUtils.RestartQueue((!RegisterTests()) ? EditorUtils.DestroyError().candidateProcessor : EditorUtils.DestroyError().productProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.Button((!RegisterTests()) ? EditorUtils.contents().simpleMode : EditorUtils.contents().advancedMode, EditorUtils.styles().iconButton, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					LogoutTests(!RegisterTests());
 				}
@@ -4383,7 +4383,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				if ((bool)_003C_003Ec__DisplayClass18_.m_RecordInitializer.GameObject())
 				{
-					EditorGUI.DropdownButton(rect3, GUIContent.none, FocusType.Passive, EditorUtils.CalcError().descriptorProcessor);
+					EditorGUI.DropdownButton(rect3, GUIContent.none, FocusType.Passive, EditorUtils.styles().dropDownButton);
 				}
 				EditorUtils.FlushQueue(rect2, "Target", 200f, 20f, stripresult3: false);
 				EditorUtils.AwakeRules<GameObject>(rect2, _003C_003Ec__DisplayClass18_.InsertProperty);
@@ -4532,11 +4532,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				m_ContextInitializer._AlgoInitializer.DrawTitle("Target GameObjects", "The GameObjects that will be animated by the animation clip");
 				GUILayout.FlexibleSpace();
-				if (m_ContextInitializer.testsInitializer && EditorUtils.RestartQueue(InterruptTests() ? EditorUtils.DestroyError().m_ExpressionProcessor : EditorUtils.DestroyError().systemProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (m_ContextInitializer.testsInitializer && EditorUtils.Button(InterruptTests() ? EditorUtils.contents().defaultMergeClip : EditorUtils.contents().defaultReplaceClip, EditorUtils.styles().iconButton, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					ManageTests(!InterruptTests());
 				}
-				if (EditorUtils.RestartQueue((!RegisterTests()) ? EditorUtils.DestroyError().candidateProcessor : EditorUtils.DestroyError().productProcessor, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.Button((!RegisterTests()) ? EditorUtils.contents().simpleMode : EditorUtils.contents().advancedMode, EditorUtils.styles().iconButton, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					LogoutTests(!RegisterTests());
 				}
@@ -4647,7 +4647,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				if ((bool)_003C_003Ec__DisplayClass18_.m_RecordInitializer.GameObject())
 				{
-					EditorGUI.DropdownButton(item, GUIContent.none, FocusType.Passive, EditorUtils.CalcError().descriptorProcessor);
+					EditorGUI.DropdownButton(item, GUIContent.none, FocusType.Passive, EditorUtils.styles().dropDownButton);
 				}
 				EditorUtils.FlushQueue(rect2, "Target", 200f, 20f, stripresult3: false);
 				EditorUtils.AwakeRules<GameObject>(rect2, _003C_003Ec__DisplayClass18_.InsertProperty);
@@ -4697,11 +4697,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					propertyInitializer = EditorGUILayout.Foldout(propertyInitializer, new GUIContent($"Existing Clips ({definitionInitializer})"));
 					GUILayout.FlexibleSpace();
-					GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._AccountProcessor.texture(), "Merge: Adds the properties to the existing clips on states. Creates a new clip if no clip exists.\n\nReplace: Replaces the existing clips on states with new clips and adds the properties to them."), GUILayout.Width(14f), GUILayout.Height(18f));
+					GUILayout.Label(new GUIContent(EditorUtils.contents().help.texture(), "Merge: Adds the properties to the existing clips on states. Creates a new clip if no clip exists.\n\nReplace: Replaces the existing clips on states with new clips and adds the properties to them."), GUILayout.Width(14f), GUILayout.Height(18f));
 					string res = ((_InitializerInitializer == 0) ? "Merge" : ((_InitializerInitializer == 1) ? "Replace" : "Mixed"));
 					using (new GUIColorScope(GUIColorScope.ColoringType.BG, _InitializerInitializer, _MapperInitializer[0], _MapperInitializer[1], _MapperInitializer[2]))
 					{
-						if (EditorUtils.DisableQueue(res))
+						if (EditorUtils.Button(res))
 						{
 							switch (_InitializerInitializer)
 							{
@@ -4753,7 +4753,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 							string res2 = (regInitializer[k] ? "Merge" : "Replace");
 							using (new GUIColorScope(GUIColorScope.ColoringType.BG, regInitializer[k], _MapperInitializer[0], _MapperInitializer[1]))
 							{
-								if (EditorUtils.DisableQueue(res2))
+								if (EditorUtils.Button(res2))
 								{
 									regInitializer[k] = !regInitializer[k];
 									ChangeTests();
@@ -6151,7 +6151,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal void DisableObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<string>.PickerEntry i)
 		{
 			GUILayout.Label(i.value, EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-			EditorUtils.StartQueue();
+			EditorUtils.AddLinkCursor();
 		}
 
 		internal bool InsertObserver(string p, string s)
@@ -6172,7 +6172,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		internal void AddObserver(DreadScripts.ControllerEditor.SearchablePickerPopup<Type>.PickerEntry i)
 		{
 			GUILayout.Label((GUIContent)i.FirstExtra(), EditorStyles.boldLabel, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-			EditorUtils.StartQueue();
+			EditorUtils.AddLinkCursor();
 		}
 
 		internal object[] InvokeObserver(Type type)
@@ -8608,7 +8608,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				for (int i = 0; i < 3; i++)
 				{
 					EditorGUI.BeginChangeCheck();
-					array[i].SetValue(EditorUtils.AddQueue(array[i], array2[i], EditorStyles.toolbarButton));
+					array[i].SetValue(EditorUtils.ToggleButton(array[i], array2[i], EditorStyles.toolbarButton));
 					if (EditorGUI.EndChangeCheck())
 					{
 						switch (i)
@@ -8624,25 +8624,25 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 			EditorGUI.BeginDisabledGroup(!LogoutMapper());
-			using (new GUILayout.VerticalScope(EditorUtils.CalcError()._WrapperObserver))
+			using (new GUILayout.VerticalScope(EditorUtils.styles().bigTitleBackground))
 			{
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.Space(18f);
 					if (!(RevertMapper() != null))
 					{
-						GUILayout.Label("No Active Machine", EditorUtils.CalcError()._ClassProcessor, GUILayout.ExpandWidth(expand: true));
+						GUILayout.Label("No Active Machine", EditorUtils.styles().centeredMiniLabel, GUILayout.ExpandWidth(expand: true));
 					}
 					else
 					{
-						GUILayout.Label(RevertMapper().name, EditorUtils.CalcError()._ClassProcessor, GUILayout.ExpandWidth(expand: true));
+						GUILayout.Label(RevertMapper().name, EditorUtils.styles().centeredMiniLabel, GUILayout.ExpandWidth(expand: true));
 					}
 					EditorGUI.EndDisabledGroup();
-					if (EditorUtils.RestartQueue(EditorUtils.DestroyError()._DicProcessor, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)) && EditorUtility.DisplayDialog("Instructions", "Open Controller Editor's Online Manual?", "Open", "Cancel"))
+					if (EditorUtils.Button(EditorUtils.contents().inspectorWindow, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)) && EditorUtility.DisplayDialog("Instructions", "Open Controller Editor's Online Manual?", "Open", "Cancel"))
 					{
 						Application.OpenURL("https://notes.sleightly.dev/ceditor");
 					}
-					if (EditorUtils.RestartQueue(EditorUtils.DestroyError()._RequestProcessor, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)))
+					if (EditorUtils.Button(EditorUtils.contents().settings, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f)))
 					{
 						ControllerEditorWindow.CalcTests();
 					}
@@ -9440,7 +9440,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_QueueAnnotation[cust_end].ApplyToAll(entry);
 			_QueueAnnotation[cust_end].entry = entry;
 		}
-		if (GUI.Button(rect, EditorUtils.DestroyError()._TagProcessor, EditorUtils.CalcError()._TemplateProcessor))
+		if (GUI.Button(rect, EditorUtils.contents().removeCondition, EditorUtils.styles().footerButton))
 		{
 			_QueueAnnotation[cust_end].RemoveFromAll();
 			_QueueAnnotation.RemoveAt(cust_end);
@@ -9909,7 +9909,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void ReflectAnnotation(string value)
 	{
-		using (new GUILayout.HorizontalScope(EditorUtils.CalcError()._WrapperObserver))
+		using (new GUILayout.HorizontalScope(EditorUtils.styles().bigTitleBackground))
 		{
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(value, EditorStyles.boldLabel);
@@ -9921,7 +9921,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (!res)
 		{
-			if (EditorUtils.CountQueue(token, EditorStyles.toolbarButton))
+			if (EditorUtils.Button(token, EditorStyles.toolbarButton))
 			{
 				res.Toggle();
 			}
@@ -9935,7 +9935,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			string text = $"CollapsePart{visitor3counter}";
 			EditorUtils.CompareQueue(text, GUILayoutUtility.GetLastRect().height, EventType.Repaint);
-			if (EditorUtils.DisableQueue(string.Empty, GUILayout.Height(EditorUtils.OrderQueue(text, 0f)), GUILayout.Width(7f)))
+			if (EditorUtils.Button(string.Empty, GUILayout.Height(EditorUtils.OrderQueue(text, 0f)), GUILayout.Width(7f)))
 			{
 				res.Toggle();
 			}
@@ -9958,7 +9958,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			flag = Selection.activeObject == v;
 		}
-		bool num = EditorUtils.CountQueue(map, flag ? EditorUtils.CalcError().m_MockProcessor : GUI.skin.label, options);
+		bool num = EditorUtils.Button(map, flag ? EditorUtils.styles().linkLabel : GUI.skin.label, options);
 		if (num)
 		{
 			Selection.activeObject = (flag ? null : v);
@@ -10022,13 +10022,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		m_WorkerAnnotation = EditorGUILayout.TextArea(m_WorkerAnnotation, GUILayout.MinHeight(54f));
 		using (new GUILayout.HorizontalScope())
 		{
-			if (EditorUtils.CountQueue("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
+			if (EditorUtils.Button("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 			{
 				m_ExpressionAnnotation = false;
 			}
 			using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(m_WorkerAnnotation) || systemAnnotation))
 			{
-				if (EditorUtils.CountQueue("Send Feedback", EditorStyles.toolbarButton))
+				if (EditorUtils.Button("Send Feedback", EditorStyles.toolbarButton))
 				{
 					if (m_WorkerAnnotation.Length > 2000)
 					{
@@ -10510,14 +10510,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(m_ReaderAnnotation) ? "Personal" : m_ReaderAnnotation), EditorUtils.CalcError().annotationObserver);
+				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(m_ReaderAnnotation) ? "Personal" : m_ReaderAnnotation), EditorUtils.styles().noteLeft);
 				GUILayout.FlexibleSpace();
 			}
 			if (!string.IsNullOrWhiteSpace(stubAnnotation))
 			{
 				using (new GUILayout.HorizontalScope(GUI.skin.box))
 				{
-					GUILayout.Label("Authorized For: " + stubAnnotation, EditorUtils.CalcError().algoObserver);
+					GUILayout.Label("Authorized For: " + stubAnnotation, EditorUtils.styles().noteRight);
 					return;
 				}
 			}
@@ -10550,7 +10550,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (!m_IdentifierAnnotation || attrAnnotation)
 			{
 				SetVisitor("Check for License", "This will check for whether you already have a license for your device");
-				if (EditorUtils.CountQueue((!attrAnnotation) ? "Check" : "Retry", EditorStyles.toolbarButton))
+				if (EditorUtils.Button((!attrAnnotation) ? "Check" : "Retry", EditorStyles.toolbarButton))
 				{
 					WriteAnnotation(assetneeded: true);
 				}
@@ -10566,7 +10566,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			flag &= flag2 && !m_DispatcherAnnotation;
 			using (new EditorGUI.DisabledScope(!flag2))
 			{
-				if (EditorUtils.DisableQueue("Activate") || flag)
+				if (EditorUtils.Button("Activate") || flag)
 				{
 					ForgotAnnotation();
 				}
@@ -10609,7 +10609,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			disabledScope = new EditorGUI.DisabledScope(!SaveLicenseInfo() || m_CallbackAnnotation);
 			try
 			{
-				if (EditorUtils.DisableQueue(m_CallbackAnnotation ? "Sending Verification Code..." : "Send Verification Code"))
+				if (EditorUtils.Button(m_CallbackAnnotation ? "Sending Verification Code..." : "Send Verification Code"))
 				{
 					InitVisitor();
 				}
@@ -10627,7 +10627,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(!Regex.IsMatch(strategyAnnotation, "[0-9]{6}") || _IndexerAnnotation);
 			try
 			{
-				if (EditorUtils.DisableQueue((!_IndexerAnnotation) ? "Transfer License" : "Transferring..."))
+				if (EditorUtils.Button((!_IndexerAnnotation) ? "Transfer License" : "Transferring..."))
 				{
 					VisitVisitor();
 				}
@@ -10642,14 +10642,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 
 	private static void SetVisitor(string item, string cust)
 	{
-		using (new GUILayout.HorizontalScope(EditorUtils.CalcError()._WrapperObserver))
+		using (new GUILayout.HorizontalScope(EditorUtils.styles().bigTitleBackground))
 		{
 			GUILayout.Label(string.Empty, GUILayout.Width(17f), GUILayout.Height(17f));
-			GUILayout.Label(item, EditorUtils.CalcError()._StructProcessor);
-			GUILayout.Label(new GUIContent(EditorUtils.DestroyError()._DicProcessor)
+			GUILayout.Label(item, EditorUtils.styles().centeredBoldRichLabel);
+			GUILayout.Label(new GUIContent(EditorUtils.contents().inspectorWindow)
 			{
 				tooltip = cust
-			}, EditorUtils.CalcError().broadcasterProcessor, GUILayout.Width(17f), GUILayout.Height(17f));
+			}, EditorUtils.styles().iconButton, GUILayout.Width(17f), GUILayout.Height(17f));
 		}
 	}
 
@@ -10863,7 +10863,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				if (GUILayout.Button(new GUIContent("Made By @Dreadrith", "https://dreadrith.com/links"), EditorUtils.CalcError().m_DefinitionObserver))
+				if (GUILayout.Button(new GUIContent("Made By @Dreadrith", "https://dreadrith.com/links"), EditorUtils.styles().linkNote))
 				{
 					Application.OpenURL("https://dreadrith.com/links");
 				}
@@ -10981,15 +10981,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				if (EditorUtils.CallQueue(EditorUtils.DestroyError().m_SingletonProcessor))
+				if (EditorUtils.CallQueue(EditorUtils.contents().hamburgerMenu))
 				{
 					ReadVisitor(cont);
 				}
-				if (singletonAnnotation && !EditorSettings.GetInstance().u_updateHidden && EditorUtils.CallQueue(EditorUtils.DestroyError().m_AdvisorProcessor))
+				if (singletonAnnotation && !EditorSettings.GetInstance().u_updateHidden && EditorUtils.CallQueue(EditorUtils.contents().updateAvailable))
 				{
 					factoryAnnotation.target = !factoryAnnotation.target;
 				}
-				GUILayout.Label("v" + m_RefAnnotation, EditorUtils.CalcError()._MapperObserver, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("v" + m_RefAnnotation, EditorUtils.styles().noteLeftTight, GUILayout.ExpandWidth(expand: false));
 				if (item != null)
 				{
 					item();
@@ -11012,15 +11012,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 		{
-			if (EditorUtils.CallQueue(EditorUtils.DestroyError().m_SingletonProcessor))
+			if (EditorUtils.CallQueue(EditorUtils.contents().hamburgerMenu))
 			{
 				ReadVisitor(cfg);
 			}
-			if (singletonAnnotation && !EditorSettings.GetInstance().u_updateHidden && EditorUtils.CallQueue(EditorUtils.DestroyError().m_AdvisorProcessor))
+			if (singletonAnnotation && !EditorSettings.GetInstance().u_updateHidden && EditorUtils.CallQueue(EditorUtils.contents().updateAvailable))
 			{
 				factoryAnnotation.target = !factoryAnnotation.target;
 			}
-			GUILayout.Label("v" + m_RefAnnotation, EditorUtils.CalcError().m_InitializerObserver, GUILayout.ExpandWidth(expand: false));
+			GUILayout.Label("v" + m_RefAnnotation, EditorUtils.styles().miniNote, GUILayout.ExpandWidth(expand: false));
 			key?.Invoke();
 		}
 	}
@@ -11130,15 +11130,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(EditorUtils.DestroyError().indexerProcessor, GUILayout.Width(24f), GUILayout.Height(24f));
-				GUILayout.Label($"v{EditorSettings.GetInstance().u_updateVersion}", EditorUtils.CalcError().itemProcessor);
+				GUILayout.Label(EditorUtils.contents().announcement, GUILayout.Width(24f), GUILayout.Height(24f));
+				GUILayout.Label($"v{EditorSettings.GetInstance().u_updateVersion}", EditorUtils.styles().title);
 			}
 			if (EditorUtils.DefineQueue())
 			{
 				factoryAnnotation.target = !factoryAnnotation.target;
 			}
 			EditorUtils.MapQueue();
-			GUILayout.TextArea(EditorSettings.GetInstance().u_updateMessage, EditorUtils.CalcError().m_GlobalProcessor);
+			GUILayout.TextArea(EditorSettings.GetInstance().u_updateMessage, EditorUtils.styles().wrappedRichLabel);
 			bool flag = !string.IsNullOrWhiteSpace(EditorSettings.GetInstance().u_updateLink);
 			bool flag2 = !string.IsNullOrWhiteSpace(EditorSettings.GetInstance().u_updateChangelog);
 			EditorGUILayout.Space();
@@ -11148,17 +11148,17 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					using (new EditorGUI.DisabledScope(_IssuerAnnotation))
 					{
-						if (EditorUtils.CountQueue("Download Update", EditorStyles.toolbarButton))
+						if (EditorUtils.Button("Download Update", EditorStyles.toolbarButton))
 						{
 							FlushVisitor();
 						}
 					}
 				}
-				if (flag2 && EditorUtils.RestartQueue(new GUIContent("Open Changelog", EditorSettings.GetInstance().u_updateChangelog), EditorStyles.toolbarButton))
+				if (flag2 && EditorUtils.Button(new GUIContent("Open Changelog", EditorSettings.GetInstance().u_updateChangelog), EditorStyles.toolbarButton))
 				{
 					Application.OpenURL(EditorSettings.GetInstance().u_updateChangelog);
 				}
-				if (EditorUtils.CountQueue("Skip for Today", EditorStyles.toolbarButton))
+				if (EditorUtils.Button("Skip for Today", EditorStyles.toolbarButton))
 				{
 					EditorSettings.GetInstance().u_updateHidden.SetValue(excludeparam: true);
 				}
@@ -11180,21 +11180,21 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			Rect taskDefinition = EditorGUILayout.GetControlRect(GUILayout.ExpandWidth(expand: true), GUILayout.Height(24f));
 			Rect def = taskDefinition;
-			GUI.Label(def.SortResolver(24f, isfield: true), EditorUtils.DestroyError().indexerProcessor);
-			GUI.Label(def, "Announcement", EditorUtils.CalcError().itemProcessor);
+			GUI.Label(def.SortResolver(24f, isfield: true), EditorUtils.contents().announcement);
+			GUI.Label(def, "Announcement", EditorUtils.styles().title);
 			_AccountAnnotation.SearchResolver(delegate
 			{
 				taskDefinition.height += 18f;
 				EditorUtils.MapQueue();
-				GUILayout.TextArea(EditorSettings.GetInstance().u_announcement, EditorUtils.CalcError().m_GlobalProcessor);
+				GUILayout.TextArea(EditorSettings.GetInstance().u_announcement, EditorUtils.styles().wrappedRichLabel);
 				EditorGUILayout.Space();
 				using (new GUILayout.HorizontalScope())
 				{
-					if (!string.IsNullOrWhiteSpace(EditorSettings.GetInstance().u_announcementLink) && EditorUtils.CountQueue(EditorSettings.GetInstance().u_announcementLinkName, EditorStyles.toolbarButton))
+					if (!string.IsNullOrWhiteSpace(EditorSettings.GetInstance().u_announcementLink) && EditorUtils.Button(EditorSettings.GetInstance().u_announcementLinkName, EditorStyles.toolbarButton))
 					{
 						Application.OpenURL(EditorSettings.GetInstance().u_announcementLink);
 					}
-					if (listenerAnnotation && EditorUtils.CountQueue("Hide", EditorStyles.toolbarButton))
+					if (listenerAnnotation && EditorUtils.Button("Hide", EditorStyles.toolbarButton))
 					{
 						EditorSettings.GetInstance().u_announcementHidden.SetValue(excludeparam: true);
 						EditorSettings.GetInstance().u_announcementHiddenDate.SetValue(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
@@ -11359,7 +11359,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			item.width = 18f;
 			using (new EditorGUI.DisabledScope(_ProcessorAnnotation.transition.conditions.Length == 0))
 			{
-				if (EditorUtils.QueryQueue(item, EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item, EditorUtils.contents().copy, GUI.skin.label))
 				{
 					SortVisitor();
 				}
@@ -11368,7 +11368,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			disabledScope = new EditorGUI.DisabledScope(m_ThreadAnnotation.Count == 0);
 			try
 			{
-				if (EditorUtils.QueryQueue(item, EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item, EditorUtils.contents().paste, GUI.skin.label))
 				{
 					RegisterVisitor();
 				}
@@ -11389,7 +11389,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				item2.width = 16f;
 				item2.x = spec.x - 3f;
 				item2.y = spec.y + 2f;
-				if (EditorUtils.QueryQueue(item2, EditorUtils.DestroyError().dispatcherProcessor, GUIStyle.none))
+				if (EditorUtils.QueryQueue(item2, EditorUtils.contents().shared, GUIStyle.none))
 				{
 					specification = !specification;
 					MapVisitor();
@@ -11411,7 +11411,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			disabledScope = new EditorGUI.DisabledScope((specification && _TokenAnnotation.Count == 0) || (!specification && m_CodeAnnotation.Count == 0));
 			try
 			{
-				if (EditorUtils.QueryQueue(item3, EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item3, EditorUtils.contents().copy, GUI.skin.label))
 				{
 					SortVisitor();
 				}
@@ -11423,7 +11423,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			item3.x += 20f;
 			using (new EditorGUI.DisabledScope(m_ThreadAnnotation.Count == 0))
 			{
-				if (EditorUtils.QueryQueue(item3, EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label))
+				if (EditorUtils.QueryQueue(item3, EditorUtils.contents().paste, GUI.skin.label))
 				{
 					RegisterVisitor();
 				}
@@ -11438,7 +11438,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		item3.x += spec.width / 2f + spec.width / 8f - 25f;
 		item3.width = 15f;
 		EditorGUI.BeginDisabledGroup((!_ProcessorAnnotation.transition && ((specification && _TokenAnnotation.Count == 0) || (!specification && m_CodeAnnotation.Count == 0))) || (_ProcessorAnnotation.transition != null && _ProcessorAnnotation.transition.conditions.Length < 1));
-		if (EditorUtils.QueryQueue(item3, EditorUtils.DestroyError().m_ExporterProcessor, GUIStyle.none))
+		if (EditorUtils.QueryQueue(item3, EditorUtils.contents().switchLayer, GUIStyle.none))
 		{
 			if (!(_ProcessorAnnotation.transition != null))
 			{
@@ -11484,7 +11484,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		spec.width = 15f;
 		using (new GUIDisabledScope(iskey: false))
 		{
-			if (EditorUtils.QueryQueue(spec, new GUIContent(EditorUtils.DestroyError()._RequestProcessor)
+			if (EditorUtils.QueryQueue(spec, new GUIContent(EditorUtils.contents().settings)
 			{
 				tooltip = "Toggles custom matching options"
 			}, GUIStyle.none))
@@ -11495,13 +11495,13 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		spec.x += 17f;
 		using (new EditorGUI.DisabledScope(_ProcessorAnnotation.transition))
 		{
-			if (EditorUtils.QueryQueue(spec, EditorUtils.DestroyError()._AttrProcessor, GUIStyle.none))
+			if (EditorUtils.QueryQueue(spec, EditorUtils.contents().merge, GUIStyle.none))
 			{
 				ConnectAlgo();
 			}
 		}
 		spec.x += 17f;
-		if (EditorUtils.QueryQueue(spec, EditorUtils.DestroyError()._IdentifierProcessor, GUIStyle.none))
+		if (EditorUtils.QueryQueue(spec, EditorUtils.contents().separate, GUIStyle.none))
 		{
 			ViewAlgo();
 		}
@@ -11594,7 +11594,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			};
 			Rect rect8 = def2.SortResolver((animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Bool) ? 50 : 100);
 			Rect rect9 = def2.SortResolver(100f);
-			if (GUI.Button(rect5, EditorUtils.DestroyError().m_ValProcessor, EditorUtils.CalcError().configProcessor))
+			if (GUI.Button(rect5, EditorUtils.contents().pickable, EditorUtils.styles().paddedBox))
 			{
 				IEnumerable<IEnumerable<AnimatorStateTransition>> first = RevertMapper().states.Select((ChildAnimatorState s) => s.state.transitions.Where((AnimatorStateTransition t) => t.conditions.Any((AnimatorCondition c) => ForgotVisitor(CS_0024_003C_003E8__locals43.m_ConfigurationDefinition, c, forcetag: true))));
 				List<AnimatorTransitionBase> mapperReg = new List<AnimatorTransitionBase>();
@@ -11645,7 +11645,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 				}
 			}
-			GUI.Label(rect7, EditorUtils.DestroyError().m_ValProcessor, GUIStyle.none);
+			GUI.Label(rect7, EditorUtils.contents().pickable, GUIStyle.none);
 			if (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Trigger)
 			{
 				using (new MixedValueScope(conditionMultiEditor.mixedValues[1]))
@@ -11741,7 +11741,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			conditionMultiEditor.SetThreshold(CS_0024_003C_003E8__locals43.m_ConfigurationDefinition.threshold);
 		}
-		if (!GUI.Button(source, EditorUtils.DestroyError()._TagProcessor, EditorUtils.CalcError()._TemplateProcessor))
+		if (!GUI.Button(source, EditorUtils.contents().removeCondition, EditorUtils.styles().footerButton))
 		{
 			return;
 		}
@@ -11931,7 +11931,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						GUILayout.FlexibleSpace();
 					}
 					EditorGUI.BeginDisabledGroup((string.IsNullOrEmpty(_SchemaAnnotation) && flag) || (string.IsNullOrEmpty(m_BroadcasterAnnotation) && flag2) || (string.IsNullOrEmpty(proxyAnnotation) && flag3) || (m_GlobalAnnotation == ControllerAction.Copy && producerAnnotation == MoveDestination.Controller && !m_MethodAnnotation));
-					if (EditorUtils.CountQueue("Apply", "minibutton", GUILayout.Width(140f)))
+					if (EditorUtils.Button("Apply", "minibutton", GUILayout.Width(140f)))
 					{
 						LogoutVisitor();
 					}
@@ -11950,18 +11950,18 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			EditorGUI.BeginChangeCheck();
-			_Client = EditorUtils.AddQueue(_Client, "Write Defaults", "toolbarbutton");
+			_Client = EditorUtils.ToggleButton(_Client, "Write Defaults", "toolbarbutton");
 			if (EditorGUI.EndChangeCheck())
 			{
 				WriteMapper();
 			}
 			EditorGUI.BeginChangeCheck();
-			m_Config = EditorUtils.AddQueue(m_Config, "Explore Controller Sub-Assets", "toolbarbutton");
+			m_Config = EditorUtils.ToggleButton(m_Config, "Explore Controller Sub-Assets", "toolbarbutton");
 			if (EditorGUI.EndChangeCheck())
 			{
 				FillMapper();
 			}
-			if (EditorUtils.RestartQueue(new GUIContent("Cleanup unused Sub-Assets", "Some Controllers have residue in their Sub-Assets that may be unused, may happen when using this tool. Use this button to clean it up."), "toolbarbutton") && (bool)LogoutMapper())
+			if (EditorUtils.Button(new GUIContent("Cleanup unused Sub-Assets", "Some Controllers have residue in their Sub-Assets that may be unused, may happen when using this tool. Use this button to clean it up."), "toolbarbutton") && (bool)LogoutMapper())
 			{
 				SearchVisitor(LogoutMapper());
 				VerifyMapper();
@@ -11981,7 +11981,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				using (new GUILayout.VerticalScope())
 				{
-					if (EditorUtils.DisableQueue("Set All On"))
+					if (EditorUtils.Button("Set All On"))
 					{
 						ForgotMapper(istask: true);
 					}
@@ -11992,7 +11992,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						using (new GUILayout.HorizontalScope())
 						{
 							CreateAnnotation(item, GUILayout.ExpandWidth(expand: true));
-							if (EditorUtils.DisableQueue(">", GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.Button(">", GUILayout.ExpandWidth(expand: false)))
 							{
 								StopMapper(item, connectionreguired: false);
 							}
@@ -12002,7 +12002,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				LoginAnnotation();
 				using (new GUILayout.VerticalScope())
 				{
-					if (EditorUtils.DisableQueue("Set All Off"))
+					if (EditorUtils.Button("Set All Off"))
 					{
 						ForgotMapper(istask: false);
 					}
@@ -12012,7 +12012,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						using (new GUILayout.HorizontalScope())
 						{
-							if (EditorUtils.DisableQueue("<", GUILayout.ExpandWidth(expand: false)))
+							if (EditorUtils.Button("<", GUILayout.ExpandWidth(expand: false)))
 							{
 								StopMapper(item2, connectionreguired: true);
 							}
@@ -12023,7 +12023,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 			}
 		}
-		_ModelAnnotation = GUILayout.Toolbar(_ModelAnnotation, EditorUtils.DestroyError().m_FacadeProcessor, EditorStyles.toolbarButton);
+		_ModelAnnotation = GUILayout.Toolbar(_ModelAnnotation, EditorUtils.contents().animatorElementTypes, EditorStyles.toolbarButton);
 		int modelAnnotation = _ModelAnnotation;
 		while (true)
 		{
@@ -12063,18 +12063,18 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			string text = ((!string.IsNullOrEmpty(task.name)) ? task.name : task.GetType().Name);
-			if (EditorUtils.CountQueue("- " + text, (!flag) ? GUI.skin.label : EditorUtils.CalcError().m_MockProcessor))
+			if (EditorUtils.Button("- " + text, (!flag) ? GUI.skin.label : EditorUtils.styles().linkLabel))
 			{
 				Selection.activeObject = (flag ? null : task);
 			}
 			GUILayout.FlexibleSpace();
-			if (EditorUtils.RestartQueue((!task.hideFlags.HasFlag(HideFlags.HideInHierarchy)) ? EditorUtils.DestroyError()._RefProcessor : EditorUtils.DestroyError().m_StatusProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(14f), GUILayout.Height(18f)))
+			if (EditorUtils.Button((!task.hideFlags.HasFlag(HideFlags.HideInHierarchy)) ? EditorUtils.contents().visible : EditorUtils.contents().hidden, EditorUtils.styles().centeredIcon, GUILayout.Width(14f), GUILayout.Height(18f)))
 			{
 				Undo.RecordObject(task, "Toggle Sub-Asset Visibility");
 				task.hideFlags ^= HideFlags.HideInHierarchy;
 				AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(task), ImportAssetOptions.ForceUpdate);
 			}
-			if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor) && EditorUtility.DisplayDialog("Delete", "Delete " + task.name + "?\nUse cautiously! May result in unintended behavior!", "Ok", "Cancel"))
+			if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon) && EditorUtility.DisplayDialog("Delete", "Delete " + task.name + "?\nUse cautiously! May result in unintended behavior!", "Ok", "Cancel"))
 			{
 				Undo.RecordObject(task, "Remove SubAsset");
 				AssetDatabase.RemoveObjectFromAsset(task);
@@ -12115,7 +12115,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				GUILayout.FlexibleSpace();
-				GUILayout.Label("Selected 0 States", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Selected 0 States", EditorUtils.styles().centeredBoldRichLabel, GUILayout.Width(140f));
 				GUILayout.FlexibleSpace();
 			}
 			EditorGUILayout.Space();
@@ -12126,7 +12126,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			using (new GUILayout.HorizontalScope())
 			{
 				GUILayout.Space(5f);
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] objects = Selection.objects;
 					objects = Selection.objects.Except(RevertMapper().states.Select((ChildAnimatorState c) => c.state)).ToArray();
@@ -12142,12 +12142,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				GUILayout.Space(18f);
 				GUILayout.FlexibleSpace();
-				if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
+				if (EditorUtils.Button("Out", GUILayout.Width(34f)))
 				{
 					GetAlgo();
 				}
-				GUILayout.Label("Selected " + num + " States", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
-				if (EditorUtils.DisableQueue("In", GUILayout.Width(34f)))
+				GUILayout.Label("Selected " + num + " States", EditorUtils.styles().centeredBoldRichLabel, GUILayout.Width(140f));
+				if (EditorUtils.Button("In", GUILayout.Width(34f)))
 				{
 					CalcAlgo();
 				}
@@ -12160,7 +12160,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] array = Selection.objects;
 					ArrayUtility.Remove(ref array, item.state);
@@ -12168,7 +12168,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				using (new EditorGUI.DisabledScope(!item.state.motion))
 				{
-					if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_RegistryProcessor, EditorUtils.CalcError().configProcessor, GUILayout.Width(17f)))
+					if (EditorUtils.Button(EditorUtils.contents().animationClip, EditorUtils.styles().paddedBox, GUILayout.Width(17f)))
 					{
 						EditorGUIUtility.PingObject(item.state.motion);
 					}
@@ -12176,15 +12176,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				using (new EditorGUI.DisabledScope(item.state.transitions.Length < 1))
 				{
-					if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
+					if (EditorUtils.Button("Out", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(item.OutgoingTransitions()).ToArray();
 					}
 				}
-				GUILayout.Label(RunAnnotation(item.state.name, 18), EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label(RunAnnotation(item.state.name, 18), EditorUtils.styles().centeredBoldRichLabel, GUILayout.Width(140f));
 				using (new EditorGUI.DisabledScope(!item.IncomingTransitions().Any()))
 				{
-					if (EditorUtils.DisableQueue("In", GUILayout.Width(34f)))
+					if (EditorUtils.Button("In", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(item.IncomingTransitions()).ToArray();
 					}
@@ -12197,7 +12197,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] array2 = Selection.objects;
 					for (int num3 = 0; num3 < array2.Length; num3++)
@@ -12215,7 +12215,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				using (new EditorGUI.DisabledScope(!RevertMapper() || RevertMapper().anyStateTransitions.Length < 1))
 				{
-					if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
+					if (EditorUtils.Button("Out", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(ManageMapper().anyStateTransitions.Where(delegate(AnimatorStateTransition t)
 						{
@@ -12225,10 +12225,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						})).ToArray();
 					}
 				}
-				GUILayout.Label("Any State", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Any State", EditorUtils.styles().centeredBoldRichLabel, GUILayout.Width(140f));
 				using (new EditorGUI.DisabledScope(disabled: true))
 				{
-					EditorUtils.DisableQueue("In", GUILayout.Width(34f));
+					EditorUtils.Button("In", GUILayout.Width(34f));
 				}
 				GUILayout.FlexibleSpace();
 				GUILayout.Space(42f);
@@ -12238,7 +12238,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope("box"))
 			{
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] array3 = Selection.objects;
 					for (int num4 = 0; num4 < array3.Length; num4++)
@@ -12256,15 +12256,15 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.FlexibleSpace();
 				using (new EditorGUI.DisabledScope(!RevertMapper() || RevertMapper().entryTransitions.Length == 0))
 				{
-					if (EditorUtils.DisableQueue("Out", GUILayout.Width(34f)))
+					if (EditorUtils.Button("Out", GUILayout.Width(34f)))
 					{
 						Selection.objects = Selection.objects.Concat(RevertMapper().entryTransitions).ToArray();
 					}
 				}
-				GUILayout.Label("Entry", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Entry", EditorUtils.styles().centeredBoldRichLabel, GUILayout.Width(140f));
 				using (new EditorGUI.DisabledScope(disabled: true))
 				{
-					EditorUtils.DisableQueue("In", GUILayout.Width(34f));
+					EditorUtils.Button("In", GUILayout.Width(34f));
 				}
 				GUILayout.FlexibleSpace();
 				GUILayout.Space(42f);
@@ -12274,7 +12274,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUILayout.HorizontalScope("box"))
 			{
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(17f)))
+				if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon, GUILayout.Width(17f)))
 				{
 					UnityEngine.Object[] objects2 = Selection.objects;
 					for (int num5 = 0; num5 < objects2.Length; num5++)
@@ -12291,11 +12291,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				GUILayout.Space(21f);
 				GUILayout.FlexibleSpace();
 				EditorGUI.BeginDisabledGroup(disabled: true);
-				EditorUtils.DisableQueue("Out", GUILayout.Width(30f));
+				EditorUtils.Button("Out", GUILayout.Width(30f));
 				EditorGUI.EndDisabledGroup();
-				GUILayout.Label("Exit", EditorUtils.CalcError()._StructProcessor, GUILayout.Width(140f));
+				GUILayout.Label("Exit", EditorUtils.styles().centeredBoldRichLabel, GUILayout.Width(140f));
 				EditorGUI.BeginDisabledGroup(regAnnotation.GetRules());
-				if (EditorUtils.DisableQueue("In", GUILayout.Width(30f)))
+				if (EditorUtils.Button("In", GUILayout.Width(30f)))
 				{
 					Selection.objects = Selection.objects.Concat(regAnnotation).ToArray();
 				}
@@ -12309,11 +12309,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorGUI.BeginDisabledGroup(num < 2);
 		using (new GUILayout.HorizontalScope())
 		{
-			if (EditorUtils.CountQueue("Align Vertical", "toolbarbutton"))
+			if (EditorUtils.Button("Align Vertical", "toolbarbutton"))
 			{
 				CountAlgo();
 			}
-			if (EditorUtils.CountQueue("Align Horizontal", "toolbarbutton"))
+			if (EditorUtils.Button("Align Horizontal", "toolbarbutton"))
 			{
 				DisableAlgo();
 			}
@@ -12322,7 +12322,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorGUI.BeginDisabledGroup(num < 1);
 		using (new GUILayout.HorizontalScope())
 		{
-			if (EditorUtils.CountQueue("Up 0.25", "toolbarbutton"))
+			if (EditorUtils.Button("Up 0.25", "toolbarbutton"))
 			{
 				ChildAnimatorState[] states = RevertMapper().states;
 				for (int num6 = 0; num6 < states.Length; num6++)
@@ -12352,7 +12352,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					InterruptAlgo(wantfirst: false);
 				}
 			}
-			if (EditorUtils.CountQueue("Right 0.25", "toolbarbutton"))
+			if (EditorUtils.Button("Right 0.25", "toolbarbutton"))
 			{
 				ChildAnimatorState[] states2 = RevertMapper().states;
 				for (int num7 = 0; num7 < states2.Length; num7++)
@@ -12392,7 +12392,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			_Publisher.Update();
 			using (new GUILayout.HorizontalScope())
 			{
-				GUILayout.Label(EditorUtils.DestroyError()._DatabaseProcessor, GUILayout.Width(35f), GUILayout.Height(35f));
+				GUILayout.Label(EditorUtils.contents().animatorStates, GUILayout.Width(35f), GUILayout.Height(35f));
 				using (new GUILayout.VerticalScope())
 				{
 					using (new MixedValueScope(m_TokenizerAnnotation))
@@ -12435,7 +12435,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorGUI.BeginDisabledGroup(disabled: true);
 		using (new GUILayout.HorizontalScope())
 		{
-			GUILayout.Label(EditorUtils.DestroyError()._DatabaseProcessor, GUILayout.Height(35f), GUILayout.Width(35f));
+			GUILayout.Label(EditorUtils.contents().animatorStates, GUILayout.Height(35f), GUILayout.Width(35f));
 			using (new GUILayout.VerticalScope())
 			{
 				GUILayout.TextField("");
@@ -12495,7 +12495,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope("in bigtitle"))
 		{
 			EditorGUI.BeginDisabledGroup(m_AlgoAnnotation.Count <= 0);
-			if (EditorUtils.DisableQueue("Add Tracking to Selected States"))
+			if (EditorUtils.Button("Add Tracking to Selected States"))
 			{
 				ConcatAnnotation();
 			}
@@ -12546,7 +12546,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.FlexibleSpace();
-			if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(25f)))
+			if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon, GUILayout.Width(25f)))
 			{
 				Selection.objects = Selection.objects.Except(propertyAnnotation).ToArray();
 			}
@@ -12572,14 +12572,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					using (new GUILayout.HorizontalScope())
 					{
-						if (EditorUtils.RestartQueue(EditorUtils.DestroyError().importerProcessor, EditorUtils.CalcError().m_InstanceProcessor, GUILayout.Width(25f)))
+						if (EditorUtils.Button(EditorUtils.contents().deselect, EditorUtils.styles().centeredIcon, GUILayout.Width(25f)))
 						{
 							UnityEngine.Object[] array = Selection.objects;
 							ArrayUtility.Remove(ref array, item.transition);
 							Selection.objects = array;
 						}
 						bool flag = item.transition == _ProcessorAnnotation.transition;
-						if (EditorUtils.CountQueue(item.DisplayName(), flag ? EditorUtils.CalcError().m_MockProcessor : GUI.skin.label, GUILayout.MinWidth(1f)))
+						if (EditorUtils.Button(item.DisplayName(), flag ? EditorUtils.styles().linkLabel : GUI.skin.label, GUILayout.MinWidth(1f)))
 						{
 							if (!flag)
 							{
@@ -12619,7 +12619,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.Label((!_ProcessorAnnotation.stateTransition) ? string.Empty : (_ProcessorAnnotation.DisplayName() + "'s Settings"), GUILayout.ExpandWidth(expand: true));
-			if ((_TestsAnnotation.Count == 1 || (bool)_ProcessorAnnotation.stateTransition) && EditorUtils.RestartQueue(EditorUtils.DestroyError().m_BridgeProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+			if ((_TestsAnnotation.Count == 1 || (bool)_ProcessorAnnotation.stateTransition) && EditorUtils.Button(EditorUtils.contents().copy, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 			{
 				if (_ObserverAnnotation == null)
 				{
@@ -12629,7 +12629,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			}
 			using (new EditorGUI.DisabledScope(!_ObserverAnnotation))
 			{
-				if (EditorUtils.RestartQueue(EditorUtils.DestroyError().m_StrategyProcessor, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
+				if (EditorUtils.Button(EditorUtils.contents().paste, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 				{
 					for (int i = 0; i < _TestsAnnotation.Count; i++)
 					{
@@ -15329,7 +15329,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (annotationVisitor == null)
 			{
 				TestInitializer(null);
-				GUILayout.Label("[Override Controller]", EditorUtils.CalcError().annotationObserver, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("[Override Controller]", EditorUtils.styles().noteLeft, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				if (EditorUtils.DefineQueue(lastRect))
 				{
@@ -15358,7 +15358,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (_AlgoVisitor == null)
 			{
 				_AlgoVisitor = null;
-				GUILayout.Label("[Override Root]", EditorUtils.CalcError().annotationObserver, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("[Override Root]", EditorUtils.styles().noteLeft, GUILayout.MinWidth(1f), GUILayout.ExpandWidth(expand: false));
 				Rect lastRect2 = GUILayoutUtility.GetLastRect();
 				if (EditorUtils.DefineQueue(lastRect2))
 				{
@@ -15566,14 +15566,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		Transform _SpecificationReg = m_ItemReg.transform;
 		float num = (rect.width - 230f) / 2f;
 		Rect spec = new Rect(rect.xMin + num, rect.yMin + 10f, rect.width - num * 2f, rect.height - 20f);
-		EditorUtils.StartQueue(spec);
+		EditorUtils.AddLinkCursor(spec);
 		rect = new Rect(0f, spec.y + spec.height + 4f, rect.width, EditorGUIUtility.singleLineHeight * 2f);
 		Rect rect2 = new Rect(rect);
 		rect2.height = 14f;
 		Rect rect3 = rect2;
 		using (new GUIDisabledScope(m_ItemReg == null))
 		{
-			GUI.Label(rect3, "[Drag & Drop GameObjects]", EditorUtils.CalcError()._VisitorObserver);
+			GUI.Label(rect3, "[Drag & Drop GameObjects]", EditorUtils.styles().noteCenter);
 			EditorUtils.AwakeRules(rect, delegate(IEnumerable<GameObject> enu)
 			{
 				EditorCurveBinding[] curveBindings = AnimationUtility.GetCurveBindings(m_ManagerReg);
@@ -16061,7 +16061,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			GUILayout.BeginArea(screenRect);
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				GUILayout.Label(baseAnnotation ? "Replicating Transitions" : ((!containerAnnotation) ? "Making Transitions" : "Redirecting Transitions"), EditorUtils.CalcError()._StructProcessor);
+				GUILayout.Label(baseAnnotation ? "Replicating Transitions" : ((!containerAnnotation) ? "Making Transitions" : "Redirecting Transitions"), EditorUtils.styles().centeredBoldRichLabel);
 			}
 			GUILayout.EndArea();
 		}
@@ -16069,7 +16069,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			if (!EditorSettings.GetInstance().hasPingedController)
 			{
-				GUI.Label(nameRect, "Click to highlight Controller", EditorUtils.CalcError().annotationObserver);
+				GUI.Label(nameRect, "Click to highlight Controller", EditorUtils.styles().noteLeft);
 			}
 			if (EditorUtils.DefineQueue(nameRect))
 			{
@@ -16206,10 +16206,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUIColorScope(GUIColorScope.ColoringType.FG, !EditorSettings.GetInstance().layerCompactView, Color.gray))
 			{
-				if (EditorUtils.QueryQueue(rect, new GUIContent(EditorUtils.DestroyError().m_SingletonProcessor)
+				if (EditorUtils.QueryQueue(rect, new GUIContent(EditorUtils.contents().hamburgerMenu)
 				{
 					tooltip = "Compact View"
-				}, EditorUtils.CalcError().configProcessor))
+				}, EditorUtils.styles().paddedBox))
 				{
 					EditorSettings.GetInstance().layerCompactView.Toggle();
 					DisableMapper();
@@ -16224,7 +16224,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			using (new GUIColorScope(GUIColorScope.ColoringType.FG, !EditorSettings.GetInstance().sortCategoryViewLayers, Color.gray))
 			{
-				if (EditorUtils.QueryQueue(item, EditorUtils.DestroyError()._MappingProcessor, EditorUtils.CalcError().configProcessor))
+				if (EditorUtils.QueryQueue(item, EditorUtils.contents().sort, EditorUtils.styles().paddedBox))
 				{
 					EditorSettings.GetInstance().sortCategoryViewLayers.Toggle();
 					DisableMapper();
@@ -16327,12 +16327,12 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					EditorGUI.DrawRect(rect2 = rect2.InterruptResolver(18f), new Color(0.2f, 0.2f, 0.2f));
 				}
-				GUI.Label(rect2, index.ToString(), EditorUtils.CalcError()._VisitorObserver);
+				GUI.Label(rect2, index.ToString(), EditorUtils.styles().noteCenter);
 			}
 			if (animatorControllerLayer.stateMachine == null)
 			{
 				float x = 20f + animatorControllerLayer.name.PushResolver();
-				GUI.Label(new Rect(x, rect.yMin + 6f, 20f, 14f), new GUIContent(EditorUtils.DestroyError().issuerProcessor)
+				GUI.Label(new Rect(x, rect.yMin + 6f, 20f, 14f), new GUIContent(EditorUtils.contents().warning)
 				{
 					tooltip = "Statemachine is Null! This layer will cause issues!"
 				});
@@ -16357,7 +16357,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						alignment = TextAnchor.MiddleCenter
 					};
 					Rect rect3 = res.PatchResolver(16f, isserv: true);
-					if (EditorUtils.QueryQueue(rect3.StopResolver(2f), EditorUtils.DestroyError()._ParamProcessor, EditorUtils.CalcError().configProcessor))
+					if (EditorUtils.QueryQueue(rect3.StopResolver(2f), EditorUtils.contents().settingsGear, EditorUtils.styles().paddedBox))
 					{
 						_ExporterVisitor.Invoke(null, new object[4]
 						{
@@ -16386,7 +16386,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					}
 					if (flag && !flag2)
 					{
-						GUI.Label(res.PatchResolver(32f, isserv: true, 2f, isvisitor3: true).StopResolver(-1f), num.ToString("F2"), EditorUtils.CalcError().algoObserver);
+						GUI.Label(res.PatchResolver(32f, isserv: true, 2f, isvisitor3: true).StopResolver(-1f), num.ToString("F2"), EditorUtils.styles().noteRight);
 					}
 					if (EditorUtils.VerifyQueue())
 					{
@@ -17680,7 +17680,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			rect.width = RegisterMapper(y);
 			Rect rect2 = rect;
 			EditorGUI.BeginChangeCheck();
-			GUIStyle style = new GUIStyle(EditorUtils.CalcError().annotationObserver)
+			GUIStyle style = new GUIStyle(EditorUtils.styles().noteLeft)
 			{
 				fontSize = 7
 			};
@@ -17704,11 +17704,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			Rect res = new Rect(0f, 0f, _ReponseVisitor.x, _ReponseVisitor.y);
 			if (stateCosmetics.HasFlag(EditorSettings.StateCosmeticOptions.inactiveIndicators) || writeDefaultValues)
 			{
-				GUI.Label(res.PatchResolver(20f, isserv: true).ManageResolver(14f), EditorUtils.CalcError()._ClientProcessor, (!writeDefaultValues) ? EditorUtils.CalcError()._VisitorObserver : EditorUtils.CalcError()._ClassProcessor);
+				GUI.Label(res.PatchResolver(20f, isserv: true).ManageResolver(14f), EditorUtils.styles().writeDefaults, (!writeDefaultValues) ? EditorUtils.styles().noteCenter : EditorUtils.styles().centeredMiniLabel);
 			}
 			if (stateCosmetics.HasFlag(EditorSettings.StateCosmeticOptions.inactiveIndicators) || flag)
 			{
-				GUI.Label(res.PatchResolver(10f, isserv: true).ManageResolver(14f), EditorUtils.CalcError().m_AttributeProcessor, (!flag) ? EditorUtils.CalcError()._VisitorObserver : EditorUtils.CalcError()._ClassProcessor);
+				GUI.Label(res.PatchResolver(10f, isserv: true).ManageResolver(14f), EditorUtils.styles().behaviours, (!flag) ? EditorUtils.styles().noteCenter : EditorUtils.styles().centeredMiniLabel);
 			}
 		}
 		if (!stateCosmetics.HasFlag(EditorSettings.StateCosmeticOptions.quickNewClip))
@@ -17817,8 +17817,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				rect.x = -9f;
 			}
-			GUIContent content = ((!num3) ? ((!flag2) ? GUIContent.none : new GUIContent("(None)")) : new GUIContent((!flag2) ? string.Empty : ("(" + __state.motion.name + ")"), (!flag3) ? null : ((__state.motion is AnimationClip animationClip) ? ((!animationClip.isLooping) ? EditorUtils.DestroyError().m_RegistryProcessor.image : EditorUtils.DestroyError().readerProcessor.image) : EditorUtils.DestroyError().m_PrinterProcessor.image)));
-			GUI.Label(rect, content, EditorUtils.CalcError()._ClassProcessor);
+			GUIContent content = ((!num3) ? ((!flag2) ? GUIContent.none : new GUIContent("(None)")) : new GUIContent((!flag2) ? string.Empty : ("(" + __state.motion.name + ")"), (!flag3) ? null : ((__state.motion is AnimationClip animationClip) ? ((!animationClip.isLooping) ? EditorUtils.contents().animationClip.image : EditorUtils.contents().loopingClip.image) : EditorUtils.contents().blendTrees.image)));
+			GUI.Label(rect, content, EditorUtils.styles().centeredMiniLabel);
 		}
 		return;
 		IL_0089:
@@ -18454,7 +18454,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						using (new MixedValueScope(field))
 						{
 							EditorGUI.BeginChangeCheck();
-							stringValue = (string)EditorUtils.CalcError().LoginError().Invoke(null, parameters);
+							stringValue = (string)EditorUtils.styles().TextFieldDropDown().Invoke(null, parameters);
 							if (EditorGUI.EndChangeCheck())
 							{
 								field.stringValue = stringValue;
