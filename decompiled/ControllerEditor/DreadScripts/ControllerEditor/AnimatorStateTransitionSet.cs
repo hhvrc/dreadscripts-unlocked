@@ -13,37 +13,37 @@ internal readonly struct AnimatorStateTransitionSet
 		AnyTransition
 	}
 
-	internal readonly AnimatorTransitionBase fieldServer;
+	internal readonly AnimatorTransitionBase transition;
 
-	internal readonly AnimatorStateTransition m_AttributeServer;
+	internal readonly AnimatorStateTransition stateTransition;
 
-	internal readonly TransitionSourceType m_ClientServer;
+	internal readonly TransitionSourceType sourceType;
 
-	internal readonly AnimatorState m_ConfigServer;
+	internal readonly AnimatorState sourceState;
 
-	internal readonly AnimatorStateMachine m_DescriptorServer;
+	internal readonly AnimatorStateMachine sourceStateMachine;
 
-	internal readonly AnimatorStateMachine _TemplateServer;
+	internal readonly AnimatorStateMachine parentStateMachine;
 
 	private static object SetupSystem;
 
 	[SpecialName]
-	internal string WriteConnection()
+	internal string GetSourceName()
 	{
-		switch (m_ClientServer)
+		switch (sourceType)
 		{
 		case TransitionSourceType.AnyTransition:
 			return "AnyState";
 		default:
-			if (m_ConfigServer != null)
+			if (sourceState != null)
 			{
-				return m_ConfigServer.name;
+				return sourceState.name;
 			}
 			return "!AnyState";
 		case TransitionSourceType.MachineTransition:
-			if (m_DescriptorServer != null)
+			if (sourceStateMachine != null)
 			{
-				return m_DescriptorServer.name;
+				return sourceStateMachine.name;
 			}
 			return "!AnyState";
 		case TransitionSourceType.EntryTransition:
@@ -52,149 +52,149 @@ internal readonly struct AnimatorStateTransitionSet
 	}
 
 	[SpecialName]
-	internal string StopConnection()
+	internal string GetDestinationName()
 	{
-		if (UpdateConnection())
+		if (GetIsExit())
 		{
 			return "Exit";
 		}
-		if (OrderContext())
+		if (GetHasDestinationStateMachine())
 		{
-			return PrintConnection().name;
+			return GetDestinationStateMachine().name;
 		}
-		if (InterruptConnection())
+		if (GetHasDestinationState())
 		{
-			return RegisterConnection().name;
+			return GetDestinationState().name;
 		}
 		return "Exit";
 	}
 
 	[SpecialName]
-	internal string PrepareConnection()
+	internal string GetDisplayName()
 	{
-		if (!string.IsNullOrEmpty(fieldServer.name))
+		if (!string.IsNullOrEmpty(transition.name))
 		{
-			return fieldServer.name;
+			return transition.name;
 		}
-		return WriteConnection() + " -> " + StopConnection();
+		return GetSourceName() + " -> " + GetDestinationName();
 	}
 
 	[SpecialName]
-	internal bool UpdateConnection()
+	internal bool GetIsExit()
 	{
-		return fieldServer.isExit;
+		return transition.isExit;
 	}
 
 	[SpecialName]
-	internal void ChangeConnection(bool isparam)
+	internal void SetIsExit(bool isparam)
 	{
-		fieldServer.isExit = isparam;
+		transition.isExit = isparam;
 	}
 
 	[SpecialName]
-	internal AnimatorState RegisterConnection()
+	internal AnimatorState GetDestinationState()
 	{
-		return fieldServer.destinationState;
+		return transition.destinationState;
 	}
 
 	[SpecialName]
-	internal void LogoutConnection(AnimatorState init)
+	internal void SetDestinationState(AnimatorState init)
 	{
-		fieldServer.destinationState = init;
+		transition.destinationState = init;
 	}
 
 	[SpecialName]
-	internal bool InterruptConnection()
+	internal bool GetHasDestinationState()
 	{
-		return RegisterConnection() != null;
+		return GetDestinationState() != null;
 	}
 
 	[SpecialName]
-	internal AnimatorStateMachine PrintConnection()
+	internal AnimatorStateMachine GetDestinationStateMachine()
 	{
-		return fieldServer.destinationStateMachine;
+		return transition.destinationStateMachine;
 	}
 
 	[SpecialName]
-	internal void SearchConnection(AnimatorStateMachine info)
+	internal void SetDestinationStateMachine(AnimatorStateMachine info)
 	{
-		fieldServer.destinationStateMachine = info;
+		transition.destinationStateMachine = info;
 	}
 
 	[SpecialName]
-	internal bool OrderContext()
+	internal bool GetHasDestinationStateMachine()
 	{
-		return PrintConnection() != null;
+		return GetDestinationStateMachine() != null;
 	}
 
 	[SpecialName]
-	internal AnimatorCondition[] SetContext()
+	internal AnimatorCondition[] GetConditions()
 	{
-		return fieldServer.conditions;
+		return transition.conditions;
 	}
 
 	[SpecialName]
-	internal void PostContext(AnimatorCondition[] item)
+	internal void SetConditions(AnimatorCondition[] item)
 	{
-		fieldServer.conditions = item;
+		transition.conditions = item;
 	}
 
 	internal AnimatorStateTransitionSet(AnimatorTransitionBase param, TransitionSourceType col, AnimatorState util)
 	{
-		fieldServer = param;
-		m_AttributeServer = param as AnimatorStateTransition;
-		m_ClientServer = col;
-		m_ConfigServer = util;
-		m_DescriptorServer = null;
-		_TemplateServer = null;
+		transition = param;
+		stateTransition = param as AnimatorStateTransition;
+		sourceType = col;
+		sourceState = util;
+		sourceStateMachine = null;
+		parentStateMachine = null;
 	}
 
 	internal AnimatorStateTransitionSet(AnimatorTransitionBase init, TransitionSourceType cfg, AnimatorStateMachine third)
 	{
-		fieldServer = init;
-		m_AttributeServer = init as AnimatorStateTransition;
-		m_ClientServer = cfg;
-		m_ConfigServer = null;
-		m_DescriptorServer = third;
-		_TemplateServer = null;
+		transition = init;
+		stateTransition = init as AnimatorStateTransition;
+		sourceType = cfg;
+		sourceState = null;
+		sourceStateMachine = third;
+		parentStateMachine = null;
 	}
 
 	internal AnimatorStateTransitionSet(AnimatorTransitionBase item, TransitionSourceType pol, AnimatorStateMachine dir, AnimatorStateMachine visitor2)
 	{
-		fieldServer = item;
-		m_AttributeServer = item as AnimatorStateTransition;
-		m_ClientServer = pol;
-		m_ConfigServer = null;
-		m_DescriptorServer = dir;
-		_TemplateServer = visitor2;
+		transition = item;
+		stateTransition = item as AnimatorStateTransition;
+		sourceType = pol;
+		sourceState = null;
+		sourceStateMachine = dir;
+		parentStateMachine = visitor2;
 	}
 
-	internal void FillConnection()
+	internal void Remove()
 	{
-		switch (m_ClientServer)
+		switch (sourceType)
 		{
 		case TransitionSourceType.AnyTransition:
-			if (m_DescriptorServer != null)
+			if (sourceStateMachine != null)
 			{
-				m_DescriptorServer.RemoveAnyStateTransition(m_AttributeServer);
+				sourceStateMachine.RemoveAnyStateTransition(stateTransition);
 			}
 			break;
 		case TransitionSourceType.EntryTransition:
-			if (m_DescriptorServer != null)
+			if (sourceStateMachine != null)
 			{
-				m_DescriptorServer.RemoveEntryTransition((AnimatorTransition)fieldServer);
+				sourceStateMachine.RemoveEntryTransition((AnimatorTransition)transition);
 			}
 			break;
 		case TransitionSourceType.StateTransition:
-			if (m_ConfigServer != null)
+			if (sourceState != null)
 			{
-				m_ConfigServer.RemoveTransition(m_AttributeServer);
+				sourceState.RemoveTransition(stateTransition);
 			}
 			break;
 		case TransitionSourceType.MachineTransition:
-			if (_TemplateServer != null && m_DescriptorServer != null)
+			if (parentStateMachine != null && sourceStateMachine != null)
 			{
-				_TemplateServer.RemoveStateMachineTransition(m_DescriptorServer, (AnimatorTransition)fieldServer);
+				parentStateMachine.RemoveStateMachineTransition(sourceStateMachine, (AnimatorTransition)transition);
 			}
 			break;
 		}
@@ -202,17 +202,17 @@ internal readonly struct AnimatorStateTransitionSet
 
 	public static implicit operator AnimatorStateTransition(AnimatorStateTransitionSet def)
 	{
-		return def.m_AttributeServer;
+		return def.stateTransition;
 	}
 
 	public static implicit operator AnimatorTransition(AnimatorStateTransitionSet init)
 	{
-		return (AnimatorTransition)init.fieldServer;
+		return (AnimatorTransition)init.transition;
 	}
 
 	public static implicit operator AnimatorTransitionBase(AnimatorStateTransitionSet v)
 	{
-		return v.fieldServer;
+		return v.transition;
 	}
 
 	internal static bool ExcludeSystem()

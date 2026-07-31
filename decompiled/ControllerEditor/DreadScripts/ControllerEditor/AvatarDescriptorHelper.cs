@@ -9,114 +9,114 @@ namespace DreadScripts.ControllerEditor;
 
 internal static class AvatarDescriptorHelper
 {
-	internal static VRCAvatarDescriptor[] m_StrategyThread = new VRCAvatarDescriptor[1];
+	internal static VRCAvatarDescriptor[] selectedAvatars = new VRCAvatarDescriptor[1];
 
-	internal static bool[] customerThread = new bool[1];
+	internal static bool[] isHumanoid = new bool[1];
 
-	internal static bool[] _DatabaseThread = new bool[1];
+	internal static bool[] hasActionLayerBug = new bool[1];
 
-	internal static VRCAvatarDescriptor[] _ExporterThread;
+	internal static VRCAvatarDescriptor[] sceneAvatars;
 
-	internal static Action<int> identifierThread;
+	internal static Action<int> onAvatarChanged;
 
 	[SpecialName]
-	public static VRCAvatarDescriptor SearchContext()
+	public static VRCAvatarDescriptor Avatar()
 	{
-		return m_StrategyThread[0];
+		return selectedAvatars[0];
 	}
 
 	[SpecialName]
-	public static void RevertContext(VRCAvatarDescriptor res)
+	public static void Avatar(VRCAvatarDescriptor res)
 	{
-		m_StrategyThread[0] = res;
+		selectedAvatars[0] = res;
 	}
 
-	public static void ChangeContext(Func<VRCAvatarDescriptor, bool> reference = null, Action cont = null)
+	public static void RefreshAvatars(Func<VRCAvatarDescriptor, bool> reference = null, Action cont = null)
 	{
-		for (int i = 0; i < m_StrategyThread.Length; i++)
+		for (int i = 0; i < selectedAvatars.Length; i++)
 		{
-			VRCAvatarDescriptor vRCAvatarDescriptor = m_StrategyThread[i];
+			VRCAvatarDescriptor vRCAvatarDescriptor = selectedAvatars[i];
 			if (vRCAvatarDescriptor != null && !vRCAvatarDescriptor.gameObject.activeInHierarchy)
 			{
-				m_StrategyThread[i] = null;
+				selectedAvatars[i] = null;
 			}
 		}
 		bool flag = false;
-		_ExporterThread = UnityEngine.Object.FindObjectsOfType<VRCAvatarDescriptor>();
-		if (_ExporterThread.Length == 0)
+		sceneAvatars = UnityEngine.Object.FindObjectsOfType<VRCAvatarDescriptor>();
+		if (sceneAvatars.Length == 0)
 		{
 			return;
 		}
-		for (int j = 0; j < m_StrategyThread.Length; j++)
+		for (int j = 0; j < selectedAvatars.Length; j++)
 		{
-			if (m_StrategyThread[j] != null)
+			if (selectedAvatars[j] != null)
 			{
 				continue;
 			}
 			if (reference != null)
 			{
-				m_StrategyThread[j] = _ExporterThread.FirstOrDefault(reference);
-				flag |= (bool)m_StrategyThread[j];
+				selectedAvatars[j] = sceneAvatars.FirstOrDefault(reference);
+				flag |= (bool)selectedAvatars[j];
 			}
-			if (!m_StrategyThread[j])
+			if (!selectedAvatars[j])
 			{
-				m_StrategyThread[j] = _ExporterThread.FirstOrDefault((VRCAvatarDescriptor a) => !m_StrategyThread.Contains(a));
-				flag |= (bool)m_StrategyThread[j];
+				selectedAvatars[j] = sceneAvatars.FirstOrDefault((VRCAvatarDescriptor a) => !selectedAvatars.Contains(a));
+				flag |= (bool)selectedAvatars[j];
 			}
 		}
 		if (flag)
 		{
 			cont?.Invoke();
-			identifierThread?.Invoke(0);
+			onAvatarChanged?.Invoke(0);
 		}
 	}
 
-	public static bool SortContext(int version_res = 0, bool isconnection = true, bool fieldinstall = true)
+	public static bool RefreshIssues(int version_res = 0, bool isconnection = true, bool fieldinstall = true)
 	{
-		if (!m_StrategyThread[version_res])
+		if (!selectedAvatars[version_res])
 		{
 			return false;
 		}
-		customerThread[version_res] = m_StrategyThread[version_res].PrintContext();
-		_DatabaseThread[version_res] = m_StrategyThread[version_res].baseAnimationLayers.Length > 3 && m_StrategyThread[version_res].baseAnimationLayers[3].type == m_StrategyThread[version_res].baseAnimationLayers[4].type;
-		if (!fieldinstall || !_DatabaseThread[version_res])
+		isHumanoid[version_res] = selectedAvatars[version_res].IsHumanoid();
+		hasActionLayerBug[version_res] = selectedAvatars[version_res].baseAnimationLayers.Length > 3 && selectedAvatars[version_res].baseAnimationLayers[3].type == selectedAvatars[version_res].baseAnimationLayers[4].type;
+		if (!fieldinstall || !hasActionLayerBug[version_res])
 		{
 			if (isconnection)
 			{
-				return !customerThread[version_res];
+				return !isHumanoid[version_res];
 			}
 			return false;
 		}
 		return true;
 	}
 
-	public static bool RegisterContext(int res = 0, bool addb = true, bool includec = true, string pred2 = "Avatar", string spec3 = "The Targeted VRCAvatar", Action pred4 = null)
+	public static bool DrawAvatarSelector(int res = 0, bool addb = true, bool includec = true, string pred2 = "Avatar", string spec3 = "The Targeted VRCAvatar", Action pred4 = null)
 	{
-		m_StrategyThread[res] = LogoutContext(res, pred2, spec3, pred4);
-		if ((bool)m_StrategyThread[res])
+		selectedAvatars[res] = DrawAvatarPopup(res, pred2, spec3, pred4);
+		if ((bool)selectedAvatars[res])
 		{
-			return PatchContext(res, addb, includec);
+			return DrawWarnings(res, addb, includec);
 		}
 		return false;
 	}
 
-	public static VRCAvatarDescriptor LogoutContext(int v = 0, string ord = "Avatar", string res = "The Targeted VRCAvatar", Action res2 = null)
+	public static VRCAvatarDescriptor DrawAvatarPopup(int v = 0, string ord = "Avatar", string res = "The Targeted VRCAvatar", Action res2 = null)
 	{
 		using (new GUILayout.HorizontalScope())
 		{
 			GUIContent label = new GUIContent(ord, res);
-			if (_ExporterThread != null && _ExporterThread.Length != 0)
+			if (sceneAvatars != null && sceneAvatars.Length != 0)
 			{
 				using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
-				int num = EditorGUILayout.Popup(label, m_StrategyThread[v] ? Array.IndexOf(_ExporterThread, m_StrategyThread[v]) : (-1), (from x in _ExporterThread
+				int num = EditorGUILayout.Popup(label, selectedAvatars[v] ? Array.IndexOf(sceneAvatars, selectedAvatars[v]) : (-1), (from x in sceneAvatars
 					where x
 					select x.name).ToArray());
 				if (changeCheckScope.changed)
 				{
-					m_StrategyThread[v] = _ExporterThread[num];
-					EditorGUIUtility.PingObject(m_StrategyThread[v]);
+					selectedAvatars[v] = sceneAvatars[num];
+					EditorGUIUtility.PingObject(selectedAvatars[v]);
 					res2?.Invoke();
-					identifierThread?.Invoke(v);
+					onAvatarChanged?.Invoke(v);
 				}
 			}
 			else
@@ -124,25 +124,25 @@ internal static class AvatarDescriptorHelper
 				EditorGUILayout.LabelField(label, new GUIContent("No Avatar Descriptors Found"));
 			}
 		}
-		return m_StrategyThread[v];
+		return selectedAvatars[v];
 	}
 
-	private static bool PatchContext(int idx_def = 0, bool testsecond = true, bool allowpool = true)
+	private static bool DrawWarnings(int idx_def = 0, bool testsecond = true, bool allowpool = true)
 	{
-		if (!allowpool || !InterruptContext(idx_def))
+		if (!allowpool || !DrawActionLayerWarning(idx_def))
 		{
 			if (!testsecond)
 			{
 				return false;
 			}
-			return ManageContext(idx_def);
+			return DrawHumanoidWarning(idx_def);
 		}
 		return true;
 	}
 
-	private static bool InterruptContext(int flagsv = 0)
+	private static bool DrawActionLayerWarning(int flagsv = 0)
 	{
-		VRCAvatarDescriptor vRCAvatarDescriptor = m_StrategyThread[flagsv];
+		VRCAvatarDescriptor vRCAvatarDescriptor = selectedAvatars[flagsv];
 		if ((bool)vRCAvatarDescriptor)
 		{
 			VRCAvatarDescriptor.CustomAnimLayer[] baseAnimationLayers = vRCAvatarDescriptor.baseAnimationLayers;
@@ -165,13 +165,13 @@ internal static class AvatarDescriptorHelper
 		return false;
 	}
 
-	private static bool ManageContext(int setup = 0)
+	private static bool DrawHumanoidWarning(int setup = 0)
 	{
-		if (!m_StrategyThread[setup])
+		if (!selectedAvatars[setup])
 		{
 			return false;
 		}
-		if (!customerThread[setup])
+		if (!isHumanoid[setup])
 		{
 			EditorGUILayout.HelpBox("Your Avatar's descriptor is set as Non-Humanoid! Please make sure that your Avatar's rig is Humanoid.", MessageType.Error);
 			return true;
@@ -179,7 +179,7 @@ internal static class AvatarDescriptorHelper
 		return false;
 	}
 
-	public static bool PrintContext(this VRCAvatarDescriptor def)
+	public static bool IsHumanoid(this VRCAvatarDescriptor def)
 	{
 		return def.baseAnimationLayers.Length > 3;
 	}

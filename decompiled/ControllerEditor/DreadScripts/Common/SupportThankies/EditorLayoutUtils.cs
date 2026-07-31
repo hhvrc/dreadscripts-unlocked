@@ -21,35 +21,35 @@ internal static class EditorLayoutUtils
 	private static MethodInfo policy;
 
 	[SpecialName]
-	public static Type CancelWrapper()
+	public static Type SplitterGUILayoutType()
 	{
 		return processor ?? (processor = Type.GetType("UnityEditor.SplitterGUILayout, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"));
 	}
 
 	[SpecialName]
-	public static Type DisableWrapper()
+	public static Type SplitterStateType()
 	{
 		return _Observer ?? (_Observer = Type.GetType("UnityEditor.SplitterState, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"));
 	}
 
 	[SpecialName]
-	public static ConstructorInfo RestartWrapper()
+	public static ConstructorInfo SplitterStateConstructor()
 	{
 		if (_Server == null)
 		{
-			_Server = DisableWrapper().GetConstructor(new Type[1] { typeof(float[]) });
+			_Server = SplitterStateType().GetConstructor(new Type[1] { typeof(float[]) });
 		}
 		return _Server;
 	}
 
 	[SpecialName]
-	public static MethodInfo AddWrapper()
+	public static MethodInfo BeginSplitMethod()
 	{
 		if (thread == null)
 		{
-			thread = CancelWrapper().GetMethod("BeginSplit", new Type[4]
+			thread = SplitterGUILayoutType().GetMethod("BeginSplit", new Type[4]
 			{
-				DisableWrapper(),
+				SplitterStateType(),
 				typeof(GUIStyle),
 				typeof(bool),
 				typeof(GUILayoutOption[])
@@ -59,7 +59,7 @@ internal static class EditorLayoutUtils
 	}
 
 	[SpecialName]
-	public static MethodInfo FindWrapper()
+	public static MethodInfo EndLayoutGroupMethod()
 	{
 		if (policy == null)
 		{
@@ -68,24 +68,24 @@ internal static class EditorLayoutUtils
 		return policy;
 	}
 
-	public static object SetWrapper(params float[] relativeSizes)
+	public static object CreateSplitterState(params float[] relativeSizes)
 	{
-		return RestartWrapper().Invoke(new object[1] { relativeSizes });
+		return SplitterStateConstructor().Invoke(new object[1] { relativeSizes });
 	}
 
-	public static void PostWrapper(object asset, GUIStyle cont = null, params GUILayoutOption[] options)
+	public static void BeginHorizontalSplit(object asset, GUIStyle cont = null, params GUILayoutOption[] options)
 	{
-		EnableWrapper(asset, cont, loadconsumer: false, options);
+		BeginSplit(asset, cont, loadconsumer: false, options);
 	}
 
-	public static void SetupWrapper(object setup, GUIStyle pol = null, params GUILayoutOption[] options)
+	public static void BeginVerticalSplit(object setup, GUIStyle pol = null, params GUILayoutOption[] options)
 	{
-		EnableWrapper(setup, pol, loadconsumer: true, options);
+		BeginSplit(setup, pol, loadconsumer: true, options);
 	}
 
-	public static void EnableWrapper(object def, GUIStyle cfg = null, bool loadconsumer = true, params GUILayoutOption[] options)
+	public static void BeginSplit(object def, GUIStyle cfg = null, bool loadconsumer = true, params GUILayoutOption[] options)
 	{
-		AddWrapper().Invoke(null, new object[4]
+		BeginSplitMethod().Invoke(null, new object[4]
 		{
 			def,
 			cfg ?? GUIStyle.none,
@@ -94,24 +94,24 @@ internal static class EditorLayoutUtils
 		});
 	}
 
-	public static void PublishWrapper()
+	public static void EndSplit()
 	{
-		FindWrapper().Invoke(null, null);
+		EndLayoutGroupMethod().Invoke(null, null);
 	}
 
-	public static void PopWrapper(string task)
+	public static void DrawTitle(string task)
 	{
-		ComputeWrapper(new GUIContent(task));
+		DrawTitle(new GUIContent(task));
 	}
 
-	public static void ComputeWrapper(GUIContent param)
+	public static void DrawTitle(GUIContent param)
 	{
 		EditorGUILayout.LabelField(param, EditorStyles.boldLabel);
-		ConcatWrapper();
+		DrawHorizontalLine();
 		GUILayout.Space(7f);
 	}
 
-	public static void MoveWrapper(Rect res = default(Rect), Color reg = default(Color))
+	public static void DrawVerticalLine(Rect res = default(Rect), Color reg = default(Color))
 	{
 		if (reg == default(Color))
 		{
@@ -126,7 +126,7 @@ internal static class EditorLayoutUtils
 		EditorGUI.DrawRect(res, reg);
 	}
 
-	public static void ConcatWrapper(Color setup = default(Color))
+	public static void DrawHorizontalLine(Color setup = default(Color))
 	{
 		if (setup == default(Color))
 		{
@@ -141,7 +141,7 @@ internal static class EditorLayoutUtils
 		EditorGUI.DrawRect(controlRect, setup);
 	}
 
-	public static void CallWrapper(Rect first = default(Rect), Color cust = default(Color), float consumer = 1.5f)
+	public static void DrawUnderline(Rect first = default(Rect), Color cust = default(Color), float consumer = 1.5f)
 	{
 		if (cust == default(Color))
 		{

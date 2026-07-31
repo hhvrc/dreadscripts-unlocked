@@ -1,6 +1,7 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AxisControlSettings.cs
 
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
 

@@ -29,7 +29,7 @@ internal class SupporterEntry
 
 	internal readonly string _Expression;
 
-	internal readonly object system = EditorLayoutUtils.SetWrapper(global::_003CModule_003E.smethod_5<float[]>(1991865236));
+	internal readonly object system = EditorLayoutUtils.CreateSplitterState(global::_003CModule_003E.smethod_5<float[]>(1991865236));
 
 	internal Rect worker;
 
@@ -85,7 +85,7 @@ internal class SupporterEntry
 			using (new GUILayout.VerticalScope())
 			{
 				GUILayout.FlexibleSpace();
-				EditorLayoutUtils.EnableWrapper(system, null, false);
+				EditorLayoutUtils.BeginSplit(system, null, false);
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.Space(8f);
@@ -132,7 +132,7 @@ internal class SupporterEntry
 					}
 					GUILayout.Space(8f);
 				}
-				EditorLayoutUtils.PublishWrapper();
+				EditorLayoutUtils.EndSplit();
 				GUILayout.FlexibleSpace();
 			}
 			if (Event.current.type == EventType.Repaint)

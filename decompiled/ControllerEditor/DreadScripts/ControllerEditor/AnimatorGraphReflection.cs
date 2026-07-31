@@ -120,7 +120,7 @@ internal static class AnimatorGraphReflection
 		{
 			if (!(_StatusTests != null))
 			{
-				return _StatusTests = (EditorWindow)MemberRefs._StrategyTests.PrepareRecord().GetValue(null);
+				return _StatusTests = (EditorWindow)MemberRefs._StrategyTests.GetMember().GetValue(null);
 			}
 			return _StatusTests;
 		}
@@ -128,7 +128,7 @@ internal static class AnimatorGraphReflection
 		[SpecialName]
 		public static void ComputePolicy(EditorWindow info)
 		{
-			MemberRefs._StrategyTests.PrepareRecord().SetValue(null, info);
+			MemberRefs._StrategyTests.GetMember().SetValue(null, info);
 		}
 
 		[SpecialName]
@@ -138,7 +138,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return (AnimatorController)MemberRefs._SingletonTests.PrepareRecord().GetValue(PopPolicy());
+			return (AnimatorController)MemberRefs._SingletonTests.GetMember().GetValue(PopPolicy());
 		}
 
 		[SpecialName]
@@ -148,7 +148,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return (Graph)MemberRefs.customerTests.PrepareRecord().GetValue(PopPolicy());
+			return (Graph)MemberRefs.customerTests.GetMember().GetValue(PopPolicy());
 		}
 
 		[SpecialName]
@@ -158,7 +158,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return (Graph)MemberRefs.m_DatabaseTests.PrepareRecord().GetValue(PopPolicy());
+			return (Graph)MemberRefs.m_DatabaseTests.GetMember().GetValue(PopPolicy());
 		}
 
 		[SpecialName]
@@ -166,7 +166,7 @@ internal static class AnimatorGraphReflection
 		{
 			if (!(PopPolicy() == null))
 			{
-				return (GraphGUI)MemberRefs.m_ExporterTests.PrepareRecord().GetValue(PopPolicy());
+				return (GraphGUI)MemberRefs.m_ExporterTests.GetMember().GetValue(PopPolicy());
 			}
 			return null;
 		}
@@ -178,7 +178,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return (GraphGUI)MemberRefs.m_IdentifierTests.PrepareRecord().GetValue(PopPolicy());
+			return (GraphGUI)MemberRefs.m_IdentifierTests.GetMember().GetValue(PopPolicy());
 		}
 
 		[SpecialName]
@@ -214,7 +214,7 @@ internal static class AnimatorGraphReflection
 		{
 			if (!(RestartPolicy() == null))
 			{
-				return (IEdgeGUI)MemberRefs.factoryTests.PrepareRecord().GetValue(RestartPolicy());
+				return (IEdgeGUI)MemberRefs.factoryTests.GetMember().GetValue(RestartPolicy());
 			}
 			return null;
 		}
@@ -224,7 +224,7 @@ internal static class AnimatorGraphReflection
 		{
 			if (!(CancelPolicy() == null))
 			{
-				return (AnimatorStateMachine)MemberRefs.m_TagTests.PrepareRecord().GetValue(CancelPolicy());
+				return (AnimatorStateMachine)MemberRefs.m_TagTests.GetMember().GetValue(CancelPolicy());
 			}
 			return null;
 		}
@@ -236,7 +236,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return (AnimatorStateMachine)MemberRefs._ImporterTests.PrepareRecord().GetValue(CancelPolicy());
+			return (AnimatorStateMachine)MemberRefs._ImporterTests.GetMember().GetValue(CancelPolicy());
 		}
 
 		[SpecialName]
@@ -244,7 +244,7 @@ internal static class AnimatorGraphReflection
 		{
 			if (!(CancelPolicy() == null))
 			{
-				return (AnimatorStateMachine)MemberRefs.m_RequestTests.PrepareRecord().GetValue(CancelPolicy());
+				return (AnimatorStateMachine)MemberRefs.m_RequestTests.GetMember().GetValue(CancelPolicy());
 			}
 			return null;
 		}
@@ -254,7 +254,7 @@ internal static class AnimatorGraphReflection
 		{
 			if (!(CancelPolicy() == null))
 			{
-				return new GraphNodeRef((Node)MemberRefs.m_ListenerTests.PrepareRecord().GetValue(CancelPolicy()));
+				return new GraphNodeRef((Node)MemberRefs.m_ListenerTests.GetMember().GetValue(CancelPolicy()));
 			}
 			return null;
 		}
@@ -266,7 +266,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return new GraphNodeRef((Node)MemberRefs.getterTests.PrepareRecord().GetValue(CancelPolicy()));
+			return new GraphNodeRef((Node)MemberRefs.getterTests.GetMember().GetValue(CancelPolicy()));
 		}
 
 		[SpecialName]
@@ -274,7 +274,7 @@ internal static class AnimatorGraphReflection
 		{
 			if (!(CancelPolicy() == null))
 			{
-				return new GraphNodeRef((Node)MemberRefs.m_InterceptorTests.PrepareRecord().GetValue(CancelPolicy()));
+				return new GraphNodeRef((Node)MemberRefs.m_InterceptorTests.GetMember().GetValue(CancelPolicy()));
 			}
 			return null;
 		}
@@ -286,7 +286,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return from Node n in (IList)MemberRefs.m_WriterTests.PrepareRecord().GetValue(FindPolicy())
+			return from Node n in (IList)MemberRefs.m_WriterTests.GetMember().GetValue(FindPolicy())
 				select new GraphNodeRef(n);
 		}
 
@@ -297,7 +297,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return from Edge e in (IList)MemberRefs._ParamsTests.PrepareRecord().GetValue(FindPolicy())
+			return from Edge e in (IList)MemberRefs._ParamsTests.GetMember().GetValue(FindPolicy())
 				select new GraphEdgeRef(e);
 		}
 
@@ -308,7 +308,7 @@ internal static class AnimatorGraphReflection
 			{
 				return null;
 			}
-			return from Node n in (IList)MemberRefs.printerTests.PrepareRecord().GetValue(InitPolicy())
+			return from Node n in (IList)MemberRefs.printerTests.GetMember().GetValue(InitPolicy())
 				select new GraphNodeRef(n);
 		}
 
@@ -339,13 +339,13 @@ internal static class AnimatorGraphReflection
 		[SpecialName]
 		public static Action LoginPolicy()
 		{
-			return (Action)MemberRefs.m_DispatcherTests.PrepareRecord().GetValue(PopPolicy());
+			return (Action)MemberRefs.m_DispatcherTests.GetMember().GetValue(PopPolicy());
 		}
 
 		[SpecialName]
 		public static void ReflectPolicy(Action value)
 		{
-			MemberRefs.m_DispatcherTests.PrepareRecord().SetValue(PopPolicy(), value);
+			MemberRefs.m_DispatcherTests.GetMember().SetValue(PopPolicy(), value);
 		}
 
 		[SpecialName]
@@ -356,12 +356,12 @@ internal static class AnimatorGraphReflection
 			{
 				return false;
 			}
-			return !(MemberRefs._RegistryTests.PrepareRecord().GetValue(list[list.Count - 1]) is AnimatorStateMachine);
+			return !(MemberRefs._RegistryTests.GetMember().GetValue(list[list.Count - 1]) is AnimatorStateMachine);
 		}
 
 		public static IList SetupPolicy()
 		{
-			return (IList)MemberRefs.attrTests.PrepareRecord().GetValue(PopPolicy());
+			return (IList)MemberRefs.attrTests.GetMember().GetValue(PopPolicy());
 		}
 
 		public static UnityEngine.Object[] EnablePolicy()
@@ -374,7 +374,7 @@ internal static class AnimatorGraphReflection
 			UnityEngine.Object[] array = new UnityEngine.Object[list.Count];
 			for (int i = 0; i < list.Count; i++)
 			{
-				array[i] = (UnityEngine.Object)MemberRefs._RegistryTests.PrepareRecord().GetValue(list[i]);
+				array[i] = (UnityEngine.Object)MemberRefs._RegistryTests.GetMember().GetValue(list[i]);
 			}
 			return array;
 		}
@@ -534,7 +534,7 @@ internal static class AnimatorGraphReflection
 			if (type == TypeResolvers.stateNode.ResolvedType())
 			{
 				nodeType = NodeType.state;
-				state = (AnimatorState)MemberRefs._CreatorTests.PrepareRecord().GetValue(init);
+				state = (AnimatorState)MemberRefs._CreatorTests.GetMember().GetValue(init);
 			}
 			else if (!(type == TypeResolvers.stateMachineNode.ResolvedType()))
 			{
@@ -561,7 +561,7 @@ internal static class AnimatorGraphReflection
 			else
 			{
 				nodeType = NodeType.machine;
-				stateMachine = (AnimatorStateMachine)MemberRefs.m_InfoTests.PrepareRecord().GetValue(init);
+				stateMachine = (AnimatorStateMachine)MemberRefs.m_InfoTests.GetMember().GetValue(init);
 			}
 		}
 
@@ -621,7 +621,7 @@ internal static class AnimatorGraphReflection
 			if (!edgeInfoCached)
 			{
 				edgeInfoCached = true;
-				edgeInfo = MemberRefs.m_IndexerTests.PrepareRecord().Invoke(GraphAccessors.CancelPolicy(), new object[1] { edge });
+				edgeInfo = MemberRefs.m_IndexerTests.GetMember().Invoke(GraphAccessors.CancelPolicy(), new object[1] { edge });
 				return edgeInfo;
 			}
 			return edgeInfo;
@@ -629,18 +629,18 @@ internal static class AnimatorGraphReflection
 
 		public bool HasTransition(AnimatorTransitionBase ident)
 		{
-			return (bool)MemberRefs.m_RuleTests.PrepareRecord().Invoke(GetEdgeInfo(), new object[1] { ident });
+			return (bool)MemberRefs.m_RuleTests.GetMember().Invoke(GetEdgeInfo(), new object[1] { ident });
 		}
 
 		public bool HasMultipleTransitions()
 		{
-			return (bool)MemberRefs.m_AccountTests.PrepareRecord().GetValue(GetEdgeInfo());
+			return (bool)MemberRefs.m_AccountTests.GetMember().GetValue(GetEdgeInfo());
 		}
 
 		[SpecialName]
 		public IEnumerable<TransitionEditionInfo> GetTransitions()
 		{
-			return from object setup in (IList)MemberRefs.callbackTests.PrepareRecord().GetValue(GetEdgeInfo())
+			return from object setup in (IList)MemberRefs.callbackTests.GetMember().GetValue(GetEdgeInfo())
 				select new TransitionEditionInfo(setup, this);
 		}
 
@@ -716,28 +716,28 @@ internal static class AnimatorGraphReflection
 		[SpecialName]
 		public string VisitSerializer()
 		{
-			return (string)m_FieldTests.PrepareRecord().GetValue(parserTests);
+			return (string)m_FieldTests.GetMember().GetValue(parserTests);
 		}
 
 		[SpecialName]
 		public string StartSerializer()
 		{
-			return (string)attributeTests.PrepareRecord().GetValue(parserTests);
+			return (string)attributeTests.GetMember().GetValue(parserTests);
 		}
 
 		public TransitionEditionInfo(object config, GraphEdgeRef second)
 		{
 			parserTests = config;
 			_ManagerTests = second;
-			taskTests = (bool)m_MessageTests.PrepareRecord().GetValue(config);
-			m_ProcessTests = (bool)m_MessageTests.PrepareRecord().GetValue(config);
-			itemTests = (AnimatorTransitionBase)_TemplateTests.PrepareRecord().GetValue(config);
+			taskTests = (bool)m_MessageTests.GetMember().GetValue(config);
+			m_ProcessTests = (bool)m_MessageTests.GetMember().GetValue(config);
+			itemTests = (AnimatorTransitionBase)_TemplateTests.GetMember().GetValue(config);
 			bool flag = itemTests != null;
 			_StructTests = ((!flag) ? null : itemTests.destinationState);
 			_ServiceTests = ((!flag) ? null : itemTests.destinationStateMachine);
-			proxyTests = (AnimatorStateMachine)descriptorTests.PrepareRecord().GetValue(config);
-			m_SchemaTests = (AnimatorState)m_ClientTests.PrepareRecord().GetValue(config);
-			broadcasterTests = (AnimatorStateMachine)((!taskTests && !m_ProcessTests) ? m_ConfigTests.PrepareRecord().GetValue(config) : proxyTests);
+			proxyTests = (AnimatorStateMachine)descriptorTests.GetMember().GetValue(config);
+			m_SchemaTests = (AnimatorState)m_ClientTests.GetMember().GetValue(config);
+			broadcasterTests = (AnimatorStateMachine)((!taskTests && !m_ProcessTests) ? m_ConfigTests.GetMember().GetValue(config) : proxyTests);
 			globalTests = ((m_SchemaTests != null) ? GraphNodeRef.NodeType.state : ((!(broadcasterTests == null)) ? ((!taskTests) ? ((!m_ProcessTests && !(proxyTests != null)) ? GraphNodeRef.NodeType.machine : GraphNodeRef.NodeType.entry) : GraphNodeRef.NodeType.any) : GraphNodeRef.NodeType.unknown));
 			stateTests = ((_StructTests != null) ? GraphNodeRef.NodeType.state : ((_ServiceTests != null) ? GraphNodeRef.NodeType.machine : GraphNodeRef.NodeType.exit));
 			_ProducerTests = globalTests == GraphNodeRef.NodeType.entry && !m_ProcessTests;
@@ -808,22 +808,22 @@ internal static class AnimatorGraphReflection
 
 	public static GraphNodeRef FindNode(AnimatorState i)
 	{
-		return new GraphNodeRef((Node)MemberRefs._IssuerTests.PrepareRecord().Invoke(GraphAccessors.CancelPolicy(), new object[1] { i }));
+		return new GraphNodeRef((Node)MemberRefs._IssuerTests.GetMember().Invoke(GraphAccessors.CancelPolicy(), new object[1] { i }));
 	}
 
 	public static GraphNodeRef FindNode(AnimatorStateMachine last)
 	{
-		return new GraphNodeRef((Node)MemberRefs._PrototypeTests.PrepareRecord().Invoke(GraphAccessors.CancelPolicy(), new object[1] { last }));
+		return new GraphNodeRef((Node)MemberRefs._PrototypeTests.GetMember().Invoke(GraphAccessors.CancelPolicy(), new object[1] { last }));
 	}
 
 	public static AnimatorStateMachine GetOwningStateMachine(AnimatorState config)
 	{
-		return (AnimatorStateMachine)MemberRefs.m_FacadeTests.PrepareRecord().GetValue(FindNode(config).Node());
+		return (AnimatorStateMachine)MemberRefs.m_FacadeTests.GetMember().GetValue(FindNode(config).Node());
 	}
 
 	public static AnimatorStateMachine GetOwningStateMachine(AnimatorStateMachine spec)
 	{
-		return (AnimatorStateMachine)MemberRefs.advisorTests.PrepareRecord().GetValue(FindNode(spec).Node());
+		return (AnimatorStateMachine)MemberRefs.advisorTests.GetMember().GetValue(FindNode(spec).Node());
 	}
 
 	public static AnimatorStateMachine GetOwningStateMachine(GraphNodeRef spec)
@@ -831,7 +831,7 @@ internal static class AnimatorGraphReflection
 		return spec.nodeType switch
 		{
 			GraphNodeRef.NodeType.any => GraphAccessors.RemovePolicy(), 
-			GraphNodeRef.NodeType.entry => (AnimatorStateMachine)MemberRefs.eventTests.PrepareRecord().GetValue(spec.Node()), 
+			GraphNodeRef.NodeType.entry => (AnimatorStateMachine)MemberRefs.eventTests.GetMember().GetValue(spec.Node()), 
 			GraphNodeRef.NodeType.state => GetOwningStateMachine(spec.state), 
 			GraphNodeRef.NodeType.machine => GetOwningStateMachine(spec.stateMachine), 
 			_ => null, 

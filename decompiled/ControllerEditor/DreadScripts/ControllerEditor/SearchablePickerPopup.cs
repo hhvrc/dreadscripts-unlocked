@@ -17,22 +17,20 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 
 		internal object[] extraData;
 
-		internal bool isVisible;
+		internal bool isVisible = true;
 
 		private static object MapSystem;
 
 		[SpecialName]
 		internal object FirstExtra()
 		{
-			return this.m_MerchantServer[0];
+			return extraData[0];
 		}
 
 		internal PickerEntry(T spec, int cust_size)
 		{
-			this.authenticationServer = true;
-			base._002Ector();
-			this._ValueServer = spec;
-			this.m_ValServer = cust_size;
+			value = spec;
+			index = cust_size;
 		}
 
 		internal static bool AddSystem()
@@ -57,55 +55,52 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 
 	private float maxWidth;
 
-	private bool isFirstFrame;
+	private bool isFirstFrame = true;
 
 	private Vector2 scrollPosition;
 
 	private readonly Rect[] entryRects;
 
-	internal readonly GUIStyle entryStyle;
+	internal readonly GUIStyle entryStyle = new GUIStyle
+	{
+		hover = 
+		{
+			background = EditorUtils.ReflectList(new Color(0.302f, 0.302f, 0.302f))
+		},
+		active = 
+		{
+			background = EditorUtils.ReflectList(new Color(0.1725f, 0.3647f, 0.5294f))
+		}
+	};
 
 	private static object WriteSystem;
 
 	public SearchablePickerPopup(string param, IEnumerable<T> attr, Action<PickerEntry> third, Action<int, T> reference2)
 	{
-		this._DecoratorServer = true;
-		this.objectServer = new GUIStyle
-		{
-			hover = 
-			{
-				background = EditorUtils.ReflectList(new Color(0.302f, 0.302f, 0.302f))
-			},
-			active = 
-			{
-				background = EditorUtils.ReflectList(new Color(0.1725f, 0.3647f, 0.5294f))
-			}
-		};
-		base._002Ector();
-		this._TokenServer = param;
-		this.roleServer = reference2;
-		this.invocationServer = third;
-		this.m_DicServer = attr.Select((T item, int i) => new PickerEntry(item, i)).ToArray();
-		this._ExceptionServer = new Rect[this.m_DicServer.Length];
+		title = param;
+		onSelected = reference2;
+		drawEntry = third;
+		entries = attr.Select((T item, int i) => new PickerEntry(item, i)).ToArray();
+		entryRects = new Rect[entries.Length];
 	}
 
 	public void EnableSearch(Func<T, string, bool> key)
 	{
-		this._ModelServer = true;
-		this._ParamServer = key;
+		hasSearch = true;
+		searchFilter = key;
 	}
 
 	public void SortBy(Func<T, object> param)
 	{
-		this.m_DicServer = ((param == null) ? this.m_DicServer : this.m_DicServer.OrderBy((PickerEntry item) => param(item._ValueServer)).ToArray());
+		entries = ((param == null) ? entries : entries.OrderBy((PickerEntry item) => param(item.value)).ToArray());
 	}
 
 	public void SetExtraData(Func<T, object[]> ident)
 	{
-		PickerEntry[] dicServer = this.m_DicServer;
-		foreach (PickerEntry pickerEntry in dicServer)
+		PickerEntry[] array = entries;
+		foreach (PickerEntry pickerEntry in array)
 		{
-			pickerEntry.m_MerchantServer = ident(pickerEntry._ValueServer);
+			pickerEntry.extraData = ident(pickerEntry.value);
 		}
 	}
 
@@ -114,60 +109,60 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 		using (new GUILayout.AreaScope(rect))
 		{
 			Event current = Event.current;
-			using (new ScrollViewScope(ref this.m_ComparatorServer))
+			using (new ScrollViewScope(ref scrollPosition))
 			{
-				if (!string.IsNullOrEmpty(this._TokenServer))
+				if (!string.IsNullOrEmpty(title))
 				{
-					GUILayout.Label(this._TokenServer, EditorUtils.CalcError()._StructProcessor);
+					GUILayout.Label(title, EditorUtils.CalcError()._StructProcessor);
 					EditorUtils.MapQueue();
 				}
-				if (this._ModelServer)
+				if (hasSearch)
 				{
 					EditorGUI.BeginChangeCheck();
-					if (this._DecoratorServer)
+					if (isFirstFrame)
 					{
-						GUI.SetNextControlName(this._TokenServer + "SearchBar");
+						GUI.SetNextControlName(title + "SearchBar");
 					}
-					this.m_CodeServer = EditorGUILayout.TextField(this.m_CodeServer, GUI.skin.GetStyle("SearchTextField"));
+					searchString = EditorGUILayout.TextField(searchString, GUI.skin.GetStyle("SearchTextField"));
 					if (EditorGUI.EndChangeCheck())
 					{
-						PickerEntry[] dicServer = this.m_DicServer;
-						foreach (PickerEntry pickerEntry in dicServer)
+						PickerEntry[] array = entries;
+						foreach (PickerEntry pickerEntry in array)
 						{
-							pickerEntry.authenticationServer = this._ParamServer(pickerEntry._ValueServer, this.m_CodeServer);
+							pickerEntry.isVisible = searchFilter(pickerEntry.value, searchString);
 						}
 					}
 				}
 				EventType type = current.type;
-				for (int j = 0; j < this.m_DicServer.Length; j++)
+				for (int j = 0; j < entries.Length; j++)
 				{
-					PickerEntry pickerEntry2 = this.m_DicServer[j];
-					if (!pickerEntry2.authenticationServer)
+					PickerEntry pickerEntry2 = entries[j];
+					if (!pickerEntry2.isVisible)
 					{
 						continue;
 					}
-					if (!this._DecoratorServer && GUI.Button(this._ExceptionServer[j], string.Empty, this.objectServer))
+					if (!isFirstFrame && GUI.Button(entryRects[j], string.Empty, entryStyle))
 					{
-						this.roleServer(pickerEntry2.m_ValServer, pickerEntry2._ValueServer);
+						onSelected(pickerEntry2.index, pickerEntry2.value);
 						base.editorWindow.Close();
 					}
 					using (new GUILayout.VerticalScope())
 					{
-						this.invocationServer(pickerEntry2);
+						drawEntry(pickerEntry2);
 					}
 					if (type == EventType.Repaint)
 					{
-						this._ExceptionServer[j] = GUILayoutUtility.GetLastRect();
-						if (this._DecoratorServer && this._ExceptionServer[j].width > this.m_TokenizerServer)
+						entryRects[j] = GUILayoutUtility.GetLastRect();
+						if (isFirstFrame && entryRects[j].width > maxWidth)
 						{
-							this.m_TokenizerServer = this._ExceptionServer[j].width;
+							maxWidth = entryRects[j].width;
 						}
 					}
 				}
-				if (type == EventType.Repaint && this._DecoratorServer)
+				if (type == EventType.Repaint && isFirstFrame)
 				{
-					this._DecoratorServer = false;
-					GUI.FocusControl(this._TokenServer + "SearchBar");
+					isFirstFrame = false;
+					GUI.FocusControl(title + "SearchBar");
 				}
 			}
 			if (rect.Contains(current.mousePosition))
@@ -180,9 +175,9 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 	public override Vector2 GetWindowSize()
 	{
 		Vector2 windowSize = base.GetWindowSize();
-		if (!this._DecoratorServer)
+		if (!isFirstFrame)
 		{
-			windowSize.x = this.m_TokenizerServer + 21f;
+			windowSize.x = maxWidth + 21f;
 		}
 		return windowSize;
 	}

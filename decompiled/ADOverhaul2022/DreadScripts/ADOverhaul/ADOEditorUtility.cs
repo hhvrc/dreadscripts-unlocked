@@ -851,61 +851,61 @@ internal static class ADOEditorUtility
 
 	internal struct SphereHandle
 	{
-		internal string m_PropertyMethod;
+		internal string label;
 
-		internal GUIStyle _SingletonMethod;
+		internal GUIStyle labelStyle;
 
-		internal Vector3 m_AccountMethod;
+		internal Vector3 position;
 
 		internal Quaternion _ParamsMethod;
 
 		internal Vector3 m_ImporterMethod;
 
-		internal float serverMethod;
+		internal float size;
 
 		internal float[] watcherMethod;
 
-		internal int regMethod;
+		internal int controlId;
 
-		internal Action processMethod;
+		internal Action onClick;
 
-		internal Func<SphereHandle, float[]> _StatusMethod;
+		internal Func<SphereHandle, float[]> getDistances;
 
-		internal Action<SphereHandle> _ValMethod;
+		internal Action<SphereHandle> onDraw;
 
 		internal static object PushDescriptor;
 
-		internal static SphereHandle OrderComparator(Vector3 config, string reg = "", float pool = 0.05f, int int_0 = -1, Action reference3 = null)
+		internal static SphereHandle Create(Vector3 config, string reg = "", float pool = 0.05f, int int_0 = -1, Action reference3 = null)
 		{
 			return new SphereHandle
 			{
-				_ValMethod = DeleteComparator,
-				_SingletonMethod = new GUIStyle(EditorStyles.boldLabel),
-				_StatusMethod = (SphereHandle sc) => new float[1] { HandleUtility.DistanceToCircle(sc.m_AccountMethod, sc.serverMethod / 2f) },
-				m_AccountMethod = config,
-				serverMethod = pool,
-				m_PropertyMethod = reg,
-				regMethod = int_0,
-				processMethod = reference3
+				onDraw = DrawDefault,
+				labelStyle = new GUIStyle(EditorStyles.boldLabel),
+				getDistances = (SphereHandle sc) => new float[1] { HandleUtility.DistanceToCircle(sc.position, sc.size / 2f) },
+				position = config,
+				size = pool,
+				label = reg,
+				controlId = int_0,
+				onClick = reference3
 			};
 		}
 
-		internal void CalculateComparator()
+		internal void Draw()
 		{
-			_ValMethod(this);
+			onDraw(this);
 		}
 
-		internal float[] CalcComparator()
+		internal float[] GetDistances()
 		{
-			return _StatusMethod(this);
+			return getDistances(this);
 		}
 
-		internal static void DeleteComparator(SphereHandle v)
+		internal static void DrawDefault(SphereHandle v)
 		{
-			Handles.SphereHandleCap(v.regMethod, v.m_AccountMethod, Quaternion.identity, v.serverMethod, EventType.Repaint);
-			if (!string.IsNullOrWhiteSpace(v.m_PropertyMethod))
+			Handles.SphereHandleCap(v.controlId, v.position, Quaternion.identity, v.size, EventType.Repaint);
+			if (!string.IsNullOrWhiteSpace(v.label))
 			{
-				FindStatus(v.m_PropertyMethod, v.m_AccountMethod, v.serverMethod, v._SingletonMethod);
+				FindStatus(v.label, v.position, v.size, v.labelStyle);
 			}
 		}
 
@@ -917,63 +917,63 @@ internal static class ADOEditorUtility
 
 	internal sealed class BannerDownloader
 	{
-		private Texture2D m_RefMethod;
+		private Texture2D texture;
 
-		private bool comparatorMethod = true;
+		private bool canResolve = true;
 
-		private readonly string _ProductMethod;
+		private readonly string url;
 
-		private readonly bool iteratorMethod;
+		private readonly bool autoDownload;
 
-		private readonly string m_PredicateMethod;
+		private readonly string cacheKey;
 
-		internal bool _CollectionMethod;
+		internal bool isLoaded;
 
-		internal bool m_InterceptorMethod;
+		internal bool isDownloading;
 
-		private bool registryMethod;
+		private bool hasRequestedDownload;
 
-		private bool m_ClientMethod;
+		private bool isReady;
 
 		[SpecialName]
-		internal Texture2D PrepareComparator()
+		internal Texture2D GetTexture()
 		{
-			if (_CollectionMethod)
+			if (isLoaded)
 			{
-				if (comparatorMethod && !m_RefMethod)
+				if (canResolve && !texture)
 				{
-					InvokeComparator();
+					TryLoadFromCache();
 				}
-				return m_RefMethod;
+				return texture;
 			}
-			if (m_InterceptorMethod)
+			if (isDownloading)
 			{
 				return null;
 			}
-			if (!iteratorMethod || registryMethod)
+			if (!autoDownload || hasRequestedDownload)
 			{
 				return null;
 			}
-			registryMethod = true;
-			m_InterceptorMethod = true;
-			SortComparator();
+			hasRequestedDownload = true;
+			isDownloading = true;
+			Download();
 			return null;
 		}
 
 		internal BannerDownloader(string v, bool addcol, string res, bool striplast2 = false)
 		{
-			_ProductMethod = v;
-			iteratorMethod = addcol;
-			m_PredicateMethod = res;
+			url = v;
+			autoDownload = addcol;
+			cacheKey = res;
 		}
 
-		internal void SortComparator()
+		internal void Download()
 		{
-			if (InvokeComparator())
+			if (TryLoadFromCache())
 			{
 				return;
 			}
-			UnityWebRequest observerMethod = new UnityWebRequest(_ProductMethod)
+			UnityWebRequest observerMethod = new UnityWebRequest(url)
 			{
 				downloadHandler = new DownloadHandlerBuffer()
 			};
@@ -987,14 +987,14 @@ internal static class ADOEditorUtility
 				try
 				{
 					byte[] data = observerMethod.downloadHandler.data;
-					m_RefMethod = new Texture2D(0, 0);
-					m_RefMethod.LoadImage(data);
-					m_RefMethod.Apply();
-					_CollectionMethod = true;
-					if (!string.IsNullOrWhiteSpace(m_PredicateMethod))
+					texture = new Texture2D(0, 0);
+					texture.LoadImage(data);
+					texture.Apply();
+					isLoaded = true;
+					if (!string.IsNullOrWhiteSpace(cacheKey))
 					{
-						CachedIcon.SaveToCache(data, m_PredicateMethod);
-						comparatorMethod = true;
+						CachedIcon.SaveToCache(data, cacheKey);
+						canResolve = true;
 					}
 				}
 				finally
@@ -1002,53 +1002,53 @@ internal static class ADOEditorUtility
 					observerMethod.Dispose();
 				}
 			};
-			m_InterceptorMethod = false;
+			isDownloading = false;
 		}
 
-		internal bool InvokeComparator()
+		internal bool TryLoadFromCache()
 		{
-			if (comparatorMethod && !string.IsNullOrWhiteSpace(m_PredicateMethod))
+			if (canResolve && !string.IsNullOrWhiteSpace(cacheKey))
 			{
-				comparatorMethod = false;
-				Texture2D texture2D = CachedIcon.LoadFromCache(m_PredicateMethod);
+				canResolve = false;
+				Texture2D texture2D = CachedIcon.LoadFromCache(cacheKey);
 				if (texture2D != null)
 				{
-					m_RefMethod = texture2D;
-					_CollectionMethod = true;
-					m_InterceptorMethod = false;
-					comparatorMethod = true;
+					texture = texture2D;
+					isLoaded = true;
+					isDownloading = false;
+					canResolve = true;
 				}
 			}
-			return m_RefMethod;
+			return texture;
 		}
 
-		internal void CustomizeComparator()
+		internal void Draw()
 		{
-			if (CancelComparator())
+			if (CanDraw())
 			{
-				Rect aspectRect = GUILayoutUtility.GetAspectRect((float)PrepareComparator().width / (float)PrepareComparator().height);
-				FillComparator(aspectRect);
+				Rect aspectRect = GUILayoutUtility.GetAspectRect((float)GetTexture().width / (float)GetTexture().height);
+				Draw(aspectRect);
 			}
 		}
 
-		internal void ConcatComparator(EditorWindow init, float visitor = 0f, float tag = 60f)
+		internal void Draw(EditorWindow init, float visitor = 0f, float tag = 60f)
 		{
-			if (CancelComparator())
+			if (CanDraw())
 			{
 				if (init == null)
 				{
-					CustomizeComparator();
+					Draw();
 				}
 				else
 				{
-					MapComparator(init.position.width, init.position.height, visitor, tag);
+					Draw(init.position.width, init.position.height, visitor, tag);
 				}
 			}
 		}
 
-		internal void MapComparator(float res, float counter, float consumer = 0f, float second2 = 60f)
+		internal void Draw(float res, float counter, float consumer = 0f, float second2 = 60f)
 		{
-			float num = (float)PrepareComparator().height / (float)PrepareComparator().width;
+			float num = (float)GetTexture().height / (float)GetTexture().width;
 			float num2 = res;
 			float num3 = num2 * num;
 			float num4 = counter - second2;
@@ -1059,10 +1059,10 @@ internal static class ADOEditorUtility
 			}
 			Rect rect = GUILayoutUtility.GetRect(num2, num3, GUILayout.ExpandWidth(expand: false));
 			rect.x += (res - num2) / 2f + consumer;
-			FillComparator(rect);
+			Draw(rect);
 		}
 
-		private void FillComparator(Rect param)
+		private void Draw(Rect param)
 		{
 			Event current = Event.current;
 			switch (current.type)
@@ -1079,22 +1079,22 @@ internal static class ADOEditorUtility
 			{
 				EditorGUIUtility.AddCursorRect(param, MouseCursor.Link);
 			}
-			GUI.DrawTexture(param, PrepareComparator());
+			GUI.DrawTexture(param, GetTexture());
 		}
 
-		internal bool CancelComparator()
+		internal bool CanDraw()
 		{
-			if (m_ClientMethod)
+			if (isReady)
 			{
 				return true;
 			}
-			if (PrepareComparator() == null)
+			if (GetTexture() == null)
 			{
 				return false;
 			}
 			if (Event.current.type == EventType.Layout)
 			{
-				m_ClientMethod = true;
+				isReady = true;
 			}
 			return true;
 		}
@@ -1263,85 +1263,85 @@ internal static class ADOEditorUtility
 
 	internal struct ShapeSnapshot
 	{
-		internal readonly UnityEngine.Object customerMethod;
+		internal readonly UnityEngine.Object source;
 
-		internal bool m_DatabaseMethod;
+		internal bool isPhysBoneCollider;
 
-		internal readonly Transform m_HelperMethod;
+		internal readonly Transform rootTransform;
 
-		internal readonly int _CandidateMethod;
+		internal readonly int shapeType;
 
-		internal float m_ReaderMethod;
+		internal float radius;
 
-		internal float m_StubMethod;
+		internal float height;
 
-		internal Vector3 _RulesMethod;
+		internal Vector3 position;
 
-		internal Quaternion m_TestsMethod;
+		internal Quaternion rotation;
 
 		private static object ValidateDescriptor;
 
 		internal ShapeSnapshot(VRCPhysBoneColliderBase ident)
 		{
-			customerMethod = ident;
-			m_DatabaseMethod = true;
-			m_HelperMethod = ident.GetRootTransform();
-			_CandidateMethod = (int)ident.shapeType;
-			m_ReaderMethod = ident.radius;
-			m_StubMethod = ident.height;
-			_RulesMethod = ident.position;
-			m_TestsMethod = ident.rotation;
+			source = ident;
+			isPhysBoneCollider = true;
+			rootTransform = ident.GetRootTransform();
+			shapeType = (int)ident.shapeType;
+			radius = ident.radius;
+			height = ident.height;
+			position = ident.position;
+			rotation = ident.rotation;
 		}
 
 		internal ShapeSnapshot(ContactBase var1)
 		{
-			customerMethod = var1;
-			m_DatabaseMethod = false;
-			m_HelperMethod = var1.GetRootTransform();
-			_CandidateMethod = (int)var1.shapeType;
-			m_ReaderMethod = var1.radius;
-			m_StubMethod = var1.height;
-			_RulesMethod = var1.position;
-			m_TestsMethod = var1.rotation;
+			source = var1;
+			isPhysBoneCollider = false;
+			rootTransform = var1.GetRootTransform();
+			shapeType = (int)var1.shapeType;
+			radius = var1.radius;
+			height = var1.height;
+			position = var1.position;
+			rotation = var1.rotation;
 		}
 
-		internal void SortProduct()
+		internal void Apply()
 		{
-			if (m_DatabaseMethod)
+			if (isPhysBoneCollider)
 			{
-				VRCPhysBoneColliderBase obj = (VRCPhysBoneColliderBase)customerMethod;
-				obj.radius = m_ReaderMethod;
-				obj.height = m_StubMethod;
-				obj.position = _RulesMethod;
-				obj.rotation = m_TestsMethod;
+				VRCPhysBoneColliderBase obj = (VRCPhysBoneColliderBase)source;
+				obj.radius = radius;
+				obj.height = height;
+				obj.position = position;
+				obj.rotation = rotation;
 			}
 			else
 			{
-				ContactBase obj2 = (ContactBase)customerMethod;
-				obj2.radius = m_ReaderMethod;
-				obj2.height = m_StubMethod;
-				obj2.position = _RulesMethod;
-				obj2.rotation = m_TestsMethod;
-				obj2.shapeType = (ContactBase.ShapeType)_CandidateMethod;
+				ContactBase obj2 = (ContactBase)source;
+				obj2.radius = radius;
+				obj2.height = height;
+				obj2.position = position;
+				obj2.rotation = rotation;
+				obj2.shapeType = (ContactBase.ShapeType)shapeType;
 			}
 		}
 
-		internal void InvokeProduct(ContactBase instance)
+		internal void Apply(ContactBase instance)
 		{
-			instance.radius = m_ReaderMethod;
-			instance.height = m_StubMethod;
-			instance.position = _RulesMethod;
-			instance.rotation = m_TestsMethod;
-			instance.shapeType = (ContactBase.ShapeType)_CandidateMethod;
+			instance.radius = radius;
+			instance.height = height;
+			instance.position = position;
+			instance.rotation = rotation;
+			instance.shapeType = (ContactBase.ShapeType)shapeType;
 		}
 
-		internal void CustomizeProduct(VRCPhysBoneCollider reference)
+		internal void Apply(VRCPhysBoneCollider reference)
 		{
-			reference.radius = m_ReaderMethod;
-			reference.height = m_StubMethod;
-			reference.position = _RulesMethod;
-			reference.rotation = m_TestsMethod;
-			reference.shapeType = (VRCPhysBoneColliderBase.ShapeType)_CandidateMethod;
+			reference.radius = radius;
+			reference.height = height;
+			reference.position = position;
+			reference.rotation = rotation;
+			reference.shapeType = (VRCPhysBoneColliderBase.ShapeType)shapeType;
 		}
 
 		internal static bool EnableDescriptor()
@@ -1365,7 +1365,7 @@ internal static class ADOEditorUtility
 		[SpecialName]
 		internal IEnumerable<Matrix4x4> GetNodeMatrices()
 		{
-			return nodes.Select((BoneNode b) => b.printerMethod);
+			return nodes.Select((BoneNode b) => b.matrix);
 		}
 
 		internal BoneChainTree(VRCPhysBone instance)
@@ -1374,27 +1374,27 @@ internal static class ADOEditorUtility
 			rootTransform = instance.GetRootTransform();
 			nodes = new List<BoneNode>();
 			BuildNodes(rootTransform, 0);
-			maxDepth = nodes.Max((BoneNode b) => b.m_StrategyMethod);
+			maxDepth = nodes.Max((BoneNode b) => b.depth);
 		}
 
 		internal void BuildNodes(Transform v, int next_cust)
 		{
 			bool flag = false;
 			BoneNode boneNode = new BoneNode();
-			BoneNode globalMethod = null;
+			BoneNode child = null;
 			BoneNode boneNode2 = null;
 			Quaternion q = v.rotation;
 			List<Transform> list = new List<Transform>();
 			for (int i = 0; i < v.childCount; i++)
 			{
-				Transform child = v.GetChild(i);
-				if (!physBone.ignoreTransforms.Contains(child))
+				Transform child2 = v.GetChild(i);
+				if (!physBone.ignoreTransforms.Contains(child2))
 				{
-					list.Add(child);
+					list.Add(child2);
 				}
 			}
-			bool descriptorMethod;
-			if (!(descriptorMethod = list.Count == 0))
+			bool isEndBone;
+			if (!(isEndBone = list.Count == 0))
 			{
 				if (list.Count > 1)
 				{
@@ -1408,15 +1408,15 @@ internal static class ADOEditorUtility
 						zero /= (float)list.Count;
 						Vector3 toDirection = zero - v.position;
 						q = v.rotation * Quaternion.FromToRotation(v.up, toDirection);
-						boneNode2 = (globalMethod = new BoneNode
+						boneNode2 = (child = new BoneNode
 						{
-							m_InvocationMethod = this,
-							m_ListenerMethod = rootTransform,
-							printerMethod = Matrix4x4.TRS(zero, q, v.lossyScale),
-							m_StrategyMethod = next_cust + 1,
-							m_RepositoryMethod = true,
-							m_DescriptorMethod = true,
-							managerMethod = boneNode
+							tree = this,
+							root = rootTransform,
+							matrix = Matrix4x4.TRS(zero, q, v.lossyScale),
+							depth = next_cust + 1,
+							isVirtual = true,
+							isEndBone = true,
+							parent = boneNode
 						});
 					}
 					else if (physBone.multiChildType == VRCPhysBoneBase.MultiChildType.Ignore)
@@ -1429,7 +1429,7 @@ internal static class ADOEditorUtility
 			{
 				if (nodes.Count != 0)
 				{
-					q = nodes[nodes.Count - 1].printerMethod.rotation;
+					q = nodes[nodes.Count - 1].matrix.rotation;
 				}
 			}
 			else
@@ -1438,31 +1438,31 @@ internal static class ADOEditorUtility
 				q = v.rotation * Quaternion.FromToRotation(Vector3.up, Vector3.Normalize(physBone.endpointPosition));
 				BoneNode obj = new BoneNode
 				{
-					m_InvocationMethod = this,
-					m_ListenerMethod = rootTransform,
-					printerMethod = Matrix4x4.TRS(pos, q, v.lossyScale),
-					m_StrategyMethod = next_cust + 1,
-					m_RepositoryMethod = true,
-					m_DescriptorMethod = true,
-					managerMethod = boneNode
+					tree = this,
+					root = rootTransform,
+					matrix = Matrix4x4.TRS(pos, q, v.lossyScale),
+					depth = next_cust + 1,
+					isVirtual = true,
+					isEndBone = true,
+					parent = boneNode
 				};
-				globalMethod = obj;
+				child = obj;
 				boneNode2 = obj;
 			}
 			if (!flag)
 			{
-				boneNode.m_InvocationMethod = this;
-				boneNode.m_ListenerMethod = rootTransform;
-				boneNode.parserMethod = v;
-				boneNode.printerMethod = Matrix4x4.TRS(v.position, q, v.lossyScale);
-				boneNode.m_StrategyMethod = next_cust;
-				boneNode.m_DescriptorMethod = descriptorMethod;
-				boneNode._GlobalMethod = globalMethod;
+				boneNode.tree = this;
+				boneNode.root = rootTransform;
+				boneNode.transform = v;
+				boneNode.matrix = Matrix4x4.TRS(v.position, q, v.lossyScale);
+				boneNode.depth = next_cust;
+				boneNode.isEndBone = isEndBone;
+				boneNode.child = child;
 				BoneNode boneNode3 = nodes.LastOrDefault();
-				if (boneNode3 != null && !boneNode3.m_DescriptorMethod && boneNode3._GlobalMethod == null)
+				if (boneNode3 != null && !boneNode3.isEndBone && boneNode3.child == null)
 				{
-					boneNode3._GlobalMethod = boneNode;
-					boneNode.managerMethod = boneNode3;
+					boneNode3.child = boneNode;
+					boneNode.parent = boneNode3;
 				}
 				nodes.Add(boneNode);
 			}
@@ -1485,7 +1485,7 @@ internal static class ADOEditorUtility
 				if (!hashSet.Contains(node))
 				{
 					List<BoneNode> list = new List<BoneNode>();
-					for (BoneNode boneNode = node; boneNode != null; boneNode = boneNode._GlobalMethod)
+					for (BoneNode boneNode = node; boneNode != null; boneNode = boneNode.child)
 					{
 						list.Add(boneNode);
 						hashSet.Add(boneNode);
@@ -1498,47 +1498,47 @@ internal static class ADOEditorUtility
 
 	internal class BoneNode
 	{
-		internal BoneChainTree m_InvocationMethod;
+		internal BoneChainTree tree;
 
-		internal Transform m_ListenerMethod;
+		internal Transform root;
 
-		internal Transform parserMethod;
+		internal Transform transform;
 
-		internal Matrix4x4 printerMethod;
+		internal Matrix4x4 matrix;
 
-		internal bool m_RepositoryMethod;
+		internal bool isVirtual;
 
-		internal bool m_DescriptorMethod;
+		internal bool isEndBone;
 
-		internal int m_StrategyMethod;
+		internal int depth;
 
-		internal BoneNode _GlobalMethod;
+		internal BoneNode child;
 
-		internal BoneNode managerMethod;
+		internal BoneNode parent;
 
 		[SpecialName]
-		internal Vector3 LoginProduct()
+		internal Vector3 GetPosition()
 		{
-			return printerMethod.GetColumn(3);
+			return matrix.GetColumn(3);
 		}
 
 		[SpecialName]
-		internal float CheckProduct()
+		internal float GetMaxScale()
 		{
-			return Mathf.Max(printerMethod.lossyScale.x, printerMethod.lossyScale.y, printerMethod.lossyScale.z);
+			return Mathf.Max(matrix.lossyScale.x, matrix.lossyScale.y, matrix.lossyScale.z);
 		}
 
 		[SpecialName]
-		internal float RegisterProduct()
+		internal float GetNormalizedDepth()
 		{
-			return 1f / (float)m_InvocationMethod.maxDepth * (float)m_StrategyMethod;
+			return 1f / (float)tree.maxDepth * (float)depth;
 		}
 
-		internal float ForgotProduct(AnimationCurve i)
+		internal float EvaluateCurve(AnimationCurve i)
 		{
 			if (i != null && i.length >= 2)
 			{
-				return i.Evaluate(RegisterProduct());
+				return i.Evaluate(GetNormalizedDepth());
 			}
 			return 1f;
 		}
@@ -3546,23 +3546,23 @@ internal static class ADOEditorUtility
 	internal static void InitStatus(SphereHandle first)
 	{
 		Event current = Event.current;
-		first._ValMethod?.Invoke(first);
-		int regMethod = first.regMethod;
-		switch (current.GetTypeForControl(regMethod))
+		first.onDraw?.Invoke(first);
+		int controlId = first.controlId;
+		switch (current.GetTypeForControl(controlId))
 		{
 		case EventType.MouseDown:
-			if (HandleUtility.nearestControl == regMethod && current.button == 0)
+			if (HandleUtility.nearestControl == controlId && current.button == 0)
 			{
-				first.processMethod();
+				first.onClick();
 				current.Use();
 			}
 			break;
 		case EventType.Layout:
 		{
-			float[] array = first.CalcComparator();
-			foreach (float distance in array)
+			float[] distances = first.GetDistances();
+			foreach (float distance in distances)
 			{
-				HandleUtility.AddControl(regMethod, distance);
+				HandleUtility.AddControl(controlId, distance);
 			}
 			break;
 		}
@@ -3928,7 +3928,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactSender CompareVal(this VRCContactReceiver init, GameObject vis)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(vis);
-		new ShapeSnapshot(init).InvokeProduct(vRCContactSender);
+		new ShapeSnapshot(init).Apply(vRCContactSender);
 		vRCContactSender.collisionTags = init.collisionTags;
 		vRCContactSender.rootTransform = init.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
@@ -3941,7 +3941,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactSender VerifyVal(this VRCPhysBoneCollider res, GameObject connection)
 	{
 		VRCContactSender vRCContactSender = Undo.AddComponent<VRCContactSender>(connection);
-		new ShapeSnapshot(res).InvokeProduct(vRCContactSender);
+		new ShapeSnapshot(res).Apply(vRCContactSender);
 		vRCContactSender.rootTransform = res.rootTransform;
 		if (vRCContactSender.rootTransform == vRCContactSender.transform)
 		{
@@ -3953,7 +3953,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactReceiver SetVal(this VRCContactSender first, GameObject result)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(result);
-		new ShapeSnapshot(first).InvokeProduct(vRCContactReceiver);
+		new ShapeSnapshot(first).Apply(vRCContactReceiver);
 		vRCContactReceiver.collisionTags = first.collisionTags;
 		vRCContactReceiver.rootTransform = first.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
@@ -3966,7 +3966,7 @@ internal static class ADOEditorUtility
 	internal static VRCContactReceiver SortVal(this VRCPhysBoneCollider param, GameObject selection)
 	{
 		VRCContactReceiver vRCContactReceiver = Undo.AddComponent<VRCContactReceiver>(selection);
-		new ShapeSnapshot(param).InvokeProduct(vRCContactReceiver);
+		new ShapeSnapshot(param).Apply(vRCContactReceiver);
 		vRCContactReceiver.rootTransform = param.rootTransform;
 		if (vRCContactReceiver.rootTransform == vRCContactReceiver.transform)
 		{
@@ -3981,7 +3981,7 @@ internal static class ADOEditorUtility
 	internal static VRCPhysBoneCollider InvokeVal(this VRCContactReceiver setup, GameObject cfg)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cfg);
-		new ShapeSnapshot(setup).CustomizeProduct(vRCPhysBoneCollider);
+		new ShapeSnapshot(setup).Apply(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = setup.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{
@@ -3993,7 +3993,7 @@ internal static class ADOEditorUtility
 	internal static VRCPhysBoneCollider CustomizeVal(this VRCContactSender key, GameObject cont)
 	{
 		VRCPhysBoneCollider vRCPhysBoneCollider = Undo.AddComponent<VRCPhysBoneCollider>(cont);
-		new ShapeSnapshot(key).CustomizeProduct(vRCPhysBoneCollider);
+		new ShapeSnapshot(key).Apply(vRCPhysBoneCollider);
 		vRCPhysBoneCollider.rootTransform = key.rootTransform;
 		if (vRCPhysBoneCollider.rootTransform == vRCPhysBoneCollider.transform)
 		{

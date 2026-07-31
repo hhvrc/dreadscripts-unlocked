@@ -30,9 +30,9 @@ internal class SupportWindow : EditorWindow
 
 	private static Vector2 _Ref;
 
-	private static object m_Status = EditorLayoutUtils.SetWrapper(1f);
+	private static object m_Status = EditorLayoutUtils.CreateSplitterState(1f);
 
-	private static object code = EditorLayoutUtils.SetWrapper(1f);
+	private static object code = EditorLayoutUtils.CreateSplitterState(1f);
 
 	private static int m_Dic = 1;
 
@@ -126,12 +126,12 @@ internal class SupportWindow : EditorWindow
 		if (m_Dic != num2)
 		{
 			m_Dic = num2;
-			m_Status = EditorLayoutUtils.SetWrapper(Enumerable.Repeat(1f, num2).ToArray());
+			m_Status = EditorLayoutUtils.CreateSplitterState(Enumerable.Repeat(1f, num2).ToArray());
 		}
 		if (_Invocation != num3)
 		{
 			_Invocation = num3;
-			code = EditorLayoutUtils.SetWrapper(Enumerable.Repeat(1f, num3).ToArray());
+			code = EditorLayoutUtils.CreateSplitterState(Enumerable.Repeat(1f, num3).ToArray());
 		}
 		GUILayout.BeginArea(_Factory);
 		_Ref = EditorGUILayout.BeginScrollView(_Ref);
@@ -139,14 +139,14 @@ internal class SupportWindow : EditorWindow
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.Space(4f);
-			EditorLayoutUtils.EnableWrapper(m_Status, null, false);
+			EditorLayoutUtils.BeginSplit(m_Status, null, false);
 			for (int i = 0; i < num2; i++)
 			{
 				using (new GUILayout.HorizontalScope())
 				{
 					using (new GUILayout.VerticalScope())
 					{
-						EditorLayoutUtils.EnableWrapper(code, null, true);
+						EditorLayoutUtils.BeginSplit(code, null, true);
 						for (int j = 0; j < num3; j++)
 						{
 							if (num4 < rule.Length)
@@ -158,7 +158,7 @@ internal class SupportWindow : EditorWindow
 								GUILayout.Label(GUIContent.none);
 							}
 						}
-						EditorLayoutUtils.PublishWrapper();
+						EditorLayoutUtils.EndSplit();
 					}
 					if (i < num2 - 1)
 					{
@@ -166,7 +166,7 @@ internal class SupportWindow : EditorWindow
 					}
 				}
 			}
-			EditorLayoutUtils.PublishWrapper();
+			EditorLayoutUtils.EndSplit();
 		}
 		GUILayout.EndScrollView();
 		GUILayout.EndArea();

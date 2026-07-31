@@ -540,25 +540,25 @@ internal static class EditorUtils
 			internal int index;
 		}
 
-		private int m_ObserverObserver;
+		private int activeZoneIndex;
 
-		private Vector2 _ServerObserver = Vector2.zero;
+		private Vector2 lastMousePosition = Vector2.zero;
 
-		private readonly int m_ThreadObserver = GUIUtility.GetControlID("ResizeStateControlID".GetHashCode(), FocusType.Passive);
+		private readonly int controlId = GUIUtility.GetControlID("ResizeStateControlID".GetHashCode(), FocusType.Passive);
 
-		public Action _PolicyObserver;
+		public Action onResize;
 
-		public float _SerializerObserver;
+		public float left;
 
-		public float pageObserver;
+		public float right;
 
-		public float resolverObserver;
+		public float top;
 
-		public float predicateObserver;
+		public float bottom;
 
 		private bool _RulesObserver;
 
-		private bool m_QueueObserver;
+		private bool isDoubleClick;
 
 		[SpecialName]
 		public bool ResolveError()
@@ -578,30 +578,30 @@ internal static class EditorUtils
 			{
 				return;
 			}
-			if (_SerializerObserver == 0f)
+			if (left == 0f)
 			{
-				if (pageObserver == 0f)
+				if (right == 0f)
 				{
-					if (resolverObserver == 0f)
+					if (top == 0f)
 					{
-						if (predicateObserver != 0f)
+						if (bottom != 0f)
 						{
-							resolverObserver = predicateObserver;
+							top = bottom;
 						}
 					}
 					else
 					{
-						predicateObserver = resolverObserver;
+						bottom = top;
 					}
 				}
 				else
 				{
-					_SerializerObserver = pageObserver;
+					left = right;
 				}
 			}
 			else
 			{
-				pageObserver = _SerializerObserver;
+				right = left;
 			}
 		}
 
@@ -610,16 +610,16 @@ internal static class EditorUtils
 			_RulesObserver = usekey;
 		}
 
-		public void CreateError()
+		public void Reset()
 		{
-			_SerializerObserver = 0f;
-			pageObserver = 0f;
-			resolverObserver = 0f;
-			predicateObserver = 0f;
-			_PolicyObserver?.Invoke();
+			left = 0f;
+			right = 0f;
+			top = 0f;
+			bottom = 0f;
+			onResize?.Invoke();
 		}
 
-		public Rect NewError(Rect config, PositionFlag pred = PositionFlag.Middle, Rect field = default(Rect))
+		public Rect Apply(Rect config, PositionFlag pred = PositionFlag.Middle, Rect field = default(Rect))
 		{
 			if (field == default(Rect))
 			{
@@ -628,10 +628,10 @@ internal static class EditorUtils
 			bool flag = field.x != -1f && field.width != -1f;
 			bool flag2 = field.y != -1f && field.height != -1f;
 			float num = 10f;
-			float num2 = config.width + _SerializerObserver + pageObserver;
-			float num3 = config.height + resolverObserver + predicateObserver;
-			float num4 = config.x - (num2 - config.width) * ViewError(pred);
-			float num5 = config.y - (config.height + resolverObserver + predicateObserver - config.height) * CollectError(pred);
+			float num2 = config.width + left + right;
+			float num3 = config.height + top + bottom;
+			float num4 = config.x - (num2 - config.width) * GetHorizontalPivot(pred);
+			float num5 = config.y - (config.height + top + bottom - config.height) * GetVerticalPivot(pred);
 			config.x = ((!flag) ? num4 : Mathf.Clamp(num4, field.x, field.x + field.width - num));
 			config.width = ((!flag) ? num2 : Mathf.Clamp(num2, num, field.width - config.x));
 			config.y = ((!flag2) ? num5 : Mathf.Clamp(num5, field.y, field.y + field.height - num));
@@ -639,18 +639,18 @@ internal static class EditorUtils
 			return config;
 		}
 
-		public void PushError(Rect info, PositionFlag pol = PositionFlag.Right | PositionFlag.Left, PositionFlag comp = PositionFlag.Middle, float param2 = 4f)
+		public void DoResizeHandles(Rect info, PositionFlag pol = PositionFlag.Right | PositionFlag.Left, PositionFlag comp = PositionFlag.Middle, float param2 = 4f)
 		{
 			Event current = Event.current;
-			if (m_QueueObserver && current.type == EventType.MouseUp)
+			if (isDoubleClick && current.type == EventType.MouseUp)
 			{
-				if (GUIUtility.hotControl == m_ThreadObserver)
+				if (GUIUtility.hotControl == controlId)
 				{
 					GUIUtility.hotControl = 0;
 				}
-				CreateError();
+				Reset();
 				current.Use();
-				m_QueueObserver = false;
+				isDoubleClick = false;
 			}
 			float num = param2 * 2f;
 			ResizeZone[] array = new ResizeZone[8]
@@ -769,27 +769,27 @@ internal static class EditorUtils
 				{
 					if (current.clickCount == 2)
 					{
-						m_QueueObserver = true;
+						isDoubleClick = true;
 					}
-					m_ObserverObserver = resizeZone.index;
-					GUIUtility.hotControl = m_ThreadObserver;
-					_ServerObserver = GUIUtility.GUIToScreenPoint(current.mousePosition);
+					activeZoneIndex = resizeZone.index;
+					GUIUtility.hotControl = controlId;
+					lastMousePosition = GUIUtility.GUIToScreenPoint(current.mousePosition);
 					current.Use();
 				}
 			}
-			if (current.type != EventType.MouseDrag || GUIUtility.hotControl != m_ThreadObserver)
+			if (current.type != EventType.MouseDrag || GUIUtility.hotControl != controlId)
 			{
 				return;
 			}
-			PositionFlag position2 = array[m_ObserverObserver].position;
-			Vector2 vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - _ServerObserver;
-			if (m_QueueObserver)
+			PositionFlag position2 = array[activeZoneIndex].position;
+			Vector2 vector = GUIUtility.GUIToScreenPoint(current.mousePosition) - lastMousePosition;
+			if (isDoubleClick)
 			{
 				if (!(vector.sqrMagnitude > new Vector2(15f, 15f).sqrMagnitude))
 				{
 					return;
 				}
-				m_QueueObserver = false;
+				isDoubleClick = false;
 			}
 			if (vector != Vector2.zero)
 			{
@@ -799,34 +799,34 @@ internal static class EditorUtils
 					{
 						if (position2 == PositionFlag.TopRight)
 						{
-							pageObserver += vector.x;
+							right += vector.x;
 							if (!ResolveError())
 							{
-								resolverObserver -= vector.y;
+								top -= vector.y;
 							}
 							else if (!comp.HasFlag(PositionFlag.Left))
 							{
-								_SerializerObserver -= vector.y;
+								left -= vector.y;
 							}
 							else
 							{
-								pageObserver -= vector.y;
+								right -= vector.y;
 							}
 						}
 						else if (position2 == PositionFlag.TopLeft)
 						{
-							_SerializerObserver -= vector.x;
+							left -= vector.x;
 							if (!ResolveError())
 							{
-								resolverObserver -= vector.y;
+								top -= vector.y;
 							}
 							else if (!comp.HasFlag(PositionFlag.Bottom))
 							{
-								predicateObserver -= vector.x;
+								bottom -= vector.x;
 							}
 							else
 							{
-								resolverObserver -= vector.x;
+								top -= vector.x;
 							}
 						}
 					}
@@ -834,38 +834,38 @@ internal static class EditorUtils
 					{
 						if (position2 == PositionFlag.BottomLeft)
 						{
-							_SerializerObserver -= vector.x;
+							left -= vector.x;
 							if (!ResolveError())
 							{
-								predicateObserver += vector.y;
+								bottom += vector.y;
 							}
 							else if (comp.HasFlag(PositionFlag.Bottom))
 							{
-								resolverObserver += vector.x;
+								top += vector.x;
 							}
 							else
 							{
-								predicateObserver += vector.x;
+								bottom += vector.x;
 							}
 						}
 					}
 					else
 					{
-						pageObserver += vector.x;
+						right += vector.x;
 						if (ResolveError())
 						{
 							if (comp.HasFlag(PositionFlag.Top))
 							{
-								predicateObserver += vector.x;
+								bottom += vector.x;
 							}
 							else
 							{
-								resolverObserver += vector.x;
+								top += vector.x;
 							}
 						}
 						else
 						{
-							predicateObserver += vector.y;
+							bottom += vector.y;
 						}
 					}
 				}
@@ -877,55 +877,55 @@ internal static class EditorUtils
 					case PositionFlag.Middle | PositionFlag.Right:
 						break;
 					default:
-						predicateObserver += vector.y;
+						bottom += vector.y;
 						if (ResolveError())
 						{
 							if (comp.HasFlag(PositionFlag.Left))
 							{
-								pageObserver += vector.y;
+								right += vector.y;
 							}
 							else
 							{
-								_SerializerObserver += vector.y;
+								left += vector.y;
 							}
 						}
 						break;
 					case PositionFlag.Left:
-						_SerializerObserver -= vector.x;
+						left -= vector.x;
 						if (ResolveError())
 						{
 							if (comp.HasFlag(PositionFlag.Bottom))
 							{
-								resolverObserver -= vector.x;
+								top -= vector.x;
 							}
 							else
 							{
-								predicateObserver -= vector.x;
+								bottom -= vector.x;
 							}
 						}
 						break;
 					case PositionFlag.Right:
-						pageObserver += vector.x;
+						right += vector.x;
 						if (ResolveError())
 						{
 							if (comp.HasFlag(PositionFlag.Bottom))
 							{
-								resolverObserver += vector.x;
+								top += vector.x;
 							}
 							else
 							{
-								predicateObserver += vector.x;
+								bottom += vector.x;
 							}
 						}
 						break;
 					}
 				}
-				_PolicyObserver?.Invoke();
+				onResize?.Invoke();
 			}
-			_ServerObserver = GUIUtility.GUIToScreenPoint(current.mousePosition);
+			lastMousePosition = GUIUtility.GUIToScreenPoint(current.mousePosition);
 		}
 
-		public static float ViewError(PositionFlag res, bool evaluateivk = false)
+		public static float GetHorizontalPivot(PositionFlag res, bool evaluateivk = false)
 		{
 			if (!evaluateivk)
 			{
@@ -952,7 +952,7 @@ internal static class EditorUtils
 			return 0.5f;
 		}
 
-		public static float CollectError(PositionFlag i, bool forceattr = false)
+		public static float GetVerticalPivot(PositionFlag i, bool forceattr = false)
 		{
 			bool flag = i.RevertPage();
 			bool flag2 = i.OrderResolver();
@@ -1011,8 +1011,8 @@ internal static class EditorUtils
 			Rect rect2 = GetAnchoredRect(rect, map, serv, config2, widthIsPercentage);
 			if (ident3 != null)
 			{
-				rect2 = ident3.NewError(rect2, config2, field);
-				ident3.PushError(rect2, config2.CompareResolver(loadreg: true));
+				rect2 = ident3.Apply(rect2, config2, field);
+				ident3.DoResizeHandles(rect2, config2.CompareResolver(loadreg: true));
 			}
 			area = SetResolver(rect2);
 			if (m_ProxyProperty)
@@ -1081,61 +1081,61 @@ internal static class EditorUtils
 
 	internal struct HandleSphere
 	{
-		internal string watcherObserver;
+		internal string label;
 
-		internal GUIStyle _CandidateObserver;
+		internal GUIStyle labelStyle;
 
-		internal Vector3 _ProductObserver;
+		internal Vector3 position;
 
 		internal Quaternion m_ExpressionObserver;
 
 		internal Vector3 systemObserver;
 
-		internal float _WorkerObserver;
+		internal float size;
 
 		internal float[] m_FilterObserver;
 
-		internal int _StubObserver;
+		internal int controlId;
 
-		internal Action m_ReaderObserver;
+		internal Action onClick;
 
-		internal Func<HandleSphere, float[]> bridgeObserver;
+		internal Func<HandleSphere, float[]> distanceFunc;
 
-		internal Action<HandleSphere> m_StrategyObserver;
+		internal Action<HandleSphere> onDraw;
 
 		private static object TestCandidate;
 
-		internal static HandleSphere WriteError(Vector3 spec, string token = "", float helper = 0.05f, int version_visitor2 = -1, Action map3 = null)
+		internal static HandleSphere Create(Vector3 spec, string token = "", float helper = 0.05f, int version_visitor2 = -1, Action map3 = null)
 		{
 			return new HandleSphere
 			{
-				m_StrategyObserver = CheckError,
-				_CandidateObserver = new GUIStyle(EditorStyles.boldLabel),
-				bridgeObserver = (HandleSphere sc) => new float[1] { HandleUtility.DistanceToCircle(sc._ProductObserver, sc._WorkerObserver / 2f) },
-				_ProductObserver = spec,
-				_WorkerObserver = helper,
-				watcherObserver = token,
-				_StubObserver = version_visitor2,
-				m_ReaderObserver = map3
+				onDraw = DrawDefault,
+				labelStyle = new GUIStyle(EditorStyles.boldLabel),
+				distanceFunc = (HandleSphere sc) => new float[1] { HandleUtility.DistanceToCircle(sc.position, sc.size / 2f) },
+				position = spec,
+				size = helper,
+				label = token,
+				controlId = version_visitor2,
+				onClick = map3
 			};
 		}
 
-		internal void ForgotError()
+		internal void Draw()
 		{
-			m_StrategyObserver(this);
+			onDraw(this);
 		}
 
-		internal float[] StopError()
+		internal float[] GetDistances()
 		{
-			return bridgeObserver(this);
+			return distanceFunc(this);
 		}
 
-		internal static void CheckError(HandleSphere config)
+		internal static void DrawDefault(HandleSphere config)
 		{
-			Handles.SphereHandleCap(config._StubObserver, config._ProductObserver, Quaternion.identity, config._WorkerObserver, EventType.Repaint);
-			if (!string.IsNullOrWhiteSpace(config.watcherObserver))
+			Handles.SphereHandleCap(config.controlId, config.position, Quaternion.identity, config.size, EventType.Repaint);
+			if (!string.IsNullOrWhiteSpace(config.label))
 			{
-				CreateQueue(config.watcherObserver, config._ProductObserver, config._WorkerObserver, config._CandidateObserver);
+				CreateQueue(config.label, config.position, config.size, config.labelStyle);
 			}
 		}
 
@@ -1959,25 +1959,25 @@ internal static class EditorUtils
 
 		internal void ManageSetter(AnimatorStateTransitionSet et)
 		{
-			if (!et.fieldServer)
+			if (!et.transition)
 			{
 				return;
 			}
-			UnityEngine.Object obj = et.RegisterConnection();
+			UnityEngine.Object obj = et.GetDestinationState();
 			bool flag;
 			if (!(flag = obj))
 			{
-				obj = et.PrintConnection();
+				obj = et.GetDestinationStateMachine();
 			}
 			if ((bool)obj)
 			{
 				bool num = _ResolverServer.m_SerializerServer.ContainsKey(obj);
-				AnimatorTransitionRef value = (num ? _ResolverServer.m_SerializerServer[obj] : ((!flag) ? new AnimatorTransitionRef(_PageServer, et.PrintConnection()) : new AnimatorTransitionRef(et.RegisterConnection())));
+				AnimatorTransitionRef value = (num ? _ResolverServer.m_SerializerServer[obj] : ((!flag) ? new AnimatorTransitionRef(_PageServer, et.GetDestinationStateMachine()) : new AnimatorTransitionRef(et.GetDestinationState())));
 				if (!num)
 				{
 					_ResolverServer.m_SerializerServer.Add(obj, value);
 				}
-				value.incomingTransitions.Add(et.fieldServer);
+				value.incomingTransitions.Add(et.transition);
 			}
 		}
 	}
@@ -6445,23 +6445,23 @@ internal static class EditorUtils
 	internal static void ChangeQueue(HandleSphere key)
 	{
 		Event current = Event.current;
-		key.m_StrategyObserver?.Invoke(key);
-		int stubObserver = key._StubObserver;
-		switch (current.GetTypeForControl(stubObserver))
+		key.onDraw?.Invoke(key);
+		int controlId = key.controlId;
+		switch (current.GetTypeForControl(controlId))
 		{
 		case EventType.MouseDown:
-			if (HandleUtility.nearestControl == stubObserver && current.button == 0)
+			if (HandleUtility.nearestControl == controlId && current.button == 0)
 			{
-				key.m_ReaderObserver();
+				key.onClick();
 				current.Use();
 			}
 			break;
 		case EventType.Layout:
 		{
-			float[] array = key.StopError();
-			foreach (float distance in array)
+			float[] distances = key.GetDistances();
+			foreach (float distance in distances)
 			{
-				HandleUtility.AddControl(stubObserver, distance);
+				HandleUtility.AddControl(controlId, distance);
 			}
 			break;
 		}

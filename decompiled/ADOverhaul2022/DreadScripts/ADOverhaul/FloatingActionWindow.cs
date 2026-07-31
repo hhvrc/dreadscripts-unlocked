@@ -6,19 +6,19 @@ namespace DreadScripts.ADOverhaul;
 
 internal class FloatingActionWindow : EditorWindow
 {
-	private float _AccountSerializer;
+	private float measuredWidth;
 
-	private float _ParamsSerializer;
+	private float measuredHeight;
 
-	private int importerSerializer;
+	private int passIndex;
 
-	private Vector2 m_ServerSerializer;
+	private Vector2 scrollPosition;
 
-	private bool m_WatcherSerializer;
+	private bool isInitialized;
 
-	private Action _RegSerializer;
+	private Action drawAction;
 
-	private Action m_ProcessSerializer;
+	private Action measureAction;
 
 	private float statusSerializer;
 
@@ -32,29 +32,29 @@ internal class FloatingActionWindow : EditorWindow
 
 	public bool _ComparatorSerializer = true;
 
-	private static FloatingActionWindow productSerializer;
+	private static FloatingActionWindow instance;
 
-	private void CheckProcess(Action key, Action pol, float pool = 100f, float init2 = 100f, bool forcet3 = true, bool isvisitor4 = true, bool extractpol5 = true)
+	private void Initialize(Action key, Action pol, float pool = 100f, float init2 = 100f, bool forcet3 = true, bool isvisitor4 = true, bool extractpol5 = true)
 	{
-		_RegSerializer = key;
-		m_ProcessSerializer = pol;
+		drawAction = key;
+		measureAction = pol;
 		statusSerializer = pool;
 		valSerializer = init2;
 		adapterSerializer = forcet3;
 		proxySerializer = isvisitor4;
 		m_RefSerializer = extractpol5;
-		m_WatcherSerializer = true;
+		isInitialized = true;
 	}
 
 	public void OnGUI()
 	{
-		if (m_WatcherSerializer)
+		if (isInitialized)
 		{
 			Event current = Event.current;
-			using (new ScrollViewScope(ref m_ServerSerializer))
+			using (new ScrollViewScope(ref scrollPosition))
 			{
 				EventType type = current.type;
-				int num = importerSerializer;
+				int num = passIndex;
 				bool flag;
 				bool flag2;
 				if (num != 0)
@@ -75,7 +75,7 @@ internal class FloatingActionWindow : EditorWindow
 					flag2 = true;
 					flag = false;
 				}
-				importerSerializer++;
+				passIndex++;
 				using (new GUILayout.VerticalScope(GUILayout.ExpandWidth(expand: false)))
 				{
 					if (flag2)
@@ -86,13 +86,13 @@ internal class FloatingActionWindow : EditorWindow
 						try
 						{
 							GUI.backgroundColor = (GUI.contentColor = (GUI.color = Color.clear));
-							if (m_ProcessSerializer != null)
+							if (measureAction != null)
 							{
-								m_ProcessSerializer();
+								measureAction();
 							}
 							else
 							{
-								_RegSerializer();
+								drawAction();
 							}
 						}
 						finally
@@ -104,7 +104,7 @@ internal class FloatingActionWindow : EditorWindow
 					}
 					else
 					{
-						_RegSerializer();
+						drawAction();
 					}
 				}
 				if (type != EventType.Repaint)
@@ -115,14 +115,14 @@ internal class FloatingActionWindow : EditorWindow
 				{
 					if (flag)
 					{
-						base.position = new Rect(base.position.x, base.position.y, _AccountSerializer, _ParamsSerializer);
+						base.position = new Rect(base.position.x, base.position.y, measuredWidth, measuredHeight);
 					}
 				}
 				else
 				{
 					Rect lastRect = GUILayoutUtility.GetLastRect();
-					_AccountSerializer = lastRect.width;
-					_ParamsSerializer = lastRect.height;
+					measuredWidth = lastRect.width;
+					measuredHeight = lastRect.height;
 				}
 				return;
 			}
@@ -135,31 +135,31 @@ internal class FloatingActionWindow : EditorWindow
 		Close();
 	}
 
-	internal static void CallProcess(Rect value, Action col, Action proc, float item2 = 100f, float second3 = 100f, bool isattr4 = true, bool istask5 = true, bool usecol6 = true)
+	internal static void Open(Rect value, Action col, Action proc, float item2 = 100f, float second3 = 100f, bool isattr4 = true, bool istask5 = true, bool usecol6 = true)
 	{
-		if (productSerializer != null)
+		if (instance != null)
 		{
 			try
 			{
-				productSerializer.Close();
+				instance.Close();
 			}
 			catch
 			{
 				Debug.Log("Failed close");
 				try
 				{
-					UnityEngine.Object.DestroyImmediate(productSerializer);
+					UnityEngine.Object.DestroyImmediate(instance);
 				}
 				catch
 				{
 					Debug.Log("Failed destroy??");
 				}
 			}
-			productSerializer = null;
+			instance = null;
 		}
-		productSerializer = ScriptableObject.CreateInstance<FloatingActionWindow>();
-		productSerializer.CheckProcess(col, proc, item2, second3, isattr4, istask5, usecol6);
-		productSerializer.ShowUtility();
-		productSerializer.position = value;
+		instance = ScriptableObject.CreateInstance<FloatingActionWindow>();
+		instance.Initialize(col, proc, item2, second3, isattr4, istask5, usecol6);
+		instance.ShowUtility();
+		instance.position = value;
 	}
 }

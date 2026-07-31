@@ -52,23 +52,23 @@ internal class ReflectionAccessor
 		}
 	}
 
-	internal static readonly Dictionary<Type, ReflectionCache> m_QueueMethod = new Dictionary<Type, ReflectionCache>();
+	internal static readonly Dictionary<Type, ReflectionCache> cacheByType = new Dictionary<Type, ReflectionCache>();
 
-	internal readonly object processorMethod;
+	internal readonly object target;
 
-	internal readonly Type m_TokenizerMethod;
+	internal readonly Type targetType;
 
 	internal readonly ReflectionCache reflectionCache;
 
 	internal ReflectionAccessor(object task)
 	{
-		processorMethod = task;
-		m_TokenizerMethod = task.GetType();
-		if (m_QueueMethod.TryGetValue(m_TokenizerMethod, out reflectionCache))
+		target = task;
+		targetType = task.GetType();
+		if (cacheByType.TryGetValue(targetType, out reflectionCache))
 		{
 			return;
 		}
-		MemberInfo[] members = m_TokenizerMethod.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+		MemberInfo[] members = targetType.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 		Dictionary<string, FieldInfo> fields = members.OfType<FieldInfo>().ToDictionary((FieldInfo f) => f.Name);
 		Dictionary<string, PropertyInfo> properties = members.OfType<PropertyInfo>().ToDictionary((PropertyInfo p) => p.Name);
 		Dictionary<string, List<MethodInfo>> dictionary = new Dictionary<string, List<MethodInfo>>();
@@ -88,30 +88,30 @@ internal class ReflectionAccessor
 			properties = properties,
 			methods = dictionary
 		};
-		m_QueueMethod.Add(m_TokenizerMethod, reflectionCache);
+		cacheByType.Add(targetType, reflectionCache);
 	}
 
 	[SpecialName]
-	public object ReadPredicate(string setup)
+	public object GetValue(string setup)
 	{
-		if (SelectPredicate(setup, out var pol))
+		if (TryGetValue(setup, out var pol))
 		{
 			return pol;
 		}
-		Debug.LogError("Member " + setup + " not found in " + m_TokenizerMethod.Name);
+		Debug.LogError("Member " + setup + " not found in " + targetType.Name);
 		return null;
 	}
 
 	[SpecialName]
-	public void TestPredicate(string setup, object pol)
+	public void SetValue(string setup, object pol)
 	{
-		if (!WritePredicate(setup, pol))
+		if (!TrySetValue(setup, pol))
 		{
-			Debug.LogError("Member " + setup + " not found in " + m_TokenizerMethod.Name);
+			Debug.LogError("Member " + setup + " not found in " + targetType.Name);
 		}
 	}
 
-	public bool SelectPredicate(string key, out object pol)
+	public bool TryGetValue(string key, out object pol)
 	{
 		if (!reflectionCache.fields.TryGetValue(key, out var value))
 		{
@@ -119,20 +119,20 @@ internal class ReflectionAccessor
 			{
 				if (reflectionCache.methods.ContainsKey(key))
 				{
-					pol = MovePredicate(key);
+					pol = Invoke(key);
 					return true;
 				}
 				pol = null;
 				return false;
 			}
-			pol = value2.GetValue(processorMethod);
+			pol = value2.GetValue(target);
 			return true;
 		}
-		pol = value.GetValue(processorMethod);
+		pol = value.GetValue(target);
 		return true;
 	}
 
-	public bool WritePredicate(string param, object second)
+	public bool TrySetValue(string param, object second)
 	{
 		if (!reflectionCache.fields.TryGetValue(param, out var value))
 		{
@@ -140,54 +140,54 @@ internal class ReflectionAccessor
 			{
 				return false;
 			}
-			value2.SetValue(processorMethod, second);
+			value2.SetValue(target, second);
 		}
-		value.SetValue(processorMethod, second);
+		value.SetValue(target, second);
 		return true;
 	}
 
-	internal object MovePredicate(string setup, params object[] args)
+	internal object Invoke(string setup, params object[] args)
 	{
-		return CollectPredicate(setup, null, args);
+		return Invoke(setup, null, args);
 	}
 
-	internal T PublishPredicate<T>(string instance, params object[] args)
+	internal T Invoke<T>(string instance, params object[] args)
 	{
-		return (T)CollectPredicate(instance, typeof(T), args);
+		return (T)Invoke(instance, typeof(T), args);
 	}
 
-	private object CollectPredicate(string ident, Type second, params object[] args)
+	private object Invoke(string ident, Type second, params object[] args)
 	{
 		if (reflectionCache.methods.TryGetValue(ident, out var value))
 		{
 			if (value.Count == 1)
 			{
-				return value[0].Invoke(processorMethod, args);
+				return value[0].Invoke(target, args);
 			}
-			if (PrintPredicate(value, args.Length, out var rule))
+			if (TryFilterByParameterCount(value, args.Length, out var rule))
 			{
-				return rule[0].Invoke(processorMethod, args);
+				return rule[0].Invoke(target, args);
 			}
-			if (InterruptPredicate(rule, (from a in args
+			if (TryFilterByParameterTypes(rule, (from a in args
 				where a != null
 				select a.GetType()).ToArray(), out var serv))
 			{
-				return serv[0].Invoke(processorMethod, args);
+				return serv[0].Invoke(target, args);
 			}
-			if (second != null && ViewPredicate(serv, second, out var proc))
+			if (second != null && TryFilterByReturnType(serv, second, out var proc))
 			{
-				return proc[0].Invoke(processorMethod, args);
+				return proc[0].Invoke(target, args);
 			}
-			Debug.LogError("Multiple methods named " + ident + " found in " + m_TokenizerMethod.Name);
+			Debug.LogError("Multiple methods named " + ident + " found in " + targetType.Name);
 		}
 		else
 		{
-			Debug.LogError("Method " + ident + " not found in " + m_TokenizerMethod.Name);
+			Debug.LogError("Method " + ident + " not found in " + targetType.Name);
 		}
 		return null;
 	}
 
-	private static bool PrintPredicate(IEnumerable<MethodInfo> reference, int ID_reg, out MethodInfo[] rule)
+	private static bool TryFilterByParameterCount(IEnumerable<MethodInfo> reference, int ID_reg, out MethodInfo[] rule)
 	{
 		rule = null;
 		if (reference == null)
@@ -198,7 +198,7 @@ internal class ReflectionAccessor
 		return rule.Length == 1;
 	}
 
-	private static bool InterruptPredicate(IEnumerable<MethodInfo> init, Type[] map, out MethodInfo[] serv)
+	private static bool TryFilterByParameterTypes(IEnumerable<MethodInfo> init, Type[] map, out MethodInfo[] serv)
 	{
 		serv = null;
 		if (init != null)
@@ -209,7 +209,7 @@ internal class ReflectionAccessor
 		return false;
 	}
 
-	private static bool ViewPredicate(IEnumerable<MethodInfo> ident, Type second, out MethodInfo[] proc)
+	private static bool TryFilterByReturnType(IEnumerable<MethodInfo> ident, Type second, out MethodInfo[] proc)
 	{
 		proc = null;
 		if (ident == null)

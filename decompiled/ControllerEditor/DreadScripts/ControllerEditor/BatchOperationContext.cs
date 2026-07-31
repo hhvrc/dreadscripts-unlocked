@@ -6,33 +6,33 @@ namespace DreadScripts.ControllerEditor;
 
 internal struct BatchOperationContext
 {
-	private StringBuilder _ManagerServer;
+	private StringBuilder errorLog;
 
-	internal int _ItemServer;
+	internal int currentStep;
 
-	internal int specificationServer;
+	internal int totalSteps;
 
 	internal string m_MethodServer;
 
 	private string _SchemaServer;
 
-	private string broadcasterServer;
+	private string title;
 
-	private string proxyServer;
+	private string info;
 
-	private bool m_StructServer;
+	private bool continueOnError;
 
-	internal bool _ServiceServer;
+	internal bool progressBarActive;
 
-	internal bool m_StateServer;
+	internal bool hasError;
 
 	internal static object InstantiateSystem;
 
-	internal BatchOperationContext PublishContext(Action asset)
+	internal BatchOperationContext Run(Action asset)
 	{
-		if (_ManagerServer == null)
+		if (errorLog == null)
 		{
-			_ManagerServer = new StringBuilder();
+			errorLog = new StringBuilder();
 		}
 		try
 		{
@@ -40,25 +40,25 @@ internal struct BatchOperationContext
 		}
 		catch (Exception ex)
 		{
-			m_StateServer = true;
-			string text = _SchemaServer + " - " + broadcasterServer + " - " + proxyServer + "\n" + ex.Message;
+			hasError = true;
+			string text = _SchemaServer + " - " + title + " - " + info + "\n" + ex.Message;
 			if (!string.IsNullOrEmpty(m_MethodServer))
 			{
 				text = m_MethodServer + " - " + text;
 			}
-			_ManagerServer.AppendLine("Error occured at step:\n" + text + "\n\n");
-			if (!m_StructServer)
+			errorLog.AppendLine("Error occured at step:\n" + text + "\n\n");
+			if (!continueOnError)
 			{
-				if (EditorUtility.DisplayDialog("Uh oh", $"Something went wrong!\n\n{_ManagerServer}Press Copy and send it to whoever is responsible for this.", "Copy", "Heck"))
+				if (EditorUtility.DisplayDialog("Uh oh", $"Something went wrong!\n\n{errorLog}Press Copy and send it to whoever is responsible for this.", "Copy", "Heck"))
 				{
-					EditorGUIUtility.systemCopyBuffer = _ManagerServer.ToString();
+					EditorGUIUtility.systemCopyBuffer = errorLog.ToString();
 				}
 				throw;
 			}
 		}
 		finally
 		{
-			if (_ServiceServer)
+			if (progressBarActive)
 			{
 				EditorUtility.ClearProgressBar();
 			}
@@ -66,15 +66,15 @@ internal struct BatchOperationContext
 		return this;
 	}
 
-	internal BatchOperationContext PopContext(string asset)
+	internal BatchOperationContext SetTitle(string asset)
 	{
-		broadcasterServer = asset;
+		title = asset;
 		return this;
 	}
 
-	internal BatchOperationContext ComputeContext(string item)
+	internal BatchOperationContext SetInfo(string item)
 	{
-		proxyServer = item;
+		info = item;
 		return this;
 	}
 
@@ -84,35 +84,35 @@ internal struct BatchOperationContext
 		return this;
 	}
 
-	internal BatchOperationContext ConcatContext()
+	internal BatchOperationContext NextStep()
 	{
-		_ItemServer++;
+		currentStep++;
 		return this;
 	}
 
-	internal BatchOperationContext CallContext()
+	internal BatchOperationContext ShowProgressBar()
 	{
-		_ServiceServer = true;
-		EditorUtility.DisplayProgressBar(broadcasterServer, $"{proxyServer} ({_ItemServer}/{specificationServer})", (float)_ItemServer / (float)specificationServer);
+		progressBarActive = true;
+		EditorUtility.DisplayProgressBar(title, $"{info} ({currentStep}/{totalSteps})", (float)currentStep / (float)totalSteps);
 		return this;
 	}
 
-	internal BatchOperationContext CancelContext()
+	internal BatchOperationContext Reset()
 	{
-		broadcasterServer = (proxyServer = (_SchemaServer = string.Empty));
-		_ItemServer = 0;
-		_ManagerServer.Clear();
-		m_StateServer = false;
-		while (_ServiceServer)
+		title = (info = (_SchemaServer = string.Empty));
+		currentStep = 0;
+		errorLog.Clear();
+		hasError = false;
+		while (progressBarActive)
 		{
 			EditorUtility.ClearProgressBar();
 		}
 		return this;
 	}
 
-	internal BatchOperationContext CountContext(bool evaluateinstance)
+	internal BatchOperationContext SetContinueOnError(bool evaluateinstance)
 	{
-		m_StructServer = evaluateinstance;
+		continueOnError = evaluateinstance;
 		return this;
 	}
 

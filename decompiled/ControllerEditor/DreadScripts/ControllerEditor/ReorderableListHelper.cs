@@ -9,51 +9,51 @@ namespace DreadScripts.ControllerEditor;
 
 internal class ReorderableListHelper<T>
 {
-	internal readonly IList m_PolicyTests;
+	internal readonly IList list;
 
-	private readonly ReorderableList m_SerializerTests;
+	private readonly ReorderableList reorderableList;
 
-	private object _PageTests;
+	private object lastSelected;
 
-	private readonly ReorderableList.ElementCallbackDelegate resolverTests;
+	private readonly ReorderableList.ElementCallbackDelegate drawElement;
 
-	private readonly Action _PredicateTests;
+	private readonly Action drawHeader;
 
-	internal Action m_RulesTests;
+	internal Action onSelectionChanged;
 
-	internal bool m_QueueTests = true;
+	internal bool expanded = true;
 
-	internal bool m_ErrorTests;
+	internal bool drawWhenEmpty;
 
 	internal static object CustomizeStruct;
 
 	[SpecialName]
-	internal int InterruptThread()
+	internal int Index()
 	{
-		return m_SerializerTests.index = RegisterThread(m_SerializerTests.index);
+		return reorderableList.index = ClampIndex(reorderableList.index);
 	}
 
 	[SpecialName]
-	internal void ManageThread(int value_length)
+	internal void Index(int value_length)
 	{
-		m_SerializerTests.index = RegisterThread(value_length);
+		reorderableList.index = ClampIndex(value_length);
 	}
 
 	internal ReorderableListHelper(Action last, IList caller, Action<ReorderableList> proc, ReorderableList.ElementCallbackDelegate attr2, ReorderableList.ElementHeightCallbackDelegate init3 = null)
 	{
-		_PredicateTests = last;
-		m_PolicyTests = caller;
-		resolverTests = attr2;
-		m_SerializerTests = new ReorderableList(caller, typeof(T), draggable: true, displayHeader: false, displayAddButton: false, displayRemoveButton: false)
+		drawHeader = last;
+		list = caller;
+		drawElement = attr2;
+		reorderableList = new ReorderableList(caller, typeof(T), draggable: true, displayHeader: false, displayAddButton: false, displayRemoveButton: false)
 		{
 			headerHeight = 1f,
 			footerHeight = 0f,
-			drawElementCallback = ChangeThread,
+			drawElementCallback = DrawElement,
 			onAddCallback = proc.Invoke
 		};
 		if (init3 != null)
 		{
-			m_SerializerTests.elementHeightCallback = init3;
+			reorderableList.elementHeightCallback = init3;
 		}
 	}
 
@@ -61,62 +61,62 @@ internal class ReorderableListHelper<T>
 		: this((Action)null, pool, item2, ivk3, token4)
 	{
 		DreadScripts.ControllerEditor.ReorderableListHelper<T> reorderableListHelper = this;
-		_PredicateTests = delegate
+		drawHeader = delegate
 		{
-			reorderableListHelper.LogoutThread(info, pol);
-			reorderableListHelper.PatchThread();
+			reorderableListHelper.DrawTitle(info, pol);
+			reorderableListHelper.DrawHeaderButtons();
 		};
 	}
 
-	private void ChangeThread(Rect param, int pol_low, bool allowcomp, bool skipfirst2)
+	private void DrawElement(Rect param, int pol_low, bool allowcomp, bool skipfirst2)
 	{
-		if (m_PolicyTests.Count != 0 && pol_low >= 0 && pol_low < m_PolicyTests.Count)
+		if (list.Count != 0 && pol_low >= 0 && pol_low < list.Count)
 		{
 			if (!GUI.Button(new Rect(param.x + param.width - 28f, param.y + param.height / 2f - 8f, 32f, 18f), EditorUtils.DestroyError().m_DecoratorProcessor, EditorUtils.CalcError()._TemplateProcessor))
 			{
 				Rect rect = new Rect(param);
 				rect.width = param.width - 29f;
 				Rect rect2 = rect;
-				resolverTests(rect2, pol_low, allowcomp, skipfirst2);
+				drawElement(rect2, pol_low, allowcomp, skipfirst2);
 			}
 			else
 			{
-				m_PolicyTests.RemoveAt(pol_low);
+				list.RemoveAt(pol_low);
 			}
 		}
 	}
 
-	internal void SortThread()
+	internal void Draw()
 	{
-		bool flag = m_PolicyTests.Count == 0;
-		if (m_RulesTests != null)
+		bool flag = list.Count == 0;
+		if (onSelectionChanged != null)
 		{
-			object obj = ((!flag) ? m_PolicyTests[InterruptThread()] : null);
-			if (obj != _PageTests)
+			object obj = ((!flag) ? list[Index()] : null);
+			if (obj != lastSelected)
 			{
-				_PageTests = obj;
-				m_RulesTests();
+				lastSelected = obj;
+				onSelectionChanged();
 			}
 		}
-		if (_PredicateTests != null)
+		if (drawHeader != null)
 		{
 			using (new EditorGUILayout.HorizontalScope("RL Header"))
 			{
-				_PredicateTests();
+				drawHeader();
 			}
 		}
-		if (m_QueueTests && (!flag || m_ErrorTests))
+		if (expanded && (!flag || drawWhenEmpty))
 		{
-			m_SerializerTests.DoLayoutList();
+			reorderableList.DoLayoutList();
 		}
 	}
 
-	internal int RegisterThread(int var1_X)
+	internal int ClampIndex(int var1_X)
 	{
-		return Mathf.Clamp(var1_X, 0, m_PolicyTests.Count - 1);
+		return Mathf.Clamp(var1_X, 0, list.Count - 1);
 	}
 
-	internal void LogoutThread(string def, string vis = null)
+	internal void DrawTitle(string def, string vis = null)
 	{
 		GUILayout.Label(def, EditorStyles.boldLabel);
 		if (!string.IsNullOrEmpty(vis))
@@ -125,19 +125,19 @@ internal class ReorderableListHelper<T>
 		}
 	}
 
-	internal void PatchThread(bool rejectv = true, bool writeattr = true)
+	internal void DrawHeaderButtons(bool rejectv = true, bool writeattr = true)
 	{
 		if (!writeattr)
 		{
 			if (rejectv)
 			{
-				m_QueueTests = EditorUtils.ExcludeQueue(m_QueueTests, (!m_QueueTests) ? EditorUtils.DestroyError().m_StatusProcessor : EditorUtils.DestroyError()._RefProcessor, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
+				expanded = EditorUtils.ExcludeQueue(expanded, (!expanded) ? EditorUtils.DestroyError().m_StatusProcessor : EditorUtils.DestroyError()._RefProcessor, EditorStyles.label, GUILayout.Width(18f), GUILayout.Height(18f));
 			}
-			using (new EditorGUI.DisabledScope(!m_QueueTests))
+			using (new EditorGUI.DisabledScope(!expanded))
 			{
 				if (EditorUtils.RestartQueue(EditorGUIUtility.IconContent("d_ol_plus"), GUI.skin.label, GUILayout.Width(18f)))
 				{
-					m_SerializerTests.onAddCallback(m_SerializerTests);
+					reorderableList.onAddCallback(reorderableList);
 				}
 				return;
 			}

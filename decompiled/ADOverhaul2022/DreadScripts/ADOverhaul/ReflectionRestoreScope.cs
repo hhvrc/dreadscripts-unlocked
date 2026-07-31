@@ -30,11 +30,11 @@ internal sealed class ReflectionRestoreScope : IDisposable
 			object pol;
 			if (!wantcol)
 			{
-				mappingMethod.accessor.SelectPredicate(s, out pol);
+				mappingMethod.accessor.TryGetValue(s, out pol);
 			}
 			else
 			{
-				pol = mappingMethod.accessor.ReadPredicate(s);
+				pol = mappingMethod.accessor.GetValue(s);
 			}
 			if (pol == null)
 			{
@@ -66,13 +66,13 @@ internal sealed class ReflectionRestoreScope : IDisposable
 		{
 			foreach (KeyValuePair<string, object> savedValue in savedValues)
 			{
-				accessor.WritePredicate(savedValue.Key, savedValue.Value);
+				accessor.TrySetValue(savedValue.Key, savedValue.Value);
 			}
 			return;
 		}
 		foreach (KeyValuePair<string, object> savedValue2 in savedValues)
 		{
-			accessor.TestPredicate(savedValue2.Key, savedValue2.Value);
+			accessor.SetValue(savedValue2.Key, savedValue2.Value);
 		}
 	}
 }

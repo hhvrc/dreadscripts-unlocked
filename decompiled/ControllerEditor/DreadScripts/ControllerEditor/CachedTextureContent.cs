@@ -53,7 +53,7 @@ internal sealed class CachedTextureContent
 		hasTexture = _texture != null;
 		if (hasTexture)
 		{
-			SaveTexture(setup.EncodeToPNG(), sessionKey);
+			SaveTextureToSession(setup.EncodeToPNG(), sessionKey);
 		}
 		RebuildContent();
 	}
@@ -68,7 +68,7 @@ internal sealed class CachedTextureContent
 
 	private void Load()
 	{
-		texture(LoadTexture(sessionKey));
+		texture(LoadTextureFromSession(sessionKey));
 	}
 
 	private void RebuildContent()
@@ -76,7 +76,7 @@ internal sealed class CachedTextureContent
 		content(new GUIContent(texture(), tooltip));
 	}
 
-	private static byte[] ToBytes(int[] key)
+	private static byte[] IntsToBytes(int[] key)
 	{
 		byte[] array = new byte[key.Length];
 		for (int i = 0; i < key.Length; i++)
@@ -86,7 +86,7 @@ internal sealed class CachedTextureContent
 		return array;
 	}
 
-	private static int[] ToInts(byte[] value)
+	private static int[] BytesToInts(byte[] value)
 	{
 		int num = value.Length;
 		int[] array = new int[num];
@@ -97,14 +97,14 @@ internal sealed class CachedTextureContent
 		return array;
 	}
 
-	internal static Texture2D LoadTexture(string task)
+	internal static Texture2D LoadTextureFromSession(string task)
 	{
 		int[] intArray = SessionState.GetIntArray(task, null);
 		if (intArray != null)
 		{
 			try
 			{
-				byte[] data = ToBytes(intArray);
+				byte[] data = IntsToBytes(intArray);
 				Texture2D texture2D = new Texture2D(0, 0);
 				texture2D.LoadImage(data);
 				texture2D.Apply();
@@ -119,9 +119,9 @@ internal sealed class CachedTextureContent
 		return null;
 	}
 
-	internal static void SaveTexture(byte[] v, string b)
+	internal static void SaveTextureToSession(byte[] v, string b)
 	{
-		int[] value = ToInts(v);
+		int[] value = BytesToInts(v);
 		SessionState.SetIntArray(b, value);
 	}
 

@@ -20,50 +20,50 @@ internal static class AnimatorTypeCache
 				Random
 			}
 
-			internal ParameterDriverBinding _DispatcherProperty;
+			internal ParameterDriverBinding driver;
 
-			internal SerializedProperty m_RegistryProperty;
+			internal SerializedProperty property;
 
-			private bool _TagProperty;
+			private bool deferApply;
 
 			[SpecialName]
-			internal bool RemovePage()
+			internal bool GetDeferApply()
 			{
-				return _TagProperty;
+				return deferApply;
 			}
 
 			[SpecialName]
-			internal void InstantiatePage(bool validatekey)
+			internal void SetDeferApply(bool validatekey)
 			{
-				if (_TagProperty && !validatekey)
+				if (deferApply && !validatekey)
 				{
-					_DispatcherProperty.Apply();
+					driver.Apply();
 				}
-				_TagProperty = validatekey;
+				deferApply = validatekey;
 			}
 
 			[SpecialName]
-			internal string ResetPage()
+			internal string GetName()
 			{
-				return m_RegistryProperty.FindPropertyRelative("name").stringValue;
+				return property.FindPropertyRelative("name").stringValue;
 			}
 
 			[SpecialName]
-			internal void FlushPage(string def)
+			internal void SetName(string def)
 			{
-				m_RegistryProperty.FindPropertyRelative("name").stringValue = def;
-				if (!RemovePage())
+				property.FindPropertyRelative("name").stringValue = def;
+				if (!GetDeferApply())
 				{
-					_DispatcherProperty.Apply();
+					driver.Apply();
 				}
 			}
 
 			[SpecialName]
-			internal string CalculatePage()
+			internal string GetSource()
 			{
 				try
 				{
-					return m_RegistryProperty.FindPropertyRelative("source").stringValue;
+					return property.FindPropertyRelative("source").stringValue;
 				}
 				catch
 				{
@@ -72,14 +72,14 @@ internal static class AnimatorTypeCache
 			}
 
 			[SpecialName]
-			internal void TestPage(string spec)
+			internal void SetSource(string spec)
 			{
 				try
 				{
-					m_RegistryProperty.FindPropertyRelative("source").stringValue = spec;
-					while (!RemovePage())
+					property.FindPropertyRelative("source").stringValue = spec;
+					while (!GetDeferApply())
 					{
-						_DispatcherProperty.Apply();
+						driver.Apply();
 					}
 				}
 				catch
@@ -88,86 +88,86 @@ internal static class AnimatorTypeCache
 			}
 
 			[SpecialName]
-			internal float ValidatePage()
+			internal float GetValue()
 			{
-				return m_RegistryProperty.FindPropertyRelative("value").floatValue;
+				return property.FindPropertyRelative("value").floatValue;
 			}
 
 			[SpecialName]
-			internal void CustomizePage(float info)
+			internal void SetValue(float info)
 			{
-				m_RegistryProperty.FindPropertyRelative("value").floatValue = info;
-				if (!RemovePage())
+				property.FindPropertyRelative("value").floatValue = info;
+				if (!GetDeferApply())
 				{
-					_DispatcherProperty.Apply();
+					driver.Apply();
 				}
 			}
 
 			[SpecialName]
-			internal float DestroyPage()
+			internal float GetChance()
 			{
-				return m_RegistryProperty.FindPropertyRelative("chance").floatValue;
+				return property.FindPropertyRelative("chance").floatValue;
 			}
 
 			[SpecialName]
-			internal void GetPage(float def)
+			internal void SetChance(float def)
 			{
-				m_RegistryProperty.FindPropertyRelative("chance").floatValue = def;
-				if (!RemovePage())
+				property.FindPropertyRelative("chance").floatValue = def;
+				if (!GetDeferApply())
 				{
-					_DispatcherProperty.Apply();
+					driver.Apply();
 				}
 			}
 
 			[SpecialName]
-			internal float IncludePage()
+			internal float GetValueMin()
 			{
-				return m_RegistryProperty.FindPropertyRelative("valueMin").floatValue;
+				return property.FindPropertyRelative("valueMin").floatValue;
 			}
 
 			[SpecialName]
-			internal void RunPage(float setup)
+			internal void SetValueMin(float setup)
 			{
-				m_RegistryProperty.FindPropertyRelative("valueMin").floatValue = setup;
-				if (!RemovePage())
+				property.FindPropertyRelative("valueMin").floatValue = setup;
+				if (!GetDeferApply())
 				{
-					_DispatcherProperty.Apply();
+					driver.Apply();
 				}
 			}
 
 			[SpecialName]
-			internal float LoginPage()
+			internal float GetValueMax()
 			{
-				return m_RegistryProperty.FindPropertyRelative("valueMax").floatValue;
+				return property.FindPropertyRelative("valueMax").floatValue;
 			}
 
 			[SpecialName]
-			internal void ReflectPage(float setup)
+			internal void SetValueMax(float setup)
 			{
-				m_RegistryProperty.FindPropertyRelative("valueMax").floatValue = setup;
-				if (!RemovePage())
+				property.FindPropertyRelative("valueMax").floatValue = setup;
+				if (!GetDeferApply())
 				{
-					_DispatcherProperty.Apply();
+					driver.Apply();
 				}
 			}
 
 			[SpecialName]
-			internal ChangeType CreatePage()
+			internal ChangeType GetChangeType()
 			{
-				return (ChangeType)m_RegistryProperty.FindPropertyRelative("type").enumValueIndex;
+				return (ChangeType)property.FindPropertyRelative("type").enumValueIndex;
 			}
 
 			[SpecialName]
-			internal void NewPage(ChangeType instance)
+			internal void SetChangeType(ChangeType instance)
 			{
-				m_RegistryProperty.FindPropertyRelative("type").enumValueIndex = (int)instance;
-				_DispatcherProperty.serializedObject.ApplyModifiedProperties();
+				property.FindPropertyRelative("type").enumValueIndex = (int)instance;
+				driver.serializedObject.ApplyModifiedProperties();
 			}
 
 			internal ParameterEntry(ParameterDriverBinding param, SerializedProperty b)
 			{
-				_DispatcherProperty = param;
-				m_RegistryProperty = b;
+				driver = param;
+				property = b;
 			}
 		}
 

@@ -78,7 +78,7 @@ internal sealed class ADOverhaul
 				GetConfiguration();
 				SortIdentifier();
 				ConcatIdentifier();
-				m_Base.ConcatComparator(this);
+				m_Base.Draw(this);
 			}
 		}
 
@@ -103,7 +103,7 @@ internal sealed class ADOverhaul
 				if (_Code)
 				{
 					EditorGUI.indentLevel++;
-					ADOSettings.GetConsumer().editorAnimatedFoldouts.DrawContent(ADOEditorUtility.CustomizeRef().issuerSerializer, null);
+					ADOSettings.Instance().editorAnimatedFoldouts.DrawContent(ADOEditorUtility.CustomizeRef().issuerSerializer, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -115,18 +115,18 @@ internal sealed class ADOverhaul
 					EditorGUI.indentLevel++;
 					using (new GUILayout.HorizontalScope())
 					{
-						ADOSettings.GetConsumer().onSceneNameLabels.DrawContent(ADOEditorUtility.CustomizeRef()._FacadeSerializer, null);
-						if ((bool)ADOSettings.GetConsumer().onSceneNameLabels)
+						ADOSettings.Instance().onSceneNameLabels.DrawContent(ADOEditorUtility.CustomizeRef()._FacadeSerializer, null);
+						if ((bool)ADOSettings.Instance().onSceneNameLabels)
 						{
-							ADOSettings.GetConsumer().labelColor.DrawContent(GUIContent.none, true);
+							ADOSettings.Instance().labelColor.DrawContent(GUIContent.none, true);
 						}
 					}
-					ADOSettings.GetConsumer().generalColor.DrawContent(ADOEditorUtility.CustomizeRef().annotationSerializer, true);
-					ADOSettings.GetConsumer().activeColor.DrawContent(ADOEditorUtility.CustomizeRef().m_CodeSerializer, true);
-					ADOSettings.GetConsumer().inactiveColor.DrawContent(ADOEditorUtility.CustomizeRef()._CallbackSerializer, true);
-					ADOSettings.GetConsumer().mixedColor.DrawContent(ADOEditorUtility.CustomizeRef()._MessageSerializer, true);
-					ADOSettings.GetConsumer().selectionColor.DrawContent(ADOEditorUtility.CustomizeRef().policySerializer, true);
-					ADOSettings.GetConsumer().handleSizeMultiplier.DrawFieldContent(ADOEditorUtility.CustomizeRef().m_RequestSerializer, true, null);
+					ADOSettings.Instance().generalColor.DrawContent(ADOEditorUtility.CustomizeRef().annotationSerializer, true);
+					ADOSettings.Instance().activeColor.DrawContent(ADOEditorUtility.CustomizeRef().m_CodeSerializer, true);
+					ADOSettings.Instance().inactiveColor.DrawContent(ADOEditorUtility.CustomizeRef()._CallbackSerializer, true);
+					ADOSettings.Instance().mixedColor.DrawContent(ADOEditorUtility.CustomizeRef()._MessageSerializer, true);
+					ADOSettings.Instance().selectionColor.DrawContent(ADOEditorUtility.CustomizeRef().policySerializer, true);
+					ADOSettings.Instance().handleSizeMultiplier.DrawFieldContent(ADOEditorUtility.CustomizeRef().m_RequestSerializer, true, null);
 					EditorGUI.indentLevel--;
 				}
 			}
@@ -140,21 +140,21 @@ internal sealed class ADOverhaul
 				EditorGUI.indentLevel++;
 				using (new GUILayout.HorizontalScope())
 				{
-					ADOSettings.GetConsumer().onSceneToolSelection.DrawContent(new GUIContent("Tool Overlay", "Displays the tool selection overlay on the scene view."), null);
-					using (new EditorGUI.DisabledScope(!ADOSettings.GetConsumer().onSceneToolSelection))
+					ADOSettings.Instance().onSceneToolSelection.DrawContent(new GUIContent("Tool Overlay", "Displays the tool selection overlay on the scene view."), null);
+					using (new EditorGUI.DisabledScope(!ADOSettings.Instance().onSceneToolSelection))
 					{
-						ADOSettings.GetConsumer().toolSelectionOverlayAlignment.DrawEnumPopup<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
+						ADOSettings.Instance().toolSelectionOverlayAlignment.DrawEnumPopup<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
 				using (new GUILayout.HorizontalScope())
 				{
-					ADOSettings.GetConsumer().onSceneEditingOverlay.DrawContent(ADOEditorUtility.CustomizeRef().mappingSerializer, null);
-					using (new EditorGUI.DisabledScope(!ADOSettings.GetConsumer().onSceneEditingOverlay))
+					ADOSettings.Instance().onSceneEditingOverlay.DrawContent(ADOEditorUtility.CustomizeRef().mappingSerializer, null);
+					using (new EditorGUI.DisabledScope(!ADOSettings.Instance().onSceneEditingOverlay))
 					{
-						ADOSettings.GetConsumer().toolOverlayAlignment.DrawEnumPopup<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
+						ADOSettings.Instance().toolOverlayAlignment.DrawEnumPopup<ADOEditorUtility.PositionFlag>("Position", isb: false, null, Array.Empty<GUILayoutOption>());
 					}
 				}
-				ADOSettings.GetConsumer().onSceneTooltip.DrawContent(ADOEditorUtility.CustomizeRef().queueSerializer, null);
+				ADOSettings.Instance().onSceneTooltip.DrawContent(ADOEditorUtility.CustomizeRef().queueSerializer, null);
 				EditorGUI.indentLevel--;
 			}
 		}
@@ -206,17 +206,17 @@ internal sealed class ADOverhaul
 			return (float)(int)template / 1f;
 		}
 
-		internal static void InvokeMethod(Action ident, ushort IDcol = 0, string util = "", ushort removeSPEC2At = 0, bool deleteord3 = false, string info4 = "")
+		internal static void Run(Action ident, ushort IDcol = 0, string util = "", ushort removeSPEC2At = 0, bool deleteord3 = false, string info4 = "")
 		{
-			CustomizeMethod(ident, null, IDcol, util, removeSPEC2At, deleteord3, info4);
+			Run(ident, null, IDcol, util, removeSPEC2At, deleteord3, info4);
 		}
 
-		internal static void CustomizeMethod(Action task, Action selection, ushort filter_high = 0, string info2 = "", ushort no__reg3 = 0, bool requirest4 = false, string ivk5 = "")
+		internal static void Run(Action task, Action selection, ushort filter_high = 0, string info2 = "", ushort no__reg3 = 0, bool requirest4 = false, string ivk5 = "")
 		{
 			producer = selection;
 			if (filter_high > 0)
 			{
-				CancelMethod(filter_high, info2, no__reg3);
+				SetContext(filter_high, info2, no__reg3);
 			}
 			try
 			{
@@ -228,14 +228,14 @@ internal sealed class ADOverhaul
 				{
 					throw;
 				}
-				ConcatMethod(param, requirest4, ivk5);
-				CompilationPipeline.compilationStarted -= WriteMethod;
-				CompilationPipeline.compilationStarted += WriteMethod;
+				CaptureException(param, requirest4, ivk5);
+				CompilationPipeline.compilationStarted -= OnCompilationStarted;
+				CompilationPipeline.compilationStarted += OnCompilationStarted;
 				throw;
 			}
 		}
 
-		private static void ConcatMethod(Exception param, bool getcfg = false, string serv = "")
+		private static void CaptureException(Exception param, bool getcfg = false, string serv = "")
 		{
 			if (!error.HasValue || m_Class.Contains(error.Value))
 			{
@@ -258,10 +258,10 @@ internal sealed class ADOverhaul
 				{
 				case 2:
 					m_Class.Add(m_Value.Value);
-					WriteMethod(null);
+					OnCompilationStarted(null);
 					break;
 				case 1:
-					WriteMethod(null);
+					OnCompilationStarted(null);
 					break;
 				case 0:
 					m_Class.Add(m_Value.Value);
@@ -271,9 +271,9 @@ internal sealed class ADOverhaul
 			}
 		}
 
-		internal static void MapMethod()
+		internal static void DrawReportPrompt()
 		{
-			if (!FillMethod())
+			if (!HasPendingReport())
 			{
 				return;
 			}
@@ -283,17 +283,17 @@ internal sealed class ADOverhaul
 				GUILayout.Label("An error has occurred! Do you want to report it?", EditorStyles.boldLabel);
 				if (ADOEditorUtility.PatchStatus("Ignore"))
 				{
-					SelectMethod(moveinstance: false);
+					Respond(moveinstance: false);
 				}
 				if (ADOEditorUtility.PatchStatus("Find Solution"))
 				{
-					SelectMethod(moveinstance: true);
+					Respond(moveinstance: true);
 				}
 			}
 			ADOEditorUtility.DisableStatus();
 		}
 
-		internal static bool FillMethod()
+		internal static bool HasPendingReport()
 		{
 			if (m_Value.HasValue)
 			{
@@ -307,7 +307,7 @@ internal sealed class ADOverhaul
 			return false;
 		}
 
-		internal static void CancelMethod(ushort version_item, string ivk = "", ushort idx_util = 0)
+		internal static void SetContext(ushort version_item, string ivk = "", ushort idx_util = 0)
 		{
 			error = new ErrorInfo
 			{
@@ -317,7 +317,7 @@ internal sealed class ADOverhaul
 			};
 		}
 
-		internal static void LogoutMethod()
+		internal static void Reset()
 		{
 			m_Mapping = string.Empty;
 			queue = false;
@@ -326,7 +326,7 @@ internal sealed class ADOverhaul
 			error = null;
 		}
 
-		internal static void SetupMethod()
+		internal static void DrawWindow()
 		{
 			RemoveSerializer(_Service && m_Value.HasValue);
 			if (!_Tokenizer)
@@ -463,9 +463,9 @@ internal sealed class ADOverhaul
 			}
 		}
 
-		internal static void SelectMethod(bool moveinstance)
+		internal static void Respond(bool moveinstance)
 		{
-			if (FillMethod() && m_Value.HasValue)
+			if (HasPendingReport() && m_Value.HasValue)
 			{
 				if (m_Class.Contains(m_Value.Value))
 				{
@@ -476,14 +476,14 @@ internal sealed class ADOverhaul
 			}
 		}
 
-		internal static void WriteMethod(object asset)
+		internal static void OnCompilationStarted(object asset)
 		{
 			if (m_Value.HasValue && producer != null)
 			{
-				InvokeMethod(producer, m_Value.Value._Container, m_Value.Value.order, m_Value.Value.schema);
+				Run(producer, m_Value.Value._Container, m_Value.Value.order, m_Value.Value.schema);
 			}
 			producer = null;
-			CompilationPipeline.compilationStarted -= WriteMethod;
+			CompilationPipeline.compilationStarted -= OnCompilationStarted;
 		}
 	}
 
@@ -767,8 +767,8 @@ internal sealed class ADOverhaul
 			public SettingsChangeScope(Action reference = null)
 			{
 				onChanged = reference;
-				previousDeferred = ReflectConsumer();
-				ResolveConsumer(isv: true);
+				previousDeferred = IsDeferred();
+				SetDeferred(isv: true);
 				changeCheck = new EditorGUI.ChangeCheckScope();
 			}
 
@@ -779,9 +779,9 @@ internal sealed class ADOverhaul
 				if (changed)
 				{
 					onChanged?.Invoke();
-					ForgotConsumer();
+					Save();
 				}
-				ResolveConsumer(previousDeferred);
+				SetDeferred(previousDeferred);
 			}
 
 			public static implicit operator bool(SettingsChangeScope v)
@@ -796,13 +796,13 @@ internal sealed class ADOverhaul
 
 			public SettingsDeferScope()
 			{
-				previousDeferred = ReflectConsumer();
-				ResolveConsumer(isv: true);
+				previousDeferred = IsDeferred();
+				SetDeferred(isv: true);
 			}
 
 			public void Dispose()
 			{
-				ResolveConsumer(previousDeferred);
+				SetDeferred(previousDeferred);
 			}
 		}
 
@@ -827,7 +827,7 @@ internal sealed class ADOverhaul
 				{
 					_value = nores;
 					onChange?.Invoke();
-					ForgotConsumer();
+					Save();
 				}
 			}
 
@@ -907,7 +907,7 @@ internal sealed class ADOverhaul
 				{
 					_value = task;
 					onChanged?.Invoke();
-					ForgotConsumer();
+					Save();
 				}
 			}
 
@@ -1103,7 +1103,7 @@ internal sealed class ADOverhaul
 					_valueY = config.y;
 					_valueZ = config.z;
 					onChanged?.Invoke();
-					ForgotConsumer();
+					Save();
 				}
 			}
 
@@ -1191,7 +1191,7 @@ internal sealed class ADOverhaul
 				{
 					_value = ident;
 					onChanged?.Invoke();
-					ForgotConsumer();
+					Save();
 				}
 			}
 
@@ -1249,7 +1249,7 @@ internal sealed class ADOverhaul
 				b = info.b;
 				a = info.a;
 				onChange?.Invoke();
-				ForgotConsumer();
+				Save();
 			}
 
 			internal ColorSetting(float def, float vis, float dir, float token2 = 1f, Action task3 = null)
@@ -1344,7 +1344,7 @@ internal sealed class ADOverhaul
 						AssetDatabase.TryGetGUIDAndLocalFileIdentifier(i, out guid, out localID);
 					}
 					m_DatabaseIdentifier?.Invoke();
-					ForgotConsumer();
+					Save();
 				}
 			}
 
@@ -1427,15 +1427,15 @@ internal sealed class ADOverhaul
 
 		private static bool _ProxyIdentifier;
 
-		private static bool m_RefIdentifier;
+		private static bool savePending;
 
-		private static bool comparatorIdentifier;
+		private static bool deferred;
 
-		private static FieldInfo[] productIdentifier;
+		private static FieldInfo[] nonSerializedFields;
 
-		private static ADOSettings m_IteratorIdentifier;
+		private static ADOSettings instance;
 
-		internal static Action m_PredicateIdentifier;
+		internal static Action onCleared;
 
 		[SerializeField]
 		internal StringSetting u_updateLink = new StringSetting();
@@ -1549,45 +1549,45 @@ internal sealed class ADOverhaul
 		internal ColorSetting selectionColor = new ColorSetting(1f, 0.65f, 0f);
 
 		[SpecialName]
-		internal static bool ReflectConsumer()
+		internal static bool IsDeferred()
 		{
-			return comparatorIdentifier;
+			return deferred;
 		}
 
 		[SpecialName]
-		internal static void ResolveConsumer(bool isv)
+		internal static void SetDeferred(bool isv)
 		{
-			bool num = comparatorIdentifier;
-			comparatorIdentifier = isv;
-			if (num && !comparatorIdentifier && m_RefIdentifier)
+			bool num = deferred;
+			deferred = isv;
+			if (num && !deferred && savePending)
 			{
-				ForgotConsumer();
+				Save();
 			}
 		}
 
 		[SpecialName]
-		internal static ADOSettings GetConsumer()
+		internal static ADOSettings Instance()
 		{
-			if (m_IteratorIdentifier == null)
+			if (instance == null)
 			{
-				UpdateConsumer();
+				Load();
 			}
-			return m_IteratorIdentifier;
+			return instance;
 		}
 
 		private ADOSettings()
 		{
-			productIdentifier = (from m in typeof(ADOSettings).GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+			nonSerializedFields = (from m in typeof(ADOSettings).GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
 				where m.IsDefined(typeof(NonSerializedSettingAttribute), inherit: false)
 				select m).ToArray();
 		}
 
-		internal static void ForgotConsumer()
+		internal static void Save()
 		{
-			m_RefIdentifier = false;
-			if (comparatorIdentifier)
+			savePending = false;
+			if (deferred)
 			{
-				m_RefIdentifier = true;
+				savePending = true;
 			}
 			else
 			{
@@ -1595,13 +1595,13 @@ internal sealed class ADOverhaul
 				{
 					return;
 				}
-				StringBuilder stringBuilder = new StringBuilder("MAIN[" + JsonUtility.ToJson(GetConsumer()) + "]\u200b\u200b\u200b");
-				FieldInfo[] array = productIdentifier;
+				StringBuilder stringBuilder = new StringBuilder("MAIN[" + JsonUtility.ToJson(Instance()) + "]\u200b\u200b\u200b");
+				FieldInfo[] array = nonSerializedFields;
 				foreach (FieldInfo fieldInfo in array)
 				{
 					try
 					{
-						string text = EditorJsonUtility.ToJson(fieldInfo.GetValue(GetConsumer()));
+						string text = EditorJsonUtility.ToJson(fieldInfo.GetValue(Instance()));
 						stringBuilder.Append(fieldInfo.Name + "[" + text + "]\u200b\u200b\u200b");
 					}
 					catch (Exception message)
@@ -1614,7 +1614,7 @@ internal sealed class ADOverhaul
 			}
 		}
 
-		private static void UpdateConsumer()
+		private static void Load()
 		{
 			string text = string.Empty;
 			if (EditorPrefs.HasKey("No1lKII9IzcBAbihub6nCg==SettingsJSON"))
@@ -1633,50 +1633,50 @@ internal sealed class ADOverhaul
 			}
 			if (dictionary.TryGetValue("MAIN", out var value))
 			{
-				m_IteratorIdentifier = JsonUtility.FromJson<ADOSettings>(value);
+				instance = JsonUtility.FromJson<ADOSettings>(value);
 			}
-			if (m_IteratorIdentifier == null)
+			if (instance == null)
 			{
-				m_IteratorIdentifier = new ADOSettings();
+				instance = new ADOSettings();
 			}
-			FieldInfo[] array = productIdentifier;
+			FieldInfo[] array = nonSerializedFields;
 			foreach (FieldInfo fieldInfo in array)
 			{
-				object obj = fieldInfo.GetValue(m_IteratorIdentifier) ?? Activator.CreateInstance(fieldInfo.FieldType);
+				object obj = fieldInfo.GetValue(instance) ?? Activator.CreateInstance(fieldInfo.FieldType);
 				if (dictionary.TryGetValue(fieldInfo.Name, out var value2))
 				{
 					EditorJsonUtility.FromJsonOverwrite(value2, obj);
 				}
-				fieldInfo.SetValue(m_IteratorIdentifier, obj);
-				if (fieldInfo.GetValue(m_IteratorIdentifier) == null)
+				fieldInfo.SetValue(instance, obj);
+				if (fieldInfo.GetValue(instance) == null)
 				{
-					fieldInfo.SetValue(m_IteratorIdentifier, Activator.CreateInstance(fieldInfo.FieldType));
+					fieldInfo.SetValue(instance, Activator.CreateInstance(fieldInfo.FieldType));
 				}
 			}
 		}
 
-		internal static void SearchConsumer()
+		internal static void PromptClear()
 		{
 			if (EditorUtility.DisplayDialog("Clearing Settings", "Are you sure you want to clear the settings?", "Clear", "Cancel"))
 			{
-				LoginConsumer();
+				Clear();
 			}
 		}
 
-		internal static void LoginConsumer()
+		internal static void Clear()
 		{
-			m_IteratorIdentifier = new ADOSettings();
-			FieldInfo[] array = productIdentifier;
+			instance = new ADOSettings();
+			FieldInfo[] array = nonSerializedFields;
 			foreach (FieldInfo fieldInfo in array)
 			{
-				fieldInfo.SetValue(m_IteratorIdentifier, Activator.CreateInstance(fieldInfo.FieldType));
+				fieldInfo.SetValue(instance, Activator.CreateInstance(fieldInfo.FieldType));
 			}
-			m_PredicateIdentifier?.Invoke();
-			ForgotConsumer();
+			onCleared?.Invoke();
+			Save();
 		}
 
 		[SpecialName]
-		internal Color[] ExcludeConsumer()
+		internal Color[] StateColors()
 		{
 			return new Color[3]
 			{
@@ -2527,36 +2527,36 @@ internal sealed class ADOverhaul
 			{
 				CallConfiguration(m_FactoryAuthentication, "Show Gizmos", delegate
 				{
-					if ((bool)ADOSettings.GetConsumer().globalGizmo)
+					if ((bool)ADOSettings.Instance().globalGizmo)
 					{
-						ADOSettings.GetConsumer().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
+						ADOSettings.Instance().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
 					}
 				}, GUILayout.ExpandWidth(expand: false));
 				bool flag;
-				string text = ((!(flag = ADOSettings.GetConsumer().globalGizmo)) ? "Local Setting" : "Global Setting");
+				string text = ((!(flag = ADOSettings.Instance().globalGizmo)) ? "Local Setting" : "Global Setting");
 				using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
 				{
 					using (new ADOSettings.SettingsChangeScope(InterruptSingleton))
 					{
-						ADOSettings.GetConsumer().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
+						ADOSettings.Instance().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
 					}
 				}
 			}
 
 			internal void CustomizeParams()
 			{
-				if ((bool)ADOSettings.GetConsumer().globalGizmo)
+				if ((bool)ADOSettings.Instance().globalGizmo)
 				{
-					ADOSettings.GetConsumer().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
+					ADOSettings.Instance().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
 				}
 			}
 
 			internal void ConcatParams()
 			{
-				if ((bool)ADOSettings.GetConsumer().globalGizmo)
+				if ((bool)ADOSettings.Instance().globalGizmo)
 				{
-					ADOSettings.GetConsumer().gizmoBoneOpacity.SetValue(EditorGUILayout.Slider("Bone Opacity", ADOSettings.GetConsumer().gizmoBoneOpacity, 0f, 1f));
-					ADOSettings.GetConsumer().gizmoLimitOpacity.SetValue(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.GetConsumer().gizmoLimitOpacity, 0f, 1f));
+					ADOSettings.Instance().gizmoBoneOpacity.SetValue(EditorGUILayout.Slider("Bone Opacity", ADOSettings.Instance().gizmoBoneOpacity, 0f, 1f));
+					ADOSettings.Instance().gizmoLimitOpacity.SetValue(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.Instance().gizmoLimitOpacity, 0f, 1f));
 				}
 				else
 				{
@@ -2572,11 +2572,11 @@ internal sealed class ADOverhaul
 
 			internal bool FillParams(ADOEditorUtility.BoneNode b)
 			{
-				if (!b.m_DescriptorMethod)
+				if (!b.isEndBone)
 				{
 					return false;
 				}
-				return !b.m_RepositoryMethod;
+				return !b.isVirtual;
 			}
 
 			internal float CancelParams(Keyframe k)
@@ -2861,11 +2861,11 @@ internal sealed class ADOverhaul
 			{
 				if (m != 0f)
 				{
-					Matrix4x4 printerMethod = b.printerMethod;
-					Vector4 column = printerMethod.GetColumn(3);
+					Matrix4x4 matrix = b.matrix;
+					Vector4 column = matrix.GetColumn(3);
 					float comp = m_TokenizerAuthentication.radius * m;
 					EditorGUI.BeginChangeCheck();
-					float num = ADOEditorUtility.CreateStatus(printerMethod.rotation, column, comp, !m_TokenizerAuthentication.showGizmos, ADOSettings.GetConsumer().handleSizeMultiplier);
+					float num = ADOEditorUtility.CreateStatus(matrix.rotation, column, comp, !m_TokenizerAuthentication.showGizmos, ADOSettings.Instance().handleSizeMultiplier);
 					if (EditorGUI.EndChangeCheck())
 					{
 						float delta = num / m - m_TokenizerAuthentication.radius;
@@ -3501,26 +3501,26 @@ internal sealed class ADOverhaul
 				{
 					CallConfiguration(m_FactoryAuthentication, "Show Gizmos", delegate
 					{
-						if ((bool)ADOSettings.GetConsumer().globalGizmo)
+						if ((bool)ADOSettings.Instance().globalGizmo)
 						{
-							ADOSettings.GetConsumer().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
+							ADOSettings.Instance().gizmosActive.SetValue(m_FactoryAuthentication.boolValue);
 						}
 					}, GUILayout.ExpandWidth(expand: false));
 					bool flag;
-					string text = ((!(flag = ADOSettings.GetConsumer().globalGizmo)) ? "Local Setting" : "Global Setting");
+					string text = ((!(flag = ADOSettings.Instance().globalGizmo)) ? "Local Setting" : "Global Setting");
 					using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
 					{
 						using (new ADOSettings.SettingsChangeScope(InterruptSingleton))
 						{
-							ADOSettings.GetConsumer().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
+							ADOSettings.Instance().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
 						}
 					}
 				}, delegate
 				{
-					if ((bool)ADOSettings.GetConsumer().globalGizmo)
+					if ((bool)ADOSettings.Instance().globalGizmo)
 					{
-						ADOSettings.GetConsumer().gizmoBoneOpacity.SetValue(EditorGUILayout.Slider("Bone Opacity", ADOSettings.GetConsumer().gizmoBoneOpacity, 0f, 1f));
-						ADOSettings.GetConsumer().gizmoLimitOpacity.SetValue(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.GetConsumer().gizmoLimitOpacity, 0f, 1f));
+						ADOSettings.Instance().gizmoBoneOpacity.SetValue(EditorGUILayout.Slider("Bone Opacity", ADOSettings.Instance().gizmoBoneOpacity, 0f, 1f));
+						ADOSettings.Instance().gizmoLimitOpacity.SetValue(EditorGUILayout.Slider("Limit Opacitiy", ADOSettings.Instance().gizmoLimitOpacity, 0f, 1f));
 					}
 					else
 					{
@@ -3567,21 +3567,21 @@ internal sealed class ADOverhaul
 			SetSingleton(task);
 			if (ValidateAccount())
 			{
-				bool flag = ADOSettings.GetConsumer().onSceneNameLabels;
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, ADOSettings.GetConsumer().labelColor.GetValue()))
+				bool flag = ADOSettings.Instance().onSceneNameLabels;
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, ADOSettings.Instance().labelColor.GetValue()))
 				{
 					for (int i = 0; i < m_MapperIdentifier.Length; i++)
 					{
 						int _ExporterAuthentication = i;
 						VRCPhysBoneCollider _CreatorAuthentication = m_MapperIdentifier[_ExporterAuthentication];
-						ADOEditorUtility.SphereHandle first = ADOEditorUtility.SphereHandle.OrderComparator(_CreatorAuthentication.transform.TransformPoint(_CreatorAuthentication.position), flag ? _CreatorAuthentication.name : string.Empty, (float)ADOSettings.GetConsumer().handleSizeMultiplier * 0.05f, _Iterator + i, delegate
+						ADOEditorUtility.SphereHandle first = ADOEditorUtility.SphereHandle.Create(_CreatorAuthentication.transform.TransformPoint(_CreatorAuthentication.position), flag ? _CreatorAuthentication.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.05f, _Iterator + i, delegate
 						{
 							m_SingletonAuthentication.DestroyStatus<VRCPhysBoneCollider>(ADOEditorUtility.FillVal(m_QueueIdentifier, _ExporterAuthentication), _CreatorAuthentication);
 						});
-						first._ValMethod = delegate(ADOEditorUtility.SphereHandle sc2)
+						first.onDraw = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
-							Handles.color = ADOSettings.GetConsumer().ExcludeConsumer()[m_QueueIdentifier[_ExporterAuthentication]];
-							ADOEditorUtility.SphereHandle.DeleteComparator(sc2);
+							Handles.color = ADOSettings.Instance().StateColors()[m_QueueIdentifier[_ExporterAuthentication]];
+							ADOEditorUtility.SphereHandle.DrawDefault(sc2);
 						};
 						ADOEditorUtility.InitStatus(first);
 					}
@@ -3589,21 +3589,21 @@ internal sealed class ADOverhaul
 			}
 			if (FlushAccount())
 			{
-				bool flag2 = ADOSettings.GetConsumer().onSceneNameLabels;
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag2, ADOSettings.GetConsumer().labelColor.GetValue()))
+				bool flag2 = ADOSettings.Instance().onSceneNameLabels;
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag2, ADOSettings.Instance().labelColor.GetValue()))
 				{
 					for (int num = 0; num < mappingIdentifier.Length; num++)
 					{
 						Transform _ConnectionAuthentication = mappingIdentifier[num];
 						int m_DispatcherAuthentication = num;
-						ADOEditorUtility.SphereHandle first2 = ADOEditorUtility.SphereHandle.OrderComparator(_ConnectionAuthentication.position, (!flag2) ? string.Empty : _ConnectionAuthentication.name, (float)ADOSettings.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num, delegate
+						ADOEditorUtility.SphereHandle first2 = ADOEditorUtility.SphereHandle.Create(_ConnectionAuthentication.position, (!flag2) ? string.Empty : _ConnectionAuthentication.name, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, _Iterator + num, delegate
 						{
 							m_TemplateIdentifier.DestroyStatus<Transform>(ADOEditorUtility.FillVal(m_QueueIdentifier, m_DispatcherAuthentication), _ConnectionAuthentication);
 						});
-						first2._ValMethod = delegate(ADOEditorUtility.SphereHandle sc2)
+						first2.onDraw = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
-							Handles.color = ADOSettings.GetConsumer().ExcludeConsumer()[m_QueueIdentifier[m_DispatcherAuthentication]];
-							ADOEditorUtility.SphereHandle.DeleteComparator(sc2);
+							Handles.color = ADOSettings.Instance().StateColors()[m_QueueIdentifier[m_DispatcherAuthentication]];
+							ADOEditorUtility.SphereHandle.DrawDefault(sc2);
 						};
 						ADOEditorUtility.InitStatus(first2);
 					}
@@ -3611,15 +3611,15 @@ internal sealed class ADOverhaul
 			}
 			if (RevertAccount())
 			{
-				bool flag3 = ADOSettings.GetConsumer().onSceneNameLabels;
-				Handles.color = ADOSettings.GetConsumer().selectionColor.GetValue();
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag3, ADOSettings.GetConsumer().labelColor.GetValue()))
+				bool flag3 = ADOSettings.Instance().onSceneNameLabels;
+				Handles.color = ADOSettings.Instance().selectionColor.GetValue();
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag3, ADOSettings.Instance().labelColor.GetValue()))
 				{
 					for (int num2 = 0; num2 < _PolicyIdentifier.Length; num2++)
 					{
 						VRCPhysBone vRCPhysBone = _PolicyIdentifier[num2];
 						int _ExpressionAuthentication = num2;
-						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.OrderComparator(vRCPhysBone.transform.position, flag3 ? vRCPhysBone.name : string.Empty, (float)ADOSettings.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num2, delegate
+						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.Create(vRCPhysBone.transform.position, flag3 ? vRCPhysBone.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, _Iterator + num2, delegate
 						{
 							VRCPhysBone[] messageIdentifier = _MessageIdentifier;
 							for (int j = 0; j < messageIdentifier.Length; j++)
@@ -3637,15 +3637,15 @@ internal sealed class ADOverhaul
 			}
 			if (ConnectAccount())
 			{
-				bool flag4 = ADOSettings.GetConsumer().onSceneNameLabels;
-				Handles.color = ADOSettings.GetConsumer().selectionColor.GetValue();
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag4, ADOSettings.GetConsumer().labelColor.GetValue()))
+				bool flag4 = ADOSettings.Instance().onSceneNameLabels;
+				Handles.color = ADOSettings.Instance().selectionColor.GetValue();
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag4, ADOSettings.Instance().labelColor.GetValue()))
 				{
 					for (int num3 = 0; num3 < _PolicyIdentifier.Length; num3++)
 					{
 						VRCPhysBone vRCPhysBone2 = _PolicyIdentifier[num3];
 						int _DecoratorAuthentication = num3;
-						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.OrderComparator(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)ADOSettings.GetConsumer().handleSizeMultiplier * 0.25f, _Iterator + num3, delegate
+						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.Create(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, _Iterator + num3, delegate
 						{
 							VRCPhysBone[] messageIdentifier = _MessageIdentifier;
 							for (int j = 0; j < messageIdentifier.Length; j++)
@@ -3662,7 +3662,7 @@ internal sealed class ADOverhaul
 				}
 			}
 			Event current = Event.current;
-			if (Tools.current != Tool.View && !current.alt && (bool)ADOSettings.GetConsumer().ignoreSceneClicks && rulesAuthentication.activeIndex > 0 && current.type == EventType.MouseDown && current.button == 0)
+			if (Tools.current != Tool.View && !current.alt && (bool)ADOSettings.Instance().ignoreSceneClicks && rulesAuthentication.activeIndex > 0 && current.type == EventType.MouseDown && current.button == 0)
 			{
 				GUIUtility.hotControl = _Iterator - 1;
 				current.Use();
@@ -3679,9 +3679,9 @@ internal sealed class ADOverhaul
 				num = 0;
 			}
 			bool flag = num > 0;
-			if ((bool)ADOSettings.GetConsumer().onSceneToolSelection && (flag || (bool)ADOSettings.GetConsumer().onSceneToolSelectionAlwaysVisible))
+			if ((bool)ADOSettings.Instance().onSceneToolSelection && (flag || (bool)ADOSettings.Instance().onSceneToolSelectionAlwaysVisible))
 			{
-				ADOEditorUtility.PositionFlag enumValue = ADOSettings.GetConsumer().toolSelectionOverlayAlignment.GetEnumValue<ADOEditorUtility.PositionFlag>();
+				ADOEditorUtility.PositionFlag enumValue = ADOSettings.Instance().toolSelectionOverlayAlignment.GetEnumValue<ADOEditorUtility.PositionFlag>();
 				bool flag2;
 				using (new ADOEditorUtility.SceneViewPanel(info, 250f, 34f, enumValue, m_ExceptionIdentifier))
 				{
@@ -3690,9 +3690,9 @@ internal sealed class ADOverhaul
 					{
 						using (new EditorGUI.DisabledScope(rulesAuthentication.activeIndex <= 0))
 						{
-							if (ADOEditorUtility.ListStatus((!ADOSettings.GetConsumer().ignoreSceneClicks) ? ADOEditorUtility.CustomizeRef().decoratorSerializer : ADOEditorUtility.CustomizeRef()._ParamSerializer))
+							if (ADOEditorUtility.ListStatus((!ADOSettings.Instance().ignoreSceneClicks) ? ADOEditorUtility.CustomizeRef().decoratorSerializer : ADOEditorUtility.CustomizeRef()._ParamSerializer))
 							{
-								ADOSettings.GetConsumer().ignoreSceneClicks.Toggle();
+								ADOSettings.Instance().ignoreSceneClicks.Toggle();
 							}
 						}
 						GUILayout.FlexibleSpace();
@@ -3739,7 +3739,7 @@ internal sealed class ADOverhaul
 				if (flag2)
 				{
 					Handles.BeginGUI();
-					ADOSettings.GetConsumer().toolSelectionOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk);
+					ADOSettings.Instance().toolSelectionOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk);
 					Handles.EndGUI();
 				}
 			}
@@ -3768,12 +3768,12 @@ internal sealed class ADOverhaul
 
 		private static void InvokeSingleton(SceneView value)
 		{
-			if (!ADOSettings.GetConsumer().onSceneEditingOverlay || rulesAuthentication.activeIndex <= 0)
+			if (!ADOSettings.Instance().onSceneEditingOverlay || rulesAuthentication.activeIndex <= 0)
 			{
 				return;
 			}
 			bool _IssuerAuthentication = RemoveAccount();
-			bool codeAuthentication = ADOSettings.GetConsumer().onSceneTooltip;
+			bool codeAuthentication = ADOSettings.Instance().onSceneTooltip;
 			if (!_IssuerAuthentication && !codeAuthentication)
 			{
 				return;
@@ -3842,16 +3842,16 @@ internal sealed class ADOverhaul
 			_003C_003Ec__DisplayClass116_0 vis = default(_003C_003Ec__DisplayClass116_0);
 			vis._MessageAuthentication = res;
 			vis._PolicyAuthentication = result.physBone;
-			ADOEditorUtility.BoneNode[] array = result.nodes.Where((ADOEditorUtility.BoneNode b) => b.m_DescriptorMethod && !b.m_RepositoryMethod).ToArray();
+			ADOEditorUtility.BoneNode[] array = result.nodes.Where((ADOEditorUtility.BoneNode b) => b.isEndBone && !b.isVirtual).ToArray();
 			foreach (ADOEditorUtility.BoneNode boneNode in array)
 			{
-				Transform parserMethod = boneNode.parserMethod;
-				Vector3 vector = parserMethod.TransformPoint(vis._PolicyAuthentication.endpointPosition);
+				Transform transform = boneNode.transform;
+				Vector3 vector = transform.TransformPoint(vis._PolicyAuthentication.endpointPosition);
 				if (!vis._PolicyAuthentication.showGizmos || !(vis._PolicyAuthentication.boneOpacity >= 0.05f))
 				{
-					Handles.DrawLine(parserMethod.position, vector);
+					Handles.DrawLine(transform.position, vector);
 				}
-				Quaternion rotation = ((Tools.pivotRotation != PivotRotation.Global) ? parserMethod.rotation : Quaternion.identity);
+				Quaternion rotation = ((Tools.pivotRotation != PivotRotation.Global) ? transform.rotation : Quaternion.identity);
 				Vector3 vector2 = Vector3.zero;
 				bool flag = false;
 				EditorGUI.BeginChangeCheck();
@@ -3866,10 +3866,10 @@ internal sealed class ADOverhaul
 				if (hotControl != _DefinitionAuthentication)
 				{
 					_DefinitionAuthentication = -1;
-					direction = vector - parserMethod.position;
+					direction = vector - transform.position;
 					if (!(direction.magnitude >= 0.01f))
 					{
-						direction = ((boneNode.managerMethod == null) ? (-parserMethod.forward) : (vector - boneNode.managerMethod.parserMethod.position));
+						direction = ((boneNode.parent == null) ? (-transform.forward) : (vector - boneNode.parent.transform.position));
 					}
 				}
 				else
@@ -3891,7 +3891,7 @@ internal sealed class ADOverhaul
 				}
 				if (flag)
 				{
-					SearchSingleton(parserMethod.InverseTransformVector(vector2 - vector), ref vis);
+					SearchSingleton(transform.InverseTransformVector(vector2 - vector), ref vis);
 				}
 			}
 		}
@@ -3948,10 +3948,10 @@ internal sealed class ADOverhaul
 			bool flag = pred == null || pred.length == 0;
 			foreach (ADOEditorUtility.BoneNode node in def.nodes)
 			{
-				float num = ((!flag) ? pred.Evaluate(node.RegisterProduct()) : 1f);
+				float num = ((!flag) ? pred.Evaluate(node.GetNormalizedDepth()) : 1f);
 				if (isinstance2)
 				{
-					num *= node.CheckProduct();
+					num *= node.GetMaxScale();
 				}
 				proc(node, num);
 			}
@@ -3964,7 +3964,7 @@ internal sealed class ADOverhaul
 			Keyframe[] keys = animationCurve.keys;
 			for (int i = 0; i < keys.Length; i++)
 			{
-				if (!(Math.Abs(keys[i].time - col.RegisterProduct()) >= 0.01f))
+				if (!(Math.Abs(keys[i].time - col.GetNormalizedDepth()) >= 0.01f))
 				{
 					num = i;
 					break;
@@ -3977,10 +3977,10 @@ internal sealed class ADOverhaul
 			}
 			else
 			{
-				num2 = animationCurve.Evaluate(col.RegisterProduct());
-				num = animationCurve.AddKey(col.RegisterProduct(), num2);
+				num2 = animationCurve.Evaluate(col.GetNormalizedDepth());
+				num = animationCurve.AddKey(col.GetNormalizedDepth(), num2);
 			}
-			float num3 = col.ForgotProduct(animationCurve);
+			float num3 = col.EvaluateCurve(animationCurve);
 			bool flag = ident3 < 0f;
 			if (!(proc.floatValue * num3 >= 0f))
 			{
@@ -3991,7 +3991,7 @@ internal sealed class ADOverhaul
 			{
 				if (num4 < (float)(flag ? (-1) : 0))
 				{
-					animationCurve.MoveKey(num, new Keyframe(col.RegisterProduct(), flag ? (-1) : 0));
+					animationCurve.MoveKey(num, new Keyframe(col.GetNormalizedDepth(), flag ? (-1) : 0));
 				}
 				else
 				{
@@ -4005,7 +4005,7 @@ internal sealed class ADOverhaul
 					{
 						num5 = proc.floatValue / ident3;
 					}
-					animationCurve.MoveKey(num, new Keyframe(col.RegisterProduct(), 1f));
+					animationCurve.MoveKey(num, new Keyframe(col.GetNormalizedDepth(), 1f));
 					for (int j = 0; j < keys.Length; j++)
 					{
 						if (j != num)
@@ -4018,7 +4018,7 @@ internal sealed class ADOverhaul
 			}
 			else
 			{
-				animationCurve.MoveKey(num, new Keyframe(col.RegisterProduct(), num4));
+				animationCurve.MoveKey(num, new Keyframe(col.GetNormalizedDepth(), num4));
 			}
 			float num7 = animationCurve.keys.Select((Keyframe k) => k.value).Prepend(0f).Max();
 			if (num7 < 0.8f)
@@ -4049,10 +4049,10 @@ internal sealed class ADOverhaul
 			CS_0024_003C_003E8__locals28.m_ErrorAuthentication = CS_0024_003C_003E8__locals28.m_WriterAuthentication.FindProperty(CS_0024_003C_003E8__locals28._ClassAuthentication.m_ParserAuthentication);
 			CS_0024_003C_003E8__locals28.producerAuthentication = CS_0024_003C_003E8__locals28._ClassAuthentication.repositoryAuthentication;
 			CS_0024_003C_003E8__locals28._TemplateAuthentication = CS_0024_003C_003E8__locals28._ClassAuthentication._DescriptorAuthentication;
-			float num = ADOSettings.GetConsumer().handleSizeMultiplier;
+			float num = ADOSettings.Instance().handleSizeMultiplier;
 			float num2 = Mathf.Clamp(HandleUtility.GetHandleSize(CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.transform.position) * 0.05f * num, 0.02f * num, num * 2f);
 			_ = EditorStyles.boldLabel;
-			Color value = ADOSettings.GetConsumer().generalColor.GetValue();
+			Color value = ADOSettings.Instance().generalColor.GetValue();
 			Color color = Handles.color;
 			Handles.color = value;
 			AnimationCurve animationCurveValue = CS_0024_003C_003E8__locals28.m_ErrorAuthentication.animationCurveValue;
@@ -4063,11 +4063,11 @@ internal sealed class ADOverhaul
 				{
 					if (m != 0f)
 					{
-						Matrix4x4 printerMethod = b.printerMethod;
-						Vector4 column = printerMethod.GetColumn(3);
+						Matrix4x4 matrix = b.matrix;
+						Vector4 column = matrix.GetColumn(3);
 						float comp2 = CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.radius * m;
 						EditorGUI.BeginChangeCheck();
-						float num9 = ADOEditorUtility.CreateStatus(printerMethod.rotation, column, comp2, !CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.showGizmos, ADOSettings.GetConsumer().handleSizeMultiplier);
+						float num9 = ADOEditorUtility.CreateStatus(matrix.rotation, column, comp2, !CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.showGizmos, ADOSettings.Instance().handleSizeMultiplier);
 						if (EditorGUI.EndChangeCheck())
 						{
 							float delta = num9 / m - CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.radius;
@@ -4089,10 +4089,10 @@ internal sealed class ADOverhaul
 					for (int num4 = 0; num4 < list.Count; num4++)
 					{
 						ADOEditorUtility.BoneNode boneNode = list[num4];
-						Vector3 vector3 = ((num4 == 0) ? boneNode.LoginProduct() : vector2);
+						Vector3 vector3 = ((num4 == 0) ? boneNode.GetPosition() : vector2);
 						if (num4 != list.Count - 1)
 						{
-							vector2 = list[num4 + 1].LoginProduct();
+							vector2 = list[num4 + 1].GetPosition();
 							vector = vector2 - vector3;
 						}
 						if (!(Vector3.Angle(Vector3.right, vector) >= 90f))
@@ -4100,7 +4100,7 @@ internal sealed class ADOverhaul
 							vector = -vector;
 						}
 						Vector3 up = Vector3.up;
-						float num5 = boneNode.ForgotProduct(animationCurveValue);
+						float num5 = boneNode.EvaluateCurve(animationCurveValue);
 						float num6 = CS_0024_003C_003E8__locals28.valueAuthentication.floatValue * num5;
 						Vector3 vector4 = vector3 + up * (num * (num6 / CS_0024_003C_003E8__locals28._TemplateAuthentication));
 						array[num3][num4] = vector4;
@@ -4413,14 +4413,14 @@ internal sealed class ADOverhaul
 
 		internal static void InterruptSingleton()
 		{
-			if ((bool)ADOSettings.GetConsumer().globalGizmo)
+			if ((bool)ADOSettings.Instance().globalGizmo)
 			{
 				VRCPhysBone[] array = UnityEngine.Object.FindObjectsOfType<VRCPhysBone>();
 				foreach (VRCPhysBone obj in array)
 				{
-					obj.showGizmos = ADOSettings.GetConsumer().gizmosActive;
-					obj.boneOpacity = ADOSettings.GetConsumer().gizmoBoneOpacity;
-					obj.limitOpacity = ADOSettings.GetConsumer().gizmoLimitOpacity;
+					obj.showGizmos = ADOSettings.Instance().gizmosActive;
+					obj.boneOpacity = ADOSettings.Instance().gizmoBoneOpacity;
+					obj.limitOpacity = ADOSettings.Instance().gizmoLimitOpacity;
 				}
 			}
 		}
@@ -4768,7 +4768,7 @@ internal sealed class ADOverhaul
 			using (new GUILayout.HorizontalScope())
 			{
 				bool ignorecaller;
-				string tooltip = ((!(ignorecaller = ADOSettings.GetConsumer().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
+				string tooltip = ((!(ignorecaller = ADOSettings.Instance().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
 				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
 					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
@@ -4776,7 +4776,7 @@ internal sealed class ADOverhaul
 						tooltip = tooltip
 					}))
 					{
-						ADOSettings.GetConsumer().hideToolsDuringTesting.Toggle();
+						ADOSettings.Instance().hideToolsDuringTesting.Toggle();
 						Tools.hidden = false;
 					}
 				}
@@ -4968,7 +4968,7 @@ internal sealed class ADOverhaul
 			QueryConfiguration(response, delegate
 			{
 				_Worker = false;
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
+				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 				AssetConfiguration(testkey: true);
 			});
 		}
@@ -4976,7 +4976,7 @@ internal sealed class ADOverhaul
 		internal void RemoveServer()
 		{
 			_Worker = false;
-			ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
+			ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 			AssetConfiguration(testkey: true);
 		}
 
@@ -5124,14 +5124,14 @@ internal sealed class ADOverhaul
 
 		internal void DeleteWatcher()
 		{
-			ADOSettings.GetConsumer().a_VerifyOnDisplay.Toggle();
-			ADOSettings.GetConsumer().a_VerifyOnProjectLoad.SetValue(nores: false);
+			ADOSettings.Instance().a_VerifyOnDisplay.Toggle();
+			ADOSettings.Instance().a_VerifyOnProjectLoad.SetValue(nores: false);
 		}
 
 		internal void DefineWatcher()
 		{
-			ADOSettings.GetConsumer().a_VerifyOnProjectLoad.Toggle();
-			ADOSettings.GetConsumer().a_VerifyOnDisplay.SetValue(nores: false);
+			ADOSettings.Instance().a_VerifyOnProjectLoad.Toggle();
+			ADOSettings.Instance().a_VerifyOnDisplay.SetValue(nores: false);
 		}
 
 		internal void DestroyWatcher()
@@ -5173,7 +5173,7 @@ internal sealed class ADOverhaul
 		internal async Task CustomizeWatcher()
 		{
 			await Task.Delay(3000);
-			ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
+			ADOSettings.Instance().u_updateHidden.SetValue(nores: true);
 			CalculateIdentifier();
 		}
 	}
@@ -5189,7 +5189,7 @@ internal sealed class ADOverhaul
 			_Service = false;
 			_Reponse = false;
 			_Object = (listener = (m_Printer = string.Empty));
-			ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
+			ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 			SessionState.EraseBool(itemContext);
 			ResetConfiguration(reponse);
 		}
@@ -5218,7 +5218,7 @@ internal sealed class ADOverhaul
 					_Service = false;
 					_Reponse = false;
 					_Object = (listener = (m_Printer = string.Empty));
-					ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
+					ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 					SessionState.EraseBool(itemContext);
 					ResetConfiguration(reponse);
 				}, comparesecond2: false);
@@ -5240,7 +5240,7 @@ internal sealed class ADOverhaul
 				_Service = false;
 				_Reponse = false;
 				_Object = (listener = (m_Printer = string.Empty));
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
+				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 				SessionState.EraseBool(itemContext);
 				ResetConfiguration(reponse);
 			}, comparesecond2: false);
@@ -5296,7 +5296,7 @@ internal sealed class ADOverhaul
 					NewIdentifier(def);
 				}
 				_Service = true;
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
+				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 				EditorPrefs.SetString("No1lKII9IzcBAbihub6nCg==LK", m_Repository);
 				_003C_003Ec__DisplayClass132_4 _003C_003Ec__DisplayClass132_4_ = default(_003C_003Ec__DisplayClass132_4);
 				_003C_003Ec__DisplayClass132_4_.ruleContext = new AesManaged();
@@ -6079,9 +6079,9 @@ internal sealed class ADOverhaul
 		{
 			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCContactReceiver)t2)).ToArray();
 		}
-		Transform helperMethod = pool.m_TokenizerContext[pool._ExceptionContext].m_HelperMethod;
-		pool._ProducerContext = UpdateConfiguration(helperMethod);
-		int candidateMethod = pool.m_TokenizerContext[pool._ExceptionContext]._CandidateMethod;
+		Transform rootTransform = pool.m_TokenizerContext[pool._ExceptionContext].rootTransform;
+		pool._ProducerContext = UpdateConfiguration(rootTransform);
+		int shapeType = pool.m_TokenizerContext[pool._ExceptionContext].shapeType;
 		if (!((Func<bool>)delegate
 		{
 			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
@@ -6090,14 +6090,14 @@ internal sealed class ADOverhaul
 		{
 			return;
 		}
-		Quaternion quaternion = helperMethod.rotation * pool.m_TokenizerContext[pool._ExceptionContext].m_TestsMethod;
-		pool.m_ErrorContext = helperMethod.TransformPoint(pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod);
+		Quaternion quaternion = rootTransform.rotation * pool.m_TokenizerContext[pool._ExceptionContext].rotation;
+		pool.m_ErrorContext = rootTransform.TransformPoint(pool.m_TokenizerContext[pool._ExceptionContext].position);
 		Vector3 vector = quaternion * Vector3.up;
-		float num = pool.m_TokenizerContext[pool._ExceptionContext].m_StubMethod * 0.5f - pool.m_TokenizerContext[pool._ExceptionContext].m_ReaderMethod;
-		float num2 = pool.m_TokenizerContext[pool._ExceptionContext].m_ReaderMethod * pool._ProducerContext;
+		float num = pool.m_TokenizerContext[pool._ExceptionContext].height * 0.5f - pool.m_TokenizerContext[pool._ExceptionContext].radius;
+		float num2 = pool.m_TokenizerContext[pool._ExceptionContext].radius * pool._ProducerContext;
 		Vector3 vector2 = num2 * vector;
-		Vector3 vector3 = pool.m_ErrorContext + Mathf.Max(num * pool._ProducerContext, 0f) * (helperMethod.rotation * pool.m_TokenizerContext[pool._ExceptionContext].m_TestsMethod * Vector3.up);
-		Vector3 vector4 = pool.m_ErrorContext - Mathf.Max(num * pool._ProducerContext, 0f) * (helperMethod.rotation * pool.m_TokenizerContext[pool._ExceptionContext].m_TestsMethod * Vector3.up);
+		Vector3 vector3 = pool.m_ErrorContext + Mathf.Max(num * pool._ProducerContext, 0f) * (rootTransform.rotation * pool.m_TokenizerContext[pool._ExceptionContext].rotation * Vector3.up);
+		Vector3 vector4 = pool.m_ErrorContext - Mathf.Max(num * pool._ProducerContext, 0f) * (rootTransform.rotation * pool.m_TokenizerContext[pool._ExceptionContext].rotation * Vector3.up);
 		pool.m_ValueContext = (Event.current.shift ? 2 : (Event.current.alt ? 1 : 0));
 		pool.m_MappingContext = pool.m_ValueContext == 1;
 		if (_Tag)
@@ -6118,21 +6118,21 @@ internal sealed class ADOverhaul
 				Vector3 vector6 = vector5 - pool.m_ErrorContext;
 				if (flag || pool.m_ValueContext != 0)
 				{
-					vector6 = helperMethod.InverseTransformVector(vector6);
+					vector6 = rootTransform.InverseTransformVector(vector6);
 				}
 				int num4 = default(int);
 				switch (pool.m_ValueContext)
 				{
 				default:
-					pool.m_TokenizerContext[num4]._RulesMethod = pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod;
+					pool.m_TokenizerContext[num4].position = pool.m_TokenizerContext[pool._ExceptionContext].position;
 					num4++;
 					goto IL_029b;
 				case 2:
-					pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod += vector6;
+					pool.m_TokenizerContext[pool._ExceptionContext].position += vector6;
 					num4 = 0;
 					goto IL_029b;
 				case 1:
-					pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod += vector6;
+					pool.m_TokenizerContext[pool._ExceptionContext].position += vector6;
 					break;
 				case 0:
 					{
@@ -6140,15 +6140,15 @@ internal sealed class ADOverhaul
 						{
 							if (!flag)
 							{
-								pool.m_TokenizerContext[num3]._RulesMethod += pool.m_TokenizerContext[num3].m_HelperMethod.InverseTransformVector(vector6);
+								pool.m_TokenizerContext[num3].position += pool.m_TokenizerContext[num3].rootTransform.InverseTransformVector(vector6);
 							}
-							else if (!(pool.m_TokenizerContext[num3].customerMethod == pool.m_TokenizerContext[pool._ExceptionContext].customerMethod))
+							else if (!(pool.m_TokenizerContext[num3].source == pool.m_TokenizerContext[pool._ExceptionContext].source))
 							{
-								pool.m_TokenizerContext[num3]._RulesMethod += pool.m_TokenizerContext[num3].m_TestsMethod * Quaternion.Inverse(pool.m_TokenizerContext[pool._ExceptionContext].m_TestsMethod) * vector6;
+								pool.m_TokenizerContext[num3].position += pool.m_TokenizerContext[num3].rotation * Quaternion.Inverse(pool.m_TokenizerContext[pool._ExceptionContext].rotation) * vector6;
 							}
 							else
 							{
-								pool.m_TokenizerContext[pool._ExceptionContext]._RulesMethod += vector6;
+								pool.m_TokenizerContext[pool._ExceptionContext].position += vector6;
 							}
 						}
 						break;
@@ -6170,7 +6170,7 @@ internal sealed class ADOverhaul
 		{
 			return;
 		}
-		if (filter && candidateMethod != 0)
+		if (filter && shapeType != 0)
 		{
 			using EditorGUI.ChangeCheckScope changeCheckScope2 = new EditorGUI.ChangeCheckScope();
 			Quaternion quaternion2 = Handles.RotationHandle(quaternion, pool.m_ErrorContext);
@@ -6184,7 +6184,7 @@ internal sealed class ADOverhaul
 				{
 					Undo.RecordObjects(pool.m_ProcessorContext, "Adjust Rotation");
 				}
-				Quaternion testsMethod = Quaternion.Euler((Quaternion.Inverse(helperMethod.rotation) * quaternion2).eulerAngles);
+				Quaternion rotation = Quaternion.Euler((Quaternion.Inverse(rootTransform.rotation) * quaternion2).eulerAngles);
 				switch (pool.m_ValueContext)
 				{
 				case 0:
@@ -6192,25 +6192,25 @@ internal sealed class ADOverhaul
 				{
 					for (int num5 = 0; num5 < pool.m_TokenizerContext.Length; num5++)
 					{
-						pool.m_TokenizerContext[num5].m_TestsMethod = testsMethod;
+						pool.m_TokenizerContext[num5].rotation = rotation;
 					}
 					break;
 				}
 				case 1:
-					pool.m_TokenizerContext[pool._ExceptionContext].m_TestsMethod = testsMethod;
+					pool.m_TokenizerContext[pool._ExceptionContext].rotation = rotation;
 					break;
 				}
 			}
 		}
-		if (record && candidateMethod != 2)
+		if (record && shapeType != 2)
 		{
-			bool flag2 = candidateMethod == 1;
+			bool flag2 = shapeType == 1;
 			_003C_003Ec__DisplayClass46_1 third = default(_003C_003Ec__DisplayClass46_1);
 			using (EditorGUI.ChangeCheckScope changeCheckScope3 = new EditorGUI.ChangeCheckScope())
 			{
 				Vector3 position = (flag2 ? vector3 : pool.m_ErrorContext);
-				Quaternion rotation = ((!flag2) ? Quaternion.identity : quaternion);
-				third._TemplateContext = Handles.RadiusHandle(rotation, position, num2, handlesOnly: true) / pool._ProducerContext;
+				Quaternion rotation2 = ((!flag2) ? Quaternion.identity : quaternion);
+				third._TemplateContext = Handles.RadiusHandle(rotation2, position, num2, handlesOnly: true) / pool._ProducerContext;
 				CollectIdentifier(changeCheckScope3.changed, ref pool, ref third);
 			}
 			if (flag2)
@@ -6220,7 +6220,7 @@ internal sealed class ADOverhaul
 				CollectIdentifier(changeCheckScope4.changed, ref pool, ref third);
 			}
 		}
-		if (_Resolver && candidateMethod == 1)
+		if (_Resolver && shapeType == 1)
 		{
 			if (!((Func<bool>)delegate
 			{
@@ -6257,7 +6257,7 @@ internal sealed class ADOverhaul
 		ADOEditorUtility.ShapeSnapshot[] array = pool.m_TokenizerContext;
 		foreach (ADOEditorUtility.ShapeSnapshot shapeSnapshot in array)
 		{
-			shapeSnapshot.SortProduct();
+			shapeSnapshot.Apply();
 		}
 	}
 
@@ -6314,7 +6314,7 @@ internal sealed class ADOverhaul
 		{
 			return;
 		}
-		Tools.hidden |= ADOSettings.GetConsumer().hideToolsDuringTesting;
+		Tools.hidden |= ADOSettings.Instance().hideToolsDuringTesting;
 		EditorApplication.playModeStateChanged -= FillConfiguration;
 		EditorApplication.playModeStateChanged += FillConfiguration;
 		if (importer != null)
@@ -6326,7 +6326,7 @@ internal sealed class ADOverhaul
 			using (new GUILayout.HorizontalScope())
 			{
 				bool ignorecaller;
-				string tooltip = ((!(ignorecaller = ADOSettings.GetConsumer().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
+				string tooltip = ((!(ignorecaller = ADOSettings.Instance().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
 				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
 				{
 					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
@@ -6334,7 +6334,7 @@ internal sealed class ADOverhaul
 						tooltip = tooltip
 					}))
 					{
-						ADOSettings.GetConsumer().hideToolsDuringTesting.Toggle();
+						ADOSettings.Instance().hideToolsDuringTesting.Toggle();
 						Tools.hidden = false;
 					}
 				}
@@ -6502,7 +6502,7 @@ internal sealed class ADOverhaul
 
 	private static void VerifyConfiguration()
 	{
-		_Definition |= ADOSettings.GetConsumer().hasReadColliderTestingWarning;
+		_Definition |= ADOSettings.Instance().hasReadColliderTestingWarning;
 		watcher = Selection.gameObjects;
 		reg = Selection.activeGameObject;
 		helper = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
@@ -7161,7 +7161,7 @@ internal sealed class ADOverhaul
 				CompareConfiguration();
 				break;
 			case 2:
-				ADOSettings.GetConsumer().hasReadColliderTestingWarning.SetValue(nores: true);
+				ADOSettings.Instance().hasReadColliderTestingWarning.SetValue(nores: true);
 				break;
 			}
 		}
@@ -7215,7 +7215,7 @@ internal sealed class ADOverhaul
 		initializer = isi;
 		if (!initializer && flag)
 		{
-			BugReporter.WriteMethod(null);
+			BugReporter.OnCompilationStarted(null);
 		}
 	}
 
@@ -7268,12 +7268,12 @@ internal sealed class ADOverhaul
 	private static void DisableConfiguration()
 	{
 		bool flag = RateConfiguration();
-		if (!ADOSettings.GetConsumer().a_HasSucceededLastVerification)
+		if (!ADOSettings.Instance().a_HasSucceededLastVerification)
 		{
 			_Worker = true;
 			m_Pool = flag;
 		}
-		if (flag && (bool)ADOSettings.GetConsumer().a_VerifyOnProjectLoad)
+		if (flag && (bool)ADOSettings.Instance().a_VerifyOnProjectLoad)
 		{
 			ADOEditorUtility.AddProcess(delegate
 			{
@@ -7284,7 +7284,7 @@ internal sealed class ADOverhaul
 
 	private static void VisitConfiguration()
 	{
-		if (!m_Pool && (bool)ADOSettings.GetConsumer().a_VerifyOnDisplay && RateConfiguration())
+		if (!m_Pool && (bool)ADOSettings.Instance().a_VerifyOnDisplay && RateConfiguration())
 		{
 			AssetConfiguration(testkey: false);
 		}
@@ -7293,7 +7293,7 @@ internal sealed class ADOverhaul
 	private static void AssetConfiguration(bool testkey)
 	{
 		_003C_003Ec__DisplayClass132_0 CS_0024_003C_003E8__locals10 = new _003C_003Ec__DisplayClass132_0();
-		if ((!ADOSettings.GetConsumer().a_VerifyOnDisplay.GetValue() && !ADOSettings.GetConsumer().a_VerifyOnProjectLoad.GetValue() && !testkey) || (_Worker && !indexer) || _Struct)
+		if ((!ADOSettings.Instance().a_VerifyOnDisplay.GetValue() && !ADOSettings.Instance().a_VerifyOnProjectLoad.GetValue() && !testkey) || (_Worker && !indexer) || _Struct)
 		{
 			return;
 		}
@@ -7369,7 +7369,7 @@ internal sealed class ADOverhaul
 					_Service = false;
 					_Reponse = false;
 					_Object = (listener = (m_Printer = string.Empty));
-					ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: false);
+					ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 					SessionState.EraseBool(CS_0024_003C_003E8__locals10.itemContext);
 					ResetConfiguration(reponse);
 				}, comparesecond2: false);
@@ -7395,7 +7395,7 @@ internal sealed class ADOverhaul
 				QueryConfiguration(response, delegate
 				{
 					_Worker = false;
-					ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
+					ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 					AssetConfiguration(testkey: true);
 				});
 			}, delegate(Exception exception)
@@ -7726,7 +7726,7 @@ internal sealed class ADOverhaul
 			}
 			if ((object)first != null)
 			{
-				ADOEditorUtility.getterSerializer.ConcatComparator(first, visitor);
+				ADOEditorUtility.getterSerializer.Draw(first, visitor);
 			}
 			ConcatIdentifier();
 			if (_Rule || _Struct)
@@ -7775,7 +7775,7 @@ internal sealed class ADOverhaul
 		{
 			return true;
 		}
-		BugReporter.SetupMethod();
+		BugReporter.DrawWindow();
 		return false;
 	}
 
@@ -8102,7 +8102,7 @@ internal sealed class ADOverhaul
 	[SpecialName]
 	private static bool ConnectSerializer()
 	{
-		return ADOSettings.GetConsumer().u_updateDay == RemoveConfiguration();
+		return ADOSettings.Instance().u_updateDay == RemoveConfiguration();
 	}
 
 	private static void SortIdentifier(Action first = null, Action<GenericMenu> col = null)
@@ -8115,7 +8115,7 @@ internal sealed class ADOverhaul
 				{
 					InvokeIdentifier(col);
 				}
-				if (!ADOSettings.GetConsumer().u_updateHidden && creator && ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef()._ParameterSerializer))
+				if (!ADOSettings.Instance().u_updateHidden && creator && ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef()._ParameterSerializer))
 				{
 					dispatcher.target = !dispatcher.target;
 				}
@@ -8160,15 +8160,15 @@ internal sealed class ADOverhaul
 				genericMenu.AddSeparator(string.Empty);
 			}
 			genericMenu.AddSeparator(string.Empty);
-			genericMenu.AddItem(new GUIContent("Verify/On Display"), ADOSettings.GetConsumer().a_VerifyOnDisplay, delegate
+			genericMenu.AddItem(new GUIContent("Verify/On Display"), ADOSettings.Instance().a_VerifyOnDisplay, delegate
 			{
-				ADOSettings.GetConsumer().a_VerifyOnDisplay.Toggle();
-				ADOSettings.GetConsumer().a_VerifyOnProjectLoad.SetValue(nores: false);
+				ADOSettings.Instance().a_VerifyOnDisplay.Toggle();
+				ADOSettings.Instance().a_VerifyOnProjectLoad.SetValue(nores: false);
 			});
-			genericMenu.AddItem(new GUIContent("Verify/On Project Load"), ADOSettings.GetConsumer().a_VerifyOnProjectLoad, delegate
+			genericMenu.AddItem(new GUIContent("Verify/On Project Load"), ADOSettings.Instance().a_VerifyOnProjectLoad, delegate
 			{
-				ADOSettings.GetConsumer().a_VerifyOnProjectLoad.Toggle();
-				ADOSettings.GetConsumer().a_VerifyOnDisplay.SetValue(nores: false);
+				ADOSettings.Instance().a_VerifyOnProjectLoad.Toggle();
+				ADOSettings.Instance().a_VerifyOnDisplay.SetValue(nores: false);
 			});
 		}
 		genericMenu.AddSeparator(string.Empty);
@@ -8223,7 +8223,7 @@ internal sealed class ADOverhaul
 
 	private static void CustomizeIdentifier(bool isres = true)
 	{
-		if ((bool)ADOSettings.GetConsumer().u_updateHidden)
+		if ((bool)ADOSettings.Instance().u_updateHidden)
 		{
 			return;
 		}
@@ -8233,9 +8233,9 @@ internal sealed class ADOverhaul
 			{
 				ADOEditorUtility.DisableStatus();
 			}
-			EditorGUILayout.HelpBox($"Version {ADOSettings.GetConsumer().u_updateVersion}\n--------------\n{ADOSettings.GetConsumer().u_updateMessage}", MessageType.Info);
-			bool flag = !string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_updateLink);
-			bool flag2 = !string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_updateChangelog);
+			EditorGUILayout.HelpBox($"Version {ADOSettings.Instance().u_updateVersion}\n--------------\n{ADOSettings.Instance().u_updateMessage}", MessageType.Info);
+			bool flag = !string.IsNullOrWhiteSpace(ADOSettings.Instance().u_updateLink);
+			bool flag2 = !string.IsNullOrWhiteSpace(ADOSettings.Instance().u_updateChangelog);
 			using (new GUILayout.HorizontalScope())
 			{
 				if (flag)
@@ -8248,13 +8248,13 @@ internal sealed class ADOverhaul
 						}
 					}
 				}
-				if (flag2 && ADOEditorUtility.CallStatus(new GUIContent("Open Changelog", ADOSettings.GetConsumer().u_updateChangelog), EditorStyles.toolbarButton))
+				if (flag2 && ADOEditorUtility.CallStatus(new GUIContent("Open Changelog", ADOSettings.Instance().u_updateChangelog), EditorStyles.toolbarButton))
 				{
-					Application.OpenURL(ADOSettings.GetConsumer().u_updateChangelog);
+					Application.OpenURL(ADOSettings.Instance().u_updateChangelog);
 				}
 				if (ADOEditorUtility.LoginStatus("Skip for Today", EditorStyles.toolbarButton))
 				{
-					ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
+					ADOSettings.Instance().u_updateHidden.SetValue(nores: true);
 				}
 			}
 		}, CalcIdentifier);
@@ -8262,7 +8262,7 @@ internal sealed class ADOverhaul
 
 	private static void ConcatIdentifier()
 	{
-		if ((bool)ADOSettings.GetConsumer().u_announcementHidden || string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_announcement))
+		if ((bool)ADOSettings.Instance().u_announcementHidden || string.IsNullOrWhiteSpace(ADOSettings.Instance().u_announcement))
 		{
 			return;
 		}
@@ -8276,17 +8276,17 @@ internal sealed class ADOverhaul
 			{
 				_CallbackContext.height += 18f;
 				ADOEditorUtility.DisableStatus();
-				EditorGUILayout.HelpBox(ADOSettings.GetConsumer().u_announcement, MessageType.Info);
+				EditorGUILayout.HelpBox(ADOSettings.Instance().u_announcement, MessageType.Info);
 				using (new GUILayout.HorizontalScope())
 				{
-					if (!string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_announcementLink) && ADOEditorUtility.LoginStatus(ADOSettings.GetConsumer().u_announcementLinkName, EditorStyles.toolbarButton))
+					if (!string.IsNullOrWhiteSpace(ADOSettings.Instance().u_announcementLink) && ADOEditorUtility.LoginStatus(ADOSettings.Instance().u_announcementLinkName, EditorStyles.toolbarButton))
 					{
-						Application.OpenURL(ADOSettings.GetConsumer().u_announcementLink);
+						Application.OpenURL(ADOSettings.Instance().u_announcementLink);
 					}
 					if (_Service && ADOEditorUtility.LoginStatus("Hide", EditorStyles.toolbarButton))
 					{
-						ADOSettings.GetConsumer().u_announcementHidden.SetValue(nores: true);
-						ADOSettings.GetConsumer().u_announcementHiddenDate.SetValue(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+						ADOSettings.Instance().u_announcementHidden.SetValue(nores: true);
+						ADOSettings.Instance().u_announcementHiddenDate.SetValue(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 					}
 				}
 			}, CalcIdentifier);
@@ -8300,7 +8300,7 @@ internal sealed class ADOverhaul
 	[InitializeOnLoadMethod]
 	private static void MapIdentifier()
 	{
-		if (!ConnectSerializer() || string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_updateVersion.GetValue()))
+		if (!ConnectSerializer() || string.IsNullOrWhiteSpace(ADOSettings.Instance().u_updateVersion.GetValue()))
 		{
 			ADOEditorUtility.AddProcess(delegate
 			{
@@ -8333,25 +8333,25 @@ internal sealed class ADOverhaul
 		})).CreateProcess(delegate(JsonObject response)
 		{
 			exporter = true;
-			string value = ADOSettings.GetConsumer().u_announcement.GetValue();
+			string value = ADOSettings.Instance().u_announcement.GetValue();
 			using (new ADOSettings.SettingsDeferScope())
 			{
-				ADOSettings.GetConsumer().u_updateLink.SetValue(response.Item("download_link"));
-				ADOSettings.GetConsumer().u_updateMessage.SetValue(response.Item("download_message"));
-				ADOSettings.GetConsumer().u_updateChangelog.SetValue(response.Item("changelog_link"));
-				ADOSettings.GetConsumer().u_updateVersion.SetValue(response.Item("version"));
-				ADOSettings.GetConsumer().u_updateDay.SetValue(RemoveConfiguration());
-				ADOSettings.GetConsumer().u_announcement.SetValue(response.Item("announcement"));
-				if (!string.IsNullOrWhiteSpace(ADOSettings.GetConsumer().u_announcement))
+				ADOSettings.Instance().u_updateLink.SetValue(response.Item("download_link"));
+				ADOSettings.Instance().u_updateMessage.SetValue(response.Item("download_message"));
+				ADOSettings.Instance().u_updateChangelog.SetValue(response.Item("changelog_link"));
+				ADOSettings.Instance().u_updateVersion.SetValue(response.Item("version"));
+				ADOSettings.Instance().u_updateDay.SetValue(RemoveConfiguration());
+				ADOSettings.Instance().u_announcement.SetValue(response.Item("announcement"));
+				if (!string.IsNullOrWhiteSpace(ADOSettings.Instance().u_announcement))
 				{
-					ADOSettings.GetConsumer().u_announcement.SetValue(ADOSettings.GetConsumer().u_announcement.GetValue().Replace("\\\\n", "\n").Replace("\\n", "\n"));
+					ADOSettings.Instance().u_announcement.SetValue(ADOSettings.Instance().u_announcement.GetValue().Replace("\\\\n", "\n").Replace("\\n", "\n"));
 				}
-				ADOSettings.GetConsumer().u_announcementLink.SetValue(response.Item("announcement_link"));
-				ADOSettings.GetConsumer().u_announcementLinkName.SetValue(response.Item("announcement_link_name"));
+				ADOSettings.Instance().u_announcementLink.SetValue(response.Item("announcement_link"));
+				ADOSettings.Instance().u_announcementLinkName.SetValue(response.Item("announcement_link_name"));
 			}
-			if (value != ADOSettings.GetConsumer().u_announcement.GetValue())
+			if (value != ADOSettings.Instance().u_announcement.GetValue())
 			{
-				ADOSettings.GetConsumer().u_announcementHidden.SetValue(nores: false);
+				ADOSettings.Instance().u_announcementHidden.SetValue(nores: false);
 			}
 			SetupIdentifier(isparam);
 		}, delegate(Exception exc)
@@ -8367,7 +8367,7 @@ internal sealed class ADOverhaul
 	private static void LogoutIdentifier()
 	{
 		m_Field = true;
-		UnityWebRequest policyContext = new UnityWebRequest(ADOSettings.GetConsumer().u_updateLink);
+		UnityWebRequest policyContext = new UnityWebRequest(ADOSettings.Instance().u_updateLink);
 		policyContext.downloadHandler = new DownloadHandlerFile("Assets/ADOverhaul.unitypackage");
 		policyContext.SendWebRequest().completed += delegate
 		{
@@ -8388,18 +8388,18 @@ internal sealed class ADOverhaul
 
 	private static void SetupIdentifier(bool iskey)
 	{
-		if ((bool)ADOSettings.GetConsumer().u_announcementHidden)
+		if ((bool)ADOSettings.Instance().u_announcementHidden)
 		{
-			if (DateTime.TryParse(ADOSettings.GetConsumer().u_announcementHiddenDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var result))
+			if (DateTime.TryParse(ADOSettings.Instance().u_announcementHiddenDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var result))
 			{
-				ADOSettings.GetConsumer().u_announcementHidden.SetValue((DateTime.UtcNow - result).TotalDays < 7.0);
+				ADOSettings.Instance().u_announcementHidden.SetValue((DateTime.UtcNow - result).TotalDays < 7.0);
 			}
 			else
 			{
-				ADOSettings.GetConsumer().u_announcementHidden.SetValue(nores: false);
+				ADOSettings.Instance().u_announcementHidden.SetValue(nores: false);
 			}
 		}
-		if (!(m_Expression < new SemVer(ADOSettings.GetConsumer().u_updateVersion.GetValue())))
+		if (!(m_Expression < new SemVer(ADOSettings.Instance().u_updateVersion.GetValue())))
 		{
 			if (iskey)
 			{
@@ -8407,25 +8407,25 @@ internal sealed class ADOverhaul
 				Task.Run(async delegate
 				{
 					await Task.Delay(3000);
-					ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
+					ADOSettings.Instance().u_updateHidden.SetValue(nores: true);
 					CalculateIdentifier();
 				});
 			}
 			else
 			{
-				ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: true);
+				ADOSettings.Instance().u_updateHidden.SetValue(nores: true);
 			}
 			return;
 		}
 		creator = true;
 		if (iskey)
 		{
-			ADOSettings.GetConsumer().u_updateHidden.SetValue(nores: false);
+			ADOSettings.Instance().u_updateHidden.SetValue(nores: false);
 			dispatcher.target = true;
 		}
-		if (!ADOSettings.GetConsumer().u_updateHidden)
+		if (!ADOSettings.Instance().u_updateHidden)
 		{
-			NewIdentifier($"Update Available! <b>(v{ADOSettings.GetConsumer().u_updateVersion})</b>");
+			NewIdentifier($"Update Available! <b>(v{ADOSettings.Instance().u_updateVersion})</b>");
 		}
 	}
 
@@ -8441,7 +8441,7 @@ internal sealed class ADOverhaul
 			if (ADOEditorUtility.ReadStatus())
 			{
 				caller.target = !caller.target;
-				if (!ADOSettings.GetConsumer().editorAnimatedFoldouts)
+				if (!ADOSettings.Instance().editorAnimatedFoldouts)
 				{
 					caller.value = caller.target;
 				}
@@ -8470,7 +8470,7 @@ internal sealed class ADOverhaul
 	internal static void MoveIdentifier(SceneView ident, Func<Rect> result, Action consumer, float pol2, float ivk3)
 	{
 		Rect ivk4 = ident.AddStatus();
-		ADOEditorUtility.PositionFlag enumValue = ADOSettings.GetConsumer().toolOverlayAlignment.GetEnumValue<ADOEditorUtility.PositionFlag>();
+		ADOEditorUtility.PositionFlag enumValue = ADOSettings.Instance().toolOverlayAlignment.GetEnumValue<ADOEditorUtility.PositionFlag>();
 		bool flag;
 		using (new ADOEditorUtility.SceneViewPanel(ident, pol2, ivk3, enumValue, customer))
 		{
@@ -8486,7 +8486,7 @@ internal sealed class ADOverhaul
 		if (flag)
 		{
 			Handles.BeginGUI();
-			ADOSettings.GetConsumer().toolOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk4);
+			ADOSettings.Instance().toolOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk4);
 			Handles.EndGUI();
 		}
 	}
@@ -8515,37 +8515,37 @@ internal sealed class ADOverhaul
 			Undo.RecordObjects(col.m_ProcessorContext, "Adjust Radius");
 		}
 		_003C_003Ec__DisplayClass46_2 var = default(_003C_003Ec__DisplayClass46_2);
-		var.m_WriterContext = third._TemplateContext - col.m_TokenizerContext[col._ExceptionContext].m_ReaderMethod;
+		var.m_WriterContext = third._TemplateContext - col.m_TokenizerContext[col._ExceptionContext].radius;
 		switch (col.m_ValueContext)
 		{
 		case 2:
 		{
-			PrintIdentifier(col.m_TokenizerContext[col._ExceptionContext], out col.m_TokenizerContext[col._ExceptionContext].m_ReaderMethod, out col.m_TokenizerContext[col._ExceptionContext].m_StubMethod, ref var);
+			PrintIdentifier(col.m_TokenizerContext[col._ExceptionContext], out col.m_TokenizerContext[col._ExceptionContext].radius, out col.m_TokenizerContext[col._ExceptionContext].height, ref var);
 			for (int j = 0; j < col.m_TokenizerContext.Length; j++)
 			{
 				if (j != col._ExceptionContext)
 				{
-					col.m_TokenizerContext[j].m_ReaderMethod = col.m_TokenizerContext[col._ExceptionContext].m_ReaderMethod;
-					if (col.m_TokenizerContext[j]._CandidateMethod == 0)
+					col.m_TokenizerContext[j].radius = col.m_TokenizerContext[col._ExceptionContext].radius;
+					if (col.m_TokenizerContext[j].shapeType == 0)
 					{
-						col.m_TokenizerContext[j].m_StubMethod = col.m_TokenizerContext[j].m_ReaderMethod * 2f;
+						col.m_TokenizerContext[j].height = col.m_TokenizerContext[j].radius * 2f;
 					}
 					else
 					{
-						col.m_TokenizerContext[j].m_StubMethod += var.m_WriterContext * 2f;
+						col.m_TokenizerContext[j].height += var.m_WriterContext * 2f;
 					}
 				}
 			}
 			break;
 		}
 		case 1:
-			PrintIdentifier(col.m_TokenizerContext[col._ExceptionContext], out col.m_TokenizerContext[col._ExceptionContext].m_ReaderMethod, out col.m_TokenizerContext[col._ExceptionContext].m_StubMethod, ref var);
+			PrintIdentifier(col.m_TokenizerContext[col._ExceptionContext], out col.m_TokenizerContext[col._ExceptionContext].radius, out col.m_TokenizerContext[col._ExceptionContext].height, ref var);
 			break;
 		default:
 		{
 			for (int i = 0; i < col.m_TokenizerContext.Length; i++)
 			{
-				PrintIdentifier(col.m_TokenizerContext[i], out col.m_TokenizerContext[i].m_ReaderMethod, out col.m_TokenizerContext[i].m_StubMethod, ref var);
+				PrintIdentifier(col.m_TokenizerContext[i], out col.m_TokenizerContext[i].radius, out col.m_TokenizerContext[i].height, ref var);
 			}
 			break;
 		}
@@ -8555,10 +8555,10 @@ internal sealed class ADOverhaul
 	[CompilerGenerated]
 	internal static void PrintIdentifier(ADOEditorUtility.ShapeSnapshot key, out float counter, out float consumer, ref _003C_003Ec__DisplayClass46_2 var12)
 	{
-		counter = key.m_ReaderMethod + var12.m_WriterContext;
-		if (key._CandidateMethod != 0)
+		counter = key.radius + var12.m_WriterContext;
+		if (key.shapeType != 0)
 		{
-			consumer = key.m_StubMethod + var12.m_WriterContext * 2f;
+			consumer = key.height + var12.m_WriterContext * 2f;
 		}
 		else
 		{
@@ -8589,21 +8589,21 @@ internal sealed class ADOverhaul
 		{
 		case 2:
 		{
-			pool.m_TokenizerContext[pool._ExceptionContext].m_StubMethod += num;
+			pool.m_TokenizerContext[pool._ExceptionContext].height += num;
 			for (int j = 0; j < pool.m_TokenizerContext.Length; j++)
 			{
-				pool.m_TokenizerContext[j].m_StubMethod = pool.m_TokenizerContext[pool._ExceptionContext].m_StubMethod;
+				pool.m_TokenizerContext[j].height = pool.m_TokenizerContext[pool._ExceptionContext].height;
 			}
 			break;
 		}
 		case 1:
-			pool.m_TokenizerContext[pool._ExceptionContext].m_StubMethod += num;
+			pool.m_TokenizerContext[pool._ExceptionContext].height += num;
 			break;
 		default:
 		{
 			for (int i = 0; i < pool.m_TokenizerContext.Length; i++)
 			{
-				pool.m_TokenizerContext[i].m_StubMethod += num;
+				pool.m_TokenizerContext[i].height += num;
 			}
 			break;
 		}
@@ -8679,7 +8679,7 @@ internal sealed class ADOverhaul
 			QueryConfiguration(response, delegate
 			{
 				_Worker = false;
-				ADOSettings.GetConsumer().a_HasSucceededLastVerification.SetValue(nores: true);
+				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 				AssetConfiguration(testkey: true);
 			});
 		}, delegate(Exception exception)
