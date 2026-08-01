@@ -15,6 +15,26 @@
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
+// DrawSceneLabel stays private here, and is NOT redirected to ADOEditorUtility.DrawSceneLabel
+// (Editor/ADOverhaul/ADOEditorUtility/ADOEditorUtility.Handles.cs), even though that helper has
+// since landed and its body is character-for-character identical to the copy below. The earlier
+// note in this header asked for exactly that redirect; it is withdrawn, because the shared helper
+// it named is not shared. ADOEditorUtility is ADOverhaul-only, while this type is in
+// DreadScripts.Common precisely because BOTH products ship it -- ControllerEditor's copy is
+// HandleSphere, and it called ControllerEditor's own EditorUtils.CreateQueue (decompiled
+// EditorUtils.cs line 6157), never ADOverhaul's. Pointing Common at ADOverhaul would give the
+// ControllerEditor half of the package a dependency on the ADOverhaul half that neither shipped
+// assembly had -- the same product-to-product coupling that put Json, SemVer and GUIColorScope in
+// Common in the first place. The package currently compiles as one assembly so the redirect would
+// build, but it would quietly make the two products inseparable.
+// The de-duplication that IS correct is to promote the label helper into Common, the way the
+// scene-view rect pair already was (ADOverhaul AddStatus/ValidateStatus and ControllerEditor
+// SortQueue/RegisterQueue -> Common.SceneViewExtensions), and have both products' utility classes
+// call that. Whoever does it should note that the two shipped copies are not quite identical: the
+// depth guard is `vector.z > 0f` in ADOverhaul and `!(vector.z <= 0f)` in ControllerEditor, which
+// differ when WorldToGUIPointWithDepth returns NaN -- ADOverhaul skips the label, ControllerEditor
+// draws it at a NaN position. The copy below is the ADOverhaul form, matching this type's source.
+//
 // Deliberately not ported:
 //  - Three fields that exist in both copies but are never read or written anywhere in either
 //    product: a Quaternion, a Vector3 and a float[]. They carry no behaviour.
@@ -128,8 +148,8 @@ namespace DreadScripts.Common
         /// <remarks>
         /// Both products carry this as a static helper on their editor-utility class (FindStatus in
         /// ADOverhaul, CreateQueue in ControllerEditor). It is duplicated here as a private member
-        /// so this file has no dependency on a utility region that is not ported yet; it should be
-        /// replaced by the shared helper once that region lands.
+        /// rather than delegated to either, so that a type shared by both products does not depend
+        /// on one of them. See the file header for why the ADOverhaul copy is not called from here.
         /// </remarks>
         private static void DrawSceneLabel(string text, Vector3 worldPosition, float offset = 0f, GUIStyle style = null)
         {

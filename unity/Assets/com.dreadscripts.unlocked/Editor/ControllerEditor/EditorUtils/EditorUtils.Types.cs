@@ -11,7 +11,23 @@
 //
 // Also present in the decompiled file and deliberately not ported here: FillRules (line 5265),
 // which is RequireType without the assembly scan -- a plain Type.GetType that throws when it
-// misses. Nothing in the reconstructed package calls it.
+// misses.
+//
+// An earlier version of this note added "nothing in the reconstructed package calls it", which was
+// true of the package but badly misleading about the source, so it is restated properly. FillRules
+// is in fact the assembly's *main* type resolver: 29 call sites, against 5 for ForgotRules and
+// none at all for WriteRules. 26 are in ControllerEditor.cs (8975, 15282-15288, 15694-15704, 15867,
+// 15892-15897, 16166-16167, 17077, 17118-17121), two in EditorUtils.cs (6735-6736) and one in
+// RenameOverlayWrapper.cs (55). Nearly all of them are the eager "prime the reflection cache"
+// methods that resolve the internal UnityEditor.Graphs / AnimationWindow types the Harmony patch
+// families are applied to and read members off; every one passes a fully assembly-qualified name,
+// which is exactly the case where the assembly scan ForgotRules adds would be wasted work.
+//
+// It is unreferenced in the package only because those call sites are not ported as-is: the ported
+// reflection caches express the same lookups as TypeResolver / ReflectionMemberRef fields, which
+// resolve lazily and yield null instead of throwing (see TypeResolver.cs and RenameOverlayWrapper.
+// cs). So FillRules is absent for want of callers, not for want of purpose, and porting it remains
+// reasonable -- it just belongs with whichever region first needs a strict resolver.
 
 using System;
 using System.Linq;

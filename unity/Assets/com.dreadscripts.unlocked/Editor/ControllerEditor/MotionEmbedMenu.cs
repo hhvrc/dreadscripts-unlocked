@@ -11,21 +11,20 @@
 //   static ExtractMotion(MenuCommand)   -> ExtractMotion(MenuCommand),  line 2267
 //   static ExtractMotion(AnimatorState) -> ExtractMotion(AnimatorState),line 2272
 //   static RemoveFromAsset(Motion)      -> RemoveFromAsset,             line 2287
+//   static ValidateRename(MenuCommand)  -> ValidateRename,              line 2303
+//   static RenameMotion(MenuCommand)    -> RenameMotion(MenuCommand),   line 2314
+//   static RenameMotion(Motion)         -> RenameMotion(Motion),        line 2324
 //   static MarkScenesDirty()            -> MarkScenesDirty,             line 2359
 //   static IsEmbedded(Object)           -> IsEmbedded,                  line 2374
 //   static GenerateUniqueName(s, s)     -> GenerateUniqueName,          line 2388
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
-// DEFERRED — not ported, because MotionRenamerWindow (ControllerEditor.cs line 3923) is not in
-// the package yet and the package must keep compiling. Port these together with that window:
-//   ValidateRename(MenuCommand)  line 2303   [MenuItem("CONTEXT/AnimatorState/Motion/Rename", true)]
-//   RenameMotion(MenuCommand)    line 2314   [MenuItem("CONTEXT/AnimatorState/Motion/Rename")]
-//   RenameMotion(Motion)         line 2324
-// Consequence: the "Rename" entry is absent from the Motion context menu; "Embed" and "Extract"
-// are complete. RenameMotion(Motion) is also where the decompiler's spurious `while (true)` at
-// line 2340 lives — it is a plain "first EditorWindow whose type is named InspectorWindow" search
-// used to position the rename popup, and should be restored as such when it is ported.
+// The three Rename members were deferred on the first pass, when MotionRenamerWindow
+// (ControllerEditor.cs line 3923) was not yet in the package; that window is now ported as
+// MotionRenamerWindow.cs and they are restored above. The decompiler's `while (true)` at line 2340,
+// inside RenameMotion(Motion), is control-flow flattening over a plain "first EditorWindow whose
+// type is named InspectorWindow" search, and is written back as that search rather than as a loop.
 //
 // NOT PORTED — duplicate. SanitizeFileName (line 2364) is character-for-character the same method
 // as EditorUtils.SanitizeFileName (decompiled EditorUtils.cs `CalculateList`, line 7115), which is
@@ -46,6 +45,7 @@
 //     changes.
 
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEditor.SceneManagement;
@@ -55,12 +55,13 @@ namespace DreadScripts.ControllerEditor
 {
     /// <summary>
     /// Context-menu commands on an animator state that move its motion between being a sub-asset of
-    /// the controller and being a standalone file.
+    /// the controller and being a standalone file, and that rename it in place.
     /// </summary>
     /// <remarks>
     /// Embedding keeps a controller self-contained — one file to share, no loose clips to lose —
     /// while extracting is what you want when a clip should be reusable or version-controlled on its
-    /// own. Unity offers no built-in way to go either direction, hence this menu.
+    /// own. Unity offers no built-in way to go either direction, hence this menu. Rename is here for
+    /// the same reason: an embedded motion has no Project-window entry to rename from at all.
     /// </remarks>
     internal static class MotionEmbedMenu
     {
@@ -228,6 +229,80 @@ namespace DreadScripts.ControllerEditor
 
                 break;
             }
+        }
+
+        [MenuItem("CONTEXT/AnimatorState/Motion/Rename", true)]
+        private static bool ValidateRename(MenuCommand command)
+        {
+            AnimatorState state = command.context as AnimatorState;
+
+            if (state != null)
+            {
+                return state.motion != null;
+            }
+
+            return false;
+        }
+
+        [MenuItem("CONTEXT/AnimatorState/Motion/Rename")]
+        private static void RenameMotion(MenuCommand command)
+        {
+            AnimatorState state = command.context as AnimatorState;
+
+            if (!(state == null) && !(state.motion == null))
+            {
+                RenameMotion(state.motion);
+            }
+        }
+
+        /// <summary>
+        /// Opens the rename prompt for <paramref name="motion"/>, adding it to the batch if the
+        /// prompt is already open.
+        /// </summary>
+        /// <remarks>
+        /// <c>GetWindow</c> returns the existing window when one is already
+        /// open, which is what makes a multi-selection rename accumulate: Unity invokes a context
+        /// menu command once per selected object, so the first call creates the window and each
+        /// later call appends to its list. Everything after the <c>Count != 1</c> guard is therefore
+        /// first-motion-only setup — seeding the text field and placing the window — and must not be
+        /// redone for the rest of the batch, or the field would be reset to the last motion's name.
+        /// <para>
+        /// The window is parked just below the inspector because that is where the motion field the
+        /// user just right-clicked is: the inspector is found by type name rather than by type
+        /// because <c>UnityEditor.InspectorWindow</c> is internal. If no inspector is open the method
+        /// returns before sizing the window, leaving it at whatever size and position
+        /// <c>GetWindow</c> chose — shipped behaviour, and harmless since the window is still usable.
+        /// </para>
+        /// </remarks>
+        private static void RenameMotion(Motion motion)
+        {
+            if (motion == null)
+            {
+                return;
+            }
+
+            // Utility window: floating, always on top, and not dockable — it is a transient prompt.
+            MotionRenamerWindow window = EditorWindow.GetWindow<MotionRenamerWindow>(true, "Motion Rename");
+            window.motions.Add(motion);
+
+            if (window.motions.Count != 1)
+            {
+                return;
+            }
+
+            window.newName = motion.name;
+
+            EditorWindow inspector = Resources.FindObjectsOfTypeAll<EditorWindow>()
+                .FirstOrDefault(w => w != null && w.GetType().Name == "InspectorWindow");
+
+            if (inspector == null)
+            {
+                return;
+            }
+
+            Vector2 position = inspector.position.position + new Vector2(0f, 50f);
+            Vector2 size = window.maxSize = window.minSize = new Vector2(300f, 50f);
+            window.position = new Rect(position, size);
         }
 
         /// <summary>
