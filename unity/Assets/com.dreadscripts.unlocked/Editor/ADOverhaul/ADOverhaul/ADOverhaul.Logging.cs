@@ -63,10 +63,10 @@
 //       licenseKeyEntryRequired and re-runs verification. Same unported dependencies.
 //   ConnectSerializer  line 7899 -- a [SpecialName] method, i.e. a property getter the obfuscator
 //       flattened; it reads `ADOSettings.Instance().u_updateDay == <today's date stamp>` and would
-//       be restored as a bool property along the lines of `checkedForUpdateToday`. Deferred because
-//       ADOSettings is not ported as a type yet (only the generic setting infrastructure in
-//       Editor/Common/Settings is), and because it needs RemoveConfiguration (line 7434), the date
-//       stamp builder, which also writes currentDateStamp as a side effect.
+//       be restored as a bool property along the lines of `checkedForUpdateToday`. ADOSettings has
+//       since landed at Editor/ADOverhaul/ADOSettings/ and declares u_updateDay, so the only
+//       remaining blocker is RemoveConfiguration (line 7434), the date stamp builder, which also
+//       writes currentDateStamp as a side effect and belongs to another region.
 //
 // 2019 vs 2022: identical behaviour. The 2019 build (lines 7781-7818, names SelectStruct /
 // RunStruct / StopStruct / WriteStruct) differs only in the order the decompiler emits the switch

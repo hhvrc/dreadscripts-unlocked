@@ -8,8 +8,16 @@
 // Line numbers are relative to the current snapshot; the decompiled names are the durable
 // reference. Field references go through the table in ADOverhaul.State.cs.
 //
-// PARTIAL PORT. The other two members of the region are left out rather than stubbed, because both
-// reach test-mode entry points that are not ported yet:
+// PARTIAL PORT. The other two members of the region are left out rather than stubbed. Both are now
+// blocked on nothing but the test-mode entry points in ADOverhaul.SceneView.cs, which are still
+// deferred there: NewConfiguration (6272, the toggle) and CompareConfiguration (6290, the restart).
+// ADOSettings, which used to block InsertConfiguration as well, has since landed at
+// Editor/ADOverhaul/ADOSettings/ and is no longer an obstacle -- the one setting it needs reads and
+// writes as `ADOSettings.Instance.hasReadColliderTestingWarning.value`, whose setter persists on its
+// own, so the decompiled `.SetValue(true)` plus save is a single assignment here.
+//
+// When they land, both take `internal` for the same reason as the member below: their call sites are
+// the inspector types this reconstruction lifted out of the class.
 //
 //   ReadConfiguration    line 6872 -- the test-mode toolbar drawn above every PhysBone and collider
 //       inspector: a "Test PhysBones in Scene" / "Stop Testing - ESC / Enter" toggle (disabled and
@@ -30,14 +38,16 @@
 //       "No" -- which is also what Escape maps to -- does nothing beyond the flag already set, and
 //       "Don't ask again" persists ADOSettings.hasReadColliderTestingWarning. Nothing destructive
 //       happens on any path; the worst outcome is a test session whose simulation no longer matches
-//       the edited colliders. Needs CompareConfiguration (line 6290) and the ADOSettings type,
-//       neither of which is ported.
+//       the edited colliders. Needs CompareConfiguration (line 6290) for the "Yes" arm, and nothing
+//       else: the "Don't ask again" arm is now expressible.
 //
 // Visibility: all three are `private` in the decompiled source, which worked because their callers
 // were nested inside the same class. The inspectors have been lifted out to top-level types in this
 // reconstruction (PhysBoneEditor, PhysBoneColliderEditor and the two contact editors), so the
-// member below is `internal` instead. Same assembly, same reachable set; it is a consequence of the
-// nesting change recorded in ADOverhaul.State.cs, not a widening of the shipped API.
+// member below is `internal` instead, and so are the other two when they land. Same assembly, same
+// reachable set; it is a consequence of the nesting change recorded in ADOverhaul.State.cs, not a
+// widening of the shipped API. The same widening has been applied to DrawAvatarParameterField in
+// ADOverhaul.AvatarSelection.cs, which has the contact editors as its only call sites.
 //
 // 2019 vs 2022: identical. The 2019 build carries the same three members at lines 6850, 6903 and
 // 6925 (CalculateSystem / PopSystem / CallSystem) with the same dialog strings and the same

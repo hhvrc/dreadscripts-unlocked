@@ -15,6 +15,8 @@
 //   ListConfiguration      -> DrawPrefabWarning,             line 6666
 //   ForgotConfiguration    -> DrawPlayableLayerWarning,      line 6684
 //   PushConfiguration      -> DrawTargetAvatarSelector,      line 6806
+//   PrepareConfiguration   -> DrawAvatarParameterField,      line 6811
+//   PostIdentifier         -> ReportParameterAdd (local fn), line 8425
 //
 //   -- GUI field helpers --
 //   UpdateConfiguration    -> GetMaxLossyScale,              line 6712
@@ -54,34 +56,31 @@
 // say so in its own header, since dropping a guard is a visible behavioural change at that site and
 // belongs in that file's record rather than only here.
 //
-// ================================= Deferred, not stubbed =======================================
+// ===================== PrepareConfiguration (6811) -- now ported, with notes ====================
 //
-//   PrepareConfiguration  line 6811 -> the avatar-parameter name field with the "Add" dropdown that
-//                                     creates the parameter on the chosen playable layer. Every
-//                                     other dependency is available -- avatarParameterNames /
-//                                     avatarPlayableLayerNames / avatarPlayableLayerTypes in
-//                                     ADOverhaul.State.cs, BuildLayerParameterOptions and
-//                                     SplitDigits below, EditorUtils.TryGetPlayableLayerController
-//                                     for the decompiled `MapVal`, and ADOEditorUtility
-//                                     .TryAddParameter for `FindProcess` -- but its two user
-//                                     messages go through ADOverhaul.NewIdentifier (line 7806),
-//                                     which is not ported yet. It is left out rather than rewired
-//                                     to a different logger.
+// DrawAvatarParameterField is the sole caller of BuildLayerParameterOptions and SplitDigits in
+// either shipped build. Three reconstruction decisions, all previously flagged in this header and
+// now carried out:
 //
-//                                     Notes for whoever lands it. `PostIdentifier` (line 8425) is
-//                                     not a member: it is the [CompilerGenerated] lift of a local
-//                                     function, taking the two `_003C_003Ec__DisplayClass86_*`
-//                                     capture structs by ref. Restore it as a local function and
-//                                     drop both structs. The `while (true)` wrapping the popup, and
-//                                     the `default: continue;` inside the switch, are ILSpy
-//                                     artifacts: the 2019 build (`ChangeSystem`, line 6819)
-//                                     decompiles the same IL as a plain
-//                                     `if (EditorGUI.EndChangeCheck()) { ... }` with
-//                                     `default: return;`, which settles it.
+//   * `PostIdentifier` (line 8425) is not a member. It is the [CompilerGenerated] lift of a local
+//     function, taking the two `_003C_003Ec__DisplayClass86_*` capture structs by ref. It is
+//     restored as the local function ReportParameterAdd and both structs are dropped; the second
+//     struct held only the AnimatorController, which is passed as an ordinary argument instead.
+//   * The `while (true)` wrapping the popup and the `default: continue;` inside the switch are ILSpy
+//     artifacts. The 2019 build (`ChangeSystem`, line 6819) decompiles the same IL as a plain
+//     `if (EditorGUI.EndChangeCheck()) { ... }` with `default: return;`, which settles it. Ported as
+//     the plain `if`. The default arm is left off entirely: it is unreachable, because every value
+//     the popup can return was built by BuildLayerParameterOptions from exactly three parameter
+//     types. (Had it been reachable, 2019's `return` would skip the "Add" label for that frame.)
+//   * The user messages go through ADOverhaul.Log (decompiled NewIdentifier, 7806), which landed in
+//     ADOverhaul.Logging.cs.
 //
-// BuildLayerParameterOptions and SplitDigits are ported anyway, even though PrepareConfiguration is
-// their only caller in either shipped build: they are complete, self-contained and pure, and both
-// are `internal` in the original.
+// Visibility: `private` in the source, `internal` here, for the reason recorded in
+// ADOverhaul.MultiObjectApply.cs -- its two call sites (decompiled 1762 and 1923) are the contact
+// receiver inspector bodies, which this reconstruction lifts out to top-level types. Same assembly,
+// same reachable set. DrawTargetAvatarSelector shares those call sites and will need the same
+// widening when the contact editors land; it stays `private` until something outside this class
+// actually needs it.
 //
 // ======================= Overlap with ControllerEditor's AvatarDescriptorHelper =================
 //
@@ -106,7 +105,8 @@
 //
 // SHIPPED BUGS PRESERVED (see the remarks on each member):
 //   * SplitDigits loops over the digit string's length instead of the requested digit count, so any
-//     value with fewer digits than requested decodes as all zeroes.
+//     value with fewer digits than requested decodes as all zeroes. The user-visible symptom is in
+//     its only consumer, DrawAvatarParameterField: "Base/Int" and "Base/Float" both add a Bool.
 //   * DrawAvatarPopup indexes the unfiltered array with an index chosen from the filtered names.
 //     AvatarDescriptorHelper carries the same one.
 //   * DrawPlayableLayerWarning reads baseAnimationLayers[4] behind a `Length > 3` guard.
@@ -127,7 +127,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DreadScripts.Common;
+using DreadScripts.ControllerEditor;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 
@@ -367,6 +369,97 @@ namespace DreadScripts.ADOverhaul
         private static void DrawTargetAvatarSelector()
         {
             DrawAvatarSelector(ref selectedAvatar, sceneAvatars, RefreshAvatarTables, warnNonHumanoid: false, checkPrefab: false, checkPlayableLayers: true, "Target Avatar");
+        }
+
+        /// <summary>
+        /// Draws an avatar-parameter name field: the property itself, a compact dropdown listing the
+        /// parameters the selected avatar already exposes, and an "Add" dropdown that creates the
+        /// typed parameter on a chosen playable layer.
+        /// </summary>
+        /// <param name="parameterName">The string property holding the parameter's name.</param>
+        /// <remarks>
+        /// The "Add" control is an <c>EditorGUI.IntPopup</c> drawn into a fixed 50px
+        /// rect with the caption painted over it afterwards, so it reads as a button
+        /// rather than as a dropdown showing a current value; nothing is ever selected in it, and its
+        /// value is only ever read from the change it just reported.
+        /// <para>
+        /// The second half of the row is skipped entirely while the name is empty or disagrees across
+        /// a multi-object selection, since neither case names a parameter that could be created.
+        /// </para>
+        /// <para>
+        /// SHIPPED BUG, reached from here: the popup value packs the playable layer type and the
+        /// parameter type as two decimal digits, and <see cref="SplitDigits"/> mis-decodes any value
+        /// that lost a leading zero to <see cref="int.Parse(string)"/>. The Base layer is
+        /// <see cref="VRCAvatarDescriptor.AnimLayerType.Base"/> = 0, so "Base/Int" and "Base/Float"
+        /// arrive as 1 and 2 and both decode as {0, 0}: picking Int or Float under Base silently adds
+        /// a <c>Bool</c> to the Base layer's controller. Every other layer type has a non-zero leading
+        /// digit and round-trips correctly. See the remarks on <see cref="SplitDigits"/> for why.
+        /// </para>
+        /// </remarks>
+        internal static void DrawAvatarParameterField(SerializedProperty parameterName)
+        {
+            // Restored from a compiler-lifted local function; the decompiler emitted it as a static
+            // method taking two capture structs by ref, which are artifacts and are not ported.
+            void ReportParameterAdd(bool added, AnimatorController controller)
+            {
+                Log(added
+                    ? parameterName.stringValue + " added to " + controller.name
+                    : parameterName.stringValue + " already exists in " + controller.name);
+            }
+
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PropertyField(parameterName);
+
+                using (EditorGUI.ChangeCheckScope changeCheck = new EditorGUI.ChangeCheckScope())
+                {
+                    int selectedIndex = EditorGUILayout.Popup(-1, avatarParameterNames, "textfielddropdown", GUILayout.Width(18f));
+                    if (changeCheck.changed)
+                    {
+                        parameterName.stringValue = avatarParameterNames[selectedIndex];
+                    }
+                }
+
+                if (parameterName.hasMultipleDifferentValues || string.IsNullOrEmpty(parameterName.stringValue))
+                {
+                    return;
+                }
+
+                Rect addRect = EditorGUILayout.GetControlRect(GUILayout.Width(50f));
+                BuildLayerParameterOptions(avatarPlayableLayerNames, avatarPlayableLayerTypes,
+                    new string[3] { "Bool", "Int", "Float" }, out string[] displayOptions, out int[] values);
+
+                EditorGUI.BeginChangeCheck();
+                int packedSelection = EditorGUI.IntPopup(addRect, -1, displayOptions, values);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    int[] digits = SplitDigits(packedSelection, 2);
+                    if (selectedAvatar.TryGetPlayableLayerController((VRCAvatarDescriptor.AnimLayerType)digits[0], out AnimatorController controller))
+                    {
+                        // The switch has no default arm: every value the popup can return was built
+                        // by BuildLayerParameterOptions from exactly these three parameter types.
+                        switch (digits[1])
+                        {
+                            case 0:
+                                ReportParameterAdd(controller.TryAddParameter(parameterName.stringValue, AnimatorControllerParameterType.Bool, 0f), controller);
+                                break;
+                            case 1:
+                                ReportParameterAdd(controller.TryAddParameter(parameterName.stringValue, AnimatorControllerParameterType.Int, 0f), controller);
+                                break;
+                            case 2:
+                                ReportParameterAdd(controller.TryAddParameter(parameterName.stringValue, AnimatorControllerParameterType.Float, 0f), controller);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Log("Couldn't fetch selected playable layer!", CustomLogType.Error);
+                    }
+                }
+
+                addRect.x += 3f;
+                GUI.Label(addRect, "Add");
+            }
         }
 
         /// <summary>
