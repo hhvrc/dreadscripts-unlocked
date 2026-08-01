@@ -10,10 +10,10 @@
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. Nothing from the type is left unported.
 //
-// The only caller is MotionEmbedMenu.RenameMotion (ControllerEditor.cs lines 2303/2314/2324),
-// which is currently listed as deferred in MotionEmbedMenu.cs. Until those three menu members are
-// ported this window has no entry point in the package; it is otherwise complete, and the
-// decompiler's spurious `while (true)` noted in that file belongs to the caller, not to here.
+// The only caller is MotionEmbedMenu.RenameMotion (ControllerEditor.cs lines 2303/2314/2324).
+// Those three menu members are now ported in MotionEmbedMenu.cs, so this window has its entry
+// point; the decompiler's spurious `while (true)` noted in that file belongs to the caller, not
+// to here.
 //
 // ASSET MUTATION — read before calling. See the remarks on OnGUI for the full account of what is
 // and is not undoable, and of the name collisions this window can create.

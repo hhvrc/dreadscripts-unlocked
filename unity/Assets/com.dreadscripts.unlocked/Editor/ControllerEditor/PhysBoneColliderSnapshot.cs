@@ -74,10 +74,13 @@ namespace DreadScripts.ControllerEditor
                 collider.position = position;
                 collider.rotation = rotation;
 
-                // The shipped build restored every field but this one on the PhysBone path, so a
-                // shape change made between capture and restore survived the rollback. The contact
-                // path and ApplyTo below both restore it.
-                collider.shapeType = (VRCPhysBoneColliderBase.ShapeType)shapeType;
+                // shapeType is deliberately NOT restored here. Both shipped builds omit it on this
+                // branch (ControllerEditor's PhysBoneColliderSnapshot.Apply, and ADOverhaul's
+                // ADOEditorUtility.ShapeSnapshot.Apply), while restoring it on the contact branch
+                // and in both ApplyTo overloads. A shape change made between capture and restore
+                // therefore survives the rollback on PhysBone colliders. The asymmetry looks like an
+                // oversight in the original, but callers may depend on it, so it is ported as
+                // shipped rather than "fixed".
             }
             else
             {
