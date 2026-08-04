@@ -2,22 +2,35 @@
 //   static ClonePredicate    -> IsExitOrDangling,                      line 3602
 //   static CreatePredicate   -> ConditionSetsMatch,                    line 3661
 //   static NewPredicate      -> Traverse(AnimatorController, ...),     line 3687
-//   static PushPredicate     -> Traverse(AnimatorStateMachine, ...),   line 3696
+//   static PushPredicate     -> ForEachGraphElement, line 3696, in EditorUtils.ControllerTraversal.cs
 //   static SortPredicate     -> GetWriteDefaultsMode,                  line 3973
 //   static RegisterPredicate -> MapTransitionTargets,                  line 4023
-//   class <>c__DisplayClass164_0/_1 -> dissolved into MapTransitionTargets' lambdas, lines 1920/1954
+//   class <>c__DisplayClass164_0 -> dissolved into MapTransitionTargets' lambdas, line 1920
+//   class <>c__DisplayClass164_1 -> dissolved into MapTransitionTargets' lambdas, line 1954
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
-// since (-153 code lines); needs re-checking against export/ before the claim is restored.
+// Audit status: PARTIAL -- all six members declared below were re-checked statement by statement
+// against decompiled/ (EditorUtils.cs lines 3602, 3661, 3687, 3696, 3973 and 4023, each of which
+// still lands on the member named above), and each is a faithful transcription; the header claims
+// no member the file does not declare. PARTIAL rather than VERIFIED because of the duplicate port
+// recorded under NOTES, which cannot be settled from inside this file.
+//
+// NOTES
+// Decompiled PushPredicate (line 3696) was ported twice by the parallel ports that were merged:
+// once here as a Traverse overload on AnimatorStateMachine, and once as ForEachGraphElement in
+// EditorUtils.ControllerTraversal.cs, with identical bodies. The two names made it invisible to the
+// C# compiler. ForEachGraphElement is the copy kept; the overload here has been removed and the
+// Traverse(AnimatorController) entry point below now calls it. Only NewPredicate (3687), which has
+// no counterpart anywhere, is still ported in this file under the Traverse name.
 //
 // Walkers over an animator's graph, plus the few graph edits that do not fit anywhere else.
 //
-// Every recursive walker here guards against a state machine listed as its own child
-// (`cm.stateMachine != parent`), which Unity's data model permits and which would otherwise
-// recurse forever. ForEachStateMachine is the one exception -- it visits the node first and does
-// not make that check -- so it will still hang on a self-parented machine. That is the vendor's
-// code and it is left as-is; the guard was added by whoever wrote the other four, not by us.
+// The recursive walkers these members lean on now live elsewhere: ForEachStateMachine in
+// EditorUtils.ControllerTraversal.cs, ForEachState and ForEachTransition in
+// EditorUtils.StateMachineTraversal.cs. The merge that reconciled the parallel ports left only
+// their callers here, so the note this header used to carry about the self-parented state machine
+// guard (and about ForEachStateMachine not making that check) belongs to those files, where the
+// walkers are.
 //
 // Grouped here rather than with the layer helpers because these operate on the graph inside a
 // layer (state machines, states, transitions, behaviours) and none of them touches
@@ -91,44 +104,21 @@ namespace DreadScripts.ControllerEditor
         }
 
         /// <summary>
-        /// Walks every layer of the controller, offering each state machine, state and transition
-        /// to the matching callback. Any callback may be null.
+        /// Runs the three callbacks over every state machine, state and transition in every layer of
+        /// <paramref name="controller"/>.
         /// </summary>
+        /// <remarks>
+        /// The whole-controller entry point to
+        /// <see cref="ForEachGraphElement(AnimatorStateMachine, Action{AnimatorStateMachine}, Action{AnimatorState}, Action{AnimatorStateTransitionSet}, bool)"/>,
+        /// which it calls once per layer root. Any callback may be null; the walker skips that half.
+        /// </remarks>
         internal static void Traverse(this AnimatorController controller, Action<AnimatorStateMachine> onStateMachine,
             Action<AnimatorState> onState, Action<AnimatorStateTransitionSet> onTransition)
         {
             AnimatorControllerLayer[] layers = controller.layers;
             for (int i = 0; i < layers.Length; i++)
             {
-                layers[i].stateMachine.Traverse(onStateMachine, onState, onTransition);
-            }
-        }
-
-        /// <summary>
-        /// Walks the state machine, offering each state machine, state and transition to the
-        /// matching callback. Any callback may be null.
-        /// </summary>
-        /// <param name="recurseStateMachines">
-        /// Only controls the state-machine callback. States and transitions are always visited
-        /// recursively -- the vendor did not thread the flag through to them.
-        /// </param>
-        internal static void Traverse(this AnimatorStateMachine stateMachine,
-            Action<AnimatorStateMachine> onStateMachine, Action<AnimatorState> onState,
-            Action<AnimatorStateTransitionSet> onTransition, bool recurseStateMachines = true)
-        {
-            if (onStateMachine != null)
-            {
-                stateMachine.ForEachStateMachine(onStateMachine, recurseStateMachines);
-            }
-
-            if (onState != null)
-            {
-                stateMachine.ForEachState(onState);
-            }
-
-            if (onTransition != null)
-            {
-                stateMachine.ForEachTransition(onTransition);
+                layers[i].stateMachine.ForEachGraphElement(onStateMachine, onState, onTransition);
             }
         }
 

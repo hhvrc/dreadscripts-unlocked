@@ -8,15 +8,24 @@
 // for its reset button. The ControllerEditor port assigns them; until it does, changing one of the
 // settings below persists correctly and simply does not refresh the view it used to refresh.
 //
-// decompiled member -> ported member, line N:
-//   UpdateVisitor()      -> onMatchingOptionsChanged,    12980
-//   SortAlgo()           -> onGraphBackgroundChanged,    15852
-//   PatchAlgo()          -> onGraphRebuildRequested,     16098
-//   PublishAnnotation()  -> onLayerListLayoutChanged,     9116
-//   writerVisitor = LayerViewViewType.DefaultView (inside the displayCategoryView callback, line
-//                       1277) -> onCategoryViewReset,     8380 (the field)
+//   UpdateVisitor()     -> onMatchingOptionsChanged, line 12980
+//   SortAlgo()          -> onGraphBackgroundChanged, line 15852
+//   PatchAlgo()         -> onGraphRebuildRequested, line 16098
+//   PublishAnnotation() -> onLayerListLayoutChanged, line 9116
+//   the displayCategoryView callback body -> onCategoryViewReset, line 1277
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
+//
+// NOTES
+// The fifth hook has no method of its own in the decompiled source: the displayCategoryView setting
+// passes an inline callback whose whole body is the single statement
+// `writerVisitor = LayerViewViewType.DefaultView;` at line 1277. The field it assigns, writerVisitor
+// (line 8380), is claimed by ControllerEditor.State.cs, where it is ported as layerViewType, so this
+// entry is anchored on the callback statement rather than on the field.
+//
+// Audit status: PARTIAL -- all five line numbers above were re-checked against decompiled/ on
+// 2026-08-05 and each lands on the member named; the behavioural prose in the doc comments below
+// was not re-derived.
 
 using System;
 

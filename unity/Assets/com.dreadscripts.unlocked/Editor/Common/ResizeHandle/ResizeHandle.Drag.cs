@@ -1,17 +1,27 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from both:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
-//     ResizeHandle.DoResizeHandles -> ApplyDragDelta, line 794 (the drag-dispatch block)
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
-//     ResizeHandle.HandleResize    -> ApplyDragDelta, line 243 (the drag-dispatch block)
-// Both sources inline this into the one resize method; it is lifted into a private helper here
-// without reordering anything. Line numbers are relative to the decompiled snapshot at the time of
-// the port; the type and member names are the durable reference.
+//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs:
+//     ResizeHandle.DoResizeHandles -> ApplyDragDelta, line 794
+//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs:
+//     ResizeHandle.HandleResize    -> ApplyDragDelta, line 243
+// Line numbers are relative to the decompiled snapshot at the time of the port; the type and member
+// names are the durable reference.
+//
+// NOTES
+// Each cited line is the head of the drag-dispatch block inside that resize method -- the
+// `if (vector != Vector2.zero)` guard in ControllerEditor, the `if (position > PositionFlag.Bottom)`
+// switch in ADOverhaul2022. Both sources inline the block into the one resize method; it is lifted
+// into a private helper here without reordering anything.
 //
 // The six reachable grips (Left, Right and the four corners) are byte-for-byte identical across
 // ControllerEditor, ADOverhaul2022 and ADOverhaul2019 once the obfuscated names are resolved,
 // including the two quirks called out below. The unreachable vertical branch is the one place the
 // three snapshots disagree -- see the remarks on that branch.
+//
+// Audit status: PARTIAL -- both source methods and both line numbers were re-checked against
+// decompiled/ on 2026-08-05 (DoResizeHandles at EditorUtils.cs 642, HandleResize at
+// ADOEditorUtility.cs 143); the three-way comparison of the branch bodies asserted below was taken
+// from the earlier port and not re-derived.
 
 using UnityEngine;
 

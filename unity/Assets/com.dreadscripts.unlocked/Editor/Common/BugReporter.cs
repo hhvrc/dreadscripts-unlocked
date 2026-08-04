@@ -7,7 +7,9 @@
 // they differ only in identifier names (2019 is still obfuscated) and in the order ILSpy emitted
 // the switch arms and if/else branches. Every string literal in the three copies is identical.
 //
-// Member mapping (ControllerEditor name / ADOverhaul2022 name -> ported name):
+// Member mapping. The left column is the ControllerEditor name, then the ADOverhaul2022 name; the
+// right column is the ported member. Because each tool carries its own copy, no single decompiled
+// line number can stand for an entry, so these are keyed on the member names:
 //   ErrorInfo               / ErrorInfo             -> ErrorInfo,           line 149
 //   m_TokenizerAlgo         / handledErrors         -> handledErrors,       line 190
 //   m_ModelAlgo             / suppressReporting     -> suppressReporting,   line 205
@@ -113,7 +115,7 @@
 // those requests and this is where a reader will come looking for it.
 // ============================================================================================
 //
-// DELIBERATELY NOT PORTED
+// NOT PORTED
 //   DrawReportPrompt (CE: RevertDefinition) and DrawWindow (CE: PostReg), together with the
 //   fields that exist only to serve them (solution, solutionComplete, responseReceived,
 //   requestSent, isSearching, template) and Respond (CE: SetupReg). These are the reporter's
@@ -129,6 +131,10 @@
 //   Also dropped: a [SpecialName] float property (CE: PublishReg, ADO: VisitMethod) returning
 //   `template / 1f` from a field never assigned a nonzero value. It is obfuscator filler with
 //   no caller.
+//
+// Audit status: UNAUDITED -- the mapping and the transmission audit above were written during the
+// port and have not been re-checked against decompiled/ since the 561e9ec re-snapshot; this pass
+// only reformatted the mapping introduction into a legal MAP block.
 
 using System;
 using System.Collections.Generic;

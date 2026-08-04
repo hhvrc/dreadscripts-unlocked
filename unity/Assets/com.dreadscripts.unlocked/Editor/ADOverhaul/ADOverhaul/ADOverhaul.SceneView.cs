@@ -1,23 +1,23 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// Ported region: decompiled lines 6060-6478 of the outer ADOverhaul class. Line numbers are
+// Ported region: decompiled lines 6264-6682 of the outer ADOverhaul class. Line numbers are
 // relative to the current snapshot; the decompiled names below are the durable reference.
 //
-//   CalculateConfiguration -> DrawShapeEditOverlay,       line 6060
-//   CalcConfiguration      -> DrawShapeEditToggles,       line 6090
-//   DeleteConfiguration    -> DrawTestModeOverlay,        line 6107
-//   DefineConfiguration    -> TickTestSimulation,         line 6187
-//   DestroyConfiguration   -> ResolvePhysBoneReflection,  line 6256
-//   NewConfiguration       -> ToggleTestMode,             line 6272
-//   CompareConfiguration   -> RestartTestMode,            line 6290
-//   VerifyConfiguration    -> StartTestMode,              line 6299
-//   SetConfiguration       -> StopTestMode,               line 6369
-//   SortConfiguration      -> SetShapeCapabilities,       line 6391
-//   CustomizeConfiguration -> DrawCollisionTagElement,    line 6433
-//   ConcatConfiguration    -> DrawCollisionTagsHeader,    line 6474
+//   CalculateConfiguration -> DrawShapeEditOverlay,       line 6264
+//   CalcConfiguration      -> DrawShapeEditToggles,       line 6294
+//   DeleteConfiguration    -> DrawTestModeOverlay,        line 6311
+//   DefineConfiguration    -> TickTestSimulation,         line 6391
+//   DestroyConfiguration   -> ResolvePhysBoneReflection,  line 6460
+//   NewConfiguration       -> ToggleTestMode,             line 6476
+//   CompareConfiguration   -> RestartTestMode,            line 6494
+//   VerifyConfiguration    -> StartTestMode,              line 6503
+//   SetConfiguration       -> StopTestMode,               line 6573
+//   SortConfiguration      -> SetShapeCapabilities,       line 6595
+//   CustomizeConfiguration -> DrawCollisionTagElement,    line 6637
+//   ConcatConfiguration    -> DrawCollisionTagsHeader,    line 6678
 //
 // Twelve of the region's thirteen members are now ported. The thirteenth, InvokeConfiguration
-// (6410), is NOT here and is not missing: ADOverhaul.PhysBoneDrawing.cs folded it into
+// (6614), is NOT here and is not missing: ADOverhaul.PhysBoneDrawing.cs folded it into
 // DrawShapeProperties as the three inline toggle rows its switch selected between. Its only call
 // sites are the three consecutive calls at decompiled 5812-5814, all inside that method. Verified
 // against that file's header before writing anything here; nothing is duplicated.
@@ -36,8 +36,7 @@
 //   ADOEditorUtility.CustomizeRef().prototypeSerializer -> ADOEditorUtility.contents.customTool
 //   ADOEditorUtility.MapRef().utilsMethod               -> ADOEditorUtility.styles.footerButton
 //   ADOEditorUtility.MapRef().m_WriterSerializer        -> ADOEditorUtility.styles.centeredBoldRichLabel
-//   ADOEditorUtility._ObserverSerializer/_BroadcasterSerializer/m_RecordSerializer
-//                                                      -> validColor / errorColor / secondaryActionColor
+//   ADOEditorUtility._ObserverSerializer / _BroadcasterSerializer / m_RecordSerializer -> ADOEditorUtility.validColor / errorColor / secondaryActionColor
 //   ADOEditorUtility.ListStatus    -> ADOEditorUtility.IconButton
 //   ADOEditorUtility.PatchStatus   -> ADOEditorUtility.Button
 //   ADOEditorUtility.QueryStatus   -> ADOEditorUtility.CancelPressed
@@ -49,13 +48,10 @@
 //   ADOEditorUtility.RunStatus     -> ADOEditorUtility.AnchorPicker
 //   ADOEditorUtility.ConnectStatus -> ADOEditorUtility.TransformHandles
 //   ADOEditorUtility.SetupStatus   -> ADOEditorUtility.MapComponents
-//   ADOEditorUtility.PositionFlag / SceneViewPanel / SceneView.AddStatus
-//                                  -> DreadScripts.Common.PositionFlag / SceneViewPanel /
-//                                     SceneViewExtensions.GetSceneViewRect
+//   ADOEditorUtility.PositionFlag / SceneViewPanel / SceneView.AddStatus -> DreadScripts.Common.PositionFlag / SceneViewPanel / SceneViewExtensions.GetSceneViewRect
 //   NewIdentifier (7806)           -> ADOverhaul.Log (ADOverhaul.Logging.cs)
 //   PublishIdentifier (8290)       -> ADOverhaul.DrawSettingsButton (ADOverhaul.Menus.cs)
-//   ADOSettings.instance() / .GetValue() / .SetValue(x)
-//                                  -> ADOSettings.instance (a property) / .value
+//   ADOSettings.instance() / .GetValue() / .SetValue(x) -> ADOSettings.instance (a property) / .value
 //
 // ────────────────────────────── WHAT THIS REGION ACTUALLY IS ──────────────────────────────
 //
@@ -191,6 +187,18 @@
 // renders the collider half), the enable/disable arms of the collider half are inverted between the
 // builds, and InvokeConfiguration's switch lists its cases 2/1/0 in 2019 against 2/0/1 in 2022.
 // Neither changes evaluation order or result. No divergence to record.
+//
+// NOTES
+// The twelve MAP line numbers at the top were re-based against the current decompiled/ snapshot:
+// they had been written before the 561e9ec re-snapshot and were each 204 lines short. The many
+// other decompiled line references in the prose sections above (6067, 6144-6183, 6488, 6496,
+// 6365-6366, 6372, 6451, 6561, 6735, 6740, 6949, 7806, 8249, 8266, 8290, 8410, 8692, ...) still
+// carry the pre-561e9ec numbering and were NOT re-based; treat the member names, not those
+// numbers, as the reference until someone sweeps them.
+//
+// Audit status: PARTIAL -- the twelve MAP line numbers above were checked against decompiled/
+// ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs and each now lands on the member named; the
+// helper and inlining tables further down were not re-verified.
 
 using System.Collections.Generic;
 using System.Linq;

@@ -9,7 +9,7 @@
 // arguments at the call site (`MethodOf<Rect, TreeViewItem>(handler)`) select the overload exactly
 // as the decompiled names did.
 //
-//   decompiled name -> overload, line
+// Mapping, by decompiled helper name; every one lands on the single overloaded MethodOf:
 //   CreateReg    -> MethodOf(Action),                          line 2798
 //   NewReg       -> MethodOf<T>(Action<T>),                     line 2803
 //   PushReg      -> MethodOf<T,TT>(Action<T,TT>),               line 2808
@@ -57,6 +57,10 @@
 //
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. See HarmonyPatchManager.cs for the type-level header.
+//
+// Audit status: PARTIAL -- the endpoints of the table (CreateReg at 2798, NewReg at 2803,
+// QueryTests at 3013) were re-checked against decompiled/ and the five-line stride holds; the
+// forty-one entries between them were not individually re-read.
 
 using System;
 using System.Reflection;

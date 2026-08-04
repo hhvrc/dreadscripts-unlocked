@@ -1,12 +1,38 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/EditorGuiUtils.cs
-//   facade -> colorTexture
-//   Button(string, GUILayoutOption[]), Button(string, GUIStyle, GUILayoutOption[]) and
-//     Button(GUIContent, GUIStyle, GUILayoutOption[]) are collapsed into two overloads via an
-//     optional style parameter.
+//
+//   facade                  -> colorTexture,             line 9
+//   RandomElement<T>        -> same,                     line 11
+//   Shrink                  -> same,                     line 16
+//   FitAspectRatio          -> same,                     line 25
+//   AlphaBlend              -> same,                     line 41
+//   DrawRoundedBox          -> same,                     line 50
+//   GetColorTexture         -> same,                     line 79
+//   SaveTextureToSession    -> same,                     line 97
+//   LoadTextureFromSession  -> same,                     line 103
+//   Button(string, GUILayoutOption[])           -> Button(string, GUIStyle, GUILayoutOption[]), line 125
+//   Button(string, GUIStyle, GUILayoutOption[]) -> Button(string, GUIStyle, GUILayoutOption[]), line 130
+//   Button(GUIContent, GUIStyle, GUILayoutOption[]) -> Button(GUIContent, GUIStyle, GUILayoutOption[]), line 135
+//   IsClicked               -> same,                     line 146
+//   BytesToInts             -> same,                     line 157
+//   IntsToBytes             -> same,                     line 168
+//
+// Line numbers are relative to the decompiled snapshot at the time of the port;
+// the member names are the durable reference.
+//
+// NOTES
+// The three decompiled Button overloads are collapsed into two here by giving the style parameter
+// a default of null: the string/GUILayoutOption[] overload and the string/GUIStyle overload
+// become one method, and the GUIContent overload keeps its own body.
+//
 // The companion file EditorLayoutUtils.cs from the same folder is NOT ported: every member of it
 // already exists on DreadScripts.Common.GUILayoutUtils (splitter reflection, CreateSplitterState,
-// Begin/EndSplit, DrawTitle -> TitleField, DrawHorizontalLine -> DrawHorizontalSeparator,
-// DrawVerticalLine -> DrawVerticalSeparator, DrawUnderline). Callers here use GUILayoutUtils.
+// Begin/EndSplit, and the separator helpers, which that class spells TitleField,
+// DrawHorizontalSeparator, DrawVerticalSeparator and DrawUnderline). Callers here use
+// GUILayoutUtils.
+//
+// Audit status: PARTIAL -- the member list and line numbers above were checked against decompiled/
+// ControllerEditor/DreadScripts/Common/SupportThankies/EditorGuiUtils.cs; the method bodies were
+// not re-diffed.
 
 using System;
 using UnityEditor;
@@ -127,7 +153,7 @@ namespace DreadScripts.Common
         /// </remarks>
         internal static Texture2D GetColorTexture(Color color)
         {
-            // DEOBF-BUG(resolved): export/ has `while (true) { colorTexture = new Texture2D(...); }`
+            // DEOBF-BUG(resolved): decompiled/ has `while (true) { colorTexture = new Texture2D(...); }`
             // here, which would hang the editor on the first call and so cannot be what shipped --
             // the support window demonstrably draws. Ported as the one-shot lazy initialisation the
             // surrounding code requires. The same de4dot fault is confirmed elsewhere: on

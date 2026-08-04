@@ -20,7 +20,7 @@
 //   PopRules,   line 4302 -> AssetField<T>,              EditorUtils.Fields.cs
 //   CallRules,  line 4427 -> IsMissing,                  EditorUtils.Fields.cs
 // The type is complete apart from the note below.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // Deliberately unported: the AssetCandidate / SelectCandidate() pair, line 1316 and 1406. That is
 // an obfuscator-injected null check on an always-null static with no callers, the same shape as

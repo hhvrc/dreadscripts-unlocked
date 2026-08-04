@@ -135,7 +135,8 @@
 //   singletonAnnotation      -> updateAvailable,                 line 8156
 //   factoryAnnotation        -> updateFoldout,                   line 8158
 //   _AccountAnnotation       -> announcementFoldout,             line 8160
-//   m_RefAnnotation          -> OMITTED (version),               line 8162
+//   m_RefAnnotation          -> NOT PORTED, line 8162 -- would be `version`; its initialiser needs
+//                               the VersionNumber type, which is not ported. See OMISSIONS below.
 //   statusAnnotation         -> extraMenuLinks,                  line 8164
 //
 //   -- Condition editing (decompiled 8166-8178) --
@@ -246,7 +247,8 @@
 //
 //   -- Graph node menus, transition dragging and layer context (decompiled 8406-8498) --
 //   m_SingletonVisitor   -> contextMenu,                            line 8410
-//   m_ComparatorVisitor  -> OMITTED (queryAlgoPatchMethod),         line 8438
+//   m_ComparatorVisitor  -> NOT PORTED, line 8438 -- would be `queryAlgoPatchMethod`; its
+//                           initialiser names the unported QueryAlgo callback. See OMISSIONS below.
 //   exceptionVisitor     -> slotDragSourceNode,                     line 8440
 //   m_ObjectVisitor      -> slotDragActive,                         line 8442
 //   m_UtilsVisitor       -> transitionDragArmed,                    line 8444
@@ -340,6 +342,14 @@
 // reader's decision. `hardwareId`, `sessionId`, `licenseKey`, `currentDateStamp` and
 // `unreadDeviceDateFingerprint` are only ever populated by machine-fingerprinting code (decompiled
 // 10222-10260, 10424-10440) that is not ported and should not be.
+//
+// Audit status: PARTIAL -- the two omissions were re-checked against decompiled/ on this pass and
+// are exactly where the table says: line 8162 is
+// `private static readonly VersionNumber m_RefAnnotation = new VersionNumber("3.3.2")` and line 8438
+// is `private static readonly MethodInfo m_ComparatorVisitor = HarmonyPatchManager.NewReg<
+// AnimatorState>(QueryAlgo)`. Spot checks of the surrounding bank (8342/8344/8348) also land on the
+// named fields. The remaining ~200 entries of the table were not re-walked one by one, which is why
+// this is PARTIAL rather than VERIFIED.
 
 using System;
 using System.Collections.Concurrent;

@@ -1,7 +1,8 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from both, which differ only in obfuscated names and one De Morgan'd branch:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, lines 490-602
-//     ProcessRunner(string i, Action<string> second, bool wantfilter, bool istask2, Action token3)
+//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, lines 490-602:
+//     the constructor ProcessRunner(string i, Action<string> second, bool wantfilter, bool istask2,
+//     Action token3), parameter for parameter:
 //                          -> ProcessRunner(command, onOutput, useCommandPrompt, ignoreFailure, onFailure)
 //     startInfo            -> startInfo
 //     process              -> process
@@ -13,12 +14,14 @@
 //     succeeded            -> succeeded
 //     Run                  -> Run
 //     Complete             -> Complete
-//     DisposeComponent     -> not ported; it is a decompiler-emitted thunk for the
-//                             Component.Dispose() call, inlined back into Run below. The
-//                             ControllerEditor copy has the plain `process?.Dispose()` call.
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, lines 1905-2008
-//     CancelReg -> Run, CountReg -> Complete, m_MockAlgo -> isFinished (the rest are the same
-//     members under obfuscated names).
+//   DisposeComponent -> NOT PORTED, line 598 -- a decompiler-emitted thunk for the
+//                       Component.Dispose() call, inlined back into Run below; the ControllerEditor
+//                       copy has the plain `process?.Dispose()` call instead.
+//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, lines 1905-2008:
+//     CancelReg -> Run
+//     CountReg  -> Complete
+//     m_MockAlgo -> isFinished
+//     (the rest are the same members under obfuscated names.)
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
@@ -67,6 +70,10 @@
 //   CreateNoWindow is set, so no console is shown to the user and stderr is effectively discarded.
 //   The captured text is never echoed to a shell or re-executed.
 // ---------------------------------------------------------------------------------------------
+//
+// Audit status: PARTIAL -- the member mapping and the ADOverhaul2022 line numbers (490-602, and
+// DisposeComponent at 598) were re-checked against decompiled/ for this pass; the ControllerEditor
+// range and the security-audit prose were not re-derived.
 
 using System;
 using System.Diagnostics;

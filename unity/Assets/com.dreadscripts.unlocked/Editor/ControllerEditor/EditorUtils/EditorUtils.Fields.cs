@@ -49,8 +49,19 @@
 //     ConcatList, line 6690       -> ShowObjectPicker,     EditorUtils.Pickers.cs
 //     configurationProperty / _WrapperProcessor (lines 2178/2182) -> validColor / warningColor,
 //                                    EditorUtils.Colors.cs
-// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
-// since (-5 code lines); needs re-checking against export/ before the claim is restored.
+//
+// NOTES
+// The one textual difference in IsMissing: decompiled CallRules ends `return !flag | cfg;`, a
+// non-short-circuiting `|`. Written `||` here. Neither operand has a side effect, so the two are
+// interchangeable; `|` on bools is a decompiler shape, not a shipped subtlety.
+//
+// Audit status: VERIFIED against decompiled/ -- both AssetField overloads and IsMissing were
+// compared statement by statement with EditorUtils.cs PopRules (4302), ComputeRules (4307) and
+// CallRules (4427); all three line numbers still land on the members they name. The AssetField body
+// matches ComputeRules call for call, including the ShowObjectPicker argument list, which reproduces
+// the decompiled ConcatList positional call (nulls, loaddef3:false, null, null, delegate) with named
+// arguments. Every cross-reference listed above was re-checked against decompiled/ as well and each
+// line number is still correct (2873, 6295, 5554, 4817, 4382, 4434, 6690, 2178/2182).
 
 using System;
 using DreadScripts.Common;

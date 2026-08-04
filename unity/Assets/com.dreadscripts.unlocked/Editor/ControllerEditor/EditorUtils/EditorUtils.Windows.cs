@@ -17,7 +17,7 @@
 // filed here because EditorWindow is the type they operate on. They serialise the *window* through
 // JsonUtility, so every [SerializeField] on it round-trips in one call -- which is how the tool
 // remembers a window's settings across a domain reload without writing a key per field.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // Nothing else in the outer class body belongs to this region -- the string-numbering helpers that
 // sit just above it (SortRules line 5480, RegisterRules 5497, LogoutRules 5502) and the session

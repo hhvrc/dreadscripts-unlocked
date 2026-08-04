@@ -2,7 +2,7 @@
 //   static CallPredicate -> HasSelection, line 3124
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // ReorderableListHelper (its own file in this folder's parent) is where the list *building* lives;
 // this is only the selection test, which is needed by callers that never touch the helper.

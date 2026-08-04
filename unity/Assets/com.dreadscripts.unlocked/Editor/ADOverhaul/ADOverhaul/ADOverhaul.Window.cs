@@ -1,12 +1,18 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// This file ports no member of the decompiled source. It exists only to bridge the two calls
-// ADOverhaulWindow makes into the outer ADOverhaul class, which the shipped build could write
-// unqualified because the window was a private nested type:
+// This file ports no member of the decompiled source, so it carries no MAP entries: it claims no
+// decompiled line, and the two lines named below are call sites inside members ported elsewhere,
+// not declarations.
 //
-//   OnEnable -> PrintConfiguration(ref m_Predicate, ref, line 162
-//                                                  _Collection, LogoutConfiguration)
-//   DrawEasyDynamicsGUI -> PushConfiguration(), line 89
+// NOTES
+// The file exists only to bridge the two calls the window makes into the outer ADOverhaul class,
+// which the decompiled build could write unqualified because the window was a private nested type.
+// The two call sites reproduced here are:
+//
+//   ADOverhaulWindow.OnEnable, decompiled line 162
+//       PrintConfiguration(ref m_Predicate, ref _Collection, LogoutConfiguration)
+//   ADOverhaulWindow.DrawEasyDynamicsGUI, decompiled line 89
+//       PushConfiguration()
 //
 // Both call targets are ported -- RefreshSceneAvatars in ADOverhaul.AvatarSelection.cs and
 // RefreshAvatarTables in ADOverhaul.Lifecycle.cs, DrawTargetAvatarSelector in
@@ -19,6 +25,9 @@
 //
 // These two methods are therefore an artifact of the reconstruction and not of the original. They
 // add no behaviour: each is exactly the expression the decompiled window inlined at its call site.
+//
+// Audit status: PARTIAL -- the two call sites above were re-checked against decompiled/ (lines 89
+// and 162 of ADOverhaul.cs) in this pass; nothing else here corresponds to decompiled source.
 
 namespace DreadScripts.ADOverhaul
 {

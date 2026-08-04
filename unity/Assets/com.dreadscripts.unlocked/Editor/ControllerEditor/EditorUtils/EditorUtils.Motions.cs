@@ -8,7 +8,7 @@
 //   static CheckPredicate  -> AnyMotion,                   line 3879
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // Motion-tree walkers. A Motion is either an AnimationClip (a leaf) or a BlendTree (which holds
 // further Motions), so anything that wants to reach the clips under a state has to recurse. Each

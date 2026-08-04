@@ -3,7 +3,7 @@
 //   static CalcError -> the styles accessor, line 6242
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every style was named from the properties it sets.
+// Audit status: VERIFIED against decompiled/ -- every style was named from the properties it sets.
 
 using System.Linq;
 using System.Reflection;

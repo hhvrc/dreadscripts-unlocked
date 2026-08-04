@@ -51,7 +51,7 @@ namespace DreadScripts.ControllerEditor
         /// This is the weakest reconstruction in the package. Unlike the other DEOBF-BUG sites it
         /// is not backed by a cross-build copy or an IL trace, so the search order and the
         /// null-handling are plausible rather than established. If de4dot's control-flow recovery
-        /// improves, re-derive this body from the new export/ before trusting it.
+        /// improves, re-derive this body from the new decompiled/ before trusting it.
         /// </remarks>
         public Type ResolvedType
         {

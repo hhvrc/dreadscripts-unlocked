@@ -23,7 +23,7 @@
 //     _MessageProperty     -> _scaleActivatePreserve
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // Helpers for Unity's built-in constraint components (UnityEngine.Animations.*Constraint).
 //

@@ -10,8 +10,8 @@
 //   static ConnectPredicate     -> CopyParameters,      line 3402
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
-// since (-216 code lines); needs re-checking against export/ before the claim is restored.
+//
+// NOTES
 //
 // LAYER TAGS. The tool stores per-layer metadata inside the animator asset itself, because
 // AnimatorControllerLayer has nowhere to put custom data. A tag is an any-state transition that is
@@ -21,18 +21,20 @@
 // tags without the prefix are whatever the user typed. GetSystemTags/GetUserTags are the two
 // halves of that split, and the '_' convention is the only thing distinguishing them.
 //
-// COPYING A LAYER. CopyLayer is a deep copy: the state machine tree, its states, their behaviours,
-// their sub-asset blend trees and every transition between them are all cloned into the target
-// controller as sub-assets, then relinked so no clone points back at an original. The seven
-// [CompilerGenerated] statics listed above are the local functions that do it -- Roslyn lifts a
-// local function's captured variables into a by-ref struct, which is exactly the
-// `ref <>c__DisplayClass128_0` parameter they all carry -- so they are written back as local
-// functions here rather than as members of the class.
+// The deep-copy machinery this file used to carry (CopyLayer and the [CompilerGenerated] locals of
+// decompiled CalculatePredicate) was moved to EditorUtils.LayerCopying.cs in the port-reconciliation
+// merges; the prose describing it went with it. What is left here is the tag helpers, AddLayer and
+// CopyParameters.
 //
-// The two dictionaries are inverses of each other and both are needed: copies maps original ->
-// clone so a second reference to the same object reuses the clone rather than duplicating it, and
-// originals maps clone -> original so the relink pass can ask a clone what it was made from
-// (its own fields having already been overwritten).
+// Audit status: VERIFIED against decompiled/ -- all nine declared members diffed statement by
+// statement against decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the
+// cited lines (VisitPredicate 3275, DefinePredicate 3293, StartPredicate 3302, ReadPredicate 3313,
+// SelectPredicate 3319, RemovePredicate 3335, InstantiatePredicate 3341, AwakePredicate 3348,
+// ConnectPredicate 3402), all of which still land on the named member in the current snapshot. The
+// only differences are decompiler-artifact removals: inverted guard clauses restored to positive
+// form (IsTagTransition, AddTag, HasTag) and LINQ query syntax written back as method syntax
+// (GetTags, GetSystemTags, GetUserTags). No behavioural divergence found; the header claims no
+// member the file does not declare.
 
 using System;
 using System.Collections.Generic;

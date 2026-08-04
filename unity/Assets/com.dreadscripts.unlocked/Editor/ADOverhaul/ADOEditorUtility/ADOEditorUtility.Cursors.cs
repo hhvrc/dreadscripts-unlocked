@@ -1,7 +1,7 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
-//   static _PredicateSerializer  -> unityVersion,               line 2052
-//   static collectionSerializer  -> isUnity2022,                line 2054
-//   static interceptorSerializer -> deferredCursorRects,        line 2056
+//   static _PredicateSerializer  -> UnityVersion,               line 2052
+//   static collectionSerializer  -> IsUnity2022,                line 2054
+//   static interceptorSerializer -> DeferredCursorRects,        line 2056
 //   static m_RegistrySerializer  -> deferringCursorRects,       line 2058
 //   static PublishStatus         -> BeginDeferredCursorRects,   line 3030
 //   static CollectStatus         -> ClearDeferredCursorRects,   line 3039
@@ -10,9 +10,6 @@
 //   static InsertStatus          -> AddCursorRect,              line 3214
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in ec740dc, but the code has changed
-// since (+0 code lines); needs re-checking against export/ before the claim is restored.
-// above and cross-checked against the ControllerEditor twin named next.
 //
 // 2019 vs 2022: the same nine members with the same bodies (2019 lines 2054, 2056, 2058, 2060,
 // 3043, 3052, 3057, 3218 and 3230, under different obfuscated names). The only difference is that
@@ -24,6 +21,20 @@
 // consolidated, on the same basis as ADOEditorUtility.Colors.cs: merging the two products'
 // utility surfaces is a separate decision, and this file must not reach into the other product's
 // namespace. See that file for the longer explanation of why the deferral exists.
+//
+// DELIBERATE DEVIATION
+//
+// Both decompiled builds declare the two version fields as plain `internal static` (2022 lines 2052
+// and 2054); here they are `private static readonly`. Nothing assigns either one after its
+// initialiser, and every reader is another member of the same type -- decompiled lines 409, 536,
+// 3222, 3641 and 3645 -- so neither the narrowing nor the readonly is observable. The names are
+// PascalCased to match this package's field convention, which is why they differ from the
+// ControllerEditor twin's, whose decompiled snapshot already spells them unityVersion/isUnity2022.
+//
+// Audit status: VERIFIED against decompiled/ -- all nine members re-checked statement by statement
+// against ADOverhaul2022 ADOEditorUtility.cs lines 2052-2058, 3030-3055 and 3202-3232, and against
+// the 2019 lines named above; every body is identical, down to the 46-pixel 2022 nudge and the
+// reverse-order replay. The only differences are the field modifiers recorded immediately above.
 
 using System.Collections.Generic;
 using UnityEditor;

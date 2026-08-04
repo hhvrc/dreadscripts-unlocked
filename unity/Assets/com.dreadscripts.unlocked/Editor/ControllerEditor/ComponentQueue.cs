@@ -1,18 +1,51 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ComponentQueue.cs
-//   [SpecialName] IsValid()/IsOn()/GameObject()/ComponentIndex()/PropertyName()/IsToggleable()
-//                                        -> the properties of the same name, restored from their
-//                                           decompiled get_/set_ method pairs
+//
+//   gameObject                           -> gameObject, line 79
+//   components                           -> components, line 81
+//   componentIndex                       -> componentIndex, line 83
+//   target                               -> target, line 85
+//   targetType                           -> targetType, line 87
+//   propertyNames                        -> propertyNames, line 89
+//   propertyIndex                        -> propertyIndex, line 91
+//   value                                -> value, line 93
+//   toggleableTypes                      -> toggleableTypes, line 95
+//   [SpecialName] IsValid()              -> IsValid (property), line 103
+//   [SpecialName] IsOn()                 -> IsOn (property), line 113
+//   [SpecialName] GameObject()           -> GameObject (property getter), line 119
+//   [SpecialName] GameObject(GameObject) -> GameObject (property setter), line 125
+//   [SpecialName] ComponentIndex()       -> ComponentIndex (property getter), line 135
+//   [SpecialName] ComponentIndex(int)    -> ComponentIndex (property setter), line 141
+//   [SpecialName] PropertyName()         -> PropertyName (property), line 152
+//   ComponentQueue()                     -> ComponentQueue(), line 161
+//   ComponentQueue(GameObject)           -> ComponentQueue(GameObject), line 167
+//   Next(bool)                           -> Next(bool), line 175
+//   Previous(bool)                       -> Previous(bool), line 185
+//   Refresh()                            -> Refresh(), line 195
+//   RefreshComponents()                  -> RefreshComponents(), line 218
+//   WrapComponentIndex()                 -> WrapComponentIndex(), line 223
+//   UpdateTarget()                       -> UpdateTarget(), line 239
+//   [SpecialName] IsToggleable()         -> IsToggleable (property), line 268
 //   <>c__DisplayClass27_0.ComputePage    -> RefreshPropertyNames(), line 39
 //   <>c__DisplayClass27_0.ConcatPage     -> TrySelectProperty(string), line 62
 //   <>c__DisplayClass27_0.MovePage       -> the where-clause lambda in RefreshPropertyNames, line 57
 //   <>c__DisplayClass27_0.CallPage       -> folded into TrySelectProperty, line 73
-//   <>c.PublishPage / <>c.PopPage        -> the select/orderBy lambdas in RefreshPropertyNames,
-//                                           lines 21 and 26
+//   <>c.PublishPage                      -> the select lambda in RefreshPropertyNames, line 21
+//   <>c.PopPage                          -> the orderBy lambda in RefreshPropertyNames, line 26
 //   IsToggleable(Type)                   -> folded into the IsToggleable property, line 274
-// The closures the obfuscator hoisted into display classes are restored as ordinary members and
-// lambdas; nothing of the original type is left unported.
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
+//
+// NOTES
+// The accessor pairs the decompiler left as [SpecialName] methods are restored as the properties
+// they started life as. The closures the obfuscator hoisted into display classes are restored as
+// ordinary members and lambdas: the display class's two fields carry the receiver and the sought
+// property name, which are `this` and a parameter here. Nothing of the original type is left
+// unported.
+//
+// Audit status: PARTIAL -- the mapping above was re-derived member by member against
+// decompiled/ControllerEditor/DreadScripts/ControllerEditor/ComponentQueue.cs on 2026-08-05, and
+// every line number lands on the member named; the doc-comment prose on the members below was not
+// re-checked against the decompiled bodies.
 
 using System;
 using System.Linq;

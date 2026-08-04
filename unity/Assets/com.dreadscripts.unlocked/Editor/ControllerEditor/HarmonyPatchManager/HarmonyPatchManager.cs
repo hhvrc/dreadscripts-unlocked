@@ -27,8 +27,8 @@
 //   RunReg            -> DeferPatch(string, MethodInfo, ...),   line 2695  (.DeferredPatches.cs)
 //   CloneReg          -> ApplyDeferredPatch,                    line 2709  (.DeferredPatches.cs)
 //   PatchSwapEntry    -> PatchSwapEntry,                        line 2404  (.DeferredPatches.cs)
-//   RefAction/RefFunc/OutAction/OutFunc/Val* delegates          line 2436-2494 (.Delegates.cs)
-//   CreateReg ... QueryTests (48 delegate->MethodInfo helpers)  line 2798-3016 (.MethodOf.cs)
+//   RefAction/RefFunc/OutAction/OutFunc/Val* delegates -> same, lines 2436-2494 (.Delegates.cs)
+//   CreateReg ... QueryTests (48 MethodOf helpers)     -> same, lines 2798-3016 (.MethodOf.cs)
 //
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
@@ -37,7 +37,7 @@
 // Despite the name, HarmonyPatchManager patches nothing in particular. It is the registration and
 // lifecycle layer: it owns the Harmony instances, resolves patch targets by name/signature through
 // reflection, swallows and accumulates patch failures so a missing internal cannot take the whole
-// tool down, and provides the compile-time-checked delegate->MethodInfo helpers that let call sites
+// tool down, and provides the compile-time-checked delegate-to-MethodInfo helpers that let call sites
 // name a patch method without a reflection string. The actual patch targets -- the UnityEditor
 // internals -- are named at the call sites in the ControllerEditor god class (decompiled lines
 // 15301-17987), not here. See the "What actually gets patched" note at the bottom of this file.
@@ -96,6 +96,8 @@
 // omitted, so ApplyPatches iterates nothing and RetryPatching re-applies nothing. Restoring them
 // is two lines once RevertWrapper exists -- put it back in the array initialiser and re-add the
 // call marked below. Nothing else in this type changes.
+//
+// Audit status: UNAUDITED
 
 using System;
 using System.Collections.Generic;

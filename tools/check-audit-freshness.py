@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check whether "Audit status: VERIFIED" files have changed since they were stamped.
 
-VERIFIED asserts the file was diffed against export/. That assertion decays the
+VERIFIED asserts the file was diffed against decompiled/. That assertion decays the
 moment the file is edited, so this finds the commit that introduced the stamp and
 compares that version against the working tree.
 
@@ -59,7 +59,7 @@ def requeue(path, stamped, delta):
     short = git('log', '-1', '--format=%h', stamped).strip()
     replacement = (
         f'// Audit status: UNAUDITED -- was VERIFIED in {short}, but the code has changed'
-        f'{nl}// since ({delta}); needs re-checking against export/ before the claim is restored.'
+        f'{nl}// since ({delta}); needs re-checking against decompiled/ before the claim is restored.'
     )
     out = AUDIT_LINE.sub(lambda _: replacement, src, count=1)
     if out == src:

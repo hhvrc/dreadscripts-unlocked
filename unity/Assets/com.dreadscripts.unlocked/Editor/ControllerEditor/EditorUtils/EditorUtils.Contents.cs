@@ -5,7 +5,7 @@
 //   static DestroyError -> the contents accessor, line 6236
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every field below was matched to its icon/tooltip pair.
+// Audit status: VERIFIED against decompiled/ -- every field below was matched to its icon/tooltip pair.
 
 using UnityEditor;
 using UnityEngine;

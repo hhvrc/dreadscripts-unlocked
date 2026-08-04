@@ -12,7 +12,7 @@
 //   static RemoveRules   -> CreateEmptyMask,          line 4807
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // AvatarMask is a pair of independent lists: thirteen humanoid body-part toggles, and a list of
 // transform paths with an active flag each. Everything below manipulates one or both.

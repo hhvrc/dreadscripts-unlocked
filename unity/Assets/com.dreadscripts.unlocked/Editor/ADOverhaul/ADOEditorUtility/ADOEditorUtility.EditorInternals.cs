@@ -18,7 +18,7 @@
 //   static RunVal                       -> RefreshInspectors,         line 3755
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
 // above.
 //
 // DEOBF-BUG(resolved): SortRef carried [SpecialName] with no matching setter, which is how ILSpy

@@ -1,12 +1,12 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
-//   static ExcludeQueue -> ToggleButton(bool, GUIContent, ...), line 5763
-//   static FindQueue    -> ToggleButton(bool, GUIContent, ...) with no style, line 5758
-//   static AddQueue     -> ToggleButton(bool, string, ...),     line 5748
-//   static InvokeQueue  -> ToggleButton(bool, string, ...) with no style, line 5753
-//   static RestartQueue -> Button(GUIContent, ...),             line 5732
-//   static InsertQueue  -> Button(GUIContent, ...) with no style, line 5727
-//   static CountQueue   -> Button(string, ...),                 line 5717
-//   static DisableQueue -> Button(string, ...) with no style,    line 5722
+//   static ToggleButton -> ToggleButton(bool, GUIContent, ...), line 5763
+//   static ToggleButton -> ToggleButton(bool, GUIContent, ...) with no style, line 5758
+//   static ToggleButton -> ToggleButton(bool, string, ...),     line 5748
+//   static ToggleButton -> ToggleButton(bool, string, ...) with no style, line 5753
+//   static Button       -> Button(GUIContent, ...),             line 5732
+//   static Button       -> Button(GUIContent, ...) with no style, line 5727
+//   static Button       -> Button(string, ...),                 line 5717
+//   static Button       -> Button(string, ...) with no style,    line 5722
 //   static QueryQueue   -> Button(Rect, GUIContent, ...),       line 5737
 //   static CancelQueue  -> Button(Rect, string, ...),           line 5712
 //   static CallQueue    -> IconButton,                          line 5697
@@ -15,9 +15,13 @@
 //   static DefineQueue  -> ClickArea,                           line 5790
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 0f4d48c, but the code has changed
-// since (+57 code lines); needs re-checking against export/ before the claim is restored.
-// and every statement below was transcribed from it.
+//
+// NOTES
+// The eight Button/ToggleButton entries above were written against the pre-561e9ec snapshot, where
+// they were still obfuscated as ExcludeQueue (5763), FindQueue (5758), AddQueue (5748),
+// InvokeQueue (5753), RestartQueue (5732), InsertQueue (5727), CountQueue (5717) and DisableQueue
+// (5722). The re-snapshot renamed them to Button/ToggleButton at the same lines; the names above
+// are the current ones.
 //
 // The decompiled class carries a separate overload for each combination of (content type, style
 // present), because the obfuscator had already split them; the optional parameters below collapse
@@ -25,6 +29,18 @@
 //
 // The Buttons region is now complete: the layout buttons, the Rect-based buttons, the icon button,
 // the "did the toggle change" variants and the bare click area are all ported.
+//
+// DELIBERATE DEVIATION
+// Button(string, GUIStyle, params) forwards straight to ToggleButton(false, new GUIContent(text),
+// style, options); decompiled line 5717 instead forwards to the GUIContent overload at 5732, whose
+// whole body is that same ToggleButton call. One forwarding hop is inlined, which is unobservable
+// -- no overload-resolution or side-effect difference -- but it is not a literal transcription.
+//
+// Audit status: VERIFIED against decompiled/ -- all nine methods this file declares were compared
+// statement by statement with EditorUtils.cs lines 5697-5800, and each of the fourteen line numbers
+// above lands on the member it names. The only difference is the inlined forwarding hop recorded
+// under DELIBERATE DEVIATION; every other body, including the `styles()`-to-`styles` accessor
+// change, matches token for token.
 
 using UnityEditor;
 using UnityEngine;

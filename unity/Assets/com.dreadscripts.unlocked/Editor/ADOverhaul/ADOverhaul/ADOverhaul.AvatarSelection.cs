@@ -16,7 +16,7 @@
 //   ForgotConfiguration    -> DrawPlayableLayerWarning,      line 6684
 //   PushConfiguration      -> DrawTargetAvatarSelector,      line 6806
 //   PrepareConfiguration   -> DrawAvatarParameterField,      line 6811
-//   PostIdentifier         -> ReportParameterAdd (local fn), line 8425
+//   PostIdentifier         -> the local function ReportParameterAdd, line 8629
 //
 //   -- GUI field helpers --
 //   UpdateConfiguration    -> GetMaxLossyScale,              line 6712
@@ -62,7 +62,7 @@
 // either shipped build. Three reconstruction decisions, all previously flagged in this header and
 // now carried out:
 //
-//   * `PostIdentifier` (line 8425) is not a member. It is the [CompilerGenerated] lift of a local
+//   * `PostIdentifier` (line 8629) is not a member. It is the [CompilerGenerated] lift of a local
 //     function, taking the two `_003C_003Ec__DisplayClass86_*` capture structs by ref. It is
 //     restored as the local function ReportParameterAdd and both structs are dropped; the second
 //     struct held only the AnimatorController, which is passed as an ordinary argument instead.
@@ -122,6 +122,10 @@
 // The only textual differences are decompiler branch-ordering choices: 2019 renders
 // DrawPlayableLayerWarning's humanoid test as the fallthrough rather than the early exit, and
 // renders RefreshSceneAvatars' preferred-avatar ternary the other way round. Same expressions.
+//
+// Audit status: PARTIAL -- PostIdentifier was relocated to its true line (8629) in decompiled/ on
+// 2026-08-05; the rest of the MAP block's line numbers predate the 561e9ec re-snapshot and were not
+// re-checked.
 
 using System;
 using System.Collections.Generic;

@@ -3,19 +3,21 @@
 // Ported region: one member of the PhysBoneEditor class. Line numbers move with the snapshot; the
 // member name below is the durable reference.
 //
-//   InterruptSingleton -> ApplyGlobalGizmoSettings, line 4210
+//   InterruptSingleton -> ApplyGlobalGizmoSettings, line 4414
 //
+// NOTES
 // Added out of order, ahead of the rest of PhysBoneEditor's inspector: this is the change callback
 // on four of ADOSettings' settings fields (gizmosActive, globalGizmo, gizmoBoneOpacity,
-// gizmoLimitOpacity), so ADOSettings cannot be ported without it. PhysBoneEditor.cs's omission list
-// no longer names it.
+// gizmoLimitOpacity), so ADOSettings cannot be ported without it.
 //
-// Two further call sites remain unported, both inside PhysBoneEditor's own inspector: the
-// SettingsChangeScope around the gizmo settings row (decompiled lines 2539 and 3309) and the
-// OnEnable-time push at line 4094.
+// Three further call sites remain unported, all inside PhysBoneEditor's own inspector: the two
+// SettingsChangeScopes around the gizmo settings rows (decompiled lines 2539 and 3513) and the
+// direct call at line 4298.
 //
-// Audit status: VERIFIED against export -- the whole method is nine lines and was re-read against
-// lines 4210-4222 on 2026-08-04.
+// Audit status: VERIFIED against decompiled/ -- the whole method is nine lines and was re-read
+// against ADOverhaul2022 lines 4414-4426 on 2026-08-05. The line number was 4210 before this audit,
+// which is stale from the 561e9ec re-snapshot and lands on PublishSingleton; likewise the call sites
+// above, which were recorded as 2539/3309/4094.
 
 using UnityEngine;
 using VRC.SDK3.Dynamics.PhysBone.Components;

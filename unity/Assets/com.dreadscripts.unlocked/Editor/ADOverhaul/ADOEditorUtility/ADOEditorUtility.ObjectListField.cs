@@ -2,7 +2,7 @@
 //   static OrderStatus -> ObjectListField, line 2595
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
 // above.
 //
 // The export's inner call reads

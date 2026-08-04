@@ -4,7 +4,7 @@
 //   static field _AttributeSerializer -> stylesInstance,    line 2078
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- all 24 members, every property set on each style and
+// Audit status: VERIFIED against decompiled/ -- all 24 members, every property set on each style and
 // the order of the three toggle-state colours were re-checked against lines 667-835 on 2026-08-04
 // and match.
 // One deliberate deviation, recorded here rather than left implicit: the backing field

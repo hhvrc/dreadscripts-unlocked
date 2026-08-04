@@ -1,6 +1,6 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// Assigned region: decompiled lines 6949-7794 -- the tool's licensing, activation, transfer,
+// Assigned region: decompiled lines 7153-7998 -- the tool's licensing, activation, transfer,
 // machine-fingerprinting and request-signing layer, plus a handful of unrelated general-purpose
 // members the obfuscator happened to lay down in the middle of it.
 //
@@ -10,15 +10,16 @@
 // the decompiled names are the durable reference. Field references go through the table in
 // ADOverhaul.State.cs.
 //
-//   RemoveSerializer     -> BugReporterOpen (set-only property), line 7007
-//   InitConfiguration    -> DrawPanelHeader,                     line 7631
+//   RemoveSerializer     -> BugReporterOpen (set-only property), line 7212
+//   InitConfiguration    -> DrawPanelHeader,                     line 7835
 //
-// Ported elsewhere, deliberately NOT repeated here:
+// Ported elsewhere, deliberately NOT repeated here. These are cross-references, not claims: each of
+// the four is mapped with its line number by the file that ports it, so it stays claimed once:
 //
-//   IncludeConfiguration -> Json.ToJsonObject,   Editor/Common/Json.cs                (line 7720)
-//   CalculateIdentifier  -> RepaintOpenWindowsDelayed, ADOverhaul.Menus.cs             (line 7770)
-//   CalcIdentifier       -> RepaintOpenWindows,        ADOverhaul.Menus.cs             (line 7775)
-//   DeleteIdentifier     -> DrawCreditLink,            ADOverhaul.Menus.cs             (line 7784)
+//   IncludeConfiguration -> Json.ToJsonObject,   Editor/Common/Json.cs                (line 7924)
+//   CalculateIdentifier  -> RepaintOpenWindowsDelayed, ADOverhaul.Menus.cs             (line 7974)
+//   CalcIdentifier       -> RepaintOpenWindows,        ADOverhaul.Menus.cs             (line 7979)
+//   DeleteIdentifier     -> DrawCreditLink,            ADOverhaul.Menus.cs             (line 7988)
 //
 // The last three are the tail of this range but were adopted by ADOverhaul.Menus.cs, which holds
 // every surviving caller -- it explains the adoption in its own header. None of them touches the
@@ -51,12 +52,14 @@
 // The catalogue is a deliverable in its own right. This repository documents what the DRM did.
 //
 // ==================================================================================================
-// CATALOGUE OF OMITTED MEMBERS, decompiled lines 6949-7794
+// NOT PORTED -- CATALOGUE OF OMITTED MEMBERS, decompiled lines 7153-7998
+// Each entry is <decompiled name> <decompiled line> followed by prose; they are catalogued rather
+// than mapped because none of them is ported.
 // ==================================================================================================
 //
 // -- Hardware fingerprinting (spawns child processes to read device serial numbers) ---------------
 //
-//   CloneConfiguration    7265  The fingerprinter, and the single most invasive thing in the
+//   CloneConfiguration    7469  The fingerprinter, and the single most invasive thing in the
 //                               assembly. Takes a continuation and runs it once a machine
 //                               fingerprint is available. It builds four `ProcessRunner`s over
 //                               `wmic baseboard get *`, `wmic cpu get *`, `wmic diskdrive get *` and
@@ -70,121 +73,121 @@
 //                               Capacity (RAM), SHA-1s them into components and joins them with
 //                               dashes into `hardwareId`, cached in EditorPrefs under "DSLICINF".
 //                               A stable, machine-unique identifier derived from hardware serials.
-//   RestartConfiguration  7229  Interleaves slices of `hardwareId` with the day/month/year fields of
+//   RestartConfiguration  7433  Interleaves slices of `hardwareId` with the day/month/year fields of
 //                               the date stamp into `unreadDeviceDateFingerprint` -- a field
 //                               nothing in either shipped build ever reads (see its summary in
 //                               ADOverhaul.State.cs).
-//   ManageConfiguration   7237  Generates and persists the install identifier `sessionId` in
+//   ManageConfiguration   7441  Generates and persists the install identifier `sessionId` in
 //                               EditorPrefs under "DreadScriptssid", regenerating it unless the
 //                               stored value matches [0-9a-f]{32}.
 //
 // -- The licence gate itself -----------------------------------------------------------------------
 //
-//   FlushConfiguration    7515  THE gate. Every inspector and the tool window open with
+//   FlushConfiguration    7719  THE gate. Every inspector and the tool window open with
 //                               `if (FlushConfiguration())`. Returns true only when `isLicensed`;
 //                               otherwise it draws the activation pane and returns false, so the
 //                               real UI is never reached. Reconstructing it would re-gate the tool
 //                               on a dead server. Callers: ADOverhaulWindow.OnGUI (74),
 //                               ContactReceiverEditor (1735), ContactSenderEditor (1991),
-//                               PhysBoneColliderEditor (2192), PhysBoneEditor (3010).
-//   EnableConfiguration   6966  The unlicensed branch of those five callers: a warning HelpBox
+//                               PhysBoneColliderEditor (2192), PhysBoneEditor (3214).
+//   EnableConfiguration   7170  The unlicensed branch of those five callers: a warning HelpBox
 //                               ("This is 'Avatar Dynamics Overhaul'. If you don't know what this
 //                               is...") over Locate / Info / Switch Editor buttons. Reachable only
 //                               when the gate has refused, i.e. never in this package. Mechanically
 //                               portable -- every helper it needs is in place -- but it is the
 //                               refusal screen, so it is left out with the refusal.
-//   ReflectConfiguration  7443  `RunWhenLicensed(Action)`: queue the action on
+//   ReflectConfiguration  7647  `RunWhenLicensed(Action)`: queue the action on
 //                               `pendingLicensedCallbacks` while unlicensed, or run it immediately
 //                               if an inline HMAC-SHA256 over `licenseKey` / `currentDateStamp` /
 //                               `hardwareId` reproduces `licenseToken`. NOTE, correcting an earlier
 //                               reading: it has NO callers in either shipped build, so
 //                               `pendingLicensedCallbacks` is only ever drained, never filled. Dead
 //                               code even in the original.
-//   ResolveConfiguration  7460  The drain: the same inline HMAC check, then a one-shot invoke of
+//   ResolveConfiguration  7664  The drain: the same inline HMAC check, then a one-shot invoke of
 //                               `pendingLicensedCallbacks` guarded by `licensedCallbacksFlushed`.
 //                               Given the above it always invokes an empty delegate.
-//   ResetConfiguration    7476  Empty body, one unused bool parameter, four call sites. Obfuscator
+//   ResetConfiguration    7680  Empty body, one unused bool parameter, four call sites. Obfuscator
 //                               scaffolding or a stripped hook; there is nothing to port.
 //
 // -- Licence state, entry points and request flows --------------------------------------------------
 //
-//   DisableConfiguration  7063  [InitializeOnLoadMethod]. Fires on every domain reload: reads the
+//   DisableConfiguration  7268  [InitializeOnLoadMethod]. Fires on every domain reload: reads the
 //                               stored key and, if `a_VerifyOnProjectLoad` is set, queues a
 //                               verification POST. This is the automatic network call on project
 //                               open. (It was missing from the region list I was given.)
-//   VisitConfiguration    7081  The per-repaint counterpart: if `a_VerifyOnDisplay` is set and a key
+//   VisitConfiguration    7285  The per-repaint counterpart: if `a_VerifyOnDisplay` is set and a key
 //                               is stored, verify. Called from FlushConfiguration on Repaint.
-//   AssetConfiguration    7089  The verification flow proper. First tries a cached response held in
+//   AssetConfiguration    7293  The verification flow proper. First tries a cached response held in
 //                               SessionState under a key of product id + EditorAnalyticsSessionInfo.id,
 //                               decrypted with a hardcoded AES-128 key and IV and authenticated with
 //                               HMAC-SHA1 keyed on that same session key; on a hit it restores
 //                               `licenseUsername`, `licenseVariant`, `licenseToken` and `hardwareId`
 //                               and marks the tool licensed. On a miss it calls CloneConfiguration
 //                               (above) to fingerprint the machine and POSTs "verifylicense".
-//   PopConfiguration      7176  Activation: validates the typed key, fingerprints the machine, POSTs
+//   PopConfiguration      7380  Activation: validates the typed key, fingerprints the machine, POSTs
 //                               "activatelicense", then re-runs verification.
-//   ExcludeConfiguration  7578  The licence-transfer pane -- "send me a 6-digit code", the code
+//   ExcludeConfiguration  7782  The licence-transfer pane -- "send me a 6-digit code", the code
 //                               field, and the transfer button.
-//   ConnectConfiguration  7644  The licence-key text field, with its focus/commit handling.
-//   FindConfiguration     7677  Whether a request may be sent right now: format valid, not inside
+//   ConnectConfiguration  7848  The licence-key text field, with its focus/commit handling.
+//   FindConfiguration     7881  Whether a request may be sent right now: format valid, not inside
 //                               the server-imposed backoff, and the transfer code present if the
 //                               transfer pane is open.
-//   AddConfiguration      7694  Format check, `^[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}$`.
-//   ValidateConfiguration 7699  Format check for the 6-character transfer code.
-//   CreateConfiguration   7708  The "Activate License" / "Transfer License" pane switcher.
-//   GetConfiguration      7495  The licence banner: "License: <tier or Personal>" and
+//   AddConfiguration      7898  Format check, `^[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}$`.
+//   ValidateConfiguration 7903  Format check for the 6-character transfer code.
+//   CreateConfiguration   7912  The "Activate License" / "Transfer License" pane switcher.
+//   GetConfiguration      7699  The licence banner: "License: <tier or Personal>" and
 //                               "Authorized For: <name>". Drawn by the window and by
 //                               PhysBoneEditor/PhysBoneColliderEditor, but purely a readout of
 //                               licence state, so there is nothing for it to display here.
-//   InstantiateConfiguration 7205 Formats `licensedToDisplayName` from the account name the server
+//   InstantiateConfiguration 7409 Formats `licensedToDisplayName` from the account name the server
 //                               returned -- strips a trailing Discord "#1234" discriminator, any
 //                               <color> markup around it and a leading '@'. Fed only by the
 //                               response, so it has no input in this package.
-//   RateConfiguration     7251  Loads the key from EditorPrefs ("No1lKII9IzcBAbihub6nCg==LK") and
+//   RateConfiguration     7455  Loads the key from EditorPrefs ("No1lKII9IzcBAbihub6nCg==LK") and
 //                               reports whether a well-formed one is stored.
-//   ResolveSerializer     7051  [SpecialName] getter: seconds remaining in the server-imposed
+//   ResolveSerializer     7256  [SpecialName] getter: seconds remaining in the server-imposed
 //                               backoff (`retryAllowedAtRealtime - Time.realtimeSinceStartup`).
-//   GetSerializer         7057  [SpecialName] getter: whether that backoff is still running.
-//   ExcludeSerializer     7480  [SpecialName] getter composing the wait notice -- "Too many failed
+//   GetSerializer         7262  [SpecialName] getter: whether that backoff is still running.
+//   ExcludeSerializer     7685  [SpecialName] getter composing the wait notice -- "Too many failed
 //                               attempts! Further failed attempts will result in getting your device
 //                               blocked!" plus "Please wait N seconds." All three exist only to
 //                               throttle and warn about requests to the dead endpoint.
 //
 // -- Request construction, signing and transport ----------------------------------------------------
 //
-//   CountConfiguration    7402  Builds the identity block every command carries: command,
+//   CountConfiguration    7606  Builds the identity block every command carries: command,
 //                               product_id ("No1lKII9IzcBAbihub6nCg=="), version, HWID, SID,
 //                               license_key, plus any command-specific pairs.
-//   StartConfiguration    7421  Appends the tamper-evidence "hash": HMAC-SHA256 over the
+//   StartConfiguration    7625  Appends the tamper-evidence "hash": HMAC-SHA256 over the
 //                               concatenated values under a 128-character key embedded in the
 //                               assembly.
-//   RemoveConfiguration   7434  Builds `currentDateStamp` as "<day>/<month>/<year>" UTC with the day
+//   RemoveConfiguration   7638  Builds `currentDateStamp` as "<day>/<month>/<year>" UTC with the day
 //                               and month passed through the obfuscation helper, for the server's
 //                               clock-tampering check.
-//   RevertConfiguration   7737  HttpWebRequest factory: POST, application/json.
-//   RunIdentifier         7746  Writes the payload and reads the response on a background task,
+//   RevertConfiguration   7941  HttpWebRequest factory: POST, application/json.
+//   RunIdentifier         7950  Writes the payload and reads the response on a background task,
 //                               parsing it into a JsonObject.
-//   OrderIdentifier       7765  Hardcodes the dead endpoint URL. This is the single line every
+//   OrderIdentifier       7969  Hardcodes the dead endpoint URL. This is the single line every
 //                               request in the whole assembly funnels through.
-//   ComputeConfiguration  7351  Response handler, thin wrapper over the below.
-//   QueryConfiguration    7356  The response handler proper: reads success / message / url /
+//   ComputeConfiguration  7555  Response handler, thin wrapper over the below.
+//   QueryConfiguration    7560  The response handler proper: reads success / message / url /
 //                               url_name / wait_warn / wait_time, logs or dialogs the message,
 //                               optionally opens the returned URL, and arms the backoff.
 //
 // -- Ported elsewhere, or belonging to another region ------------------------------------------------
 //
-//   IncludeConfiguration  7720  Confirmed already ported: it is one of four byte-identical
-//                               `(string, string)` -> JSON serialisers the obfuscator duplicated
+//   IncludeConfiguration  7924  Confirmed already ported: it is one of four byte-identical
+//                               `(string, string)`-pair-to-JSON serialisers the obfuscator duplicated
 //                               across the two products, consolidated as `Json.ToJsonObject` in
 //                               Editor/Common/Json.cs (which records all four originals, this one
 //                               among them). Not duplicated here.
-//   CalculateIdentifier   7770  \
-//   CalcIdentifier        7775   > See the mapping at the top: adopted by ADOverhaul.Menus.cs.
-//   DeleteIdentifier      7784  /
-//   InsertConfiguration   6949  The PhysBone test-mode "collider changes require a restart" prompt.
+//   CalculateIdentifier   7974  \
+//   CalcIdentifier        7979   > See the mapping at the top: adopted by ADOverhaul.Menus.cs.
+//   DeleteIdentifier      7988  /
+//   InsertConfiguration   7153  The PhysBone test-mode "collider changes require a restart" prompt.
 //                               Nothing to do with licensing despite sitting at the head of this
 //                               range; owned by the test-mode region.
-//   AwakeConfiguration    7018  The feedback panel. Its layout is ordinary, but its only action is a
+//   AwakeConfiguration    7222  The feedback panel. Its layout is ordinary, but its only action is a
 //                               "sendfeedback" POST through CountConfiguration / StartConfiguration
 //                               / OrderIdentifier, so it cannot be ported without the transport.
 //                               Worth recording for whoever revisits it: its second statement is
@@ -227,6 +230,14 @@
 // [SpecialName] members here that really were accessors are handled as such -- RemoveSerializer is
 // restored as a property setter below, while ResolveSerializer / GetSerializer / ExcludeSerializer
 // are accessors of the omitted licence state and are omitted with it.
+//
+// Audit status: PARTIAL -- every decompiled line number above was re-located by name in
+// decompiled/ADOverhaul2022/.../ADOverhaul.cs on this pass and corrected: the whole region had
+// shifted by ~204 lines in the 561e9ec re-snapshot (RemoveSerializer 7007 -> 7212, InitConfiguration
+// 7631 -> 7835, the region itself 6949-7794 -> 7153-7998, and every catalogue entry likewise), as
+// had the FlushConfiguration caller in PhysBoneEditor (3010 -> 3214). What was NOT re-audited is
+// the prose: the described behaviour of the omitted members, and the 2019-build line numbers quoted
+// below, are as first written. The bodies were not re-diffed against decompiled/, so this is PARTIAL rather than VERIFIED.
 
 using DreadScripts.Common;
 using UnityEngine;

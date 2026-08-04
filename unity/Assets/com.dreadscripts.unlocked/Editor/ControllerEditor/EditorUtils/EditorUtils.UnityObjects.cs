@@ -1,12 +1,15 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
-//   static InitResolver   -> SetDontSave,             line 2586
-//   static VisitResolver  -> SetHidden,               line 2601
-//   static DefineResolver -> SetDontSaveRecursively,  line 2616
-//   static RevertResolver -> AsComponentOrAsset,      line 3037
+//   static SetDontSave            -> same,                 line 2586
+//   static SetHidden             -> same,                 line 2601
+//   static SetDontSaveRecursively -> same,                line 2616
+//   static RevertResolver        -> AsComponentOrAsset,   line 3037
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in d3b7ecd, but the code has changed
-// since (+8 code lines); needs re-checking against export/ before the claim is restored.
+//
+// NOTES
+// The first three entries were written against the pre-561e9ec snapshot, where they were still
+// obfuscated as InitResolver (2586), VisitResolver (2601) and DefineResolver (2616). The
+// re-snapshot renamed them at the same lines; the names above are the current ones.
 //
 // HideFlags helpers on UnityEngine.Object. SetDontSave toggles the DontSaveInEditor|DontSaveInBuild
 // pair (the "temporary object" flags); SetHidden toggles HideInHierarchy|HideInInspector. Both are
@@ -16,6 +19,14 @@
 // AsComponentOrAsset is filed here rather than with the asset helpers because it is a cast, not an
 // asset operation: it exists so a picker that hands back whatever the user clicked can be asked for
 // the type the caller actually wanted.
+//
+// Audit status: VERIFIED against decompiled/ -- all four methods this file declares were compared
+// statement by statement with EditorUtils.cs lines 2586-2622 and 3037-3049, and all four line
+// numbers still land on the members they name. The only differences are branch shape with identical
+// behaviour: the null guards are written `if (obj == null) return;` where decompiled/ wraps the body
+// in `if (!(x == null))`, SetDontSave's two arms are ordered set-then-clear where decompiled/ tests
+// the negation first, and AsComponentOrAsset's `obj is GameObject go` replaces the decompiled
+// `as GameObject` plus `(object)obj != null` pair.
 
 using UnityEngine;
 

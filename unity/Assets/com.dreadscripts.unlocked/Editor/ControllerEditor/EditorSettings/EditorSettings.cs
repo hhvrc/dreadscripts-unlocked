@@ -3,10 +3,9 @@
 // ControllerEditor class, lines 437-1577. Lifted to a top-level type, as this package does with
 // every type the decompiled god-class carries as a nested member.
 //
-// decompiled member -> ported member, line N:
-//   EditorSettings                    -> EditorSettings,                  437
-//   [SpecialName] GetInstance()       -> Instance (property),            1470
-//   private EditorSettings()          -> EditorSettings(),               1479
+//   EditorSettings                    -> EditorSettings, line 437
+//   [SpecialName] GetInstance()       -> Instance (property), line 1470
+//   private EditorSettings()          -> EditorSettings(), line 1479
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
@@ -31,6 +30,9 @@
 // Their only readers (lines 5436-5599, 6404, 10068-10189, 10487, 18143) are all inside the
 // verification routine. Omitting them costs nothing at load time: JsonUtility ignores JSON keys with
 // no matching field, so a settings block written by the shipped build still reads back.
+//
+// Audit status: PARTIAL -- the three MAP entries above were re-checked against decompiled/ and land
+// on the members named; the settings field list and the not-ported claims above were not re-checked.
 
 using System;
 using UnityEditor;

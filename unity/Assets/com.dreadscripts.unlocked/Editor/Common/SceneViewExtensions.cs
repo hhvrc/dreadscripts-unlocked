@@ -16,7 +16,7 @@
 // ADOverhaul snapshots render as the plain `if` reproduced here. Two independent builds of the same
 // method disagreeing is what settles it. The same de4dot fault is confirmed on
 // AnimatorTypeCache.ParameterEntry.Source, where tracing the original Reactor IL showed a plain `if`
-// turned into a `while`. export/ keeps the loop until that recovery is fixed; do not restore it.
+// turned into a `while`. decompiled/ keeps the loop until that recovery is fixed; do not restore it.
 
 using UnityEditor;
 using UnityEngine;

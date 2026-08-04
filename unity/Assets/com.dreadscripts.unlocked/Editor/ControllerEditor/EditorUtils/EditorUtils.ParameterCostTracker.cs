@@ -38,21 +38,24 @@
 // package was compiled and keep using it against every later SDK; reading it by reflection at
 // runtime is what actually follows the installed SDK. The same reasoning applies to any future
 // reference to it from this package. Process() below therefore never writes a limit of its own: it
-// Audit status: VERIFIED against export
 // gets the free space from EditorUtils.GetRemainingCost and, for the message it shows when that
 // space runs out, quotes EditorUtils.MaxParameterCost. Both resolve to the same reflected value.
 //
-// The members of the outer EditorUtils class this type calls into, and where they now live:
-//   GetRemainingCost  (decompiled InterruptList, line 7724)  -> EditorUtils.Parameters.cs
-//   MaxParameterCost  (decompiled RunError, line 7691)       -> EditorUtils.Parameters.cs
-//   AssetField<T>     (decompiled PopRules, line 4302)       -> EditorUtils.Fields.cs
-//   IsMissing         (decompiled CallRules, line 4427)      -> EditorUtils.Fields.cs
-//   validColor / warningColor (decompiled configurationProperty and _WrapperProcessor,
-//                              lines 2178 and 2182)          -> EditorUtils.Colors.cs
-//   SetExpressionParameters (decompiled CallError, line 8000) -> EditorUtils.AvatarDescriptor.cs
+// The members of the outer EditorUtils class this type calls into, and where they now live. These
+// are cross-references, not claims -- each of those members is mapped by the file that ports it:
+//   InterruptList (line 7724)          -> GetRemainingCost (EditorUtils.Parameters.cs)
+//   RunError (line 7691)               -> MaxParameterCost (EditorUtils.Parameters.cs)
+//   PopRules (line 4302)               -> AssetField of T (EditorUtils.Fields.cs)
+//   CallRules (line 4427)              -> IsMissing (EditorUtils.Fields.cs)
+//   configurationProperty / _WrapperProcessor (lines 2178, 2182) -> validColor / warningColor (EditorUtils.Colors.cs)
+//   CallError (line 8000)              -> SetExpressionParameters (EditorUtils.AvatarDescriptor.cs)
 //
-// Deliberately unported: the CompareCandidate / PublishCandidate() pair, line 1436 and 1575, an
-// obfuscator-injected null check on an always-null static with no callers.
+//   CompareCandidate  -> NOT PORTED, line 1436 -- an always-null static, half of an
+//                        obfuscator-injected null check with no callers
+//   PublishCandidate  -> NOT PORTED, line 1575 -- the other half of that check
+//
+// Audit status: PARTIAL -- every line number and member name in this header was re-checked against
+// decompiled/ in this pass; the method bodies were not re-diffed statement by statement.
 
 using System;
 using System.Collections.Generic;

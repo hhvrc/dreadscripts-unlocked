@@ -3,11 +3,10 @@
 // class, lines 751-1688. Lifted to a top-level type, as this package does with every type the
 // decompiled god-class carries as a nested member.
 //
-// decompiled member -> ported member, line N:
-//   ADOSettings                       -> ADOSettings,                     751
-//   [SpecialName] instance()          -> instance (property),            1568
-//   private ADOSettings()             -> ADOSettings(),                  1577
-//   [SpecialName] StateColors()       -> StateColors (property),         1678
+//   ADOSettings                       -> ADOSettings, line 751
+//   [SpecialName] Instance()          -> instance (property), line 1569
+//   private ADOSettings()             -> ADOSettings(), line 1578
+//   [SpecialName] StateColors()       -> StateColors (property), line 1679
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
@@ -51,6 +50,11 @@
 // The ADOverhaul2019 build declares the identical field list, in the identical order, with the
 // identical defaults and the identical EditorPrefs key (its lines 1438-1546, 1606-1619). The two
 // builds differ only in obfuscated local and parameter names.
+//
+// Audit status: PARTIAL -- the four MAP entries above were re-checked against decompiled/ (the
+// accessor at 1569 is named `Instance()` in the current snapshot, not `instance()`, and the three
+// member line numbers were each one short of the declaration after the 561e9ec re-snapshot); the
+// settings field list and the not-ported claims below were not re-checked.
 
 using System;
 using UnityEngine;

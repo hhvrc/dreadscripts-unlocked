@@ -18,7 +18,7 @@
 //   static PostStatus      -> MarkAsLink,                                    line 3079
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
 // above and cross-checked against the ControllerEditor twin named next.
 //
 // The obfuscator had already split each button into one overload per (content type, style present)

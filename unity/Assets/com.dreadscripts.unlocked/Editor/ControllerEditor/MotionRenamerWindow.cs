@@ -1,14 +1,14 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
-//   nested class MotionRenamerWindow, lines 3923-3996, lifted to a top-level type
-//   (same treatment PhysBoneEditor received in the ADOverhaul assembly).
-//
-//   _ManagerMapper       -> motions
-//   _ItemMapper          -> newName
-//   _SpecificationMapper -> focusPending
+//   nested class MotionRenamerWindow -> lifted to a top-level type, lines 3923-3996
+//     _ManagerMapper       -> motions
+//     _ItemMapper          -> newName
+//     _SpecificationMapper -> focusPending
 //   OnGUI                -> OnGUI,        line 3931
 //   OnLostFocus          -> OnLostFocus,  line 3992
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
-// member names are the durable reference. Nothing from the type is left unported.
+// member names are the durable reference. Nothing from the type is left unported. Lifting the
+// nested class to a top-level type is the same treatment PhysBoneEditor received in the ADOverhaul
+// assembly.
 //
 // The only caller is MotionEmbedMenu.RenameMotion (ControllerEditor.cs lines 2303/2314/2324).
 // Those three menu members are now ported in MotionEmbedMenu.cs, so this window has its entry
@@ -17,6 +17,10 @@
 //
 // ASSET MUTATION — read before calling. See the remarks on OnGUI for the full account of what is
 // and is not undoable, and of the name collisions this window can create.
+//
+// Audit status: PARTIAL -- the mapping above was re-checked against decompiled/ (the class at 3923,
+// its three fields at 3925/3927/3929, OnGUI at 3931 and OnLostFocus at 3992); the OnGUI body was
+// not re-diffed statement by statement.
 
 using System.Collections.Generic;
 using System.Linq;

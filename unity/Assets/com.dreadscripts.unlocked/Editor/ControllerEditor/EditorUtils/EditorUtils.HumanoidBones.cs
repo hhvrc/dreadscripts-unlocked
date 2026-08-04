@@ -14,7 +14,7 @@
 //   static MoveList     -> TryGetMirroredBone,                           line 6679
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // Humanoid rigs are optional in almost every part: Animator.GetBoneTransform returns null for a
 // bone the avatar's Human description does not map, which is the normal case for fingers, toes,

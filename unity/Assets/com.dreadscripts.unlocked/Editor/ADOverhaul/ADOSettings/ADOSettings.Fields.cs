@@ -1,20 +1,33 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
-// Ported region: the settings fields of the nested `ADOSettings` class, lines 1441-1546.
+// Ported region: the settings fields of the nested `ADOSettings` class, lines 1441-1549.
 //
 // Every field keeps its decompiled name -- these names are the on-disk contract. They are what
 // JsonUtility writes into the MAIN envelope, so renaming any of them silently discards the user's
 // stored value.
 //
-// decompiled member -> ported member, line N (only where the shape changed):
+//   a_HasSucceededLastVerification -> NOT PORTED, line 1474 -- licensing-gate remnant, see ADOSettings.cs
+//   a_VerifyOnDisplay -> NOT PORTED, line 1477 -- licensing-gate remnant, see ADOSettings.cs
+//   a_VerifyOnProjectLoad -> NOT PORTED, line 1480 -- licensing-gate remnant, see ADOSettings.cs
+//
+// Every other field of the region keeps its decompiled name and its initialiser; the entries below
+// are the only ones whose shape changed:
 //   [SpecialName] GetValue()/SetValue() on each setting -> the Common port's `value` property
-//   PhysBoneEditor.InterruptSingleton (4210), passed as the onChange of the four gizmo settings
-//                                -> onGizmoSettingsChanged, see ADOSettings.ChangeHooks.cs
+//   PhysBoneEditor.InterruptSingleton (declared 4414) -> onGizmoSettingsChanged, in ADOSettings.ChangeHooks.cs
 //   ADOEditorUtility.PositionFlag -> DreadScripts.Common.PositionFlag (Common/ResizeHandle/)
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
-// Not ported: a_HasSucceededLastVerification (1474), a_VerifyOnDisplay (1477) and
-// a_VerifyOnProjectLoad (1480) -- licensing-gate remnants, see ADOSettings.cs.
+// NOTES
+// The `stateColors` property here corresponds to [SpecialName] StateColors() (line 1679), which
+// sits outside the field region and is claimed by ADOSettings.cs -- which also declares its own
+// `StateColors` property. The decompiled member is therefore ported twice under two spellings; the
+// duplicate is left alone here because resolving it would mean deleting C# code.
+// The onChange delegate cited above was recorded as line 4210 before the decompiled/ re-snapshot;
+// 4210 now lands inside PublishSingleton, and InterruptSingleton is declared at 4414.
+//
+// Audit status: PARTIAL -- the field list, names, defaults and the three unported a_* lines were
+// compared against decompiled/ lines 1441-1549 for this port; the XML doc remarks citing reader
+// line numbers elsewhere in the file (3366, 3461, 6113, 8240, ...) were not re-checked.
 
 using UnityEngine;
 using DreadScripts.Common;

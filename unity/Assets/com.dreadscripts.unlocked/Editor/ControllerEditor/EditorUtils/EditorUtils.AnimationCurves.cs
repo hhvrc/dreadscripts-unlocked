@@ -10,7 +10,7 @@
 //   static InitPredicate    -> TryGetBinding(IEnumerable<EditorCurveBinding>, ...), line 3260
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // TWO VENDOR BUGS ARE PRESERVED HERE. Both are in the shipped assembly, not artefacts of the
 // decompile, and both are transcribed rather than corrected -- fixing them would change what the

@@ -141,7 +141,7 @@
 //                                                          while a query is in flight. Erases the
 //                                                          cached response from SessionState under
 //                                                          "yOk0XCnENLMO6DIF8cYpSg==updateinfo" and
-//                                                          re-runs AwakeVisitor (11229) -> the
+//                                                          re-runs AwakeVisitor (11229), i.e. the
 //                                                          "getdownloadinfo" POST to the dead host.
 //                                "Send Feedback"           licence-gated. Opens the feedback panel
 //                                                          (ListAnnotation, 10018), whose only
@@ -156,8 +156,8 @@
 //                                "Documentation"           ungated, opens
 //                                                          notes.sleightly.dev/controllereditor.
 //                                "Samples/Templates"       licence-gated, from the statusAnnotation
-//                                                          table (8164): one entry, "Templates" ->
-//                                                          notes.sleightly.dev/templates. The
+//                                                          table (8164): one entry, "Templates",
+//                                                          opening notes.sleightly.dev/templates. The
 //                                                          `Length <= 1` branch drops the "Samples/"
 //                                                          prefix for a single entry, so as shipped
 //                                                          the item reads just "Templates".
@@ -219,11 +219,14 @@
 // Both were audited against the already-ported shared copies before writing anything, and both are
 // twins of the ADOverhaul originals those copies were built from. Neither is re-ported here.
 //
-//   BugReporter    1580-1904  -> Editor/Common/BugReporter.cs (DreadScripts.Common)
-//       That file's header already names this exact line range as one of its two sources and maps
-//       every member (m_TokenizerAlgo -> handledErrors, ManageDefinition/PrintDefinition -> Run,
+//   BugReporter -> BugReporter, line 1580, in BugReporter.cs
+//       The nested type spans 1580-1904. That file (Editor/Common/BugReporter.cs, namespace
+//       DreadScripts.Common) already names this exact line range as one of its two sources, and
+//       maps every member:
+//       m_TokenizerAlgo -> handledErrors, ManageDefinition/PrintDefinition -> Run,
 //       SearchDefinition -> CaptureException, CompareReg -> SetContext, SetReg -> Reset, OrderReg ->
-//       HasPendingReport, EnableReg -> OnCompilationStarted). Re-verified member by member for this
+//       HasPendingReport, EnableReg -> OnCompilationStarted.
+//       Re-verified member by member for this
 //       port: the reconstruction is faithful, including the quirk it flags in CaptureException --
 //       the `handledErrors.Contains(errorContext.Value)` half of the guard can never match, because
 //       errorContext always has a null exceptionMessage and the entries in handledErrors never do.
@@ -239,8 +242,9 @@
 //       two. The other three are the unported UI fields, so the ported method is complete with
 //       respect to what exists. ADOverhaul's Reset is the same.
 //
-//   ProcessRunner  1905-2006  -> Editor/Common/ProcessRunner.cs (DreadScripts.Common)
-//       Likewise already sourced from this exact range. Re-verified: identical field for field and
+//   ProcessRunner -> ProcessRunner, line 1905, in ProcessRunner.cs
+//       The nested type spans 1905-2006; Editor/Common/ProcessRunner.cs (DreadScripts.Common) is
+//       likewise already sourced from this exact range. Re-verified: identical field for field and
 //       statement for statement. The one textual difference between the two products is the success
 //       branch of Complete, which that file already records -- ControllerEditor writes
 //       `if (!succeeded && !ignoreFailure) { onFailure?.Invoke(); } else { onOutput(text); }` and
@@ -268,6 +272,11 @@
 // Common/BugReporter.cs already identifies it as obfuscator filler and drops it. The
 // `_003C_003Ec__DisplayClass239_0` capture struct visible at 10930 belongs to InitVisitor's transfer
 // continuation, which is omitted along with it.
+//
+// Audit status: PARTIAL -- the catalogue was written by reading decompiled/ directly (the file's
+// own CORRECTION notes are the record of that), but nothing here is re-checked against the
+// post-561e9ec snapshot beyond the two nested-type entry points, BugReporter at 1580 and
+// ProcessRunner at 1905; the 10xxx/11xxx line numbers in the catalogue may have drifted.
 
 namespace DreadScripts.ControllerEditor
 {

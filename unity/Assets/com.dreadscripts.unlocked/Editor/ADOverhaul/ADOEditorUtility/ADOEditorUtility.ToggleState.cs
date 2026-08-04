@@ -2,7 +2,7 @@
 //   static FillVal -> CycleToggleState, line 4042
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
 // above and cross-checked against the 2019 build (ReadParam, line 4148), which is identical.
 //
 // Both shipped call sites are in decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs,

@@ -6,15 +6,21 @@
 // the literal key of that field's own envelope entry. Renaming any of them silently discards the
 // user's stored value.
 //
-// decompiled member -> ported member, line N (only where the name changed):
+//   parameterLabelStyle          -> parameterLabelStyle,          line 1389
+//   RebuildParameterLabelStyle() -> RebuildParameterLabelStyle,   line 1439
+//   a_VerifyOnDisplay -> NOT PORTED, line 1151 -- licensing-gate remnant, see EditorSettings.cs
+//   a_VerifyOnProjectLoad -> NOT PORTED, line 1154 -- licensing-gate remnant, see EditorSettings.cs
+//   a_HasSucceededLastVerification -> NOT PORTED, line 1437 -- licensing-gate remnant, see EditorSettings.cs
+//
+// Every other field of the region keeps its decompiled name and its initialiser; the only other
+// change of shape is uniform across them:
 //   [SpecialName] GetValue()/SetValue() on each setting -> the Common port's `value` property
-//   RebuildParameterLabelStyle() -> RebuildParameterLabelStyle(), 1439
-//   parameterLabelStyle          -> parameterLabelStyle,          1389
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
-// Not ported: a_VerifyOnDisplay (1151), a_VerifyOnProjectLoad (1154) and
-// a_HasSucceededLastVerification (1437) -- licensing-gate remnants, see EditorSettings.cs.
+// Audit status: PARTIAL -- the five MAP entries above were re-checked against
+// decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs and each lands on
+// the member named. The remaining settings fields of the region were not re-diffed field by field.
 
 using System;
 using UnityEditor.Animations;

@@ -7,7 +7,7 @@
 //   static VerifyRules  -> GetOrAddComponent<T>,       line 5255
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // MapTransformsTo / MapComponentsTo answer "where did this end up in the copy": given two
 // hierarchies of the same shape, they translate references into the first into references into the

@@ -1,9 +1,25 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/SupporterEntry.cs
-//   m_Queue -> rawEntry, error -> nameFragments, m_Setter -> prefixFragments,
-//   m_Connection -> suffixFragments, m_Consumer -> backgroundTexture,
-//   adapter -> backgroundLayout, m_Interpreter -> backgroundColor, _Watcher -> borderColor,
-//   candidate -> nameColor, _Product -> tooltip, _Expression -> onClickUrl,
-//   system -> splitterState, worker -> cardRect
+//
+//   SupporterEntry -> SupporterEntry, line 8
+//   m_Queue -> rawEntry, line 10
+//   error -> nameFragments, line 12
+//   m_Setter -> prefixFragments, line 14
+//   m_Connection -> suffixFragments, line 16
+//   m_Consumer -> backgroundTexture, line 18
+//   adapter -> backgroundLayout, line 20
+//   m_Interpreter -> backgroundColor, line 22
+//   _Watcher -> borderColor, line 24
+//   candidate -> nameColor, line 26
+//   _Product -> tooltip, line 28
+//   _Expression -> onClickUrl, line 30
+//   system -> splitterState, line 32
+//   worker -> cardRect, line 34
+//   SupporterEntry(string spec) -> SupporterEntry(string), line 36
+//   DrawCard(float) -> DrawCard, line 75
+//   TryExtractAttribute(string, out string) -> TryExtractAttribute, line 151
+//
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
 //
 // The splitter weights were an obfuscator-encrypted constant in the decompilation
 // (`_003CModule_003E.smethod_5<float[]>(1991865236)`). Decrypting the constant blob out of
@@ -12,6 +28,10 @@
 // Uses DreadScripts.Common.GUIColorScope and GUILayoutUtils in place of the GuiColorScope and
 // EditorLayoutUtils copies that sit beside this type in the decompiled source; both are already
 // ported and behave identically.
+//
+// Audit status: PARTIAL -- the MAP entries above were re-checked against decompiled/ (member names,
+// order and line numbers all land); the bodies of DrawCard and TryExtractAttribute were not
+// re-diffed.
 
 using System;
 using System.Collections.Generic;

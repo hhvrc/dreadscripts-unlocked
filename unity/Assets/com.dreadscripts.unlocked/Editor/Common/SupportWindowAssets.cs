@@ -1,8 +1,28 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/SupportWindowAssets.cs
-//   GetTextures() -> Textures, GetStyles() -> Styles (properties; [SpecialName] in the
-//     decompilation), _Object -> textures, m_Utils -> styles
-//   TextureAssets.merchant -> Icon, TextureAssets._Authentication -> KofiBanner
-//   StyleAssets._Pool -> Header, composer -> Name, repository -> Prefix, m_Mapping -> Suffix
+//
+//   TextureAssets                -> TextureAssets, lines 9-14
+//     merchant                   -> Icon
+//     _Authentication            -> KofiBanner
+//   StyleAssets                  -> StyleAssets, lines 16-48
+//     _Pool                      -> Header
+//     composer                   -> Name
+//     repository                 -> Prefix
+//     m_Mapping                  -> Suffix
+//   _Object                      -> textures, line 50
+//   m_Utils                      -> styles, line 52
+//   [SpecialName] GetTextures()  -> Textures (property), line 55
+//   [SpecialName] GetStyles()    -> Styles (property), line 61
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
+//
+// NOTES
+// The two accessor pairs were [SpecialName] methods in the decompilation, which is what a property
+// getter decompiles to when the metadata for the property itself is stripped; they are restored as
+// properties here. The two backing fields were `internal` in the source and are `private` here --
+// nothing outside the type touched them.
+//
+// Audit status: VERIFIED against decompiled/ -- the whole decompiled file is 65 lines and every
+// member, URL, cache key and style value above was read off it on 2026-08-05.
 
 using UnityEditor;
 using UnityEngine;

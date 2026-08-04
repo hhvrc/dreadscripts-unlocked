@@ -1,7 +1,6 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   nested class QuickToggleWindow -> lifted to a top-level type, line 4157
 //
-// decompiled member -> ported member (decompiled line):
 //   m_WrapperInitializer        -> root,                     line 4452
 //   annotationInitializer       -> targets,                  line 4454
 //   _VisitorInitializer         -> states,                   line 4456
@@ -14,13 +13,15 @@
 //   propertyInitializer         -> existingClipsExpanded,    line 4475
 //   _ProcessorInitializer       -> labels,                   line 4477
 //   UtilityWindowBase<>.title   -> Title,                    line 4485
-//   UtilityWindowBase<>.OnCustomGUI -> OnCustomGUI,          line 4678 (QuickToggleWindow.Gui.cs)
-//   OnCustomConfirm             -> OnCustomConfirm,          line 4768 (QuickToggleWindow.ClipWriting.cs)
 //   UpdateTests                 -> CalculateWindowSize,      line 4819
 //   ChangeTests                 -> RefreshMergeMode,         line 4824
 //   SortTests                   -> ShowAt(Vector2),          line 4829
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
+//
+// Two more members of the decompiled type are ported into the sibling partials, which claim them:
+//   OnCustomGUI, the UtilityWindowBase explicit implementation (line 4678) -> QuickToggleWindow.Gui.cs
+//   OnCustomConfirm (line 4768) -> QuickToggleWindow.ClipWriting.cs
 //
 // DEFERRED — not ported, because each depends on code that has no port yet. The package has to
 // keep compiling, so these members are simply absent rather than stubbed:
@@ -49,6 +50,11 @@
 //
 // Nothing obfuscator scaffolding-shaped (always-null statics, marker classes, licence gates) is
 // present in this type; every member above is live code.
+//
+// Audit status: PARTIAL -- the MAP block was re-checked against decompiled/ on 2026-08-05: the type
+// at ControllerEditor.cs line 4157 and the cross-file entries (4485, 4678, 4768) plus 4819/4824/4829
+// and the field run starting at 4452 all land on the member named. The DEFERRED list's line numbers
+// and its blocker prose were not re-derived.
 
 using System.Collections.Generic;
 using System.Linq;

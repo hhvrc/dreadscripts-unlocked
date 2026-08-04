@@ -1,21 +1,32 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
-//   static MapResolver       -> IsBetween(this float, float, float),   line 2697
-//   static ValidateResolver  -> IsBetween(this int, int, int),         line 2706
-//   static CustomizeResolver -> IsValidIndex(this int, IList),         line 2715
-//   static RateResolver      -> IsValidIndex(this int, Array),         line 2724
-//   static DestroyResolver   -> IsOutside(this float, float, float),   line 2733
-//   static GetResolver       -> IsOutside(this int, int, int),         line 2742
-//   static CalcResolver      -> RoundToNearest(this float, int),       line 2751
-//   static IncludeResolver   -> RoundToNearest(this int, int),         line 2756
-//   static AwakeResolver     -> Flip(this ref bool),                   line 2668
+//
+//   static Flip           -> Flip(this ref bool),                   line 2668
+//   static IsBetween      -> IsBetween(this float, float, float),   line 2697
+//   static IsBetween      -> IsBetween(this int, int, int),         line 2706
+//   static IsValidIndex   -> IsValidIndex(this int, IList),         line 2715
+//   static IsValidIndex   -> IsValidIndex(this int, Array),         line 2724
+//   static IsOutside      -> IsOutside(this float, float, float),   line 2733
+//   static IsOutside      -> IsOutside(this int, int, int),         line 2742
+//   static RoundToNearest -> RoundToNearest(this float, int),       line 2751
+//   static RoundToNearest -> RoundToNearest(this int, int),         line 2756
+//
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
 //
+// NOTES
 // Numeric range/rounding helpers plus the ref-bool flip. IsBetween is inclusive at both ends;
 // IsOutside is its complement (value < min || value > max), kept as a separate method because the
-// original did. RoundToNearest(float, int) rounds to the nearest int first, then to the nearest
-// multiple of the step -- matching the original's CalcResolver -> IncludeResolver chain.
+// original did. RoundToNearest(float, int) rounds to the nearest int first and then hands off to
+// RoundToNearest(int, int) for the multiple-of-step step, matching the chain the original had.
+//
+// The 561e9ec re-snapshot deobfuscated these nine members, so the decompiled column above now reads
+// the same as the ported column. Their pre-561e9ec obfuscated spellings, in the order listed, were
+// AwakeResolver, MapResolver, ValidateResolver, CustomizeResolver, RateResolver, DestroyResolver,
+// GetResolver, CalcResolver, IncludeResolver.
+//
+// Audit status: PARTIAL -- all nine line numbers were checked against decompiled/ControllerEditor/
+// DreadScripts/ControllerEditor/EditorUtils.cs and each lands on the signature named; the bodies
+// were not re-diffed, which is why this is PARTIAL rather than VERIFIED.
 
 using System;
 using System.Collections;

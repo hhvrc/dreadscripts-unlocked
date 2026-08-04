@@ -19,7 +19,7 @@
 //   static NewQueue     -> RadiusHandle,                     line 6175
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // SHARED WITH ADOVERHAUL, NOT CONSOLIDATED. ADOEditorUtility.SceneHandles.cs ports the same
 // DrawSphereHandle, TransformHandles and RadiusHandle from ADOverhaul's own copy, and says there why

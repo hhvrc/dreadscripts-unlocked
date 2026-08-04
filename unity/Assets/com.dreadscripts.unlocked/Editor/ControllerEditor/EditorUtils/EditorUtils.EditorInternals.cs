@@ -13,8 +13,8 @@
 //   static CountList  -> GetMenuItems,         line 6755
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
 //
+// NOTES
 // Three pokes at UnityEditor internals that have no public equivalent at all. Each is a genuine
 // capability the tool needs and Unity does not offer, so there is no "do it properly" alternative
 // to point at -- only a version risk, which is the same in each case: the member is looked up by
@@ -34,6 +34,11 @@
 // from the decompiled source as-is. The GenericMenu one is the exception in shape rather than in
 // confidence: the vendor tries both spellings, which is itself evidence the field was renamed
 // between the versions the tool supported.
+//
+// Audit status: PARTIAL -- every entry in the MAP block above was re-checked against
+// decompiled/ControllerEditor/.../EditorUtils.cs on 2026-08-05 (fields 2208-2224, methods 6730 /
+// 6745 / 6755) and all twelve land on the member named. The bodies were not re-diffed, and the
+// header's former "VERIFIED against decompiled/" claim is withdrawn.
 
 using System;
 using System.Collections;

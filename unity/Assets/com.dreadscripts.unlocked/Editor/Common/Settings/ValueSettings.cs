@@ -3,44 +3,50 @@
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
 //
-// decompiled member -> ported member (ControllerEditor line / ADOverhaul2022 line):
-//   BoolSetting                                  -> BoolSetting,                          508 / 810
-//   BoolSetting.GetValue/SetValue                -> BoolSetting.value,                    516 / 818
-//   BoolSetting.Toggle                           -> BoolSetting.Toggle,                   539 / 841
-//   BoolSetting.Draw(string) / Draw              -> BoolSetting.Draw(string, ...),        544 / 846
-//   BoolSetting.Draw(GUIContent) / DrawContent   -> BoolSetting.Draw(GUIContent, ...),    549 / 851
-//   BoolSetting.DrawButton(string)               -> BoolSetting.DrawButton(string, ...),  558 / 863
-//   BoolSetting.DrawButton(GUIContent) / DrawButtonContent -> DrawButton(GUIContent, ...), 563 / 868
-//   FloatSetting                                 -> FloatSetting,                         585 / 890
-//   FloatSetting.GetValue/SetValue               -> FloatSetting.value,                   593 / 898
-//   FloatSetting.VisitDefinition / DrawField     -> DrawField(string, ...),               616 / 921
-//   FloatSetting.StartDefinition / DrawFieldContent -> DrawField(GUIContent, ...),        628 / 933
-//   FloatSetting.DefineDefinition / DrawFieldWithLabelWidth -> DrawFieldWithLabelWidth(string, ...),   621 / 926
-//   FloatSetting.ReadDefinition / DrawFieldWithLabelWidthContent -> DrawFieldWithLabelWidth(GUIContent, ...), 644 / 945
-//   FloatSetting.SelectDefinition / DrawSlider   -> DrawSlider(string, ...),              651 / 952
-//   FloatSetting.RemoveDefinition / DrawSliderContent -> DrawSlider(GUIContent, ...),     656 / 957
-//   FloatSetting.InstantiateDefinition / DrawNormalizedSlider -> DrawNormalizedSlider(string, ...),    671 / 969
-//   FloatSetting.AwakeDefinition / DrawNormalizedSliderContent -> DrawNormalizedSlider(GUIContent, ...), 676 / 974
-//   EnumSetting                                  -> EnumSetting,                          698 / 996
-//   EnumSetting.IntValue                         -> EnumSetting.IntValue,                 701 / 999
-//   EnumSetting.GetEnumValue<T>                  -> EnumSetting.GetEnumValue<T>,          718 / 1016
-//   EnumSetting.DrawIntField(GUIContent) / DrawIntFieldContent -> DrawIntField(GUIContent, ...), 723 / 1021
-//   EnumSetting.DrawIntField(string)             -> DrawIntField(string, ...),            732 / 1026
-//   EnumSetting.DrawEnumPopup<T>(GUIContent) / DrawEnumPopupContent<T> -> DrawEnumPopup<T>(GUIContent, ...), 737 / 1031
-//   EnumSetting.DrawEnumPopup<T>(string)         -> DrawEnumPopup<T>(string, ...),        746 / 1043
-//   EnumSetting.FromEnum<T>                      -> EnumSetting.FromEnum<T>,              751 / 1048
-//   StringSetting                                -> StringSetting,                        874 / 1174
-//   StringSetting.GetValue/SetValue              -> StringSetting.value,                  882 / 1182
-//   StringSetting.Draw(string)                   -> StringSetting.Draw(string, ...),      906 / --
-//   StringSetting.Draw(GUIContent)               -> StringSetting.Draw(GUIContent, ...),  911 / --
+// Member mapping. The checked line number is the ControllerEditor one; where the ADOverhaul2022
+// copy spells the member differently or sits at a different line, that appears in the decompiled
+// name column as "ADO <name> <line>":
+//   BoolSetting (ADO 810)                                -> BoolSetting, line 508
+//   BoolSetting.GetValue/SetValue (ADO 818)              -> BoolSetting.value, line 516
+//   BoolSetting.Toggle (ADO 841)                         -> BoolSetting.Toggle, line 539
+//   BoolSetting.Draw(string) (ADO Draw 846)              -> BoolSetting.Draw(string, ...), line 544
+//   BoolSetting.Draw(GUIContent) (ADO DrawContent 851)   -> BoolSetting.Draw(GUIContent, ...), line 549
+//   BoolSetting.DrawButton(string) (ADO 863)             -> BoolSetting.DrawButton(string, ...), line 558
+//   BoolSetting.DrawButton(GUIContent) (ADO DrawButtonContent 868) -> DrawButton(GUIContent, ...), line 563
+//   FloatSetting (ADO 890)                               -> FloatSetting, line 585
+//   FloatSetting.GetValue/SetValue (ADO 898)             -> FloatSetting.value, line 593
+//   FloatSetting.VisitDefinition (ADO DrawField 921)     -> DrawField(string, ...), line 616
+//   FloatSetting.StartDefinition (ADO DrawFieldContent 933) -> DrawField(GUIContent, ...), line 628
+//   FloatSetting.DefineDefinition (ADO DrawFieldWithLabelWidth 926) -> DrawFieldWithLabelWidth(string, ...), line 621
+//   FloatSetting.ReadDefinition (ADO DrawFieldWithLabelWidthContent 945) -> DrawFieldWithLabelWidth(GUIContent, ...), line 644
+//   FloatSetting.SelectDefinition (ADO DrawSlider 952)   -> DrawSlider(string, ...), line 651
+//   FloatSetting.RemoveDefinition (ADO DrawSliderContent 957) -> DrawSlider(GUIContent, ...), line 656
+//   FloatSetting.InstantiateDefinition (ADO DrawNormalizedSlider 969) -> DrawNormalizedSlider(string, ...), line 671
+//   FloatSetting.AwakeDefinition (ADO DrawNormalizedSliderContent 974) -> DrawNormalizedSlider(GUIContent, ...), line 676
+//   EnumSetting (ADO 996)                                -> EnumSetting, line 698
+//   EnumSetting.IntValue (ADO 999)                       -> EnumSetting.IntValue, line 701
+//   EnumSetting.GetEnumValue (ADO 1016)                  -> EnumSetting.GetEnumValue<T>, line 718
+//   EnumSetting.DrawIntField(GUIContent) (ADO DrawIntFieldContent 1021) -> DrawIntField(GUIContent, ...), line 723
+//   EnumSetting.DrawIntField(string) (ADO 1026)          -> DrawIntField(string, ...), line 732
+//   EnumSetting.DrawEnumPopup(GUIContent) (ADO DrawEnumPopupContent 1031) -> DrawEnumPopup<T>(GUIContent, ...), line 737
+//   EnumSetting.DrawEnumPopup(string) (ADO 1043)         -> DrawEnumPopup<T>(string, ...), line 746
+//   EnumSetting.FromEnum (ADO 1048)                      -> EnumSetting.FromEnum<T>, line 751
+//   StringSetting (ADO 1174)                             -> StringSetting, line 874
+//   StringSetting.GetValue/SetValue (ADO 1182)           -> StringSetting.value, line 882
+//   StringSetting.Draw(string) (ControllerEditor only)   -> StringSetting.Draw(string, ...), line 906
+//   StringSetting.Draw(GUIContent) (ControllerEditor only) -> StringSetting.Draw(GUIContent, ...), line 911
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. Where the two sources named the same method differently,
 // ADOverhaul's names are used: they are ordinary English and ControllerEditor's are not, so they
 // are almost certainly what was written. The string/GUIContent pairs the sources carry as
 // Draw/DrawContent are collapsed into overloads here.
 //
+// NOTES
 // ADOverhaul's StringSetting has no draw methods at all; the two above come from ControllerEditor
 // only. Everything else in this file is present, and behaviourally identical, in both.
+//
+// Audit status: PARTIAL -- every line number and member name above was re-checked against
+// decompiled/ (both copies) in this pass; the method bodies were not re-diffed.
 
 using System;
 using UnityEditor;

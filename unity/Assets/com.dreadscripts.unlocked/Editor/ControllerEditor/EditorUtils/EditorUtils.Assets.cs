@@ -11,8 +11,6 @@
 //   static ConcatRules        -> IsNull,                  line 4422
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
-// since (-34 code lines); needs re-checking against export/ before the claim is restored.
 //
 // Everything here is about the difference between a Unity object that IS an asset file and one
 // that merely lives inside one. AnimatorControllers, blend trees, state machines, states and
@@ -20,10 +18,26 @@
 // this" and "duplicate this" have two completely different implementations depending on which of
 // the two an object is -- which is what IsSubAsset asks and what the rest of this file branches on.
 //
-// MapError sits at the far end of the decompiled file (line 8478) rather than beside its only
-// caller, because it is a [CompilerGenerated] local function of MarkDirty that the obfuscator
-// lifted out. It is written back as an ordinary member here rather than as a nested local
-// function, since MarkDirty captures nothing and so nothing is lost by doing so.
+// NOTES
+//
+// The dirtying pair this file used to carry -- ManagePredicate/PrintPredicate (decompiled lines
+// 4103 and 4108) and the lifted MapError (line 8478) -- was removed when the parallel ports were
+// reconciled; EditorUtils.Dirtying.cs and EditorUtils.SetDirty.cs are the surviving ports, and the
+// paragraph that explained MapError's placement went with them.
+//
+// CloneSerialized (decompiled CompareRules, line 4193) is claimed twice across the package: this
+// file declares the real class-level member, and EditorUtils.LayerCopying.cs still carries a
+// byte-identical copy as a local function of CopyLayer. That file's own header calls for the local
+// function to be deleted once a real CloneSerialized lands -- it has landed, here -- so the double
+// claim is a known outstanding cleanup in that file, not a defect in this port. The bodies were
+// compared and are the same.
+//
+// Audit status: VERIFIED against decompiled/ -- all ten members re-checked statement by statement
+// against EditorUtils.cs lines 4058, 4082, 4088, 4130, 4170, 4193, 4205, 4216, 4293 and 4422, every
+// one of which still lands on the member named. The only rewrites are shape, not behaviour:
+// LoadByGuid<T>(string, long) is a foreach over LoadAllAssetsAtPath where the decompilation has the
+// equivalent while/break loop, and DestroyAssetObject reads the main-asset test as `mainAsset ==
+// asset` where the decompilation has `!(obj != config)`.
 
 using System;
 using UnityEditor;

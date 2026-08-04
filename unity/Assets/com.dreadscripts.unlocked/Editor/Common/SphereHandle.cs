@@ -7,15 +7,16 @@
 // SphereHandle is kept here as the clearer of the two shipped names: it reads as "a handle that
 // is a sphere", and matches Unity's own Handles.SphereHandleCap that it draws with.
 //
-//   ADOverhaul member -> ported member
+// Member mapping, ADOverhaul name to ported name:
 //   getDistances      -> distanceFunc   (ControllerEditor already called it distanceFunc)
 //   DrawDefault       -> DrawDefault
 //   Create            -> Create
-//   FindStatus(...)   -> DrawSceneLabel, line 3616 (see note below)
+//   FindStatus(string, Vector3, float, GUIStyle) -> DrawSceneLabel, line 3616
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
-// DrawSceneLabel stays private here, and is NOT redirected to ADOEditorUtility.DrawSceneLabel
+// DELIBERATE DEVIATION
+// DrawSceneLabel stays local to this type, and is NOT redirected to ADOEditorUtility.DrawSceneLabel
 // (Editor/ADOverhaul/ADOEditorUtility/ADOEditorUtility.Handles.cs), even though that helper has
 // since landed and its body is character-for-character identical to the copy below. The earlier
 // note in this header asked for exactly that redirect; it is withdrawn, because the shared helper
@@ -35,12 +36,16 @@
 // differ when WorldToGUIPointWithDepth returns NaN -- ADOverhaul skips the label, ControllerEditor
 // draws it at a NaN position. The copy below is the ADOverhaul form, matching this type's source.
 //
-// Deliberately not ported:
+// NOT PORTED
 //  - Three fields that exist in both copies but are never read or written anywhere in either
 //    product: a Quaternion, a Vector3 and a float[]. They carry no behaviour.
 //  - A private static object field paired with a "field == null" predicate (IncludeCandidate /
 //    SortDescriptor). The field is never assigned, so the predicate is a constant true; it is an
 //    obfuscator tamper-check stub, not product behaviour.
+//
+// Audit status: PARTIAL -- the member mapping and FindStatus at ADOEditorUtility.cs line 3616 were
+// re-checked against decompiled/ for this pass; the ControllerEditor copy and the prose below the
+// mapping were not re-derived.
 
 using System;
 using UnityEditor;

@@ -5,11 +5,14 @@
 // members the shipped type has, which is why ControllerEditor.State.cs had to stop declaring the
 // type `static` before this file could exist. See that file's header.
 //
-//   InterruptWrapper -> ShowWindow,  line 8577 (the [MenuItem] entry point)
+//   InterruptWrapper -> ShowWindow,  line 8578
 //   OnGUI            -> OnGUI,       line 8583
-//   OnFocus          -> OnFocus,     line 8831
+//   OnFocus          -> NOT PORTED, line 8831 -- its whole body is one call to ManageWrapper (8676),
+//     the selection-sync routine, which is itself unported and licence gated; see PARTIAL PORT.
 //   OnDisable        -> OnDisable,   line 8842
 //   OnEnable         -> OnEnable,    line 8857
+// ShowWindow is the [MenuItem] entry point; the attribute sits one line above the declaration, at
+// decompiled 8577.
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
@@ -46,7 +49,7 @@
 //     CalculateAnnotation, MapVisitor, CancelAnnotation -- the three first-open initialisers.
 //
 //   OnFocus is not ported at all rather than ported empty: its entire body is one call to
-//   ManageWrapper (8672), the selection-sync routine, which is both unported and itself licence
+//   ManageWrapper (8676), the selection-sync routine, which is both unported and itself licence
 //   gated. An empty OnFocus would be a fabrication, not a partial port.
 //
 //   OnDisable's Undo.undoRedoPerformed unsubscribe is omitted, because OnEnable's matching
@@ -67,8 +70,10 @@
 //
 // ControllerEditor ships a single build, so there is no second decompilation to diff this against.
 //
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
-// above, minus the omissions named in this header.
+// Audit status: PARTIAL -- the five MAP entries were re-checked against decompiled/ControllerEditor/
+// DreadScripts/ControllerEditor/ControllerEditor.cs and each lands on the member named (8577 was the
+// [MenuItem] attribute line, corrected to 8578; ManageWrapper corrected from 8672 to 8676). The
+// bodies were not re-diffed statement by statement, which is why this is PARTIAL rather than VERIFIED.
 
 using UnityEditor;
 using UnityEditor.Animations;

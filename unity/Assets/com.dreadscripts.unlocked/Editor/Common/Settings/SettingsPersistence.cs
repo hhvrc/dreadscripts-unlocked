@@ -4,18 +4,34 @@
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
 //
-// decompiled member -> ported member (ControllerEditor line / ADOverhaul2022 line):
-//   SettingsChangeScope                  -> SettingsChangeScope,                 451 / 753
-//   SettingsChangeScope.IsChanged        -> SettingsChangeScope.changed,         460 / 762
-//   SettingsDeferScope                   -> SettingsDeferScope,                  491 / 793
-//   static GetDeferred / IsDeferred      -> SettingsPersistence.deferred,       1453 / 1552
-//   static SetDeferred                   -> SettingsPersistence.SetDeferred,    1459 / 1558
-//   static deferred                      -> SettingsPersistence.deferred,       1395 / 1432
-//   static pendingSave / savePending     -> SettingsPersistence.pendingSave,    1393 / 1430
-//   static _InterpreterAlgo / _ProxyIdentifier -> SettingsPersistence.suppressSave, 1391 / 1428
-//   static SaveSettings / Save (deferral half) -> SettingsPersistence.Save,     1486 / 1585
+// The MAP line numbers below are the ControllerEditor ones; the ADOverhaul2022 counterparts are
+// tabulated in the NOTES section at the bottom.
+//
+//   SettingsChangeScope                  -> SettingsChangeScope,           line 451
+//   SettingsChangeScope.IsChanged        -> SettingsChangeScope.changed,   line 460
+//   SettingsDeferScope                   -> SettingsDeferScope,            line 491
+//   static _InterpreterAlgo              -> SettingsPersistence.suppressSave, line 1391
+//   static pendingSave                   -> SettingsPersistence.pendingSave, line 1393
+//   static deferred                      -> SettingsPersistence.deferred,  line 1395
+//   static GetDeferred                   -> SettingsPersistence.deferred,  line 1453
+//   static SetDeferred                   -> SettingsPersistence.SetDeferred, line 1459
+//   static SaveSettings (deferral half)  -> SettingsPersistence.Save,      line 1486
+//
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
+//
+// NOTES
+// Where the same member is spelled differently in the two builds, and where it sits in each:
+//                                          ControllerEditor / ADOverhaul2022
+//   SettingsChangeScope                          451  /  753
+//   SettingsChangeScope.IsChanged                460  /  762
+//   SettingsDeferScope                           491  /  793
+//   suppressSave  (_InterpreterAlgo / _ProxyIdentifier)   1391 / 1428
+//   pendingSave   (pendingSave / savePending)            1393 / 1430
+//   deferred      (deferred / deferred)                  1395 / 1432
+//   the getter    (GetDeferred / IsDeferred)             1453 / 1552
+//   SetDeferred   (SetDeferred / SetDeferred)            1459 / 1558
+//   Save          (SaveSettings / Save)                  1486 / 1585
 //
 // Deliberately NOT ported here, because they are product-specific rather than framework: the
 // EditorPrefs key each product writes under, the JSON envelope built in SaveSettings/Save, the
@@ -23,6 +39,9 @@
 // accessor (GetInstance/Instance), the nonSerializedSettingFields/nonSerializedFields cache, the
 // onSettingsCleared/onCleared hook, and of course the settings fields themselves. Each product's
 // settings class keeps those and subscribes its own serializer to onSave.
+//
+// Audit status: PARTIAL -- every line number in the tables above was checked against decompiled/
+// (both builds) and lands on the member named; the bodies were not re-diffed.
 
 using System;
 using UnityEditor;

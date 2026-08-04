@@ -3,7 +3,8 @@
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
 //
-// decompiled member -> ported member (ControllerEditor line / ADOverhaul2022 line):
+// Member mapping. Each entry names the decompiled member, then the ported member, then the
+// ControllerEditor line and the ADOverhaul2022 line it was read from:
 //   VectorSetting                                       -> VectorSetting,                  768 / 1065
 //   VectorSetting.DeleteDefinition/CreateDefinition, GetValue/SetValue -> VectorSetting.value, 786 / 1083
 //   VectorSetting.IncludeDefinition / Initialize        -> VectorSetting.Initialize,       810 / 1110
@@ -19,14 +20,20 @@
 //   ObjectReferenceSetting.GetValue/SetValue, ForgotPage/UpdatePage -> .value,            1043 / 1321
 //   ObjectReferenceSetting.Draw(string) / InvokePage    -> Draw(string, ...),             1083 / 1361
 //   ObjectReferenceSetting.Draw(GUIContent) / CustomizePage -> Draw(GUIContent, ...),     1088 / 1366
-//   ObjectReferenceSetting.LoadAsset<T> / ConcatPage<T> -> LoadAsset<T>,                  1100 / 1378
-//   ObjectReferenceSetting.GetValue<T> / MapPage<T>     -> GetValue<T>,                   1122 / 1400
+//   ObjectReferenceSetting.LoadAsset / ConcatPage       -> LoadAsset<T>,                  1100 / 1378
+//   ObjectReferenceSetting.GetValue / MapPage           -> GetValue<T>,                   1122 / 1400
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. Where the two sources named the same method differently,
-// ADOverhaul's names are used, and the string/GUIContent pairs are collapsed into overloads.
+// ADOverhaul's names are used, and the string/GUIContent pairs are collapsed into overloads. The
+// two generic entries are written without their type parameter, because the mapping column is
+// matched mechanically and cannot contain angle brackets; both are the single-type-argument
+// generics they are in the source.
 //
+// NOTES
 // The two copies are behaviourally identical here; they differ only in which product's icon table
 // the revert button came from, which is now SettingBase.DrawResetButton.
+//
+// Audit status: UNAUDITED
 
 using System;
 using UnityEditor;

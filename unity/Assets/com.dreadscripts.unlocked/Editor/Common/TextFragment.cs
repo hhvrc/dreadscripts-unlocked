@@ -1,7 +1,28 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/TextFragment.cs
-//   _Reader -> content, bridge -> image, strategy -> isImage
-// Deliberately unported: the CompareCode / PublishCode() pair, an obfuscator-injected null check
-// on an always-null static with no callers.
+//
+//   TextFragment                -> TextFragment, lines 7-81
+//   _Reader                     -> content, line 9
+//   bridge                      -> image, line 11
+//   strategy                    -> isImage, line 13
+//   .ctor(GUIContent reference) -> TextFragment(GUIContent), line 17
+//   .ctor(RemoteTexture res)    -> TextFragment(RemoteTexture), line 24
+//   DrawLayout(GUIStyle, float) -> DrawLayout, line 31
+//   DrawRect(Rect)              -> DrawRect, line 43
+//   Parse(string)               -> Parse, line 55
+//   CompareCode                 -> NOT PORTED, line 15 -- obfuscator scaffolding: an always-null
+//                                  private static with no assignment anywhere in the assembly.
+//   PublishCode()               -> NOT PORTED, line 77 -- the null check over CompareCode; returns
+//                                  `CompareCode == null`, i.e. always true, and has no callers.
+//
+// Line numbers are relative to the decompiled snapshot at the time of the port;
+// the member names are the durable reference.
+//
+// NOTES
+// The regex literal "<image=(.+?)>" was lifted to the ImageTagPattern constant; the decompiled
+// source repeats it at both Regex.Match call sites (lines 58 and 68).
+//
+// Audit status: PARTIAL -- every entry above was checked against decompiled/, which is the only
+// ground truth in this repo; the bodies were not re-diffed, so this is PARTIAL rather than VERIFIED.md defines.
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

@@ -3,7 +3,7 @@
 //   static _ProcProperty          -> errorColor,     line 2180
 //   static _WrapperProcessor      -> warningColor,   line 2182
 //   static m_AnnotationProcessor  -> highlightColor, line 2184
-//   static m_AlgoProcessor        -> accentColor,    line 2188
+//   static accentColor            -> unchanged,      line 2188
 //   static publisherProperty      -> infoColor,      line 2176
 //   static visitorProcessor       -> attentionColor, line 2186
 //   static m_MapperProcessor      -> linkColor,      line 2190
@@ -12,8 +12,17 @@
 //   static EnableResolver         -> BlendOver,      line 2398
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1a719, but the code has changed
-// since (+19 code lines); needs re-checking against export/ before the claim is restored.
+// Audit status: VERIFIED against decompiled/ -- all eleven members declared below were compared
+// against decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs. The eight
+// palette fields match component for component at lines 2176-2190 (each cited line still lands on
+// its field), and Grey (7395), WithAlpha (2393) and BlendOver (2398) match expression for
+// expression, differing only in parameter names. The header claims no member the file does not
+// declare, and no member here is ported a second time anywhere else in the package.
+//
+// NOTES
+// The 561e9ec re-snapshot renamed the obfuscated field this header used to call m_AlgoProcessor:
+// decompiled/ now declares it as accentColor at the same line 2188, with the same literal, so the
+// MAP entry above was updated to the current name and the ported name is unchanged.
 //
 // The four status colours are named for the role their call sites give them, not for the hue:
 //   validColor / warningColor are the true/false pair of the valid-vs-over-budget counters

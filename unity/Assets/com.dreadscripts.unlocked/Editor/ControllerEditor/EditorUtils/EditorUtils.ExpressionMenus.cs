@@ -14,7 +14,7 @@
 //   static RemoveError  -> Matches(Control.Parameter, Control.Parameter), line 8326
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // The two ValidateCanAddControls overloads that take a count live in EditorUtils.Validation.cs and
 // are the bottom of this stack; the three here resolve a count from a menu and delegate to them.

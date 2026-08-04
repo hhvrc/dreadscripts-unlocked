@@ -3,7 +3,9 @@
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
 //
-// decompiled member -> ported member (ControllerEditor line / ADOverhaul2022 line):
+// Member mapping. Because each tool carries its own copy, no single decompiled line number can
+// stand for an entry; the two numbers in the right-hand column are the ControllerEditor line and
+// the ADOverhaul2022 line, and the sub-entries below are keyed on the member names instead:
 //   SettingBase                          -> SettingBase,                        1138 / 1416
 //   SettingBase.defaultValue             -> SettingBase.defaultValue,           1140 / 1418
 //   SettingBase.Reset / QueryCollection  -> SettingBase.Reset,                  1142 / 1420
@@ -11,11 +13,16 @@
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
+// DELIBERATE DEVIATION
 // DrawResetButton has no counterpart in either source: there, each setting's draw method reached
 // straight for its own product's icon table (EditorUtils.contents.reset drawn by IconButton in
 // ControllerEditor, ADOEditorUtility's equivalent pair in ADOverhaul). Since neither table can be
 // referenced from Common, the button became the one seam the framework leaves open. See the
 // remarks on resetButton for what the built-in default reproduces.
+//
+// Audit status: PARTIAL -- the four mappings above were re-checked against decompiled/ in both
+// tools (ControllerEditor.cs 1138-1146 and ADOverhaul.cs 1416-1424 in the post-561e9ec snapshot);
+// the DrawResetButton deviation is a design note, not a transcription. The bodies were not re-diffed against decompiled/, so this is PARTIAL rather than VERIFIED.
 
 using System;
 using UnityEditor;

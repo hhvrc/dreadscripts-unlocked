@@ -1,30 +1,41 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //
-// Ported region: the PhysBoneParameter struct, lines 1547-1590 of the current snapshot. Line
-// numbers move with the snapshot; the member names below are the durable reference.
+// Ported region: the PhysBoneParameter struct, lines 1547-1590 of the current snapshot.
 //
-//   PhysBoneParameter(string, AnimatorControllerParameterType, string) -> same, line 47
-//   suffix                                                            -> same, line 31
-//   parameterType                                                     -> same, line 37
-//   hasBackingField                                                   -> same, line 43
-//   valueField                                                        -> same, line 45
-//   GetFloat(VRCPhysBoneBase)                                         -> same, line 61
-//   GetBool(VRCPhysBoneBase)                                          -> same, line 69
-//   GetValueString(VRCPhysBoneBase)                                   -> same, line 78
-//   QueryDescriptor()                                                 -> not ported (see below)
+//   PhysBoneParameter                                                 -> same, lines 1547-1590
+//   suffix                                                            -> same, line 1549
+//   parameterType                                                     -> same, line 1551
+//   hasBackingField                                                   -> same, line 1553
+//   valueField                                                        -> _valueField, line 1555
+//   CallDescriptor                                                    -> NOT PORTED, line 1557 -- licence-check scaffolding, never assigned
+//   PhysBoneParameter(string, AnimatorControllerParameterType, string) -> same, line 1559
+//   GetFloat(VRCPhysBoneBase)                                         -> same, line 1567
+//   GetBool(VRCPhysBoneBase)                                          -> same, line 1572
+//   GetValueString(VRCPhysBoneBase)                                   -> same, line 1577
+//   QueryDescriptor()                                                 -> NOT PORTED, line 1586 -- constant `true`, no caller
 //
-// Deliberately not ported: the private `CallDescriptor` field and the `QueryDescriptor()` method
-// that only tested it for null. Both are licence-check scaffolding left by the protector; nothing
-// ever assigned CallDescriptor, so QueryDescriptor() was a constant `true` and no caller in either
-// build reads it. The 2019 build carries the same pair under the names `CreateCandidate` and
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference. The per-member numbers above were rewritten from a pre-561e9ec
+// snapshot to the current one.
+//
+// NOT PORTED
+// The private `CallDescriptor` field and the `QueryDescriptor()` method that only tested it for
+// null. Both are licence-check scaffolding left by the protector; nothing ever assigned
+// CallDescriptor, so QueryDescriptor() was a constant `true` and no caller in either build reads
+// it. The 2019 build carries the same pair under the names `CreateCandidate` and
 // `CancelCandidate()`.
 //
+// NOTES
 // The decompiled struct is nested inside the static class ADOEditorUtility. ADOEditorUtility is not
 // ported yet, so this is lifted to a top-level type in the same namespace; call sites in the
 // original read `ADOEditorUtility.PhysBoneParameter`.
 //
 // 2019 vs 2022: identical apart from decompiler-generated parameter names and an inverted ternary
 // in the constructor. No behavioural divergence.
+//
+// Audit status: PARTIAL -- every member above was compared against
+// decompiled/ADOverhaul2022/.../ADOEditorUtility.cs lines 1547-1590 on 2026-08-05 and the bodies
+// agree; the 2019 build was not re-read.
 
 using System.Reflection;
 using UnityEngine;

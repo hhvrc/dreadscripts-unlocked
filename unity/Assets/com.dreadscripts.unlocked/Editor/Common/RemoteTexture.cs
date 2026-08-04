@@ -1,15 +1,34 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/RemoteTexture.cs
-//   GetTexture()            -> Texture (property; [SpecialName] in the decompilation marks it as
-//                              a property getter that ILSpy could not re-form)
-//   TextureDisplayParams    -> TextureDisplayParams, with the obfuscated field names mapped to
-//                              _Params -> hasValue, _Listener -> tilingX, getter -> tilingY,
-//                              interceptor -> offset
-//   m_Database -> texture, m_Exporter -> mayLoadFromCache, _Identifier -> url,
-//   attr -> autoDownload, _Dispatcher -> cacheKey, _Registry -> IsLoaded,
-//   importer -> IsDownloading, printer -> downloadRequested, order -> readyLatched
-// Deliberately unported: TextureDisplayParams.CustomizeIndexer / SearchIndexer(), a null-check on
-// an always-null static that the obfuscator injected as tamper bait. It has no callers and no
-// effect on behaviour.
+//   RemoteTexture           -> RemoteTexture,        lines 8-254
+//   TextureLayoutMethod     -> TextureLayoutMethod,  lines 10-16
+//   TextureDisplayParams    -> TextureDisplayParams, lines 18-57
+//     _Params -> hasValue, _Listener -> tilingX, getter -> tilingY, interceptor -> offset
+//   TextureDisplayParams(float)                  -> TextureDisplayParams(float), line 30
+//   TextureDisplayParams(float, float)           -> TextureDisplayParams(float, float), line 35
+//   TextureDisplayParams(Vector2, float)         -> TextureDisplayParams(Vector2, float), line 40
+//   TextureDisplayParams(Vector2, float, float)  -> TextureDisplayParams(Vector2, float, float), line 45
+//   TextureDisplayParams.CustomizeIndexer -> NOT PORTED, line 28 -- an always-null static the obfuscator injected as tamper bait
+//   TextureDisplayParams.SearchIndexer()  -> NOT PORTED, line 53 -- the null-check on that static; no callers, no effect on behaviour
+//   the instance fields, lines 59-75:
+//     m_Database -> texture, m_Exporter -> mayLoadFromCache, _Identifier -> url,
+//     attr -> autoDownload, _Dispatcher -> cacheKey, _Registry -> IsLoaded,
+//     importer -> IsDownloading, printer -> downloadRequested, order -> readyLatched
+//   GetTexture()            -> Texture (property), line 78
+//   RemoteTexture(..)       -> RemoteTexture(string, bool, string), line 102
+//   Download()              -> Download,           line 109
+//   DrawPattern()           -> DrawPattern,        line 147
+//   Draw(Rect)              -> Draw(Rect),         line 152
+//   Draw(Rect, ..)          -> Draw(Rect, TextureLayoutMethod, TextureDisplayParams), line 157
+//   Clear()                 -> Clear,              line 202
+//   TryLoadFromCache()      -> TryLoadFromCache,   line 216
+//   DrawPlaceholder()       -> DrawPlaceholder,    line 233
+//   IsReady()               -> IsReady,            line 238
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
+//
+// NOTES
+// GetTexture() carries [SpecialName] in the decompilation, which marks it as a property getter
+// ILSpy could not re-form; it is restored to a property here.
 //
 // ---------------------------------------------------------------------------------------------
 // NETWORK ACCESS -- this type performs unattended HTTP requests from the editor.
@@ -39,6 +58,11 @@
 // Caching: decoded bytes are kept in SessionState under cacheKey, i.e. for the lifetime of the
 // editor process, so a domain reload re-uses them instead of re-fetching.
 // ---------------------------------------------------------------------------------------------
+//
+// Audit status: PARTIAL -- every MAP entry above was re-derived from
+// decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/RemoteTexture.cs (lines 8-254)
+// while writing this header. The NETWORK ACCESS block records observations about live hosts that
+// cannot be checked against decompiled/ and was not re-verified.
 
 using UnityEditor;
 using UnityEngine;

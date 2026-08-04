@@ -1,17 +1,22 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 // Ported region: the persistence half of the nested `EditorSettings` class, lines 1393-1577.
 //
-// decompiled member -> ported member, line N:
-//   SaveSettings()             -> WriteToPrefs(),                  1486
-//   LoadSettings()             -> Load(),                          1518
-//   PromptClearSettings()      -> PromptClear(),                   1559
-//   ClearSettings()            -> Clear(),                         1567
-//   onSettingsCleared          -> onCleared,                       1401
-//   nonSerializedSettingFields -> nonSerializedSettingFields,      1397
-//   instance                   -> instance,                        1399
-//   "yOk0XCnENLMO6DIF8cYpSg==SettingsJSON" (inline, 1515 and 1521 and 1524) -> prefsKey
+//   SaveSettings()             -> WriteToPrefs(), line 1486
+//   LoadSettings()             -> Load(), line 1518
+//   PromptClearSettings()      -> PromptClear(), line 1559
+//   ClearSettings()            -> Clear(), line 1567
+//   nonSerializedSettingFields -> nonSerializedSettingFields, line 1397
+//   instance                   -> instance, line 1399
+//   onSettingsCleared          -> onCleared, line 1401
+//   private EditorSettings() body -> CacheNonSerializedSettingFields(), line 1481
+//   "yOk0XCnENLMO6DIF8cYpSg==SettingsJSON" (inline at 1514, 1521 and 1523) -> prefsKey, line 1514
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
+//
+// NOTES
+// The caching of the NonSerializedSetting fields is the whole body of the decompiled parameterless
+// constructor (1479-1484); the constructor itself is claimed by EditorSettings.cs, and only its
+// body, lifted into CacheNonSerializedSettingFields, is claimed here.
 //
 // The deferral/pending-save half of the shipped SaveSettings -- the `pendingSave`, `deferred` and
 // `_InterpreterAlgo` statics and the branches that read them -- is NOT here: it was already ported
@@ -21,8 +26,13 @@
 // SettingsPersistence.Save().
 //
 // ADOverhaul's ADOSettings.Save/Load/Clear/PromptClear (decompiled/ADOverhaul2022/.../ADOverhaul.cs,
-// lines 1585-1673) are the same code with a different key, "No1lKII9IzcBAbihub6nCg==SettingsJSON".
+// lines 1585-1676) are the same code with a different key, "No1lKII9IzcBAbihub6nCg==SettingsJSON".
 // They stay separate types because the two products persist independent blocks.
+//
+// Audit status: PARTIAL -- every mapping above, and every line number in it, was re-derived against
+// decompiled/ControllerEditor on 2026-08-05; the ControllerEditor numbers were already correct, only
+// the three inline-key line numbers and the ADOverhaul cross-reference above needed correcting. The
+// doc-comment prose on the members below was not re-checked.
 
 using System;
 using System.Collections.Generic;

@@ -3,8 +3,8 @@
 // Ported region: the ADOverhaulWindow class, lines 35-166 of the current snapshot. Line numbers
 // move with the snapshot; the member names below are the durable reference.
 //
-//   ADOverhaulWindow            -> same, line 51
-//   enum EasyDynamicsFunctions  -> same, line 62
+//   ADOverhaulWindow            -> lifted to a top-level type, line 35
+//   enum EasyDynamicsFunctions  -> same, line 37
 //   selectedFunction            -> same, line 50
 //   editorFoldout               -> same, line 60
 //   handlesFoldout              -> same, line 62
@@ -109,6 +109,12 @@
 // wholesale, e.g. selectedFunction -> m_Ref, editorFoldout -> _Instance). The only divergence
 // anywhere near this file is the RefreshAvatarTables one noted above, which belongs to the outer
 // class.
+//
+// Audit status: PARTIAL -- every line number in the MAP block above was re-checked against
+// decompiled/ADOverhaul2022 on this pass; the class itself is at line 35 and the enum at line 37
+// (the header previously said 51 and 62, which are a blank line and `handlesFoldout`), and the
+// remaining nine were confirmed correct. The prose sections below the MAP block were not
+// re-derived.
 
 using DreadScripts.Common;
 using UnityEditor;

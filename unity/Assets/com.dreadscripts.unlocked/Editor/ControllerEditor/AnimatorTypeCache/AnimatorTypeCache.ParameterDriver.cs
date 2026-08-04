@@ -21,12 +21,20 @@
 // Every Get*/Set* pair above is marked [SpecialName] in the shipped assembly - they are property
 // accessors whose property definitions the obfuscator stripped, and they are restored as properties
 // here.
-// Audit status: UNAUDITED -- was VERIFIED in a1311ff, but the code has changed
-// since (+0 code lines); needs re-checking against export/ before the claim is restored.
-// DEOBF-BUG(resolved): ParameterEntry.Source's setter deviates from export/, which renders it as
-// an infinite `while (!DeferApply)` loop. The correct form was recovered by tracing the original
-// obfuscated IL, not guessed -- see the comment at the setter. export/ will keep showing the loop
-// until de4dot's control-flow recovery is fixed, so do not "restore" it to match.
+// DEOBF-BUG(resolved): ParameterEntry.Source's setter deviates from decompiled/, which renders it
+// as an infinite `while (!GetDeferApply())` loop (AnimatorTypeCache.cs line 80). The correct form
+// was recovered by tracing the original obfuscated IL, not guessed -- see the comment at the
+// setter. decompiled/ will keep showing the loop until de4dot's control-flow recovery is fixed, so
+// do not "restore" it to match.
+//
+// Audit status: VERIFIED against decompiled/ -- every member this file declares was compared
+// statement by statement with AnimatorTypeCache.cs lines 12-238: both types' fields, both
+// constructors (decompiled lines 167 and 197, not previously mapped above), the nine ParameterEntry
+// properties and the five ParameterDriverBinding members. Every line number cited above lands on
+// the member named. The only divergences are the Source setter recorded immediately above and two
+// decompiler-shape artefacts with identical behaviour: RemoveParameter's `if (arraySize != 0)
+// return false; return true;` written here as a single comparison, and the Get*/Set* pairs restored
+// as properties (they are [SpecialName] accessors in the shipped assembly, as noted above).
 
 using System.Collections.Generic;
 using UnityEditor;
@@ -154,7 +162,7 @@ namespace DreadScripts.ControllerEditor
                         {
                             property.FindPropertyRelative("source").stringValue = value;
 
-                            // DEOBF-BUG(resolved): export/ renders this as `while (!DeferApply)`, never
+                            // DEOBF-BUG(resolved): decompiled/ renders this as `while (!DeferApply)`, never
                             // terminates -- Apply() cannot clear the flag. That loop is not in the
                             // shipped product. The original method is a Reactor XOR-switch state
                             // machine (ControllerEditor.dll, AttrProperty::TestPage, RVA 0x75f78);

@@ -4,18 +4,24 @@
 // lines 3026-3163 of the current snapshot. Line numbers move with the snapshot; the member names
 // below are the durable reference.
 //
-//   name / depth / fullPath / children / layers / baseCategoryNode (3028-3038) -> unchanged
-//   CategoryPath()            (3041) -> CategoryPath, restored to a property (see below)
-//   .ctor(v, result, dirPtr)  (3046) -> LayerPathNode(name, fullPath, categoryDelimiter,
-//                                       baseCategoryName, depth)
-//   AddLayer(key, selection, positionc) (3053) -> AddLayer(path, layer, layerIndex)
-//   AddEntry(res)             (3078) -> AddEntry(entry)
-//   FindClosest(info)         (3086) -> FindClosest(path)
-//   FindNode(def)             (3103) -> FindNode(path)
-//   GetOrCreateBaseCategory() (3120) -> GetOrCreateBaseCategory()
-//   WalkPath(param, selection, isres) (3134) -> WalkPath(path, action, includeSelf)
-//   StripRootPrefix(item)     (3159) -> StripRootPrefix(path), now an instance method
+//   LayerPathNode             -> LayerPathNode, lines 3026-3163
+//     name       -> unchanged
+//     depth      -> unchanged
+//     fullPath   -> unchanged
+//     children   -> unchanged
+//     layers     -> unchanged
+//     baseCategoryNode -> unchanged
+//   CategoryPath()            -> CategoryPath (restored to a property; see NOTES), line 3041
+//   .ctor(v, result, dirPtr)  -> LayerPathNode(name, fullPath, categoryDelimiter, baseCategoryName, depth), line 3046
+//   AddLayer(key, selection, positionc) -> AddLayer(path, layer, layerIndex), line 3053
+//   AddEntry(res)             -> AddEntry(entry),                      line 3078
+//   FindClosest(info)         -> FindClosest(path),                    line 3086
+//   FindNode(def)             -> FindNode(path),                       line 3103
+//   GetOrCreateBaseCategory() -> GetOrCreateBaseCategory,              line 3120
+//   WalkPath(param, selection, isres) -> WalkPath(path, action, includeSelf), line 3134
+//   StripRootPrefix(item)     -> StripRootPrefix(path) (now an instance method), line 3159
 //
+// NOTES
 // CategoryPath carried [SpecialName] in the decompiled output with no arguments and no return-value
 // side effects, which is how ILSpy renders a property getter whose `get_` prefix the deobfuscator
 // has already stripped. It is restored here as a property; the outer class's call sites read it as
@@ -27,9 +33,9 @@
 // The decompiled methods read two user settings through statics on the enclosing ControllerEditor
 // class, which is not ported:
 //
-//   PushInitializer() -> EditorSettings.GetInstance().categoryDelimiter, default "/", line 16159
-//   ValidateInitializer() -> EditorSettings.GetInstance().categoryBaseName,  default "Base", line 16113
-//   QueryMapper(task) -> task.Split(new[] { PushInitializer() }, StringSplitOptions.None), line 16923
+//   PushInitializer()     (line 16159) -> EditorSettings.GetInstance().categoryDelimiter, default "/"
+//   ValidateInitializer() (line 16113) -> EditorSettings.GetInstance().categoryBaseName, default "Base"
+//   QueryMapper(task)     (line 16923) -> task.Split(new[] { PushInitializer() }, StringSplitOptions.None)
 //
 // EditorSettings (line 437) is not ported either, so every method of this type except AddEntry and
 // the constructor depends on unported code. Rather than defer nine tenths of the type, the two
@@ -38,12 +44,16 @@
 // drawing code in the outer class, becomes the private SplitPath below.
 //
 // No method signature other than the constructor's changes, and the only place a root node is ever
-// constructed is the unported outer class (`new LayerPathNode("Root", "Root")`, line 16266), so
+// constructed is the unported outer class (`new LayerPathNode("Root", "Root")`, line 16791), so
 // there are no call sites to break. The one observable difference: the original re-reads the
 // settings on every call, so editing the delimiter would immediately change how an already-built
 // tree resolves paths, whereas here a tree keeps the values it was built with. The outer class
 // rebuilds the whole tree whenever those settings change, so this is not reachable in practice.
 // ==============================================================================
+//
+// Audit status: PARTIAL -- every line number above was checked against decompiled/ControllerEditor/
+// DreadScripts/ControllerEditor/ControllerEditor.cs and now lands on the member named; the root-node
+// construction site was corrected from 16266 to 16791. The method bodies were not re-diffed.
 
 using System;
 using System.Collections.Generic;

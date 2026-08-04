@@ -4,19 +4,26 @@
 //   static PostQueue            -> GetTextWidth(Enum, GUIStyle),      line 5616
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
-// since (-11 code lines); needs re-checking against export/ before the claim is restored.
+// Audit status: VERIFIED against decompiled/ -- both GetTextWidth overloads, the only members this
+// file declares, were compared statement by statement against decompiled/ (EditorUtils.cs:
+// PushResolver 2842 and SetupQueue 5621, whose bodies are identical to each other and to the
+// collapsed extension below, and PostQueue 5616). All three cited lines still land on the members
+// named above, and the header claims no member the file does not declare.
 //
 // PushResolver (an extension on string) and SetupQueue (a plain static taking a string) have
 // identical bodies and cannot both exist here -- as C# members they would have the same signature.
 // They are collapsed into the single extension method below; both decompiled names map to it.
 //
-// THE SCRATCH CONTENT IS SHARED AND MUTABLE. TempContent hands back one process-wide GUIContent
-// with its text and tooltip overwritten, which is what Unity's own internal EditorGUIUtility
-// .TempContent does and why it costs no allocation in a per-frame OnGUI. The consequence is that
-// the returned reference is only valid until the next call: it must be passed straight to a draw
-// call and never stored, never put in an array, and never used twice in one expression. Pass
-// copy: true where it has to outlive the call -- that is what every use in a GUIContent[] does.
+// DELIBERATE DEVIATION
+// PostQueue is a plain static in decompiled/ and is ported as an extension on Enum, to match the
+// string overload it delegates to. Its body is otherwise transcribed unchanged.
+//
+// NOTES
+// TempContent, whose sharing rules the two measurements below depend on, is no longer declared
+// here: the merge of the parallel ports left it in EditorUtils.SharedContent.cs (decompiled
+// CreateResolver, line 2812), which documents that the returned GUIContent is one process-wide
+// mutable instance, valid only until the next call, and that copy: true is needed wherever it has
+// to outlive the call. Both calls below pass it straight into a CalcSize, which is the safe use.
 
 using System;
 using UnityEngine;

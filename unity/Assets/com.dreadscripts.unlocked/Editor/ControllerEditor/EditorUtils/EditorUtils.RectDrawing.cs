@@ -3,7 +3,7 @@
 //   static ResetRules   -> AnchorPicker,    line 4871
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // DrawRoundedRect leans on the six-argument GUI.DrawTexture Unity added in 2019.1, which takes a
 // border width and a corner radius and does the rounding on the GPU. It is fed a 1x1 texture of the

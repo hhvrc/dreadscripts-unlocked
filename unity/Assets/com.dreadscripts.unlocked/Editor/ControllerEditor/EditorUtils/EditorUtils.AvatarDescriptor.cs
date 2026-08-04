@@ -20,7 +20,7 @@
 // ConcatError (line 7978) and its menu counterpart (line ~8240), which create and save a new
 // parameters/menu asset when the descriptor has none. Those belong to other regions and can be added
 // when a call site needs them.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 
 using System.Linq;
 using UnityEditor;

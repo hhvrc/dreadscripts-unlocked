@@ -26,7 +26,7 @@
 // Complete: the whole Rect region (2851-3022) is now here. The three Shrink* methods are literally
 // the Expand* ones with a negated argument, which is how the vendor wrote them and is kept, so the
 // pair reads the same way at a call site whichever direction is wanted.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 
 using UnityEngine;
 

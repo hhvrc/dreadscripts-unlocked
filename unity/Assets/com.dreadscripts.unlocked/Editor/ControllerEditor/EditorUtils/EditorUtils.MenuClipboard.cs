@@ -24,18 +24,22 @@
 // existed yet. They all do now, and it maps as:
 //   PopRules / ComputeRules, line 4302 -> EditorUtils.AssetField<T>, EditorUtils.Fields.cs
 //   CallRules, line 4427               -> EditorUtils.IsMissing,     EditorUtils.Fields.cs
-//   configurationProperty / _WrapperProcessor, lines 2178/2182
-//                                      -> validColor / warningColor, EditorUtils.Colors.cs
-//   ReadError, line 8263               -> EditorUtils.SetExpressionsMenu,
-//                                         EditorUtils.AvatarDescriptor.cs
+//   configurationProperty / _WrapperProcessor, lines 2178/2182 -> validColor / warningColor, EditorUtils.Colors.cs
+//   ReadError, line 8263               -> EditorUtils.SetExpressionsMenu, EditorUtils.AvatarDescriptor.cs
 //   MenuSelector.InvokeRecord          -> MenuSelector.Open, MenuSelector.cs
+// These are call-site cross-references, not claims: each of those members is mapped, with its line
+// number, by the file that ports it. They are sub-entries here so that a single decompiled member
+// is still claimed by exactly one header.
 //
 // Also not ported: the static field CancelField (line 1609) and RestartField() (line 1777), which
 // returns "CancelField == null". Nothing anywhere assigns the field or calls the method, and the
 // sibling ParameterCostTracker carries the identical CompareCandidate/PublishCandidate pair, so
 // this is obfuscator scaffolding rather than behaviour -- an always-true method over a field that
 // is always null.
-// Audit status: VERIFIED against export
+// Audit status: PARTIAL -- the struct header and field/method mappings above were re-checked
+// against decompiled/EditorUtils.cs (MenuClipboardState still opens at line 1581 in the post-561e9ec
+// snapshot). The earlier "VERIFIED against decompiled/" claim was unsupportable. The GUI-half cross-references were not
+// re-walked.
 
 using System;
 using System.Collections.Generic;

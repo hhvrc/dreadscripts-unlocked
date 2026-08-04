@@ -7,8 +7,10 @@
 // much -- the menu item "DreadTools/Controller Editor/Settings" (line 3307) and the "Settings"
 // item the shared hamburger menu adds (line 9136).
 //
-// decompiled member -> ported member (decompiled line):
-//   private enum NodeColor      -> NodeColor (own file),                    line 3192
+// The nested private enum NodeColor (decompiled line 3192) is lifted to a top-level type of its
+// own and is mapped by the file that declares it, NodeColor.cs; it is not claimed here.
+//
+// Member mapping, with the decompiled line:
 //   m_AdvisorMapper             -> targetAnimator,                          line 3203
 //   _CallbackMapper             -> alwaysUseTargetAnimator,                 line 3205
 //   indexerMapper               -> selectedTab,                             line 3207
@@ -143,6 +145,10 @@
 //   `[SpecialName]` on PushTests -- it was a property getter, restored as IsProSkin.
 //
 // A shipped bug in RebuildTransitionSerializedObject is preserved verbatim; see that method.
+//
+// Audit status: PARTIAL -- the class, field and method lines cited above were spot-checked against
+// decompiled/ in this pass (3190, 3192, 3203, 3205, 3275, 3301, 3307, 3313, 3841, 3909 all land on
+// the member named); the method bodies and the NOT PORTED / DEFERRED sections were not re-verified.
 
 using System;
 using UnityEditor;

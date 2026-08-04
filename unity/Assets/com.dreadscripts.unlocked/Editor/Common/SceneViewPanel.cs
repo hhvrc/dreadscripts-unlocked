@@ -18,7 +18,7 @@
 // for a caller that passes a different row height, so both are ported as shipped rather than
 // unified.
 //
-//   ADOverhaul member -> ported member
+// Mapping, by ADOverhaul member name (see the ADOverhaul line range at the top of this header):
 //   ctor(SceneView, float, int, float, PositionFlag, ResizeHandle)         -> the primary constructor
 //   ctor(SceneView, float, float, PositionFlag, ResizeHandle)              -> single-row constructor
 //   ctor(SceneView, string, float, int, float, PositionFlag, ResizeHandle) -> titled constructor
@@ -41,6 +41,10 @@
 // colours instead.
 //
 // 2019 vs 2022: identical apart from obfuscated names.
+//
+// Audit status: PARTIAL -- the ADOverhaul source range (ADOEditorUtility.cs 503-582, class
+// SceneViewPanel and its three constructors) was re-checked against decompiled/; the
+// ControllerEditor copy and the constructor bodies were not re-diffed.
 
 using System;
 using DreadScripts.ControllerEditor;

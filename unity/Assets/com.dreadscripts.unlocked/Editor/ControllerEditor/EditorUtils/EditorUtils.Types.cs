@@ -5,7 +5,7 @@
 //   static InstantiateResolver -> Is(this Type, Type),     line 2659
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // The decompiled ForgotRules body is a while/continue/break loop produced by control-flow
 // flattening; it is written out below as the plain foreach it started life as. The evaluation

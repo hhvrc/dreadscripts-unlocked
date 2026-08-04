@@ -22,7 +22,7 @@
 // fires on the Unity 2018/2019-era editors the original package also supported. That older
 // signature was not verified against a live install and is transcribed from the decompiled source
 // as-is.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // The two callbacks are the subtle part -- see the parameter documentation below.
 

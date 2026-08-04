@@ -11,16 +11,15 @@
 //   static CheckRules      -> Args,         line 5322
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in d3b7ecd, but the code has changed
-// since (+49 code lines); needs re-checking against export/ before the claim is restored.
 //
 // Small IEnumerable<T> helpers, all of them unique to this partial.
 //
 // Three members this file was ported with are not here, because EditorUtils.Behaviours.cs had
 // already ported the same decompiled members under different names and that port is the one kept:
-// the typed ForEach (InvokeResolver, 2555) lives there beside the AnimatorState helpers that are
-// its only callers, and FindIndex/TryFindIndex (2563/2580) are its IndexOf/TryGetIndex. Only the
-// untyped ForEach overload, which has no counterpart there, remains here.
+// the typed ForEach (decompiled ForEach, line 2555 -- the header there still calls it by its
+// pre-resnapshot name InvokeResolver) lives there beside the AnimatorState helpers that are its
+// only callers, and decompiled FindIndex/TryFindIndex (2563/2580) are its IndexOf/TryGetIndex.
+// Only the untyped ForEach overload, which has no counterpart there, remains here.
 //
 // Distinct and Except are the vendor's own -- they take an equality *delegate* rather than an
 // IEqualityComparer, which LINQ's overloads of those names cannot, and which is the whole point:
@@ -31,6 +30,12 @@
 //
 // Args exists purely so a `params` call site can be written without naming the array type -- e.g.
 // Args(a, b, c) in place of new[] { a, b, c } where inference would otherwise fail.
+//
+// Audit status: VERIFIED against decompiled/ -- all ten members re-checked statement by statement
+// against EditorUtils.cs lines 5070, 5083, 5096, 5104, 5117, 5122, 5134, 5142, 5150 and 5322, every
+// one of which still lands on the member named. Bodies are identical, including the deferred
+// iterators' HashSet/array staging and the inverted early-out in both IsNullOrEmpty overloads,
+// which is written as `return flag && ...` here where the decompilation branches.
 
 using System;
 using System.Collections;

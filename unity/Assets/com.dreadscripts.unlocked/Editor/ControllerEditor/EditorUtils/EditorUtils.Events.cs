@@ -14,7 +14,7 @@
 // the Contents and Styles partials) and ends at WriteQueue, after which the file turns to the
 // Handles/Graphics gizmo drawing helpers (ForgotQueue line 6329, StopQueue line 6356, CheckQueue
 // line 6361) that are unrelated and are not ported here.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // The command-name enum the region tests against is the shared DreadScripts.Common.EventCommands,
 // already ported; the decompiled source nests its own copy inside EditorUtils.

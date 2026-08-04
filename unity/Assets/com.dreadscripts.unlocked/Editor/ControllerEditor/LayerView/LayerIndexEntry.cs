@@ -1,22 +1,30 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
-// Ported region: the `private struct LayerIndexEntry` nested in the static ControllerEditor class,
-// lines 3165-3188 of the current snapshot. Line numbers move with the snapshot; the member names
-// below are the durable reference.
+// Ported region: the `private struct LayerIndexEntry` nested in the static ControllerEditor class.
 //
-//   layer                 (3167) -> layer
-//   layerIndex            (3169) -> layerIndex
-//   .ctor(value, next_cfg)(3173) -> LayerIndexEntry(layer, layerIndex)
-//   implicit operator     (3179) -> implicit operator AnimatorControllerLayer
+//   LayerIndexEntry             -> LayerIndexEntry, lines 3165-3188
+//   layer                       -> layer, line 3167
+//   layerIndex                  -> layerIndex, line 3169
+//   .ctor(value, next_cfg)      -> LayerIndexEntry(layer, layerIndex), line 3173
+//   implicit operator           -> implicit operator AnimatorControllerLayer, line 3179
+//   NewProduct                  -> NOT PORTED, line 3171 -- obfuscator scaffolding: a private
+//                                  static object that is never assigned.
+//   LoginProduct()              -> NOT PORTED, line 3184 -- an internal static bool returning
+//                                  `NewProduct == null`, i.e. always true. This always-null-static
+//                                  plus null-check pair is the licensing-gate remnant that appears
+//                                  on dozens of types throughout the assembly (compare
+//                                  PrintState/ResolveState at line 2143); it carries no behaviour.
 //
-// NOT PORTED — obfuscator scaffolding:
-//   NewProduct    (3171)  a private static object that is never assigned
-//   LoginProduct()(3184)  an internal static bool that returns `NewProduct == null`, i.e. always
-//                         true. This always-null-static/null-check pair is the licensing-gate
-//                         remnant that appears on dozens of types throughout the assembly (compare
-//                         PrintState/ResolveState at line 2143); it carries no behaviour.
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
 //
-// LIFTED OUT OF ControllerEditor, following the convention already used for PhysBoneEditor.
+// NOTES
+// Lifted out of ControllerEditor into its own file, following the convention already used for
+// PhysBoneEditor.
+//
+// Audit status: PARTIAL -- every entry above was re-checked against decompiled/ (the struct still
+// sits at lines 3165-3188 of the post-561e9ec snapshot); the bodies were not re-diffed, which is why
+// this is PARTIAL rather than VERIFIED.
 
 using UnityEditor.Animations;
 

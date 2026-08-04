@@ -8,10 +8,14 @@
 //   static MapList       -> FindMethod(Type, string, Type),       line 7143
 //   static ValidateList  -> FindMethod(Type, string, Type[]),     line 7161
 //   static CustomizeList -> FindMethod(Type, string, int),        line 7179
-//   lambda <>c.IncludeSetter -> `p => p.ParameterType`, inlined at its use site
+//   IncludeSetter (the <>c cached lambda) -> inlined into FindMethod(Type, string, Type[]), line 1866
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+//
+// NOTES
+// IncludeSetter is the compiler's cached `p => p.ParameterType` selector; the decompiler hoisted it
+// into the <>c display class at line 1866 and calls it from the Except() at line 7164. It is written
+// back inline at that single use site rather than resurrected as a member.
 //
 // Two families that look alike and are not:
 //   * GetAny* are one-line wrappers over Type.GetMember with the four binding flags spelt out, so
@@ -29,6 +33,11 @@
 // The Type[] overload is not a signature match, it is a subset test: it keeps any method whose
 // parameter types are a *superset* of the ones asked for, so trailing optional parameters do not
 // have to be listed. Being set-based it also ignores parameter order and repeats.
+//
+// Audit status: VERIFIED -- all ten entries were re-checked against decompiled/ on 2026-08-05 and
+// each line number lands on the member named (the IncludeSetter lambda at EditorUtils.cs line 1866,
+// used at 7164). This replaces an older "VERIFIED against decompiled/" claim, which cannot be
+// reproduced.
 
 using System;
 using System.Linq;

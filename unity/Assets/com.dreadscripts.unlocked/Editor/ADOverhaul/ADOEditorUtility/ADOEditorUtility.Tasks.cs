@@ -2,36 +2,41 @@
 //   static CreateProcess -> HandleTask, line 2395
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- reconstructed from both the async method body (line
-// 2395) and its compiler-generated state machine (line 1851), which agree statement for statement.
 //
+// NOTES
 // The method's real name and its real parameter names are recovered from the state machine, not
 // guessed. Roslyn names the state-machine struct after the method it was generated for
-// (_003CHandleTask_003Ed__18<T>, i.e. <HandleTask>d__18) and names each hoisted parameter field
-// after the parameter it holds, and the protector renamed neither. The fields are taskHandle,
-// onComplete, onFailure, OnCancelled, onSuccess and onFinale; which parameter each one is was
-// settled by matching the state machine's body against the async method's, since the field
-// declaration order does not follow the parameter order:
+// (_003CHandleTask_003Ed__18<T>, i.e. <HandleTask>d__18, decompiled line 1851) and names each
+// hoisted parameter field after the parameter it holds, and the protector renamed neither. The
+// fields are taskHandle, onComplete, onFailure, OnCancelled, onSuccess and onFinale; which
+// parameter each one is was settled by matching the state machine's body against the async
+// method's, since the field declaration order does not follow the parameter order:
 //   res (1st)       -> taskHandle
 //   attr            -> onSuccess
-//   res (2nd)       -> onFailure    (the decompiler emitted two parameters both named `res`;
-//                                    the second shadows the first, which is why the export's
-//                                    null check reads `if (res == null)` against an Action)
-//   task2           -> onCancelled  (the field is OnCancelled, capitalised; lower-cased here to
-//                                    match its five siblings)
+//   res (2nd)       -> onFailure
+//   task2           -> onCancelled
 //   var13           -> onComplete
 //   selection4      -> onFinale
+//
+// Two of those need a word. The decompiler emitted two parameters both named `res`; the second
+// shadows the first, which is why the decompiled null check reads `if (res == null)` against an
+// Action. And the cancellation field is spelled OnCancelled, capitalised; it is lower-cased here
+// to match its five siblings.
 //
 // Seven single-statement smethod_N proxies in the state machine (smethod_0..smethod_6, lines
 // 2014-2047) are inlined back to what they wrap: Task.IsCompleted, Debug.LogError,
 // Debug.LogException, Task.IsFaulted, Task.IsCanceled, Task.Exception and
 // Exception.GetBaseException.
 //
-// The outcome dispatch is written out below as three plain branches. The shipped form was
+// The outcome dispatch is written out below as three plain branches. The decompiled form was
 //     if (!IsFaulted || IsCanceled) { if (IsFaulted || !IsCanceled) success; else cancelled; }
 //     else failure;
 // which is the same function of the two flags for every combination, including the impossible
 // faulted-and-cancelled one (both forms take the success branch there).
+//
+// Audit status: PARTIAL -- the mapping above was re-checked against decompiled/ (the async method
+// at line 2395 and the state-machine struct at line 1851, which agree statement for statement);
+// the ported method body was not re-diffed in this pass.
 
 using System;
 using System.Threading.Tasks;

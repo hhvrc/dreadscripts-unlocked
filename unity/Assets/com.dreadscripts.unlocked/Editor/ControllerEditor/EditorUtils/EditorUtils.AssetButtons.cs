@@ -5,7 +5,7 @@
 //   static MoveRules     -> AssetButtons,              line 4382
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // These are the small button groups that sit at the right-hand end of an asset row -- select an
 // existing asset, create a new one, ping the current one -- plus the save-panel helper the create

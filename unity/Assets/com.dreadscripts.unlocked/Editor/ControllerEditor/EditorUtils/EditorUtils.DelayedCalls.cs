@@ -4,19 +4,29 @@
 //   static RestartRules          -> RunHierarchyDelayedCalls, line 4487
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
-// since (-31 code lines); needs re-checking against export/ before the claim is restored.
 //
-// ControllerEditor's copy of the deferred-work queue. The DelayCall half is the same code as
-// ADOverhaul's ADOEditorUtility.DelayedCalls.cs -- see that file for why the Remove/Combine pair on
-// the delegate is not redundant -- but this class is not shared with it: ControllerEditor adds a
-// second queue on a different hook, and the two products' copies were never merged in the shipped
-// assemblies either.
+// NOTES
+//
+// ControllerEditor's hierarchy-tick half of the deferred-work queue. The plain EditorApplication
+// .delayCall half (decompiled _MethodProperty line 2152, CountRules line 4444, InsertRules line
+// 4470) was ported into EditorUtils.Callbacks.cs, which claims those three; the duplicate port that
+// once sat here was removed in the port-reconciliation merges. See that file, or ADOverhaul's
+// ADOEditorUtility.DelayedCalls.cs, for why the Remove/Combine pair on the delegate is not
+// redundant.
 //
 // The second queue exists because EditorApplication.delayCall does not fire while the Hierarchy
 // window is the one that needs redrawing. hierarchyWindowItemOnGUI does fire then -- once per
 // visible item -- so it is used as a "the hierarchy is about to draw" tick. The drain runs on the
 // first item of the pass and unsubscribes immediately, so the per-item cost is one delegate check.
+//
+// Audit status: VERIFIED against decompiled/ -- all three declared members diffed statement by
+// statement against decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the
+// cited lines (_SchemaProperty 2154, DisableRules 4455, RestartRules 4487), all of which still land
+// on the named member in the current snapshot. Field initialiser, the empty-queue test, both
+// Delegate.Remove/Combine pairs, the repaint flag, the drain loop with its per-action
+// try/LogException and the trailing unsubscribe all match; the only change is naming and the two
+// unused callback parameters being named rather than left as decompiler placeholders. The header
+// claims no member the file does not declare.
 
 using System;
 using System.Collections.Generic;

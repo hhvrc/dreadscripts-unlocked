@@ -11,7 +11,7 @@
 //   static NewResolver    -> Humanize,             line 2823
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // ChangeRules and SortRules are ported as overloads of one name: they are the same operation, one
 // taking the set of names already in use and the other the predicate that decides availability.

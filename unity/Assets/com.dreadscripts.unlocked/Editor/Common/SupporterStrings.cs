@@ -1,6 +1,15 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/SupporterStrings.cs
-//   _Role -> WindowTitles, m_Model -> HeaderTexts, m_Tokenizer -> HeaderTooltips,
-//   decorator -> SupporterTooltips
+//
+//   _Role       -> WindowTitles,      line 5
+//   m_Model     -> HeaderTexts,       line 11
+//   m_Tokenizer -> HeaderTooltips,    line 17
+//   decorator   -> SupporterTooltips, line 23
+//
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
+//
+// Audit status: PARTIAL -- all four arrays were compared entry for entry against decompiled/ on
+// 2026-08-05 and match.
 
 namespace DreadScripts.Common
 {

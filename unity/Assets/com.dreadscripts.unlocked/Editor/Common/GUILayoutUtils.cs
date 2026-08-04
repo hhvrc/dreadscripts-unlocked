@@ -3,6 +3,40 @@
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/GUILayoutUtils.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/SplitterGUIUtils.cs
 //
+// The two copies sit at identical line numbers; the numbers below are the ADOverhaul2022 ones, and
+// the decompiled-name column gives the ADOverhaul2022 spelling first and the ControllerEditor
+// spelling second where they differ.
+//
+//   GUILayoutUtils / SplitterGUIUtils        -> GUILayoutUtils, lines 9-164
+//   defaultLineColor                         -> separatorColor
+//   creatorMethod / splitterGUILayoutType    -> splitterGUILayoutType
+//   splitterStateType                        -> unchanged
+//   splitterStateConstructor                 -> unchanged
+//   beginSplitMethod                         -> unchanged
+//   endLayoutGroupMethod                     -> unchanged
+//   RemoveIterator / SplitterGUILayoutType() -> SplitterGUILayoutType (property), line 24
+//   ResolveIterator / SplitterStateType()    -> SplitterStateType (property), line 30
+//   GetIterator / SplitterStateConstructor() -> SplitterStateConstructor (property), line 36
+//   ExcludeIterator / BeginSplitMethod()     -> BeginSplitMethod (property), line 46
+//   ConnectIterator / EndLayoutGroupMethod() -> EndLayoutGroupMethod (property), line 62
+//   SearchIterator / CreateSplitterState     -> CreateSplitterState, line 71
+//   LoginIterator / BeginHorizontalSplit     -> BeginHorizontalSplit, line 76
+//   PatchIterator / BeginVerticalSplit       -> BeginVerticalSplit, line 81
+//   CheckIterator / BeginSplit               -> BeginSplit, line 86
+//   CallIterator / EndSplit                  -> EndSplit, line 97
+//   RegisterIterator / DrawTitle(string)     -> TitleField(string), line 102
+//   ChangeIterator / DrawTitle(GUIContent)   -> TitleField(GUIContent), line 107
+//   StopIterator / DrawVerticalLine          -> DrawVerticalSeparator, line 114
+//   PushIterator / DrawHorizontalLine        -> DrawHorizontalSeparator, line 129
+//   PrepareIterator / DrawUnderline          -> DrawUnderline, line 144
+//   VisitIterator / GetMethod                -> NOT PORTED, line 160 -- a one-line
+//       type.GetMethod(name, flags) wrapper, inlined back into the two reflection properties that
+//       were its only callers
+//
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
+//
+// NOTES
 // An earlier wave also landed the ControllerEditor source as a standalone
 // Editor/ControllerEditor/SplitterGUIUtils.cs, duplicating all ten members of this type including
 // the five cached reflection statics -- two independent caches of the same internal Unity members,
@@ -12,6 +46,9 @@
 // Editor/Common/EditorGuiUtils.cs already recorded that the ControllerEditor layout companion is not
 // ported because every member of it exists here. The duplicate file has been removed; this type is
 // the single copy, and both products' call sites use it.
+//
+// Audit status: PARTIAL -- the member mapping above was built by comparing this file against both
+// decompiled/ copies member for member; the bodies were not re-diffed statement by statement.
 
 using System;
 using System.Reflection;

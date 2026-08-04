@@ -1,5 +1,5 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
-//   static CloneList   -> TrimTransparentBorder, lines 7424-7494
+//   static TrimTransparentBorder -> unchanged,   lines 7257-7322
 //   static ReflectList -> ColorTexture,          line 7339
 //   static field connectionProcessor -> sharedColorTexture, line 2228
 //   static LoginList   -> SharedColorTexture,    line 7324
@@ -8,8 +8,11 @@
 //   static ViewList    -> ReadPixelsScaled,      line 7404
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1a719, but the code has changed
-// since (+69 code lines); needs re-checking against export/ before the claim is restored.
+//
+// The TrimTransparentBorder entry above used to read "CloneList, lines 7424-7494". Both halves were
+// stale: the re-snapshot in 561e9ec renumbered the file and gave that member back its real name, so
+// it is now TrimTransparentBorder at 7257-7322, and 7424 is MirrorTransform, which
+// EditorUtils.TransformGeometry.cs claims. Corrected here; nothing about the port changed.
 //
 // Complete: every texture helper in the outer class body is now here. CachedIcon (line 7381), which
 // also produces a texture, lives with the icon table it feeds in EditorUtils.Contents.cs.
@@ -18,6 +21,23 @@
 // every call and the caller owns it, while SharedColorTexture overwrites one process-wide texture
 // and hands back a reference that is only valid until the next call. Use the shared one for an
 // immediate GUI.DrawTexture and the allocating one for anything stored in a GUIStyle.
+//
+// DELIBERATE DEVIATION
+//
+// TrimTransparentBorder clears the padding ring with a single SetPixels of a default Color[] where
+// the shipped build (7306-7315) walks every pixel of the result and writes Color.clear to the ones
+// outside the trimmed region. The written result is the same -- default(Color) is (0,0,0,0), and
+// every pixel the loop skipped is overwritten by the block copy that follows in both versions -- so
+// this is a cost change, not a behaviour change. The decompiled early-out is also inverted: it
+// wraps the whole body in `if (!(ident == null))` and throws at the bottom, which is written here
+// as a guard clause that throws first.
+//
+// Audit status: VERIFIED against decompiled/ -- all seven members re-checked statement by statement
+// against EditorUtils.cs lines 7257-7322 (after correcting the stale citation above), 7324, 7339,
+// 7349, 7354, 7404 and the sharedColorTexture field at 2228. Bodies match, including the RGBA32 vs
+// RGBAFloat split between the two single-colour helpers, the inscribed hard-edged circle, and the
+// unreleased temporary RenderTexture in ReadPixelsScaled. The one difference is the padding clear
+// recorded immediately above.
 
 using System;
 using DreadScripts.Common;

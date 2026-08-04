@@ -9,7 +9,7 @@
 //   static InterruptQueue -> GetHandRotation,                               line 6528
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // Moving the Scene view camera to look at something, and the avatar measurements the callers use to
 // decide how far away "looking at it" should be.

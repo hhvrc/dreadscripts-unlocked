@@ -21,7 +21,7 @@
 //
 // The [SpecialName] methods in the decompiled source are property accessors the deobfuscation pass
 // left as methods; they are restored to properties here.
-// Audit status: VERIFIED against export member-by-member (2026-08-04).
+// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04).
 
 using System;
 using System.Collections.Generic;

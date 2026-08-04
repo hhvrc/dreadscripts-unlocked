@@ -1,10 +1,31 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/WebRequestJob.cs
-//   _Algo -> Request, mapper -> pollIntervalMilliseconds, initializer -> onCompleted
-//   IsError() -> IsError (property; [SpecialName] in the decompilation)
-//   WebRequestJob(string, string, int) and WebRequestJob(string, Action, string, int) are
-//     collapsed into the single constructor below via optional parameters.
-// Deliberately unported: the NewCode / LoginCode() pair, an obfuscator-injected null check on an
-// always-null static with no callers.
+//
+//   _Algo                                -> Request,                    line 10
+//   mapper                               -> pollIntervalMilliseconds,   line 12
+//   initializer                          -> onCompleted,                line 14
+//   NewCode                              -> NOT PORTED, line 16 -- an always-null static that only
+//     LoginCode() reads; obfuscator-injected, no other callers.
+//   IsError()                            -> IsError,                    line 19
+//   WebRequestJob(string, string, int)   -> the four-parameter constructor, line 28
+//   WebRequestJob(string, Action, string, int) -> WebRequestJob,         line 33
+//   Dispose                              -> same,                       line 44
+//   Process                              -> same,                       line 49
+//   LoginCode                            -> NOT PORTED, line 59 -- a null check on NewCode, which is
+//     never assigned; obfuscator-injected, no callers.
+//
+// Line numbers are relative to the decompiled snapshot at the time of the port;
+// the member names are the durable reference.
+//
+// NOTES
+// IsError() is a method in the decompilation but carries [SpecialName], i.e. it was a property in
+// the shipped assembly; it is restored as a property here.
+//
+// The two decompiled constructors are collapsed into the single four-parameter constructor below
+// via optional parameters -- the three-parameter one is a pure forwarding overload.
+//
+// Audit status: PARTIAL -- the member list and line numbers above were checked against decompiled/
+// ControllerEditor/DreadScripts/Common/SupportThankies/WebRequestJob.cs; the bodies were read but
+// not diffed statement by statement.
 
 using System;
 using System.Threading.Tasks;

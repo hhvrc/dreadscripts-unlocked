@@ -4,7 +4,7 @@
 //   static m_VisitorSerializer -> physBoneParameters,      line 2124
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and member
 // names are the durable reference.
-// Audit status: VERIFIED against export -- all three tables were re-checked entry by entry against
+// Audit status: VERIFIED against decompiled/ -- all three tables were re-checked entry by entry against
 // lines 2110-2131 on 2026-08-04: 23 reserved parameters, 23 collision tags and 5 PhysBone
 // parameters, same entries in the same order, and the same readonly/non-readonly split.
 //

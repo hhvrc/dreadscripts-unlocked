@@ -9,11 +9,16 @@
 //   static StopRules      -> ToContent,               line 5317
 //   static PrepareRules   -> GetValue,                line 5327
 //   static AssetRules     -> SetValue,                line 5388
-//   class <>c__DisplayClass210_1<T>/<>c__DisplayClass212_1<T> -> dissolved into the lambdas in
-//                            AddToArray/RemoveFromArray, lines 1986/2004
+//   class <>c__DisplayClass210_1<T> -> dissolved into the element-match lambda in AddToArray, line 1986
+//   class <>c__DisplayClass212_1<T> -> dissolved into the element-match lambda in RemoveFromArray, line 2004
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+//
+// NOTES
+// Each of those two compiler-generated closures also carries an always-null static and a method
+// returning whether it is null (GetAttribute/VisitAttribute at 1990/1997,
+// RateAttribute/PostAttribute at 2008/2015). They are obfuscator tamper bait with no callers, and
+// nothing of them survives the closures being dissolved into lambdas.
 //
 // MULTI-OBJECT EDITING is what most of this file is for. A SerializedProperty taken from a
 // multi-object SerializedObject cannot have its array edited: Unity refuses, because it has no way
@@ -28,6 +33,10 @@
 // Enum is handled as its *index*, not its value: enumValueIndex is a position in
 // enumDisplayNames, so round-tripping through these two is safe but comparing the result against a
 // cast enum value is not.
+//
+// Audit status: PARTIAL -- all twelve MAP entries above were re-checked against
+// decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs and each line number
+// lands on the member named; the method bodies were not re-diffed statement by statement.
 
 using System;
 using System.Collections.Generic;

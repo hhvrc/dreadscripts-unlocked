@@ -5,7 +5,7 @@
 //   static CreateStatus               -> RadiusHandle,       line 3649
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
 // above, and TransformHandles's discarded third condition was cross-checked against the 2019 build.
 //
 // DECOMPILE DAMAGE: TransformHandles's export body computes a third condition and throws it away --

@@ -3,14 +3,17 @@
 //     slot        -> slot,        line 782
 //     Node()      -> Node,        line 787
 //     Edges()     -> Edges,       line 793
-//     constructor -> unchanged,   line 798
+//     constructor -> GraphSlotRef(Slot), line 798
+//   TestStruct    -> NOT PORTED, line 784 -- obfuscator scaffolding: a never-assigned object field,
+//                    read only by IncludeStruct below. It carries no behaviour.
+//   IncludeStruct -> NOT PORTED, line 803 -- obfuscator scaffolding: returns `TestStruct == null`,
+//                    a constant true, and nothing calls it.
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
-// Deliberately not ported: the static field TestStruct and the method IncludeStruct (lines 784 and
-// 803), which are obfuscator scaffolding — a never-assigned object compared against null by a
-// method nothing calls. They carry no behaviour.
-// Audit status: VERIFIED against export member-by-member (2026-08-04). Dead scaffolding correctly dropped.
+// Audit status: VERIFIED -- every entry above was re-checked member-by-member against
+// decompiled/ControllerEditor/.../AnimatorGraphReflection.cs on 2026-08-05; all seven line numbers
+// land on the member named, and the dead scaffolding is correctly dropped.
 
 using System.Collections.Generic;
 using System.Linq;

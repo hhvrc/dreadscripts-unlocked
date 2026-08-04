@@ -2,7 +2,7 @@
 //   static MapQueue -> Separator, line 5933
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 
 using UnityEditor;
 using UnityEngine;

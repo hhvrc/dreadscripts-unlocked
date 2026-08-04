@@ -6,7 +6,7 @@
 //   static VerifyList  -> SetLocalScaleKeepingWorldPositions, line 7503
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // MirrorTransform is the mirror tool's whole implementation and has two quite different modes.
 // If the source sits under a humanoid Animator and its *parent* is a mapped human bone, the

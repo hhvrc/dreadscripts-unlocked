@@ -44,7 +44,7 @@
 //   _WatcherVisitor      -> stateMachineGraphGUIType,           line 8336
 //   m_CandidateVisitor   -> stateMachineGraphType,              line 8338
 //   m_ProductVisitor     -> edgeGUIType,                        line 8340
-//   workerVisitor        -> rebuildGraphMethod,                 line 8348
+//   workerVisitor        -> rebuildGraphMethod,                 line 8346
 //   m_PrototypeVisitor   -> addBreadCrumbMethod,                line 8406
 //   _AdapterAnnotation   -> activeGraphGUIGetter,               line 8074
 //   interpreterAnnotation-> getEdgePointsMethod,                line 8076
@@ -154,6 +154,10 @@
 //   <see cref="PrimeAnimationWindowReflection"/>. Where the decompiled source itself already reads
 //   through AnimatorGraphReflection.TypeResolvers -- the four MakeTransitionCallback lookups in
 //   PrimeGraphNodeReflection -- that is kept, because it is what shipped, not because it is nicer.
+//
+// Audit status: PARTIAL -- rebuildGraphMethod's field line was corrected from 8348 to 8346 against
+// decompiled/ on 2026-08-05 (8348 is filterVisitor, which ControllerEditor.State.cs owns); the
+// remaining entries were not re-checked.
 
 using System;
 using System.Reflection;

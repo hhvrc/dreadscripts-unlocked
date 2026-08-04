@@ -12,7 +12,7 @@
 //   static field getterSerializer -> banner,            line 2106
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every field and every statement below was transcribed
+// Audit status: VERIFIED against decompiled/ -- every field and every statement below was transcribed
 // from the region above.
 //
 // DEOBF-BUG(resolved): GetTexture carried [SpecialName] with no matching setter -- ILSpy's

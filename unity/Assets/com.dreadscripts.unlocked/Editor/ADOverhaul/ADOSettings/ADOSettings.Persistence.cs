@@ -1,30 +1,39 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 // Ported region: the persistence half of the nested `ADOSettings` class, lines 1428-1676.
 //
-// decompiled member -> ported member, line N:
-//   Save()                 -> Serialize(),                     1585
-//   Load()                 -> Load(),                             1613
-//   PromptClear()          -> PromptClear(),                      1654
-//   Clear()                -> Clear(),                            1662
-//   onCleared              -> onCleared,                          1436
-//   nonSerializedFields    -> nonSerializedFields,          1432
-//   settingsInstance               -> settingsInstance,                           1434
-//   "No1lKII9IzcBAbihub6nCg==SettingsJSON" (inline, 1610, 1617 and 1619) -> prefsKey
+//   Save()                     -> Serialize(), line 1585
+//   Load()                     -> Load(), line 1617
+//   PromptClear()              -> PromptClear(), line 1658
+//   Clear()                    -> Clear(), line 1666
+//   nonSerializedFields        -> nonSerializedFields, line 1434
+//   instance                   -> settingsInstance, line 1436
+//   onCleared                  -> onCleared, line 1438
+//   private ADOSettings() body -> CacheNonSerializedSettingFields(), line 1580
+//   "No1lKII9IzcBAbihub6nCg==SettingsJSON" (inline at 1613, 1620 and 1622) -> prefsKey, line 1613
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
+// NOTES
 // The deferral/pending-save half of the shipped Save -- the `savePending`, `deferred` and
-// `_ProxyIdentifier` statics, the `IsDeferred`/`SetDeferred` [SpecialName] accessors (1551/1557) and
+// `_ProxyIdentifier` statics, the `IsDeferred`/`SetDeferred` [SpecialName] accessors (1552/1558) and
 // the branches that read them -- is NOT here: it was already ported to
 // DreadScripts.Common.SettingsPersistence, shared with ControllerEditor. Serialize is what is
 // left once those are removed, and it is subscribed to SettingsPersistence.onSave by the static
 // constructor in ADOSettings.cs. Callers that used to call ADOSettings.Save() call
 // SettingsPersistence.Save().
 //
+// The caching of the NonSerializedSetting fields is the whole body of the decompiled parameterless
+// constructor (1577-1582); the constructor itself is claimed by ADOSettings.cs, and only its body,
+// lifted into CacheNonSerializedSettingFields, is claimed here.
+//
 // ControllerEditor's EditorSettings.SaveSettings/LoadSettings/ClearSettings/PromptClearSettings
-// (decompiled/ControllerEditor/.../ControllerEditor.cs, lines 1486-1573) are the same code with a
+// (decompiled/ControllerEditor/.../ControllerEditor.cs, lines 1486-1577) are the same code with a
 // different key, "yOk0XCnENLMO6DIF8cYpSg==SettingsJSON". They stay separate types because the two
 // products persist independent blocks.
+//
+// Audit status: PARTIAL -- every mapping above, and every line number in it, was re-derived against
+// decompiled/ADOverhaul2022 on 2026-08-05 (the previous numbers predated the 561e9ec re-snapshot and
+// were three to four lines short); the doc-comment prose on the members below was not re-checked.
 
 using System;
 using System.Collections.Generic;

@@ -8,7 +8,7 @@
 //   static RemoveStatus  -> SubmitOrCancelAndDefocus,   line 3420
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
 // above and cross-checked against the ControllerEditor twin named next.
 //
 // The nested EventCommands enum these read is shared with ControllerEditor and lives in

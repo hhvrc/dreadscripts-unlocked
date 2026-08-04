@@ -7,20 +7,25 @@
 //     isExplicitEntryTransition, isExitTransition -> unchanged,   lines 682-712
 //     DisplayName()  -> DisplayName,   line 717
 //     FullName()     -> FullName,      line 723
-//     constructor    -> unchanged,     line 728
+//     constructor    -> TransitionEditionInfo(object, GraphEdgeRef), line 728
 //     Remove()       -> Remove,        line 749
+//     LogoutStruct   -> NOT PORTED, line 714 -- obfuscator scaffolding: a never-assigned static
+//     FindStruct()   -> NOT PORTED, line 774 -- the null-check on it; nothing calls it, no behaviour
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
+// NOTES
 // The [SpecialName] methods in the decompiled source are property accessors the deobfuscation pass
 // left as methods; they are restored to properties here.
 //
-// Deliberately not ported: the static field LogoutStruct and the method FindStruct (lines 714 and
-// 774), which are obfuscator scaffolding — a never-assigned object compared against null by a
-// method nothing calls. They carry no behaviour.
-// Audit status: VERIFIED against export member-by-member (2026-08-04).
-// Note: the constructor reproduces the vendor copy-paste bug where isDefaultTransition reads the
-// isAnyStateTransition ref (RE_NOTES 'Vendor bugs'). Preserved faithfully, not corrected.
+// SHIPPED BUG
+// The constructor reproduces the vendor copy-paste bug where isDefaultTransition reads the
+// isAnyStateTransition ref (decompiled line 733, RE_NOTES 'Vendor bugs'). Preserved faithfully,
+// not corrected.
+//
+// Audit status: VERIFIED -- compared member by member against decompiled/ControllerEditor/
+// DreadScripts/ControllerEditor/AnimatorGraphReflection.cs lines 664-778 on 2026-08-05; every line
+// number above lands on the member named, including the two unported ones.
 
 using System.Reflection;
 using UnityEditor.Animations;

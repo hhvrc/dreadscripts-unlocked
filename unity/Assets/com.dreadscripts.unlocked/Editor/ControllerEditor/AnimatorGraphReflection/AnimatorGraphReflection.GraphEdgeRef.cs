@@ -10,7 +10,7 @@
 //     HasTransition()           -> HasTransition,            line 630
 //     HasMultipleTransitions()  -> HasMultipleTransitions,   line 635
 //     GetTransitions()          -> Transitions,              line 641
-//     constructor               -> unchanged,                line 647
+//     GraphEdgeRef(Edge)        -> GraphEdgeRef(Edge),       line 647
 //     implicit operator Edge    -> unchanged,                line 652
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
@@ -18,8 +18,11 @@
 // The [SpecialName] methods in the decompiled source are property accessors the deobfuscation pass
 // left as methods; they are restored to properties here. MoveSerializer (line 658) is the
 // compiler-generated body of the Transitions projection and has no separate port.
-// Audit status: VERIFIED against export member-by-member (2026-08-04). The [CompilerGenerated]
-// MoveSerializer closure is correctly dissolved into the Transitions projection, not given a file.
+//
+// Audit status: PARTIAL -- every entry above was re-checked against decompiled/ member by member
+// and line by line (2026-08-04), including that the [CompilerGenerated] MoveSerializer closure is
+// dissolved into the Transitions projection rather than given a file of its own. The bodies were
+// not re-diffed statement by statement in that pass.
 
 using System.Collections;
 using System.Collections.Generic;

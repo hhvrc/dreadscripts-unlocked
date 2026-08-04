@@ -1,9 +1,34 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/SupportWindow.cs
-//   m_Advisor -> isFetching, _Callback -> isLoaded, m_Indexer -> hasFailed, issuer -> errorMessage,
-//   m_Prototype -> headerContent, rule -> supporters, m_Singleton -> rawSupporterData,
-//   _Factory -> gridRect, _Account -> lastRepaintGridRect, _Ref -> scrollPosition,
-//   m_Status -> columnSplitterState, code -> rowSplitterState, m_Dic -> columnCount,
-//   _Invocation -> rowCount, IsDone() -> IsDone (property; [SpecialName] in the decompilation)
+//   SupportWindow      -> the EditorWindow subclass of the same name, lines 11-256
+//   the static fields, lines 13-39:
+//     m_Advisor -> isFetching, _Callback -> isLoaded, m_Indexer -> hasFailed, issuer -> errorMessage,
+//     m_Prototype -> headerContent, rule -> supporters, m_Singleton -> rawSupporterData,
+//     _Factory -> gridRect, _Account -> lastRepaintGridRect, _Ref -> scrollPosition,
+//     m_Status -> columnSplitterState, code -> rowSplitterState, m_Dic -> columnCount,
+//     _Invocation -> rowCount
+//   IsDone()           -> IsDone (property), line 42
+//   InitHeaderContent  -> InitHeaderContent,  line 51
+//   DrawButton         -> DrawButton,         line 56
+//   Open               -> Open,               line 67
+//   OnGUI              -> OnGUI,              line 72
+//   DrawSupporters     -> DrawSupporters,     line 105
+//   DrawKofiButton     -> DrawKofiButton,     line 175
+//   OpenKofi           -> OpenKofi,           line 187
+//   FetchSupporters    -> FetchSupporters,    line 192
+//   ParseRawData       -> ParseRawData,       line 233
+//   OnEnable           -> OnEnable,           line 244
+//   ResetState         -> ResetState,         line 249
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
+//
+// DELIBERATE DEVIATION
+// The two URLs are string literals in the decompiled source -- the supporter list inline in
+// FetchSupporters (line 199) and the Ko-fi link inline in OpenKofi (line 189). They are hoisted to
+// the `SupportersUrl` and `KofiUrl` constants here so that every network destination this type
+// reaches is visible at the top of the class; the values are unchanged.
+//
+// IsDone() carries [SpecialName] in the decompilation, marking it as a property getter ILSpy could
+// not re-form; it is restored to a property here.
 //
 // Uses DreadScripts.Common.GUILayoutUtils in place of the EditorLayoutUtils copy that sits beside
 // this type in the decompiled source; it is already ported and behaves identically.
@@ -39,6 +64,11 @@
 // Nothing here runs unless the user opens the window (or draws DrawButton, which only fetches the
 // icon).
 // ---------------------------------------------------------------------------------------------
+//
+// Audit status: PARTIAL -- every MAP entry above was re-derived from
+// decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/SupportWindow.cs (lines 11-256)
+// while writing this header, as were the two hoisted URL literals. The NETWORK ACCESS block records
+// observations about live hosts that cannot be checked against decompiled/ and was not re-verified.
 
 using System;
 using System.Linq;

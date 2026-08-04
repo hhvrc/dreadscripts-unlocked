@@ -14,30 +14,51 @@
 //   static ConcatQueue      -> DrawLinkUnderline,                   line 5679
 //   static SearchResolver   -> FadeGroup,                           line 3023
 //   static CustomizeError   -> the textFieldDropDown accessor,      line 5987
+//   static field m_TaskProperty -> textFieldDropDownMethod,         line 2168
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
-// since (-31 code lines); needs re-checking against export/ before the claim is restored.
+//
+// NOTES
 //
 // The click helpers all share one convention: a default(Rect) argument means "the rect the last
 // layout control occupied", resolved through GUILayoutUtility.GetLastRect. It is what lets a
 // caller write a layout control and then ask whether it was clicked without ever naming a rect.
 //
-// VENDOR BUG in RightClicked, transcribed as shipped: the two branches are an if/else, so when the
-// rect is defaulted it is resolved from the last control and then *not* tested -- the method
-// returns false. The containment test only runs on the branch where an explicit rect was passed.
-// A right-click on a layout control therefore never registers through this. See the remark there.
-//
-// FOUR DECOMPILED METHODS, TWO HERE. FlushQueue is ConnectQueue with its `draw` argument fixed to
-// true, and CalculateQueue is TestQueue likewise; as C# overloads each pair would be ambiguous for
-// any call that relies on the defaults, since the only difference is a bool in a position that is
-// optional either way. Each pair is collapsed into the single method whose `draw` parameter
-// defaults to true, which is exactly what the discarded overload did.
-//
 // TextFieldDropDown wraps UnityEditor.EditorGUI.TextFieldDropDown, which is internal: a text field
 // with a dropdown of suggestions beside it. When the reflection lookup fails -- a Unity version
 // where the method moved or changed signature -- every overload degrades to returning the value it
 // was given, so the field simply does not draw rather than throwing.
+//
+// SHIPPED BUG
+//
+// RightClicked (decompiled InstantiateQueue, line 5848), transcribed as shipped: the two branches
+// are an if/else, so when the rect is defaulted it is resolved from the last control and then *not*
+// tested -- the method returns false. The containment test only runs on the branch where an
+// explicit rect was passed. A right-click on a layout control therefore never registers through
+// this. See the remark on the method.
+//
+// DELIBERATE DEVIATION
+//
+// SplitIntoGrid allocates `new Rect[Mathf.Max(count, 0)]` where decompiled CustomizeQueue (line
+// 5959) allocates `new Rect[visitorPosition]` directly. For count >= 0 the two are identical; for a
+// negative count the vendor throws OverflowException on the allocation, before its own `count <= 0`
+// guard can return, whereas this returns an empty array. No shipped call site passes a negative
+// count, so the difference is unreachable in practice, but it is a real behavioural change and not
+// a decompiler artifact.
+//
+// SplitIntoGrid is also `internal` where decompiled CustomizeQueue is `public`. EditorUtils itself
+// is an internal type, so this is not observable outside the assembly.
+//
+// Audit status: PARTIAL -- all sixteen declared members were diffed statement by statement against
+// decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the cited lines, all
+// of which still land on the named member in the current snapshot. Fifteen match exactly once
+// inverted guard clauses and the decompiler's repeated `CustomizeError()` calls (hoisted into a
+// local here, equivalent because the accessor caches) are accounted for. The sixteenth,
+// SplitIntoGrid, diverges on negative counts -- see DELIBERATE DEVIATION above; that one point is
+// what keeps this from VERIFIED. The MAP claims no member the file does not declare; the stale
+// paragraph about FlushQueue/ConnectQueue/CalculateQueue/TestQueue was removed, those four having
+// moved to EditorUtils.OverlayLabels.cs and EditorUtils.LayoutOverlayLabels.cs, and the previously
+// unclaimed backing field for the TextFieldDropDown accessor (m_TaskProperty) was added.
 
 using System;
 using System.Reflection;

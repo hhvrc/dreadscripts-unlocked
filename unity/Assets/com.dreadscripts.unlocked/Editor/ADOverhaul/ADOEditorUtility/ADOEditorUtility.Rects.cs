@@ -4,7 +4,7 @@
 //   static GetProcess   -> DrawRoundedBox(Rect, Color, Color, float),        line 2250
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
 // above.
 //
 // Shared with ControllerEditor: EditorUtils.Rects.cs ports the identical SliceLeft, under the same

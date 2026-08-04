@@ -5,23 +5,25 @@
 // numbers move with the snapshot; the member names below are the durable reference.
 //
 // This file carries the type declaration and the scene-wide target caches. The rest of the type is
-// split across sibling partials:
+// split across sibling partials, each of which owns (and maps) the members it ported:
 //
-//   PhysBoneEditor.PropertyBinding.cs   -> nested AlgoAuthentication, line 2360
-//   PhysBoneEditor.Properties.cs        -> the SerializedProperty cache and PrintSingleton, line 4115
-//   PhysBoneEditor.ToolModes.cs         -> rulesAuthentication and the [SpecialName] mode accessors, lines 2914-3006
-//   PhysBoneEditor.MembershipStates.cs  -> MoveSingleton / PublishSingleton, lines 3967-4073
-//   PhysBoneEditor.EndpointEditing.cs   -> SearchSingleton / LoginSingleton / PatchSingleton, lines 4301-4361
-//   PhysBoneEditor.GizmoSettings.cs     -> InterruptSingleton, line 4210
+//   PhysBoneEditor.PropertyBinding.cs   nested AlgoAuthentication (decompiled line 2360)
+//   PhysBoneEditor.Properties.cs        the SerializedProperty cache and PrintSingleton (line 4115)
+//   PhysBoneEditor.ToolModes.cs         rulesAuthentication and the [SpecialName] mode accessors
+//                                       (lines 2914-3006)
+//   PhysBoneEditor.MembershipStates.cs  MoveSingleton / PublishSingleton (lines 3967-4073)
+//   PhysBoneEditor.EndpointEditing.cs   SearchSingleton / LoginSingleton / PatchSingleton
+//                                       (lines 4301-4361)
+//   PhysBoneEditor.GizmoSettings.cs     InterruptSingleton (line 4210)
 //
 // Members in this file:
 //
-//   _MessageIdentifier -> selectedPhysBones, line 2776
-//   _PolicyIdentifier -> scenePhysBones, line 2778
-//   m_MapperIdentifier -> sceneColliders, line 2780
-//   mappingIdentifier -> candidateTransforms, line 2782
-//   m_QueueIdentifier -> membershipStates, in PhysBoneEditor.MembershipStates.cs, line 2784
-//   ChangeSingleton() -> TargetObject(), line 4363
+//   _MessageIdentifier -> selectedPhysBones, line 2980
+//   _PolicyIdentifier -> scenePhysBones, line 2982
+//   m_MapperIdentifier -> sceneColliders, line 2984
+//   mappingIdentifier -> candidateTransforms, line 2986
+//   m_QueueIdentifier -> membershipStates, line 2988, in PhysBoneEditor.MembershipStates.cs
+//   ChangeSingleton() -> TargetObject(), line 4567
 //
 // LIFTED OUT OF ADOverhaul. The decompiled type is `private sealed class PhysBoneEditor` nested
 // inside the static `ADOverhaul` class, which is not ported. It is lifted here to a top-level
@@ -87,6 +89,13 @@
 // into the lambda cache. This is the protector's activation gate, identical in shape to the
 // remnants removed from PhysBoneParameter and ObfuscationMarker, and it is deliberately not
 // reproduced.
+//
+// Audit status: PARTIAL -- the six MAP entries above were re-checked against decompiled/ and their
+// line numbers corrected (the field block is at 2980-2988 and ChangeSingleton at 4567 in the
+// post-561e9ec snapshot, not 2776-2784/4363). The sibling-partial list and the omitted-member
+// table still carry pre-re-snapshot numbers and were not re-checked; the numbers each
+// sibling partial states in its own header are the ones kept current. The omitted-member table
+// above was likewise not re-checked.
 
 using UnityEditor;
 using UnityEngine;

@@ -3,12 +3,13 @@
 // Ported region: the CachedIcon class, lines 1148-1262 of the current snapshot. Line numbers move
 // with the snapshot; the member names below are the durable reference.
 //
-//   GetContent()   -> content (property), line 1161
-//   GetTexture()   -> texture (property), line 1174
+//   GetContent()   -> Content (property), line 1161
+//   GetTexture()   -> Texture (property), line 1174
 //   ResolveTexture -> ResolveTexture,     line 1204
 //   LoadFromCache  -> LoadFromCache,      line 1230
 //   SaveToCache    -> SaveToCache,        line 1252
-//   ToBytes/ToInts -> not ported; see the note on the cache helpers below.
+//   ToBytes -> NOT PORTED, line 1209 -- the same int[]-to-byte[] loop EditorGuiUtils.LoadTextureFromSession already carries
+//   ToInts  -> NOT PORTED, line 1219 -- the same byte[]-to-int[] loop EditorGuiUtils.SaveTextureToSession already carries
 //
 // The decompiled class is nested inside the static class ADOEditorUtility. ADOEditorUtility is not
 // ported yet, so this is lifted to a top-level type in the same namespace, as PhysBoneParameter
@@ -28,6 +29,10 @@
 // DreadScripts.Common.EditorGuiUtils.SaveTextureToSession / LoadTextureFromSession -- same
 // SessionState keys, same int-array encoding -- so they forward to those rather than carrying a
 // third copy of the conversion loops, and its private ToBytes/ToInts are dropped as a result.
+//
+// Audit status: PARTIAL -- every MAP entry above was re-checked against
+// decompiled/ADOverhaul2022/.../ADOEditorUtility.cs lines 1148-1262 (names, line numbers and the
+// constructor's null-texture path). The 2019 build's copy of the type was not re-diffed.
 
 using DreadScripts.Common;
 using UnityEditor;

@@ -10,7 +10,7 @@
 //   static ConcatPredicate  -> Add180(Vector3, Axis),        line 3116
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: VERIFIED against decompiled/
 //
 // Small per-component Vector helpers. The Axis-taking pair exist for the mirror/flip tools: Negate
 // mirrors a position or scale across the chosen axes, and Add180 does the equivalent to a Euler
