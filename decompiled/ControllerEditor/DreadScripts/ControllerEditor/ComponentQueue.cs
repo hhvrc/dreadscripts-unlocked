@@ -61,7 +61,7 @@ internal class ComponentQueue
 
 		internal bool ConcatPage()
 		{
-			int num = expressionProperty.propertyNames.FindResolver((string s) => s == m_SystemProperty);
+			int num = expressionProperty.propertyNames.FindIndex((string s) => s == m_SystemProperty);
 			if (num < 0)
 			{
 				return false;
@@ -267,12 +267,12 @@ internal class ComponentQueue
 	[SpecialName]
 	private bool IsToggleable()
 	{
-		return toggleableTypes.Any((Type i) => targetType.InstantiateResolver(i));
+		return toggleableTypes.Any((Type i) => targetType.Is(i));
 	}
 
 	[CompilerGenerated]
 	private bool IsToggleable(Type i)
 	{
-		return targetType.InstantiateResolver(i);
+		return targetType.Is(i);
 	}
 }

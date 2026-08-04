@@ -2596,6 +2596,210 @@ internal sealed class ADOverhaul
 		}
 
 		[CompilerGenerated]
+		private sealed class _003C_003Ec__DisplayClass108_0
+		{
+			public PhysBoneEditor m_InfoAuthentication;
+
+			public bool _ModelAuthentication;
+
+			internal void InstantiateParams()
+			{
+				using (new GUILayout.HorizontalScope())
+				{
+					EditorGUILayout.PropertyField(producerIdentifier, new GUIContent("Root"));
+					if (GUILayout.Button(new GUIContent("S", "Set to Self"), GUILayout.Width(18f), GUILayout.Height(18f)))
+					{
+						UnityEngine.Object[] targets = m_InfoAuthentication.targets;
+						for (int i = 0; i < targets.Length; i++)
+						{
+							VRCPhysBone vRCPhysBone = targets[i] as VRCPhysBone;
+							if ((bool)vRCPhysBone)
+							{
+								SerializedObject serializedObject = new SerializedObject(vRCPhysBone);
+								serializedObject.FindProperty("rootTransform").objectReferenceValue = vRCPhysBone.transform;
+								serializedObject.ApplyModifiedProperties();
+							}
+						}
+					}
+				}
+				ResetAccount(SearchConfiguration(_WriterIdentifier, ResolveAccount()));
+				EditorGUILayout.PropertyField(classIdentifier);
+				using (new GUILayout.VerticalScope("box"))
+				{
+					using (new GUILayout.HorizontalScope())
+					{
+						GUILayout.Space(12f);
+						m_TemplateIdentifier.isExpanded = EditorGUILayout.Foldout(m_TemplateIdentifier.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
+						GUILayout.FlexibleSpace();
+						FindAccount(LoginConfiguration(ConnectAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+						EditorGUI.BeginChangeCheck();
+						ExcludeAccount(LoginConfiguration(FlushAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+						if (EditorGUI.EndChangeCheck())
+						{
+							PublishSingleton();
+						}
+					}
+					if (m_TemplateIdentifier.isExpanded)
+					{
+						EditorGUI.indentLevel++;
+						ADOEditorUtility.OrderStatus<Transform>(m_TemplateIdentifier);
+						EditorGUI.indentLevel--;
+					}
+				}
+			}
+
+			internal void RestartParams()
+			{
+				PostSingleton(6);
+				if (_ModelAuthentication)
+				{
+					StopConfiguration(consumerAuthentication, m_UtilsAuthentication);
+				}
+				using (new GUILayout.VerticalScope(GUI.skin.box))
+				{
+					using (new GUILayout.HorizontalScope())
+					{
+						GUILayout.Space(12f);
+						m_SingletonAuthentication.isExpanded = EditorGUILayout.Foldout(m_SingletonAuthentication.isExpanded, "Colliders", toggleOnLabelClick: true);
+						GUILayout.FlexibleSpace();
+						RunParams(LoginConfiguration(RevertAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+						EditorGUI.BeginChangeCheck();
+						CreateAccount(LoginConfiguration(ValidateAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+						if (EditorGUI.EndChangeCheck())
+						{
+							MoveSingleton();
+						}
+					}
+					if (m_SingletonAuthentication.isExpanded)
+					{
+						EditorGUI.indentLevel++;
+						ADOEditorUtility.OrderStatus<VRCPhysBoneCollider>(m_SingletonAuthentication);
+						EditorGUI.indentLevel--;
+					}
+				}
+			}
+
+			internal void ManageParams()
+			{
+				if (_ModelAuthentication)
+				{
+					while (true)
+					{
+						StopConfiguration(comparatorAuthentication, _ProductAuthentication);
+						StopConfiguration(iteratorAuthentication, m_PredicateAuthentication);
+					}
+				}
+				EditorGUILayout.PropertyField(_CollectionAuthentication);
+				EditorGUILayout.PropertyField(interceptorAuthentication);
+			}
+
+			internal void RateParams()
+			{
+				EditorGUILayout.PropertyField(_ValueIdentifier);
+				EditorGUILayout.PropertyField(resolverAuthentication);
+				EditorGUILayout.PropertyField(_FilterAuthentication);
+				PushConfiguration();
+				using (new GUILayout.HorizontalScope())
+				{
+					if ((bool)(UnityEngine.Object)(object)m_Predicate)
+					{
+						List<string> list = new List<string>();
+						string[] registry = m_Registry;
+						foreach (string text in registry)
+						{
+							int num = text.LastIndexOf("_IsGrabbed", StringComparison.Ordinal);
+							if (num < 0)
+							{
+								num = text.LastIndexOf("_Angle", StringComparison.Ordinal);
+							}
+							if (num < 0)
+							{
+								num = text.LastIndexOf("_Stretch", StringComparison.Ordinal);
+							}
+							if (num >= 0)
+							{
+								list.Add(text);
+							}
+						}
+						string[] proc = list.Select(_003C_003Ec.m_ManagerAuthentication.SetParams).Distinct().ToArray();
+						string stringValue = tagAuthentication.stringValue;
+						using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
+						{
+							stringValue = ADOEditorUtility.PopStatus("Parameter", stringValue, proc);
+							if (changeCheckScope.changed)
+							{
+								tagAuthentication.stringValue = stringValue;
+							}
+						}
+						using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Predicate == null || string.IsNullOrEmpty(tagAuthentication.stringValue)))
+						{
+							if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().m_DispatcherSerializer))
+							{
+								GenericMenu genericMenu = new GenericMenu();
+								using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Predicate.baseAnimationLayers.Concat(m_Predicate.specialAnimationLayers).GetEnumerator())
+								{
+									while (enumerator.MoveNext())
+									{
+										_003C_003Ec__DisplayClass108_1 _003C_003Ec__DisplayClass108_ = new _003C_003Ec__DisplayClass108_1();
+										_003C_003Ec__DisplayClass108_.configAuthentication = enumerator.Current;
+										_003C_003Ec__DisplayClass108_.m_MockAuthentication = _003C_003Ec__DisplayClass108_.configAuthentication.animatorController as UnityEditor.Animations.AnimatorController;
+										if (_003C_003Ec__DisplayClass108_.m_MockAuthentication == null)
+										{
+											continue;
+										}
+										UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.m_MockAuthentication.parameters;
+										ADOEditorUtility.PhysBoneParameter[] visitorSerializer = ADOEditorUtility.m_VisitorSerializer;
+										for (int i = 0; i < visitorSerializer.Length; i++)
+										{
+											_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
+											_003C_003Ec__DisplayClass108_2.advisorAuthentication = _003C_003Ec__DisplayClass108_;
+											_003C_003Ec__DisplayClass108_2._StateAuthentication = visitorSerializer[i];
+											_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.suffix;
+											if (!parameters.Any(_003C_003Ec__DisplayClass108_2.PatchImporter))
+											{
+												genericMenu.AddItem(new GUIContent($"{_003C_003Ec__DisplayClass108_2.advisorAuthentication.configAuthentication.type}/{_003C_003Ec__DisplayClass108_2._FieldAuthentication}"), on: false, _003C_003Ec__DisplayClass108_2.CheckImporter);
+											}
+										}
+									}
+								}
+								genericMenu.ShowAsContext();
+							}
+						}
+					}
+					else
+					{
+						EditorGUILayout.PropertyField(tagAuthentication);
+					}
+				}
+				VRCPhysBone vRCPhysBone = PublishImporter((Editor)m_InfoAuthentication) as VRCPhysBone;
+				if (!(vRCPhysBone != null) || !Application.isPlaying || m_InfoAuthentication.serializedObject.isEditingMultipleObjects || string.IsNullOrEmpty(vRCPhysBone.parameter))
+				{
+					return;
+				}
+				using (new EditorGUILayout.HorizontalScope())
+				{
+					GUILayoutUtils.LoginIterator(m_CodeIdentifier, null);
+					foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility.m_VisitorSerializer.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
+					{
+						using (new EditorGUILayout.VerticalScope())
+						{
+							GUILayout.Label(item.suffix, EditorStyles.boldLabel, GUILayout.ExpandWidth(expand: true));
+							GUILayoutUtils.PrepareIterator();
+							GUILayout.Label(item.GetValueString(vRCPhysBone));
+						}
+						GUILayoutUtils.StopIterator();
+					}
+					GUILayoutUtils.CallIterator();
+				}
+			}
+
+			static UnityEngine.Object PublishImporter(Editor editor_0)
+			{
+				return editor_0.target;
+			}
+		}
+
+		[CompilerGenerated]
 		private sealed class _003C_003Ec__DisplayClass108_1
 		{
 			public VRCAvatarDescriptor.CustomAnimLayer configAuthentication;
@@ -3273,7 +3477,7 @@ internal sealed class ADOverhaul
 							EditorGUILayout.PropertyField(tagAuthentication);
 						}
 					}
-					VRCPhysBone vRCPhysBone = base.target as VRCPhysBone;
+					VRCPhysBone vRCPhysBone = _003C_003Ec__DisplayClass108_0.PublishImporter((Editor)this) as VRCPhysBone;
 					if (vRCPhysBone != null && Application.isPlaying && !base.serializedObject.isEditingMultipleObjects && !string.IsNullOrEmpty(vRCPhysBone.parameter))
 					{
 						using (new EditorGUILayout.HorizontalScope())
