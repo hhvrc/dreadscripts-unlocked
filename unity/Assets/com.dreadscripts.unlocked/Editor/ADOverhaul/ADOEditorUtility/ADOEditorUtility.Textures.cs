@@ -3,6 +3,9 @@
 //   static field m_ThreadSerializer -> solidColorTexture, line 2108
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and member
 // names are the durable reference.
+// Audit status: VERIFIED against export -- the body was re-checked statement by statement against
+// lines 3902-3916 on 2026-08-04 and matches, including the texture format, the filter mode and the
+// aniso level.
 //
 // 2019 vs 2022: identical in both (2019 line 4004, under a different obfuscated name).
 // No behavioural divergence.

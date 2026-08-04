@@ -8,6 +8,9 @@
 //   static _FilterSerializer      -> accentColor,          line 2074
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
+// Audit status: VERIFIED against export -- all seven literals and their declaration order were
+// re-checked against lines 2062-2074 on 2026-08-04 and match. Accessibility matches too (plain
+// `internal static Color`, not readonly, as shipped).
 //
 // 2019 vs 2022: the same seven colours in the same order with the same literals (2019 lines
 // 2064-2076, under different obfuscated names). No behavioural divergence.

@@ -5,6 +5,12 @@
 //   static field factorySerializer -> contentsInstance,  line 2076
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
+// Audit status: VERIFIED against export -- all 35 fields, their icon names, their labels and their
+// tooltips were re-checked field by field against lines 584-665 on 2026-08-04, including the six
+// tooltips the shipped constructor assigned afterwards, and match.
+// One deliberate deviation, recorded here rather than left implicit: the backing field
+// (factorySerializer) is `internal` in the shipped build and `private` here. Nothing but the
+// accessor reads it in either assembly.
 //
 // 2019 vs 2022: the two builds are identical here apart from obfuscated member names. No
 // behavioural divergence, so nothing needed choosing between them.
