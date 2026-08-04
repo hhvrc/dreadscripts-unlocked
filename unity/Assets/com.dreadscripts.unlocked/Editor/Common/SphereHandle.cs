@@ -127,11 +127,12 @@ namespace DreadScripts.Common
         /// </param>
         /// <remarks>
         /// Both products carry this as a static helper on their editor-utility class (FindStatus in
-        /// ADOverhaul, CreateQueue in ControllerEditor). It is duplicated here as a private member
-        /// so this file has no dependency on a utility region that is not ported yet; it should be
-        /// replaced by the shared helper once that region lands.
+        /// ADOverhaul, CreateQueue in ControllerEditor), so this is the shared copy rather than a
+        /// third one. It was private while the utility regions were unported; ADOEditorUtility has
+        /// since landed and deliberately did not port FindStatus again, and the ADOverhaul root
+        /// class calls it directly in three places, so it is internal now.
         /// </remarks>
-        private static void DrawSceneLabel(string text, Vector3 worldPosition, float offset = 0f, GUIStyle style = null)
+        internal static void DrawSceneLabel(string text, Vector3 worldPosition, float offset = 0f, GUIStyle style = null)
         {
             if (style == null)
             {
