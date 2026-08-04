@@ -10,7 +10,8 @@
 //   static ConnectPredicate     -> CopyParameters,      line 3402
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
+// since (-216 code lines); needs re-checking against export/ before the claim is restored.
 //
 // LAYER TAGS. The tool stores per-layer metadata inside the animator asset itself, because
 // AnimatorControllerLayer has nowhere to put custom data. A tag is an any-state transition that is

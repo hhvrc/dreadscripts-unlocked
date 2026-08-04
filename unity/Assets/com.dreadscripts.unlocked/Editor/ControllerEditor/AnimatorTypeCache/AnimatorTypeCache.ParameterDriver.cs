@@ -21,7 +21,8 @@
 // Every Get*/Set* pair above is marked [SpecialName] in the shipped assembly - they are property
 // accessors whose property definitions the obfuscator stripped, and they are restored as properties
 // here.
-// Audit status: VERIFIED against export member-by-member (2026-08-04).
+// Audit status: UNAUDITED -- was VERIFIED in a1311ff, but the code has changed
+// since (+0 code lines); needs re-checking against export/ before the claim is restored.
 // DEOBF-BUG(resolved): ParameterEntry.Source's setter deviates from export/, which renders it as
 // an infinite `while (!DeferApply)` loop. The correct form was recovered by tracing the original
 // obfuscated IL, not guessed -- see the comment at the setter. export/ will keep showing the loop

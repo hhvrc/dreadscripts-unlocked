@@ -4,7 +4,8 @@
 //   static PostQueue            -> GetTextWidth(Enum, GUIStyle),      line 5616
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
+// since (-11 code lines); needs re-checking against export/ before the claim is restored.
 //
 // PushResolver (an extension on string) and SetupQueue (a plain static taking a string) have
 // identical bodies and cannot both exist here -- as C# members they would have the same signature.

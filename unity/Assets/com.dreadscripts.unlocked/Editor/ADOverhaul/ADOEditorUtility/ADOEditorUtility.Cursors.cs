@@ -10,7 +10,8 @@
 //   static InsertStatus          -> AddCursorRect,              line 3214
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- every statement below was transcribed from the region
+// Audit status: UNAUDITED -- was VERIFIED in ec740dc, but the code has changed
+// since (+0 code lines); needs re-checking against export/ before the claim is restored.
 // above and cross-checked against the ControllerEditor twin named next.
 //
 // 2019 vs 2022: the same nine members with the same bodies (2019 lines 2054, 2056, 2058, 2060,

@@ -4,9 +4,9 @@
 // ADOverhaulWindow makes into the outer ADOverhaul class, which the shipped build could write
 // unqualified because the window was a private nested type:
 //
-//   OnEnable              (decompiled line 162) -> PrintConfiguration(ref m_Predicate, ref
+//   OnEnable -> PrintConfiguration(ref m_Predicate, ref, line 162
 //                                                  _Collection, LogoutConfiguration)
-//   DrawEasyDynamicsGUI   (decompiled line 89)  -> PushConfiguration()
+//   DrawEasyDynamicsGUI -> PushConfiguration(), line 89
 //
 // Both call targets are ported -- RefreshSceneAvatars in ADOverhaul.AvatarSelection.cs and
 // RefreshAvatarTables in ADOverhaul.Lifecycle.cs, DrawTargetAvatarSelector in

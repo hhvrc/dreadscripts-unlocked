@@ -8,7 +8,8 @@
 //   static ViewList    -> ReadPixelsScaled,      line 7404
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in 2b1a719, but the code has changed
+// since (+69 code lines); needs re-checking against export/ before the claim is restored.
 //
 // Complete: every texture helper in the outer class body is now here. CachedIcon (line 7381), which
 // also produces a texture, lives with the icon table it feeds in EditorUtils.Contents.cs.

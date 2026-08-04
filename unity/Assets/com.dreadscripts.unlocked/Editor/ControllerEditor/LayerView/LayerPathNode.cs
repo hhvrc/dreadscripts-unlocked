@@ -27,9 +27,9 @@
 // The decompiled methods read two user settings through statics on the enclosing ControllerEditor
 // class, which is not ported:
 //
-//   PushInitializer()     (line 16159) -> EditorSettings.GetInstance().categoryDelimiter, default "/"
-//   ValidateInitializer() (line 16113) -> EditorSettings.GetInstance().categoryBaseName,  default "Base"
-//   QueryMapper(task)     (line 16923) -> task.Split(new[] { PushInitializer() }, StringSplitOptions.None)
+//   PushInitializer() -> EditorSettings.GetInstance().categoryDelimiter, default "/", line 16159
+//   ValidateInitializer() -> EditorSettings.GetInstance().categoryBaseName,  default "Base", line 16113
+//   QueryMapper(task) -> task.Split(new[] { PushInitializer() }, StringSplitOptions.None), line 16923
 //
 // EditorSettings (line 437) is not ported either, so every method of this type except AddEntry and
 // the constructor depends on unported code. Rather than defer nine tenths of the type, the two

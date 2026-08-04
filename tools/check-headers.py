@@ -23,9 +23,12 @@ MAP_HERE = re.compile(r'^//\s{3}(?P<d>.+?)\s*->\s*(?P<p>.+?),\s*line (?P<n>\d+)\
 MAP_RANGE = re.compile(r'^//\s{3}(?P<d>.+?)\s*->\s*(?P<p>.+?),\s*lines (?P<n>\d+)-(?P<m>\d+)\s*$')
 MAP_ELSEWHERE = re.compile(r'^//\s{3}(?P<d>.+?)\s*->\s*(?P<p>.+?),\s*line (?P<n>\d+),\s*in (?P<f>\S+\.cs)\s*$')
 MAP_UNPORTED = re.compile(r'^//\s{3}(?P<d>.+?)\s*->\s*NOT PORTED,\s*line (?P<n>\d+)\s*--\s*(?P<why>.+)$')
-# A sub-entry: a field of the member named by the preceding top-level entry. Five
-# spaces of indent, and no line number of its own.
-MAP_SUB = re.compile(r'^//\s{5,}(?P<d>[^->]+?)\s*->\s*(?P<p>.+?)\s*$')
+# A sub-entry: a field or parameter belonging to whatever introduced the block.
+# Identified by carrying no line number, not by indent.
+MAP_SUB = re.compile(r'^//\s{3,}(?P<d>[^->]+?)\s*->\s*(?P<p>.+?)\s*$')
+# A sub-entry run must be introduced by a top-level entry or a prose line ending
+# in ':'; otherwise it is indistinguishable from an entry missing its line number.
+INTRODUCER = re.compile(r':\s*$')
 
 ARROW = re.compile(r'^//\s.*->')
 SECTION = re.compile(r'^//\s*(?:=+\s*)?(PARTIAL PORT|DELIBERATE DEVIATION|SHIPPED BUG'
@@ -92,6 +95,7 @@ def check(root):
             source = None
             in_section = False
             saw_audit = False
+            sub_ok = False          # is a sub-entry run currently legal here?
 
             for i, line in enumerate(head):
                 m = SRC.match(line)
@@ -104,6 +108,10 @@ def check(root):
                     in_section = True
 
                 if not ARROW.match(line):
+                    if INTRODUCER.search(line):
+                        sub_ok = True
+                    elif line.strip() not in ('//', ''):
+                        sub_ok = False
                     continue
 
                 for rx, kind in ((MAP_ELSEWHERE, 'elsewhere'), (MAP_UNPORTED, 'unported'),
@@ -113,6 +121,11 @@ def check(root):
                         stats['map:' + kind] += 1
                         if source and kind != 'sub':
                             claims[(source, int(g.group('n')))].append((path, g.group('d')))
+                        if kind == 'sub' and not sub_ok:
+                            errors[path].append(
+                                f'line {i + 1}: sub-entry (no line number) with no introducing '
+                                f'entry or "...:" line -> {line.strip()[:60]}')
+                        sub_ok = True
                         if kind in ('here', 'range') and not declares(body, g.group('p'), g.group('d')):
                             errors[path].append(
                                 f'line {i + 1}: header claims "{g.group("p")}" but the file does not declare it')

@@ -8,7 +8,8 @@
 //   class <>c__DisplayClass164_0/_1 -> dissolved into MapTransitionTargets' lambdas, lines 1920/1954
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
+// since (-153 code lines); needs re-checking against export/ before the claim is restored.
 //
 // Walkers over an animator's graph, plus the few graph edits that do not fit anywhere else.
 //

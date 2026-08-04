@@ -12,7 +12,8 @@
 //   static EnableResolver         -> BlendOver,      line 2398
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in 2b1a719, but the code has changed
+// since (+19 code lines); needs re-checking against export/ before the claim is restored.
 //
 // The four status colours are named for the role their call sites give them, not for the hue:
 //   validColor / warningColor are the true/false pair of the valid-vs-over-budget counters

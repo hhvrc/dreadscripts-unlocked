@@ -11,7 +11,8 @@
 //   static CheckRules      -> Args,         line 5322
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in d3b7ecd, but the code has changed
+// since (+49 code lines); needs re-checking against export/ before the claim is restored.
 //
 // Small IEnumerable<T> helpers, all of them unique to this partial.
 //

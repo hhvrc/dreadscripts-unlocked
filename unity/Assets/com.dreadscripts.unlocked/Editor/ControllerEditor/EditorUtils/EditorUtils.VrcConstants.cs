@@ -2,7 +2,8 @@
 //   static interpreterProcessor -> vrcCollisionTags,     line 2245
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- both tables transcribed entry for entry, in order.
+// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
+// since (-7 code lines); needs re-checking against export/ before the claim is restored.
 //
 // Two literal tables of VRChat-defined names. They are transcribed rather than read from the SDK
 // because the SDK does not expose either as a list: the built-in parameters exist only as rows in

@@ -15,7 +15,8 @@
 //   static DefineQueue  -> ClickArea,                           line 5790
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export -- the region is byte-identical between the two snapshots
+// Audit status: UNAUDITED -- was VERIFIED in 0f4d48c, but the code has changed
+// since (+57 code lines); needs re-checking against export/ before the claim is restored.
 // and every statement below was transcribed from it.
 //
 // The decompiled class carries a separate overload for each combination of (content type, style

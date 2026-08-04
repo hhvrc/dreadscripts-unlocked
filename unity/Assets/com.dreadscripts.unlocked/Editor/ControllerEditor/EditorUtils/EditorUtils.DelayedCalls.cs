@@ -4,7 +4,8 @@
 //   static RestartRules          -> RunHierarchyDelayedCalls, line 4487
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
+// since (-31 code lines); needs re-checking against export/ before the claim is restored.
 //
 // ControllerEditor's copy of the deferred-work queue. The DelayCall half is the same code as
 // ADOverhaul's ADOEditorUtility.DelayedCalls.cs -- see that file for why the Remove/Combine pair on

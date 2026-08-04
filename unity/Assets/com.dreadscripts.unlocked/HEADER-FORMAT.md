@@ -31,15 +31,20 @@ Everything between is optional but must match one of the forms below.
 ## MAP entries
 
 One line per decompiled member the file is responsible for. Five forms, and no
-others. Top-level entries are indented three spaces; sub-entries five.
+others. All are indented three spaces.
 
 ```
 //   <decompiled name> -> <ported name>, line <N>
 //   <decompiled name> -> <ported name>, lines <N>-<M>
 //   <decompiled name> -> <ported name>, line <N>, in <file.cs>
 //   <decompiled name> -> NOT PORTED, line <N> -- <reason>
-//     <decompiled name> -> <ported name>
+//   <decompiled name> -> <ported name>
 ```
+
+What separates the fifth form from the first four is that it carries **no line
+number**. That is the whole rule: an entry with a line number stands on its own
+and is checked against `decompiled/`; an entry without one is a sub-entry, and
+belongs to whatever introduced the block it sits in.
 
 - **`line <N>`** — the member is declared in *this* file. The checker verifies
   that a member of that name actually exists here; a header claiming a member the
@@ -51,10 +56,18 @@ others. Top-level entries are indented three spaces; sub-entries five.
 - **`NOT PORTED`** — deliberately absent. The reason is required. Use this rather
   than silently omitting the member, so that "unported" and "overlooked" stay
   distinguishable.
-- **five-space indent, no line number** — a sub-entry: a field or local of the
-  member named by the preceding top-level entry. A nested class gets one entry
-  with its line range, then one sub-entry per field it carries. Sub-entries have
-  no line of their own and are not checked against `decompiled/`.
+- **no line number** — a sub-entry: a field, local or parameter belonging to
+  whatever the block is about. A nested class gets one entry with its line range
+  followed by a sub-entry per field; a recovered parameter list gets a paragraph
+  ending in `:` followed by a sub-entry per parameter. Sub-entries name nothing
+  the checker can locate in `decompiled/`, so they are not checked — which is
+  also why they must not carry a line number. If a member deserves a line number,
+  it is a top-level entry.
+
+  A sub-entry run must be introduced by either a top-level entry or a prose line
+  ending in `:`. A stray arrow line with no line number and no introducer is an
+  error, because that is indistinguishable from a top-level entry whose line
+  number was forgotten.
 
 Two shorthands are allowed in the `<ported name>` column:
 

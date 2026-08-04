@@ -11,7 +11,8 @@
 //   static ConcatRules        -> IsNull,                  line 4422
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against export
+// Audit status: UNAUDITED -- was VERIFIED in 2b1c7ff, but the code has changed
+// since (-34 code lines); needs re-checking against export/ before the claim is restored.
 //
 // Everything here is about the difference between a Unity object that IS an asset file and one
 // that merely lives inside one. AnimatorControllers, blend trees, state machines, states and

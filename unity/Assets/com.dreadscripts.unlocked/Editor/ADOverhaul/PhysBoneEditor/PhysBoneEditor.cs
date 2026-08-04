@@ -16,12 +16,12 @@
 //
 // Members in this file:
 //
-//   _MessageIdentifier (line 2776) -> selectedPhysBones
-//   _PolicyIdentifier  (line 2778) -> scenePhysBones
-//   m_MapperIdentifier (line 2780) -> sceneColliders
-//   mappingIdentifier  (line 2782) -> candidateTransforms
-//   m_QueueIdentifier  (line 2784) -> membershipStates, in PhysBoneEditor.MembershipStates.cs
-//   ChangeSingleton()  (line 4363) -> TargetObject()
+//   _MessageIdentifier -> selectedPhysBones, line 2776
+//   _PolicyIdentifier -> scenePhysBones, line 2778
+//   m_MapperIdentifier -> sceneColliders, line 2780
+//   mappingIdentifier -> candidateTransforms, line 2782
+//   m_QueueIdentifier -> membershipStates, in PhysBoneEditor.MembershipStates.cs, line 2784
+//   ChangeSingleton() -> TargetObject(), line 4363
 //
 // LIFTED OUT OF ADOverhaul. The decompiled type is `private sealed class PhysBoneEditor` nested
 // inside the static `ADOverhaul` class, which is not ported. It is lifted here to a top-level
