@@ -13,7 +13,7 @@ namespace DreadScripts.ADOverhaul
     /// </remarks>
     internal sealed class ExclusiveSelectionState
     {
-        private bool[] toggles;
+        private bool[] _toggles;
 
         /// <summary>Index of the selected toggle, or -1 when nothing is selected.</summary>
         internal int activeIndex = -1;
@@ -29,9 +29,9 @@ namespace DreadScripts.ADOverhaul
         /// </summary>
         internal void Resize(int count)
         {
-            if (toggles == null || toggles.Length != count)
+            if (_toggles == null || _toggles.Length != count)
             {
-                toggles = new bool[count];
+                _toggles = new bool[count];
             }
 
             // The shipped build tested activeIndex > 0 here, so a selection on the first toggle was
@@ -39,13 +39,13 @@ namespace DreadScripts.ADOverhaul
             // allocated array had it off.
             if (activeIndex >= 0)
             {
-                if (activeIndex >= toggles.Length)
+                if (activeIndex >= _toggles.Length)
                 {
                     activeIndex = -1;
                 }
                 else
                 {
-                    toggles[activeIndex] = true;
+                    _toggles[activeIndex] = true;
                 }
             }
         }
@@ -53,20 +53,20 @@ namespace DreadScripts.ADOverhaul
         /// <summary>Selects <paramref name="index"/>, deselecting whatever was selected before.</summary>
         internal void Select(int index)
         {
-            if (index < 0 || index >= toggles.Length || activeIndex == index)
+            if (index < 0 || index >= _toggles.Length || activeIndex == index)
             {
                 return;
             }
 
             Clear();
             activeIndex = index;
-            toggles[index] = true;
+            _toggles[index] = true;
         }
 
         /// <summary>Selects or deselects <paramref name="index"/>.</summary>
         internal void SetSelected(int index, bool selected)
         {
-            if (index < 0 || index >= toggles.Length)
+            if (index < 0 || index >= _toggles.Length)
             {
                 return;
             }
@@ -86,7 +86,7 @@ namespace DreadScripts.ADOverhaul
         {
             if (activeIndex >= 0)
             {
-                toggles[activeIndex] = false;
+                _toggles[activeIndex] = false;
                 activeIndex = -1;
             }
         }

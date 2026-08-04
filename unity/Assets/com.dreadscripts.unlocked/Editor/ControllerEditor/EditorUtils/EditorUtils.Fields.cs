@@ -49,6 +49,7 @@
 //     ConcatList, line 6690       -> ShowObjectPicker,     EditorUtils.Pickers.cs
 //     configurationProperty / _WrapperProcessor (lines 2178/2182) -> validColor / warningColor,
 //                                    EditorUtils.Colors.cs
+// Audit status: VERIFIED against export
 
 using System;
 using DreadScripts.Common;

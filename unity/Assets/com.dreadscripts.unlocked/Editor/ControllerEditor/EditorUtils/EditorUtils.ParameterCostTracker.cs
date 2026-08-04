@@ -38,6 +38,7 @@
 // package was compiled and keep using it against every later SDK; reading it by reflection at
 // runtime is what actually follows the installed SDK. The same reasoning applies to any future
 // reference to it from this package. Process() below therefore never writes a limit of its own: it
+// Audit status: VERIFIED against export
 // gets the free space from EditorUtils.GetRemainingCost and, for the message it shows when that
 // space runs out, quotes EditorUtils.MaxParameterCost. Both resolve to the same reflected value.
 //

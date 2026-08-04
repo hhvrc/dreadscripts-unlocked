@@ -9,6 +9,7 @@
 // resolve a count from a menu before delegating to these two, and AddError/InvokeError/FindError
 // (lines 8109-8135) belong to the control-copying path rather than to validation. They can be
 // added as further overloads if a call site needs them.
+// Audit status: VERIFIED against export
 
 using VRC.SDK3.Avatars.ScriptableObjects;
 

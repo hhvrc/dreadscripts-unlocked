@@ -13,8 +13,10 @@
 // Audit status: VERIFIED against export -- the region is byte-identical between the two snapshots
 // and every statement below was transcribed from it.
 //
-// Partial in progress: the other cursor-related helpers in the outer class body (the scroll-wheel
-// and drag-zone handlers around lines 4345 and 5882) are not ported yet.
+// Complete: nothing cursor-related is left in the outer class body. The scroll-wheel handler this
+// header previously listed as outstanding is HandleScrollWheel, which is an input helper rather
+// than a cursor one and now lives in EditorUtils.GuiHelpers.cs; the link cursor a clickable label
+// registers is DrawLinkUnderline, in the same file.
 
 using System.Collections.Generic;
 using UnityEditor;

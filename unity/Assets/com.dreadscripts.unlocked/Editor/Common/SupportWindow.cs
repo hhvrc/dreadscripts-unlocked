@@ -54,6 +54,16 @@ namespace DreadScripts.Common
     /// </summary>
     internal class SupportWindow : EditorWindow
     {
+        /*
+         * <namecolor=#9B9DFB><prefix=<image=https://i.imgur.com/lFaZH7e.png>><bgimage=https://i.imgur.com/0j03vZ3.png><bgtype=scaletofill><bordercolor=#9B9DFB><tooltip=I love mah waif><onclick=https://zioketski.gumroad.com/>
+         * <name=JelleJurre><namecolor=#FFC0CB><prefix=<color=#FFC0CB>â¤ï¸Ž</color>><suffix=<color=#FFC0CB>â¤ï¸Ž</color>><bordercolor=#FFC0CB><tooltip=Just because I'm a programmer doens't mean I'm a femboy. I mean, I am a femboy, but not because I'm a programmer!><onclick=https://jellejurre.dev/>
+         * <name=ScarlettKat><namecolor=#FFCC13><prefix=<image=https://i.imgur.com/9o7yVIv.png>><suffix=<image=https://i.imgur.com/9o7yVIv.png>><bordercolor=#FFCC13>
+         * <name=GHOST XO><namecolor=#FFCC13><prefix=<image=https://i.imgur.com/9o7yVIv.png>><suffix=<image=https://i.imgur.com/9o7yVIv.png>><bordercolor=#FFCC13>
+         * <name=Buddy><namecolor=#FFCC13><prefix=<image=https://i.imgur.com/9o7yVIv.png>><suffix=<image=https://i.imgur.com/9o7yVIv.png>><bordercolor=#FFCC13>
+         * <name=Z><namecolor=#FFCC13><prefix=<image=https://i.imgur.com/9o7yVIv.png>><suffix=<image=https://i.imgur.com/9o7yVIv.png>><bordercolor=#FFCC13>
+         * <name=hfcRed><namecolor=#FFCC13><prefix=<image=https://i.imgur.com/9o7yVIv.png>><suffix=<image=https://i.imgur.com/9o7yVIv.png>><bordercolor=#FFCC13>
+         * <name=Somebody><namecolor=#FFCC13><prefix=<image=https://i.imgur.com/9o7yVIv.png>><suffix=<image=https://i.imgur.com/9o7yVIv.png>><bordercolor=#FFCC13>
+         */
         private const string SupportersUrl = "https://storage.googleapis.com/dreadscripts-c6b62.appspot.com/Dreadscripts/Supporters.txt";
         private const string KofiUrl = "https://ko-fi.com/dreadrith";
 

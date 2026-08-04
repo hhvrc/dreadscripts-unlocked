@@ -95,10 +95,7 @@ namespace DreadScripts.Common
         /// <inheritdoc cref="Draw(string, GUIStyle, GUILayoutOption[])"/>
         internal void Draw(GUIContent label, GUIStyle style = null, params GUILayoutOption[] options)
         {
-            if (style == null)
-            {
-                style = EditorStyles.toggle;
-            }
+            style ??= EditorStyles.toggle;
 
             value = EditorGUILayout.Toggle(label, value, style, options);
         }
@@ -127,8 +124,8 @@ namespace DreadScripts.Common
         /// <inheritdoc cref="DrawButton(string, string, bool, Color?, Color?, GUILayoutOption[])"/>
         internal void DrawButton(GUIContent content, GUIContent offContent = null, bool toolbarStyle = false, Color? onColor = null, Color? offColor = null, params GUILayoutOption[] options)
         {
-            onColor = onColor ?? GUI.backgroundColor;
-            offColor = offColor ?? GUI.backgroundColor;
+            onColor ??= GUI.backgroundColor;
+            offColor ??= GUI.backgroundColor;
 
             Color previousBackground = GUI.backgroundColor;
             GUI.backgroundColor = value ? onColor.Value : offColor.Value;
@@ -164,12 +161,9 @@ namespace DreadScripts.Common
 
         internal readonly Action onChange;
 
-        internal float value
+        internal float Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             set
             {
                 if (_value != value)
@@ -204,7 +198,7 @@ namespace DreadScripts.Common
                     style = EditorStyles.numberField;
                 }
 
-                value = EditorGUILayout.FloatField(label, value, style, options);
+                Value = EditorGUILayout.FloatField(label, Value, style, options);
                 if (showReset && DrawResetButton())
                 {
                     Reset();
@@ -246,7 +240,7 @@ namespace DreadScripts.Common
         {
             using (new GUILayout.HorizontalScope())
             {
-                value = EditorGUILayout.Slider(label, value, min, max, options);
+                Value = EditorGUILayout.Slider(label, Value, min, max, options);
 
                 // DEOBF-BUG(resolved): the ControllerEditor export has `while` rather than `if`
                 // here, which would spin forever on the click; ADOverhaul's copy of the same method
@@ -273,7 +267,7 @@ namespace DreadScripts.Common
 
         internal override void Reset()
         {
-            value = (float)defaultValue;
+            Value = (float)defaultValue;
         }
 
         public static implicit operator int(FloatSetting setting)
@@ -306,14 +300,8 @@ namespace DreadScripts.Common
         /// </remarks>
         internal int IntValue
         {
-            get
-            {
-                return (int)value;
-            }
-            set
-            {
-                this.value = value;
-            }
+            get => (int)Value;
+            set => Value = value;
         }
 
         internal EnumSetting(int defaultValue, Action onChange = null)
@@ -390,12 +378,9 @@ namespace DreadScripts.Common
 
         internal readonly Action onChange;
 
-        internal string value
+        internal string Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             set
             {
                 // The ControllerEditor decompilation renders this guard's body as an infinite loop
@@ -437,9 +422,9 @@ namespace DreadScripts.Common
                     style = EditorStyles.textField;
                 }
 
-                value = delayed
-                    ? EditorGUILayout.DelayedTextField(label, value, style, options)
-                    : EditorGUILayout.TextField(label, value, style, options);
+                Value = delayed
+                    ? EditorGUILayout.DelayedTextField(label, Value, style, options)
+                    : EditorGUILayout.TextField(label, Value, style, options);
 
                 if (showReset && DrawResetButton())
                 {
@@ -450,12 +435,12 @@ namespace DreadScripts.Common
 
         internal override void Reset()
         {
-            value = (string)defaultValue;
+            Value = (string)defaultValue;
         }
 
         public override string ToString()
         {
-            return value;
+            return Value;
         }
 
         public static implicit operator string(StringSetting setting)

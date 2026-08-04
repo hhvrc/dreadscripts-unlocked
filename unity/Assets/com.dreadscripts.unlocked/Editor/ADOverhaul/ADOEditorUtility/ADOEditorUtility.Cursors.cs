@@ -33,18 +33,18 @@ namespace DreadScripts.ADOverhaul
     internal static partial class ADOEditorUtility
     {
         /// <summary>The running editor's version string.</summary>
-        internal static string unityVersion = Application.unityVersion;
+        private static readonly string UnityVersion = Application.unityVersion;
 
         /// <summary>
         /// Whether the editor is a 2022 release. Used to correct for the extra chrome 2022 puts
         /// above a window's client area, which shifts GUI rects relative to screen space.
         /// </summary>
-        internal static bool isUnity2022 = unityVersion.Contains("2022");
+        private static readonly bool IsUnity2022 = UnityVersion.Contains("2022");
 
         /// <summary>
         /// Cursor rects collected while <see cref="deferringCursorRects"/> is set, in screen space.
         /// </summary>
-        private static readonly Stack<(Rect rect, MouseCursor cursor)> deferredCursorRects = new Stack<(Rect, MouseCursor)>();
+        private static readonly Stack<(Rect rect, MouseCursor cursor)> DeferredCursorRects = new();
 
         private static bool deferringCursorRects;
 
@@ -71,7 +71,7 @@ namespace DreadScripts.ADOverhaul
         /// <summary>Drops anything collected so far without registering it.</summary>
         internal static void ClearDeferredCursorRects()
         {
-            deferredCursorRects.Clear();
+            DeferredCursorRects.Clear();
         }
 
         /// <summary>Stops collecting and registers everything collected, innermost first.</summary>
@@ -83,9 +83,9 @@ namespace DreadScripts.ADOverhaul
             }
 
             deferringCursorRects = false;
-            while (deferredCursorRects.Count > 0)
+            while (DeferredCursorRects.Count > 0)
             {
-                var (screenRect, cursor) = deferredCursorRects.Pop();
+                var (screenRect, cursor) = DeferredCursorRects.Pop();
                 EditorGUIUtility.AddCursorRect(GUIUtility.ScreenToGUIRect(screenRect), cursor);
             }
         }
@@ -98,14 +98,14 @@ namespace DreadScripts.ADOverhaul
         /// Register the cursor even inside a disabled scope. Off by default so disabled controls do
         /// not look clickable.
         /// </param>
-        internal static void AddLinkCursor(Rect rect = default(Rect), bool evenWhenDisabled = false)
+        internal static void AddLinkCursor(Rect rect = default, bool evenWhenDisabled = false)
         {
             if (Event.current.type != EventType.Repaint)
             {
                 return;
             }
 
-            if (rect == default(Rect))
+            if (rect == default)
             {
                 rect = GUILayoutUtility.GetLastRect();
             }
@@ -126,12 +126,12 @@ namespace DreadScripts.ADOverhaul
 
             if (deferringCursorRects)
             {
-                if (isUnity2022)
+                if (IsUnity2022)
                 {
                     rect.y += 46f;
                 }
 
-                deferredCursorRects.Push((GUIUtility.GUIToScreenRect(rect), cursor));
+                DeferredCursorRects.Push((GUIUtility.GUIToScreenRect(rect), cursor));
             }
             else if (Event.current.type == EventType.Repaint)
             {

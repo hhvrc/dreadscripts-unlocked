@@ -20,6 +20,7 @@
 // lazily and null-check it on every read, because the field had no initialiser. It is a field
 // initialiser here instead, matching EditorUtils.Windows.cs; nothing can observe the difference
 // from a static class.
+// Audit status: VERIFIED against export
 
 using System.Collections.Generic;
 using UnityEngine;

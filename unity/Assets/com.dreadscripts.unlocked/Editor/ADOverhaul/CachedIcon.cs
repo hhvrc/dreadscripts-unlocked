@@ -41,7 +41,7 @@ namespace DreadScripts.ADOverhaul
     /// </summary>
     /// <remarks>
     /// The icons this holds are generated rather than loaded from disk: callers take a built-in
-    /// editor icon and recolour it, then hand the result here. The generated <see cref="Texture2D"/>
+    /// editor icon and recolor it, then hand the result here. The generated <see cref="Texture2D"/>
     /// does not survive a domain reload, which in the editor happens on every recompile and would
     /// leave the toolbars blank until something rebuilt them. Caching the encoded bytes in the
     /// session lets the icon be re-decoded instead of regenerated.
@@ -53,28 +53,28 @@ namespace DreadScripts.ADOverhaul
         /// again only if that lookup produced something, so a permanent miss costs one read rather
         /// than one per repaint, while a hit stays re-readable after the next reload.
         /// </summary>
-        private bool canResolve = true;
+        private bool _canResolve = true;
 
         private GUIContent _content;
 
         private Texture2D _texture;
 
-        private readonly string cacheKey;
+        private readonly string _cacheKey;
 
-        private readonly string tooltip;
+        private readonly string _tooltip;
 
-        private GUIContent content
+        private GUIContent Content
         {
             get
             {
                 // Rebuilt lazily rather than only in the constructor, because the constructor may
                 // have been handed a null texture and recovered one from the cache afterwards --
                 // see the note there.
-                if (_content.image == null && canResolve)
+                if (_content.image == null && _canResolve)
                 {
-                    _content = new GUIContent(texture)
+                    _content = new GUIContent(Texture)
                     {
-                        tooltip = tooltip
+                        tooltip = _tooltip
                     };
                 }
 
@@ -84,17 +84,17 @@ namespace DreadScripts.ADOverhaul
 
         /// <summary>
         /// The icon, re-decoded from the session cache if a domain reload destroyed it, or null when
-        /// nothing is cached under <see cref="cacheKey"/>.
+        /// nothing is cached under <see cref="_cacheKey"/>.
         /// </summary>
-        internal Texture2D texture
+        internal Texture2D Texture
         {
             get
             {
-                if (canResolve && _texture == null)
+                if (_canResolve && _texture == null)
                 {
-                    canResolve = false;
+                    _canResolve = false;
                     ResolveTexture();
-                    canResolve = _texture != null;
+                    _canResolve = _texture != null;
                 }
 
                 return _texture;
@@ -105,11 +105,13 @@ namespace DreadScripts.ADOverhaul
         /// The freshly built icon, or null to adopt whatever is already cached under
         /// <paramref name="cacheKey"/>.
         /// </param>
+        /// <param name="cacheKey"></param>
+        /// <param name="tooltip"></param>
         public CachedIcon(Texture2D texture, string cacheKey, string tooltip = "")
         {
             _texture = texture;
-            this.cacheKey = cacheKey;
-            this.tooltip = tooltip;
+            this._cacheKey = cacheKey;
+            this._tooltip = tooltip;
 
             if (_texture != null)
             {
@@ -131,7 +133,7 @@ namespace DreadScripts.ADOverhaul
 
         private void ResolveTexture()
         {
-            _texture = LoadFromCache(cacheKey);
+            _texture = LoadFromCache(_cacheKey);
         }
 
         /// <summary>
@@ -151,7 +153,7 @@ namespace DreadScripts.ADOverhaul
 
         public static implicit operator GUIContent(CachedIcon icon)
         {
-            return icon.content;
+            return icon.Content;
         }
     }
 }

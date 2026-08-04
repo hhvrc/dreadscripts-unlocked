@@ -2,6 +2,7 @@
 //   static InitResolver   -> SetDontSave,             line 2586
 //   static VisitResolver  -> SetHidden,               line 2601
 //   static DefineResolver -> SetDontSaveRecursively,  line 2616
+//   static RevertResolver -> AsComponentOrAsset,      line 3037
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 // Audit status: VERIFIED against export
@@ -10,6 +11,10 @@
 // pair (the "temporary object" flags); SetHidden toggles HideInHierarchy|HideInInspector. Both are
 // null-tolerant no-ops, matching the original. SetDontSaveRecursively walks every child transform's
 // GameObject (including inactive ones) and applies SetDontSave to each.
+//
+// AsComponentOrAsset is filed here rather than with the asset helpers because it is a cast, not an
+// asset operation: it exists so a picker that hands back whatever the user clicked can be asked for
+// the type the caller actually wanted.
 
 using UnityEngine;
 
@@ -69,6 +74,26 @@ namespace DreadScripts.ControllerEditor
             {
                 transforms[i].gameObject.SetDontSave(dontSave);
             }
+        }
+
+        /// <summary>
+        /// <paramref name="obj"/> as <typeparamref name="T"/>, reaching through a GameObject to its
+        /// component when <typeparamref name="T"/> is one. Null when it cannot be had.
+        /// </summary>
+        /// <remarks>
+        /// Unity's object picker returns the GameObject for a prefab even when the field being
+        /// filled wants a component on it, so a plain cast would drop the selection. Note the test
+        /// is IsSubclassOf(Component), so asking for exactly <c>Component</c> takes the plain-cast
+        /// path and yields null for a GameObject.
+        /// </remarks>
+        internal static T AsComponentOrAsset<T>(this Object obj) where T : Object
+        {
+            if (!typeof(T).IsSubclassOf(typeof(Component)))
+            {
+                return obj as T;
+            }
+
+            return obj is GameObject go ? go.GetComponent<T>() : null;
         }
     }
 }

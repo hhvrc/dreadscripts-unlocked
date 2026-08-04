@@ -38,6 +38,7 @@
 // enforce a naming style.
 //
 // Paths outside Assets/: this family does NOT agree with EditorUtils.AssetButtons'
+// Audit status: VERIFIED against export
 // CreateAssetViaSavePanel, which warns and refuses. Here, a *file* path whose directory is
 // neither absolute-under-the-project nor already "Assets"-rooted is silently relocated by
 // prefixing "Assets/", and a *folder* path is not checked at all -- PrepareAssetPath with

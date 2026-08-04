@@ -287,7 +287,7 @@ namespace DreadScripts.ControllerEditor
                 {
                     using (new IndentedLayoutScope())
                     {
-                        EditorSettings.Instance.defaultLayerWeight.value = EditorGUILayout.Slider("Default Layer Weight", EditorSettings.Instance.defaultLayerWeight.value, 0f, 1f);
+                        EditorSettings.Instance.defaultLayerWeight.Value = EditorGUILayout.Slider("Default Layer Weight", EditorSettings.Instance.defaultLayerWeight.Value, 0f, 1f);
                         EditorSettings.Instance.defaultLayerMask.Draw("Default Layer Mask", false);
 
                         using (new EditorGUILayout.HorizontalScope(GUI.skin.box))
@@ -330,7 +330,7 @@ namespace DreadScripts.ControllerEditor
         {
             using (new GUILayout.HorizontalScope())
             {
-                setting.value = (float)(NodeColor)EditorGUILayout.EnumPopup(label, (NodeColor)setting.value);
+                setting.Value = (float)(NodeColor)EditorGUILayout.EnumPopup(label, (NodeColor)setting.Value);
 
                 if (EditorUtils.Button(EditorUtils.contents.reset, EditorUtils.styles.tightLabel, GUILayout.Width(18f), GUILayout.Height(18f)))
                 {

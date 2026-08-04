@@ -433,7 +433,7 @@ namespace DreadScripts.ADOverhaul
                         if (ADOEditorUtility.Button("Hide", EditorStyles.toolbarButton))
                         {
                             ADOSettings.instance.u_announcementHidden.value = true;
-                            ADOSettings.instance.u_announcementHiddenDate.value = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+                            ADOSettings.instance.u_announcementHiddenDate.Value = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
                         }
                     }
                 }, RepaintOpenWindows);
@@ -484,7 +484,7 @@ namespace DreadScripts.ADOverhaul
                 }
             }
 
-            if (!(version < new SemVer(ADOSettings.instance.u_updateVersion.value)))
+            if (!(version < new SemVer(ADOSettings.instance.u_updateVersion.Value)))
             {
                 if (userRequested)
                 {

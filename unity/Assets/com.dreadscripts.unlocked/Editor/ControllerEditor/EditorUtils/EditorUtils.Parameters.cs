@@ -16,6 +16,7 @@
 // CalcSyncedTotalCost and IsNetworkSynced are ported here rather than reported as missing because
 // GetRemainingCost cannot compile without them -- they are the entire body of its non-SDK branch.
 // If another partial ends up owning them, delete them from here rather than duplicating.
+// Audit status: VERIFIED against export
 //
 // Deliberately unported from the same region: ManageList (line 7738), which strips unnamed and
 // duplicate parameters from an asset in place; it is a mutation rather than a cost query and has

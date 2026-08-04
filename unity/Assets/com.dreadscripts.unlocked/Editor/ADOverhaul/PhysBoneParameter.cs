@@ -73,7 +73,7 @@ namespace DreadScripts.ADOverhaul
         /// </summary>
         internal readonly bool hasBackingField;
 
-        private readonly FieldInfo valueField;
+        private readonly FieldInfo _valueField;
 
         /// <param name="valueFieldName">
         /// Name of the public instance field on <see cref="VRCPhysBoneBase"/> holding this
@@ -84,11 +84,11 @@ namespace DreadScripts.ADOverhaul
             this.suffix = suffix;
             this.parameterType = parameterType;
 
-            valueField = string.IsNullOrWhiteSpace(valueFieldName)
+            _valueField = string.IsNullOrWhiteSpace(valueFieldName)
                 ? null
                 : typeof(VRCPhysBoneBase).GetField(valueFieldName, BindingFlags.Instance | BindingFlags.Public);
 
-            hasBackingField = valueField != null;
+            hasBackingField = _valueField != null;
         }
 
         /// <summary>
@@ -98,13 +98,13 @@ namespace DreadScripts.ADOverhaul
         /// </summary>
         internal float GetFloat(VRCPhysBoneBase physBone)
         {
-            return (float)valueField.GetValue(physBone);
+            return (float)_valueField.GetValue(physBone);
         }
 
         /// <summary>Reads the parameter's current value off <paramref name="physBone"/> as a bool.</summary>
         internal bool GetBool(VRCPhysBoneBase physBone)
         {
-            return (bool)valueField.GetValue(physBone);
+            return (bool)_valueField.GetValue(physBone);
         }
 
         /// <summary>

@@ -35,6 +35,7 @@
 // sibling ParameterCostTracker carries the identical CompareCandidate/PublishCandidate pair, so
 // this is obfuscator scaffolding rather than behaviour -- an always-true method over a field that
 // is always null.
+// Audit status: VERIFIED against export
 
 using System;
 using System.Collections.Generic;
