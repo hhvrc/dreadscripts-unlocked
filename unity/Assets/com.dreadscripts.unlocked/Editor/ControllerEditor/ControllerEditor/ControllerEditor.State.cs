@@ -25,9 +25,11 @@
 //   per-window and resets with the window, as shipped.
 //
 //   FORMER DEVIATION 2, now withdrawn -- the window's own members are portable again. `OnGUI`
-//   (8583), `OnEnable` (8857), `OnDisable` (8842), `OnFocus` (8831) and the `[MenuItem]` entry point
-//   `InterruptWrapper` (8577) are ported in ControllerEditor.Window.cs. `CustomizeVisitor` (11948)
-//   belongs to an unported region and is still outstanding.
+//   (8583), `OnEnable` (8857), `OnDisable` (8842) and the `[MenuItem]` entry point
+//   `InterruptWrapper` (8577) are ported in ControllerEditor.Window.cs; the first three partially,
+//   each with its blockers named in that file's header. `OnFocus` (8831) is NOT ported: its whole
+//   body is one call to the unported ManageWrapper, so there is nothing of it to write yet.
+//   `CustomizeVisitor` (11948) belongs to an unported region and is still outstanding.
 //
 //   -- Window and controller context (decompiled 7962-8016) --
 //   m_Base           -> activeWindow,                     line 7962
