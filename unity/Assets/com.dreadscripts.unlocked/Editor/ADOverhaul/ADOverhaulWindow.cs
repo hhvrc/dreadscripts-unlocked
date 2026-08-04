@@ -24,17 +24,7 @@
 // The two calls the window makes back into the outer class go through the bridge methods in
 // ADOverhaul/ADOverhaul.Window.cs, which explains itself.
 //
-// ================================= LICENCE GATE, NOT PORTED ===================================
-//
-// The decompiled OnGUI is one `if (FlushConfiguration(this)) { ... }`. FlushConfiguration
-// (decompiled line 7515) is the tool's licence gate: when `_Service` (isLicensed) is false it takes
-// over the whole window and returns false, drawing -- in order -- a device-fingerprint tick, the
-// banner, the announcement, and then one of four panels: "Activating/Verifying License..." while a
-// request is in flight; "Check for License" with a Check/Retry button; a licence-key entry form with
-// an Activate button, an attempt-throttling notice and a "your device will be blocked" warning; or
-// the transfer flow (ExcludeConfiguration, line 7578) that mails a six-digit code to the address on
-// the licence and asks for it back.
-//
+// ================================= LICENCE GATE, NOT PORTED ============================//
 // None of that is ported. The vendor's validation backend is permanently shut down, so every one of
 // those paths can now only fail, and the gate would lock out exactly the legitimate holders this
 // restoration exists for. Its two remaining branches -- the ones taken when the tool considers
@@ -239,7 +229,7 @@ namespace DreadScripts.ADOverhaul
                 if (editorFoldout)
                 {
                     EditorGUI.indentLevel++;
-                    ADOSettings.Instance.editorAnimatedFoldouts.Draw(ADOEditorUtility.contents.animatedFoldouts);
+                    ADOSettings.instance.editorAnimatedFoldouts.Draw(ADOEditorUtility.contents.animatedFoldouts);
                     EditorGUI.indentLevel--;
                 }
             }
@@ -253,19 +243,19 @@ namespace DreadScripts.ADOverhaul
 
                     using (new GUILayout.HorizontalScope())
                     {
-                        ADOSettings.Instance.onSceneNameLabels.Draw(ADOEditorUtility.contents.showNameLabels);
-                        if (ADOSettings.Instance.onSceneNameLabels)
+                        ADOSettings.instance.onSceneNameLabels.Draw(ADOEditorUtility.contents.showNameLabels);
+                        if (ADOSettings.instance.onSceneNameLabels)
                         {
-                            ADOSettings.Instance.labelColor.Draw(GUIContent.none);
+                            ADOSettings.instance.labelColor.Draw(GUIContent.none);
                         }
                     }
 
-                    ADOSettings.Instance.generalColor.Draw(ADOEditorUtility.contents.generalColor);
-                    ADOSettings.Instance.activeColor.Draw(ADOEditorUtility.contents.activeColor);
-                    ADOSettings.Instance.inactiveColor.Draw(ADOEditorUtility.contents.inactiveColor);
-                    ADOSettings.Instance.mixedColor.Draw(ADOEditorUtility.contents.mixedColor);
-                    ADOSettings.Instance.selectionColor.Draw(ADOEditorUtility.contents.selectionColor);
-                    ADOSettings.Instance.handleSizeMultiplier.DrawField(ADOEditorUtility.contents.handleSize);
+                    ADOSettings.instance.generalColor.Draw(ADOEditorUtility.contents.generalColor);
+                    ADOSettings.instance.activeColor.Draw(ADOEditorUtility.contents.activeColor);
+                    ADOSettings.instance.inactiveColor.Draw(ADOEditorUtility.contents.inactiveColor);
+                    ADOSettings.instance.mixedColor.Draw(ADOEditorUtility.contents.mixedColor);
+                    ADOSettings.instance.selectionColor.Draw(ADOEditorUtility.contents.selectionColor);
+                    ADOSettings.instance.handleSizeMultiplier.DrawField(ADOEditorUtility.contents.handleSize);
 
                     EditorGUI.indentLevel--;
                 }
@@ -285,26 +275,26 @@ namespace DreadScripts.ADOverhaul
                 {
                     // The one label in this pane built inline rather than taken from the shared
                     // content table, as shipped.
-                    ADOSettings.Instance.onSceneToolSelection.Draw(
+                    ADOSettings.instance.onSceneToolSelection.Draw(
                         new GUIContent("Tool Overlay", "Displays the tool selection overlay on the scene view."));
 
-                    using (new EditorGUI.DisabledScope(!ADOSettings.Instance.onSceneToolSelection))
+                    using (new EditorGUI.DisabledScope(!ADOSettings.instance.onSceneToolSelection))
                     {
-                        ADOSettings.Instance.toolSelectionOverlayAlignment.DrawEnumPopup<PositionFlag>("Position");
+                        ADOSettings.instance.toolSelectionOverlayAlignment.DrawEnumPopup<PositionFlag>("Position");
                     }
                 }
 
                 using (new GUILayout.HorizontalScope())
                 {
-                    ADOSettings.Instance.onSceneEditingOverlay.Draw(ADOEditorUtility.contents.propertyAndTipOverlay);
+                    ADOSettings.instance.onSceneEditingOverlay.Draw(ADOEditorUtility.contents.propertyAndTipOverlay);
 
-                    using (new EditorGUI.DisabledScope(!ADOSettings.Instance.onSceneEditingOverlay))
+                    using (new EditorGUI.DisabledScope(!ADOSettings.instance.onSceneEditingOverlay))
                     {
-                        ADOSettings.Instance.toolOverlayAlignment.DrawEnumPopup<PositionFlag>("Position");
+                        ADOSettings.instance.toolOverlayAlignment.DrawEnumPopup<PositionFlag>("Position");
                     }
                 }
 
-                ADOSettings.Instance.onSceneTooltip.Draw(ADOEditorUtility.contents.tooltips);
+                ADOSettings.instance.onSceneTooltip.Draw(ADOEditorUtility.contents.tooltips);
 
                 EditorGUI.indentLevel--;
             }

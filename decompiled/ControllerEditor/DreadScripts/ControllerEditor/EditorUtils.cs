@@ -2095,23 +2095,23 @@ internal static class EditorUtils
 		}
 	}
 
-	private static MethodInfo m_MockProperty;
+	private static MethodInfo _parentActivatePreserve;
 
-	private static MethodInfo m_InstanceProperty;
+	private static MethodInfo _parentActivateZero;
 
-	private static MethodInfo fieldProperty;
+	private static MethodInfo _rotationActivatePreserve;
 
-	private static MethodInfo _AttributeProperty;
+	private static MethodInfo _rotationActivateZero;
 
-	private static MethodInfo _ClientProperty;
+	private static MethodInfo _positionActivatePreserve;
 
-	private static MethodInfo _ConfigProperty;
+	private static MethodInfo _positionActivateZero;
 
-	private static MethodInfo m_DescriptorProperty;
+	private static MethodInfo _aimActivatePreserve;
 
-	private static MethodInfo _TemplateProperty;
+	private static MethodInfo _aimActivateZero;
 
-	private static MethodInfo _MessageProperty;
+	private static MethodInfo _scaleActivatePreserve;
 
 	internal static readonly GUIContent m_CollectionProperty = new GUIContent();
 
@@ -2390,12 +2390,12 @@ internal static class EditorUtils
 		return result;
 	}
 
-	internal static Color SetupResolver(this Color asset, float second)
+	internal static Color WithAlpha(this Color asset, float second)
 	{
 		return new Color(asset.r, asset.g, asset.b, second);
 	}
 
-	internal static Color EnableResolver(this Color init, Color visitor)
+	internal static Color BlendOver(this Color init, Color visitor)
 	{
 		float num = visitor.a + init.a * (1f - visitor.a);
 		float r = (visitor.r * visitor.a + init.r * init.a * (1f - visitor.a)) / num;
@@ -2404,7 +2404,7 @@ internal static class EditorUtils
 		return new Color(r, g, b, num);
 	}
 
-	internal static void PublishResolver(this IConstraint i, params float[] weights)
+	internal static void SetSourceWeights(this IConstraint i, params float[] weights)
 	{
 		List<ConstraintSource> list = new List<ConstraintSource>();
 		i.GetSources(list);
@@ -2419,92 +2419,92 @@ internal static class EditorUtils
 		i.SetSources(list);
 	}
 
-	internal static void PopResolver(this ParentConstraint instance)
+	internal static void ActivateAndPreserveOffset(this ParentConstraint instance)
 	{
-		if (m_MockProperty == null)
+		if (_parentActivatePreserve == null)
 		{
-			m_MockProperty = typeof(ParentConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_parentActivatePreserve = typeof(ParentConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		m_MockProperty.Invoke(instance, null);
+		_parentActivatePreserve.Invoke(instance, null);
 	}
 
-	internal static void ComputeResolver(this ParentConstraint v)
+	internal static void ActivateWithZeroOffset(this ParentConstraint v)
 	{
-		if (m_InstanceProperty == null)
+		if (_parentActivateZero == null)
 		{
-			m_InstanceProperty = typeof(ParentConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_parentActivateZero = typeof(ParentConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		m_InstanceProperty.Invoke(v, null);
+		_parentActivateZero.Invoke(v, null);
 	}
 
-	internal static void MoveResolver(this RotationConstraint param)
+	internal static void ActivateAndPreserveOffset(this RotationConstraint param)
 	{
-		if (fieldProperty == null)
+		if (_rotationActivatePreserve == null)
 		{
-			fieldProperty = typeof(RotationConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_rotationActivatePreserve = typeof(RotationConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		fieldProperty.Invoke(param, null);
+		_rotationActivatePreserve.Invoke(param, null);
 	}
 
-	internal static void ConcatResolver(this RotationConstraint task)
+	internal static void ActivateWithZeroOffset(this RotationConstraint task)
 	{
-		if (_AttributeProperty == null)
+		if (_rotationActivateZero == null)
 		{
-			_AttributeProperty = typeof(RotationConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_rotationActivateZero = typeof(RotationConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		_AttributeProperty.Invoke(task, null);
+		_rotationActivateZero.Invoke(task, null);
 	}
 
-	internal static void CallResolver(this PositionConstraint reference)
+	internal static void ActivateAndPreserveOffset(this PositionConstraint reference)
 	{
-		if (_ClientProperty == null)
+		if (_positionActivatePreserve == null)
 		{
-			_ClientProperty = typeof(PositionConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_positionActivatePreserve = typeof(PositionConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		_ClientProperty.Invoke(reference, null);
+		_positionActivatePreserve.Invoke(reference, null);
 	}
 
-	internal static void CancelResolver(this PositionConstraint config)
+	internal static void ActivateWithZeroOffset(this PositionConstraint config)
 	{
-		if (_ConfigProperty == null)
+		if (_positionActivateZero == null)
 		{
-			_ConfigProperty = typeof(PositionConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_positionActivateZero = typeof(PositionConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		_ConfigProperty.Invoke(config, null);
+		_positionActivateZero.Invoke(config, null);
 	}
 
-	internal static void CountResolver(this AimConstraint ident)
+	internal static void ActivateAndPreserveOffset(this AimConstraint ident)
 	{
-		if (m_DescriptorProperty == null)
+		if (_aimActivatePreserve == null)
 		{
-			m_DescriptorProperty = typeof(AimConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_aimActivatePreserve = typeof(AimConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		m_DescriptorProperty.Invoke(ident, null);
+		_aimActivatePreserve.Invoke(ident, null);
 	}
 
-	internal static void DisableResolver(this AimConstraint def)
+	internal static void ActivateWithZeroOffset(this AimConstraint def)
 	{
-		if (_TemplateProperty == null)
+		if (_aimActivateZero == null)
 		{
-			_TemplateProperty = typeof(AimConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_aimActivateZero = typeof(AimConstraint).GetMethod("ActivateWithZeroOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		_TemplateProperty.Invoke(def, null);
+		_aimActivateZero.Invoke(def, null);
 	}
 
-	internal static void InsertResolver(this ScaleConstraint info)
+	internal static void ActivateAndPreserveOffset(this ScaleConstraint info)
 	{
-		if (_MessageProperty == null)
+		if (_scaleActivatePreserve == null)
 		{
-			_MessageProperty = typeof(ScaleConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
+			_scaleActivatePreserve = typeof(ScaleConstraint).GetMethod("ActivateAndPreserveOffset", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
-		_MessageProperty.Invoke(info, null);
+		_scaleActivatePreserve.Invoke(info, null);
 	}
 
-	private static void RestartResolver(this IConstraint instance)
+	private static void ActivateAndPreserveOffset(this IConstraint instance)
 	{
 		if (instance is ParentConstraint instance2)
 		{
-			instance2.PopResolver();
+			instance2.ActivateAndPreserveOffset();
 		}
 		else if (!(instance is RotationConstraint param))
 		{
@@ -2512,25 +2512,25 @@ internal static class EditorUtils
 			{
 				if (instance is AimConstraint ident)
 				{
-					ident.CountResolver();
+					ident.ActivateAndPreserveOffset();
 				}
 			}
 			else
 			{
-				reference.CallResolver();
+				reference.ActivateAndPreserveOffset();
 			}
 		}
 		else
 		{
-			param.MoveResolver();
+			param.ActivateAndPreserveOffset();
 		}
 	}
 
-	private static void QueryResolver(this IConstraint var1)
+	private static void ActivateWithZeroOffset(this IConstraint var1)
 	{
 		if (var1 is ParentConstraint v)
 		{
-			v.ComputeResolver();
+			v.ActivateWithZeroOffset();
 		}
 		else if (!(var1 is RotationConstraint task))
 		{
@@ -2538,21 +2538,21 @@ internal static class EditorUtils
 			{
 				if (var1 is AimConstraint def)
 				{
-					def.DisableResolver();
+					def.ActivateWithZeroOffset();
 				}
 			}
 			else
 			{
-				config.CancelResolver();
+				config.ActivateWithZeroOffset();
 			}
 		}
 		else
 		{
-			task.ConcatResolver();
+			task.ActivateWithZeroOffset();
 		}
 	}
 
-	internal static void InvokeResolver<T>(this IEnumerable<T> first, Action<T> visitor)
+	internal static void ForEach<T>(this IEnumerable<T> first, Action<T> visitor)
 	{
 		foreach (T item in first)
 		{
@@ -2560,7 +2560,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static int FindResolver<T>(this IEnumerable<T> var1, Func<T, bool> cont)
+	internal static int FindIndex<T>(this IEnumerable<T> var1, Func<T, bool> cont)
 	{
 		int num = -1;
 		using (IEnumerator<T> enumerator = var1.GetEnumerator())
@@ -2577,13 +2577,13 @@ internal static class EditorUtils
 		return -1;
 	}
 
-	internal static bool ExcludeResolver<T>(this IEnumerable<T> param, Func<T, bool> caller, out int c)
+	internal static bool TryFindIndex<T>(this IEnumerable<T> param, Func<T, bool> caller, out int c)
 	{
-		c = param.FindResolver(caller);
+		c = param.FindIndex(caller);
 		return c != -1;
 	}
 
-	internal static void InitResolver(this UnityEngine.Object first, bool removetoken)
+	internal static void SetDontSave(this UnityEngine.Object first, bool removetoken)
 	{
 		if (!(first == null))
 		{
@@ -2598,7 +2598,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void VisitResolver(this UnityEngine.Object reference, bool isvisitor)
+	internal static void SetHidden(this UnityEngine.Object reference, bool isvisitor)
 	{
 		if (!(reference == null))
 		{
@@ -2613,23 +2613,23 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void DefineResolver(this GameObject setup, bool getcfg)
+	internal static void SetDontSaveRecursively(this GameObject setup, bool getcfg)
 	{
 		Transform[] componentsInChildren = setup.GetComponentsInChildren<Transform>(includeInactive: true);
 		for (int i = 0; i < componentsInChildren.Length; i++)
 		{
-			componentsInChildren[i].gameObject.InitResolver(getcfg);
+			componentsInChildren[i].gameObject.SetDontSave(getcfg);
 		}
 	}
 
-	internal static void StartResolver(this Transform v)
+	internal static void ResetLocal(this Transform v)
 	{
 		v.localPosition = Vector3.zero;
 		v.localRotation = Quaternion.identity;
 		v.localScale = Vector3.one;
 	}
 
-	internal static Transform[] ReadResolver(this Transform def)
+	internal static Transform[] GetChildren(this Transform def)
 	{
 		Transform[] array = new Transform[def.childCount];
 		for (int i = 0; i < def.childCount; i++)
@@ -2639,7 +2639,7 @@ internal static class EditorUtils
 		return array;
 	}
 
-	internal static void SelectResolver(this Transform item, Vector3 counter)
+	internal static void SetLossyScale(this Transform item, Vector3 counter)
 	{
 		item.localScale = Vector3.one;
 		Matrix4x4 worldToLocalMatrix = item.worldToLocalMatrix;
@@ -2647,7 +2647,7 @@ internal static class EditorUtils
 		item.localScale = worldToLocalMatrix.MultiplyPoint(counter);
 	}
 
-	internal static bool RemoveResolver<T>(this Type config)
+	internal static bool Is<T>(this Type config)
 	{
 		if (config.IsSubclassOf(typeof(T)))
 		{
@@ -2656,7 +2656,7 @@ internal static class EditorUtils
 		return config == typeof(T);
 	}
 
-	internal static bool InstantiateResolver(this Type reference, Type attr)
+	internal static bool Is(this Type reference, Type attr)
 	{
 		if (reference.IsSubclassOf(attr))
 		{
@@ -2665,27 +2665,27 @@ internal static class EditorUtils
 		return reference == attr;
 	}
 
-	internal static bool AwakeResolver(this ref bool task)
+	internal static bool Flip(this ref bool task)
 	{
 		return task = !task;
 	}
 
-	internal static bool ResetResolver(this string param)
+	internal static bool IsNullOrEmpty(this string param)
 	{
 		return string.IsNullOrEmpty(param);
 	}
 
-	internal static bool FlushResolver(this string item)
+	internal static bool IsNullOrWhiteSpace(this string item)
 	{
 		return string.IsNullOrWhiteSpace(item);
 	}
 
-	internal static string ConnectResolver(this string instance)
+	internal static string OrEmpty(this string instance)
 	{
 		return instance ?? "";
 	}
 
-	internal static string CalculateResolver(this string def, string ord)
+	internal static string Or(this string def, string ord)
 	{
 		if (!string.IsNullOrEmpty(def))
 		{
@@ -2694,7 +2694,7 @@ internal static class EditorUtils
 		return ord;
 	}
 
-	internal static bool MapResolver(this float i, float cust, float dic)
+	internal static bool IsBetween(this float i, float cust, float dic)
 	{
 		if (i < cust)
 		{
@@ -2703,7 +2703,7 @@ internal static class EditorUtils
 		return i <= dic;
 	}
 
-	internal static bool ValidateResolver(this int ident, int indexvisitor, int thirdoffset)
+	internal static bool IsBetween(this int ident, int indexvisitor, int thirdoffset)
 	{
 		if (ident < indexvisitor)
 		{
@@ -2712,7 +2712,7 @@ internal static class EditorUtils
 		return ident <= thirdoffset;
 	}
 
-	internal static bool CustomizeResolver(this int end_param, IList pred)
+	internal static bool IsValidIndex(this int end_param, IList pred)
 	{
 		if (end_param >= 0)
 		{
@@ -2721,7 +2721,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static bool RateResolver(this int lastsize, Array ivk)
+	internal static bool IsValidIndex(this int lastsize, Array ivk)
 	{
 		if (lastsize >= 0)
 		{
@@ -2730,7 +2730,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static bool DestroyResolver(this float init, float pol, float third)
+	internal static bool IsOutside(this float init, float pol, float third)
 	{
 		if (!(init >= pol))
 		{
@@ -2739,7 +2739,7 @@ internal static class EditorUtils
 		return init > third;
 	}
 
-	internal static bool GetResolver(this int offsetident, int countermin, int start_control)
+	internal static bool IsOutside(this int offsetident, int countermin, int start_control)
 	{
 		if (offsetident < countermin)
 		{
@@ -2748,12 +2748,12 @@ internal static class EditorUtils
 		return offsetident > start_control;
 	}
 
-	internal static int CalcResolver(this float spec, int counter_end)
+	internal static int RoundToNearest(this float spec, int counter_end)
 	{
-		return Mathf.RoundToInt(spec).IncludeResolver(counter_end);
+		return Mathf.RoundToInt(spec).RoundToNearest(counter_end);
 	}
 
-	internal static int IncludeResolver(this int minfirst, int ivkhigh)
+	internal static int RoundToNearest(this int minfirst, int ivkhigh)
 	{
 		return Mathf.RoundToInt((float)minfirst / (float)ivkhigh) * ivkhigh;
 	}
@@ -2820,7 +2820,7 @@ internal static class EditorUtils
 		return new GUIContent(m_CollectionProperty);
 	}
 
-	internal static string NewResolver(this string key)
+	internal static string Humanize(this string key)
 	{
 		if (string.IsNullOrEmpty(key))
 		{
@@ -3069,12 +3069,12 @@ internal static class EditorUtils
 
 	internal static Vector3 SetPredicate(this Vector3 item, int selectionLow)
 	{
-		return new Vector3(item.x.CalcResolver(selectionLow), item.y.CalcResolver(selectionLow), item.z.CalcResolver(selectionLow));
+		return new Vector3(item.x.RoundToNearest(selectionLow), item.y.RoundToNearest(selectionLow), item.z.RoundToNearest(selectionLow));
 	}
 
 	internal static Vector2 PostPredicate(this Vector2 task, int b_Z)
 	{
-		return new Vector2(task.x.CalcResolver(b_Z), task.y.CalcResolver(b_Z));
+		return new Vector2(task.x.RoundToNearest(b_Z), task.y.RoundToNearest(b_Z));
 	}
 
 	internal static float SetupPredicate(this Vector3 i)
@@ -3123,7 +3123,7 @@ internal static class EditorUtils
 
 	internal static bool CallPredicate(this ReorderableList key)
 	{
-		return key.index.CustomizeResolver(key.list);
+		return key.index.IsValidIndex(key.list);
 	}
 
 	internal static IEnumerable<T> CancelPredicate<T>(this T asset) where T : Enum
@@ -3614,12 +3614,12 @@ internal static class EditorUtils
 
 	internal static int LoginPredicate(this AnimatorState def, StateMachineBehaviour reg)
 	{
-		return def.behaviours.FindResolver((StateMachineBehaviour b) => b == reg);
+		return def.behaviours.FindIndex((StateMachineBehaviour b) => b == reg);
 	}
 
 	internal static void ReflectPredicate(this AnimatorState key, Type counter, bool isstate = false)
 	{
-		if (key.behaviours.ExcludeResolver((StateMachineBehaviour b) => b.GetType() == counter, out var c))
+		if (key.behaviours.TryFindIndex((StateMachineBehaviour b) => b.GetType() == counter, out var c))
 		{
 			key.DeletePredicate(c, isstate);
 		}
@@ -6672,7 +6672,7 @@ internal static class EditorUtils
 		{
 			return tasklow;
 		}
-		int num = ((!tasklow.ValidateResolver(11, 22) && !tasklow.ValidateResolver(1, 6)) ? (tasklow.ValidateResolver(24, 38) ? 15 : (tasklow.ValidateResolver(39, 53) ? (-15) : 0)) : ((tasklow % 2 == 1) ? 1 : (-1)));
+		int num = ((!tasklow.IsBetween(11, 22) && !tasklow.IsBetween(1, 6)) ? (tasklow.IsBetween(24, 38) ? 15 : (tasklow.IsBetween(39, 53) ? (-15) : 0)) : ((tasklow % 2 == 1) ? 1 : (-1)));
 		return tasklow + num;
 	}
 

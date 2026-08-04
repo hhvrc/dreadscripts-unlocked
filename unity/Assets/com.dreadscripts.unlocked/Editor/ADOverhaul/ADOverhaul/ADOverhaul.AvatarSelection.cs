@@ -135,7 +135,7 @@ using VRC.SDK3.Avatars.Components;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         #region Avatar selection
 
@@ -441,13 +441,13 @@ namespace DreadScripts.ADOverhaul
                         switch (digits[1])
                         {
                             case 0:
-                                ReportParameterAdd(controller.TryAddParameter(parameterName.stringValue, AnimatorControllerParameterType.Bool, 0f), controller);
+                                ReportParameterAdd(controller.AddParameterIfMissing(parameterName.stringValue, AnimatorControllerParameterType.Bool, 0f), controller);
                                 break;
                             case 1:
-                                ReportParameterAdd(controller.TryAddParameter(parameterName.stringValue, AnimatorControllerParameterType.Int, 0f), controller);
+                                ReportParameterAdd(controller.AddParameterIfMissing(parameterName.stringValue, AnimatorControllerParameterType.Int, 0f), controller);
                                 break;
                             case 2:
-                                ReportParameterAdd(controller.TryAddParameter(parameterName.stringValue, AnimatorControllerParameterType.Float, 0f), controller);
+                                ReportParameterAdd(controller.AddParameterIfMissing(parameterName.stringValue, AnimatorControllerParameterType.Float, 0f), controller);
                                 break;
                         }
                     }

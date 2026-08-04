@@ -21,6 +21,11 @@
 // Every Get*/Set* pair above is marked [SpecialName] in the shipped assembly - they are property
 // accessors whose property definitions the obfuscator stripped, and they are restored as properties
 // here.
+// Audit status: VERIFIED against export member-by-member (2026-08-04).
+// DEOBF-BUG(resolved): ParameterEntry.Source's setter deviates from export/, which renders it as
+// an infinite `while (!DeferApply)` loop. The correct form was recovered by tracing the original
+// obfuscated IL, not guessed -- see the comment at the setter. export/ will keep showing the loop
+// until de4dot's control-flow recovery is fixed, so do not "restore" it to match.
 
 using System.Collections.Generic;
 using UnityEditor;
@@ -148,13 +153,15 @@ namespace DreadScripts.ControllerEditor
                         {
                             property.FindPropertyRelative("source").stringValue = value;
 
-                            // Literal from the decompiled source, which has "while" where every
-                            // other setter here has "if". Apply() does not clear DeferApply, so this
-                            // does not terminate when DeferApply is false; it is almost certainly an
-                            // artefact of the obfuscator's control-flow flattening rather than
-                            // shipped behaviour. Transcribed as-is rather than guessed at - see the
-                            // porting note on this file.
-                            while (!DeferApply)
+                            // DEOBF-BUG(resolved): export/ renders this as `while (!DeferApply)`, never
+                            // terminates -- Apply() cannot clear the flag. That loop is not in the
+                            // shipped product. The original method is a Reactor XOR-switch state
+                            // machine (ControllerEditor.dll, AttrProperty::TestPage, RVA 0x75f78);
+                            // tracing its dispatch gives GetDeferApply() false -> Apply() once ->
+                            // ret, and true -> ret immediately. That is the plain `if` below, and it
+                            // matches all seven sibling setters, which Reactor never flattened and
+                            // whose IL de4dot therefore leaves as a correct forward branch.
+                            if (!DeferApply)
                             {
                                 driver.Apply();
                             }

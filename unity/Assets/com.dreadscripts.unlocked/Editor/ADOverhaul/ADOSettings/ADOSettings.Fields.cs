@@ -213,21 +213,21 @@ namespace DreadScripts.ADOverhaul
 
         /// <summary>
         /// Membership state 1: the transform or collider is in the edited list. Default a green,
-        /// (0.56, 0.94, 0.47). Read through <see cref="StateColors"/>.
+        /// (0.56, 0.94, 0.47). Read through <see cref="stateColors"/>.
         /// </summary>
         [SerializeField]
         internal ColorSetting activeColor = new ColorSetting(0.56f, 0.94f, 0.47f);
 
         /// <summary>
         /// Membership state 0: not in the edited list. Default a magenta-red, (1, 0, 0.3765).
-        /// Read through <see cref="StateColors"/>.
+        /// Read through <see cref="stateColors"/>.
         /// </summary>
         [SerializeField]
         internal ColorSetting inactiveColor = new ColorSetting(1f, 0f, 0.3765f);
 
         /// <summary>
         /// Membership state 2: in some of the multi-edited targets' lists but not all. Default
-        /// orange, (1, 0.65, 0). Read through <see cref="StateColors"/>.
+        /// orange, (1, 0.65, 0). Read through <see cref="stateColors"/>.
         /// </summary>
         [SerializeField]
         internal ColorSetting mixedColor = new ColorSetting(1f, 0.65f, 0f);
@@ -239,6 +239,21 @@ namespace DreadScripts.ADOverhaul
         /// </summary>
         [SerializeField]
         internal ColorSetting selectionColor = new ColorSetting(1f, 0.65f, 0f);
+
+        /// <summary>
+        /// The user's handle palette in the order a tri-state toggle indexes it: 0 = inactive,
+        /// 1 = active, 2 = mixed.
+        /// </summary>
+        /// <remarks>
+        /// Built fresh on every read rather than cached, so it always reflects the current setting;
+        /// callers pass it straight to a GUIColorScope and drop it.
+        /// </remarks>
+        internal Color[] stateColors => new[]
+        {
+            inactiveColor.value,
+            activeColor.value,
+            mixedColor.value
+        };
 
         // ---- Update and announcement banner ----
         // Populated from the remote manifest the tool used to fetch; kept because they are the

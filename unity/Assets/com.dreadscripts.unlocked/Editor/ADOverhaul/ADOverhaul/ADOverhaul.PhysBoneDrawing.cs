@@ -79,7 +79,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         /// <summary>
         /// Draws the shape block shared by the PhysBone collider, contact sender and contact

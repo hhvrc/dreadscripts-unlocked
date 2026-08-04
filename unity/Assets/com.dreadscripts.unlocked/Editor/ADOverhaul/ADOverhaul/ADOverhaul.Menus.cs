@@ -158,7 +158,7 @@
 // reproduced.
 //
 // ConnectSerializer (line 7898) is a [SpecialName] accessor -- really an `updateCheckedToday`
-// property, `ADOSettings.Instance().u_updateDay == RemoveConfiguration()` -- and belongs with the
+// property, `ADOSettings.instance().u_updateDay == RemoveConfiguration()` -- and belongs with the
 // update-day helper RemoveConfiguration (line 7434) in another region, alongside the two members
 // that read it. It is not this file's. MapIdentifier (line 8096, the [InitializeOnLoadMethod] hook)
 // is already audited and deferred in ADOverhaul.Lifecycle.cs.
@@ -197,7 +197,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         /// <summary>
         /// Draws the boxed header row every ADOverhaul surface opens with: the hamburger menu button,
@@ -228,7 +228,7 @@ namespace DreadScripts.ADOverhaul
 
                     // The toggle is offered only while the banner is collapsed: once the banner is
                     // showing, its own "Skip for Today" is what closes it again.
-                    if (!ADOSettings.Instance.u_updateHidden && updateAvailable &&
+                    if (!ADOSettings.instance.u_updateHidden && updateAvailable &&
                         ADOEditorUtility.IconButton(ADOEditorUtility.contents.updateAvailable))
                     {
                         updateFoldout.target = !updateFoldout.target;
@@ -352,7 +352,7 @@ namespace DreadScripts.ADOverhaul
         /// </remarks>
         internal static void DrawUpdateBanner(bool drawSeparator = true)
         {
-            if (ADOSettings.Instance.u_updateHidden)
+            if (ADOSettings.instance.u_updateHidden)
             {
                 return;
             }
@@ -365,25 +365,25 @@ namespace DreadScripts.ADOverhaul
                 }
 
                 EditorGUILayout.HelpBox(
-                    $"Version {ADOSettings.Instance.u_updateVersion}\n--------------\n{ADOSettings.Instance.u_updateMessage}",
+                    $"Version {ADOSettings.instance.u_updateVersion}\n--------------\n{ADOSettings.instance.u_updateMessage}",
                     MessageType.Info);
 
-                bool hasChangelog = !string.IsNullOrWhiteSpace(ADOSettings.Instance.u_updateChangelog);
+                bool hasChangelog = !string.IsNullOrWhiteSpace(ADOSettings.instance.u_updateChangelog);
 
                 using (new GUILayout.HorizontalScope())
                 {
                     // The changelog URL doubles as the button's tooltip, so it can be read before
                     // it is followed.
                     if (hasChangelog && ADOEditorUtility.Button(
-                        new GUIContent("Open Changelog", ADOSettings.Instance.u_updateChangelog),
+                        new GUIContent("Open Changelog", ADOSettings.instance.u_updateChangelog),
                         EditorStyles.toolbarButton))
                     {
-                        Application.OpenURL(ADOSettings.Instance.u_updateChangelog);
+                        Application.OpenURL(ADOSettings.instance.u_updateChangelog);
                     }
 
                     if (ADOEditorUtility.Button("Skip for Today", EditorStyles.toolbarButton))
                     {
-                        ADOSettings.Instance.u_updateHidden.value = true;
+                        ADOSettings.instance.u_updateHidden.value = true;
                     }
                 }
             }, RepaintOpenWindows);
@@ -401,7 +401,7 @@ namespace DreadScripts.ADOverhaul
         /// </remarks>
         internal static void DrawAnnouncementBanner()
         {
-            if (ADOSettings.Instance.u_announcementHidden || string.IsNullOrWhiteSpace(ADOSettings.Instance.u_announcement))
+            if (ADOSettings.instance.u_announcementHidden || string.IsNullOrWhiteSpace(ADOSettings.instance.u_announcement))
             {
                 return;
             }
@@ -411,29 +411,29 @@ namespace DreadScripts.ADOverhaul
                 Rect clickArea = EditorGUILayout.GetControlRect(GUILayout.ExpandWidth(true), GUILayout.Height(24f));
 
                 Rect titleRow = clickArea;
-                GUI.Label(titleRow.SliceHorizontal(24f, true), ADOEditorUtility.contents.announcement);
+                GUI.Label(titleRow.SliceLeft(24f, true), ADOEditorUtility.contents.announcement);
                 GUI.Label(titleRow, "Announcement", ADOEditorUtility.styles.title);
 
                 announcementFoldout.FadeGroup(delegate
                 {
                     clickArea.height += 18f;
                     ADOEditorUtility.Separator();
-                    EditorGUILayout.HelpBox(ADOSettings.Instance.u_announcement, MessageType.Info);
+                    EditorGUILayout.HelpBox(ADOSettings.instance.u_announcement, MessageType.Info);
 
                     using (new GUILayout.HorizontalScope())
                     {
-                        if (!string.IsNullOrWhiteSpace(ADOSettings.Instance.u_announcementLink) &&
-                            ADOEditorUtility.Button(ADOSettings.Instance.u_announcementLinkName, EditorStyles.toolbarButton))
+                        if (!string.IsNullOrWhiteSpace(ADOSettings.instance.u_announcementLink) &&
+                            ADOEditorUtility.Button(ADOSettings.instance.u_announcementLinkName, EditorStyles.toolbarButton))
                         {
-                            Application.OpenURL(ADOSettings.Instance.u_announcementLink);
+                            Application.OpenURL(ADOSettings.instance.u_announcementLink);
                         }
 
                         // Dismissal is stamped with the moment it happened, so
                         // ApplyCachedUpdateInfo can expire it a week later.
                         if (ADOEditorUtility.Button("Hide", EditorStyles.toolbarButton))
                         {
-                            ADOSettings.Instance.u_announcementHidden.value = true;
-                            ADOSettings.Instance.u_announcementHiddenDate.value = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+                            ADOSettings.instance.u_announcementHidden.value = true;
+                            ADOSettings.instance.u_announcementHiddenDate.value = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
                         }
                     }
                 }, RepaintOpenWindows);
@@ -471,20 +471,20 @@ namespace DreadScripts.ADOverhaul
         /// </remarks>
         internal static void ApplyCachedUpdateInfo(bool userRequested)
         {
-            if (ADOSettings.Instance.u_announcementHidden)
+            if (ADOSettings.instance.u_announcementHidden)
             {
-                if (DateTime.TryParse(ADOSettings.Instance.u_announcementHiddenDate, CultureInfo.InvariantCulture,
+                if (DateTime.TryParse(ADOSettings.instance.u_announcementHiddenDate, CultureInfo.InvariantCulture,
                         DateTimeStyles.AssumeUniversal, out DateTime hiddenAt))
                 {
-                    ADOSettings.Instance.u_announcementHidden.value = (DateTime.UtcNow - hiddenAt).TotalDays < 7.0;
+                    ADOSettings.instance.u_announcementHidden.value = (DateTime.UtcNow - hiddenAt).TotalDays < 7.0;
                 }
                 else
                 {
-                    ADOSettings.Instance.u_announcementHidden.value = false;
+                    ADOSettings.instance.u_announcementHidden.value = false;
                 }
             }
 
-            if (!(version < new SemVer(ADOSettings.Instance.u_updateVersion.value)))
+            if (!(version < new SemVer(ADOSettings.instance.u_updateVersion.value)))
             {
                 if (userRequested)
                 {
@@ -492,13 +492,13 @@ namespace DreadScripts.ADOverhaul
                     Task.Run(async delegate
                     {
                         await Task.Delay(3000);
-                        ADOSettings.Instance.u_updateHidden.value = true;
+                        ADOSettings.instance.u_updateHidden.value = true;
                         RepaintOpenWindowsDelayed();
                     });
                 }
                 else
                 {
-                    ADOSettings.Instance.u_updateHidden.value = true;
+                    ADOSettings.instance.u_updateHidden.value = true;
                 }
 
                 return;
@@ -507,15 +507,15 @@ namespace DreadScripts.ADOverhaul
             updateAvailable = true;
             if (userRequested)
             {
-                ADOSettings.Instance.u_updateHidden.value = false;
+                ADOSettings.instance.u_updateHidden.value = false;
                 updateFoldout.target = true;
             }
 
             // Only announced in the console when the banner is actually visible, so a user who
             // dismissed it is not told again on every domain reload.
-            if (!ADOSettings.Instance.u_updateHidden)
+            if (!ADOSettings.instance.u_updateHidden)
             {
-                Log($"Update Available! <b>(v{ADOSettings.Instance.u_updateVersion})</b>");
+                Log($"Update Available! <b>(v{ADOSettings.instance.u_updateVersion})</b>");
             }
         }
 
@@ -544,7 +544,7 @@ namespace DreadScripts.ADOverhaul
                 if (ADOEditorUtility.ClickArea())
                 {
                     foldout.target = !foldout.target;
-                    if (!ADOSettings.Instance.editorAnimatedFoldouts)
+                    if (!ADOSettings.instance.editorAnimatedFoldouts)
                     {
                         foldout.value = foldout.target;
                     }
@@ -600,7 +600,7 @@ namespace DreadScripts.ADOverhaul
         /// </para>
         /// <para>
         /// Note that the picker only reports a cell on repaint events (see
-        /// <see cref="ADOEditorUtility.DrawAnchorPicker"/>), so what is stored is the cell hovered on
+        /// <see cref="ADOEditorUtility.AnchorPicker"/>), so what is stored is the cell hovered on
         /// the last repaint before the drag ended rather than the one under the cursor at
         /// mouse-up.
         /// </para>
@@ -608,14 +608,14 @@ namespace DreadScripts.ADOverhaul
         internal static void DrawOverlay(SceneView sceneView, Func<Rect> drawHeader, Action body, float width, float height)
         {
             Rect sceneViewRect = sceneView.GetSceneViewRect();
-            PositionFlag alignment = ADOSettings.Instance.toolOverlayAlignment.GetEnumValue<PositionFlag>();
+            PositionFlag alignment = ADOSettings.instance.toolOverlayAlignment.GetEnumValue<PositionFlag>();
 
             bool isDragging;
             using (new SceneViewPanel(sceneView, width, height, alignment, sceneViewPanelResizeHandle))
             {
                 Rect dragHandle = drawHeader();
                 ADOEditorUtility.AddCursorRect(dragHandle, MouseCursor.Pan);
-                isDragging = ADOEditorUtility.CaptureHotControl(dragHandle, tooltipDragControlId);
+                isDragging = ADOEditorUtility.HasMouseCapture(dragHandle, tooltipDragControlId);
 
                 if (body != null)
                 {
@@ -627,7 +627,7 @@ namespace DreadScripts.ADOverhaul
             if (isDragging)
             {
                 Handles.BeginGUI();
-                ADOSettings.Instance.toolOverlayAlignment.IntValue = (int)ADOEditorUtility.DrawAnchorPicker(alignment, sceneViewRect);
+                ADOSettings.instance.toolOverlayAlignment.IntValue = (int)ADOEditorUtility.AnchorPicker(alignment, sceneViewRect);
                 Handles.EndGUI();
             }
         }
@@ -697,7 +697,7 @@ namespace DreadScripts.ADOverhaul
                     Application.OpenURL("https://dreadrith.com/links");
                 }
 
-                ADOEditorUtility.DrawLinkUnderline();
+                ADOEditorUtility.MarkAsLink();
             }
         }
     }

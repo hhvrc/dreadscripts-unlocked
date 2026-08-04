@@ -9,6 +9,7 @@
 //
 // Each decompiled field spells the assembly-qualified name out in full; the identical suffix is
 // factored into a const below, which the compiler folds back into exactly the same literals.
+// Audit status: VERIFIED against export member-by-member (2026-08-04). All 15 resolver fields present.
 
 namespace DreadScripts.ControllerEditor
 {

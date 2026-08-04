@@ -11,7 +11,7 @@
 //   getDistances      -> distanceFunc   (ControllerEditor already called it distanceFunc)
 //   DrawDefault       -> DrawDefault
 //   Create            -> Create
-//   FindStatus(...)   -> DrawSceneLabel (see note below)
+//   FindStatus(...)   -> DrawSceneLabel, line 3616 (see note below)
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
@@ -147,11 +147,12 @@ namespace DreadScripts.Common
         /// </param>
         /// <remarks>
         /// Both products carry this as a static helper on their editor-utility class (FindStatus in
-        /// ADOverhaul, CreateQueue in ControllerEditor). It is duplicated here as a private member
-        /// rather than delegated to either, so that a type shared by both products does not depend
-        /// on one of them. See the file header for why the ADOverhaul copy is not called from here.
+        /// ADOverhaul, CreateQueue in ControllerEditor), so this is the shared copy rather than a
+        /// third one. It was private while the utility regions were unported; ADOEditorUtility has
+        /// since landed and deliberately did not port FindStatus again, and the ADOverhaul root
+        /// class calls it directly in three places, so it is internal now.
         /// </remarks>
-        private static void DrawSceneLabel(string text, Vector3 worldPosition, float offset = 0f, GUIStyle style = null)
+        internal static void DrawSceneLabel(string text, Vector3 worldPosition, float offset = 0f, GUIStyle style = null)
         {
             if (style == null)
             {

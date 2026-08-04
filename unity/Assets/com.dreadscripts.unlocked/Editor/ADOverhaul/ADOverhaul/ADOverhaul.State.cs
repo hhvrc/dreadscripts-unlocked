@@ -167,7 +167,7 @@ namespace DreadScripts.ADOverhaul
     /// This file declares that shared state and nothing else; the members that read and write it are
     /// ported into sibling <c>ADOverhaul.*.cs</c> files.
     /// </remarks>
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         #region PhysBone driver reflection
 

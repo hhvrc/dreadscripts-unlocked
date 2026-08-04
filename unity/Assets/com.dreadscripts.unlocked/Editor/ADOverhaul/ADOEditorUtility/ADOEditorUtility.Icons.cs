@@ -3,6 +3,10 @@
 //   static DefineVal -> TrimTransparentBorder,  line 3837
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and member
 // names are the durable reference.
+// Audit status: VERIFIED against export -- both bodies were re-checked statement by statement
+// against lines 3837-3925 on 2026-08-04 and match. The one structural difference is the
+// degenerate-size guard, which the export writes as `if (w >= 1 && h >= 1) { work } LogError;
+// return null;` and this file writes as an early-out; same behaviour.
 //
 // 2019 vs 2022: the same two methods (2019 lines 4023 and 3941, under different obfuscated names).
 // Two decompilation differences, neither of them behavioural:

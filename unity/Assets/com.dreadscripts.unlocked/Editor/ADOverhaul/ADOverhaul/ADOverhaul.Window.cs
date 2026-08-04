@@ -22,7 +22,7 @@
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         /// <summary>
         /// Re-reads the open scenes' avatar descriptors and, if no avatar was selected yet, picks

@@ -13,6 +13,7 @@
 // The accessors above are marked [SpecialName] in the shipped assembly, and ExpressionsMenuBinding
 // carries [DefaultMember("Item")]: they are properties and an indexer that the obfuscator stripped
 // back to methods, restored here.
+// Audit status: VERIFIED against export member-by-member (2026-08-04).
 
 using UnityEditor;
 using UnityEngine;

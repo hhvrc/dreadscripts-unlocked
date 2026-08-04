@@ -10,6 +10,7 @@
 // Both types carry [DefaultMember("Item")] and their accessors are marked [SpecialName] in the
 // shipped assembly: they were indexers that the obfuscator stripped back to methods named Item, and
 // they are restored as indexers here.
+// Audit status: VERIFIED against export member-by-member (2026-08-04).
 
 using UnityEditor;
 using UnityEngine;

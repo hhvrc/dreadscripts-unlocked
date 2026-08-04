@@ -4,6 +4,12 @@
 //   static field _AttributeSerializer -> stylesInstance,    line 2078
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
+// Audit status: VERIFIED against export -- all 24 members, every property set on each style and
+// the order of the three toggle-state colours were re-checked against lines 667-835 on 2026-08-04
+// and match.
+// One deliberate deviation, recorded here rather than left implicit: the backing field
+// (_AttributeSerializer) is `internal` in the shipped build and `private` here. Nothing but the
+// accessor reads it in either assembly.
 //
 // 2019 vs 2022: identical apart from obfuscated member names and the polarity the decompiler chose
 // for the isProSkin ternaries (`isProSkin ? gray : note` in one build, `!isProSkin ? note : gray`

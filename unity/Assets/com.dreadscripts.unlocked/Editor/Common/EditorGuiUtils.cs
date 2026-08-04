@@ -127,11 +127,12 @@ namespace DreadScripts.Common
         /// </remarks>
         internal static Texture2D GetColorTexture(Color color)
         {
-            // NOTE: the decompiled source has `while (true) { colorTexture = new Texture2D(...); }`
+            // DEOBF-BUG(resolved): export/ has `while (true) { colorTexture = new Texture2D(...); }`
             // here, which would hang the editor on the first call and so cannot be what shipped --
-            // the support window demonstrably draws. Ported as the plainly intended one-shot
-            // initialisation; flagged here because it is the one place this file is not a literal
-            // transcription.
+            // the support window demonstrably draws. Ported as the one-shot lazy initialisation the
+            // surrounding code requires. The same de4dot fault is confirmed elsewhere: on
+            // AnimatorTypeCache.ParameterEntry.Source, tracing the original Reactor IL showed a
+            // plain `if` that de4dot had turned into a `while`. Recheck if that recovery is fixed.
             if (colorTexture == null)
             {
                 colorTexture = new Texture2D(1, 1, TextureFormat.RGBAFloat, false)

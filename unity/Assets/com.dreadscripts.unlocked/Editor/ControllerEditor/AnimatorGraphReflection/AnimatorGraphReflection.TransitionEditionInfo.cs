@@ -18,6 +18,9 @@
 // Deliberately not ported: the static field LogoutStruct and the method FindStruct (lines 714 and
 // 774), which are obfuscator scaffolding — a never-assigned object compared against null by a
 // method nothing calls. They carry no behaviour.
+// Audit status: VERIFIED against export member-by-member (2026-08-04).
+// Note: the constructor reproduces the vendor copy-paste bug where isDefaultTransition reads the
+// isAnyStateTransition ref (RE_NOTES 'Vendor bugs'). Preserved faithfully, not corrected.
 
 using System.Reflection;
 using UnityEditor.Animations;

@@ -233,7 +233,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         /// <summary>
         /// Opens or closes the bug reporter's takeover panel, clearing the reporter's captured error

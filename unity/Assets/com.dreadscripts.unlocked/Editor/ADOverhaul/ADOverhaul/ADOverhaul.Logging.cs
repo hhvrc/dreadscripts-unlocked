@@ -78,7 +78,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         /// <summary>
         /// Writes <paramref name="message"/> to the console behind a tinted "[ADOverhaul]" prefix,

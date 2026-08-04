@@ -112,7 +112,7 @@ using VRC.SDK3.Dynamics.Contact.Components;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         /// <summary>
         /// Rebuilds everything the inspectors derive from <see cref="selectedAvatar"/>: the playable
@@ -131,7 +131,7 @@ namespace DreadScripts.ADOverhaul
         /// </remarks>
         private static void RefreshAvatarTables()
         {
-            ADOEditorUtility.GetPlayableLayerOptions(selectedAvatar, ref avatarPlayableLayerNames, ref avatarPlayableLayerTypes);
+            ADOEditorUtility.GetPopulatedPlayableLayers(selectedAvatar, ref avatarPlayableLayerNames, ref avatarPlayableLayerTypes);
             if (!selectedAvatar)
             {
                 avatarParameterNames = Array.Empty<string>();

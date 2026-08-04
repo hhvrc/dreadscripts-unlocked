@@ -44,18 +44,18 @@
 //   ADOEditorUtility.ComputeStatus -> ADOEditorUtility.SubmitPressed
 //   ADOEditorUtility.AssetStatus   -> ADOEditorUtility.IconSpacer
 //   ADOEditorUtility.InsertStatus  -> ADOEditorUtility.AddCursorRect
-//   ADOEditorUtility.VisitStatus   -> ADOEditorUtility.CaptureHotControl
+//   ADOEditorUtility.VisitStatus   -> ADOEditorUtility.HasMouseCapture
 //   ADOEditorUtility.DisableStatus -> ADOEditorUtility.Separator
-//   ADOEditorUtility.RunStatus     -> ADOEditorUtility.DrawAnchorPicker
-//   ADOEditorUtility.ConnectStatus -> ADOEditorUtility.DrawTransformHandles
+//   ADOEditorUtility.RunStatus     -> ADOEditorUtility.AnchorPicker
+//   ADOEditorUtility.ConnectStatus -> ADOEditorUtility.TransformHandles
 //   ADOEditorUtility.SetupStatus   -> ADOEditorUtility.MapComponents
 //   ADOEditorUtility.PositionFlag / SceneViewPanel / SceneView.AddStatus
 //                                  -> DreadScripts.Common.PositionFlag / SceneViewPanel /
 //                                     SceneViewExtensions.GetSceneViewRect
 //   NewIdentifier (7806)           -> ADOverhaul.Log (ADOverhaul.Logging.cs)
 //   PublishIdentifier (8290)       -> ADOverhaul.DrawSettingsButton (ADOverhaul.Menus.cs)
-//   ADOSettings.Instance() / .GetValue() / .SetValue(x)
-//                                  -> ADOSettings.Instance (a property) / .value
+//   ADOSettings.instance() / .GetValue() / .SetValue(x)
+//                                  -> ADOSettings.instance (a property) / .value
 //
 // ────────────────────────────── WHAT THIS REGION ACTUALLY IS ──────────────────────────────
 //
@@ -204,7 +204,7 @@ using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         #region Shape-handle overlay
 
@@ -256,7 +256,7 @@ namespace DreadScripts.ADOverhaul
             void DrawFramedPanel(float width, float height)
             {
                 Rect sceneViewRect = sceneView.GetSceneViewRect();
-                PositionFlag alignment = ADOSettings.Instance.toolOverlayAlignment.GetEnumValue<PositionFlag>();
+                PositionFlag alignment = ADOSettings.instance.toolOverlayAlignment.GetEnumValue<PositionFlag>();
 
                 bool headerDragged;
                 using (new SceneViewPanel(sceneView, width, height, alignment, sceneViewPanelResizeHandle))
@@ -274,7 +274,7 @@ namespace DreadScripts.ADOverhaul
                     }
 
                     ADOEditorUtility.AddCursorRect(titleRect, MouseCursor.Pan);
-                    headerDragged = ADOEditorUtility.CaptureHotControl(titleRect, tooltipDragControlId);
+                    headerDragged = ADOEditorUtility.HasMouseCapture(titleRect, tooltipDragControlId);
 
                     ADOEditorUtility.Separator(2, 0);
                     DrawShapeEditToggles();
@@ -286,8 +286,8 @@ namespace DreadScripts.ADOverhaul
                 if (headerDragged)
                 {
                     Handles.BeginGUI();
-                    ADOSettings.Instance.toolOverlayAlignment.IntValue =
-                        (int)ADOEditorUtility.DrawAnchorPicker(alignment, sceneViewRect);
+                    ADOSettings.instance.toolOverlayAlignment.IntValue =
+                        (int)ADOEditorUtility.AnchorPicker(alignment, sceneViewRect);
                     Handles.EndGUI();
                 }
             }
@@ -451,7 +451,7 @@ namespace DreadScripts.ADOverhaul
         {
             // Seeded, not assigned: a prompt already dismissed earlier in this domain stays dismissed
             // even when the persisted "don't ask again" is off.
-            hasShownColliderRestartPrompt |= ADOSettings.Instance.hasReadColliderTestingWarning;
+            hasShownColliderRestartPrompt |= ADOSettings.instance.hasReadColliderTestingWarning;
 
             selectedObjectsBeforeTest = Selection.gameObjects;
             activeObjectBeforeTest = Selection.activeGameObject;
@@ -761,21 +761,21 @@ namespace DreadScripts.ADOverhaul
             }
 
             // ORed, not assigned: turning the setting off does not reveal tools something else hid.
-            Tools.hidden |= ADOSettings.Instance.hideToolsDuringTesting;
+            Tools.hidden |= ADOSettings.instance.hideToolsDuringTesting;
 
             EditorApplication.playModeStateChanged -= StopTestModeOnEnteringPlayMode;
             EditorApplication.playModeStateChanged += StopTestModeOnEnteringPlayMode;
 
             if (testRoot != null)
             {
-                ADOEditorUtility.DrawTransformHandles(
+                ADOEditorUtility.TransformHandles(
                     testRoot.transform,
                     forceMove: true,
                     forceRotate: true,
                     forceScale: false,
-                    disableMove: false,
-                    disableRotate: false,
-                    disableScale: true);
+                    suppressMove: false,
+                    suppressRotate: false,
+                    suppressScale: true);
             }
 
             DrawFramedPanel(200f, 104f);
@@ -785,7 +785,7 @@ namespace DreadScripts.ADOverhaul
             void DrawFramedPanel(float width, float height)
             {
                 Rect sceneViewRect = sceneView.GetSceneViewRect();
-                PositionFlag alignment = ADOSettings.Instance.toolOverlayAlignment.GetEnumValue<PositionFlag>();
+                PositionFlag alignment = ADOSettings.instance.toolOverlayAlignment.GetEnumValue<PositionFlag>();
 
                 bool headerDragged;
                 using (new SceneViewPanel(sceneView, width, height, alignment, sceneViewPanelResizeHandle))
@@ -793,7 +793,7 @@ namespace DreadScripts.ADOverhaul
                     Rect titleRect;
                     using (new GUILayout.HorizontalScope())
                     {
-                        bool toolsHidden = ADOSettings.Instance.hideToolsDuringTesting;
+                        bool toolsHidden = ADOSettings.instance.hideToolsDuringTesting;
                         string tooltip = toolsHidden
                             ? "Native tools are hidden during test."
                             : "Native tools are visible during test.";
@@ -802,7 +802,7 @@ namespace DreadScripts.ADOverhaul
                         {
                             if (ADOEditorUtility.IconButton(new GUIContent(ADOEditorUtility.contents.customTool) { tooltip = tooltip }))
                             {
-                                ADOSettings.Instance.hideToolsDuringTesting.Toggle();
+                                ADOSettings.instance.hideToolsDuringTesting.Toggle();
 
                                 // Cleared unconditionally, including when hiding was just switched
                                 // on -- the OR at the top of this method puts it back on the next
@@ -819,7 +819,7 @@ namespace DreadScripts.ADOverhaul
                     }
 
                     ADOEditorUtility.AddCursorRect(titleRect, MouseCursor.Pan);
-                    headerDragged = ADOEditorUtility.CaptureHotControl(titleRect, tooltipDragControlId);
+                    headerDragged = ADOEditorUtility.HasMouseCapture(titleRect, tooltipDragControlId);
 
                     ADOEditorUtility.Separator(2, 0);
                     DrawTestModeButtons();
@@ -828,8 +828,8 @@ namespace DreadScripts.ADOverhaul
                 if (headerDragged)
                 {
                     Handles.BeginGUI();
-                    ADOSettings.Instance.toolOverlayAlignment.IntValue =
-                        (int)ADOEditorUtility.DrawAnchorPicker(alignment, sceneViewRect);
+                    ADOSettings.instance.toolOverlayAlignment.IntValue =
+                        (int)ADOEditorUtility.AnchorPicker(alignment, sceneViewRect);
                     Handles.EndGUI();
                 }
             }
@@ -929,7 +929,7 @@ namespace DreadScripts.ADOverhaul
                     break;
 
                 case 2:
-                    ADOSettings.Instance.hasReadColliderTestingWarning.value = true;
+                    ADOSettings.instance.hasReadColliderTestingWarning.value = true;
                     break;
             }
         }

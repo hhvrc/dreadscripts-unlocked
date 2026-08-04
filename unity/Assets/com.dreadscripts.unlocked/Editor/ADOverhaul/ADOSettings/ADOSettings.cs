@@ -5,7 +5,7 @@
 //
 // decompiled member -> ported member, line N:
 //   ADOSettings                       -> ADOSettings,                     751
-//   [SpecialName] Instance()          -> Instance (property),            1568
+//   [SpecialName] instance()          -> instance (property),            1568
 //   private ADOSettings()             -> ADOSettings(),                  1577
 //   [SpecialName] StateColors()       -> StateColors (property),         1678
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
@@ -23,7 +23,7 @@
 //
 // Note that decompiled ADOSettings call sites read `GetValue()`/`SetValue(x)` where the Common port
 // exposes a `value` property -- those were [SpecialName] property accessors in the original, and the
-// port restored them. `ADOSettings.Instance()` and `StateColors()` are the same artifact and are
+// port restored them. `ADOSettings.instance()` and `StateColors()` are the same artifact and are
 // properties here.
 //
 // This type is the twin of ControllerEditor's EditorSettings (Editor/ControllerEditor/EditorSettings/),
@@ -63,10 +63,10 @@ namespace DreadScripts.ADOverhaul
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A single instance, reachable through <see cref="Instance"/>, holds the lot. Each field is a
+    /// A single settingsInstance, reachable through <see cref="instance"/>, holds the lot. Each field is a
     /// <see cref="SettingBase"/> that writes the whole block out the moment it is assigned, so there
     /// is no explicit save step anywhere in the tool -- see <see cref="SettingsPersistence"/> for how
-    /// that is kept affordable, and <see cref="WriteToPrefs"/> for where it lands.
+    /// that is kept affordable, and <see cref="Serialize"/> for where it lands.
     /// </para>
     /// <para>
     /// Unlike ControllerEditor's twin, ADOverhaul declares no
@@ -84,29 +84,29 @@ namespace DreadScripts.ADOverhaul
             // The framework's Save() fans out to whoever is listening; this is where this product's
             // serializer joins in. Running from the static constructor is enough because nothing can
             // reach a setting -- and so nothing can request a save -- without first touching this
-            // type through Instance.
-            SettingsPersistence.onSave += WriteToPrefs;
+            // type through instance.
+            SettingsPersistence.onSave += Serialize;
         }
 
         /// <summary>
         /// The one settings block, loaded from <see cref="UnityEditor.EditorPrefs"/> on first use.
         /// </summary>
-        internal static ADOSettings Instance
+        internal static ADOSettings instance
         {
             get
             {
-                if (instance == null)
+                if (settingsInstance == null)
                 {
                     Load();
                 }
 
-                return instance;
+                return settingsInstance;
             }
         }
 
         /// <remarks>
         /// Private so that the singleton is the only way in. The constructor's one job is to fill the
-        /// static <see cref="nonSerializedSettingFields"/> cache, which every save and load then
+        /// static <see cref="nonSerializedFields"/> cache, which every save and load then
         /// reads -- see <see cref="Load"/> for why that coupling is more delicate than it looks.
         /// </remarks>
         private ADOSettings()

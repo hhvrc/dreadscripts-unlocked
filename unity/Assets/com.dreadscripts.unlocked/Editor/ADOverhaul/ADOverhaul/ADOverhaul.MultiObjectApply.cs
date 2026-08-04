@@ -13,7 +13,7 @@
 // deferred there: NewConfiguration (6272, the toggle) and CompareConfiguration (6290, the restart).
 // ADOSettings, which used to block InsertConfiguration as well, has since landed at
 // Editor/ADOverhaul/ADOSettings/ and is no longer an obstacle -- the one setting it needs reads and
-// writes as `ADOSettings.Instance.hasReadColliderTestingWarning.value`, whose setter persists on its
+// writes as `ADOSettings.instance.hasReadColliderTestingWarning.value`, whose setter persists on its
 // own, so the decompiled `.SetValue(true)` plus save is a single assignment here.
 //
 // When they land, both take `internal` for the same reason as the member below: their call sites are
@@ -61,7 +61,7 @@ using UnityEngine;
 
 namespace DreadScripts.ADOverhaul
 {
-    internal static partial class ADOverhaul
+    internal sealed partial class ADOverhaul
     {
         /// <summary>
         /// Commits an inspector's pending edits and reports whether there were any, marking each of

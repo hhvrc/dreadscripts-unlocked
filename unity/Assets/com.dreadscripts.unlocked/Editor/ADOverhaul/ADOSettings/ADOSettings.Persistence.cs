@@ -2,13 +2,13 @@
 // Ported region: the persistence half of the nested `ADOSettings` class, lines 1428-1676.
 //
 // decompiled member -> ported member, line N:
-//   Save()                 -> WriteToPrefs(),                     1585
+//   Save()                 -> Serialize(),                     1585
 //   Load()                 -> Load(),                             1613
 //   PromptClear()          -> PromptClear(),                      1654
 //   Clear()                -> Clear(),                            1662
 //   onCleared              -> onCleared,                          1436
-//   nonSerializedFields    -> nonSerializedSettingFields,          1432
-//   instance               -> instance,                           1434
+//   nonSerializedFields    -> nonSerializedFields,          1432
+//   settingsInstance               -> settingsInstance,                           1434
 //   "No1lKII9IzcBAbihub6nCg==SettingsJSON" (inline, 1610, 1617 and 1619) -> prefsKey
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
@@ -16,7 +16,7 @@
 // The deferral/pending-save half of the shipped Save -- the `savePending`, `deferred` and
 // `_ProxyIdentifier` statics, the `IsDeferred`/`SetDeferred` [SpecialName] accessors (1551/1557) and
 // the branches that read them -- is NOT here: it was already ported to
-// DreadScripts.Common.SettingsPersistence, shared with ControllerEditor. WriteToPrefs is what is
+// DreadScripts.Common.SettingsPersistence, shared with ControllerEditor. Serialize is what is
 // left once those are removed, and it is subscribed to SettingsPersistence.onSave by the static
 // constructor in ADOSettings.cs. Callers that used to call ADOSettings.Save() call
 // SettingsPersistence.Save().
@@ -55,7 +55,7 @@ namespace DreadScripts.ADOverhaul
         /// Separates the entries of the stored envelope. Three zero-width spaces, chosen so that the
         /// delimiter cannot occur in a JSON payload written by Unity.
         /// </summary>
-        private const string entrySeparator = "​​​";
+        private const string entryTerminator = "​​​";
 
         /// <summary>Matches one <c>name[payload]</c> entry of the envelope.</summary>
         private const string entryPattern = "(\\w+)\\[(.*?)\\]\\u200B\\u200B\\u200B";
@@ -64,19 +64,19 @@ namespace DreadScripts.ADOverhaul
         private const string mainEntry = "MAIN";
 
         /// <summary>
-        /// Raised after <see cref="Clear"/> has replaced the instance, for anything holding derived
+        /// Raised after <see cref="Clear"/> has replaced the settingsInstance, for anything holding derived
         /// state that has to be rebuilt against the new one.
         /// </summary>
         /// <remarks>
         /// Nothing in either shipped build subscribes; it exists as the seam the settings window
         /// would have used. Kept because it is the only notification a caller gets that
-        /// <see cref="Instance"/> now refers to a different object.
+        /// <see cref="instance"/> now refers to a different object.
         /// </remarks>
         internal static Action onCleared;
 
-        private static FieldInfo[] nonSerializedSettingFields;
+        private static FieldInfo[] nonSerializedFields;
 
-        private static ADOSettings instance;
+        private static ADOSettings settingsInstance;
 
         /// <summary>
         /// Collects the fields marked <see cref="NonSerializedSettingAttribute"/>, which are persisted
@@ -90,7 +90,7 @@ namespace DreadScripts.ADOverhaul
         /// </remarks>
         private static void CacheNonSerializedSettingFields()
         {
-            nonSerializedSettingFields = typeof(ADOSettings)
+            nonSerializedFields = typeof(ADOSettings)
                 .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                 .Where(f => f.IsDefined(typeof(NonSerializedSettingAttribute), false))
                 .ToArray();
@@ -103,7 +103,7 @@ namespace DreadScripts.ADOverhaul
         /// <remarks>
         /// <para>
         /// The stored form is an envelope of <c>name[payload]</c> entries separated by
-        /// <see cref="entrySeparator"/>: one <c>MAIN</c> entry holding
+        /// <see cref="entryTerminator"/>: one <c>MAIN</c> entry holding
         /// <see cref="JsonUtility.ToJson(object)"/> of the settings object, then one entry per
         /// <see cref="NonSerializedSettingAttribute"/> field holding
         /// <see cref="EditorJsonUtility.ToJson(object)"/> of that field's value. The extra layer
@@ -116,16 +116,16 @@ namespace DreadScripts.ADOverhaul
         /// user the rest of their settings.
         /// </para>
         /// </remarks>
-        private static void WriteToPrefs()
+        private static void Serialize()
         {
-            StringBuilder envelope = new StringBuilder(mainEntry + "[" + JsonUtility.ToJson(Instance) + "]" + entrySeparator);
+            StringBuilder envelope = new StringBuilder(mainEntry + "[" + JsonUtility.ToJson(instance) + "]" + entryTerminator);
 
-            foreach (FieldInfo field in nonSerializedSettingFields)
+            foreach (FieldInfo field in nonSerializedFields)
             {
                 try
                 {
-                    string json = EditorJsonUtility.ToJson(field.GetValue(Instance));
-                    envelope.Append(field.Name + "[" + json + "]" + entrySeparator);
+                    string json = EditorJsonUtility.ToJson(field.GetValue(instance));
+                    envelope.Append(field.Name + "[" + json + "]" + entryTerminator);
                 }
                 catch (Exception e)
                 {
@@ -137,7 +137,7 @@ namespace DreadScripts.ADOverhaul
         }
 
         /// <summary>
-        /// Builds <see cref="instance"/> from <see cref="EditorPrefs"/>, or from the field
+        /// Builds <see cref="settingsInstance"/> from <see cref="EditorPrefs"/>, or from the field
         /// initialisers if there is nothing stored.
         /// </summary>
         /// <remarks>
@@ -150,8 +150,8 @@ namespace DreadScripts.ADOverhaul
         /// <para>
         /// SHIPPED BEHAVIOUR, preserved: two ways this can throw. A malformed envelope with a repeated
         /// entry name makes <see cref="Dictionary{TKey,TValue}.Add"/> throw rather than discarding the
-        /// block. And the loop over <see cref="nonSerializedSettingFields"/> assumes the cache is
-        /// already filled, which holds only because every path to here runs the instance constructor
+        /// block. And the loop over <see cref="nonSerializedFields"/> assumes the cache is
+        /// already filled, which holds only because every path to here runs the settingsInstance constructor
         /// first -- <see cref="JsonUtility.FromJson{T}(string)"/> invokes the parameterless
         /// constructor, and the fallback constructs directly.
         /// </para>
@@ -177,32 +177,32 @@ namespace DreadScripts.ADOverhaul
 
             if (entries.TryGetValue(mainEntry, out string main))
             {
-                instance = JsonUtility.FromJson<ADOSettings>(main);
+                settingsInstance = JsonUtility.FromJson<ADOSettings>(main);
             }
 
-            if (instance == null)
+            if (settingsInstance == null)
             {
-                instance = new ADOSettings();
+                settingsInstance = new ADOSettings();
             }
 
-            foreach (FieldInfo field in nonSerializedSettingFields)
+            foreach (FieldInfo field in nonSerializedFields)
             {
                 // Overwriting an existing object rather than creating one is what lets
                 // EditorJsonUtility restore a Unity object reference at all; it has no way to
                 // construct the target itself.
-                object value = field.GetValue(instance) ?? Activator.CreateInstance(field.FieldType);
+                object value = field.GetValue(settingsInstance) ?? Activator.CreateInstance(field.FieldType);
                 if (entries.TryGetValue(field.Name, out string json))
                 {
                     EditorJsonUtility.FromJsonOverwrite(json, value);
                 }
 
-                field.SetValue(instance, value);
+                field.SetValue(settingsInstance, value);
 
                 // Re-checked through the field because assigning a Unity object that was destroyed
                 // during the overwrite stores something that compares equal to null.
-                if (field.GetValue(instance) == null)
+                if (field.GetValue(settingsInstance) == null)
                 {
-                    field.SetValue(instance, Activator.CreateInstance(field.FieldType));
+                    field.SetValue(settingsInstance, Activator.CreateInstance(field.FieldType));
                 }
             }
         }
@@ -222,10 +222,10 @@ namespace DreadScripts.ADOverhaul
         /// </summary>
         internal static void Clear()
         {
-            instance = new ADOSettings();
-            foreach (FieldInfo field in nonSerializedSettingFields)
+            settingsInstance = new ADOSettings();
+            foreach (FieldInfo field in nonSerializedFields)
             {
-                field.SetValue(instance, Activator.CreateInstance(field.FieldType));
+                field.SetValue(settingsInstance, Activator.CreateInstance(field.FieldType));
             }
 
             onCleared?.Invoke();
