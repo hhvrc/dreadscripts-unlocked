@@ -11,10 +11,12 @@
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
-// ILSpy rendered ControllerEditor's copy of the y-offset as `while (true) { rect.y += 40f; }` --
-// an infinite loop that cannot be what shipped, and that both ADOverhaul snapshots render as the
-// plain `if` reproduced here. That is taken as a decompiler artefact rather than a behavioural
-// divergence.
+// DEOBF-BUG(resolved): ControllerEditor's copy of the y-offset comes out as
+// `while (true) { rect.y += 40f; }` -- an infinite loop that cannot be what shipped, and that both
+// ADOverhaul snapshots render as the plain `if` reproduced here. Two independent builds of the same
+// method disagreeing is what settles it. The same de4dot fault is confirmed on
+// AnimatorTypeCache.ParameterEntry.Source, where tracing the original Reactor IL showed a plain `if`
+// turned into a `while`. export/ keeps the loop until that recovery is fixed; do not restore it.
 
 using UnityEditor;
 using UnityEngine;

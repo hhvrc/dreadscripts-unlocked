@@ -248,9 +248,10 @@ namespace DreadScripts.Common
             {
                 value = EditorGUILayout.Slider(label, value, min, max, options);
 
-                // The ControllerEditor decompilation has `while` rather than `if` here, which would
-                // spin forever on the click; ADOverhaul's copy of the same method has `if`, so the
-                // `while` is a decompiler artefact.
+                // DEOBF-BUG(resolved): the ControllerEditor export has `while` rather than `if`
+                // here, which would spin forever on the click; ADOverhaul's copy of the same method
+                // has `if`, so the `while` is a de4dot control-flow-recovery fault. Same fault
+                // confirmed against the original IL on AnimatorTypeCache.ParameterEntry.Source.
                 if (showReset && DrawResetButton())
                 {
                     Reset();

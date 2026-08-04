@@ -44,9 +44,14 @@ namespace DreadScripts.ControllerEditor
 
         /// <summary>The resolved type, or null if the name could not be resolved.</summary>
         /// <remarks>
-        /// de4dot could not recover this body — the shipped build decompiles to an empty infinite
-        /// loop where the lookup used to be. What remains is reconstructed from the surrounding
-        /// members: the two fields and the "resolve once" flag only admit this shape.
+        /// DEOBF-BUG(guessed): de4dot could not recover this body at all — the shipped build
+        /// decompiles to an empty infinite loop where the lookup used to be, so there is nothing
+        /// here to transcribe. The body below is inferred from the surrounding members: the two
+        /// fields and the "resolve once" flag only admit roughly this shape.
+        /// This is the weakest reconstruction in the package. Unlike the other DEOBF-BUG sites it
+        /// is not backed by a cross-build copy or an IL trace, so the search order and the
+        /// null-handling are plausible rather than established. If de4dot's control-flow recovery
+        /// improves, re-derive this body from the new export/ before trusting it.
         /// </remarks>
         public Type ResolvedType
         {
