@@ -182,7 +182,7 @@ namespace DreadScripts.ControllerEditor
     /// no per-version branches, so it is one shape or nothing.
     /// </para>
     /// </remarks>
-    internal static partial class ControllerEditor
+    internal partial class ControllerEditor
     {
         /// <summary>
         /// The binding flags every lookup in this file uses: any member, public or not, instance or

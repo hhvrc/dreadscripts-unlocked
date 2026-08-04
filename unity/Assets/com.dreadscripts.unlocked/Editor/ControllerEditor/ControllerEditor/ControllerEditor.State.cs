@@ -5,7 +5,7 @@
 // decompiled names below are the durable reference, and every later port of a ControllerEditor
 // member should map its field references through this table rather than re-deriving names.
 //
-// ============================ CORRECTION: THE SHIPPED TYPE IS AN EditorWindow ====================
+// ==================== RESOLVED: THE SHIPPED TYPE IS AN EditorWindow, AND NOW IS ==================
 //
 // ControllerEditor is not a static class in the assembly. It has instance members -- `private void
 // OnGUI()` (line 8583), `private void OnEnable()` (line 8857), `private void CustomizeVisitor()`
@@ -14,24 +14,20 @@
 // is an instance field. It is the tool's *main* window; the ControllerEditorWindow type already in
 // the package is the separate *settings* window that was nested inside it.
 //
-// It is nevertheless reconstructed here as `internal static partial class`, because the sibling
-// ControllerEditor.*.cs files in this folder had already been written that way and a partial type
-// cannot be static in one declaration and not in another. Reversing them was outside this port's
-// scope. The consequence is recorded here rather than hidden:
+// This file originally declared it `internal static partial class` -- not from the source, but
+// because the three sibling ControllerEditor.*.cs files in this folder had been written that way in
+// the same porting wave and a partial type cannot be static in one declaration and not in another.
+// That is now corrected: this declaration carries `: EditorWindow` and the three siblings declare
+// the type without `static` and without a base. Both deviations it forced are gone:
 //
-//   DELIBERATE DEVIATION 1 -- `producerAnnotation` (line 8266) is ported as `static
-//   copyDestination`. Shipped, it is per-window and resets when the window is closed; here it is
-//   process-wide and survives, exactly like the neighbouring settings in the same GUI row already
-//   do. Behaviourally this makes one control in the Copy panel consistent with the ten around it,
-//   which is almost certainly what the author meant, but it is still a change and is not presented
-//   as faithful.
+//   FORMER DEVIATION 1, now withdrawn -- `producerAnnotation` (line 8266) was ported as a `static`
+//   `copyDestination`. It is an instance field again, so the Copy panel's destination is once more
+//   per-window and resets with the window, as shipped.
 //
-//   DELIBERATE DEVIATION 2 -- `OnGUI`, `OnEnable`, `CustomizeVisitor` and the `GetWindow` menu item
-//   cannot be ported at all while the type is static, so the tool's main window is currently
-//   unreachable. Nothing in the package calls them yet, so nothing is broken today, but whoever
-//   ports the window must first change every `internal static partial class ControllerEditor` in
-//   this folder to `internal partial class ControllerEditor : EditorWindow` -- at which point
-//   `copyDestination` should go back to being an instance field and DEVIATION 1 disappears.
+//   FORMER DEVIATION 2, now withdrawn -- the window's own members are portable again. `OnGUI`
+//   (8583), `OnEnable` (8857), `OnDisable` (8842), `OnFocus` (8831) and the `[MenuItem]` entry point
+//   `InterruptWrapper` (8577) are ported in ControllerEditor.Window.cs. `CustomizeVisitor` (11948)
+//   belongs to an unported region and is still outstanding.
 //
 //   -- Window and controller context (decompiled 7962-8016) --
 //   m_Base           -> activeWindow,                     line 7962
@@ -369,11 +365,11 @@ namespace DreadScripts.ControllerEditor
     /// </para>
     /// <para>
     /// The type derives from <see cref="EditorWindow"/> because the shipped one does -- see the file
-    /// header. Only a handful of its members are instance members, and until they are ported the
-    /// window has no <c>OnGUI</c> and will draw empty.
+    /// header. Only a handful of its members are instance members; those, and the menu item that
+    /// opens the window, are in ControllerEditor.Window.cs.
     /// </para>
     /// </remarks>
-    internal static partial class ControllerEditor
+    internal partial class ControllerEditor : EditorWindow
     {
         #region Window and controller context
 
@@ -1179,11 +1175,11 @@ namespace DreadScripts.ControllerEditor
         /// Where a Copy action puts its result.
         /// </summary>
         /// <remarks>
-        /// DELIBERATE DEVIATION: the shipped field is an INSTANCE field (decompiled line 8266) --
-        /// the only one in a class of 267 statics -- and is declared <c>static</c> here. See the
-        /// DELIBERATE DEVIATION block in this file's header for why and for what it changes.
+        /// The only instance field in a class of 267 statics (decompiled line 8266), so unlike the
+        /// scope settings beside it in the same GUI row this one is per-window and resets when the
+        /// window is closed. Kept instance, as shipped.
         /// </remarks>
-        private static MoveDestination copyDestination;
+        private MoveDestination copyDestination;
 
         #endregion
 

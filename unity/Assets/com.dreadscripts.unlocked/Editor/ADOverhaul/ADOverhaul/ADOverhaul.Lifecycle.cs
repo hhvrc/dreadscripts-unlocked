@@ -8,28 +8,42 @@
 //   SetupConfiguration   -> RefreshAvatarParameterNames,  line 6524
 //   SelectConfiguration  -> ResetFoldouts,                line 6536
 //
-// PARTIAL PORT. The rest of the region is left out rather than stubbed, because each member reaches
-// something that is not ported yet. Listed with what it needs, so it is mechanical once those land:
+// PARTIAL PORT. The rest of the region is left out rather than stubbed. This list was written when
+// none of the named blockers existed; most of them have landed since, so each entry now records
+// whether it is still blocked or merely unwritten.
 //
 //   MapConfiguration     line 6480  -- runs an action between a scene-GUI re-subscribe and an avatar
-//                                     rescan. Needs CancelConfiguration (below) and
-//                                     PrintConfiguration (line 6596).
+//                                     rescan. UNBLOCKED except for CancelConfiguration (below),
+//                                     which is itself unblocked: PrintConfiguration (line 6596) is
+//                                     ported as RefreshSceneAvatars in ADOverhaul.AvatarSelection.cs.
 //   FillConfiguration    line 6488  -- a PlayModeStateChange handler; on ExitingEditMode it toggles
 //                                     PhysBone test mode off so the temporary "Physbone Tester"
-//                                     hierarchy does not survive into play mode. Needs
-//                                     NewConfiguration (line 6273).
+//                                     hierarchy does not survive into play mode. NOT MISSING: it is
+//                                     already ported, in ADOverhaul.SceneView.cs, under the
+//                                     deliberately distinct name StopTestModeOnEnteringPlayMode --
+//                                     that file owns its only subscription, so it was declared
+//                                     beside it. Nothing should be added here for it; see that
+//                                     file's header. Its blocker NewConfiguration (line 6272) is
+//                                     ported there too, as ToggleTestMode.
 //   CancelConfiguration  line 6496  -- subscribes or unsubscribes the scene-view shape handles, and
-//                                     on unsubscribe restores Tools.hidden. Needs
-//                                     CalculateConfiguration (line 6060).
-//   WriteConfiguration   line 6552  -- see the [DidReloadScripts] note below. Needs
+//                                     on unsubscribe restores Tools.hidden. UNBLOCKED:
+//                                     CalculateConfiguration (line 6060) is ported as
+//                                     DrawShapeEditOverlay in ADOverhaul.SceneView.cs, whose header
+//                                     notes that landing this member is a one-line change.
+//   WriteConfiguration   line 6552  -- see the [DidReloadScripts] note below. Still blocked. Needs
 //                                     PhysBoneEditor.WriteSingleton,
 //                                     PhysBoneColliderEditor.InsertProperty,
 //                                     ContactSenderEditor.InvokeProperty and
 //                                     ContactReceiverEditor.ReadPage; the two contact editors are
 //                                     not ported as types at all.
-//   MapIdentifier        line 8096  -- see the [InitializeOnLoadMethod] audit below. Needs
-//                                     ConnectSerializer (line 7899), CancelIdentifier (line 8118)
-//                                     and SetupIdentifier (line 8185).
+//   MapIdentifier        line 8096  -- see the [InitializeOnLoadMethod] audit below. Of the three it
+//                                     names, SetupIdentifier (line 8185) is ported as
+//                                     ApplyCachedUpdateInfo in ADOverhaul.Menus.cs and
+//                                     CancelIdentifier (line 8118) is deliberately dropped there as
+//                                     the dead update request -- so only ConnectSerializer
+//                                     (line 7899, the `updateCheckedToday` accessor) is genuinely
+//                                     missing, and the audit below already says this hook should be
+//                                     wired straight to the local half rather than reproduced.
 //
 // ================================ [InitializeOnLoadMethod] audit ================================
 //

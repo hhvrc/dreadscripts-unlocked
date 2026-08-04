@@ -2,6 +2,16 @@
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/GUILayoutUtils.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/SplitterGUIUtils.cs
+//
+// An earlier wave also landed the ControllerEditor source as a standalone
+// Editor/ControllerEditor/SplitterGUIUtils.cs, duplicating all ten members of this type including
+// the five cached reflection statics -- two independent caches of the same internal Unity members,
+// with the same names spelled differently (DrawTitle -> TitleField, DrawHorizontalLine ->
+// DrawHorizontalSeparator, DrawVerticalLine -> DrawVerticalSeparator). That was an oversight rather
+// than a deliberate twin: it had no call sites anywhere in the package, and
+// Editor/Common/EditorGuiUtils.cs already recorded that the ControllerEditor layout companion is not
+// ported because every member of it exists here. The duplicate file has been removed; this type is
+// the single copy, and both products' call sites use it.
 
 using System;
 using System.Reflection;

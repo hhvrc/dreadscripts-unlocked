@@ -61,7 +61,7 @@ using UnityEngine;
 
 namespace DreadScripts.ControllerEditor
 {
-    internal static partial class ControllerEditor
+    internal partial class ControllerEditor
     {
         /// <summary>
         /// Writes <paramref name="message"/> to the console behind a tinted "[Controller Editor]"

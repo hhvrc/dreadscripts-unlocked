@@ -273,7 +273,7 @@ namespace DreadScripts.ControllerEditor
 {
     // Intentionally empty: see the catalogue above. This region of the decompiled source is the
     // licence gate and its chrome, and none of it is reconstructed.
-    internal static partial class ControllerEditor
+    internal partial class ControllerEditor
     {
     }
 }

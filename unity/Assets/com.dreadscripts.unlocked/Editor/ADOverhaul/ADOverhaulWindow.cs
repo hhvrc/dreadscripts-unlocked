@@ -45,11 +45,17 @@
 //   `if (initializer) { BugReporter.DrawWindow(); return false; }` -- the bug reporter's IMGUI.
 //
 // Neither AwakeConfiguration nor BugReporter.DrawWindow is ported (see the DELIBERATELY NOT PORTED
-// block in Common/BugReporter.cs), and neither flag can currently become true: the only thing that
-// sets either is the hamburger menu (InvokeIdentifier, line 7936), which is itself deferred in
-// ADOverhaul.Menus.cs. They are omitted as unreachable-and-unported, not as dead ends -- when the
-// menu and the two panels land, this OnGUI should grow the two guards back at the top of its body,
-// ahead of DrawSettingsGUI.
+// block in Common/BugReporter.cs), so both guards are omitted as unreachable-and-unported rather
+// than as dead ends -- when the two panels land, this OnGUI should grow the guards back at the top
+// of its body, ahead of DrawSettingsGUI.
+//
+// One half of that has since changed and is recorded here so the note is not read as still true:
+// the hamburger menu (InvokeIdentifier, line 7936) HAS landed, as ADOverhaul.ShowContextMenu in
+// ADOverhaul.Menus.cs, and its "Send Feedback" item toggles `feedbackPanelOpen` (the m_Algo flag).
+// So that flag can now become true, and while it is true the shipped build would have replaced this
+// window's contents with the feedback panel. Here it does nothing visible, because
+// AwakeConfiguration -- the panel body -- is still unported. `bugReporterOpen` (the `initializer`
+// flag) remains genuinely unsettable: nothing in the ported menu or anywhere else writes it.
 //
 // GetConfiguration() (decompiled line 7495, called by OnGUI between the separator and the header
 // row) is dropped for the first reason rather than the second. It is a two-box read-only strip
@@ -63,11 +69,18 @@
 // Nothing below is stubbed. Each is a call the decompiled OnGUI makes that this port omits because
 // its target does not exist in the package yet.
 //
+//   banner.Draw(this)  line 81   -- see the field note below. The only genuinely blocked call left
+//                                   in this window; BannerDownloader is still unported.
+//
+// UNBLOCKED, kept out of OnGUI only because nobody has revisited it. Both of the calls this header
+// used to list as deferred have since landed in ADOverhaul.Menus.cs and can be added back to OnGUI
+// as a mechanical change:
+//
 //   SortIdentifier()   line 7904 -- the boxed header row (hamburger button, update-available
-//                                   toggle, "v<version>" label, credit link). Deferred in
-//                                   ADOverhaul.Menus.cs; see that file's header for what it needs.
-//   ConcatIdentifier() line 8059 -- the announcement banner. Deferred in the same place.
-//   banner.Draw(this)  line 81   -- see the field note below.
+//                                   toggle, "v<version>" label, credit link). Ported as
+//                                   ADOverhaul.DrawToolHeader.
+//   ConcatIdentifier() line 8059 -- the announcement banner. Ported as
+//                                   ADOverhaul.DrawAnnouncementBanner.
 //
 // Fields, all `private static`, omitted with their sole readers:
 //   m_Param           line 44  -- selected index for a two-tab toolbar named by `prototype`;
@@ -170,8 +183,11 @@ namespace DreadScripts.ADOverhaul
         /// <remarks>
         /// See the file header: the shipped body wrapped all of this in the licence gate, and
         /// followed the separator with the licence strip, the header row, the announcement banner
-        /// and the artwork. The gate and the licence strip are dropped; the remaining three are
-        /// deferred on unported call targets, which is why the footer is currently empty.
+        /// and the artwork. The gate and the licence strip are dropped. Of the remaining three only
+        /// the artwork is still blocked, on the unported BannerDownloader; the header row and the
+        /// announcement banner have since landed as <see cref="ADOverhaul.DrawToolHeader"/> and
+        /// <see cref="ADOverhaul.DrawAnnouncementBanner"/> and should be restored here. The footer
+        /// is empty until they are.
         /// </remarks>
         private void OnGUI()
         {
