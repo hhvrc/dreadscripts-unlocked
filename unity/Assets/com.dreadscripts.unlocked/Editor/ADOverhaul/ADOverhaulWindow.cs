@@ -15,8 +15,10 @@
 // Resources.FindObjectsOfTypeAll. `internal` keeps all three reachable once they land.
 //
 // PARTIAL PORT. Everything below the window's identity is left out, because every one of these
-// members reaches a member of the unported outer class or of the unported ADOSettings. None of it
-// is stubbed; the list is here so the rest is mechanical once its dependencies land.
+// members reaches a member of the outer ADOverhaul class that is still unported. None of it is
+// stubbed; the list is here so the rest is mechanical once its dependencies land. (ADOSettings has
+// since been ported -- Editor/ADOverhaul/ADOSettings.cs -- so DrawSettingsGUI's dependency on it is
+// met; its remaining blocker is the three foldout bools this file also leaves out.)
 //
 //   OnGUI()                  line 88  -- needs ADOverhaul.FlushConfiguration (line 7515),
 //                                       ADOEditorUtility.DisableStatus (ADOEditorUtility.cs line
@@ -30,9 +32,9 @@
 //                                       the unfinished toolbar the `m_Param`/`prototype` pair below
 //                                       belongs to, and it ends in a
 //                                       HelpBox("Under Development", Info).
-//   DrawSettingsGUI()        line 114 -- needs ADOSettings (line 751) and its Instance() accessor
-//                                       (line 1569), plus eleven GUIContents from
-//                                       ADOEditorUtility.contents and the three foldout bools.
+//   DrawSettingsGUI()        line 114 -- needs eleven GUIContents from ADOEditorUtility.contents
+//                                       and the three foldout bools. ADOSettings and its accessor
+//                                       (now ADOSettings.instance) have landed.
 //   OnEnable()               line 178 -- needs ADOverhaul.PrintConfiguration (line 6596), the
 //                                       static avatar-selection fields m_Predicate (line 5622) and
 //                                       _Collection (line 5624), and ADOverhaul.LogoutConfiguration

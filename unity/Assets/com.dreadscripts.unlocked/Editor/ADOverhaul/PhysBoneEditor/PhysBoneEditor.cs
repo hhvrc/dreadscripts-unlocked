@@ -12,6 +12,7 @@
 //   PhysBoneEditor.ToolModes.cs         -> rulesAuthentication and the [SpecialName] mode accessors, lines 2914-3006
 //   PhysBoneEditor.MembershipStates.cs  -> MoveSingleton / PublishSingleton, lines 3967-4073
 //   PhysBoneEditor.EndpointEditing.cs   -> SearchSingleton / LoginSingleton / PatchSingleton, lines 4301-4361
+//   PhysBoneEditor.GizmoSettings.cs     -> InterruptSingleton, line 4210
 //
 // Members in this file:
 //
@@ -74,7 +75,6 @@
 //   CancelSingleton                             3832   the property-edit scene handles
 //   CollectSingleton                            4075   builds the play-mode parameter readout table
 //   OnEnable / OnDisable                        4089/4106  scene-callback registration and target caching
-//   InterruptSingleton                          4210   pushes the global gizmo settings onto every PhysBone
 //   ViewSingleton                               4224   the "Advanced" integration-type toggle
 //   PostSingleton / ListSingleton               4239/4265  one property + curve + edit-button row
 //   ForgotSingleton                             4273   unused variant of PostSingleton
