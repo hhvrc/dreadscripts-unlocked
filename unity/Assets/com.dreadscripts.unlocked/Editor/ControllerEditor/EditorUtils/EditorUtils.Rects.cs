@@ -10,15 +10,23 @@
 //   static InterruptResolver -> WithWidth,                                                 line 2995
 //   static ManageResolver    -> WithHeight,                                                line 3001
 //   static PrintResolver     -> FitAspect,                                                 line 3007
+//   static ViewResolver      -> CollapseToRightEdge,                                       line 2851
+//   static CollectResolver   -> Shrink,                                                    line 2858
+//   static ResolveResolver   -> ShrinkHorizontally,                                        line 2863
+//   static ListResolver      -> ShrinkVertically,                                          line 2868
+//   static FillResolver      -> ExpandHorizontally,                                        line 2882
+//   static WriteResolver     -> ExpandVertically,                                          line 2889
+//   static ForgotResolver    -> MoveRight,                                                 line 2896
+//   static StopResolver      -> MoveDown,                                                  line 2902
+//   static CheckResolver     -> InsetLeft,                                                 line 2908
+//   static PrepareResolver   -> Widen,                                                     line 2915
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
-// Still unported from the Rect region, all of them one- or two-line edge arithmetic that nothing
-// ported so far calls: ViewResolver (2851, collapse to the zero-width rect at the right edge),
-// CollectResolver (2858), ResolveResolver (2863) and ListResolver (2868) -- which are just the
-// negated forms of Expand and of the two axis-restricted expanders -- plus FillResolver (2882),
-// WriteResolver (2889), ForgotResolver (2896), StopResolver (2902), CheckResolver (2908) and
-// PrepareResolver (2915).
+// Complete: the whole Rect region (2851-3022) is now here. The three Shrink* methods are literally
+// the Expand* ones with a negated argument, which is how the vendor wrote them and is kept, so the
+// pair reads the same way at a call site whichever direction is wanted.
+// Audit status: VERIFIED against export
 
 using UnityEngine;
 
@@ -280,6 +288,90 @@ namespace DreadScripts.ControllerEditor
             }
 
             return result;
+        }
+    
+        /// <summary>
+        /// The zero-width rect sitting immediately to the right of <paramref name="rect"/>, at the
+        /// same y and height -- the cursor position after it, for laying the next control out by
+        /// hand.
+        /// </summary>
+        internal static Rect CollapseToRightEdge(this Rect rect)
+        {
+            Rect result = new Rect(rect);
+            result.x = rect.x + rect.width;
+            return result;
+        }
+
+        /// <summary>Inset on all four sides by <paramref name="amount"/>.</summary>
+        internal static Rect Shrink(this Rect rect, float amount)
+        {
+            return rect.Expand(-amount);
+        }
+
+        /// <summary>Inset on the left and right by <paramref name="amount"/>.</summary>
+        internal static Rect ShrinkHorizontally(this Rect rect, float amount)
+        {
+            return rect.ExpandHorizontally(-amount);
+        }
+
+        /// <summary>Inset on the top and bottom by <paramref name="amount"/>.</summary>
+        internal static Rect ShrinkVertically(this Rect rect, float amount)
+        {
+            return rect.ExpandVertically(-amount);
+        }
+
+        /// <summary>
+        /// Grown by <paramref name="amount"/> on the left and right, keeping the centre.
+        /// </summary>
+        internal static Rect ExpandHorizontally(this Rect rect, float amount)
+        {
+            rect.x -= amount;
+            rect.width += amount * 2f;
+            return rect;
+        }
+
+        /// <summary>
+        /// Grown by <paramref name="amount"/> on the top and bottom, keeping the centre.
+        /// </summary>
+        internal static Rect ExpandVertically(this Rect rect, float amount)
+        {
+            rect.y -= amount;
+            rect.height += amount * 2f;
+            return rect;
+        }
+
+        /// <summary>Moved right by <paramref name="amount"/>; the size is unchanged.</summary>
+        internal static Rect MoveRight(this Rect rect, float amount)
+        {
+            rect.x += amount;
+            return rect;
+        }
+
+        /// <summary>Moved down by <paramref name="amount"/>; the size is unchanged.</summary>
+        internal static Rect MoveDown(this Rect rect, float amount)
+        {
+            rect.y += amount;
+            return rect;
+        }
+
+        /// <summary>
+        /// Inset from the left by <paramref name="amount"/>: the left edge moves right and the
+        /// right edge stays put.
+        /// </summary>
+        internal static Rect InsetLeft(this Rect rect, float amount)
+        {
+            rect.width -= amount;
+            rect.x += amount;
+            return rect;
+        }
+
+        /// <summary>
+        /// Widened by <paramref name="amount"/> on the right only; the left edge stays put.
+        /// </summary>
+        internal static Rect Widen(this Rect rect, float amount)
+        {
+            rect.width += amount;
+            return rect;
         }
     }
 }

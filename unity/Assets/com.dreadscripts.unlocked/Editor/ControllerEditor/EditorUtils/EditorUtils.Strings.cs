@@ -19,8 +19,9 @@
 //
 // The five extension helpers below come from the 2673-2839 region: null/blank tests, "" and
 // fallback coalescers, and the Humanize word-splitter. PushResolver (2842, a GUIStyle text-width
-// helper) is deliberately not here -- it depends on the GUIContent scratch helpers (CreateResolver)
-// which are not ported yet.
+// helper) is deliberately not here: it is a GUI measurement rather than a string operation, and it
+// has since been ported as GetTextWidth beside the GUIContent scratch helper it depends on, in
+// EditorUtils.GuiContent.cs. Nothing from the 2673-2839 string region is left unported.
 
 using System;
 using System.Collections.Generic;

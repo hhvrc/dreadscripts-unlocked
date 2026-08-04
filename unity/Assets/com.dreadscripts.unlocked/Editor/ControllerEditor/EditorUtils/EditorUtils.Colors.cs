@@ -4,6 +4,9 @@
 //   static _WrapperProcessor      -> warningColor,   line 2182
 //   static m_AnnotationProcessor  -> highlightColor, line 2184
 //   static m_AlgoProcessor        -> accentColor,    line 2188
+//   static publisherProperty      -> infoColor,      line 2176
+//   static visitorProcessor       -> attentionColor, line 2186
+//   static m_MapperProcessor      -> linkColor,      line 2190
 //   static PushList               -> Grey,           line 7395
 //   static SetupResolver          -> WithAlpha,      line 2393
 //   static EnableResolver         -> BlendOver,      line 2398
@@ -57,6 +60,26 @@ namespace DreadScripts.ControllerEditor
 
         /// <summary>Emphasis tint, used to mark a row as active or singled out.</summary>
         internal static Color highlightColor = new Color(0.7f, 0.3f, 1f);
+
+        /// <summary>
+        /// Informational tint -- the pale blue used where something is being reported rather than
+        /// judged. No call site survives in the ControllerEditor assembly.
+        /// </summary>
+        internal static Color infoColor = new Color(0.5f, 0.8f, 1f);
+
+        /// <summary>
+        /// Orange, between <see cref="warningColor"/> and <see cref="errorColor"/> in severity. No
+        /// call site survives in the ControllerEditor assembly; named for its position in the
+        /// palette rather than for a use.
+        /// </summary>
+        internal static Color attentionColor = new Color(1f, 0.65f, 0f);
+
+        /// <summary>
+        /// The default tint of a clickable label and of the underline drawn beneath it on hover --
+        /// see the link-label helpers in EditorUtils.GuiHelpers.cs, which fall back to this when
+        /// given no colour.
+        /// </summary>
+        internal static Color linkColor = new Color(0.3f, 0.7f, 1f);
 
         /// <summary>The tool's accent colour, used for hover highlights on clickable labels.</summary>
         internal static Color accentColor = new Color(1f, 0.5f, 0.7f);

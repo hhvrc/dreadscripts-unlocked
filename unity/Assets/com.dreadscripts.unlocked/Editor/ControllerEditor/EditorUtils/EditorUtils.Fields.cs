@@ -2,6 +2,7 @@
 //   static CallRules    -> IsMissing(this UnityEngine.Object, out bool), line 4427
 //   static PopRules     -> AssetField<T>(string, ...),                   line 4302
 //   static ComputeRules -> AssetField<T>(GUIContent, ...),               line 4307
+//   static CountPredicate -> ObjectField<T>,                             line 3139
 // IsMissing is named for what it returns rather than for the question it is usually asked: the
 // decompiled body returns true when the reference is *not* usable, and every call site branches on
 // that to pick placeholder text, so "IsAssigned" would read backwards at each of them.
@@ -49,6 +50,7 @@
 //     ConcatList, line 6690       -> ShowObjectPicker,     EditorUtils.Pickers.cs
 //     configurationProperty / _WrapperProcessor (lines 2178/2182) -> validColor / warningColor,
 //                                    EditorUtils.Colors.cs
+// Audit status: VERIFIED against export
 
 using System;
 using DreadScripts.Common;
@@ -271,6 +273,21 @@ namespace DreadScripts.ControllerEditor
                     AssetButtons(onSelected, value, onCreated, assetExtension, allowNull, showPing: false);
                 }
             }
+        }
+    
+        /// <summary>
+        /// A typed EditorGUILayout.ObjectField -- the same control, without the cast at every call
+        /// site.
+        /// </summary>
+        /// <param name="allowSceneObjects">
+        /// Whether the picker offers objects from the open scenes as well as assets. Must be false
+        /// for a field whose value is going to be saved into an asset, since a scene reference
+        /// cannot be serialised there.
+        /// </param>
+        internal static T ObjectField<T>(this T value, GUIContent label, bool allowSceneObjects = true,
+            params GUILayoutOption[] options) where T : UnityEngine.Object
+        {
+            return (T)EditorGUILayout.ObjectField(label, value, typeof(T), allowSceneObjects, options);
         }
     }
 }

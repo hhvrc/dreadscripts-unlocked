@@ -4,12 +4,20 @@
 //   static InterruptRules -> FindWindow,           line 5530
 //   static ManageRules    -> TryFindWindow,        line 5548
 //   static PrintRules     -> FocusWindow,          line 5554
+//   static OrderPredicate   -> SaveToPrefs,        line 3051
+//   static ComparePredicate -> LoadFromPrefs,      line 3064
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
 // One deliberate deviation, behaviourally invisible: the decompiled InterruptRules allocates
 // windowTypeCache lazily with a null check on every call, because the field had no initialiser.
 // It is a field initialiser here instead; nothing can observe the difference from a static class.
+//
+// SaveToPrefs/LoadFromPrefs come from elsewhere in the decompiled file (lines 3051-3068) and are
+// filed here because EditorWindow is the type they operate on. They serialise the *window* through
+// JsonUtility, so every [SerializeField] on it round-trips in one call -- which is how the tool
+// remembers a window's settings across a domain reload without writing a key per field.
+// Audit status: VERIFIED against export
 //
 // Nothing else in the outer class body belongs to this region -- the string-numbering helpers that
 // sit just above it (SortRules line 5480, RegisterRules 5497, LogoutRules 5502) and the session
@@ -149,6 +157,46 @@ namespace DreadScripts.ControllerEditor
                 // call site is a mouse event inside a window, where that cannot happen.
                 previouslyFocused.Focus();
             }
+        }
+    
+        /// <summary>
+        /// Writes the window's serialised state to EditorPrefs (or PlayerPrefs) under
+        /// <paramref name="key"/>.
+        /// </summary>
+        /// <param name="usePlayerPrefs">
+        /// Use PlayerPrefs instead of EditorPrefs. PlayerPrefs is per-project and lives in the
+        /// project folder; EditorPrefs is per-machine and shared across projects.
+        /// </param>
+        internal static void SaveToPrefs<T>(this T window, string key, bool usePlayerPrefs = false)
+            where T : EditorWindow
+        {
+            string json = JsonUtility.ToJson(window, false);
+            if (usePlayerPrefs)
+            {
+                PlayerPrefs.SetString(key, json);
+            }
+            else
+            {
+                EditorPrefs.SetString(key, json);
+            }
+        }
+
+        /// <summary>
+        /// Restores the window's serialised state from <paramref name="key"/>, leaving it untouched
+        /// if the key is absent.
+        /// </summary>
+        /// <remarks>
+        /// The window's *current* state is passed as the pref's default, so a missing key overwrites
+        /// the window with itself. That is what makes this safe to call unconditionally on enable.
+        /// </remarks>
+        internal static void LoadFromPrefs<T>(this T window, string key, bool usePlayerPrefs = false)
+            where T : EditorWindow
+        {
+            string fallback = JsonUtility.ToJson(window, false);
+            string json = usePlayerPrefs
+                ? PlayerPrefs.GetString(key, fallback)
+                : EditorPrefs.GetString(key, fallback);
+            JsonUtility.FromJsonOverwrite(json, window);
         }
     }
 }

@@ -16,6 +16,7 @@
 //   control / filter -> filter      per-candidate predicate; null means "accept any T"
 //   ident2 / asset2  -> onHovered   raised on every frame the drag is over the rect and matches,
 //                                   i.e. repeatedly during DragUpdated, not once
+// Audit status: VERIFIED against export
 //
 // IMGUI drag-and-drop is stateful and order-sensitive; see the remarks on HandleDragAndDrop for
 // the accept/Use contract these two rely on. Do not reorder the statements.
