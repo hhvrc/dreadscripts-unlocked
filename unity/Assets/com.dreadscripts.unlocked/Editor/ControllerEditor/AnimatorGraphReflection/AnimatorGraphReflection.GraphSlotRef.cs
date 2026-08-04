@@ -10,6 +10,7 @@
 // Deliberately not ported: the static field TestStruct and the method IncludeStruct (lines 784 and
 // 803), which are obfuscator scaffolding — a never-assigned object compared against null by a
 // method nothing calls. They carry no behaviour.
+// Audit status: VERIFIED against export member-by-member (2026-08-04). Dead scaffolding correctly dropped.
 
 using System.Collections.Generic;
 using System.Linq;

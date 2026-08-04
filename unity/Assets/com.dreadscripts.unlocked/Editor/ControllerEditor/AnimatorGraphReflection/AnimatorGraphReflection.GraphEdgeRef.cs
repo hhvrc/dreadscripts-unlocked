@@ -18,6 +18,8 @@
 // The [SpecialName] methods in the decompiled source are property accessors the deobfuscation pass
 // left as methods; they are restored to properties here. MoveSerializer (line 658) is the
 // compiler-generated body of the Transitions projection and has no separate port.
+// Audit status: VERIFIED against export member-by-member (2026-08-04). The [CompilerGenerated]
+// MoveSerializer closure is correctly dissolved into the Transitions projection, not given a file.
 
 using System.Collections;
 using System.Collections.Generic;

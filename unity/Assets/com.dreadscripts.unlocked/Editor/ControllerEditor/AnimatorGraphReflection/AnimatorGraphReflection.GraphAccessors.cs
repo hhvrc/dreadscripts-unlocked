@@ -31,6 +31,7 @@
 // Everything marked [SpecialName] in the decompiled source is a property accessor that the
 // deobfuscation pass left as a method; those are restored to properties here, which is why the
 // call sites read Tool rather than Tool().
+// Audit status: VERIFIED against export member-by-member (2026-08-04).
 
 using System;
 using System.Collections;

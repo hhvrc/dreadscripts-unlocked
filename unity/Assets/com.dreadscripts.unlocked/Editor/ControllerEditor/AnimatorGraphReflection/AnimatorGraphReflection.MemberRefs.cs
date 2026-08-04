@@ -12,6 +12,7 @@
 //
 // The decompiled source writes the type as DreadScripts.ControllerEditor.ReflectionMemberRef<T>
 // in full; the namespace is already in scope here, so the qualification is dropped.
+// Audit status: VERIFIED against export member-by-member (2026-08-04). All 30 member refs present.
 
 using System.Reflection;
 using UnityEditor.Animations;

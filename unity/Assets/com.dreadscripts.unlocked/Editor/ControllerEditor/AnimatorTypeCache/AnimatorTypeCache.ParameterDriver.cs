@@ -21,6 +21,10 @@
 // Every Get*/Set* pair above is marked [SpecialName] in the shipped assembly - they are property
 // accessors whose property definitions the obfuscator stripped, and they are restored as properties
 // here.
+// Audit status: VERIFIED against export member-by-member (2026-08-04).
+// Note: ParameterEntry.Source's setter keeps the decompiled `while (!DeferApply)` loop, which
+// matches export exactly but is a probable control-flow-flattening artefact (all seven sibling
+// setters use `if`). Preserved faithfully rather than reconstructed; flagged for a preserve/fix call.
 
 using System.Collections.Generic;
 using UnityEditor;
