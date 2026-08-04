@@ -5,6 +5,8 @@
 //   static m_AnnotationProcessor  -> highlightColor, line 2184
 //   static m_AlgoProcessor        -> accentColor,    line 2188
 //   static PushList               -> Grey,           line 7395
+//   static SetupResolver          -> WithAlpha,      line 2393
+//   static EnableResolver         -> BlendOver,      line 2398
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 // Audit status: VERIFIED against export
@@ -27,7 +29,9 @@
 // Editor/Common; deliberately not consolidated here, since that file belongs to the other
 // product.
 //
-// Partial in progress: the rest of the colour helpers in the outer class body are not ported yet.
+// The two Color-math extension helpers (WithAlpha, BlendOver) are ported here. Colour-tinted GUI
+// helpers that merely take a Color? argument (e.g. the coloured-label drawers) live in their own
+// GUI partials, not here; the rich-text log colouriser is in EditorUtils.Logging.cs.
 
 using UnityEngine;
 
@@ -73,6 +77,25 @@ namespace DreadScripts.ControllerEditor
             }
 
             return new Color(level, level, level, 1f);
+        }
+
+        /// <summary>Returns a copy of the colour with its alpha replaced by <paramref name="alpha"/>.</summary>
+        internal static Color WithAlpha(this Color color, float alpha)
+        {
+            return new Color(color.r, color.g, color.b, alpha);
+        }
+
+        /// <summary>
+        /// Alpha-composites <paramref name="overlay"/> over <paramref name="background"/> (standard
+        /// "source over" blend) and returns the straight-alpha result.
+        /// </summary>
+        internal static Color BlendOver(this Color background, Color overlay)
+        {
+            float a = overlay.a + background.a * (1f - overlay.a);
+            float r = (overlay.r * overlay.a + background.r * background.a * (1f - overlay.a)) / a;
+            float g = (overlay.g * overlay.a + background.g * background.a * (1f - overlay.a)) / a;
+            float b = (overlay.b * overlay.a + background.b * background.a * (1f - overlay.a)) / a;
+            return new Color(r, g, b, a);
         }
     }
 }

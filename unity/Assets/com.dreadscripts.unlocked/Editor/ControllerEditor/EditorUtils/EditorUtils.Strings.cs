@@ -2,17 +2,29 @@
 //   static UpdateRules   -> TryMakeNameUnique,    line 5468
 //   static ChangeRules   -> MakeNameUnique,       line 5474
 //   static SortRules     -> MakeNameUnique,       line 5480
-//   static RegisterRules -> StripNumberSuffix,    line 5497
-//   static LogoutRules   -> TryGetTrailingNumber, line 5502
+//   static RegisterRules  -> StripNumberSuffix,    line 5497
+//   static LogoutRules    -> TryGetTrailingNumber, line 5502
+//   static ResetResolver  -> IsNullOrEmpty,        line 2673
+//   static FlushResolver  -> IsNullOrWhiteSpace,   line 2678
+//   static ConnectResolver -> OrEmpty,             line 2683
+//   static CalculateResolver -> Or,                line 2688
+//   static NewResolver    -> Humanize,             line 2823
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
+// Audit status: VERIFIED against export
 //
 // ChangeRules and SortRules are ported as overloads of one name: they are the same operation, one
 // taking the set of names already in use and the other the predicate that decides availability.
-// Nothing from the region is left unported.
+// Nothing from the name-uniquing region (5468-5502) is left unported.
+//
+// The five extension helpers below come from the 2673-2839 region: null/blank tests, "" and
+// fallback coalescers, and the Humanize word-splitter. PushResolver (2842, a GUIStyle text-width
+// helper) is deliberately not here -- it depends on the GUIContent scratch helpers (CreateResolver)
+// which are not ported yet.
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace DreadScripts.ControllerEditor
@@ -155,6 +167,61 @@ namespace DreadScripts.ControllerEditor
 
             number = int.Parse(match.Groups[1].Value);
             return true;
+        }
+
+        /// <summary><see cref="string.IsNullOrEmpty(string)"/> as an extension method.</summary>
+        internal static bool IsNullOrEmpty(this string value)
+        {
+            return string.IsNullOrEmpty(value);
+        }
+
+        /// <summary><see cref="string.IsNullOrWhiteSpace(string)"/> as an extension method.</summary>
+        internal static bool IsNullOrWhiteSpace(this string value)
+        {
+            return string.IsNullOrWhiteSpace(value);
+        }
+
+        /// <summary>Returns the string, or "" when it is null.</summary>
+        internal static string OrEmpty(this string value)
+        {
+            return value ?? "";
+        }
+
+        /// <summary>Returns the string when it is non-empty, otherwise <paramref name="fallback"/>.</summary>
+        internal static string Or(this string value, string fallback)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            return fallback;
+        }
+
+        /// <summary>
+        /// Turns a camel/Pascal-case identifier into spaced words -- capitalises the first letter and
+        /// inserts a space before each upper-case letter that follows a lower-case one.
+        /// </summary>
+        internal static string Humanize(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            StringBuilder builder = new StringBuilder();
+            builder.Append(char.ToUpper(value[0]));
+            for (int i = 1; i < value.Length; i++)
+            {
+                if (char.IsUpper(value[i]) && !char.IsUpper(value[i - 1]))
+                {
+                    builder.Append(' ');
+                }
+
+                builder.Append(value[i]);
+            }
+
+            return builder.ToString();
         }
     }
 }
