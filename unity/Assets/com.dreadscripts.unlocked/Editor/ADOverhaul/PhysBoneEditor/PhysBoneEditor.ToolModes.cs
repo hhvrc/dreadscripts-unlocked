@@ -1,22 +1,22 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// Ported region: the tool-mode state of PhysBoneEditor — lines 2912-2916 and the [SpecialName]
-// accessors at lines 2929-3006, plus LogoutSingleton (line 3926) and SetupSingleton (line 3941) of
+// Ported region: the tool-mode state of PhysBoneEditor — lines 3116-3120 and the [SpecialName]
+// accessors at lines 3133-3210, plus LogoutSingleton (line 4130) and SetupSingleton (line 4145) of
 // the current snapshot. Line numbers move with the snapshot; the member names below are the durable
 // reference.
 //
-//   rulesAuthentication      -> toolModes,                 line 51
-//   m_TestsAuthentication    -> toolModeNames,             line 62
-//   m_StubAuthentication     -> editedBindingIndex,        line 75
-//   CountAccount()           -> activeBinding,             line 88
-//   RemoveAccount()          -> isEditingProperty,         line 106
-//   ResolveAccount()/ResetAccount(bool)   -> isEditingEndpoints,          line 126
-//   FlushAccount()/ExcludeAccount(bool)   -> isSelectingIgnoreTransforms, line 141
-//   ConnectAccount()/FindAccount(bool)    -> isCopyingIgnoreTransforms,   line 156
-//   ValidateAccount()/CreateAccount(bool) -> isSelectingColliders,        line 171
-//   RevertAccount()/RunParams(bool)       -> isCopyingColliders,          line 186
-//   LogoutSingleton(int)     -> SetPropertyEditTarget(int), line 208
-//   SetupSingleton()         -> ExitTool(),                line 229
+//   m_StubAuthentication     -> editedBindingIndex,        line 3116
+//   rulesAuthentication      -> toolModes,                 line 3118
+//   m_TestsAuthentication    -> toolModeNames,             line 3120
+//   CountAccount()           -> activeBinding,             line 3133
+//   RemoveAccount()          -> isEditingProperty,         line 3143
+//   ResolveAccount()/ResetAccount(bool)   -> isEditingEndpoints,          line 3153
+//   FlushAccount()/ExcludeAccount(bool)   -> isSelectingIgnoreTransforms, line 3165
+//   ConnectAccount()/FindAccount(bool)    -> isCopyingIgnoreTransforms,   line 3177
+//   ValidateAccount()/CreateAccount(bool) -> isSelectingColliders,        line 3189
+//   RevertAccount()/RunParams(bool)       -> isCopyingColliders,          line 3201
+//   LogoutSingleton(int)     -> SetPropertyEditTarget(int), line 4130
+//   SetupSingleton()         -> ExitTool(),                line 4145
 //
 // The [SpecialName] methods are property accessors that ILSpy did not recombine, so they are
 // restored to properties here. The getter/setter pairs become read/write properties; RemoveAccount

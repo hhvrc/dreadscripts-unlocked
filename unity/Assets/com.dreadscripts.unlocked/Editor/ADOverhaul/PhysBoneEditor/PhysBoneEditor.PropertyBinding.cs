@@ -4,21 +4,21 @@
 // current snapshot. Line numbers move with the snapshot; the member names below are the durable
 // reference.
 //
-//   AlgoAuthentication                 -> PropertyBinding,      line 55
-//   roleAuthentication                 -> label,                line 62
-//   m_VisitorAuthentication            -> valueProperty,        line 68
-//   _InvocationAuthentication          -> curveProperty,        line 76
-//   m_ListenerAuthentication           -> valuePropertyPath,    line 86
-//   m_ParserAuthentication             -> curvePropertyPath,    line 89
-//   printerAuthentication              -> hasCurve,             line 82
-//   _GlobalAuthentication              -> hasValue,             line 79
-//   repositoryAuthentication           -> minValue,             line 97
-//   _DescriptorAuthentication          -> maxValue,             line 100
-//   m_StrategyAuthentication           -> handleMode,           line 110
+//   AlgoAuthentication                 -> PropertyBinding,      lines 2360-2402
+//   roleAuthentication                 -> label,                line 2362
+//   m_VisitorAuthentication            -> valueProperty,        line 2364
+//   _InvocationAuthentication          -> curveProperty,        line 2366
+//   m_ListenerAuthentication           -> valuePropertyPath,    line 2368
+//   m_ParserAuthentication             -> curvePropertyPath,    line 2370
+//   printerAuthentication              -> hasCurve,             line 2372
+//   repositoryAuthentication           -> minValue,             line 2374
+//   _DescriptorAuthentication          -> maxValue,             line 2376
+//   m_StrategyAuthentication           -> handleMode,           line 2378
+//   _GlobalAuthentication              -> hasValue,             line 2380
 //   AlgoAuthentication(SerializedProperty, SerializedProperty, float, float, int)
-//                                      -> PropertyBinding(...), line 118
+//                                      -> PropertyBinding(...), line 2382
 //   AlgoAuthentication(string, SerializedProperty, SerializedProperty, float, float, int)
-//                                      -> PropertyBinding(...), line 130
+//                                      -> PropertyBinding(...), line 2387
 //
 // The two constructors are kept as a pair rather than collapsed into one with an optional label,
 // because the label-less overload derives its label from the value property's displayName, which an

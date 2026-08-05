@@ -1,16 +1,13 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// Ported region: SearchSingleton (line 4301), LoginSingleton (line 4342) and PatchSingleton
-// (line 4354) of the current snapshot, together with the compiler-generated capture struct
-// _003C_003Ec__DisplayClass116_0 (line 2630) that carried their arguments. Line numbers move with
+// Ported region: SearchSingleton (line 4505), LoginSingleton (line 4546) and PatchSingleton
+// (line 4558) of the current snapshot, together with the compiler-generated capture struct
+// _003C_003Ec__DisplayClass116_0 (line 2834) that carried their arguments. Line numbers move with
 // the snapshot; the member names below are the durable reference.
 //
-//   SearchSingleton(Vector3, ref _003C_003Ec__DisplayClass116_0)
-//                             -> ApplyEndpointOffset(Vector3, VRCPhysBone[], VRCPhysBone), line 62
-//   LoginSingleton(VRCPhysBone, Vector3)
-//                             -> OffsetEndpoint(VRCPhysBone, Vector3),                     line 108
-//   PatchSingleton(VRCPhysBone, string, Action<SerializedProperty>)
-//                             -> EditProperty(VRCPhysBone, string, Action<SerializedProperty>), line 128
+//   SearchSingleton -> ApplyEndpointOffset(Vector3, VRCPhysBone[], VRCPhysBone),        line 4505
+//   LoginSingleton  -> OffsetEndpoint(VRCPhysBone, Vector3),                            line 4546
+//   PatchSingleton  -> EditProperty(VRCPhysBone, string, Action<SerializedProperty>),   line 4558
 //
 // The capture struct held exactly the two values the original method needed from its caller —
 // _MessageAuthentication (the selection) and _PolicyAuthentication (the PhysBone under the handle) —

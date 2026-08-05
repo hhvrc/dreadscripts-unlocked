@@ -1,12 +1,12 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// Ported region: MoveSingleton (line 3967) and part of PublishSingleton (line 4005) of the current
-// snapshot, plus the m_QueueIdentifier field (line 2784). Line numbers move with the snapshot; the
+// Ported region: MoveSingleton (line 4171) and part of PublishSingleton (line 4209) of the current
+// snapshot, plus the m_QueueIdentifier field (line 2988). Line numbers move with the snapshot; the
 // member names below are the durable reference.
 //
-//   m_QueueIdentifier    -> membershipStates,                line 51
-//   MoveSingleton()      -> RefreshColliderStates(),         line 71
-//   PublishSingleton()   -> RefreshIgnoreTransformStates(),  line 105  (partial, see below)
+//   m_QueueIdentifier    -> membershipStates,                line 2988
+//   MoveSingleton()      -> RefreshColliderStates(),         line 4171
+//   PublishSingleton()   -> RefreshIgnoreTransformStates(),  line 4209  (partial, see below)
 //
 // PARTIAL PORT OF PublishSingleton. The decompiled method is two unrelated routines behind one
 // branch on the Ignore Selection tool being armed: the branch ported here recomputes the membership
