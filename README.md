@@ -61,7 +61,7 @@ The port is driven from the research repo, which owns the tooling and the status
 
 - `python3 scripts/port_status.py` — what has landed, what is left, what is excluded and why.
   It diffs the two trees rather than reading a checklist, so it cannot go stale.
-- `python3 scripts/typecheck_devel.py` — compiles the package against the reference assemblies.
+- `python3 scripts/typecheck_package.py` — compiles the package against the reference assemblies.
 
 ---
 
