@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AxisControlSettings.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AxisControlSettings.cs
 //
 // DELIBERATE DEVIATION
 // The three preset fields (allowed, forced, off) are `public static` in the decompiled source and

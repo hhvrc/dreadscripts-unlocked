@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static InvokeResolver   -> ForEach,                 line 2555
 //   static FindResolver     -> IndexOf,                 line 2563
 //   static ExcludeResolver  -> TryGetIndex,             line 2580

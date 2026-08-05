@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneChainData.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneChainData.cs
 //
 // Audit status: VERIFIED -- diffed in full against export/. The five fields, the constructor,
 // BuildChain and BuildChains match statement for statement, and [SpecialName] GetBoneMatrices is

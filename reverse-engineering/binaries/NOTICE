@@ -1,0 +1,8 @@
+NOT COVERED BY THIS REPOSITORY'S LICENCE
+
+These four assemblies are the original author's compiled products. They are not our
+work, we do not hold any rights in them, and we do not license them.
+
+They are here because the rest of this folder is only checkable against them: the
+deobfuscated source, the rename maps and the restored package are all derived from
+these files, and without them none of it can be independently re-derived.

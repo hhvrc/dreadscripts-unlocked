@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   nested static class MotionEmbedMenu, lines 2207-2400, lifted to a top-level type
 //   (same treatment PhysBoneEditor received in the ADOverhaul assembly).
 //

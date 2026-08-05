@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionRestoreScope.cs
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/PropertyRestoreScope.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionRestoreScope.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/PropertyRestoreScope.cs
 //
 // Audit status: VERIFIED -- both copies diffed statement by statement against this file: the four
 // fields, both constructors, the snapshot delegate and Dispose. The shipped anonymous snapshot

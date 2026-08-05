@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static FillList    -> ConvertToSender(VRCContactReceiver, GameObject),      line 7536
 //   static WriteList   -> ConvertToSender(VRCPhysBoneCollider, GameObject),     line 7549
 //   static ForgotList  -> ConvertToReceiver(VRCContactSender, GameObject),      line 7561
@@ -7,7 +7,7 @@
 //   static PrepareList -> ConvertToCollider(VRCContactSender, GameObject),      line 7598
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // VRChat's contact senders, contact receivers and PhysBone colliders are three unrelated component
 // types that happen to describe the same thing: a shape (sphere, capsule or plane) placed relative

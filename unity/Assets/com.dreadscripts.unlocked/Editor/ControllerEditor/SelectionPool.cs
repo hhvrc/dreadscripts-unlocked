@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/SelectionPool.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/SelectionPool.cs
 //
 // DELIBERATE DEVIATION
 // Two places where this knowingly differs from the shipped build:

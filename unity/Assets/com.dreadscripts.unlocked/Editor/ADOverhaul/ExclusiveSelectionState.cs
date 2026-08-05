@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ExclusiveSelectionState.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ExclusiveSelectionState.cs
 //
 // The whole file is one type; every member is ported and keeps its decompiled name, except the
 // backing array `toggles`, which becomes `_toggles`.

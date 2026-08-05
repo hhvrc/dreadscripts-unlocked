@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   struct MenuClipboardState -> MenuClipboardState, line 1581
 //     IsValid()  [SpecialName] -> IsValid property, line 1612
 //     Set(VRCAvatarDescriptor, VRCExpressionsMenu, VRCExpressionsMenu) -> Set, line 1617
@@ -37,8 +37,8 @@
 // this is obfuscator scaffolding rather than behaviour -- an always-true method over a field that
 // is always null.
 // Audit status: PARTIAL -- the struct header and field/method mappings above were re-checked
-// against decompiled/EditorUtils.cs (MenuClipboardState still opens at line 1581 in the post-561e9ec
-// snapshot). The earlier "VERIFIED against decompiled/" claim was unsupportable. The GUI-half cross-references were not
+// against reverse-engineering/export/EditorUtils.cs (MenuClipboardState still opens at line 1581 in the post-561e9ec
+// snapshot). The earlier "VERIFIED against reverse-engineering/export/" claim was unsupportable. The GUI-half cross-references were not
 // re-walked.
 
 using System;

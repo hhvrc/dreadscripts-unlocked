@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   (nested type ControllerEditor.HarmonyPatchManager)
 //   PatchSwapEntry -> PatchSwapEntry,                      line 2404
 //   m_SchemaAlgo   -> deferredPatches,                     line 2559

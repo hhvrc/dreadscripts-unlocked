@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static InstantiateRules -> HandleDragAndDrop,      line 4817
 //   static AwakeRules       -> HandleMultiDragAndDrop, line 4842
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
@@ -16,7 +16,7 @@
 //   control / filter -> filter      per-candidate predicate; null means "accept any T"
 //   ident2 / asset2  -> onHovered   raised on every frame the drag is over the rect and matches,
 //                                   i.e. repeatedly during DragUpdated, not once
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // IMGUI drag-and-drop is stateful and order-sensitive; see the remarks on HandleDragAndDrop for
 // the accept/Use contract these two rely on. Do not reorder the statements.

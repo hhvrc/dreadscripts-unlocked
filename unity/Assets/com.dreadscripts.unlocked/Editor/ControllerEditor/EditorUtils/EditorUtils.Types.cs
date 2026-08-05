@@ -1,11 +1,11 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ForgotRules        -> FindType(string),         line 5285
 //   static WriteRules         -> RequireType(string),      line 5276
 //   static RemoveResolver     -> Is<T>(this Type),         line 2650
 //   static InstantiateResolver -> Is(this Type, Type),     line 2659
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // The decompiled ForgotRules body is a while/continue/break loop produced by control-flow
 // flattening; it is written out below as the plain foreach it started life as. The evaluation

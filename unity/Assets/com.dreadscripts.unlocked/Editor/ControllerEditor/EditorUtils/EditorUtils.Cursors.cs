@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static m_BroadcasterProperty -> unityVersion,               line 2156
 //   static m_ProxyProperty       -> isUnity2022,                line 2158
 //   static stateProperty         -> deferredCursorRects,        line 2164
@@ -10,7 +10,7 @@
 //   static AwakeQueue            -> AddCursorRect,              line 5866
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- the region is byte-identical between the two snapshots
+// Audit status: VERIFIED against reverse-engineering/export/ -- the region is byte-identical between the two snapshots
 // and every statement below was transcribed from it.
 //
 // Complete: nothing cursor-related is left in the outer class body. The scroll-wheel handler this

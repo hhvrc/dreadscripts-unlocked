@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/BatchOperationContext.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/BatchOperationContext.cs
 //
 // DEOBF-BUG
 // Reset loops `while (progressBarShown) EditorUtility.ClearProgressBar();` in the decompiled source
@@ -168,13 +168,13 @@ namespace DreadScripts.ControllerEditor
             errorLog?.Clear();
             hasError = false;
 
-            // DEOBF-BUG(guessed): decompiled/ loops while the progress-bar flag is set and never clears
+            // DEOBF-BUG(guessed): reverse-engineering/export/ loops while the progress-bar flag is set and never clears
             // it, so any reset after a progress bar had been shown would hang the editor. The
             // `while` itself is the de4dot fault confirmed against the original IL on
             // AnimatorTypeCache.ParameterEntry.Source, so reading it as `if` is safe. The
-            // `progressBarShown = false` assignment is the guessed part: nothing in decompiled/ shows
+            // `progressBarShown = false` assignment is the guessed part: nothing in reverse-engineering/export/ shows
             // where the flag was cleared, and without it the guard could never re-arm. Re-derive
-            // from decompiled/ if de4dot's control-flow recovery is fixed.
+            // from reverse-engineering/export/ if de4dot's control-flow recovery is fixed.
             if (progressBarShown)
             {
                 EditorUtility.ClearProgressBar();

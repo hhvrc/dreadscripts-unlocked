@@ -2,8 +2,8 @@
 // type. Reconstructed from both. They are not merely renamings of each other: they differ in
 // the write path, which is broken in one of them and correct in the other. See the comment on
 // TrySetValue for which was followed and why.
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionAccessor.cs
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ObjectReflector.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionAccessor.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ObjectReflector.cs
 //
 // Audit status: VERIFIED -- every member of both copies diffed statement by statement against this
 // file: the constructor and its member-table build, the [SpecialName] GetValue/SetValue pair

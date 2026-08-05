@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static CompareVal   -> ToContactSender(VRCContactReceiver, GameObject),      line 3928
 //   static VerifyVal    -> ToContactSender(VRCPhysBoneCollider, GameObject),     line 3941
 //   static SetVal       -> ToContactReceiver(VRCContactSender, GameObject),      line 3953
@@ -7,7 +7,7 @@
 //   static CustomizeVal -> ToPhysBoneCollider(VRCContactSender, GameObject),     line 3993
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // DEOBF-BUG(resolved): ToContactReceiver(VRCPhysBoneCollider, ...) rendered its root-transform

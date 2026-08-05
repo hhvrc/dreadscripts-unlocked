@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static UpdateList    -> TryGetPlayableLayerController, line 7639
 //   static ChangeList    -> GetPlayableLayerController,    line 7647
 //   static SortList      -> SetPlayableLayerController,    line 7656
@@ -20,7 +20,7 @@
 // ConcatError (line 7978) and its menu counterpart (line ~8240), which create and save a new
 // parameters/menu asset when the descriptor has none. Those belong to other regions and can be added
 // when a call site needs them.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 
 using System.Linq;
 using UnityEditor;

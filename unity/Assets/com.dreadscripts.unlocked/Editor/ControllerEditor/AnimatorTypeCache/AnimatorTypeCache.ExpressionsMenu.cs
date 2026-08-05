@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
 //   ExpressionsMenuBinding                 -> ExpressionsMenuBinding, line 371
 //     controls                             -> controls,              line 373
 //     GetControl(int)                      -> this[int],             line 382
@@ -13,7 +13,7 @@
 // The accessors above are marked [SpecialName] in the shipped assembly, and ExpressionsMenuBinding
 // carries [DefaultMember("Item")]: they are properties and an indexer that the obfuscator stripped
 // back to methods, restored here.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04).
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04).
 
 using UnityEditor;
 using UnityEngine;

@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ScrollViewScope.cs
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ScrollViewScope.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ScrollViewScope.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ScrollViewScope.cs
 //
 // Audit status: VERIFIED -- both copies diffed statement by statement against this file. The
 // `began` field, the ref-Vector2 constructor with its try/catch, and Dispose are transcribed

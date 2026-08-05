@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/TempGameObjectHierarchy.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/TempGameObjectHierarchy.cs
 //
 // Audit status: VERIFIED -- diffed in full against export/. The field, the constructor (including
 // the "Dummy/" prefix, the split, the parenting walk) and Destroy match statement for statement;

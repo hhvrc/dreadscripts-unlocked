@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/TemporaryTransform.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/TemporaryTransform.cs
 //
 // Audit status: VERIFIED -- diffed in full against export/. Both constructors, Destroy and the
 // implicit Transform conversion match statement for statement; the four HideFlags are the same

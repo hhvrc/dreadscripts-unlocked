@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ViewQueue    -> CommandIssued,   line 6247
 //   static CollectQueue -> KeyPressed,      line 6266
 //   static ResolveQueue -> SubmitPressed,   line 6281
@@ -14,7 +14,7 @@
 // the Contents and Styles partials) and ends at WriteQueue, after which the file turns to the
 // Handles/Graphics gizmo drawing helpers (ForgotQueue line 6329, StopQueue line 6356, CheckQueue
 // line 6361) that are unrelated and are not ported here.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // The command-name enum the region tests against is the shared DreadScripts.Common.EventCommands,
 // already ported; the decompiled source nests its own copy inside EditorUtils.

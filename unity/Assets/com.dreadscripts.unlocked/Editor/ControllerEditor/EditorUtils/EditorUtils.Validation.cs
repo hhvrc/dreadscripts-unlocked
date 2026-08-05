@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static QueryError   -> ValidateCanAddControls(this VRCExpressionsMenu, int),         line 8092
 //   static RestartError -> ValidateCanAddControls(this VRCExpressionsMenu.Control, int), line 8079
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
@@ -9,7 +9,7 @@
 // resolve a count from a menu before delegating to these two, and AddError/InvokeError/FindError
 // (lines 8109-8135) belong to the control-copying path rather than to validation. They can be
 // added as further overloads if a call site needs them.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 
 using VRC.SDK3.Avatars.ScriptableObjects;
 

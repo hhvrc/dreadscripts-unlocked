@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   (nested type ControllerEditor.HarmonyPatchManager, delegate declarations at lines 2436-2494)
 // Every delegate is ported under its decompiled name; the obfuscator left this family alone
 // because the names are load-bearing at the call sites. Line numbers are relative to the

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ManageList   -> RemoveInvalidParameters,                          line 7738
 //   static PrintList    -> ValidateCanAddParameters(descriptor, asset, ...), line 7762
 //   static SearchList   -> ValidateCanAddParameters(descriptor, params, ...), line 7767
@@ -17,7 +17,7 @@
 //   class <>c__DisplayClass465_1 -> dissolved into AddParameters' lambda,    line 2084
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // VRChat gives an avatar a fixed budget of synced parameter bits (see MaxParameterCost in
 // EditorUtils.Parameters.cs), so anything that adds parameters has to check first. The five

@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionCache.cs
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/TypeReflectionData.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionCache.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/TypeReflectionData.cs
 //
 // Audit status: VERIFIED -- both copies diffed field by field against this file. All four fields
 // (members, fields, properties, methods) match in name, type, accessibility and declaration order;

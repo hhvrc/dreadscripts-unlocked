@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static SortResolver      -> SliceLeft(this ref Rect, float, bool, float, bool, bool),  line 2943
 //   static PatchResolver     -> SliceRight(this ref Rect, float, bool, float, bool, bool), line 2982
 //   static RegisterResolver  -> SliceTop(this ref Rect, float, bool, float, bool, bool),   line 2959
@@ -26,7 +26,7 @@
 // Complete: the whole Rect region (2851-3022) is now here. The three Shrink* methods are literally
 // the Expand* ones with a negated argument, which is how the vendor wrote them and is kept, so the
 // pair reads the same way at a call site whichever direction is wanted.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 
 using UnityEngine;
 

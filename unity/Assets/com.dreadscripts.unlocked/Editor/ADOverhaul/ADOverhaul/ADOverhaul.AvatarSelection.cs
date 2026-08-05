@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the outer ADOverhaul class's avatar-selection block (decompiled 6561-6711) and the
 // small GUI field helpers that follow it (6712-6871). Line numbers move with the snapshot; the
@@ -123,7 +123,7 @@
 // DrawPlayableLayerWarning's humanoid test as the fallthrough rather than the early exit, and
 // renders RefreshSceneAvatars' preferred-avatar ternary the other way round. Same expressions.
 //
-// Audit status: PARTIAL -- PostIdentifier was relocated to its true line (8629) in decompiled/ on
+// Audit status: PARTIAL -- PostIdentifier was relocated to its true line (8629) in reverse-engineering/export/ on
 // 2026-08-05; the rest of the MAP block's line numbers predate the 561e9ec re-snapshot and were not
 // re-checked.
 

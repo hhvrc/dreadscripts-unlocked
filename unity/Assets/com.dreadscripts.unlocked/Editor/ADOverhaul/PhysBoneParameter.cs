@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //
 // Ported region: the PhysBoneParameter struct, lines 1547-1590 of the current snapshot.
 //
@@ -34,7 +34,7 @@
 // in the constructor. No behavioural divergence.
 //
 // Audit status: PARTIAL -- every member above was compared against
-// decompiled/ADOverhaul2022/.../ADOEditorUtility.cs lines 1547-1590 on 2026-08-05 and the bodies
+// reverse-engineering/export/ADOverhaul2022/.../ADOEditorUtility.cs lines 1547-1590 on 2026-08-05 and the bodies
 // agree; the 2019 build was not re-read.
 
 using System.Reflection;

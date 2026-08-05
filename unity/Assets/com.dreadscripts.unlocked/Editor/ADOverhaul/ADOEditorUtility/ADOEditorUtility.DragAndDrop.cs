@@ -1,9 +1,9 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static IncludeProcess -> HandleDragAndDrop,      line 2487
 //   static RevertProcess  -> HandleMultiDragAndDrop, line 2512
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above, including the two closure classes named next.
 //
 // Four compiler-generated closure classes belong to this region and get no file of their own:

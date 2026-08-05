@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   ControllerEditorWindow.RunTests     -> DrawDefaultsTab,        line 3610
 //   ControllerEditorWindow.CloneTests   -> DrawTransitionDefaults, line 3628
 //   ControllerEditorWindow.LoginTests   -> DrawStateDefaults,      line 3690

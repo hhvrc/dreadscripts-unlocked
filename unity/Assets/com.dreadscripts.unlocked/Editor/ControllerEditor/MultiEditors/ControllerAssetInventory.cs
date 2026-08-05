@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   MethodVisitor                   -> ControllerAssetInventory,   line 36
 //     _SchemaVisitor                -> blendTrees,                 line 38
 //     broadcasterVisitor            -> behaviours,                 line 40

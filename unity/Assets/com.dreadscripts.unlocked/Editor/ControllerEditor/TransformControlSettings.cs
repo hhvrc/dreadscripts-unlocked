@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/TransformControlSettings.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/TransformControlSettings.cs
 //
 // Audit status: VERIFIED -- diffed in full against export/. The four serialized fields, the
 // constructor and the three [SpecialName] accessors (properties again here) match, including the

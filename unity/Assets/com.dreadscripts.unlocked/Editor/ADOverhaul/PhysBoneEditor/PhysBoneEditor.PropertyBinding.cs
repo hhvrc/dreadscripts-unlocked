@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the AlgoAuthentication class nested inside PhysBoneEditor, lines 2360-2402 of the
 // current snapshot. Line numbers move with the snapshot; the member names below are the durable

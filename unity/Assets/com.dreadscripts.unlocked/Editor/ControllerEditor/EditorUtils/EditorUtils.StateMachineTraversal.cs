@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static AssetPredicate    -> ForEachState,      line 3919
 //   static ResolvePredicate  -> ForEachTransition, line 3734
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and

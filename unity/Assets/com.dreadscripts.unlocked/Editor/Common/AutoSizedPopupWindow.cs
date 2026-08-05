@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/FloatingActionWindow.cs
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/AutoSizedPopupWindow.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/FloatingActionWindow.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AutoSizedPopupWindow.cs
 //
 // Deliberately narrowed signature: the shipped entry point was
 //   Open(Rect, Action, Action, float = 100, float = 100, bool = true, bool = true, bool = true)

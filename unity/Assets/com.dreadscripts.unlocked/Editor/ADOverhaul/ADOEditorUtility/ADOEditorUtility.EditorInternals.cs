@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static field _ClientSerializer      -> textFieldDropDownMethod (backing), line 2060
 //   static SortRef                      -> textFieldDropDownMethod (property), line 3286
 //   static PopStatus                    -> TextFieldDropDown(string, ...),      line 3298
@@ -18,7 +18,7 @@
 //   static RunVal                       -> RefreshInspectors,         line 3755
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // DEOBF-BUG(resolved): SortRef carried [SpecialName] with no matching setter, which is how ILSpy

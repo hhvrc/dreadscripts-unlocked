@@ -1,8 +1,8 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static RunStatus -> AnchorPicker, line 2539
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // The PositionFlag enum and its four anchor predicates are shared with ControllerEditor and live in
@@ -10,7 +10,7 @@
 // this file only draws the picker for them. ControllerEditor ships no equivalent picker.
 //
 // Both call sites are the scene-view overlay alignment setting in
-// decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, lines 3538 and 8285, which store
+// reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, lines 3538 and 8285, which store
 // the result as an int on ADOSettings.
 
 using DreadScripts.Common;

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static RemoveList      -> EnsureDirectoryExists,   line 7003
 //   static InstantiateList -> PrepareAssetPath(string, bool, PathOption), line 7011
 //   static AwakeList       -> PrepareAssetPath(string, string, bool),     line 7053
@@ -38,7 +38,7 @@
 // enforce a naming style.
 //
 // Paths outside Assets/: this family does NOT agree with EditorUtils.AssetButtons'
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 // CreateAssetViaSavePanel, which warns and refuses. Here, a *file* path whose directory is
 // neither absolute-under-the-project nor already "Assets"-rooted is silently relocated by
 // prefixing "Assets/", and a *folder* path is not checked at all -- PrepareAssetPath with

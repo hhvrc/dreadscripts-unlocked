@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 //   LoginVisitor        -> RefreshStateProperties,      line 12506
 //   PushVisitor         -> RefreshTransitionProperties, line 12714

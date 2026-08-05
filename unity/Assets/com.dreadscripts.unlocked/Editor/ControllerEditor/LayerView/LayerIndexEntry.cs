@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // Ported region: the `private struct LayerIndexEntry` nested in the static ControllerEditor class.
 //
@@ -22,7 +22,7 @@
 // Lifted out of ControllerEditor into its own file, following the convention already used for
 // PhysBoneEditor.
 //
-// Audit status: PARTIAL -- every entry above was re-checked against decompiled/ (the struct still
+// Audit status: PARTIAL -- every entry above was re-checked against reverse-engineering/export/ (the struct still
 // sits at lines 3165-3188 of the post-561e9ec snapshot); the bodies were not re-diffed, which is why
 // this is PARTIAL rather than VERIFIED.
 

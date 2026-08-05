@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   nested class MotionRenamerWindow -> lifted to a top-level type, lines 3923-3996
 //     _ManagerMapper       -> motions
 //     _ItemMapper          -> newName
@@ -18,7 +18,7 @@
 // ASSET MUTATION — read before calling. See the remarks on OnGUI for the full account of what is
 // and is not undoable, and of the name collisions this window can create.
 //
-// Audit status: PARTIAL -- the mapping above was re-checked against decompiled/ (the class at 3923,
+// Audit status: PARTIAL -- the mapping above was re-checked against reverse-engineering/export/ (the class at 3923,
 // its three fields at 3925/3927/3929, OnGUI at 3931 and OnLostFocus at 3992); the OnGUI body was
 // not re-diffed statement by statement.
 

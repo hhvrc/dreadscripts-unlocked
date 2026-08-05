@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/RenameOverlayWrapper.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/RenameOverlayWrapper.cs
 //
 // The decompiled type held its bindings in a static field per member and bound them all in one
 // eager EnsureInitialized() pass built out of EditorUtils.FillRules / Type.RestartList. Here the

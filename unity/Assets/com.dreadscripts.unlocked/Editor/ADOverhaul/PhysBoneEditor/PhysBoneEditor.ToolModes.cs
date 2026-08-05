@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the tool-mode state of PhysBoneEditor — lines 3116-3120 and the [SpecialName]
 // accessors at lines 3133-3210, plus LogoutSingleton (line 4130) and SetupSingleton (line 4145) of

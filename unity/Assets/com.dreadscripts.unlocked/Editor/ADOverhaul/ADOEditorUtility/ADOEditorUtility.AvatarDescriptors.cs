@@ -1,9 +1,9 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static MapVal    -> TryGetAnimatorController,   line 4034
 //   static ConcatVal -> GetPopulatedPlayableLayers, line 4005
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above, including the one closure lambda named next.
 //
 // One lambda from the compiler-generated _003C_003Ec closure (line 1592) belongs here and gets no

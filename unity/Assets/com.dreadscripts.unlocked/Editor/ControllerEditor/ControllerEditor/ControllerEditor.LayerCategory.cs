@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // Ported region: the layer-category tree -- the machinery that turns the current controller's flat
 // layer array into the folder tree the "Category" layer views draw, and the ReorderableList that

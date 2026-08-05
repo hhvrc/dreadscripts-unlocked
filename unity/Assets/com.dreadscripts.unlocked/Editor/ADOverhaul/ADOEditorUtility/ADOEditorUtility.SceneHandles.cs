@@ -1,11 +1,11 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static field m_DatabaseSerializer -> radiusHandleHash,   line 2086
 //   static InitStatus                 -> DrawSphereHandle,   line 3546
 //   static ConnectStatus              -> TransformHandles,   line 3572
 //   static CreateStatus               -> RadiusHandle,       line 3649
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above, and TransformHandles's discarded third condition was cross-checked against the 2019 build.
 //
 // DECOMPILE DAMAGE: TransformHandles's export body computes a third condition and throws it away --
@@ -19,7 +19,7 @@
 // writing a Handles.ScaleHandle call would be a guess at code that never shipped.
 //
 // SHARED WITH CONTROLLEREDITOR, NOT CONSOLIDATED -- REPORT-ONLY OVERLAP.
-// decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs carries twins of all
+// reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs carries twins of all
 // three: ChangeQueue (line 6445) is DrawSphereHandle statement for statement, the radius handle is
 // at line 6211, and the "RadiusHandleHash" control-id seed is at line 2174. The SphereHandle type
 // itself has already been consolidated into DreadScripts.Common.SphereHandle, so these three

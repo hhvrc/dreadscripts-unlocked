@@ -1,10 +1,10 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   nested class Styles              -> Styles,            lines 667-835
 //   static MapRef                    -> the styles accessor, line 3343
 //   static field _AttributeSerializer -> stylesInstance,    line 2078
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- all 24 members, every property set on each style and
+// Audit status: VERIFIED against reverse-engineering/export/ -- all 24 members, every property set on each style and
 // the order of the three toggle-state colours were re-checked against lines 667-835 on 2026-08-04
 // and match.
 // One deliberate deviation, recorded here rather than left implicit: the backing field

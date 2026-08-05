@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ToggleButton -> ToggleButton(bool, GUIContent, ...), line 5763
 //   static ToggleButton -> ToggleButton(bool, GUIContent, ...) with no style, line 5758
 //   static ToggleButton -> ToggleButton(bool, string, ...),     line 5748
@@ -36,7 +36,7 @@
 // whole body is that same ToggleButton call. One forwarding hop is inlined, which is unobservable
 // -- no overload-resolution or side-effect difference -- but it is not a literal transcription.
 //
-// Audit status: VERIFIED against decompiled/ -- all nine methods this file declares were compared
+// Audit status: VERIFIED against reverse-engineering/export/ -- all nine methods this file declares were compared
 // statement by statement with EditorUtils.cs lines 5697-5800, and each of the fourteen line numbers
 // above lands on the member it names. The only difference is the inlined forwarding hop recorded
 // under DELIBERATE DEVIATION; every other body, including the `styles()`-to-`styles` accessor

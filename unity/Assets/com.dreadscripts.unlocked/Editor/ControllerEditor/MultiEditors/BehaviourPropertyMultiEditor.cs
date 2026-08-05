@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   BehaviourPropertyMultiEditor                     -> BehaviourPropertyMultiEditor,  line 234
 //     matched                                        -> matched,                       line 236
 //     entry                                          -> entry,                         line 238

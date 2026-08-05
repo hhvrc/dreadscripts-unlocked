@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   nested class GraphNodeRef -> GraphNodeRef, line 396
 //     nested enum NodeType             -> NodeType,                    line 398
 //     nodeResolved                     -> nodeResolved,                line 409
@@ -21,7 +21,7 @@
 //
 // The [SpecialName] methods in the decompiled source are property accessors the deobfuscation pass
 // left as methods; they are restored to properties here.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04).
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04).
 
 using System;
 using System.Collections.Generic;

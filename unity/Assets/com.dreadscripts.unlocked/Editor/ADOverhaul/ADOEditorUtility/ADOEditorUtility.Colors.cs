@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static _ObserverSerializer    -> validColor,           line 2062
 //   static _BroadcasterSerializer -> errorColor,           line 2064
 //   static _EventSerializer       -> warningColor,         line 2066
@@ -8,7 +8,7 @@
 //   static _FilterSerializer      -> accentColor,          line 2074
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- all seven literals and their declaration order were
+// Audit status: VERIFIED against reverse-engineering/export/ -- all seven literals and their declaration order were
 // re-checked against lines 2062-2074 on 2026-08-04 and match. Accessibility matches too (plain
 // `internal static Color`, not readonly, as shipped).
 //
@@ -17,7 +17,7 @@
 //
 // The names come from the role each colour's call sites give it, not from its hue -- the same basis
 // ControllerEditor's EditorUtils.Colors.cs used. Call sites, all in
-// decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs:
+// reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs:
 //   validColor           the "true" half of every conditional GUIColorScope pair (lines 2537, 3307,
 //                        4255, 4568, 5782, 6126, 6728, 6742, 6901, 4604, 6160), the enabled "Apply
 //                        Changes" button, and the Regular tint of the log colouriser (line 7812).
@@ -32,7 +32,7 @@
 //   cautionColor and accentColor have no surviving call site in either assembly; see their notes.
 //
 // Shared with ControllerEditor: EditorUtils declares the same literals
-// (decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs lines 2176-2190), and
+// (reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs lines 2176-2190), and
 // all seven of these appear there. The two palettes are effectively the same table -- ControllerEditor
 // carries one extra entry the ADOverhaul build does not (a pale blue, 0.5/0.8/1, at line 2176) --
 // which makes them a candidate for a shared palette in Editor/Common. Deliberately NOT consolidated

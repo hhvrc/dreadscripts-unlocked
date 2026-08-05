@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ConcatList -> ShowObjectPicker(...), line 6690
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
@@ -22,7 +22,7 @@
 // fires on the Unity 2018/2019-era editors the original package also supported. That older
 // signature was not verified against a live install and is transcribed from the decompiled source
 // as-is.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // The two callbacks are the subtle part -- see the parameter documentation below.
 

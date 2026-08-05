@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: decompiled lines 6264-6682 of the outer ADOverhaul class. Line numbers are
 // relative to the current snapshot; the decompiled names below are the durable reference.
@@ -194,14 +194,14 @@
 // Neither changes evaluation order or result. No divergence to record.
 //
 // NOTES
-// The twelve MAP line numbers at the top were re-based against the current decompiled/ snapshot:
+// The twelve MAP line numbers at the top were re-based against the current reverse-engineering/export/ snapshot:
 // they had been written before the 561e9ec re-snapshot and were each 204 lines short. The many
 // other decompiled line references in the prose sections above (6067, 6144-6183, 6488, 6496,
 // 6365-6366, 6372, 6451, 6561, 6735, 6740, 6949, 7806, 8249, 8266, 8290, 8410, 8692, ...) still
 // carry the pre-561e9ec numbering and were NOT re-based; treat the member names, not those
 // numbers, as the reference until someone sweeps them.
 //
-// Audit status: PARTIAL -- the twelve MAP line numbers above were checked against decompiled/
+// Audit status: PARTIAL -- the twelve MAP line numbers above were checked against reverse-engineering/export/
 // ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs and each now lands on the member named, and
 // the DrawShapeEditOverlay half of the registration audit was re-read against CancelConfiguration
 // (decompiled 6700-6711) and its four call sites when that member was ported; the helper and

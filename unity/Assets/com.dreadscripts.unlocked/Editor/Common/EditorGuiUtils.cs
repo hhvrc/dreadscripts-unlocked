@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/EditorGuiUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/Common/SupportThankies/EditorGuiUtils.cs
 //
 //   facade                  -> colorTexture,             line 9
 //   RandomElement<T>        -> same,                     line 11
@@ -30,7 +30,7 @@
 // DrawHorizontalSeparator, DrawVerticalSeparator and DrawUnderline). Callers here use
 // GUILayoutUtils.
 //
-// Audit status: PARTIAL -- the member list and line numbers above were checked against decompiled/
+// Audit status: PARTIAL -- the member list and line numbers above were checked against reverse-engineering/export/
 // ControllerEditor/DreadScripts/Common/SupportThankies/EditorGuiUtils.cs; the method bodies were
 // not re-diffed.
 
@@ -153,7 +153,7 @@ namespace DreadScripts.Common
         /// </remarks>
         internal static Texture2D GetColorTexture(Color color)
         {
-            // DEOBF-BUG(resolved): decompiled/ has `while (true) { colorTexture = new Texture2D(...); }`
+            // DEOBF-BUG(resolved): reverse-engineering/export/ has `while (true) { colorTexture = new Texture2D(...); }`
             // here, which would hang the editor on the first call and so cannot be what shipped --
             // the support window demonstrably draws. Ported as the one-shot lazy initialisation the
             // surrounding code requires. The same de4dot fault is confirmed elsewhere: on

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   nested readonly struct TransitionEditionInfo -> TransitionEditionInfo, line 664
 //     m_DisplayNameRef ... isDefaultTransitionRef -> unchanged,   lines 666-680
 //     context, edge, transition, stateTransition, animatorTransition, sourceState,
@@ -23,7 +23,7 @@
 // isAnyStateTransition ref (decompiled line 733, RE_NOTES 'Vendor bugs'). Preserved faithfully,
 // not corrected.
 //
-// Audit status: VERIFIED -- compared member by member against decompiled/ControllerEditor/
+// Audit status: VERIFIED -- compared member by member against reverse-engineering/export/ControllerEditor/
 // DreadScripts/ControllerEditor/AnimatorGraphReflection.cs lines 664-778 on 2026-08-05; every line
 // number above lands on the member named, including the two unported ones.
 

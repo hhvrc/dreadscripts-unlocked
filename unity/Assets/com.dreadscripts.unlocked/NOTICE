@@ -1,0 +1,15 @@
+NOT COVERED BY THIS REPOSITORY'S LICENCE
+
+This package is a restoration: two Unity Editor tools rebuilt from their shipped
+assemblies after the server they validated against was shut down.
+
+It is therefore derived work. Almost every file here was reconstructed from those
+assemblies and reproduces the original logic deliberately, down to the bugs -- that
+fidelity is the point of a restoration, and it is also why the underlying expression
+remains the original author's. We do not hold it and cannot license it, so no
+licence is offered over it and none should be assumed.
+
+What this project contributed is real but narrower: the naming, the reorganisation
+into a single package, the provenance headers on every file, the decisions about
+what to leave out, and the corrections where the decompiler was wrong. Each file
+records which of those applies to it.

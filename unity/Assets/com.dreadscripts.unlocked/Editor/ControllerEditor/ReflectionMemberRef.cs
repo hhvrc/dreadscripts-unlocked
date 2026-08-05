@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ReflectionMemberRef.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ReflectionMemberRef.cs
 //
 // The three [SpecialName] accessors GetFirstParameterType/GetMembers/GetMember were properties
 // before the obfuscator split them, and are properties (FirstParameterType/Members/Member) again

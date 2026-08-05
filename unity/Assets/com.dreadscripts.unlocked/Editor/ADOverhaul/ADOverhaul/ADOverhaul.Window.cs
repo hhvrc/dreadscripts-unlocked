@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // This file ports no member of the decompiled source, so it carries no MAP entries: it claims no
 // decompiled line, and the two lines named below are call sites inside members ported elsewhere,
@@ -26,7 +26,7 @@
 // These two methods are therefore an artifact of the reconstruction and not of the original. They
 // add no behaviour: each is exactly the expression the decompiled window inlined at its call site.
 //
-// Audit status: PARTIAL -- the two call sites above were re-checked against decompiled/ (lines 89
+// Audit status: PARTIAL -- the two call sites above were re-checked against reverse-engineering/export/ (lines 89
 // and 162 of ADOverhaul.cs) in this pass; nothing else here corresponds to decompiled source.
 
 namespace DreadScripts.ADOverhaul

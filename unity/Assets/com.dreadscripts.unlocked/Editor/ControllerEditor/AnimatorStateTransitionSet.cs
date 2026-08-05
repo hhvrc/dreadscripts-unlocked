@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorStateTransitionSet.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorStateTransitionSet.cs
 //   GetSourceName                                -> SourceName,                 line 31
 //   GetDestinationName                           -> DestinationName,            line 55
 //   GetDisplayName                               -> DisplayName,                line 73

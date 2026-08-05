@@ -1,8 +1,8 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from both, which are identical apart from obfuscated names:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //     PositionFlag -> PositionFlag, line 518
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //     PositionFlag -> PositionFlag, line 25
 // The ADOverhaul2019 build declares the same enum with the same values (line 25 there too).
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and

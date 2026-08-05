@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs,   lines 503-582
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs, lines 985-1058
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs,   lines 503-582
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs, lines 985-1058
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. The class is nested inside EditorUtils /
 // ADOEditorUtility in the shipped assemblies; it is lifted to the namespace here.
@@ -43,7 +43,7 @@
 // 2019 vs 2022: identical apart from obfuscated names.
 //
 // Audit status: PARTIAL -- the ADOverhaul source range (ADOEditorUtility.cs 503-582, class
-// SceneViewPanel and its three constructors) was re-checked against decompiled/; the
+// SceneViewPanel and its three constructors) was re-checked against reverse-engineering/export/; the
 // ControllerEditor copy and the constructor bodies were not re-diffed.
 
 using System;

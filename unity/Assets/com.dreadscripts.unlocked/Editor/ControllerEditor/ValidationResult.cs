@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ValidationResult.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ValidationResult.cs
 //
 // Audit status: VERIFIED -- diffed in full against export/. The four fields, the constructor, all
 // five implicit conversions and ToString match statement for statement; only the declaration order

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static PrepareStatus   -> ToggleButton(bool, GUIContent, GUIStyle, ...), line 3176
 //   static ChangeStatus    -> ToggleButton(bool, string, GUIStyle, ...),     line 3161
 //   static StopStatus      -> ToggleButton(bool, string, ...) with no style, line 3166
@@ -18,7 +18,7 @@
 //   static PostStatus      -> MarkAsLink,                                    line 3079
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above and cross-checked against the ControllerEditor twin named next.
 //
 // The obfuscator had already split each button into one overload per (content type, style present)

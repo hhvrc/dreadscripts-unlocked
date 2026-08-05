@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/GameObjectRef.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/GameObjectRef.cs
 //
 // NOTES
 // Transform, Components and Item all carry [SpecialName] in the decompiled source; the first two are

@@ -1,0 +1,73 @@
+== _Role (13) ==
+000: Goofy Goobers
+001: Kofi Lovers
+002: Just People
+003: Pookies
+004: Friendos
+005: Frens
+006: Cultists
+007: Dreadlings
+008: Epic Gamers
+009: Y'all
+010: Pals
+011: Buddies
+012: Gang Gang
+
+== m_Model (15) ==
+000: ♡ Thanks to these lovely people ♡
+001: ♡ You are the champions ♡
+002: ♡ Couldn't do it without them ♡
+003: ♡ Overwhelmed by their support ♡
+004: ♡ Fueled by their love and support ♡
+005: ♡ I have been thoroughly supported ♡
+006: ♡ Overly caffeinated by these peeps ♡
+007: They sorta like my stuff
+008: ♡ I'd learn shader code for them ♡
+009: ♡ Literally the best people ever ♡
+010: I'm not crying, you're crying!
+011: Jokes on them, I'm a terrible person
+012: Slightly better than my cat
+013: XOXO
+014: pls support
+
+== m_Tokenizer (14) ==
+000: Thanks to you too ♡
+001: You're cool too ♡
+002: Got Kofi?
+003: Join the cool kids club
+004: You better be on this list
+005: You look like you'd be a good supporter ;)
+006: Remember to support your local devs
+007: Support ya boi
+008: Eat your veggies
+009: Eat tight. Sleep healthy.
+010: HYDRATE. NOW.
+011: Check your posture
+012: Use code DREADSCRIPTS for 10% off (lie)
+013: You're now blinking and breathing manually
+
+== decorator (23) ==
+000: The Goofiest Goober
+001: Chad
+002: Epic Gamer
+003: Top Tier
+004: Chat is this real?!
+005: Friendo of the Year
+006: Quality Human
+007: Real MVP
+008: Very very cool
+009: I threatened them to support me
+010: Had to bribe them with snacks
+011: Not a bot
+012: Can beat Goku
+013: Makes the best coffee
+014: Makes a mean applepie
+015: They're behind you.
+016: Why would they do this?
+017: They're cool at parties
+018: Might be the impostor
+019: The peak of human evolution
+020: The friend we make along the way
+021: OwO
+022: W
+

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/MenuSelector.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/MenuSelector.cs
 //   _ExceptionThread -> treeView,                line 13
 //   objectThread     -> showAssetPicker,         line 15
 //   utilsThread      -> controlsToAdd,           line 17
@@ -27,7 +27,7 @@
 // sites named: absolute on isfield (SortResolver) and isserv (PatchResolver), offsetAbsolute on
 // isvisitor3, allowSceneObjects on loaddef3. ShowObjectPicker's seventh parameter is the
 // selector-closed callback, which is where the decompiled call passes its delegate positionally.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 
 using System;
 using System.Collections.Generic;

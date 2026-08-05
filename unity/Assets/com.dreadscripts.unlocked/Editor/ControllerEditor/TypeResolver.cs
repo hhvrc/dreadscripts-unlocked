@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/TypeResolver.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/TypeResolver.cs
 //
 // DEOBF-BUG
 // ResolvedType has no recoverable body: de4dot leaves `if (!resolved) { while (true) { resolved =
@@ -62,7 +62,7 @@ namespace DreadScripts.ControllerEditor
         /// This is the weakest reconstruction in the package. Unlike the other DEOBF-BUG sites it
         /// is not backed by a cross-build copy or an IL trace, so the search order and the
         /// null-handling are plausible rather than established. If de4dot's control-flow recovery
-        /// improves, re-derive this body from the new decompiled/ before trusting it.
+        /// improves, re-derive this body from the new reverse-engineering/export/ before trusting it.
         /// </remarks>
         public Type ResolvedType
         {

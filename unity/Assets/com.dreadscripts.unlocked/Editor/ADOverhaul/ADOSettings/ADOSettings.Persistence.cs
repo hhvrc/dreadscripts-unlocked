@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 // Ported region: the persistence half of the nested `ADOSettings` class, lines 1428-1676.
 //
 //   Save()                     -> Serialize(), line 1585
@@ -27,12 +27,12 @@
 // lifted into CacheNonSerializedSettingFields, is claimed here.
 //
 // ControllerEditor's EditorSettings.SaveSettings/LoadSettings/ClearSettings/PromptClearSettings
-// (decompiled/ControllerEditor/.../ControllerEditor.cs, lines 1486-1577) are the same code with a
+// (reverse-engineering/export/ControllerEditor/.../ControllerEditor.cs, lines 1486-1577) are the same code with a
 // different key, "yOk0XCnENLMO6DIF8cYpSg==SettingsJSON". They stay separate types because the two
 // products persist independent blocks.
 //
 // Audit status: PARTIAL -- every mapping above, and every line number in it, was re-derived against
-// decompiled/ADOverhaul2022 on 2026-08-05 (the previous numbers predated the 561e9ec re-snapshot and
+// reverse-engineering/export/ADOverhaul2022 on 2026-08-05 (the previous numbers predated the 561e9ec re-snapshot and
 // were three to four lines short); the doc-comment prose on the members below was not re-checked.
 
 using System;

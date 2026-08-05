@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   nested class ControllerEditorWindow -> lifted to a top-level type, line 3190
 //
 // Despite the name this is the tool's *settings* window, not its main view: the Controller Editor

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ChangeCallbackScope.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ChangeCallbackScope.cs
 //
 // DELIBERATE DEVIATION
 // Dispose gates the callback on `changeScope.changed`; the decompiled source calls it

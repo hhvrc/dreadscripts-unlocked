@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/GUIColorScope.cs
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/GUIColorScope.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/GUIColorScope.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/GUIColorScope.cs
 //
 // Audit status: VERIFIED -- both copies diffed statement by statement against this file: the
 // ColoringType enum (All = 7 written out as BG | FG | General), all four constructors, the colour

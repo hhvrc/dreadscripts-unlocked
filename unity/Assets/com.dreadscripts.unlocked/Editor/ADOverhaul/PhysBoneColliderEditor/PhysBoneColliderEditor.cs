@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the PhysBoneColliderEditor class, lines 2161-2356 of the current snapshot. Line
 // numbers move with the snapshot; the member names below are the durable reference.

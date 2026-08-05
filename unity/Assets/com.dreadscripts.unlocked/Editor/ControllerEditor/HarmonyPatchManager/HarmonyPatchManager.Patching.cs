@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   (nested type ControllerEditor.HarmonyPatchManager)
 //   MapReg      -> Patch(Type, string, ...),            line 2631
 //   ValidateReg -> PatchByParameterType,                line 2636

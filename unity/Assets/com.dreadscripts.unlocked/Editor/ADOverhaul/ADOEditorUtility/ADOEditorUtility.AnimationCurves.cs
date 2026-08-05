@@ -1,11 +1,11 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static FlushProcess   -> TryGetSurroundingKeyframes, line 2274
 //   static ExcludeProcess -> TryEvaluateTangent,         line 2312
 //   static InitProcess    -> CatmullRom,                 line 2328
 //   static ConnectProcess -> TangentBetween,             line 2337
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // VENDOR BUG, reproduced as shipped: TangentBetween converts each keyframe's tangent to degrees

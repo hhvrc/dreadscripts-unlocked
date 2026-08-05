@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // The three accessors that answer "what is the tool looking at right now": which controller, which
 // layer's state machine, and which sub-machine the graph has been navigated into. Almost every other

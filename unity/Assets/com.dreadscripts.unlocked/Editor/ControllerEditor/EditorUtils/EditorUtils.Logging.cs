@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static RunResolver     -> Colorize(string, Color),   line 2761
 //   static CloneResolver   -> Colorize(string, LogType), line 2766
 //   static LoginResolver   -> Log,                       line 2781
@@ -12,7 +12,7 @@
 // "Resolver" suffix the obfuscator gave everything -- GetResolver/CalcResolver/IncludeResolver
 // (lines 2742-2759) are numeric snapping helpers and DeleteResolver/CreateResolver (lines
 // 2807-2821) build GUIContent; they belong to other partials.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // The severity parameter is Unity's LogType, not the tools' own CustomLogType: the switch below
 // distinguishes Assert and Exception, which CustomLogType does not model.

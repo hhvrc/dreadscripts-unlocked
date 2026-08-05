@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   nested class BoneNode -> BoneNode, lines 1499-1545
 //   GetPosition()         -> position (property),        line 1520
 //   GetMaxScale()         -> maxScale (property),        line 1526
@@ -6,7 +6,7 @@
 //   EvaluateCurve         -> EvaluateCurve,              line 1537
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every field and every statement below was transcribed
+// Audit status: VERIFIED against reverse-engineering/export/ -- every field and every statement below was transcribed
 // from the region above.
 //
 // DEOBF-BUG(resolved): all three getters carried [SpecialName] with no matching setter, which is

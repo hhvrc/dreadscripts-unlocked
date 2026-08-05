@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/OptionState.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/OptionState.cs
 //
 // Audit status: VERIFIED -- diffed in full against export/; the three members and their
 // declaration order match exactly.

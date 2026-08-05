@@ -1,11 +1,11 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   nested class WatcherProcessor -> Contents, lines 29-235
 //   static PushQueue -> IconContent, line 6227
 //   static NewList   -> CachedIcon,  line 7381
 //   static DestroyError -> the contents accessor, line 6236
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every field below was matched to its icon/tooltip pair.
+// Audit status: VERIFIED against reverse-engineering/export/ -- every field below was matched to its icon/tooltip pair.
 
 using UnityEditor;
 using UnityEngine;

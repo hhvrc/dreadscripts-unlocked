@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the PhysBoneEditor class, lines 2358-4367 of the current snapshot, together with
 // the compiler-generated display classes between lines 2404 and 2760 that belong to it. Line
@@ -90,7 +90,7 @@
 // remnants removed from PhysBoneParameter and ObfuscationMarker, and it is deliberately not
 // reproduced.
 //
-// Audit status: PARTIAL -- the six MAP entries above were re-checked against decompiled/ and their
+// Audit status: PARTIAL -- the six MAP entries above were re-checked against reverse-engineering/export/ and their
 // line numbers corrected (the field block is at 2980-2988 and ChangeSingleton at 4567 in the
 // post-561e9ec snapshot, not 2776-2784/4363). In the sibling-partial list, only the
 // PhysBoneEditor.GizmoSettings.cs entry has been re-checked -- its member is named

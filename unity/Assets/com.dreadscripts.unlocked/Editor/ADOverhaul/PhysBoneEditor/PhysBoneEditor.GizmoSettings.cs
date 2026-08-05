@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: one member of the PhysBoneEditor class. Line numbers move with the snapshot; the
 // member name below is the durable reference.
@@ -12,7 +12,7 @@
 //
 // The decompiled member used to read InterruptSingleton here; that was the obfuscator's name, and
 // renames/ADOverhaul2022.json now maps it (token 0x0600019b) to ApplyGlobalGizmoSettings, so
-// decompiled/ and this file agree on the identifier.
+// reverse-engineering/export/ and this file agree on the identifier.
 //
 // WIRING. The four settings do not name this method in this package: they raise the assignable seam
 // ADOSettings.onGizmoSettingsChanged, declared in Editor/ADOverhaul/ADOSettings/ADOSettings.ChangeHooks.cs,
@@ -25,7 +25,7 @@
 //
 // 2019 vs 2022
 // The 2019 build carries the same method under the obfuscator's name CancelProducer, declared at
-// line 4400 of decompiled/ADOverhaul2019/DreadScripts/ADOverhaul/ADOverhaul.cs. The two are the
+// line 4400 of reverse-engineering/export/ADOverhaul2019/DreadScripts/ADOverhaul/ADOverhaul.cs. The two are the
 // same method, on five independent pieces of evidence:
 //
 //   1. Same signature and accessibility on the same type: `internal static void`, no parameters, on
@@ -43,7 +43,7 @@
 //      then call Object.FindObjectsOfType<VRCPhysBone>().
 //
 // DEOBF-BUG(resolved)
-// The 2019 decompile of this method loses its loop. decompiled/ADOverhaul2019 line 4400 renders the
+// The 2019 decompile of this method loses its loop. reverse-engineering/export/ADOverhaul2019 line 4400 renders the
 // whole body as a guard around a bare `UnityEngine.Object.FindObjectsOfType<VRCPhysBone>();` whose
 // result is discarded -- the three field writes and the foreach around them are simply absent, and
 // nothing in the 2019 tree writes VRCPhysBone.showGizmos at all.
@@ -56,11 +56,11 @@
 // same three assignments the 2022 decompile shows in full.
 //
 // Nothing was guessed to repair it: what is written below is the 2022 body, transcribed from
-// decompiled/ADOverhaul2022 lines 4414-4426, which is complete and needs no reconstruction. The
+// reverse-engineering/export/ADOverhaul2022 lines 4414-4426, which is complete and needs no reconstruction. The
 // 2019 loss is recorded here only because that build is this file's cross-reference, and a reader
 // comparing the two would otherwise read it as a behavioural change between versions.
 //
-// Audit status: VERIFIED -- the nine-line body was re-read against decompiled/ADOverhaul2022 lines
+// Audit status: VERIFIED -- the nine-line body was re-read against reverse-engineering/export/ADOverhaul2022 lines
 // 4414-4426 on 2026-08-05, together with all seven use sites in both builds and the 2019 original's
 // IL as described above.
 

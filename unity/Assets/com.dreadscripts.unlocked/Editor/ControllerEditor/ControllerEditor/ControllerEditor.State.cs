@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // Ported region: the field bank of the outer ControllerEditor class, lines 7962-8499 of the current
 // snapshot -- 267 static fields and one instance field. Line numbers move with the snapshot; the
@@ -351,7 +351,7 @@
 // The protocol they served is specified in reverse-engineering/DRM.md, at the repository root, and
 // answered by drm_server/ beside it.
 //
-// Audit status: PARTIAL -- the two omissions were re-checked against decompiled/ on this pass and
+// Audit status: PARTIAL -- the two omissions were re-checked against reverse-engineering/export/ on this pass and
 // are exactly where the table says: line 8162 is
 // `private static readonly VersionNumber m_RefAnnotation = new VersionNumber("3.3.2")` and line 8438
 // is `private static readonly MethodInfo m_ComparatorVisitor = HarmonyPatchManager.NewReg<

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   (nested type ControllerEditor.HarmonyPatchManager, lines 2402-3017, lifted to top level here
 //   following the precedent set by PhysBoneEditor)
 //

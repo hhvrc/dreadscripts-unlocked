@@ -1,9 +1,9 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   nested struct ShapeSnapshot -> ShapeSnapshot, lines 1264-1351
 //   ValidateDescriptor / EnableDescriptor -> not ported; see below
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every field and every statement below was transcribed
+// Audit status: VERIFIED against reverse-engineering/export/ -- every field and every statement below was transcribed
 // from the region above.
 //
 // Every member of this struct kept its original name through obfuscation except the tamper pair:

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   (nested type ControllerEditor.HarmonyPatchManager, lines 2798-3016)
 //
 // Forty-four one-line helpers, each `internal static MethodInfo Xxx<...>(SomeDelegate d) => d.Method;`
@@ -59,7 +59,7 @@
 // member names are the durable reference. See HarmonyPatchManager.cs for the type-level header.
 //
 // Audit status: PARTIAL -- the endpoints of the table (CreateReg at 2798, NewReg at 2803,
-// QueryTests at 3013) were re-checked against decompiled/ and the five-line stride holds; the
+// QueryTests at 3013) were re-checked against reverse-engineering/export/ and the five-line stride holds; the
 // forty-one entries between them were not individually re-read.
 
 using System;

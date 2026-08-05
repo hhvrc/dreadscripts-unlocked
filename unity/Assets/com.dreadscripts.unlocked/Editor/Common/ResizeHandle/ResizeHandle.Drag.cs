@@ -1,8 +1,8 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from both:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs:
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs:
 //     ResizeHandle.DoResizeHandles -> ApplyDragDelta, line 794
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs:
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs:
 //     ResizeHandle.HandleResize    -> ApplyDragDelta, line 243
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and member
 // names are the durable reference.
@@ -19,7 +19,7 @@
 // three snapshots disagree -- see the remarks on that branch.
 //
 // Audit status: PARTIAL -- both source methods and both line numbers were re-checked against
-// decompiled/ on 2026-08-05 (DoResizeHandles at EditorUtils.cs 642, HandleResize at
+// reverse-engineering/export/ on 2026-08-05 (DoResizeHandles at EditorUtils.cs 642, HandleResize at
 // ADOEditorUtility.cs 143); the three-way comparison of the branch bodies asserted below was taken
 // from the earlier port and not re-derived.
 

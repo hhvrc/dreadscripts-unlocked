@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTransitionRef.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTransitionRef.cs
 //
 // NOTES
 // StateTransitions and StateMachineTransitions carry [SpecialName] in the decompiled source, i.e.

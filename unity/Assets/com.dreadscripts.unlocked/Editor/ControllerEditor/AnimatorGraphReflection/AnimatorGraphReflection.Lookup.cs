@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   the members declared directly on the type, after the nested types:
 //     FindNode(AnimatorState)                    -> FindNode,             line 809
 //     FindNode(AnimatorStateMachine)             -> FindNode,             line 814
@@ -10,7 +10,7 @@
 //
 // The nested types live in the sibling files of this folder: TypeResolvers, MemberRefs,
 // GraphAccessors, GraphNodeRef, GraphEdgeRef, GraphSlotRef and TransitionEditionInfo.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04). AnimatorGraphReflection is
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04). AnimatorGraphReflection is
 // COMPLETE: all seven nested types plus the five outer-body members are ported across the eight
 // files in this folder.
 

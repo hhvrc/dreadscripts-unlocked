@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ListPredicate   -> ForEachClip(BlendTree),      line 3785
 //   static VerifyPredicate -> AnyClip(BlendTree),          line 3794
 //   static FillPredicate   -> ForEachBlendTree,            line 3824
@@ -8,7 +8,7 @@
 //   static CheckPredicate  -> AnyMotion,                   line 3879
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Motion-tree walkers. A Motion is either an AnimationClip (a leaf) or a BlendTree (which holds
 // further Motions), so anything that wants to reach the clips under a state has to recurse. Each

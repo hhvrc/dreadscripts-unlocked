@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/MenuControlTreeItem.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/MenuControlTreeItem.cs
 //
 // Audit status: VERIFIED -- diffed in full against export/ControllerEditor/DreadScripts/
 // ControllerEditor/MenuControlTreeItem.cs. Base type, the one readonly field and the one

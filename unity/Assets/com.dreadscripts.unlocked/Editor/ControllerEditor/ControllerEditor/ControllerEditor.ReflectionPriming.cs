@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // Ported region: the six eager "resolve the internal Unity members we are about to patch" methods of
 // the ControllerEditor god class, and the reflection handle fields they fill. Line numbers are
@@ -163,7 +163,7 @@
 //   PrimeGraphNodeReflection -- that is kept, because it is what shipped, not because it is nicer.
 //
 // Audit status: PARTIAL -- rebuildGraphMethod's field line was corrected from 8348 to 8346 against
-// decompiled/ on 2026-08-05 (8348 is filterVisitor, which ControllerEditor.State.cs owns); the
+// reverse-engineering/export/ on 2026-08-05 (8348 is filterVisitor, which ControllerEditor.State.cs owns); the
 // remaining field entries were not re-checked. The one region audited since is the tail of
 // PrimeMenuAndLayerEditorReflection, which was deferred and is now written out: decompiled
 // 17095-17103 was diffed statement for statement, which is what turned up that the old deferral note

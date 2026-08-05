@@ -1,11 +1,11 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static itemProperty  -> lastAssetFolder,           line 2122
 //   static SetupRules    -> CreateAssetViaSavePanel,   line 4223
 //   static IncludeQueue  -> PingButton,                line 6028
 //   static MoveRules     -> AssetButtons,              line 4382
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // These are the small button groups that sit at the right-hand end of an asset row -- select an
 // existing asset, create a new one, ping the current one -- plus the save-panel helper the create

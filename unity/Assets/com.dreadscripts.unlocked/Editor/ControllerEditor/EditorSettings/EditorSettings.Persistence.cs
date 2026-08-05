@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 // Ported region: the persistence half of the nested `EditorSettings` class, lines 1393-1577.
 //
 //   SaveSettings()             -> WriteToPrefs(), line 1486
@@ -25,12 +25,12 @@
 // constructor in EditorSettings.cs. Callers that used to call SaveSettings() call
 // SettingsPersistence.Save().
 //
-// ADOverhaul's ADOSettings.Save/Load/Clear/PromptClear (decompiled/ADOverhaul2022/.../ADOverhaul.cs,
+// ADOverhaul's ADOSettings.Save/Load/Clear/PromptClear (reverse-engineering/export/ADOverhaul2022/.../ADOverhaul.cs,
 // lines 1585-1676) are the same code with a different key, "No1lKII9IzcBAbihub6nCg==SettingsJSON".
 // They stay separate types because the two products persist independent blocks.
 //
 // Audit status: PARTIAL -- every mapping above, and every line number in it, was re-derived against
-// decompiled/ControllerEditor on 2026-08-05; the ControllerEditor numbers were already correct, only
+// reverse-engineering/export/ControllerEditor on 2026-08-05; the ControllerEditor numbers were already correct, only
 // the three inline-key line numbers and the ADOverhaul cross-reference above needed correcting. The
 // doc-comment prose on the members below was not re-checked.
 

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ComponentQueue.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ComponentQueue.cs
 //
 //   gameObject                           -> gameObject, line 79
 //   components                           -> components, line 81
@@ -43,7 +43,7 @@
 // unported.
 //
 // Audit status: PARTIAL -- the mapping above was re-derived member by member against
-// decompiled/ControllerEditor/DreadScripts/ControllerEditor/ComponentQueue.cs on 2026-08-05, and
+// reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ComponentQueue.cs on 2026-08-05, and
 // every line number lands on the member named; the doc-comment prose on the members below was not
 // re-checked against the decompiled bodies.
 

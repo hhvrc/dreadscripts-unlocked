@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/MenuExpressionTreeView.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/MenuExpressionTreeView.cs
 // Member names are unchanged from the decompiled source; only locals were renamed, since the
 // decompiler had reduced them to num/flag artifacts. The goto-based ternary chain in RowGUI and the
 // two rects it computes but never uses are decompiler noise and are not reproduced.

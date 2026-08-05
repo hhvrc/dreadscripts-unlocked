@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static SetStatus       -> Toggle,   line 2732
 //   static CustomizeStatus -> As<T>,    line 2766
 //   static ConcatStatus    -> GetFlags, line 2780
@@ -6,7 +6,7 @@
 //   static FillStatus      -> And,      line 2798
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // These five are the general-purpose extensions in the outer class body -- the ones that operate on

@@ -1,11 +1,11 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type,
 // under two different names. Reconstructed from both, which are statement-for-statement
 // identical and differ only in the obfuscated name of the constructor parameter:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ReadableTextureScope.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ReadableTextureScope.cs
 //     (shipped as ReadableTextureScope, a top-level type)
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs, lines 1103-1146
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs, lines 1103-1146
 //     (shipped as ReadableTexture, nested in ADOEditorUtility)
-//   decompiled/ADOverhaul2019/DreadScripts/ADOverhaul/ADOEditorUtility.cs, lines 1102-1145
+//   reverse-engineering/export/ADOverhaul2019/DreadScripts/ADOverhaul/ADOEditorUtility.cs, lines 1102-1145
 //     (same, no divergence from the 2022 build)
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static PublishResolver -> SetSourceWeights,                          line 2407
 //   static PopResolver     -> ActivateAndPreserveOffset(ParentConstraint),   line 2422
 //   static ComputeResolver -> ActivateWithZeroOffset(ParentConstraint),      line 2431
@@ -23,7 +23,7 @@
 //     _MessageProperty     -> _scaleActivatePreserve
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Helpers for Unity's built-in constraint components (UnityEngine.Animations.*Constraint).
 //

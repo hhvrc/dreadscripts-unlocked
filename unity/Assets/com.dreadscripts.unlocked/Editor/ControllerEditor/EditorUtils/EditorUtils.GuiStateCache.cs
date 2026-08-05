@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static serviceProperty -> guiStateCache,        line 2162
 //   static SearchRules     -> SetGuiState,          line 5571
 //   static RevertRules     -> GetGuiState(string),  line 5580
@@ -20,7 +20,7 @@
 // lazily and null-check it on every read, because the field had no initialiser. It is a field
 // initialiser here instead, matching EditorUtils.Windows.cs; nothing can observe the difference
 // from a static class.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 
 using System.Collections.Generic;
 using UnityEngine;

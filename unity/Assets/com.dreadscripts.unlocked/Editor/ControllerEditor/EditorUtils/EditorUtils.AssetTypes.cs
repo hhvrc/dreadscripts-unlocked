@@ -1,9 +1,9 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static m_SpecificationProperty -> assetExtensions,      line 2124
 //   static CancelRules             -> TryGetAssetExtension, line 4434
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // The table is transcribed literally, including the entries whose spelling looks wrong -- see the
 // remarks on assetExtensions. Nothing else from the surrounding decompiled region is ported here.

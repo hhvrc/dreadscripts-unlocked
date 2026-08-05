@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static VisitPredicate       -> AddLayer,            line 3275
 //   static DefinePredicate      -> IsTagTransition,     line 3293
 //   static StartPredicate       -> AddTag,              line 3302
@@ -26,8 +26,8 @@
 // merges; the prose describing it went with it. What is left here is the tag helpers, AddLayer and
 // CopyParameters.
 //
-// Audit status: VERIFIED against decompiled/ -- all nine declared members diffed statement by
-// statement against decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the
+// Audit status: VERIFIED against reverse-engineering/export/ -- all nine declared members diffed statement by
+// statement against reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the
 // cited lines (VisitPredicate 3275, DefinePredicate 3293, StartPredicate 3302, ReadPredicate 3313,
 // SelectPredicate 3319, RemovePredicate 3335, InstantiatePredicate 3341, AwakePredicate 3348,
 // ConnectPredicate 3402), all of which still land on the named member in the current snapshot. The

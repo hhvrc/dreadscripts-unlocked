@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ReorderableListHelper.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ReorderableListHelper.cs
 //
 // The [SpecialName] Index()/Index(int) pair was a property before the obfuscator split it, and is
 // one again here. The unused static pair CustomizeStruct/SearchStruct is deliberately not ported:

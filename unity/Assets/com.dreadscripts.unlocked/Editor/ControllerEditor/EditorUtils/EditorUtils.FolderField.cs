@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static EnableRules -> FolderField, line 4249
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.

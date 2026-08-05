@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/UtilityWindowBase.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/UtilityWindowBase.cs
 //
 // NOT PORTED
 // The decompile also carries `private static readonly PropertyInfo positionProperty` (a reflected

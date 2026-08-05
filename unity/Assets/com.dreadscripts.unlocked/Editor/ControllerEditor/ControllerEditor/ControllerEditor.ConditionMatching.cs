@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 //   WriteVisitor   -> ConditionsMatch(AnimatorCondition, AnimatorCondition, bool, out bool[]), line 12859
 //   ForgotVisitor  -> ConditionsMatch(AnimatorCondition, AnimatorCondition, bool), line 12905

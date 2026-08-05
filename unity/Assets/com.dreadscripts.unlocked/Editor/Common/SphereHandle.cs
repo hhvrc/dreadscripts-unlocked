@@ -2,8 +2,8 @@
 // type. The two are the same type with the name transposed -- ADOverhaul calls it
 // SphereHandle, ControllerEditor calls it HandleSphere -- with identical fields, identical
 // factory defaults and identical drawing. Reconstructed from:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs,   lines 852-917 (SphereHandle)
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs, lines 1082-1148 (HandleSphere)
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs,   lines 852-917 (SphereHandle)
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs, lines 1082-1148 (HandleSphere)
 // SphereHandle is kept here as the clearer of the two shipped names: it reads as "a handle that
 // is a sphere", and matches Unity's own Handles.SphereHandleCap that it draws with.
 //
@@ -44,7 +44,7 @@
 //    obfuscator tamper-check stub, not product behaviour.
 //
 // Audit status: PARTIAL -- the member mapping and FindStatus at ADOEditorUtility.cs line 3616 were
-// re-checked against decompiled/ for this pass; the ControllerEditor copy and the prose below the
+// re-checked against reverse-engineering/export/ for this pass; the ControllerEditor copy and the prose below the
 // mapping were not re-derived.
 
 using System;

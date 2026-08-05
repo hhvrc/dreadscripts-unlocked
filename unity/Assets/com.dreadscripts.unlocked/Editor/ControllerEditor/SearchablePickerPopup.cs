@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/SearchablePickerPopup.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/SearchablePickerPopup.cs
 //   nested class PickerEntry -> unchanged,   lines 12-40
 //     index, value, extraData, isVisible -> unchanged
 //     constructor  -> PickerEntry(T, int),   line 30
@@ -49,7 +49,7 @@
 // in the decompiled OnGUI are written `editorWindow` here; it is the same inherited member.
 //
 // Audit status: VERIFIED -- compared member by member and statement by statement against
-// decompiled/ControllerEditor/DreadScripts/ControllerEditor/SearchablePickerPopup.cs lines 1-194 on
+// reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/SearchablePickerPopup.cs lines 1-194 on
 // 2026-08-05; every line number above lands on the member named, including the four unported ones.
 
 using System;

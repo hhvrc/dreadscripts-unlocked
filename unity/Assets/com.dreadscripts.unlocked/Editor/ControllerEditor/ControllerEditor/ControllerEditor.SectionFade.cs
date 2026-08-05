@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 //   IncludeAnnotation -> SeparatorIf, line 9874
 //
@@ -8,7 +8,7 @@
 // ======================================== NOTES ================================================
 //
 // This member's declaration is not near its call sites and its line number was not recorded
-// anywhere in the package; it was found by searching decompiled/ for the two calls OnGUI makes at
+// anywhere in the package; it was found by searching reverse-engineering/export/ for the two calls OnGUI makes at
 // lines 8667 and 8669, which resolve to the declaration at 9874.
 //
 // CORRECTION TO ControllerEditor.Window.cs's HEADER. That file lists this member as "the animated

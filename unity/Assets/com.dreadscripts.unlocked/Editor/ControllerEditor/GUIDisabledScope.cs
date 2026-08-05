@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/GUIDisabledScope.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/GUIDisabledScope.cs
 //
 // Audit status: VERIFIED -- the field, the constructor and Dispose are the whole type and were
 // diffed statement by statement against export/. Only the obfuscated parameter name (iskey) differs.

@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of these types,
 // nested inside their respective settings classes.
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
 //
 // Member mapping. The checked line number is the ControllerEditor one; where the ADOverhaul2022
 // copy spells the member differently or sits at a different line, that appears in the decompiled
@@ -46,7 +46,7 @@
 // only. Everything else in this file is present, and behaviourally identical, in both.
 //
 // Audit status: PARTIAL -- every line number and member name above was re-checked against
-// decompiled/ (both copies) in this pass; the method bodies were not re-diffed.
+// reverse-engineering/export/ (both copies) in this pass; the method bodies were not re-diffed.
 
 using System;
 using UnityEditor;

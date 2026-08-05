@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of these types,
 // nested inside their respective settings classes.
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
 //
 // Member mapping. Each entry names the decompiled member, then the ported member, then the
 // ControllerEditor line and the ADOverhaul2022 line it was read from:

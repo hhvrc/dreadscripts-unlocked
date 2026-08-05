@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static AddRules      -> CreateBaseLayerMask,      line 4596
 //   static InvokeRules   -> CreateCombinedMask,       line 4621
 //   static FindRules     -> CreateMaskForLayer,       line 4634
@@ -12,7 +12,7 @@
 //   static RemoveRules   -> CreateEmptyMask,          line 4807
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // AvatarMask is a pair of independent lists: thirteen humanoid body-part toggles, and a list of
 // transform paths with an active flag each. Everything below manipulates one or both.

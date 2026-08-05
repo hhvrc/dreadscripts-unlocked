@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static field iteratorProperty   -> radiusHandleHash,             line 2174
 //   static field regProcessor       -> arrowMesh,                    line 2196
 //   static field testsProcessor     -> arrowMaterial,                line 2198
@@ -19,7 +19,7 @@
 //   static NewQueue     -> RadiusHandle,                     line 6175
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // SHARED WITH ADOVERHAUL, NOT CONSOLIDATED. ADOEditorUtility.SceneHandles.cs ports the same
 // DrawSphereHandle, TransformHandles and RadiusHandle from ADOverhaul's own copy, and says there why

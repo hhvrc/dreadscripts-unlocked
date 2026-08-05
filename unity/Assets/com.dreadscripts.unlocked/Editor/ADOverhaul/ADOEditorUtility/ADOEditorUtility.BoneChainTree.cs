@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   nested class BoneChainTree -> BoneChainTree, lines 1353-1497
 //   GetNodeMatrices()          -> nodeMatrices (property), line 1366
 //   .ctor(VRCPhysBone)         -> .ctor,                   line 1371
@@ -6,7 +6,7 @@
 //   BuildChains                -> BuildChains,             line 1479
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every field and every statement below was transcribed
+// Audit status: VERIFIED against reverse-engineering/export/ -- every field and every statement below was transcribed
 // from the region above.
 //
 // DEOBF-BUG(resolved): GetNodeMatrices carried [SpecialName] with no matching setter -- ILSpy's

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   nested class GraphEdgeRef -> GraphEdgeRef, line 586
 //     edge                      -> edge,                     line 588
 //     edgeInfoCached / edgeInfo -> edgeInfoCached / edgeInfo, lines 590-592
@@ -19,7 +19,7 @@
 // left as methods; they are restored to properties here. MoveSerializer (line 658) is the
 // compiler-generated body of the Transitions projection and has no separate port.
 //
-// Audit status: PARTIAL -- every entry above was re-checked against decompiled/ member by member
+// Audit status: PARTIAL -- every entry above was re-checked against reverse-engineering/export/ member by member
 // and line by line (2026-08-04), including that the [CompilerGenerated] MoveSerializer closure is
 // dissolved into the Transitions projection rather than given a file of its own. The bodies were
 // not re-diffed statement by statement in that pass.

@@ -2,9 +2,9 @@
 // type, under two different names. Reconstructed from both, which are behaviourally
 // identical and differ only in obfuscated parameter names and in the branch shape the
 // decompiler produced for operator >:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/SemVer.cs            (as SemVer)
-//   decompiled/ADOverhaul2019/DreadScripts/ADOverhaul/SemVer.cs            (as SemVer)
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/VersionNumber.cs (as VersionNumber)
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/SemVer.cs            (as SemVer)
+//   reverse-engineering/export/ADOverhaul2019/DreadScripts/ADOverhaul/SemVer.cs            (as SemVer)
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/VersionNumber.cs (as VersionNumber)
 // The ADOverhaul name is kept here; ControllerEditor call sites that referred to
 // VersionNumber use this type instead.
 //

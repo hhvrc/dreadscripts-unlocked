@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static structProperty -> windowTypeCache,      line 2160
 //   static PatchRules     -> UnmaximizeAllWindows, line 5518
 //   static InterruptRules -> FindWindow,           line 5530
@@ -17,7 +17,7 @@
 // filed here because EditorWindow is the type they operate on. They serialise the *window* through
 // JsonUtility, so every [SerializeField] on it round-trips in one call -- which is how the tool
 // remembers a window's settings across a domain reload without writing a key per field.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Nothing else in the outer class body belongs to this region -- the string-numbering helpers that
 // sit just above it (SortRules line 5480, RegisterRules 5497, LogoutRules 5502) and the session

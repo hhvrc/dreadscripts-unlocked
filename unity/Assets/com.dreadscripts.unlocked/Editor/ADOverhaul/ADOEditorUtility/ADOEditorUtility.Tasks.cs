@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static CreateProcess -> HandleTask, line 2395
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
@@ -34,7 +34,7 @@
 // which is the same function of the two flags for every combination, including the impossible
 // faulted-and-cancelled one (both forms take the success branch there).
 //
-// Audit status: PARTIAL -- the mapping above was re-checked against decompiled/ (the async method
+// Audit status: PARTIAL -- the mapping above was re-checked against reverse-engineering/export/ (the async method
 // at line 2395 and the state-machine struct at line 1851, which agree statement for statement);
 // the ported method body was not re-diffed in this pass.
 

@@ -1,10 +1,10 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static StartResolver  -> ResetLocal,    line 2625
 //   static ReadResolver   -> GetChildren,   line 2632
 //   static SelectResolver -> SetLossyScale, line 2642
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Basic Transform helpers. SetLossyScale reproduces the vendor's world-scale setter: it neutralises
 // the parent's scale by taking the world-to-local matrix with its translation column zeroed and

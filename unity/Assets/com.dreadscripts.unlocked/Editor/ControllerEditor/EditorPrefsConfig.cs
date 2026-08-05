@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorPrefsConfig.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorPrefsConfig.cs
 //   [SpecialName] Item(string) / Item(string, object) -> this[string], line 235
 //   [SpecialName] Item(Enum)   / Item(Enum, object)   -> this[Enum],   line 248
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names

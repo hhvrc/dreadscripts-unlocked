@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   nested static class TypeResolvers -> TypeResolvers, line 18
 //     every resolver field keeps its decompiled name (stateMachineGraph, stateMachineGraphGUI,
 //     edgeGUI, animatorControllerTool, breadCrumbElement, graph, graphGUI, stateNode,
@@ -9,7 +9,7 @@
 //
 // Each decompiled field spells the assembly-qualified name out in full; the identical suffix is
 // factored into a const below, which the compiler folds back into exactly the same literals.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04). All 15 resolver fields present.
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04). All 15 resolver fields present.
 
 namespace DreadScripts.ControllerEditor
 {

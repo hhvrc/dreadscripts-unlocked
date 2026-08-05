@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static FlushRules     -> DrawObjectListField<T>,  line 4932
 //   static CalculateRules -> AddToArray,              line 4979
 //   static MapRules       -> RemoveFromArray,         line 4998
@@ -35,7 +35,7 @@
 // cast enum value is not.
 //
 // Audit status: PARTIAL -- all twelve MAP entries above were re-checked against
-// decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs and each line number
+// reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs and each line number
 // lands on the member named; the method bodies were not re-diffed statement by statement.
 
 using System;

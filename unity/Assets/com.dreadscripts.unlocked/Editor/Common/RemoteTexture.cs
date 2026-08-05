@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/RemoteTexture.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/Common/SupportThankies/RemoteTexture.cs
 //   RemoteTexture           -> RemoteTexture,        lines 8-254
 //   TextureLayoutMethod     -> TextureLayoutMethod,  lines 10-16
 //   TextureDisplayParams    -> TextureDisplayParams, lines 18-57
@@ -60,9 +60,9 @@
 // ---------------------------------------------------------------------------------------------
 //
 // Audit status: PARTIAL -- every MAP entry above was re-derived from
-// decompiled/ControllerEditor/DreadScripts/Common/SupportThankies/RemoteTexture.cs (lines 8-254)
+// reverse-engineering/export/ControllerEditor/DreadScripts/Common/SupportThankies/RemoteTexture.cs (lines 8-254)
 // while writing this header. The NETWORK ACCESS block records observations about live hosts that
-// cannot be checked against decompiled/ and was not re-verified.
+// cannot be checked against reverse-engineering/export/ and was not re-verified.
 
 using UnityEditor;
 using UnityEngine;

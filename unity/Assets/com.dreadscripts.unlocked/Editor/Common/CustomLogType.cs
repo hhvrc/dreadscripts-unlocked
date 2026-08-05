@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from both, which are identical:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, line 743
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, line 2149
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, line 743
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, line 2149
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. The 2019 and 2022 ADOverhaul builds agree exactly.
 //

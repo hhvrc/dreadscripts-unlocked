@@ -1,11 +1,11 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   nested class Contents         -> Contents,          lines 584-665
 //   static ManageStatus           -> IconContent,       line 3328
 //   static CustomizeRef           -> the contents accessor, line 3337
 //   static field factorySerializer -> contentsInstance,  line 2076
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- all 35 fields, their icon names, their labels and their
+// Audit status: VERIFIED against reverse-engineering/export/ -- all 35 fields, their icon names, their labels and their
 // tooltips were re-checked field by field against lines 584-665 on 2026-08-04, including the six
 // tooltips the shipped constructor assigned afterwards, and match.
 // One deliberate deviation, recorded here rather than left implicit: the backing field

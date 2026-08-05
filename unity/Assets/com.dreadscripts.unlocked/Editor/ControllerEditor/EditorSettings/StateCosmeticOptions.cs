@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 // Ported region: the `internal enum StateCosmeticOptions` nested in the nested `EditorSettings`
 // class, lines 439-449. Lifted to a top-level type, as this package does with the other enums the
 // decompiled god-class carries as nested members (LayerViewViewType, OptionState, OrientationState).

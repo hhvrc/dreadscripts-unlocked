@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EventExtensions.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EventExtensions.cs
 //
 // NOTES
 // The private Where(EventWrapper, Func<Event, bool>) helper is not a decompiled member. Each of the

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static RunError       -> MaxParameterCost (property), line 7691
 //   static recordProcessor    -> cachedMaxParameterCost,      line 2232
 //   static InterruptList  -> GetRemainingCost,       line 7724
@@ -16,7 +16,7 @@
 // CalcSyncedTotalCost and IsNetworkSynced are ported here rather than reported as missing because
 // GetRemainingCost cannot compile without them -- they are the entire body of its non-SDK branch.
 // If another partial ends up owning them, delete them from here rather than duplicating.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Deliberately unported from the same region: ManageList (line 7738), which strips unnamed and
 // duplicate parameters from an asset in place; it is a mutation rather than a cost query and has

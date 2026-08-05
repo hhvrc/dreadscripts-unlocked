@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   nested readonly struct GraphSlotRef -> GraphSlotRef, line 780
 //     slot        -> slot,        line 782
 //     Node()      -> Node,        line 787
@@ -12,7 +12,7 @@
 // member names are the durable reference.
 //
 // Audit status: VERIFIED -- every entry above was re-checked member-by-member against
-// decompiled/ControllerEditor/.../AnimatorGraphReflection.cs on 2026-08-05; all seven line numbers
+// reverse-engineering/export/ControllerEditor/.../AnimatorGraphReflection.cs on 2026-08-05; all seven line numbers
 // land on the member named, and the dead scaffolding is correctly dropped.
 
 using System.Collections.Generic;

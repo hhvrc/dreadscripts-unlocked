@@ -1,9 +1,9 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
 //   AvatarDescriptorBinding -> AvatarDescriptorBinding, line 240
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. The fields keep the decompiled order, which is the
 // descriptor's own serialized field order.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04).
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04).
 // Note: the colliderFingerLittleRProperty field initializer (new SerializedObject(null).FindProperty)
 // matches export exactly but is a decompiler mis-attribution / vendor artefact. Preserved faithfully.
 

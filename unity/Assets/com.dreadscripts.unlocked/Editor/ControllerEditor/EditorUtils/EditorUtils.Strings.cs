@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static UpdateRules   -> TryMakeNameUnique,    line 5468
 //   static ChangeRules   -> MakeNameUnique,       line 5474
 //   static SortRules     -> MakeNameUnique,       line 5480
@@ -11,7 +11,7 @@
 //   static NewResolver    -> Humanize,             line 2823
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // ChangeRules and SortRules are ported as overloads of one name: they are the same operation, one
 // taking the set of names already in use and the other the predicate that decides availability.

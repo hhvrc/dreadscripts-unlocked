@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   ResolveAlgo     -> InvertCondition(AnimatorCondition),       line 15115
 //   ListAlgo        -> InvertCondition(AnimatorCondition, bool), line 15120
 //   CollectAlgo     -> InvertMode,                               line 15102

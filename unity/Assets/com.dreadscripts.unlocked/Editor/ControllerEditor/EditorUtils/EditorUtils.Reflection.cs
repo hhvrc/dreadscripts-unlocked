@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static DisableList   -> GetAnyMethod(Type, string),           line 6773
 //   static InsertList    -> GetAnyMethod(Type, string, Type[]),   line 6778
 //   static RestartList   -> GetAnyField,                          line 6783
@@ -34,9 +34,9 @@
 // parameter types are a *superset* of the ones asked for, so trailing optional parameters do not
 // have to be listed. Being set-based it also ignores parameter order and repeats.
 //
-// Audit status: VERIFIED -- all ten entries were re-checked against decompiled/ on 2026-08-05 and
+// Audit status: VERIFIED -- all ten entries were re-checked against reverse-engineering/export/ on 2026-08-05 and
 // each line number lands on the member named (the IncludeSetter lambda at EditorUtils.cs line 1866,
-// used at 7164). This replaces an older "VERIFIED against decompiled/" claim, which cannot be
+// used at 7164). This replaces an older "VERIFIED against reverse-engineering/export/" claim, which cannot be
 // reproduced.
 
 using System;

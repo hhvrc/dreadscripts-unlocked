@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // The window half of the ControllerEditor type: its EditorWindow message handlers and the menu item
 // that opens it. Every other partial in this folder holds statics; these are the only instance

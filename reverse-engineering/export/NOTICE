@@ -1,0 +1,11 @@
+NOT COVERED BY THIS REPOSITORY'S LICENCE
+
+This tree is decompiler output: the original author's shipped assemblies
+deobfuscated, renamed and rendered back as C#. Its structure and logic are theirs,
+so it is not ours to license.
+
+It is a build artefact rather than authored source -- regenerated from ../binaries/
+whenever ../renames/ changes -- and is kept as the reference the restored package is
+diffed against.
+
+The names applied to it come from ../renames/, which is this project's work.

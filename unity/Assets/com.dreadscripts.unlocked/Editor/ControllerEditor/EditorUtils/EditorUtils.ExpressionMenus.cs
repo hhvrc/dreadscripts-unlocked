@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static CountError   -> ValidateCanAddControls(descriptor, menu),   line 8042
 //   static DisableError -> ValidateCanAddControls(menu, menu),         line 8057
 //   static InsertError  -> ValidateCanAddControls(control, menu),      line 8070
@@ -14,7 +14,7 @@
 //   static RemoveError  -> Matches(Control.Parameter, Control.Parameter), line 8326
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // The two ValidateCanAddControls overloads that take a count live in EditorUtils.Validation.cs and
 // are the bottom of this stack; the three here resolve a count from a menu and delegate to them.

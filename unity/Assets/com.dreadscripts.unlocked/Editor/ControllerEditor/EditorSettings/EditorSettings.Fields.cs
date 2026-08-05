@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 // Ported region: the settings fields of the nested `EditorSettings` class, lines 1151-1457.
 //
 // Every field keeps its decompiled name -- these names are the on-disk contract. They are what
@@ -19,7 +19,7 @@
 // are the durable reference.
 //
 // Audit status: PARTIAL -- the five MAP entries above were re-checked against
-// decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs and each lands on
+// reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs and each lands on
 // the member named. The remaining settings fields of the region were not re-diffed field by field.
 
 using System;

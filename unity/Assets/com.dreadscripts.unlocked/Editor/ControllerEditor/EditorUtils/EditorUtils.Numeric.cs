@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //
 //   static Flip           -> Flip(this ref bool),                   line 2668
 //   static IsBetween      -> IsBetween(this float, float, float),   line 2697
@@ -24,7 +24,7 @@
 // AwakeResolver, MapResolver, ValidateResolver, CustomizeResolver, RateResolver, DestroyResolver,
 // GetResolver, CalcResolver, IncludeResolver.
 //
-// Audit status: PARTIAL -- all nine line numbers were checked against decompiled/ControllerEditor/
+// Audit status: PARTIAL -- all nine line numbers were checked against reverse-engineering/export/ControllerEditor/
 // DreadScripts/ControllerEditor/EditorUtils.cs and each lands on the signature named; the bodies
 // were not re-diffed, which is why this is PARTIAL rather than VERIFIED.
 

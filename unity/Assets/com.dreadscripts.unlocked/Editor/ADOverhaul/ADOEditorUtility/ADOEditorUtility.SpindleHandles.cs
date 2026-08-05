@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static field customerSerializer   -> colorPropertyId,           line 2084
 //   static field m_InstanceSerializer -> spindleMesh,               line 2080
 //   static field m_TaskSerializer     -> spindleMaterial,           line 2082
@@ -10,7 +10,7 @@
 //   static ExcludeStatus -> ConfigureHandleMaterial, line 3538
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // DEAD IN BOTH SHIPPED BUILDS. Nothing calls any of the three DrawSpindle overloads: they are
@@ -28,7 +28,7 @@
 // distance between two points and aimed with LookRotation, it reads as a spike joining them.
 //
 // SHARED WITH CONTROLLEREDITOR, NOT CONSOLIDATED -- REPORT-ONLY OVERLAP.
-// decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs has the same mesh builder
+// reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs has the same mesh builder
 // (line 6388), the same material (line 6432) and the same four material settings (UpdateQueue, line
 // 6437). Whether the pair belongs in DreadScripts.Common is a cross-product decision this file does
 // not take.

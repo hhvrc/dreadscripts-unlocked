@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static configurationProperty  -> validColor,     line 2178
 //   static _ProcProperty          -> errorColor,     line 2180
 //   static _WrapperProcessor      -> warningColor,   line 2182
@@ -12,8 +12,8 @@
 //   static EnableResolver         -> BlendOver,      line 2398
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- all eleven members declared below were compared
-// against decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs. The eight
+// Audit status: VERIFIED against reverse-engineering/export/ -- all eleven members declared below were compared
+// against reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs. The eight
 // palette fields match component for component at lines 2176-2190 (each cited line still lands on
 // its field), and Grey (7395), WithAlpha (2393) and BlendOver (2398) match expression for
 // expression, differing only in parameter names. The header claims no member the file does not
@@ -21,7 +21,7 @@
 //
 // NOTES
 // The 561e9ec re-snapshot renamed the obfuscated field this header used to call m_AlgoProcessor:
-// decompiled/ now declares it as accentColor at the same line 2188, with the same literal, so the
+// reverse-engineering/export/ now declares it as accentColor at the same line 2188, with the same literal, so the
 // MAP entry above was updated to the current name and the ported name is unchanged.
 //
 // The four status colours are named for the role their call sites give them, not for the hue:
@@ -36,7 +36,7 @@
 //     (see below) is the "on" background of a toggled row, so it is named for that emphasis role.
 //
 // Shared with ADOverhaul: ADOEditorUtility declares the same palette with the same literals
-// (decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs lines 2062-2072:
+// (reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs lines 2062-2072:
 // _ObserverSerializer, _BroadcasterSerializer, _EventSerializer, resolverSerializer; the 2019
 // build matches under different obfuscated names). A later pass could lift these into
 // Editor/Common; deliberately not consolidated here, since that file belongs to the other

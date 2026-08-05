@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   struct ParameterCostTracker -> ParameterCostTracker, line 1412
 //     IsValid()                                        -> IsValid (property; [SpecialName] in the
 //                                                         decompilation)
@@ -55,7 +55,7 @@
 //   PublishCandidate  -> NOT PORTED, line 1575 -- the other half of that check
 //
 // Audit status: PARTIAL -- every line number and member name in this header was re-checked against
-// decompiled/ in this pass; the method bodies were not re-diffed statement by statement.
+// reverse-engineering/export/ in this pass; the method bodies were not re-diffed statement by statement.
 
 using System;
 using System.Collections.Generic;

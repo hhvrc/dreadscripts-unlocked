@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // The refresh routine the Controller Editor runs when something *outside* the GUI changes what the
 // window is showing: a settings edit, or a play-mode transition, that invalidates the Animator

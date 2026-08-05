@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static field threadProcessor       -> customEditorRefsResolved,   line 2208
 //   static field m_PolicyProcessor     -> customEditorAttributesType,  line 2210
 //   static field m_SerializerProcessor -> monoEditorTypeType,          line 2212
@@ -36,9 +36,9 @@
 // between the versions the tool supported.
 //
 // Audit status: PARTIAL -- every entry in the MAP block above was re-checked against
-// decompiled/ControllerEditor/.../EditorUtils.cs on 2026-08-05 (fields 2208-2224, methods 6730 /
+// reverse-engineering/export/ControllerEditor/.../EditorUtils.cs on 2026-08-05 (fields 2208-2224, methods 6730 /
 // 6745 / 6755) and all twelve land on the member named. The bodies were not re-diffed, and the
-// header's former "VERIFIED against decompiled/" claim is withdrawn.
+// header's former "VERIFIED against reverse-engineering/export/" claim is withdrawn.
 
 using System;
 using System.Collections;

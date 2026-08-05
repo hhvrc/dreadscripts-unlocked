@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/QuickInputWindow.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/QuickInputWindow.cs
 //   static CreateHelper -> Create,        line 60
 //   NewHelper           -> SetValue,      line 104
 //   PushHelper          -> SetObjectType, line 116

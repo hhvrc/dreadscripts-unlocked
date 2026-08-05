@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static GetList      -> FrameSceneView(point, size, rotation, ...),      line 7209
 //   static RateList     -> FrameSceneView(point, direction, size, ...),     line 7197
 //   static DestroyList  -> FrameSceneView(point, offset, ...),              line 7203
@@ -9,7 +9,7 @@
 //   static InterruptQueue -> GetHandRotation,                               line 6528
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Moving the Scene view camera to look at something, and the avatar measurements the callers use to
 // decide how far away "looking at it" should be.

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   _003C_003Ec__DisplayClass379_0 -> ParameterRewriter, line 7128
 //     _ReaderReg     -> exactMatch
 //     m_BridgeReg    -> oldName

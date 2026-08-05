@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static CalculatePredicate -> CopyLayer,                 line 3417
 //   static TestPredicate      -> CopyLayerSettings,         line 3446
 //   static ResetPredicate     -> CopyLayers,                line 3355

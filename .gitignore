@@ -1,0 +1,37 @@
+# Python bytecode from the tooling in reverse-engineering/tooling/
+__pycache__/
+*.py[cod]
+
+# Scratch space the pipeline creates: deobfuscated intermediates, the published de4dot
+# build, lock files. Regenerable by definition, and large.
+reverse-engineering/work/
+
+# The reference assemblies are identified by reverse-engineering/reference-assemblies.json
+# and reassembled locally rather than committed -- they are Unity's and VRChat's
+# redistributables. Ignored so a local reassembly cannot be added by accident.
+reverse-engineering/deps/
+
+# Unity, per project
+unity/[Ll]ibrary/
+unity/[Tt]emp/
+unity/[Oo]bj/
+unity/[Bb]uild/
+unity/[Ll]ogs/
+unity/[Uu]serSettings/
+unity/*.csproj
+unity/*.sln
+
+# Editors
+.idea/
+.vs/
+*.swp
+*~
+.DS_Store
+
+# VPM release artifacts: built by vpm/build_listing.py, attached to a GitHub release.
+vpm/dist/
+
+# C# build output from the reverse-engineering tools (IlRename, SourceAnalysis).
+# Scoped rather than a bare bin/obj, so it cannot swallow anything under unity/.
+reverse-engineering/tools/**/bin/
+reverse-engineering/tools/**/obj/

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
 //   ParameterDriverBinding             -> ParameterDriverBinding,   line 12
 //     GetLocalOnly / SetLocalOnly      -> LocalOnly,                line 184
 //     GetParameter                     -> GetParameter,             line 209
@@ -21,13 +21,13 @@
 // Every Get*/Set* pair above is marked [SpecialName] in the shipped assembly - they are property
 // accessors whose property definitions the obfuscator stripped, and they are restored as properties
 // here.
-// DEOBF-BUG(resolved): ParameterEntry.Source's setter deviates from decompiled/, which renders it
+// DEOBF-BUG(resolved): ParameterEntry.Source's setter deviates from reverse-engineering/export/, which renders it
 // as an infinite `while (!GetDeferApply())` loop (AnimatorTypeCache.cs line 80). The correct form
 // was recovered by tracing the original obfuscated IL, not guessed -- see the comment at the
-// setter. decompiled/ will keep showing the loop until de4dot's control-flow recovery is fixed, so
+// setter. reverse-engineering/export/ will keep showing the loop until de4dot's control-flow recovery is fixed, so
 // do not "restore" it to match.
 //
-// Audit status: VERIFIED against decompiled/ -- every member this file declares was compared
+// Audit status: VERIFIED against reverse-engineering/export/ -- every member this file declares was compared
 // statement by statement with AnimatorTypeCache.cs lines 12-238: both types' fields, both
 // constructors (decompiled lines 167 and 197, not previously mapped above), the nine ParameterEntry
 // properties and the five ParameterDriverBinding members. Every line number cited above lands on
@@ -162,7 +162,7 @@ namespace DreadScripts.ControllerEditor
                         {
                             property.FindPropertyRelative("source").stringValue = value;
 
-                            // DEOBF-BUG(resolved): decompiled/ renders this as `while (!DeferApply)`, never
+                            // DEOBF-BUG(resolved): reverse-engineering/export/ renders this as `while (!DeferApply)`, never
                             // terminates -- Apply() cannot clear the flag. That loop is not in the
                             // shipped product. The original method is a Reactor XOR-switch state
                             // machine (ControllerEditor.dll, AttrProperty::TestPage, RVA 0x75f78);

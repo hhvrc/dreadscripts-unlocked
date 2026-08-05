@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/CachedTextureContent.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/CachedTextureContent.cs
 //
 // DEOBF-BUG
 // The `texture` getter loops `while (true) Load();` in the decompiled source, which would hang the

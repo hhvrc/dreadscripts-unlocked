@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // Ported region: the `private class LayerPathNode` nested in the static ControllerEditor class,
 // lines 3026-3163 of the current snapshot. Line numbers move with the snapshot; the member names
@@ -51,7 +51,7 @@
 // rebuilds the whole tree whenever those settings change, so this is not reachable in practice.
 // ==============================================================================
 //
-// Audit status: PARTIAL -- every line number above was checked against decompiled/ControllerEditor/
+// Audit status: PARTIAL -- every line number above was checked against reverse-engineering/export/ControllerEditor/
 // DreadScripts/ControllerEditor/ControllerEditor.cs and now lands on the member named; the root-node
 // construction site was corrected from 16266 to 16791. The method bodies were not re-diffed.
 

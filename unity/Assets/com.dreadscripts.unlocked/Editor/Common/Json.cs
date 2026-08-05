@@ -1,6 +1,6 @@
 // Shared by both tools, which shipped four copies of this reader between them. Reconstructed from
 // all four; they are the same type under different obfuscated names:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //     struct ExporterObserver              -> struct JsonObject,      line 1149
 //       ExporterObserver(string)           -> JsonObject(string),     line 1159
 //       m_IdentifierObserver               -> stored (field)
@@ -15,13 +15,13 @@
 //       _PrinterObserver                   -> floatValue (field)
 //       m_WriterObserver                   -> hasValue (field)
 //     static InvokeList                    -> Json.ToJsonObject,      line 6798
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //     JsonObject / JsonValue,              lines 2011-2148
 //     static CallVisitor                   -> Json.ToJsonObject,      line 10782
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //     JsonObject / JsonValue,              lines 605-742
 //     static IncludeConfiguration          -> Json.ToJsonObject,      line 7720
-//   decompiled/ADOverhaul2019/DreadScripts/ADOverhaul/ADOverhaul.cs
+//   reverse-engineering/export/ADOverhaul2019/DreadScripts/ADOverhaul/ADOverhaul.cs
 //     JsonObject / JsonValue,              lines 605-742 (no divergence from the 2022 build)
 //     static InstantiateSystem             -> Json.ToJsonObject,      line 7705
 //

@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
 // type, character-for-character identical in both. Reconstructed from:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs, line 1067
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs,   line 837
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs, line 1067
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs,   line 837
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. The enum is nested inside EditorUtils /
 // ADOEditorUtility in the shipped assemblies; it is lifted to the namespace here because it is

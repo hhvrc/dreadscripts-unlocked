@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/CenteredHorizontalScope.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/CenteredHorizontalScope.cs
 //
 // Audit status: VERIFIED -- both constructors and Dispose diffed statement by statement against
 // export/; the call sequence is identical. Only the obfuscated parameter name (res) differs.

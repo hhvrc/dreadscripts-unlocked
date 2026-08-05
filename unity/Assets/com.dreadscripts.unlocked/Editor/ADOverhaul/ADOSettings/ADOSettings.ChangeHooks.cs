@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 // Ported region: the change callback passed to the four gizmo settings' field initialisers of the
 // nested `ADOSettings` class, lines 1483, 1486, 1525 and 1528.
 //
@@ -13,7 +13,7 @@
 // claim on it. In the 2022 snapshot the method is declared at ADOverhaul.cs line 4414, under the
 // name ApplyGlobalGizmoSettings that renames/ADOverhaul2022.json now applies to the obfuscator's
 // InterruptSingleton; older revisions of this header cited that obfuscated name, and before the
-// decompiled/ re-snapshot, line 4210.
+// reverse-engineering/export/ re-snapshot, line 4210.
 //
 // WIRED UP. The seam is satisfied. PhysBoneEditor.ApplyGlobalGizmoSettings is ported, and the
 // declaration below carries it as the field's initialiser, so changing one of the four gizmo
@@ -32,12 +32,12 @@
 //
 // 2019 vs 2022
 // The 2019 build has the same method under the obfuscator's name CancelProducer, at line 4400 of
-// decompiled/ADOverhaul2019/DreadScripts/ADOverhaul/ADOverhaul.cs, passed to the same four settings
+// reverse-engineering/export/ADOverhaul2019/DreadScripts/ADOverhaul/ADOverhaul.cs, passed to the same four settings
 // at lines 1480, 1483, 1522 and 1525 there. PhysBoneEditor.GizmoSettings.cs carries the evidence
 // tying the two together, and the DEOBF-BUG note on what the 2019 decompile of the body loses.
 //
 // Audit status: VERIFIED -- the four initialiser lines, the declaration at 4414 and the whole of
-// the method body at 4414-4426 were read against decompiled/ADOverhaul2022 on 2026-08-05, and the
+// the method body at 4414-4426 were read against reverse-engineering/export/ADOverhaul2022 on 2026-08-05, and the
 // behaviour described in the remarks below (skipped entirely when globalGizmo is off; no
 // Undo.RecordObject and no EditorUtility.SetDirty anywhere in the body) was re-derived from it.
 

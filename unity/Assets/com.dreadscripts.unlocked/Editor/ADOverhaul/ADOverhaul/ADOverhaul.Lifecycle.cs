@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the startup, domain-reload and avatar-refresh plumbing of the outer ADOverhaul
 // class. The decompiled names are the durable reference; the MAP line numbers below are mixed
@@ -116,7 +116,7 @@
 //
 // Mixed line numbering in the MAP above, deliberately, and it is not safe to tidy from this file
 // alone. CancelConfiguration's entry carries 6700, which is where it stands in the current
-// decompiled/ snapshot. The other three were written before the 561e9ec re-snapshot and are each
+// reverse-engineering/export/ snapshot. The other three were written before the 561e9ec re-snapshot and are each
 // 204 lines short of it -- RefreshAvatarTables, RefreshAvatarParameterNames and ResetFoldouts really
 // begin at 6713, 6728 and 6740. They were NOT re-based, because ADOverhaul.AvatarSelection.cs still
 // carries the same pre-561e9ec numbering and claims 6684 and 6740 for ForgotConfiguration and

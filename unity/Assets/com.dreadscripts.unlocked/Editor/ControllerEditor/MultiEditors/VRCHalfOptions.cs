@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   VRCHalfOptions -> VRCHalfOptions, line 430
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.

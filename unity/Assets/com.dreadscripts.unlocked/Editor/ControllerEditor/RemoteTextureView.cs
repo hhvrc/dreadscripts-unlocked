@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/RemoteTextureView.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/RemoteTextureView.cs
 //   candidatePolicy   -> cachedTexture,      line 11
 //   _ProductPolicy    -> cacheLookupAllowed, line 13
 //   _ExpressionPolicy -> onClick,            line 15

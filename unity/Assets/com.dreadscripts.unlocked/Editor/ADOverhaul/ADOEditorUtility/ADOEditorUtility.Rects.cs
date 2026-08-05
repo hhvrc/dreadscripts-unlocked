@@ -1,10 +1,10 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static SortStatus   -> SliceLeft,      line 2737
 //   static ResetProcess -> DrawRoundedBox(Rect, float),                      line 2245
 //   static GetProcess   -> DrawRoundedBox(Rect, Color, Color, float),        line 2250
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // Shared with ControllerEditor: EditorUtils.Rects.cs ports the identical SliceLeft, under the same

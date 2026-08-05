@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static m_CollectionProperty -> sharedContent, line 2116
 //   static CreateResolver       -> TempContent,   line 2812
 //   static DeleteResolver       -> TempContent,   line 2807

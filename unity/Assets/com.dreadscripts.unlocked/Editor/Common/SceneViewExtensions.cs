@@ -1,9 +1,9 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of these helpers.
 // Reconstructed from both, which are identical apart from obfuscated names:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //     SortQueue     -> GetSceneViewRect,        line 6471
 //     RegisterQueue -> SubtractSceneViewChrome, line 6476
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //     AddStatus     -> GetSceneViewRect,        line 3634
 //     ValidateStatus-> SubtractSceneViewChrome, line 3639
 // The ADOverhaul2019 build declares the same pair at lines 3650 and 3655
@@ -16,7 +16,7 @@
 // ADOverhaul snapshots render as the plain `if` reproduced here. Two independent builds of the same
 // method disagreeing is what settles it. The same de4dot fault is confirmed on
 // AnimatorTypeCache.ParameterEntry.Source, where tracing the original Reactor IL showed a plain `if`
-// turned into a `while`. decompiled/ keeps the loop until that recovery is fixed; do not restore it.
+// turned into a `while`. reverse-engineering/export/ keeps the loop until that recovery is fixed; do not restore it.
 //
 // Audit status: VERIFIED -- all three shipped copies diffed statement by statement against this
 // file. Both methods match in every copy: the extension method is a single call through

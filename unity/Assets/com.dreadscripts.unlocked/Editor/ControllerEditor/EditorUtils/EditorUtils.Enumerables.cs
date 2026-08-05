@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static CreateRules     -> ForEach(IEnumerable, Action<T>), line 5142
 //   static IncludeRules    -> LogEach,      line 5096
 //   static RunRules        -> Distinct,     line 5104
@@ -31,7 +31,7 @@
 // Args exists purely so a `params` call site can be written without naming the array type -- e.g.
 // Args(a, b, c) in place of new[] { a, b, c } where inference would otherwise fail.
 //
-// Audit status: VERIFIED against decompiled/ -- all ten members re-checked statement by statement
+// Audit status: VERIFIED against reverse-engineering/export/ -- all ten members re-checked statement by statement
 // against EditorUtils.cs lines 5070, 5083, 5096, 5104, 5117, 5122, 5134, 5142, 5150 and 5322, every
 // one of which still lands on the member named. Bodies are identical, including the deferred
 // iterators' HashSet/array staging and the inverted early-out in both IsNullOrEmpty overloads,

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 // Ported region: the settings fields of the nested `ADOSettings` class, lines 1441-1549.
 //
 // Every field keeps its decompiled name -- these names are the on-disk contract. They are what
@@ -22,11 +22,11 @@
 // sits outside the field region and is claimed by ADOSettings.cs -- which also declares its own
 // `StateColors` property. The decompiled member is therefore ported twice under two spellings; the
 // duplicate is left alone here because resolving it would mean deleting C# code.
-// The onChange delegate cited above was recorded as line 4210 before the decompiled/ re-snapshot;
+// The onChange delegate cited above was recorded as line 4210 before the reverse-engineering/export/ re-snapshot;
 // 4210 now lands inside PublishSingleton, and InterruptSingleton is declared at 4414.
 //
 // Audit status: PARTIAL -- the field list, names, defaults and the three unported a_* lines were
-// compared against decompiled/ lines 1441-1549 for this port; the XML doc remarks citing reader
+// compared against reverse-engineering/export/ lines 1441-1549 for this port; the XML doc remarks citing reader
 // line numbers elsewhere in the file (3366, 3461, 6113, 8240, ...) were not re-checked.
 
 using UnityEngine;

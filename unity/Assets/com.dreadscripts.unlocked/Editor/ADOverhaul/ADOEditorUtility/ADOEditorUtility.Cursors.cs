@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static _PredicateSerializer  -> UnityVersion,               line 2052
 //   static collectionSerializer  -> IsUnity2022,                line 2054
 //   static interceptorSerializer -> DeferredCursorRects,        line 2056
@@ -31,7 +31,7 @@
 // PascalCased to match this package's field convention, which is why they differ from the
 // ControllerEditor twin's, whose decompiled snapshot already spells them unityVersion/isUnity2022.
 //
-// Audit status: VERIFIED against decompiled/ -- all nine members re-checked statement by statement
+// Audit status: VERIFIED against reverse-engineering/export/ -- all nine members re-checked statement by statement
 // against ADOverhaul2022 ADOEditorUtility.cs lines 2052-2058, 3030-3055 and 3202-3232, and against
 // the 2019 lines named above; every body is identical, down to the 46-pixel 2022 nudge and the
 // reverse-order replay. The only differences are the field modifiers recorded immediately above.

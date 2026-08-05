@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/GUILayoutUtils.cs
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/SplitterGUIUtils.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/GUILayoutUtils.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/SplitterGUIUtils.cs
 //
 // The two copies sit at identical line numbers; the numbers below are the ADOverhaul2022 ones, and
 // the decompiled-name column gives the ADOverhaul2022 spelling first and the ControllerEditor
@@ -48,7 +48,7 @@
 // the single copy, and both products' call sites use it.
 //
 // Audit status: PARTIAL -- the member mapping above was built by comparing this file against both
-// decompiled/ copies member for member; the bodies were not re-diffed statement by statement.
+// reverse-engineering/export/ copies member for member; the bodies were not re-diffed statement by statement.
 
 using System;
 using System.Reflection;

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ReadQueue        -> Clicked(Rect),                       line 5817
 //   static SelectQueue      -> Clicked(out bool),                   line 5823
 //   static RemoveQueue      -> Clicked(Rect, out bool),             line 5828
@@ -50,7 +50,7 @@
 // is an internal type, so this is not observable outside the assembly.
 //
 // Audit status: PARTIAL -- all sixteen declared members were diffed statement by statement against
-// decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the cited lines, all
+// reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the cited lines, all
 // of which still land on the named member in the current snapshot. Fifteen match exactly once
 // inverted guard clauses and the decompiler's repeated `CustomizeError()` calls (hoisted into a
 // local here, equivalent because the accessor caches) are accounted for. The sixteenth,

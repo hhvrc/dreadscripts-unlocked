@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static SelectStatus  -> GetContent,      line 2884
 //   static WriteStatus   -> GetValue,        line 2889
 //   static MoveStatus    -> SetValue,        line 2950
@@ -10,7 +10,7 @@
 //   static DestroyStatus -> SetInArray(SerializedProperty, bool, params T[]),     line 2683
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above, including the four closure classes named next.
 //
 // Four compiler-generated closure classes belong to this region and get no file of their own:

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 // Ported region: the `[Serializable] private class ADOSettings` nested in the static ADOverhaul
 // class, lines 751-1688. Lifted to a top-level type, as this package does with every type the
 // decompiled god-class carries as a nested member.
@@ -51,7 +51,7 @@
 // identical defaults and the identical EditorPrefs key (its lines 1438-1546, 1606-1619). The two
 // builds differ only in obfuscated local and parameter names.
 //
-// Audit status: PARTIAL -- the four MAP entries above were re-checked against decompiled/ (the
+// Audit status: PARTIAL -- the four MAP entries above were re-checked against reverse-engineering/export/ (the
 // accessor at 1569 is named `Instance()` in the current snapshot, not `instance()`, and the three
 // member line numbers were each one short of the declaration after the 561e9ec re-snapshot); the
 // settings field list and the not-ported claims below were not re-checked.

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   ConditionMultiEditor                     -> ConditionMultiEditor,   line 109
 //     matched                                -> matched,                line 111
 //     condition                              -> condition,              line 113

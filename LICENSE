@@ -1,3 +1,12 @@
+MIT License, EXCEPT where a directory says otherwise. See the licence table in
+README.md; each exception carries its own LICENSE or NOTICE file.
+
+reverse-engineering/tooling/ and reverse-engineering/tools/ are GPL-3.0.
+
+unity/Assets/com.dreadscripts.unlocked/, reverse-engineering/binaries/ and
+reverse-engineering/export/ are derived from the original author's work and are
+NOT licensed by us at all -- the MIT terms below do not extend to them.
+
 MIT License
 
 Copyright (c) 2026 HeavenVR

@@ -1,7 +1,7 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from both, which are identical apart from obfuscated names (see the note on the
 // Top/Bottom fall-through in ResizeHandle.Zones.cs for the one place the snapshots disagree):
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //     ResizeHandle          -> ResizeHandle,          line 532
 //     activeZoneIndex       -> activeZoneIndex,       line 543
 //     lastMousePosition     -> lastMousePosition,     line 545
@@ -20,7 +20,7 @@
 //     Apply                 -> GetResizedRect,        line 622
 //     GetHorizontalPivot    -> GetHorizontalPivot,    line 928
 //     GetVerticalPivot      -> GetVerticalPivot,      line 955
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //     ResizeHandle          -> ResizeHandle,          line 39
 //     activeZoneIndex       -> activeZoneIndex,       line 50
 //     lastMousePosition     -> lastMousePosition,     line 52

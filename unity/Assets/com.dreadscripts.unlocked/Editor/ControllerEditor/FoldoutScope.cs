@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/FoldoutScope.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/FoldoutScope.cs
 //
 // Audit status: VERIFIED -- both fields, all five constructors (including which overload each
 // chains to and the iscfg/label/style arguments it passes), Dispose and the implicit bool operator

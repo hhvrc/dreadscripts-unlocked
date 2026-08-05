@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ClonePredicate    -> IsExitOrDangling,                      line 3602
 //   static CreatePredicate   -> ConditionSetsMatch,                    line 3661
 //   static NewPredicate      -> Traverse(AnimatorController, ...),     line 3687
@@ -10,7 +10,7 @@
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 // Audit status: PARTIAL -- all six members declared below were re-checked statement by statement
-// against decompiled/ (EditorUtils.cs lines 3602, 3661, 3687, 3696, 3973 and 4023, each of which
+// against reverse-engineering/export/ (EditorUtils.cs lines 3602, 3661, 3687, 3696, 3973 and 4023, each of which
 // still lands on the member named above), and each is a faithful transcription; the header claims
 // no member the file does not declare. PARTIAL rather than VERIFIED because of the duplicate port
 // recorded under NOTES, which cannot be settled from inside this file.

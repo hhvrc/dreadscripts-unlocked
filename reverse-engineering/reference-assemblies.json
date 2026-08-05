@@ -1,0 +1,552 @@
+{
+  "$comment": "Reference assemblies the deobfuscate/decompile/typecheck pipeline needs. They are third-party redistributables and are NOT checked in; this manifest identifies exactly which build each came from so the set can be reproduced and verified.",
+  "sources": {
+    "unity": {
+      "product": "Unity Editor",
+      "version": "2022.3.22f1",
+      "revision": "887be4894c44",
+      "obtain": "Install Unity 2022.3.22f1, then copy from <UnityEditor>/Editor/Data/Managed/ and its UnityEngine/ subfolder.",
+      "files": [
+        {
+          "path": "0Harmony.dll",
+          "size": 807424,
+          "sha256": "96968fa1e5616b9f8f48ff270d968fd130d7d6921fedf5ab13b55dad029f439d"
+        },
+        {
+          "path": "Mono.Security.dll",
+          "size": 241152,
+          "sha256": "c133cdc6ab9e5c078f2bb1e104c3ebb1fb6279204f2d1c0f507b0cad9d563d24"
+        },
+        {
+          "path": "System.Configuration.dll",
+          "size": 122880,
+          "sha256": "4af674ebca00ea9723e193765cad14373c87481d70bf34415621ddee82b3c818"
+        },
+        {
+          "path": "System.Core.dll",
+          "size": 1084928,
+          "sha256": "fd47d532ed9227e9d37009532593be62029cbaacad03894cab0486cb9a12a9c2"
+        },
+        {
+          "path": "System.Runtime.Serialization.dll",
+          "size": 939008,
+          "sha256": "c9c73e46ac3b29d5072537143e7a690610eccc69dd046e38fd3a6a0077ed892d"
+        },
+        {
+          "path": "System.Xml.Linq.dll",
+          "size": 137216,
+          "sha256": "cf042277622843ed46201f1d8501319f1956b15a4276c61cf9b5cd0c7182d55b"
+        },
+        {
+          "path": "System.Xml.dll",
+          "size": 3173888,
+          "sha256": "3a426c7ea6092e34d0268a712876137101775a81f488d7b8c8d17be0fe5f4b67"
+        },
+        {
+          "path": "System.dll",
+          "size": 2630144,
+          "sha256": "3abf502be672231dc7464bfbe62ac2640e37d66a5fd81354f907bfdf3415e4f9"
+        },
+        {
+          "path": "UnityEditor.CoreModule.dll",
+          "size": 9782272,
+          "sha256": "ae9380f003afd5ba1076ad3cdc89f5ed6c785b5e90f8693090af8ee59b4dcd82"
+        },
+        {
+          "path": "UnityEditor.DeviceSimulatorModule.dll",
+          "size": 105984,
+          "sha256": "72998981f4cf7a3d928040a6c8c7e09ca33f2106df4f455374ea9eb636a74d3e"
+        },
+        {
+          "path": "UnityEditor.DiagnosticsModule.dll",
+          "size": 26112,
+          "sha256": "2fb3619057f6bb9d29cf51c6b7b76e697a4911081e536e699d8c45139c40d6f4"
+        },
+        {
+          "path": "UnityEditor.EditorToolbarModule.dll",
+          "size": 57344,
+          "sha256": "2f2f6634b0a1c93b18ef1fe7f7a348876729c1df684bb4d94ce1eaa6b55d89f5"
+        },
+        {
+          "path": "UnityEditor.GraphViewModule.dll",
+          "size": 252928,
+          "sha256": "e75f36a71d357ec0a6b440e64bd124c265abe4f00c980739e88eef0f0d1f4e3d"
+        },
+        {
+          "path": "UnityEditor.Graphs.dll",
+          "size": 253952,
+          "sha256": "df19a23b88f86f4d711a06d64ab07d9f5d95d23e5486f3bdf30f8ce9dbf7396b"
+        },
+        {
+          "path": "UnityEditor.PresetsUIModule.dll",
+          "size": 36352,
+          "sha256": "87bef43a965792dfc74249ece69833a42e09c47bff3fca3dad83138445c864a1"
+        },
+        {
+          "path": "UnityEditor.QuickSearchModule.dll",
+          "size": 1541120,
+          "sha256": "d6e2ed0965dfdcf8b5f68e24e0c09ad2279f7ce4f1c43cc396eccc90769a6ef3"
+        },
+        {
+          "path": "UnityEditor.SceneTemplateModule.dll",
+          "size": 148480,
+          "sha256": "bce14e36a3578bd392818e161a84e710c4aaf5ddd87b557295dce6785e0f3d0b"
+        },
+        {
+          "path": "UnityEditor.SceneViewModule.dll",
+          "size": 49152,
+          "sha256": "6ed8bb6704f9776b611956b587356542edb8671607ea05f57dfb714c0d55540f"
+        },
+        {
+          "path": "UnityEditor.TextCoreFontEngineModule.dll",
+          "size": 15872,
+          "sha256": "eaccd80da609c04acfc3a5386e4291f137a126f7c393b5b17bead2fb4f7b77ba"
+        },
+        {
+          "path": "UnityEditor.TextCoreTextEngineModule.dll",
+          "size": 197120,
+          "sha256": "384029ec0599bd9555a39c001a82315e4a8ad77c9b0a46df41943735b053d0f6"
+        },
+        {
+          "path": "UnityEditor.UIBuilderModule.dll",
+          "size": 667136,
+          "sha256": "42bedb31fec69a4322259fa0a3d3f38ab08f18edb1bedb4c39aae89239a802f9"
+        },
+        {
+          "path": "UnityEditor.UIElementsModule.dll",
+          "size": 369152,
+          "sha256": "d851a3cf0f5f7155bf1b3832dccb0009fbd2a8c84602ea83c8b652c6da7366a2"
+        },
+        {
+          "path": "UnityEditor.UIElementsSamplesModule.dll",
+          "size": 55808,
+          "sha256": "997459f9b4e68a174cbee85167b24da5480d4763610fd584133298ca78d5d043"
+        },
+        {
+          "path": "UnityEditor.UnityConnectModule.dll",
+          "size": 234496,
+          "sha256": "6f74ac82a82d25489f1a543547171d31651a8e4e7d0e43373efe0a66760d78a1"
+        },
+        {
+          "path": "UnityEditor.dll",
+          "size": 13288960,
+          "sha256": "3182fbaf9c502f64423e69f3b3512dda174288dc68bf082426a7222cb336280f"
+        },
+        {
+          "path": "UnityEngine.AIModule.dll",
+          "size": 54272,
+          "sha256": "6680580346cbd607189b7afed804be23c289514fb80231ffd079fb589e025220"
+        },
+        {
+          "path": "UnityEngine.ARModule.dll",
+          "size": 12800,
+          "sha256": "5fed363467e4b97bdfd75a995a551dab2c2eb029d7ae2edc0dc022acbdc96204"
+        },
+        {
+          "path": "UnityEngine.AccessibilityModule.dll",
+          "size": 15360,
+          "sha256": "b72b2086974d40d0a23ad4aff4a17fb38dd173f0273fe40e7757bded40849d2b"
+        },
+        {
+          "path": "UnityEngine.AndroidJNIModule.dll",
+          "size": 86528,
+          "sha256": "bfc170f7c5fc60cb3f503ddaade96494b05637a24c7deaad8607ce18386a8d5d"
+        },
+        {
+          "path": "UnityEngine.AnimationModule.dll",
+          "size": 161792,
+          "sha256": "ceaa04cbf6a6bda2ef3d993fcaed78fdc80d2ecdfc4b5d4917b6087fdde04b49"
+        },
+        {
+          "path": "UnityEngine.AssetBundleModule.dll",
+          "size": 25088,
+          "sha256": "be827d2cf263383ff45972c48289565379a4fd3eee511077bd9ba5811b4b1e45"
+        },
+        {
+          "path": "UnityEngine.AudioModule.dll",
+          "size": 66048,
+          "sha256": "a681b0706873a1308ee7be5a7536259e1723d81eac5ceacce5b7441320f4563a"
+        },
+        {
+          "path": "UnityEngine.ClothModule.dll",
+          "size": 17920,
+          "sha256": "617d82b6ee640b91039d6be5940399295498660a14a72b4ed84944dadf7cb6f3"
+        },
+        {
+          "path": "UnityEngine.ClusterInputModule.dll",
+          "size": 13312,
+          "sha256": "c75224712ac9ff6ebca158bc5284bad05128a14ef5d056ebe9cc7e44118d9b0e"
+        },
+        {
+          "path": "UnityEngine.ClusterRendererModule.dll",
+          "size": 13824,
+          "sha256": "d023ed1641eea12f4731f77a81c58748f798b580bb3f4135954c296904230bf3"
+        },
+        {
+          "path": "UnityEngine.ContentLoadModule.dll",
+          "size": 18944,
+          "sha256": "f13c709733f535dd0575f565b41b7217124321d4e75565492288203f7dc9061c"
+        },
+        {
+          "path": "UnityEngine.CoreModule.dll",
+          "size": 1528832,
+          "sha256": "88d98feeec42e07bc64e80b520df5c7fe7555ae4a1a8bb07e4ab72e99ef19a37"
+        },
+        {
+          "path": "UnityEngine.CrashReportingModule.dll",
+          "size": 12800,
+          "sha256": "4313e99ae75aac9d8056bc2b7facfecbc5633c972cafd4a752176b76937b433c"
+        },
+        {
+          "path": "UnityEngine.DSPGraphModule.dll",
+          "size": 20992,
+          "sha256": "a7456a5cf02aaf66e971a447ed63b0561f021c550509661b1ddaf4957dde7e0f"
+        },
+        {
+          "path": "UnityEngine.DirectorModule.dll",
+          "size": 16384,
+          "sha256": "a030f559b634e85a36fc4f1c1cd4514baebe9c4558fadfb7f503d706e98a9a2c"
+        },
+        {
+          "path": "UnityEngine.GIModule.dll",
+          "size": 11776,
+          "sha256": "e68215863c3d81482285cdbdd15004e901c0d1ee3dcb646cc01c974a0e24a47e"
+        },
+        {
+          "path": "UnityEngine.GameCenterModule.dll",
+          "size": 40960,
+          "sha256": "9e40262cdf595a6ec11161f58e55eb6d189a5c55f4d97cab6bab39b29bf84c91"
+        },
+        {
+          "path": "UnityEngine.GridModule.dll",
+          "size": 16896,
+          "sha256": "3773e079a3cfae1909fbe68f826ed3ac39026fe6f9927429b7daf271ac260872"
+        },
+        {
+          "path": "UnityEngine.HotReloadModule.dll",
+          "size": 11776,
+          "sha256": "63640dc9cbc1e5e7c3bb1ba96845ab7170ab1e4476f798e5e40a3e20182f3e4a"
+        },
+        {
+          "path": "UnityEngine.IMGUIModule.dll",
+          "size": 185344,
+          "sha256": "35ba9d1d254bea53cb0ab6e15309b78d634380a9bea5cf42d1af93339a9e5d35"
+        },
+        {
+          "path": "UnityEngine.ImageConversionModule.dll",
+          "size": 16384,
+          "sha256": "d597f356e380a0464af4adf548f633729edd404c04399411dca6f03495900ce0"
+        },
+        {
+          "path": "UnityEngine.InputLegacyModule.dll",
+          "size": 31744,
+          "sha256": "ede6ab4d07e6258160fcbe743abbfa6bc55f6d39f8389c278516493faa179c0b"
+        },
+        {
+          "path": "UnityEngine.InputModule.dll",
+          "size": 15360,
+          "sha256": "7bbb7b7f5ace30a3a7c09504086f4d9a33360b1a133fda304b35b38e483b2541"
+        },
+        {
+          "path": "UnityEngine.JSONSerializeModule.dll",
+          "size": 13824,
+          "sha256": "ca5ea25f0a1a09686b1bbc31c7951d21788a66dd7d3c585708b1f1da7d47ce99"
+        },
+        {
+          "path": "UnityEngine.LocalizationModule.dll",
+          "size": 12800,
+          "sha256": "fe4e57d6f25149e22251c883bcaf2447d64460d2904db469dc677a50bf81a952"
+        },
+        {
+          "path": "UnityEngine.NVIDIAModule.dll",
+          "size": 25600,
+          "sha256": "695ccc817286854053de89a78bf55afbab8a8d0ac324813f6c30fc95b82d96d4"
+        },
+        {
+          "path": "UnityEngine.ParticleSystemModule.dll",
+          "size": 156672,
+          "sha256": "176c7af5c0b1e440b501e7e6b39fed1b21449986969017ed5b0c84499ceada94"
+        },
+        {
+          "path": "UnityEngine.PerformanceReportingModule.dll",
+          "size": 12288,
+          "sha256": "9f5e1e80c75df554e126bd33bb4a43e29c2fe6fb4c92d614e0ad13119b7bf2d7"
+        },
+        {
+          "path": "UnityEngine.Physics2DModule.dll",
+          "size": 133632,
+          "sha256": "711523001c3b3a8ab186547008718f7000616ffe04ab2b7c4b3e226f7290dca4"
+        },
+        {
+          "path": "UnityEngine.PhysicsModule.dll",
+          "size": 130560,
+          "sha256": "11ceca1f3171c8403d34dd92ad50bfda01c583a36884cb77994cdfdf52e54477"
+        },
+        {
+          "path": "UnityEngine.ProfilerModule.dll",
+          "size": 11776,
+          "sha256": "28e465403396aeaaf55b36f3e68668058ada1aa2810a7e26d7d6d6c70df6988a"
+        },
+        {
+          "path": "UnityEngine.PropertiesModule.dll",
+          "size": 143360,
+          "sha256": "9663bcc74c6ff900e7775a027a2b69fa51da532b00c6cdf7f82566075c671412"
+        },
+        {
+          "path": "UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll",
+          "size": 11776,
+          "sha256": "03e891be7492c09eca7a71757f1b7b389fc47f88b7bee46a6d79148279bea178"
+        },
+        {
+          "path": "UnityEngine.ScreenCaptureModule.dll",
+          "size": 12800,
+          "sha256": "54d646f8688a3a0f1d037926c944af66ab0f0fe82ee5f91d68e4f10ffa80c13f"
+        },
+        {
+          "path": "UnityEngine.SharedInternalsModule.dll",
+          "size": 24576,
+          "sha256": "434b04b46de9806ddc92d3b434117475eea4486d9d1ab8c3d729a2a20b182c0b"
+        },
+        {
+          "path": "UnityEngine.SpriteMaskModule.dll",
+          "size": 13312,
+          "sha256": "5908157cce6233a3c882e1b6284929fd3bb014e5ea9e62824db9b7a82a4a4217"
+        },
+        {
+          "path": "UnityEngine.SpriteShapeModule.dll",
+          "size": 18432,
+          "sha256": "a60190f5fff9a95df4b9c3354db989359e20619cb558e97c9ec2ba9dea2eea18"
+        },
+        {
+          "path": "UnityEngine.StreamingModule.dll",
+          "size": 12288,
+          "sha256": "4da4ae818a9d781ea865131fe80fbeb3da6e28f2fa9ff272e867a334c49e53b5"
+        },
+        {
+          "path": "UnityEngine.SubstanceModule.dll",
+          "size": 16384,
+          "sha256": "abd117789874781fa62df26e6a1f51a2d61877f7e3365899b3e4e34129778737"
+        },
+        {
+          "path": "UnityEngine.SubsystemsModule.dll",
+          "size": 26624,
+          "sha256": "c9ccfc4086173e6db9fcf7e7878277a63369293ffff8df6b8215b1869a492ba4"
+        },
+        {
+          "path": "UnityEngine.TLSModule.dll",
+          "size": 18432,
+          "sha256": "e82782a41d3d11b6d180bb4720394be0c4b30f357ac70d2fc6d6d335ca85c0d1"
+        },
+        {
+          "path": "UnityEngine.TerrainModule.dll",
+          "size": 93184,
+          "sha256": "b967f35a1cb996539b4399e91e01b62fca4b7e26b0c46aa199eb3e88ebe469b3"
+        },
+        {
+          "path": "UnityEngine.TerrainPhysicsModule.dll",
+          "size": 12800,
+          "sha256": "1e55de5b9e16870c6595378a4263ab61b7db47600a4e3feee8b336fbefda3cf5"
+        },
+        {
+          "path": "UnityEngine.TextCoreFontEngineModule.dll",
+          "size": 64512,
+          "sha256": "0bcb76f99b9753a62a5de7b2d2c2cf3e5ab7e114fc5b223ddd4c8a3451694120"
+        },
+        {
+          "path": "UnityEngine.TextCoreTextEngineModule.dll",
+          "size": 243712,
+          "sha256": "b5329a7787a847d29a1ac6a0bcdc4093199162f1fb498f83a7be832994ce5676"
+        },
+        {
+          "path": "UnityEngine.TextRenderingModule.dll",
+          "size": 31232,
+          "sha256": "dda05dcbe3cdee184f424055cf980c9c14fee408d9ca59ba5e9f50416efedfab"
+        },
+        {
+          "path": "UnityEngine.TilemapModule.dll",
+          "size": 41472,
+          "sha256": "0c62c4d6672ff0e7f7927a96b3fabe911f77b265f8d5bb712cc74298030ce3d0"
+        },
+        {
+          "path": "UnityEngine.UIElementsModule.dll",
+          "size": 1537536,
+          "sha256": "177776e433eec941c985bbada00d712915b5b36361cc82108db69a07644b7cf4"
+        },
+        {
+          "path": "UnityEngine.UIModule.dll",
+          "size": 28672,
+          "sha256": "59a71e6ab6812611ae1e45fbdef97b8939445343c9ef0035aa48b1b712192923"
+        },
+        {
+          "path": "UnityEngine.UmbraModule.dll",
+          "size": 11776,
+          "sha256": "55a1d4ea3cbb2b7c5895e2f344ed519c2583edc7e33dfc01363f1c5706f5c8f7"
+        },
+        {
+          "path": "UnityEngine.UnityAnalyticsCommonModule.dll",
+          "size": 12800,
+          "sha256": "bba6b16a22d585bbc71203754b295b3161c9a8dda7808bae7566ea5eec1d88c7"
+        },
+        {
+          "path": "UnityEngine.UnityAnalyticsModule.dll",
+          "size": 36352,
+          "sha256": "c0228d0d61fa69c957aba16c682a9c3bbf46167090fa2d0060b95a709a67b00e"
+        },
+        {
+          "path": "UnityEngine.UnityConnectModule.dll",
+          "size": 13824,
+          "sha256": "56fad9fb7e8e8e50b11feac7673e647cd14c8dcc1417c2185da0cf57d976dfe8"
+        },
+        {
+          "path": "UnityEngine.UnityCurlModule.dll",
+          "size": 13312,
+          "sha256": "aa73ac79ce4ee5dcba1e8c11b85924f35c8173db9f6ade77dcbb98316277e4cb"
+        },
+        {
+          "path": "UnityEngine.UnityTestProtocolModule.dll",
+          "size": 11776,
+          "sha256": "8eb519b2e8ccdf1d974409e91d52dadca0c6cefc5a08b066c79cd0b277e8be28"
+        },
+        {
+          "path": "UnityEngine.UnityWebRequestAssetBundleModule.dll",
+          "size": 14848,
+          "sha256": "f96199f467c98123adcce218c64c7a967d526292ef6239bc338238cd68a346af"
+        },
+        {
+          "path": "UnityEngine.UnityWebRequestAudioModule.dll",
+          "size": 14336,
+          "sha256": "ee888a14fc7baa1bc62573b8c32df6d76c6c8b16bf595063b710e65286a550cd"
+        },
+        {
+          "path": "UnityEngine.UnityWebRequestModule.dll",
+          "size": 50176,
+          "sha256": "87e12f51de9bb9431505f81582a4e8a9565de35b0fd28c34c5c023a1d50f8d00"
+        },
+        {
+          "path": "UnityEngine.UnityWebRequestTextureModule.dll",
+          "size": 13312,
+          "sha256": "3ed97950039fd92dbd1493bd9c079452ce80d03e80acf03bf2f4882cee1fc416"
+        },
+        {
+          "path": "UnityEngine.UnityWebRequestWWWModule.dll",
+          "size": 23040,
+          "sha256": "94cb3c0fd123944751b04e2820307a83557c665992a9d48b8278297d1f244956"
+        },
+        {
+          "path": "UnityEngine.VFXModule.dll",
+          "size": 50688,
+          "sha256": "ab550b3c2150cacf260ed5c78b49c7df56cfa09c6ea5b8848a1da6f28b7269ad"
+        },
+        {
+          "path": "UnityEngine.VRModule.dll",
+          "size": 17920,
+          "sha256": "259975b39ff730b7eed61345f7513dadf9891fc56ddac40f42a487f3917266c1"
+        },
+        {
+          "path": "UnityEngine.VehiclesModule.dll",
+          "size": 15872,
+          "sha256": "549d16e3441257e7fcb63d2ab119e696fc1673063084fa1656b355b231967dcc"
+        },
+        {
+          "path": "UnityEngine.VideoModule.dll",
+          "size": 33280,
+          "sha256": "5eb43dd2e698bac338b1d2d767b9c705fdbc7925671851dc291e24bbf6228eac"
+        },
+        {
+          "path": "UnityEngine.VirtualTexturingModule.dll",
+          "size": 27648,
+          "sha256": "485309e8c1aad9cb9dfac716f114aeb6473351f1ea1ce1c6526a8f06f34ceddc"
+        },
+        {
+          "path": "UnityEngine.WindModule.dll",
+          "size": 12800,
+          "sha256": "ed6477d5aa684236839b75dfc9adf5957290e013953a24432f1697cbf4e34829"
+        },
+        {
+          "path": "UnityEngine.XRModule.dll",
+          "size": 62464,
+          "sha256": "385be0877e589df23ea58fe9b7ef3cb56ee16f2877ef0ddc8528a4a158cfa10f"
+        },
+        {
+          "path": "UnityEngine.dll",
+          "size": 120320,
+          "sha256": "22b732cb341370c5b46b47d12d4ee7ea67a92b76d4abd42367590d97560a614f"
+        },
+        {
+          "path": "mscorlib.dll",
+          "size": 4644352,
+          "sha256": "5e76cb8e961d440c05e161dce80ae95f6ffb6b9717f5ef2be497bc8e8c0ca09f"
+        },
+        {
+          "path": "netstandard.dll",
+          "size": 90624,
+          "sha256": "28c29e416a25d54e82128de50870c3767b7cdd4f97bb083dba0e3558eebe6484"
+        }
+      ],
+      "count": 95
+    },
+    "vrchat": {
+      "product": "VRChat SDK (com.vrchat.base)",
+      "version": "3.10.4",
+      "obtain": "Resolve the VPM package com.vrchat.base 3.10.4 into a Unity project and copy the managed assemblies it brings.",
+      "files": [
+        {
+          "path": "VRC.Dynamics.dll",
+          "size": 193536,
+          "sha256": "c0343a61b88778726b5b510cc05c0d9b6e9b4df7ca17cf1e4de32b2551136b89"
+        },
+        {
+          "path": "VRC.SDK3.Dynamics.Constraint.dll",
+          "size": 5120,
+          "sha256": "560c36c5660abb4a91e9f330653e8d39a047b7648c1b2e862a037c7df71e2df0"
+        },
+        {
+          "path": "VRC.SDK3.Dynamics.Contact.dll",
+          "size": 8192,
+          "sha256": "f391e1673c6aaf4ebcc1943ad04443053d702fbb3b032166c08bc37a3fad2d24"
+        },
+        {
+          "path": "VRC.SDK3.Dynamics.PhysBone.dll",
+          "size": 16384,
+          "sha256": "a0ed25b2bf465209722864f62af8caba467230a421475419311a3e97ac436a00"
+        },
+        {
+          "path": "VRC.Utility.dll",
+          "size": 20480,
+          "sha256": "2834bfec216728f3e5305fd869e1777304425a0238fca56fed294337989e3889"
+        },
+        {
+          "path": "VRCCore-Editor.dll",
+          "size": 3188736,
+          "sha256": "9facaa95bb9d3c4f0191422c773c498ec5b57a0996799c2ca7a3782f7c0670ec"
+        },
+        {
+          "path": "VRCCore-Standalone.dll",
+          "size": 3175936,
+          "sha256": "9240f098c7e293568a3157982f5f987fa4aca4bef270e63114d761a56cf3e62f"
+        },
+        {
+          "path": "VRCSDK3A-Editor.dll",
+          "size": 18944,
+          "sha256": "3f668edfdbc536a19f0c31fda61be0567f4cf4503ba868a2e888e6b9670ed934"
+        },
+        {
+          "path": "VRCSDK3A.dll",
+          "size": 28160,
+          "sha256": "3b7d9c57c447d2b3f6d8ade57d61945999dfec1ebb9a73567289088037340dc9"
+        },
+        {
+          "path": "VRCSDKBase-Editor.dll",
+          "size": 80896,
+          "sha256": "459431464320780e90fdbccbd36c1d0657a4a74ec65e87afd8c68530725d080b"
+        },
+        {
+          "path": "VRCSDKBase.dll",
+          "size": 251392,
+          "sha256": "089f4cb4fd6029b132cd74682d274c4d4a20b5bf3899f34a240dfd4a2c3814f6"
+        }
+      ],
+      "count": 11
+    }
+  }
+}

@@ -1,11 +1,11 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this type.
 // Reconstructed from both:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //     ResizeHandle.ResizeZone       -> ResizeZone,       line 534
 //     ResizeHandle.DoResizeHandles  -> HandleResize,     line 642
 //                                   -> BuildZones,       line 656 (the inline zone array)
 //                                   -> TryGetZoneCursor, line 716 (the inline cursor switch)
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //     ResizeHandle.ResizeZone       -> ResizeZone,       line 41
 //     ResizeHandle.HandleResize     -> HandleResize,     line 143
 //                                   -> BuildZones,       line 165 (the inline zone array)

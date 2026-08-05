@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   nested static class GraphAccessors -> GraphAccessors, line 114
 //     static cachedTool                    -> cachedTool,               line 116
 //     static Tool() / Tool(EditorWindow)   -> Tool { get; set; },       lines 119, 129
@@ -31,7 +31,7 @@
 // Everything marked [SpecialName] in the decompiled source is a property accessor that the
 // deobfuscation pass left as a method; those are restored to properties here, which is why the
 // call sites read Tool rather than Tool().
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04).
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04).
 
 using System;
 using System.Collections;

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/BoneTransformData.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/BoneTransformData.cs
 //
 // DELIBERATE DEVIATION
 // NormalizedDepth guards against a zero maxDepth; the decompiled source does not. It computes

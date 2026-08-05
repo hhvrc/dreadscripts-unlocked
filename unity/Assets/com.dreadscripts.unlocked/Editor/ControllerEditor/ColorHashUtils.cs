@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ColorHashUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ColorHashUtils.cs
 //
 // Audit status: VERIFIED -- ColorFromString is the only member; every statement, the 73244475
 // multiplier, all three mask/shift expressions and the 0.7/0.3 and 0.8/0.2 constants were diffed

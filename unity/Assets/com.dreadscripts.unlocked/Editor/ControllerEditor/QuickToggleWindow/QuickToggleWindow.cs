@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   nested class QuickToggleWindow -> lifted to a top-level type, line 4157
 //
 //   m_WrapperInitializer        -> root,                     line 4452

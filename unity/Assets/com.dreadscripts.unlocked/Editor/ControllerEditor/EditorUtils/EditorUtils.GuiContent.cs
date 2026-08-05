@@ -1,11 +1,11 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static PushResolver         -> GetTextWidth(string, GUIStyle),    line 2842
 //   static SetupQueue           -> GetTextWidth(string, GUIStyle),    line 5621
 //   static PostQueue            -> GetTextWidth(Enum, GUIStyle),      line 5616
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- both GetTextWidth overloads, the only members this
-// file declares, were compared statement by statement against decompiled/ (EditorUtils.cs:
+// Audit status: VERIFIED against reverse-engineering/export/ -- both GetTextWidth overloads, the only members this
+// file declares, were compared statement by statement against reverse-engineering/export/ (EditorUtils.cs:
 // PushResolver 2842 and SetupQueue 5621, whose bodies are identical to each other and to the
 // collapsed extension below, and PostQueue 5616). All three cited lines still land on the members
 // named above, and the header claims no member the file does not declare.
@@ -15,7 +15,7 @@
 // They are collapsed into the single extension method below; both decompiled names map to it.
 //
 // DELIBERATE DEVIATION
-// PostQueue is a plain static in decompiled/ and is ported as an extension on Enum, to match the
+// PostQueue is a plain static in reverse-engineering/export/ and is ported as an extension on Enum, to match the
 // string overload it delegates to. Its body is otherwise transcribed unchanged.
 //
 // NOTES

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static SetPredicate     -> RoundToNearest(Vector3, int), line 3070
 //   static PostPredicate    -> RoundToNearest(Vector2, int), line 3075
 //   static SetupPredicate   -> MaxComponent,                 line 3080
@@ -10,7 +10,7 @@
 //   static ConcatPredicate  -> Add180(Vector3, Axis),        line 3116
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Small per-component Vector helpers. The Axis-taking pair exist for the mirror/flip tools: Negate
 // mirrors a position or scale across the chosen axes, and Add180 does the equivalent to a Euler

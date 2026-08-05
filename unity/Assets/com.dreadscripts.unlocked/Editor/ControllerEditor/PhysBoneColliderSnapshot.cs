@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneColliderSnapshot.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneColliderSnapshot.cs
 //   Apply()                        -> Restore,                     line 205
 //   Apply(ContactBase)             -> ApplyTo(ContactBase),        line 226
 //   Apply(VRCPhysBoneCollider)     -> ApplyTo(VRCPhysBoneCollider), line 235

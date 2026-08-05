@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   nested enum WriteDefaultSetSettings -> WriteDefaultSetSettings, line 1060
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type name is
 // the durable reference. The enum is nested inside EditorUtils in the shipped assembly; it is

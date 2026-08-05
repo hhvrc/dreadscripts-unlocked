@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
 //   typeCache               -> typeCache,               line 487
 //   sdkAvailable            -> sdkAvailable,            line 489
 //   hasChecked              -> hasChecked,              line 491
@@ -18,7 +18,7 @@
 // "resolve a type by name, searching every loaded assembly, null if absent" helper in
 // EditorUtils.cs (line 5285). It is called here as EditorUtils.FindType; if the EditorUtils
 // reflection region is ported under a different name, this call site follows it.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04). AnimatorTypeCache is
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04). AnimatorTypeCache is
 // COMPLETE: all six nested types plus the outer type-lookup body are ported across the five files
 // in this folder; there are no compiler-generated closures in this class.
 

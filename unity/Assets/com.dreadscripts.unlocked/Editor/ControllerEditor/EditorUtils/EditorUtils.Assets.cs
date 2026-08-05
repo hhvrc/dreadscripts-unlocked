@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static LogoutPredicate    -> DestroyAssetObject,      line 4058
 //   static PatchPredicate     -> IsSubAsset,              line 4082
 //   static InterruptPredicate -> AddSubAsset,             line 4088
@@ -30,7 +30,7 @@
 // function of CopyLayer, put there while this file did not yet exist. That copy has been deleted
 // and its caller now resolves to this member, so the decompiled helper has one owner again.
 //
-// Audit status: VERIFIED against decompiled/ -- all ten members re-checked statement by statement
+// Audit status: VERIFIED against reverse-engineering/export/ -- all ten members re-checked statement by statement
 // against EditorUtils.cs lines 4058, 4082, 4088, 4130, 4170, 4193, 4205, 4216, 4293 and 4422, every
 // one of which still lands on the member named. The only rewrites are shape, not behaviour:
 // LoadByGuid<T>(string, long) is a foreach over LoadAllAssetsAtPath where the decompilation has the

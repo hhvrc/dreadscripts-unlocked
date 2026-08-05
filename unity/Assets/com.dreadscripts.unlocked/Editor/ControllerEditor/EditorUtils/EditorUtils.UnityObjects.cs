@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static SetDontSave            -> same,                 line 2586
 //   static SetHidden             -> same,                 line 2601
 //   static SetDontSaveRecursively -> same,                line 2616
@@ -20,11 +20,11 @@
 // asset operation: it exists so a picker that hands back whatever the user clicked can be asked for
 // the type the caller actually wanted.
 //
-// Audit status: VERIFIED against decompiled/ -- all four methods this file declares were compared
+// Audit status: VERIFIED against reverse-engineering/export/ -- all four methods this file declares were compared
 // statement by statement with EditorUtils.cs lines 2586-2622 and 3037-3049, and all four line
 // numbers still land on the members they name. The only differences are branch shape with identical
-// behaviour: the null guards are written `if (obj == null) return;` where decompiled/ wraps the body
-// in `if (!(x == null))`, SetDontSave's two arms are ordered set-then-clear where decompiled/ tests
+// behaviour: the null guards are written `if (obj == null) return;` where reverse-engineering/export/ wraps the body
+// in `if (!(x == null))`, SetDontSave's two arms are ordered set-then-clear where reverse-engineering/export/ tests
 // the negation first, and AsComponentOrAsset's `obj is GameObject go` replaces the decompiled
 // `as GameObject` plus `(object)obj != null` pair.
 

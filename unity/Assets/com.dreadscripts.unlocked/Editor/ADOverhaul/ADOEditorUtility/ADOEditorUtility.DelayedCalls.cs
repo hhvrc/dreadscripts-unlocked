@@ -1,10 +1,10 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static field _IteratorSerializer -> delayedCalls,     line 2050
 //   static AddProcess                -> DelayCall,        line 2367
 //   static ValidateProcess           -> RunDelayedCalls,  line 2378
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // The Remove-then-Combine pair on EditorApplication.delayCall is written out as it shipped rather

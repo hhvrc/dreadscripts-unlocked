@@ -1,9 +1,9 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static PostResolver -> DrawRoundedRect, line 2369
 //   static ResetRules   -> AnchorPicker,    line 4871
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // DrawRoundedRect leans on the six-argument GUI.DrawTexture Unity added in 2019.1, which takes a
 // border width and a corner radius and does the rounding on the GPU. It is fed a 1x1 texture of the

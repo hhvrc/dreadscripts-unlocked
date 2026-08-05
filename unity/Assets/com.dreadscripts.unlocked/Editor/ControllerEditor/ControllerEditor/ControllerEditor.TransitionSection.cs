@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 //   ReflectVisitor -> DrawTransitionSection, line 12529
 //   CreateVisitor -> DrawTransitionSettings, line 12615
@@ -50,7 +50,7 @@
 // it remains unported and it is not ReflectVisitor.
 //
 // A note on the decompiled names in the MAP above. Two of them -- `ReflectVisitor` and
-// `DeleteAnnotation` -- no longer appear under those spellings in `decompiled/`: the ported names
+// `DeleteAnnotation` -- no longer appear under those spellings in `reverse-engineering/export/`: the ported names
 // were fed back into the rename map, so the snapshot now declares them as `DrawTransitionSection`
 // and `DrawCollapsibleSection`. The obfuscated spellings are kept in the left-hand column because
 // they are the names every other header in this package still joins on, and because the whole

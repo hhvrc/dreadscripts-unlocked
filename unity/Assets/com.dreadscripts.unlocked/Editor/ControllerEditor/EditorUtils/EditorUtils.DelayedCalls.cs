@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static field _SchemaProperty -> hierarchyDelayedCalls,    line 2154
 //   static DisableRules          -> DelayCallOnHierarchyGui,  line 4455
 //   static RestartRules          -> RunHierarchyDelayedCalls, line 4487
@@ -19,8 +19,8 @@
 // visible item -- so it is used as a "the hierarchy is about to draw" tick. The drain runs on the
 // first item of the pass and unsubscribes immediately, so the per-item cost is one delegate check.
 //
-// Audit status: VERIFIED against decompiled/ -- all three declared members diffed statement by
-// statement against decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the
+// Audit status: VERIFIED against reverse-engineering/export/ -- all three declared members diffed statement by
+// statement against reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs at the
 // cited lines (_SchemaProperty 2154, DisableRules 4455, RestartRules 4487), all of which still land
 // on the named member in the current snapshot. Field initialiser, the empty-queue test, both
 // Delegate.Remove/Combine pairs, the repaint flag, the drain loop with its per-action

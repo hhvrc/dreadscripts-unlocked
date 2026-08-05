@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   nested class QuickToggleWindow, line 4157
 //   OnCustomConfirm -> OnCustomConfirm, line 4768
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member name is

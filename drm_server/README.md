@@ -105,7 +105,7 @@ That cache is keyed on the current date, so **it satisfies startup checks for th
 the plugin then re-checks the next day.** Leaving the server installed as a service
 (`install-service`, or `install.ps1`, which does it for you) is what makes that invisible; otherwise
 activate again whenever the plugin reports itself unlicensed.
-[`DRM.md`](https://github.com/hhvrc/dreadscripts-unlocked/blob/main/DRM.md) § "DSLICINF — Local License
+[`DRM.md`](https://github.com/hhvrc/dreadscripts-unlocked/blob/main/reverse-engineering/DRM.md) § "DSLICINF — Local License
 Cache" has the cache format and validation rules. (Absolute link on purpose: this file is published
 into the public repo alongside `DRM.md`, but lives one directory deeper here.)
 
@@ -138,7 +138,7 @@ into the public repo alongside `DRM.md`, but lives one directory deeper here.)
 
 These eight are the complete set the plugins send to this host. The request and response fields
 of each are documented inline in `handler.go`; the protocol itself is specified in
-[`../DRM.md`](../DRM.md).
+[`../reverse-engineering/DRM.md`](../reverse-engineering/DRM.md).
 
 ## How it works
 

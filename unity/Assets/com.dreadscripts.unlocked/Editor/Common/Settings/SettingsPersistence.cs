@@ -1,8 +1,8 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of the whole
 // persisted-settings framework, nested inside their respective settings classes. Reconstructed
 // from both, which are the same code under different obfuscated names.
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, class EditorSettings
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs, class ADOSettings
 //
 // The MAP line numbers below are the ControllerEditor ones; the ADOverhaul2022 counterparts are
 // tabulated in the NOTES section at the bottom.
@@ -40,7 +40,7 @@
 // onSettingsCleared/onCleared hook, and of course the settings fields themselves. Each product's
 // settings class keeps those and subscribes its own serializer to onSave.
 //
-// Audit status: PARTIAL -- every line number in the tables above was checked against decompiled/
+// Audit status: PARTIAL -- every line number in the tables above was checked against reverse-engineering/export/
 // (both builds) and lands on the member named; the bodies were not re-diffed.
 
 using System;

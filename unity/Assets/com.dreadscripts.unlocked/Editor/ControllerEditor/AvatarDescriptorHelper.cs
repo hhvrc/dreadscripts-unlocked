@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AvatarDescriptorHelper.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AvatarDescriptorHelper.cs
 //   Avatar() / Avatar(VRCAvatarDescriptor) -> Avatar, line 23
 // The get/set pair above carries [SpecialName] in the decompiled source, i.e. it is the accessor
 // pair of a property ILSpy could not recombine; it is restored as a property here. Line numbers are

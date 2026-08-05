@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ManageQueue  -> TryGetBones(animator, out map, bones),        line 6544
 //   static PrintQueue   -> TryGetBones(animator, useFallbacks, ...),     line 6550
 //   static SearchQueue  -> TryGetBones(animator, ..., out cancelled, ...), line 6556
@@ -14,7 +14,7 @@
 //   static MoveList     -> TryGetMirroredBone,                           line 6679
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/
+// Audit status: VERIFIED against reverse-engineering/export/
 //
 // Humanoid rigs are optional in almost every part: Animator.GetBoneTransform returns null for a
 // bone the avatar's Human description does not map, which is the normal case for fingers, toes,

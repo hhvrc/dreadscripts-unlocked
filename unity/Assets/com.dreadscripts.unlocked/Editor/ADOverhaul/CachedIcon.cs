@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //
 // Ported region: the CachedIcon class, lines 1148-1262 of the current snapshot. Line numbers move
 // with the snapshot; the member names below are the durable reference.
@@ -31,7 +31,7 @@
 // third copy of the conversion loops, and its private ToBytes/ToInts are dropped as a result.
 //
 // Audit status: PARTIAL -- every MAP entry above was re-checked against
-// decompiled/ADOverhaul2022/.../ADOEditorUtility.cs lines 1148-1262 (names, line numbers and the
+// reverse-engineering/export/ADOverhaul2022/.../ADOEditorUtility.cs lines 1148-1262 (names, line numbers and the
 // constructor's null-texture path). The 2019 build's copy of the type was not re-diffed.
 
 using DreadScripts.Common;

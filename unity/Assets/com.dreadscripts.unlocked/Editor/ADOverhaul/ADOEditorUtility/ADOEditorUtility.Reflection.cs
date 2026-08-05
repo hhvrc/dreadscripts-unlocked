@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+// Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //   static CancelStatus   -> FindType,                     line 2803
 //   static OrderVal       -> FindMethod(Type, string),        line 3765
 //   static CalculateVal   -> FindMethod(Type, string, Type),  line 3783
@@ -7,7 +7,7 @@
 //   static FlushAdapter   -> not ported; see below,        line 4058
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
-// Audit status: VERIFIED against decompiled/ -- every statement below was transcribed from the region
+// Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
 // above.
 //
 // Deliberately not ported: FlushAdapter, a file-scoped static whose whole body is

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/CallbackAttribute.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/CallbackAttribute.cs
 //
 // Audit status: VERIFIED -- the whole type is two fields and a base clause; the class declaration,
 // both field declarations and their modifiers were diffed against export/ and match exactly.

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 // Ported region: the `[Serializable] private class EditorSettings` nested in the static
 // ControllerEditor class, lines 437-1577. Lifted to a top-level type, as this package does with
 // every type the decompiled god-class carries as a nested member.
@@ -31,7 +31,7 @@
 // verification routine. Omitting them costs nothing at load time: JsonUtility ignores JSON keys with
 // no matching field, so a settings block written by the shipped build still reads back.
 //
-// Audit status: PARTIAL -- the three MAP entries above were re-checked against decompiled/ and land
+// Audit status: PARTIAL -- the three MAP entries above were re-checked against reverse-engineering/export/ and land
 // on the members named; the settings field list and the not-ported claims above were not re-checked.
 
 using System;

@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTypeCache.cs
 //   SerializedObjectWrapper              -> SerializedObjectWrapper,   line 445
 //     FindProperty(string)               -> FindProperty(string),      line 453
 //   SerializedPropertyWrapper            -> SerializedPropertyWrapper, line 460
@@ -10,7 +10,7 @@
 // Both types carry [DefaultMember("Item")] and their accessors are marked [SpecialName] in the
 // shipped assembly: they were indexers that the obfuscator stripped back to methods named Item, and
 // they are restored as indexers here.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04).
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04).
 
 using UnityEditor;
 using UnityEngine;

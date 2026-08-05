@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 // Ported region: the `private enum BoolModes` nested in the static ControllerEditor class,
 // line 2201 of the current snapshot. Line numbers move with the snapshot; the names are the durable

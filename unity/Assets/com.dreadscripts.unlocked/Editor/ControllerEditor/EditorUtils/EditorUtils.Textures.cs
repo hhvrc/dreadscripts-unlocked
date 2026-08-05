@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static TrimTransparentBorder -> unchanged,   lines 7257-7322
 //   static ReflectList -> ColorTexture,          line 7339
 //   static field connectionProcessor -> sharedColorTexture, line 2228
@@ -32,7 +32,7 @@
 // wraps the whole body in `if (!(ident == null))` and throws at the bottom, which is written here
 // as a guard clause that throws first.
 //
-// Audit status: VERIFIED against decompiled/ -- all seven members re-checked statement by statement
+// Audit status: VERIFIED against reverse-engineering/export/ -- all seven members re-checked statement by statement
 // against EditorUtils.cs lines 7257-7322 (after correcting the stale citation above), 7324, 7339,
 // 7349, 7354, 7404 and the sharedColorTexture field at 2228. Bodies match, including the RGBA32 vs
 // RGBAFloat split between the two single-colour helpers, the inscribed hard-edged circle, and the

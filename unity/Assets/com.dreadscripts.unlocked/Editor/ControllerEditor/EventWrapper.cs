@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EventWrapper.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EventWrapper.cs
 //
 // NOT PORTED
 // The `internal static object NewDecorator` field and the `LoginDecorator()` method that only

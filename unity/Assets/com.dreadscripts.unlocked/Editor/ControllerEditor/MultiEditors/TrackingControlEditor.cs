@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //   TrackingControlEditor                    -> TrackingControlEditor,   line 284
 //     serializedObject                       -> serializedObject,        line 286
 //     head .. mouth                          -> head .. mouth,           lines 288-305

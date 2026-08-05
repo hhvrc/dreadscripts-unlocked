@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/AnimatorGraphReflection.cs
 //   nested static class MemberRefs -> MemberRefs, line 51
 //     every member reference keeps its decompiled name (tool, stateMachineGraph, blendTreeGraph,
 //     stateMachineGraphGUI, blendTreeGraphGUI, m_BreadCrumbs, graphDirtyCallback, m_Target,
@@ -12,7 +12,7 @@
 //
 // The decompiled source writes the type as DreadScripts.ControllerEditor.ReflectionMemberRef<T>
 // in full; the namespace is already in scope here, so the qualification is dropped.
-// Audit status: VERIFIED against decompiled/ member-by-member (2026-08-04). All 30 member refs present.
+// Audit status: VERIFIED against reverse-engineering/export/ member-by-member (2026-08-04). All 30 member refs present.
 
 using System.Reflection;
 using UnityEditor.Animations;

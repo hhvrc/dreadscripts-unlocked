@@ -1,4 +1,4 @@
-// Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
+// Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 // Ported region: the change callbacks passed to the settings field initialisers of the nested
 // `EditorSettings` class, lines 1181-1359.
 //
@@ -23,7 +23,7 @@
 // (line 8380), is claimed by ControllerEditor.State.cs, where it is ported as layerViewType, so this
 // entry is anchored on the callback statement rather than on the field.
 //
-// Audit status: PARTIAL -- all five line numbers above were re-checked against decompiled/ on
+// Audit status: PARTIAL -- all five line numbers above were re-checked against reverse-engineering/export/ on
 // 2026-08-05 and each lands on the member named; the behavioural prose in the doc comments below
 // was not re-derived.
 

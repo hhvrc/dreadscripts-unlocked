@@ -1,12 +1,12 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of these extensions.
 // Reconstructed from both, which are identical apart from obfuscated names:
-//   decompiled/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
+//   reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //     PrintPage       -> IsAnchoredRight,  line 2252
 //     SearchPage      -> IsAnchoredLeft,   line 2261
 //     RevertPage      -> IsAnchoredTop,    line 2270
 //     OrderResolver   -> IsAnchoredBottom, line 2279
 //     CompareResolver -> GetResizeEdges,   line 2287
-//   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
+//   reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOEditorUtility.cs
 //     CountProcess    -> IsAnchoredRight,  line 2133
 //     StartProcess    -> IsAnchoredLeft,   line 2142
 //     RemoveProcess   -> IsAnchoredTop,    line 2151
