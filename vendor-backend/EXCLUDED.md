@@ -34,16 +34,18 @@ subsystem was its own file, otherwise the decompiled member or type. `Product` i
 | `VersionNumber` | CE | never ported | As above. |
 | `getdownloadinfo` | both | never ported | The update check. Fires on editor load, so against a dead endpoint it means a failed request and an error toast on every project load. Its `u_*` settings fields stay, because removing them would change the settings blob format. |
 
-## Still to remove
+Everything above and below was removed in one pass on 2026-08-05, and the package compiled at every
+step: the licence code had no callers outside itself, which is the clearest evidence that the
+restoration never depended on it.
 
-Listed here so the gap is visible rather than forgotten. These are agreed but not yet done:
-
-| Identifier | Product | Why |
-|---|---|---|
-| `ControllerEditor.Licensing` | CE | The CE half of the licence flow, matching `ADOverhaul.Licensing` above. |
-| `ProcessRunner` | both | Spawns the `wmic` subprocesses that derive the hardware fingerprint. Its only remaining callers are the licence code. |
-| Hardware/session/licence state fields | both | `hardwareId`, `sessionId`, `licenseKey`, `licenseToken`, `currentDateStamp` and neighbours, declared in the ported state tables. They are only written by fingerprinting code that is not shipped. |
-| `SupportWindow` and its cluster | CE | `SupporterEntry`, `SupporterStrings`, `SupportWindowAssets`, `TextFragment`, `WebRequestJob` — the supporter window and the transport it drives. |
+| Identifier | Product | Removed | Why |
+|---|---|---|---|
+| `ControllerEditor.Licensing` | CE | 2026-08-05 | The CE half of the licence flow, matching `ADOverhaul.Licensing`. |
+| `ProcessRunner` | both | 2026-08-05 | Spawned the `wmic` subprocesses that derive the hardware fingerprint. Its only callers were the licence code and the bug reporter. |
+| The `Licensing` field regions | both | 2026-08-05 | 28 fields in `ControllerEditor.State.cs` and 26 in `ADOverhaul.State.cs` — `hardwareId`, `sessionId`, `licenseKey`, `licenseToken`, `currentDateStamp` and neighbours. Originally declared-but-unwritten so that later ports of the regions reading them would have names to agree on; once the readers were removed, a declared field was a stub rather than a seam. Recorded in both headers as `NOT PORTED` entries. |
+| `SupportWindow` | CE | 2026-08-05 | The supporter window: fetched a supporter list over the network at editor time. |
+| `SupporterEntry`, `SupporterStrings`, `SupportWindowAssets`, `TextFragment` | CE | 2026-08-05 | Existed only to serve the supporter window. |
+| `WebRequestJob` | CE | 2026-08-05 | The polling HTTP transport the supporter window drove. No other caller. |
 
 ## Not excluded, deliberately
 

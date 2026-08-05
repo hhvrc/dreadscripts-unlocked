@@ -101,34 +101,34 @@
 //   m_ExpressionAnnotation   -> feedbackPanelOpen,               line 8084
 //   systemAnnotation         -> isSendingFeedback,               line 8086
 //   m_WorkerAnnotation       -> feedbackText,                    line 8088
-//   m_FilterAnnotation       -> licenseUsername,                 line 8090
-//   stubAnnotation           -> licensedToDisplayName,           line 8092
-//   m_ReaderAnnotation       -> licenseVariant,                  line 8094
-//   m_BridgeAnnotation       -> licenseKey,                      line 8096
-//   strategyAnnotation       -> transferVerificationCode,        line 8098
-//   m_CustomerAnnotation     -> transferTargetEmail,             line 8100
-//   databaseAnnotation       -> sessionId,                       line 8102
-//   m_ExporterAnnotation     -> serverWarnedTooManyAttempts,     line 8104
-//   m_IdentifierAnnotation   -> licenseKeyEntryRequired,         line 8106
-//   attrAnnotation           -> licenseCheckRetryOffered,        line 8108
-//   m_DispatcherAnnotation   -> licenseCheckedThisSession,       line 8110
-//   m_RegistryAnnotation     -> retryAllowedAtRealtime,          line 8112
-//   m_TagAnnotation          -> currentDateStamp,                line 8114
-//   importerAnnotation       -> isActivatingLicense,             line 8116
-//   _RequestAnnotation       -> isVerifyingLicense,              line 8118
-//   printerAnnotation        -> unreadDeviceDateFingerprint,     line 8120
-//   _WriterAnnotation        -> hardwareId,                      line 8122
-//   m_ParamsAnnotation       -> licenseToken,                    line 8124
-//   listenerAnnotation       -> isLicensed,                      line 8126
-//   m_GetterAnnotation       -> licenseRestoredFromCache,        line 8128
-//   m_InterceptorAnnotation  -> licensedCallbacksFlushed,        line 8130
-//   creatorAnnotation        -> pendingLicensedCallbacks,        line 8132
-//   m_EventAnnotation        -> pendingResetCallbacks,           line 8134
-//   infoAnnotation           -> repaintTargetTypes,              line 8136
-//   facadeAnnotation         -> showingTransferPanel,            line 8142
-//   advisorAnnotation        -> transferCodeSent,                line 8144
-//   m_CallbackAnnotation     -> isRequestingTransferCode,        line 8146
-//   _IndexerAnnotation       -> isConfirmingTransfer,            line 8148
+//   m_FilterAnnotation -> NOT PORTED, line 8090 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   stubAnnotation -> NOT PORTED, line 8092 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_ReaderAnnotation -> NOT PORTED, line 8094 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_BridgeAnnotation -> NOT PORTED, line 8096 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   strategyAnnotation -> NOT PORTED, line 8098 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_CustomerAnnotation -> NOT PORTED, line 8100 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   databaseAnnotation -> NOT PORTED, line 8102 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_ExporterAnnotation -> NOT PORTED, line 8104 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_IdentifierAnnotation -> NOT PORTED, line 8106 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   attrAnnotation -> NOT PORTED, line 8108 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_DispatcherAnnotation -> NOT PORTED, line 8110 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_RegistryAnnotation -> NOT PORTED, line 8112 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_TagAnnotation -> NOT PORTED, line 8114 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   importerAnnotation -> NOT PORTED, line 8116 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _RequestAnnotation -> NOT PORTED, line 8118 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   printerAnnotation -> NOT PORTED, line 8120 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _WriterAnnotation -> NOT PORTED, line 8122 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_ParamsAnnotation -> NOT PORTED, line 8124 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   listenerAnnotation -> NOT PORTED, line 8126 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_GetterAnnotation -> NOT PORTED, line 8128 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_InterceptorAnnotation -> NOT PORTED, line 8130 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   creatorAnnotation -> NOT PORTED, line 8132 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_EventAnnotation -> NOT PORTED, line 8134 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   infoAnnotation -> NOT PORTED, line 8136 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   facadeAnnotation -> NOT PORTED, line 8142 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   advisorAnnotation -> NOT PORTED, line 8144 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_CallbackAnnotation -> NOT PORTED, line 8146 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _IndexerAnnotation -> NOT PORTED, line 8148 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   _IssuerAnnotation        -> isDownloadingUpdate,             line 8150
 //   _PrototypeAnnotation     -> isCheckingForUpdate,             line 8152
 //   _RuleAnnotation          -> hasCheckedForUpdate,             line 8154
@@ -332,16 +332,17 @@
 // No obfuscator scaffolding (always-null statics paired with null-check predicates, marker types)
 // was found inside 7962-8499.
 //
-// LICENSING FIELDS ARE DECLARED, THE LICENSING CODE IS NOT. Roughly thirty of the fields below
-// exist only to drive the vendor's activation/verification/transfer flow against a server that has
-// been shut down; with the backend gone those checks can now only ever fail, which would lock out
-// legitimate license holders. They are declared because the members that read them are interleaved
-// with functional code -- the version banner, the settings pane and several graph headers sit in
-// methods that also touch `isLicensed` -- so later ports of those regions need the names to exist
-// and to agree. Declaring a field commits to nothing; whether any given reader is ported is that
-// reader's decision. `hardwareId`, `sessionId`, `licenseKey`, `currentDateStamp` and
-// `unreadDeviceDateFingerprint` are only ever populated by machine-fingerprinting code (decompiled
-// 10222-10260, 10424-10440) that is not ported and should not be.
+// THE LICENSING FIELDS ARE GONE. Twenty-eight fields drove the vendor's activation, verification
+// and transfer flow against a server that has been shut down. They were originally declared but left
+// unwritten, on the reasoning that later ports of the regions reading them would need the names to
+// exist and agree. That reasoning expired on 2026-08-05, when the licence code itself was removed:
+// with no reader left in the package, a declared field is not a seam, it is a stub of a thing this
+// restoration has decided not to ship.
+//
+// They are recorded above as NOT PORTED entries rather than dropped from the table, so that
+// "removed on purpose" stays distinguishable from "overlooked" -- and the decision itself lives in
+// ../../../vendor-backend/EXCLUDED.md, not here, because a file's header dies with the file.
+// The protocol they served is specified in ../../../DRM.md and answered by ../../../drm_server/.
 //
 // Audit status: PARTIAL -- the two omissions were re-checked against decompiled/ on this pass and
 // are exactly where the table says: line 8162 is
@@ -750,171 +751,6 @@ namespace DreadScripts.ControllerEditor
         /// The message typed into the feedback panel. Truncated to 2000 characters on submission.
         /// </summary>
         private static string feedbackText;
-
-        #endregion
-
-        #region Licensing
-
-        // Everything in this region belongs to the vendor's activation flow, which talked to a
-        // server that has been shut down. The fields are declared so that ports of the surrounding
-        // GUI can compile and so their names are agreed; see the file header.
-
-        /// <summary>Account name returned by a successful verification.</summary>
-        private static string licenseUsername;
-
-        /// <summary>
-        /// The "Authorized For" line: <see cref="licenseUsername"/> with a trailing Discord-style
-        /// discriminator and any colour markup stripped, and a leading '@' removed.
-        /// </summary>
-        private static string licensedToDisplayName;
-
-        /// <summary>
-        /// License tier returned by verification. Blank means the tool displays "Personal".
-        /// </summary>
-        private static string licenseVariant;
-
-        /// <summary>
-        /// The license key, cached in EditorPrefs. Validated against a four-group hexadecimal
-        /// pattern before it is considered usable.
-        /// </summary>
-        private static string licenseKey = "";
-
-        /// <summary>The six-digit code entered to confirm a license transfer.</summary>
-        private static string transferVerificationCode = "";
-
-        /// <summary>
-        /// The email address the transfer code was sent to, echoed back by the server so the panel
-        /// can show the user where to look.
-        /// </summary>
-        private static string transferTargetEmail = "";
-
-        /// <summary>
-        /// A per-install identifier persisted in EditorPrefs and sent with every request.
-        /// Regenerated if the stored value is not a 32-digit hexadecimal GUID.
-        /// </summary>
-        private static string sessionId;
-
-        /// <summary>
-        /// Sticky flag raised when the server reports that the device is close to being blocked for
-        /// repeated failures. Once set it stays set for the session and prefixes the wait notice.
-        /// </summary>
-        private static bool serverWarnedTooManyAttempts;
-
-        /// <summary>
-        /// Whether the license panel should ask for a key to be typed in rather than offer a device
-        /// check. Set when no usable key is stored and when a check comes back rejected.
-        /// </summary>
-        private static bool licenseKeyEntryRequired;
-
-        /// <summary>
-        /// Whether a device check has already failed once this session, which relabels the check
-        /// button "Retry" and lets it through the guard that otherwise suppresses repeat attempts.
-        /// </summary>
-        private static bool licenseCheckRetryOffered;
-
-        /// <summary>
-        /// Whether a verification has been attempted since the domain was loaded, so the on-display
-        /// check does not fire on every repaint.
-        /// </summary>
-        private static bool licenseCheckedThisSession;
-
-        /// <summary>
-        /// <c>Time.realtimeSinceStartup</c> before which no further request may be sent, set from
-        /// the server's own backoff instruction.
-        /// </summary>
-        private static float retryAllowedAtRealtime;
-
-        /// <summary>
-        /// The current UTC date as a "d/M/yyyy" string with the day and month obfuscated, sent with
-        /// requests and compared against the server's date to detect a tampered system clock.
-        /// </summary>
-        private static string currentDateStamp;
-
-        /// <summary>Whether an activation request is in flight.</summary>
-        private static bool isActivatingLicense;
-
-        /// <summary>Whether a verification request is in flight.</summary>
-        private static bool isVerifyingLicense;
-
-        /// <summary>
-        /// Composed from slices of <see cref="hardwareId"/> and <see cref="currentDateStamp"/> each
-        /// time the fingerprint is rebuilt, and then never read: nothing in the assembly consumes
-        /// it. What it was for is not recoverable -- the shape (device identity interleaved with a
-        /// date) would fit a cache key or an offline grace token, but that is a guess and is not
-        /// asserted here.
-        /// </summary>
-        private static string unreadDeviceDateFingerprint;
-
-        /// <summary>
-        /// The machine fingerprint sent as "HWID": several hashes of gathered device properties,
-        /// joined with dashes.
-        /// </summary>
-        private static string hardwareId;
-
-        /// <summary>
-        /// The token a successful verification returns. It is the input to the inline HMAC check
-        /// that the obfuscator scattered through dozens of methods as a licensed/unlicensed test:
-        /// each site recomputes <c>HMACSHA256(currentDateStamp + hardwareId)</c> and compares.
-        /// </summary>
-        private static string licenseToken;
-
-        /// <summary>
-        /// Whether the tool considers itself licensed. The coarse gate; the inline HMAC checks are
-        /// the fine one.
-        /// </summary>
-        private static bool isLicensed;
-
-        /// <summary>
-        /// Set when a verification succeeded from the EditorPrefs cache rather than from the
-        /// network, which triggers a settings write-back and a repaint of every tool window.
-        /// </summary>
-        private static bool licenseRestoredFromCache;
-
-        /// <summary>
-        /// Whether <see cref="pendingLicensedCallbacks"/> has already been drained. It is a
-        /// one-shot: callbacks queued while unlicensed run once, on the first licensed frame.
-        /// </summary>
-        private static bool licensedCallbacksFlushed;
-
-        /// <summary>
-        /// Work deferred until the tool is licensed. While unlicensed, each caller is removed and
-        /// re-added so a given delegate is queued at most once; while licensed, callers run
-        /// immediately instead of queueing.
-        /// </summary>
-        private static Action pendingLicensedCallbacks;
-
-        /// <summary>
-        /// Work deferred until the licensing state is reset, queued the same way as
-        /// <see cref="pendingLicensedCallbacks"/> and drained by the reset handler.
-        /// </summary>
-        private static Action pendingResetCallbacks;
-
-        /// <summary>
-        /// The types whose open instances are repainted when shared state changes -- this window and
-        /// the settings window. Editors as well as windows, since some of this state is drawn from
-        /// custom inspectors.
-        /// </summary>
-        private static readonly Type[] repaintTargetTypes =
-        {
-            typeof(ControllerEditor),
-            typeof(ControllerEditorWindow)
-        };
-
-        /// <summary>
-        /// Whether the license pane is showing the transfer form rather than the activation form.
-        /// </summary>
-        private static bool showingTransferPanel;
-
-        /// <summary>
-        /// Whether a transfer code has been sent, which is what reveals the code-entry field.
-        /// </summary>
-        private static bool transferCodeSent;
-
-        /// <summary>Whether the "send me a transfer code" request is in flight.</summary>
-        private static bool isRequestingTransferCode;
-
-        /// <summary>Whether the transfer confirmation request is in flight.</summary>
-        private static bool isConfirmingTransfer;
 
         #endregion
 
