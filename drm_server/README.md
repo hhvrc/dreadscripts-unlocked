@@ -126,14 +126,19 @@ into the public repo alongside `DRM.md`, but lives one directory deeper here.)
 
 | `command` | Response |
 |---|---|
-| `activatelicense` | `success=true`, `message="License verified."`, plus date/username/HMAC token/HWID fields for the DSLICINF cache |
+| `activatelicense` | `success=true`, `message="License verified."`, plus `date` / `username` / `variant` / HMAC `token` for the DSLICINF cache |
 | `verifylicense` | Same as `activatelicense` — both call the identical grant path |
-| `getdownloadinfo` | `success=true`, "no update available" |
-| `sendfeedback` | `success=true` |
-| `findsolution` | `success=true` |
-| `reportbug` | `success=true` |
-| `transferlicenserequest` / `transferlicense` / `transferlicenseconfirm` | `success=true`, explains transfers are unnecessary since the backend is offline |
+| `getdownloadinfo` | `success=true`, `version` echoed back so the plugin sees itself as up to date; no download or announcement offered |
+| `sendfeedback` | `success=true`, feedback logged to the console, confirmation `message` echoed to the Unity console |
+| `findsolution` | `success=true` with no `solution`, which puts the bug reporter on its "no solution found" branch |
+| `reportbug` | `success=true`, report logged to the console |
+| `transferlicenserequest` | `success=true` plus a `transfer_email` placeholder, and a `message` saying no code was mailed |
+| `transferlicenseconfirm` | `success=true` if `verification_code` is 6 alphanumerics (the plugin's own rule), otherwise `success=false` with an explanation |
 | _(anything else)_ | `success=true`, logged as unrecognised |
+
+These eight are the complete set the plugins send to this host. The request and response fields
+of each are documented inline in `handler.go`; the protocol itself is specified in
+[`../DRM.md`](../DRM.md).
 
 ## How it works
 
