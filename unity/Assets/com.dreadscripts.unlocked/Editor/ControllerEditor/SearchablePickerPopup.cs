@@ -1,12 +1,56 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/SearchablePickerPopup.cs
-//   PickerEntry.FirstExtra -> PickerEntry.firstExtra, line 63
-// The decompiled type also carries two always-null statics with a "is it still null" method each
-// (PickerEntry.MapSystem/AddSystem and WriteSystem/RemoveSystem). Nothing reads either, in this
-// assembly or the other; they are obfuscator scaffolding and are deliberately not ported.
+//   nested class PickerEntry -> unchanged,   lines 12-40
+//     index, value, extraData, isVisible -> unchanged
+//     constructor  -> PickerEntry(T, int),   line 30
+//     FirstExtra() -> firstExtra,            line 25
+//     MapSystem    -> NOT PORTED, line 22 -- obfuscator scaffolding: an always-null static, and
+//     AddSystem()  -> NOT PORTED, line 36 -- the "is it still null" method that reads it
+//   title, searchString, entries, drawEntry, onSelected, searchFilter, hasSearch, maxWidth,
+//   isFirstFrame, scrollPosition, entryRects -> unchanged,   lines 42-62
+//   entryStyle       -> unchanged,   lines 64-74
+//   WriteSystem      -> NOT PORTED, line 76 -- the outer class's own always-null static, and
+//   RemoveSystem()   -> NOT PORTED, line 190 -- its null-check; the same scaffolding as above
+//   constructor      -> SearchablePickerPopup,   line 78
+//   EnableSearch     -> unchanged,   line 87
+//   SortBy           -> unchanged,   line 93
+//   SetExtraData     -> unchanged,   line 98
+//   OnGUI            -> unchanged,   line 107
+//   GetWindowSize    -> unchanged,   line 175
+//   Show             -> unchanged,   line 185
+//   Parameters, renamed from the decompiler's placeholders and read off their use sites:
+//     PickerEntry ctor spec/cust_size  -> value/index
+//     ctor param/attr/third/reference2 -> title/items/drawEntry/onSelected
+//     EnableSearch key                 -> searchFilter
+//     SortBy param                     -> keySelector
+//     SetExtraData ident               -> selector
+//     Show item                        -> activatorRect
+// Line numbers are relative to the decompiled snapshot at the time of the port; the type and
+// member names are the durable reference. Nothing from the type is left unported apart from the
+// four scaffolding members named above.
 //
-// Depends on two EditorUtils helpers that are not ported yet, referenced here under the names they
-// are expected to take: EditorUtils.ColorTexture (decompiled ReflectList, a 1x1 point-filtered
-// texture of a colour) and EditorUtils.Separator (decompiled MapQueue, the thin horizontal rule).
+// NOTES
+// The four unported members are two always-null statics with a "is it still null" method each. The
+// only occurrences of any of the four identifiers in the whole ControllerEditor export are their
+// own declarations and the two null-checks; nothing calls or assigns them.
+//
+// The three EditorUtils helpers this file calls have all landed, and are used here under their real
+// signatures rather than anticipated ones: ColorTexture (decompiled ReflectList) in
+// EditorUtils/EditorUtils.Textures.cs, Separator (decompiled MapQueue) in
+// EditorUtils/EditorUtils.Separators.cs, and the styles accessor (decompiled CalcError) in
+// EditorUtils/EditorUtils.Styles.cs. Two consequences for the call sites here: the separator call
+// passes no arguments, exactly as the decompiled `EditorUtils.MapQueue()` does, so it takes that
+// helper's own defaults; and styles is a property in the port, so the decompiled
+// `EditorUtils.styles()` call becomes a property read. An earlier note in this header said the
+// first two were still unported and named them under the names they were expected to take -- both
+// guesses turned out to match what landed, and the note went stale when those partials arrived.
+//
+// ScrollViewScope was lifted into DreadScripts.Common by its own port, which is why this file has a
+// using for that namespace where the decompiled source has none. The two `base.editorWindow` uses
+// in the decompiled OnGUI are written `editorWindow` here; it is the same inherited member.
+//
+// Audit status: VERIFIED -- compared member by member and statement by statement against
+// decompiled/ControllerEditor/DreadScripts/ControllerEditor/SearchablePickerPopup.cs lines 1-194 on
+// 2026-08-05; every line number above lands on the member named, including the four unported ones.
 
 using System;
 using System.Collections.Generic;

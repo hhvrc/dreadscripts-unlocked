@@ -1,24 +1,33 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/MenuSelector.cs
-//   _ExceptionThread -> treeView,             line 30
-//   objectThread     -> showAssetPicker,      line 36
-//   utilsThread      -> controlsToAdd,        line 44
-//   m_ValThread      -> onMenuSelected,       line 47
-//   valueThread      -> lastRootMenuStack,    line 57
-//   m_MerchantThread -> lastRootMenu,         line 60
-//   DefineRecord     -> rootMenu property,    line 63
-//   ReadRecord       -> menuStack property,   line 66
-//   InvokeRecord     -> Open,                 line 79
-//   FindRecord       -> TrySelect,            line 99
+//   _ExceptionThread -> treeView,                line 13
+//   objectThread     -> showAssetPicker,         line 15
+//   utilsThread      -> controlsToAdd,           line 17
+//   m_ValThread      -> onMenuSelected,          line 19
+//   valueThread      -> lastRootMenuStack,       line 21
+//   m_MerchantThread -> lastRootMenu,            line 23
+//   DefineRecord     -> rootMenu,                line 26
+//   ReadRecord       -> menuStack,               line 32
+//   InvokeRecord     -> Open,                    line 37
+//   FindRecord       -> TrySelect,               line 48
+//   OnGUI            -> unchanged,               line 57
+//   ExcludeRecord    -> inlined lambda in OnGUI, line 109
+//   InitRecord       -> inlined lambda in OnGUI, line 119
+//   VisitRecord      -> inlined lambda in OnGUI, line 129
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names are
 // the durable reference.
 //
-// ExcludeRecord, InitRecord and VisitRecord are [CompilerGenerated] lambda bodies that the decompiler
-// lifted out of OnGUI; they are ported as the inline lambdas they came from, not as methods.
+// The last three are [CompilerGenerated] lambda bodies that the decompiler lifted out of OnGUI;
+// they are ported as the inline lambdas they came from, not as methods.
 //
-// Not ported yet, referenced here by their intended names:
-//   EditorUtils.SliceLeft / SliceRight            (decompiled SortResolver / PatchResolver)
-//   EditorUtils.ShowObjectPicker                  (decompiled ConcatList)
-//   EditorUtils.ValidateCanAddControls (2 overloads, decompiled QueryError / RestartError)
+// The four EditorUtils helpers this file calls are all in the package -- SliceLeft and SliceRight in
+// EditorUtils.Rects.cs, ShowObjectPicker in EditorUtils.Pickers.cs, and the two
+// ValidateCanAddControls overloads taking a control count in EditorUtils.Validation.cs; those
+// headers own the mapping back to their decompiled names. Every call below was re-checked against
+// the declared signatures, so the named arguments here sit on the parameters the decompiled call
+// sites named: absolute on isfield (SortResolver) and isserv (PatchResolver), offsetAbsolute on
+// isvisitor3, allowSceneObjects on loaddef3. ShowObjectPicker's seventh parameter is the
+// selector-closed callback, which is where the decompiled call passes its delegate positionally.
+// Audit status: VERIFIED against decompiled/
 
 using System;
 using System.Collections.Generic;
