@@ -3637,14 +3637,14 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						copiedTransitionSettings = new AnimatorStateTransition();
 					}
-					CustomizeAlgo(EditorSettings.GetInstance().defaultTransition, copiedTransitionSettings);
+					CopyTransitionSettings(EditorSettings.GetInstance().defaultTransition, copiedTransitionSettings);
 				}
 				using (new EditorGUI.DisabledScope(!copiedTransitionSettings))
 				{
 					if (EditorUtils.Button(EditorUtils.contents().paste, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)))
 					{
 						Undo.RecordObject(EditorSettings.GetInstance().defaultTransition, "PasteSettings");
-						CustomizeAlgo(copiedTransitionSettings, EditorSettings.GetInstance().defaultTransition);
+						CopyTransitionSettings(copiedTransitionSettings, EditorSettings.GetInstance().defaultTransition);
 					}
 				}
 				if (EditorUtils.Button(EditorUtils.contents().restoreDefaults, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f)) && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
@@ -6308,7 +6308,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				col = RootStateMachine().AddAnyStateTransition(destinationState);
 			}
-			CustomizeAlgo(EditorSettings.GetInstance().defaultTransition, col);
+			CopyTransitionSettings(EditorSettings.GetInstance().defaultTransition, col);
 		}
 	}
 
@@ -8806,8 +8806,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		MapVisitor();
 		selectedStateTransitions = Selection.GetFiltered<AnimatorStateTransition>(SelectionMode.Editable).ToList();
-		RunAlgo();
-		CalculateAnnotation();
+		RebuildTransitionInspector();
+		RefreshInspectorProperties();
 		if (!redirectTransitionsMode && !replicateTransitionsMode)
 		{
 			pendingTransitionEdits = selectedTransitionEdits.ToList();
@@ -8898,7 +8898,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			mixedValueTransitionSerialized = new SerializedObject(objs);
 		}
 		transitionInspectorSerialized = mixedValueTransitionSerialized;
-		CalculateAnnotation();
+		RefreshInspectorProperties();
 		MapVisitor();
 		CancelAnnotation();
 	}
@@ -9191,7 +9191,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				return false;
 			}
 			int second;
-			UnityEngine.AnimatorControllerParameterType type = ResetAnnotation(i.GetName(), out second).type;
+			UnityEngine.AnimatorControllerParameterType type = FindParameter(i.GetName(), out second).type;
 			if (i.GetChangeType() == AnimatorTypeCache.ParameterDriverBinding.ParameterEntry.ChangeType.Set || i.GetChangeType() == AnimatorTypeCache.ParameterDriverBinding.ParameterEntry.ChangeType.Add)
 			{
 				if (type == UnityEngine.AnimatorControllerParameterType.Trigger)
@@ -9311,7 +9311,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 		AnimatorTypeCache.ParameterDriverBinding.ParameterEntry entry = parameterDriverEditors[cust_end].entry;
 		int second;
-		UnityEngine.AnimatorControllerParameter animatorControllerParameter = ResetAnnotation(entry.GetName(), out second);
+		UnityEngine.AnimatorControllerParameter animatorControllerParameter = FindParameter(entry.GetName(), out second);
 		Rect source = new Rect(ident);
 		Rect rect = new Rect(ident.width - 29f, ident.y + 2f, 32f, 18f);
 		source.width -= 42f;
@@ -9711,10 +9711,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private static UnityEngine.AnimatorControllerParameter AwakeAnnotation(string config)
 	{
 		int second;
-		return ResetAnnotation(config, out second);
+		return FindParameter(config, out second);
 	}
 
-	private static UnityEngine.AnimatorControllerParameter ResetAnnotation(string spec, out int second)
+	private static UnityEngine.AnimatorControllerParameter FindParameter(string spec, out int second)
 	{
 		if ((bool)ActiveController())
 		{
@@ -9765,10 +9765,10 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		boolParameterNames = list2.ToArray();
 	}
 
-	private static void CalculateAnnotation()
+	private static void RefreshInspectorProperties()
 	{
-		LoginVisitor();
-		PushVisitor();
+		RefreshStateProperties();
+		RefreshTransitionProperties();
 	}
 
 	private static string TestAnnotation(int firstsize)
@@ -11522,7 +11522,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		ConditionMultiEditor conditionMultiEditor = list[boffset];
 		CS_0024_003C_003E8__locals43.m_ConfigurationDefinition = conditionMultiEditor.condition;
 		int second;
-		UnityEngine.AnimatorControllerParameter animatorControllerParameter = ResetAnnotation(CS_0024_003C_003E8__locals43.m_ConfigurationDefinition.parameter, out second);
+		UnityEngine.AnimatorControllerParameter animatorControllerParameter = FindParameter(CS_0024_003C_003E8__locals43.m_ConfigurationDefinition.parameter, out second);
 		bool flag = false;
 		bool flag2 = false;
 		if (!((Func<bool>)delegate
@@ -12503,7 +12503,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	private static void LoginVisitor()
+	private static void RefreshStateProperties()
 	{
 		if (selectedStatesSerialized != null)
 		{
@@ -12536,7 +12536,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		{
 			string token = $"Transition Count: {selectedTransitionEdits.Count}";
 			DrawCollapsibleSection(DeleteVisitor, token, EditorSettings.GetInstance().showTransitionsCount, iscont2: true, 0);
-			DrawCollapsibleSection(CreateVisitor, "Transition Settings", EditorSettings.GetInstance().showTransitionSettings, iscont2: true, 1);
+			DrawCollapsibleSection(DrawTransitionSettings, "Transition Settings", EditorSettings.GetInstance().showTransitionSettings, iscont2: true, 1);
 			DrawCollapsibleSection(NewVisitor, "Transition Conditions", EditorSettings.GetInstance().showTransitionConditions, iscont2: false, 2);
 		}
 	}
@@ -12586,8 +12586,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 								focusedTransition = item;
 								showSharedConditions = true;
 								MapVisitor();
-								RunAlgo();
-								CalculateAnnotation();
+								RebuildTransitionInspector();
+								RefreshInspectorProperties();
 							}
 							else
 							{
@@ -12612,7 +12612,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	private void CreateVisitor()
+	private void DrawTransitionSettings()
 	{
 		EditorGUI.BeginDisabledGroup(!hasStateTransitionSelected);
 		transitionInspectorSerialized.Update();
@@ -12625,7 +12625,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					copiedTransitionSettings = new AnimatorStateTransition();
 				}
-				CustomizeAlgo((!focusedTransition.stateTransition) ? selectedStateTransitions[0] : focusedTransition.stateTransition, copiedTransitionSettings);
+				CopyTransitionSettings((!focusedTransition.stateTransition) ? selectedStateTransitions[0] : focusedTransition.stateTransition, copiedTransitionSettings);
 			}
 			using (new EditorGUI.DisabledScope(!copiedTransitionSettings))
 			{
@@ -12634,7 +12634,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					for (int i = 0; i < selectedStateTransitions.Count; i++)
 					{
 						Undo.RecordObject(selectedStateTransitions[i], "PasteSettings");
-						CustomizeAlgo(copiedTransitionSettings, selectedStateTransitions[i]);
+						CopyTransitionSettings(copiedTransitionSettings, selectedStateTransitions[i]);
 					}
 				}
 			}
@@ -12711,7 +12711,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		}
 	}
 
-	private static void PushVisitor()
+	private static void RefreshTransitionProperties()
 	{
 		if (transitionInspectorSerialized != null)
 		{
@@ -12868,8 +12868,8 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		if ((!isres && !EditorSettings.GetInstance().matchParameter) || reference2[0])
 		{
 			int second;
-			UnityEngine.AnimatorControllerParameter animatorControllerParameter = ResetAnnotation(value.parameter, out second);
-			UnityEngine.AnimatorControllerParameter animatorControllerParameter2 = ResetAnnotation(counter.parameter, out second);
+			UnityEngine.AnimatorControllerParameter animatorControllerParameter = FindParameter(value.parameter, out second);
+			UnityEngine.AnimatorControllerParameter animatorControllerParameter2 = FindParameter(counter.parameter, out second);
 			if (animatorControllerParameter != null || animatorControllerParameter2 != null)
 			{
 				if (animatorControllerParameter.type != animatorControllerParameter2.type)
@@ -13232,19 +13232,19 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			int second;
 			if (s.cycleOffsetParameterActive && !string.IsNullOrEmpty(s.cycleOffsetParameter))
 			{
-				predicateReg.Add(ResetAnnotation(s.cycleOffsetParameter, out second));
+				predicateReg.Add(FindParameter(s.cycleOffsetParameter, out second));
 			}
 			if (s.mirrorParameterActive && !string.IsNullOrEmpty(s.mirrorParameter))
 			{
-				predicateReg.Add(ResetAnnotation(s.mirrorParameter, out second));
+				predicateReg.Add(FindParameter(s.mirrorParameter, out second));
 			}
 			if (s.speedParameterActive && !string.IsNullOrEmpty(s.speedParameter))
 			{
-				predicateReg.Add(ResetAnnotation(s.speedParameter, out second));
+				predicateReg.Add(FindParameter(s.speedParameter, out second));
 			}
 			if (s.timeParameterActive && !string.IsNullOrEmpty(s.timeParameter))
 			{
-				predicateReg.Add(ResetAnnotation(s.timeParameter, out second));
+				predicateReg.Add(FindParameter(s.timeParameter, out second));
 			}
 			s.motion.StopPredicate(delegate(UnityEditor.Animations.BlendTree tree)
 			{
@@ -13253,11 +13253,11 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					int second2;
 					if (!string.IsNullOrEmpty(tree.blendParameter))
 					{
-						predicateReg.Add(ResetAnnotation(tree.blendParameter, out second2));
+						predicateReg.Add(FindParameter(tree.blendParameter, out second2));
 					}
 					if (tree.blendType != BlendTreeType.Simple1D && !string.IsNullOrEmpty(tree.blendParameterY))
 					{
-						predicateReg.Add(ResetAnnotation(tree.blendParameterY, out second2));
+						predicateReg.Add(FindParameter(tree.blendParameterY, out second2));
 					}
 				}
 			}, null);
@@ -13267,7 +13267,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					if (!string.IsNullOrEmpty(c.parameter))
 					{
-						predicateReg.Add(ResetAnnotation(c.parameter, out var _));
+						predicateReg.Add(FindParameter(c.parameter, out var _));
 					}
 				});
 			});
@@ -13281,7 +13281,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 						{
 							if (!string.IsNullOrEmpty(p.GetName()))
 							{
-								predicateReg.Add(ResetAnnotation(p.GetName(), out var _));
+								predicateReg.Add(FindParameter(p.GetName(), out var _));
 							}
 						});
 					}
@@ -13294,7 +13294,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				if (!string.IsNullOrEmpty(c.parameter))
 				{
-					predicateReg.Add(ResetAnnotation(c.parameter, out var _));
+					predicateReg.Add(FindParameter(c.parameter, out var _));
 				}
 			});
 		});
@@ -13304,7 +13304,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			{
 				if (!string.IsNullOrEmpty(c.parameter))
 				{
-					predicateReg.Add(ResetAnnotation(c.parameter, out var _));
+					predicateReg.Add(FindParameter(c.parameter, out var _));
 				}
 			});
 		});
@@ -13318,7 +13318,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 					{
 						if (!string.IsNullOrEmpty(p.GetName()))
 						{
-							predicateReg.Add(ResetAnnotation(p.GetName(), out var _));
+							predicateReg.Add(FindParameter(p.GetName(), out var _));
 						}
 					});
 				}
@@ -14690,7 +14690,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		return animatorTransitionBase;
 	}
 
-	private static void CustomizeAlgo(AnimatorStateTransition reference, AnimatorStateTransition col)
+	private static void CopyTransitionSettings(AnimatorStateTransition reference, AnimatorStateTransition col)
 	{
 		AnimatorCondition[] conditions = col.conditions;
 		AnimatorStateMachine destinationStateMachine = col.destinationStateMachine;
@@ -14710,7 +14710,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (key is AnimatorStateTransition reference && map is AnimatorStateTransition col)
 		{
-			CustomizeAlgo(reference, col);
+			CopyTransitionSettings(reference, col);
 		}
 	}
 
@@ -14798,7 +14798,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		Selection.objects = Selection.objects.Concat(list).ToArray();
 	}
 
-	private static void RunAlgo()
+	private static void RebuildTransitionInspector()
 	{
 		SerializedObject serializedObject;
 		if (!(focusedTransition.transition != null))
@@ -15099,7 +15099,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		EditorUtility.SetDirty(ActiveController());
 	}
 
-	private static AnimatorConditionMode CollectAlgo(AnimatorConditionMode reference)
+	private static AnimatorConditionMode InvertMode(AnimatorConditionMode reference)
 	{
 		return reference switch
 		{
@@ -15120,7 +15120,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	private static AnimatorCondition ListAlgo(AnimatorCondition config, bool excludeord)
 	{
 		AnimatorCondition result = config;
-		result.mode = CollectAlgo(config.mode);
+		result.mode = InvertMode(config.mode);
 		if (excludeord)
 		{
 			bool flag = config.mode == AnimatorConditionMode.Greater;
@@ -15128,7 +15128,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 			if (flag || flag2)
 			{
 				int second;
-				UnityEngine.AnimatorControllerParameter animatorControllerParameter = ResetAnnotation(config.parameter, out second);
+				UnityEngine.AnimatorControllerParameter animatorControllerParameter = FindParameter(config.parameter, out second);
 				if (animatorControllerParameter != null)
 				{
 					if (animatorControllerParameter.type != UnityEngine.AnimatorControllerParameterType.Int)
@@ -17918,7 +17918,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 		if (AnimatorGraphReflection.TypeResolvers.stateMachineNode != toNode.GetType())
 		{
 			AnimatorStateTransition animatorStateTransition = definitionTests.transitions.Last();
-			CustomizeAlgo(EditorSettings.GetInstance().defaultTransition, animatorStateTransition);
+			CopyTransitionSettings(EditorSettings.GetInstance().defaultTransition, animatorStateTransition);
 			animatorStateTransition.canTransitionToSelf = true;
 			return;
 		}
@@ -17939,7 +17939,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				}
 				if (animatorStateTransition2 != null)
 				{
-					CustomizeAlgo(EditorSettings.GetInstance().defaultTransition, animatorStateTransition2);
+					CopyTransitionSettings(EditorSettings.GetInstance().defaultTransition, animatorStateTransition2);
 					animatorStateTransition2.canTransitionToSelf = true;
 				}
 			}
@@ -17950,7 +17950,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 	{
 		if (AnimatorGraphReflection.TypeResolvers.stateMachineNode != toNode.GetType())
 		{
-			CustomizeAlgo(EditorSettings.GetInstance().defaultTransition, RootStateMachine().anyStateTransitions.Last());
+			CopyTransitionSettings(EditorSettings.GetInstance().defaultTransition, RootStateMachine().anyStateTransitions.Last());
 			return;
 		}
 		genericMenuForStateMachineNodeMethod.Invoke(null, new object[3]
@@ -17971,7 +17971,7 @@ internal sealed class ControllerEditor : EditorWindow, IHasCustomMenu
 				{
 					col = RootStateMachine().AddAnyStateTransition(destinationState);
 				}
-				CustomizeAlgo(EditorSettings.GetInstance().defaultTransition, col);
+				CopyTransitionSettings(EditorSettings.GetInstance().defaultTransition, col);
 			}
 		});
 	}
