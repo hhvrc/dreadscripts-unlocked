@@ -25,12 +25,10 @@
 // reconciled; EditorUtils.Dirtying.cs and EditorUtils.SetDirty.cs are the surviving ports, and the
 // paragraph that explained MapError's placement went with them.
 //
-// CloneSerialized (decompiled CompareRules, line 4193) is claimed twice across the package: this
-// file declares the real class-level member, and EditorUtils.LayerCopying.cs still carries a
-// byte-identical copy as a local function of CopyLayer. That file's own header calls for the local
-// function to be deleted once a real CloneSerialized lands -- it has landed, here -- so the double
-// claim is a known outstanding cleanup in that file, not a defect in this port. The bodies were
-// compared and are the same.
+// CloneSerialized (decompiled CompareRules, line 4193) is declared here, and here only. It was
+// claimed twice until 2026-08-05: EditorUtils.LayerCopying.cs carried an identical copy as a local
+// function of CopyLayer, put there while this file did not yet exist. That copy has been deleted
+// and its caller now resolves to this member, so the decompiled helper has one owner again.
 //
 // Audit status: VERIFIED against decompiled/ -- all ten members re-checked statement by statement
 // against EditorUtils.cs lines 4058, 4082, 4088, 4130, 4170, 4193, 4205, 4216, 4293 and 4422, every

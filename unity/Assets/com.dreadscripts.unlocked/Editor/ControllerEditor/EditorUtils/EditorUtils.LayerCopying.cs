@@ -10,7 +10,7 @@
 //   static ConnectError       -> CopyLayer/CopyMachineTree  (local function), line 8405
 //   static CalculateError     -> CopyLayer/RemapStates      (local function), line 8427
 //   static TestError          -> CopyLayer/RemapTransitions (local function), line 8453
-//   static CompareRules       -> CopyLayer/CloneSerialized  (local function), line 4193
+//   static CompareRules       -> CloneSerialized, line 4193, in EditorUtils.Assets.cs
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 //
@@ -24,13 +24,13 @@
 // The struct itself is not ported -- reproducing it would be reproducing the compiler's output.
 //
 // CompareRules (line 4193) is genuinely a class-level helper of the decompiled type, not a local
-// function, and it has three other callers in the "Rules" asset family. That family is not ported
-// yet, and this file may not add a member to it that a later wave would then declare a second time,
-// so it is restored as a local function here too. When the Rules region lands and brings a real
-// CloneSerialized/CopyAsset with it, the local function below should be deleted in favour of it --
-// the bodies must stay identical, since the deep copy's correctness depends on
-// EditorUtility.CopySerialized preserving every field including the object references that the
-// remapping passes then rewrite.
+// function, and it has three other callers in the "Rules" asset family. While that family was
+// unported this file carried it as an eighth local function, so as not to claim a member a later
+// wave would declare a second time. EditorUtils.Assets.cs has since landed the real class-level
+// CloneSerialized, so on 2026-08-05 the local copy was deleted and Clone now calls that one; the
+// two bodies were compared line by line first and were identical. Keep them that way if either is
+// touched: the deep copy's correctness depends on EditorUtility.CopySerialized preserving every
+// field, including the object references that the remapping passes then rewrite.
 //
 // Not ported here: ConnectPredicate (line 3402), the parameters-only counterpart of
 // CopyLayersAndParameters. It is a plain loop over GetOrAddParameter with a progress bar, is not in
@@ -109,22 +109,6 @@ namespace DreadScripts.ControllerEditor
             // translated.
             Dictionary<Object, Object> clones = new Dictionary<Object, Object>();
             Dictionary<Object, Object> sources = new Dictionary<Object, Object>();
-
-            T CloneSerialized<T>(T original) where T : Object
-            {
-                if (!original)
-                {
-                    return null;
-                }
-
-                System.Type type = original.GetType();
-                Object instance = type.IsSubclassOf(typeof(ScriptableObject)) || type == typeof(ScriptableObject)
-                    ? ScriptableObject.CreateInstance(type)
-                    : (Object)System.Activator.CreateInstance(type);
-
-                EditorUtility.CopySerialized(original, instance);
-                return (T)instance;
-            }
 
             T Clone<T>(T original) where T : Object
             {
