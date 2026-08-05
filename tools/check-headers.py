@@ -29,6 +29,12 @@ MAP_SUB = re.compile(r'^//\s{3,}(?P<d>[^->]+?)\s*->\s*(?P<p>.+?)\s*$')
 # A sub-entry run must be introduced by a top-level entry or a prose line ending
 # in ':'; otherwise it is indistinguishable from an entry missing its line number.
 INTRODUCER = re.compile(r':\s*$')
+# A sub-entry's description may wrap. Continuation lines are indented past the arrow column to line
+# up under the text they continue, which is what distinguishes them from a new paragraph -- prose
+# sits at one space and MAP entries at three. Treating a wrap as the end of the run is how six
+# perfectly well-formed sub-entries in EditorUtils.Fields.cs were reported as stray arrow lines:
+# every one of them was simply the entry that followed a wrapped description.
+CONTINUATION = re.compile(r'^//\s{5,}\S')
 
 ARROW = re.compile(r'^//\s.*->')
 SECTION = re.compile(r'^//\s*(?:=+\s*)?(PARTIAL PORT|DELIBERATE DEVIATION|SHIPPED BUG'
@@ -110,6 +116,8 @@ def check(root):
                 if not ARROW.match(line):
                     if INTRODUCER.search(line):
                         sub_ok = True
+                    elif sub_ok and CONTINUATION.match(line):
+                        pass          # a wrapped description, still inside the run
                     elif line.strip() not in ('//', ''):
                         sub_ok = False
                     continue
@@ -119,8 +127,21 @@ def check(root):
                     g = rx.match(line)
                     if g:
                         stats['map:' + kind] += 1
-                        if source and kind != 'sub':
-                            claims[(source, int(g.group('n')))].append((path, g.group('d')))
+                        # The join key is (decompiled file, decompiled line): `line <N>` is a line
+                        # in the SNAPSHOT, as the boilerplate in 189 of these headers says outright,
+                        # not a line in the ported file. Two files claiming one snapshot line are
+                        # claiming one member.
+                        #
+                        # `, in <file>` is excluded because it is a pointer to the owner, not a
+                        # claim. The spec introduces that form precisely so the checker can confirm
+                        # exactly one file claims each member; counting it as a claim made correct
+                        # use of the form always error, which is what hid the resolved PushPredicate
+                        # double-port behind a permanent false one.
+                        if source and kind not in ('sub', 'elsewhere'):
+                            # The NOT PORTED form has no ported-name group to report.
+                            ported = 'NOT PORTED' if kind == 'unported' else g.group('p').strip()
+                            claims[(source, int(g.group('n')))].append(
+                                (path, f"{g.group('d').strip()} -> {ported}"))
                         if kind == 'sub' and not sub_ok:
                             errors[path].append(
                                 f'line {i + 1}: sub-entry (no line number) with no introducing '
@@ -143,8 +164,13 @@ def check(root):
         if len(rows) > 1:
             files = {os.path.basename(p) for p, _ in rows}
             if len(files) > 1:
+                # Show what each file claims the line is: a member ported twice under two different
+                # names is what this check exists to catch, and a stale line number left by the
+                # re-snapshot looks identical until you can see that the two files name different
+                # decompiled members.
+                where = ', '.join(f'{os.path.basename(p)} [{n}]' for p, n in sorted(rows))
                 errors[rows[0][0]].append(
-                    f'{key[0]}:{key[1]} claimed by {len(files)} files: {", ".join(sorted(files))}')
+                    f'{key[0]}:{key[1]} claimed by {len(files)} files: {where}')
     return errors, warns, stats
 
 
