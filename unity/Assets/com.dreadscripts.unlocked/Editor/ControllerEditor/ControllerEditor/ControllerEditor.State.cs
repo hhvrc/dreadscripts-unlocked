@@ -403,9 +403,9 @@ namespace DreadScripts.ControllerEditor
         /// <c>AnimatorControllerTool</c>.
         /// </summary>
         /// <remarks>
-        /// The shipped property that lazily fills this in and rebuilds the layer view when it
-        /// changes is not ported yet -- see the header. Until it is, treat this field as read-only
-        /// and assign it only through that property.
+        /// Assign it only through <see cref="ActiveController"/>, never directly: that property
+        /// lazily fills this field from the Animator window when it is null, and rebuilds the layer
+        /// view on change. Writing the field behind its back skips both.
         /// </remarks>
         private static UnityEditor.Animations.AnimatorController currentController;
 

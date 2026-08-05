@@ -2,6 +2,8 @@
 //
 //   ReflectVisitor -> DrawTransitionSection, line 12529
 //   CreateVisitor -> DrawTransitionSettings, line 12615
+//   DeleteVisitor -> DrawSelectedTransitionList, line 12544, in ControllerEditor.TransitionList.cs
+//   NewVisitor -> DrawTransitionConditions, line 12672, in ControllerEditor.ConditionSection.cs
 //   DeleteAnnotation -> DrawCollapsibleSection, line 9920, in ControllerEditor.CollapsibleSection.cs
 //   CustomizeAlgo -> CopyTransitionSettings, line 14693, in ControllerEditor.TransitionCopy.cs
 //   RunAlgo -> RebuildTransitionInspector, line 14801, in ControllerEditor.InspectorRefresh.cs
@@ -40,7 +42,7 @@
 // permitted to make. Whoever integrates this should fix both together.
 //
 // Nothing in this file draws a controller or a layer. If you came here looking for the layer list,
-// it is not ported yet and it is not ReflectVisitor.
+// it remains unported and it is not ReflectVisitor.
 //
 // A note on the decompiled names in the MAP above. Two of them -- `ReflectVisitor` and
 // `DeleteAnnotation` -- no longer appear under those spellings in `decompiled/`: the ported names
@@ -64,61 +66,25 @@
 // legitimate holders this restoration exists for. The ported guard keeps only the first term and
 // behaves as though the licence check passed.
 //
-// =========================== PARTIAL PORT, EACH WITH ITS BLOCKER ===============================
+// ==================================== NOTES, CONTINUED =========================================
 //
-// The guard is ported for real, and so is the second of the three statements it guards. The other
-// two are not, and nothing stands in for them: this file declares no empty helper, no placeholder
-// Action and no substitute drawing code.
+// ALL THREE SUB-SECTIONS NOW DRAW. Earlier revisions of this header carried a PARTIAL PORT section
+// listing DeleteVisitor and NewVisitor as deferred with their blockers; both have landed and that
+// section is deleted rather than left to rot beside the working code. What was blocking them, and
+// where each piece now lives, since the chain is the largest one this package has had:
 //
-// LANDED since the previous pass, and no longer blockers:
+//   DeleteVisitor (12544) is ControllerEditor.TransitionList.cs. Its blocker was MapVisitor
+//     (11763), now RebuildConditionList in ControllerEditor.ConditionList.cs.
+//   NewVisitor (12672) is ControllerEditor.ConditionSection.cs. Its blocker was UpdateVisitor
+//     (12980), now RefreshSharedConditions in ControllerEditor.ConditionMatching.cs, and through it
+//     the same RebuildConditionList.
 //
-//   DeleteAnnotation (9920), the collapsible-section helper all three statements call, is ported as
-//     DrawCollapsibleSection in ControllerEditor.CollapsibleSection.cs.
-//   CustomizeAlgo (14693), the transition-settings copier, is ported as CopyTransitionSettings in
-//     ControllerEditor.TransitionCopy.cs. That was CreateVisitor's only blocker, which is why the
-//     "Transition Settings" body below is real code rather than another deferral.
-//   RunAlgo (14801) and CalculateAnnotation (9768) are ported as RebuildTransitionInspector and
-//     RefreshInspectorProperties in ControllerEditor.InspectorRefresh.cs. Between them they are the
-//     only writers of `transitionInspectorSerialized` and of the ten `transition*Property` handles
-//     that DrawTransitionSettings reads, so without them that body would have compiled and then
-//     dereferenced nulls on its first frame.
-//   ManageWrapper (8676) is ported as SyncSelection in ControllerEditor.SelectionSync.cs. An
-//     earlier revision of this header listed it as a DeleteVisitor blocker; it has not been one
-//     since that file landed.
-//
-// Still missing, with what each one now actually needs:
-//
-//   DeleteVisitor (decompiled 12544) -- the body of the first section, the "Transition Count"
-//     list. Draws one clickable row per entry of `selectedTransitionEdits` in three columns, with a
-//     deselect button per row and one for the whole set. Three of its four refresh calls are ported
-//     now; the remaining blocker is MapVisitor (11763) alone. MapVisitor rebuilds whichever of the
-//     three condition ReorderableLists is current, and it cannot be ported as a leaf: it names
-//     TestVisitor (11510), CalculateVisitor (11345) and FillVisitor (12814) as the list's element,
-//     header and add callbacks, and PrepareVisitor (12951) to build the focused transition's rows.
-//     Those are ~420 lines of the condition editor, and CalculateVisitor alone pulls in
-//     SortVisitor, RegisterVisitor, ChangeVisitor, ResolveAlgo, ConnectAlgo, ViewAlgo, AssetVisitor
-//     and the ConditionMultiEditor mutators. That is a region of its own, not a helper this file
-//     should absorb, so DeleteVisitor stays deferred rather than being written against a MapVisitor
-//     that does not exist.
-//
-//   NewVisitor (decompiled 12672) -- the body of the third section, "Transition Conditions": the
-//     match-parameter/mode/value toggles and whichever of the three condition ReorderableLists is
-//     current, with up/down arrow handling that walks focus between the "Threshold<n>" controls.
-//     Blocked on UpdateVisitor (decompiled 12980), which its change check calls; the package has
-//     that member only as the assignable seam `EditorSettings.onMatchingOptionsChanged`, and
-//     calling the seam instead of the method would invert the direction of the dependency -- the
-//     seam exists so the settings can notify the window, not so the window can notify itself.
-//     UpdateVisitor is two statements, `sharedConditionEditors = AssetVisitor(selectedTransitions)`
-//     followed by `MapVisitor()`, so it reduces to the same MapVisitor chain as DeleteVisitor plus
-//     AssetVisitor (12961), which calls CheckVisitor (12924), which calls WriteVisitor (12859).
-//     Beyond that, the body itself dereferences whichever ReorderableList MapVisitor would have
-//     built, so porting it ahead of MapVisitor would produce a method that draws nothing but a
-//     null reference.
-//
-// The two missing statements are left as inline DEFERRED comments at their shipped positions, the
-// same convention ControllerEditor.Window.cs and ControllerEditor.SelectionSync.cs use. No GUI
-// scope is opened or closed around them, so omitting them cannot leave Unity's layout stack
-// unbalanced -- each of the three shipped statements is a self-contained call.
+// RebuildConditionList in turn needed the whole condition editor, which is now five further files:
+// ControllerEditor.ConditionMatching.cs (the matching rule and the three row-set builders),
+// .ConditionClipboard.cs (copy/paste of conditions), .ConditionList.cs (the three ReorderableLists
+// and the add callback), .ConditionListHeader.cs, .ConditionRow.cs, and -- reached from the
+// header's last two buttons -- .ConditionMergeSplit.cs. Each of those carries its own licence-gate
+// and audit notes.
 //
 // ============================== DELIBERATE DEVIATION ==========================================
 //
@@ -138,19 +104,18 @@
 //
 // ControllerEditor ships a single build, so there is no second decompilation to diff this against.
 //
-// Audit status: PARTIAL -- DrawTransitionSettings was diffed statement for statement against
+// Audit status: VERIFIED -- DrawTransitionSettings was diffed statement for statement against
 // decompiled lines 12615-12670: the disabled-group open and close, the Update/ApplyModifiedProperties
 // pair, both ternaries, the copy button's compound condition, the null-check and allocation of
 // copiedTransitionSettings, the paste loop with its Undo.RecordObject label "PasteSettings", all
 // ten PropertyField calls in shipped order with their three horizontal scopes and the nested
-// exit-time disabled group, and the two trailing Space calls. That range contains no `goto`, no
-// residual `switch` dispatch, no `while (true)` and no unresolved `smethod_N`, so no deobfuscator
-// fault applies to it. DrawTransitionSection's guard, its three call targets, the three setting
-// names, the three slot indices (0, 1, 2) and the interpolated "Transition Count" label were
-// transcribed from decompiled lines 12529-12542 and re-checked on this pass. The file is PARTIAL
-// rather than VERIFIED because two of the three shipped statements are still absent: the bodies of
-// DeleteVisitor (12544) and NewVisitor (12672) were read only far enough to describe them and their
-// blockers above, and were not diffed statement by statement.
+// exit-time disabled group, and the two trailing Space calls. DrawTransitionSection was re-diffed
+// against decompiled lines 12529-12542 on the pass that landed the other two sub-sections: the
+// guard, all three call targets, the three setting names, the three boxed flags (true, true,
+// false), the three slot indices (0, 1, 2) and the interpolated "Transition Count" label, which the
+// shipped code also computes into a local before the first call. Neither range contains a `goto`, a
+// residual `switch` dispatch, a `while (true)` or an unresolved `smethod_N`, so no deobfuscator
+// fault applies to either; the licence predicate recorded above is the only thing removed.
 
 using UnityEditor;
 using UnityEditor.Animations;
@@ -183,10 +148,8 @@ namespace DreadScripts.ControllerEditor
         /// saved settings.
         /// </para>
         /// <para>
-        /// Only the middle of the three sub-sections is drawn. The first and third are marked
-        /// DEFERRED at their shipped positions below; see the file header for what each one still
-        /// needs. The licence predicate that the shipped guard ANDs into this test is dropped, also
-        /// per the file header.
+        /// All three sub-sections draw. The licence predicate that the shipped guard ANDs into this
+        /// test is dropped, per the file header.
         /// </para>
         /// </remarks>
         private void DrawTransitionSection()
@@ -196,24 +159,19 @@ namespace DreadScripts.ControllerEditor
                 return;
             }
 
-            // DEFERRED, slot 0 -- DrawCollapsibleSection(DrawSelectedTransitionList,
-            //     $"Transition Count: {selectedTransitionEdits.Count}",
-            //     EditorSettings.Instance.showTransitionsCount, boxed: true, index: 0).
-            // The label is the one the shipped code builds per frame rather than passing as a
-            // literal, because it interpolates the live selection size. It is not computed here:
-            // with the body absent there is nothing to pass it to, and a local nothing reads is
-            // just an unused variable. DrawSelectedTransitionList is decompiled DeleteVisitor
-            // (12544), blocked on MapVisitor (11763).
+            // The label is built per frame rather than passed as a literal, because it interpolates
+            // the live selection size.
+            string countLabel = $"Transition Count: {selectedTransitionEdits.Count}";
+
+            DrawCollapsibleSection(DrawSelectedTransitionList, countLabel,
+                EditorSettings.Instance.showTransitionsCount, boxed: true, index: 0);
 
             DrawCollapsibleSection(DrawTransitionSettings, "Transition Settings",
                 EditorSettings.Instance.showTransitionSettings, boxed: true, index: 1);
 
-            // DEFERRED, slot 2 -- DrawCollapsibleSection(DrawTransitionConditions,
-            //     "Transition Conditions", EditorSettings.Instance.showTransitionConditions,
-            //     boxed: false, index: 2).
-            // This is the one sub-section drawn unboxed, because its body opens a box of its own.
-            // DrawTransitionConditions is decompiled NewVisitor (12672), blocked on UpdateVisitor
-            // (12980) and through it on the same MapVisitor chain.
+            // The one sub-section drawn unboxed, because its body opens a box of its own.
+            DrawCollapsibleSection(DrawTransitionConditions, "Transition Conditions",
+                EditorSettings.Instance.showTransitionConditions, boxed: false, index: 2);
         }
 
         /// <summary>
