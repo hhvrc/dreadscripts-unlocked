@@ -994,7 +994,7 @@ internal static class EditorUtils
 			: this(res, pool, item2 + 40f, v3, v4)
 		{
 			GUILayout.Label(col, styles().centeredBoldRichLabel);
-			MapQueue(2, 0);
+			Separator(2, 0);
 		}
 
 		public SceneViewPanel(SceneView key, float map, float serv = 20f, PositionFlag config2 = PositionFlag.BottomRight, ResizeHandle ident3 = null)
@@ -1323,7 +1323,7 @@ internal static class EditorUtils
 
 		internal ControllerPicker Set(VRCAvatarDescriptor value, VRCAvatarDescriptor.AnimLayerType token, bool dorole = false)
 		{
-			return Set(value, token, (!(value != null)) ? null : value.ChangeList(token), dorole);
+			return Set(value, token, (!(value != null)) ? null : value.GetPlayableLayerController(token), dorole);
 		}
 
 		internal ControllerPicker Set(VRCAvatarDescriptor spec, VRCAvatarDescriptor.AnimLayerType connection, UnityEditor.Animations.AnimatorController pool, bool isdef2 = false)
@@ -1366,7 +1366,7 @@ internal static class EditorUtils
 			bool flag = vRCAvatarDescriptor == null;
 			VRCAvatarDescriptor.AnimLayerType m_AdvisorObserver = layerType;
 			string text = m_AdvisorObserver.ToString();
-			UnityEditor.Animations.AnimatorController animatorController = (flag ? null : vRCAvatarDescriptor.ChangeList(m_AdvisorObserver));
+			UnityEditor.Animations.AnimatorController animatorController = (flag ? null : vRCAvatarDescriptor.GetPlayableLayerController(m_AdvisorObserver));
 			_ = animatorController != null;
 			bool flag2 = useAvatarLayer && !flag && animatorController == controller;
 			if (ord == null)
@@ -1374,7 +1374,7 @@ internal static class EditorUtils
 				ord = ((!useAvatarLayer) ? "Target Controller" : ("Target " + text + ":"));
 			}
 			bool cfg;
-			string b = (controller.CallRules(out cfg) ? ((!cfg) ? "No Controller Selected" : ((!flag2) ? "Controller Is Missing!" : ("[Avatar's " + text + " Is Missing!]"))) : ((!flag2) ? controller.name : ("[Avatar's " + text + "]")));
+			string b = (controller.IsMissing(out cfg) ? ((!cfg) ? "No Controller Selected" : ((!flag2) ? "Controller Is Missing!" : ("[Avatar's " + text + " Is Missing!]"))) : ((!flag2) ? controller.name : ("[Avatar's " + text + "]")));
 			ControllerPicker _FacadeObserver = this;
 			PopRules(ord, b, controller, delegate(UnityEditor.Animations.AnimatorController c)
 			{
@@ -1385,13 +1385,13 @@ internal static class EditorUtils
 		private void OnControllerSelected(UnityEditor.Animations.AnimatorController spec, VRCAvatarDescriptor.AnimLayerType cfg, Action<UnityEditor.Animations.AnimatorController> template)
 		{
 			template(spec);
-			if (useAvatarLayer && avatar != null && avatar.ChangeList(cfg) == null)
+			if (useAvatarLayer && avatar != null && avatar.GetPlayableLayerController(cfg) == null)
 			{
 				VRCAvatarDescriptor prototypeObserver = avatar;
 				GenericMenu genericMenu = new GenericMenu();
 				genericMenu.AddItem(new GUIContent($"Set As Avatar's {cfg}?/Yes"), on: false, delegate
 				{
-					prototypeObserver.SortList(cfg, spec);
+					prototypeObserver.SetPlayableLayerController(cfg, spec);
 				});
 				genericMenu.ShowAsContext();
 			}
@@ -1500,11 +1500,11 @@ internal static class EditorUtils
 			{
 				if (!(parameters == null))
 				{
-					availableCost = parameters.InterruptList(includesecond: true, willCreateIfNull);
+					availableCost = parameters.GetRemainingCost(includesecond: true, willCreateIfNull);
 					requestedCost = costs.Sum(((string, int) c) => c.Item2);
 					remainingCost = availableCost - requestedCost;
 					isWithinLimit = remainingCost >= 0;
-					validation = ((!isWithinLimit) ? new ValidationResult(isparam: false, $"Adding {requestedCost} bits of parameters would exceed the maximum parameters memory of ${RunError()}", 2) : new ValidationResult(isparam: true, "Success"));
+					validation = ((!isWithinLimit) ? new ValidationResult(isparam: false, $"Adding {requestedCost} bits of parameters would exceed the maximum parameters memory of ${MaxParameterCost()}", 2) : new ValidationResult(isparam: true, "Success"));
 					tooltip = $"Remaining: {remainingCost}\n" + string.Join("\n", costs.Select(((string, int) c) => c.Item1));
 				}
 				else
@@ -1524,7 +1524,7 @@ internal static class EditorUtils
 		{
 			bool flag = useAvatar && avatar != null && avatar.expressionParameters == parameters;
 			bool cfg;
-			string b = (parameters.CallRules(out cfg) ? ((!cfg) ? "No Parameters Selected" : ((!flag) ? "Parameters Are Missing!" : "[Avatar's Parameters Are Missing!]")) : ((!(useAvatar && flag)) ? parameters.name : "[Avatar's Parameters]"));
+			string b = (parameters.IsMissing(out cfg) ? ((!cfg) ? "No Parameters Selected" : ((!flag) ? "Parameters Are Missing!" : "[Avatar's Parameters Are Missing!]")) : ((!(useAvatar && flag)) ? parameters.name : "[Avatar's Parameters]"));
 			ParameterCostTracker objectObserver = this;
 			PopRules(connection, b, parameters, delegate(VRCExpressionParameters p)
 			{
@@ -1545,7 +1545,7 @@ internal static class EditorUtils
 
 		private void DrawCounter()
 		{
-			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, configurationProperty, _WrapperProcessor))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, validColor, warningColor))
 			{
 				GUILayout.Label(new GUIContent($"{requestedCost}/{availableCost}", tooltip), styles().noteRight, GUILayout.ExpandWidth(expand: false));
 			}
@@ -1560,7 +1560,7 @@ internal static class EditorUtils
 				GenericMenu genericMenu = new GenericMenu();
 				genericMenu.AddItem(new GUIContent("Set As Avatar's Parameters?/Yes"), on: false, delegate
 				{
-					valueObserver.CallError(last);
+					valueObserver.SetExpressionParameters(last);
 				});
 				genericMenu.ShowAsContext();
 			}
@@ -1728,13 +1728,13 @@ internal static class EditorUtils
 			onMenuSelected = value;
 			bool flag = useAvatar && avatar != null && avatar.expressionsMenu == targetMenu;
 			bool cfg;
-			string b = (targetMenu.CallRules(out cfg) ? ((!cfg) ? "No Menu Selected" : ((!flag) ? "Menu Is Missing!" : "[Avatar's Menu Is Missing!]")) : ((!flag) ? targetMenu.name : "[Avatar's Main Menu]"));
+			string b = (targetMenu.IsMissing(out cfg) ? ((!cfg) ? "No Menu Selected" : ((!flag) ? "Menu Is Missing!" : "[Avatar's Menu Is Missing!]")) : ((!flag) ? targetMenu.name : "[Avatar's Main Menu]"));
 			PopRules(filter, b, targetMenu, OnMenuSelected, validation, DrawCounter, OnMenuCreated, nocol);
 		}
 
 		private void DrawCounter()
 		{
-			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, configurationProperty, _WrapperProcessor))
+			using (new GUIColorScope(GUIColorScope.ColoringType.FG, isWithinLimit, validColor, warningColor))
 			{
 				GUILayout.Label(new GUIContent($"{controlsToAdd}/{availableSlots}", $"Remaining: {remainingSlots}"), styles().noteRight, GUILayout.ExpandWidth(expand: false));
 			}
@@ -1745,7 +1745,7 @@ internal static class EditorUtils
 					tooltip = "Select Menu From TreeView"
 				}, styles().iconButton))
 				{
-					MenuSelector.InvokeRecord(targetMenu, OnMenuSelected, controlsToAdd);
+					MenuSelector.Open(targetMenu, OnMenuSelected, controlsToAdd);
 				}
 			}
 		}
@@ -1759,7 +1759,7 @@ internal static class EditorUtils
 				GenericMenu genericMenu = new GenericMenu();
 				genericMenu.AddItem(new GUIContent("Set As Avatar's Main Menu?/Yes"), on: false, delegate
 				{
-					m_ClientObserver.ReadError(info);
+					m_ClientObserver.SetExpressionsMenu(info);
 				});
 				genericMenu.ShowAsContext();
 			}
@@ -1932,7 +1932,7 @@ internal static class EditorUtils
 			{
 				return;
 			}
-			_003C_003Ec__DisplayClass164_._PageServer.ResolvePredicate(_003C_003Ec__DisplayClass164_.ManageSetter, moveserv: false);
+			_003C_003Ec__DisplayClass164_._PageServer.ForEachTransition(_003C_003Ec__DisplayClass164_.ManageSetter, moveserv: false);
 			foreach (AnimatorState item in _003C_003Ec__DisplayClass164_._PageServer.states.Select(_003C_003Ec.m_ConfigObserver.RateSetter))
 			{
 				if (!m_SerializerServer.ContainsKey(item))
@@ -2113,15 +2113,15 @@ internal static class EditorUtils
 
 	private static MethodInfo _scaleActivatePreserve;
 
-	internal static readonly GUIContent m_CollectionProperty = new GUIContent();
+	internal static readonly GUIContent sharedContent = new GUIContent();
 
 	private static MethodInfo m_ParserProperty;
 
 	private static bool managerProperty;
 
-	internal static string itemProperty = "Assets";
+	internal static string lastAssetFolder = "Assets";
 
-	internal static readonly Dictionary<Type, string> m_SpecificationProperty = new Dictionary<Type, string>
+	internal static readonly Dictionary<Type, string> assetExtensions = new Dictionary<Type, string>
 	{
 		{
 			typeof(UnityEditor.Animations.AnimatorController),
@@ -2159,7 +2159,7 @@ internal static class EditorUtils
 
 	private static Dictionary<string, Type> structProperty;
 
-	private static Dictionary<string, object> serviceProperty;
+	private static Dictionary<string, object> guiStateCache;
 
 	private static readonly Stack<(Rect, MouseCursor)> deferredCursorRects = new Stack<(Rect, MouseCursor)>();
 
@@ -2173,21 +2173,21 @@ internal static class EditorUtils
 
 	private static readonly int iteratorProperty = "RadiusHandleHash".GetHashCode();
 
-	internal static Color publisherProperty = new Color(0.5f, 0.8f, 1f);
+	internal static Color infoColor = new Color(0.5f, 0.8f, 1f);
 
-	internal static Color configurationProperty = new Color(0.56f, 0.94f, 0.47f);
+	internal static Color validColor = new Color(0.56f, 0.94f, 0.47f);
 
-	internal static Color _ProcProperty = new Color(1f, 0.25f, 0.25f);
+	internal static Color errorColor = new Color(1f, 0.25f, 0.25f);
 
-	internal static Color _WrapperProcessor = new Color(0.99f, 0.95f, 0f);
+	internal static Color warningColor = new Color(0.99f, 0.95f, 0f);
 
-	internal static Color m_AnnotationProcessor = new Color(0.7f, 0.3f, 1f);
+	internal static Color highlightColor = new Color(0.7f, 0.3f, 1f);
 
-	internal static Color visitorProcessor = new Color(1f, 0.65f, 0f);
+	internal static Color attentionColor = new Color(1f, 0.65f, 0f);
 
 	internal static Color accentColor = new Color(1f, 0.5f, 0.7f);
 
-	internal static Color m_MapperProcessor = new Color(0.3f, 0.7f, 1f);
+	internal static Color linkColor = new Color(0.3f, 0.7f, 1f);
 
 	internal static Contents contentsInstance;
 
@@ -2229,20 +2229,20 @@ internal static class EditorUtils
 
 	private static Dictionary<GameObject, VRCAvatarDescriptor> m_ContextProcessor;
 
-	private static int recordProcessor;
+	private static int cachedMaxParameterCost;
 
-	private static FieldInfo helperProcessor;
+	private static FieldInfo networkSyncedField;
 
-	private static bool m_ConsumerProcessor;
+	private static bool networkSyncedFieldResolved;
 
-	internal static readonly string[] m_AdapterProcessor = new string[28]
+	internal static readonly string[] reservedAvatarParameters = new string[28]
 	{
 		"IsLocal", "Viseme", "Voice", "GestureLeft", "GestureRight", "GestureLeftWeight", "GestureRightWeight", "AngularY", "VelocityX", "VelocityY",
 		"VelocityZ", "VelocityMagnitude", "Upright", "Grounded", "Seated", "AFK", "TrackingType", "VRMode", "MuteSelf", "InStation",
 		"Earmuffs", "IsOnFriendsList", "AvatarVersion", "ScaleModified", "ScaleFactor", "ScaleFactorInverse", "EyeHeightAsMeters", "EyeHeightAsPercent"
 	};
 
-	internal static readonly string[] interpreterProcessor = new string[23]
+	internal static readonly string[] defaultCollisionTags = new string[23]
 	{
 		"Head", "Torso", "Hand", "Foot", "Finger", "FingerIndex", "FingerMiddle", "FingerRing", "FingerLittle", "HandL",
 		"FootL", "FingerL", "FingerIndexL", "FingerMiddleL", "FingerRingL", "FingerLittleL", "HandR", "FootR", "FingerR", "FingerIndexR",
@@ -2363,10 +2363,10 @@ internal static class EditorUtils
 
 	internal static Rect SetResolver(Rect v, float col = 2f)
 	{
-		return PostResolver(v, new Color(0.03f, 0.03f, 0.03f, 0.5f), new Color(0.137f, 0.137f, 0.137f, 0.5f), col);
+		return DrawRoundedRect(v, new Color(0.03f, 0.03f, 0.03f, 0.5f), new Color(0.137f, 0.137f, 0.137f, 0.5f), col);
 	}
 
-	internal static Rect PostResolver(Rect key, Color map, Color filter, float x2 = 3f)
+	internal static Rect DrawRoundedRect(Rect key, Color map, Color filter, float x2 = 3f)
 	{
 		float num = x2 + 2f;
 		Rect position = key;
@@ -2376,11 +2376,11 @@ internal static class EditorUtils
 		position.height += num;
 		if (map != Color.clear)
 		{
-			GUI.DrawTexture(key, LoginList(map), ScaleMode.StretchToFill, alphaBlend: true, 0f, map, 0f, 8f);
+			GUI.DrawTexture(key, SharedColorTexture(map), ScaleMode.StretchToFill, alphaBlend: true, 0f, map, 0f, 8f);
 		}
 		if (filter != Color.clear)
 		{
-			GUI.DrawTexture(position, LoginList(filter), ScaleMode.StretchToFill, alphaBlend: true, 0f, filter, x2, 8f);
+			GUI.DrawTexture(position, SharedColorTexture(filter), ScaleMode.StretchToFill, alphaBlend: true, 0f, filter, x2, 8f);
 		}
 		Rect result = key;
 		result.x += 4f;
@@ -2770,15 +2770,15 @@ internal static class EditorUtils
 		case LogType.Error:
 		case LogType.Assert:
 		case LogType.Exception:
-			return task.RunResolver(_ProcProperty);
+			return task.RunResolver(errorColor);
 		case LogType.Warning:
-			return task.RunResolver(_WrapperProcessor);
+			return task.RunResolver(warningColor);
 		default:
-			return task.RunResolver(configurationProperty);
+			return task.RunResolver(validColor);
 		}
 	}
 
-	internal static void LoginResolver(this string param, LogType selection = LogType.Log)
+	internal static void Log(this string param, LogType selection = LogType.Log)
 	{
 		switch (selection)
 		{
@@ -2799,9 +2799,9 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void ReflectResolver(this string item, LogType connection = LogType.Log)
+	internal static void LogColored(this string item, LogType connection = LogType.Log)
 	{
-		item.CloneResolver(connection).LoginResolver(connection);
+		item.CloneResolver(connection).Log(connection);
 	}
 
 	internal static GUIContent DeleteResolver(this string param, bool tokenneeded)
@@ -2811,13 +2811,13 @@ internal static class EditorUtils
 
 	internal static GUIContent CreateResolver(this string var1, string cfg = "", bool wanthelper = false)
 	{
-		m_CollectionProperty.text = var1;
-		m_CollectionProperty.tooltip = cfg;
+		sharedContent.text = var1;
+		sharedContent.tooltip = cfg;
 		if (!wanthelper)
 		{
-			return m_CollectionProperty;
+			return sharedContent;
 		}
-		return new GUIContent(m_CollectionProperty);
+		return new GUIContent(sharedContent);
 	}
 
 	internal static string Humanize(this string key)
@@ -2848,29 +2848,29 @@ internal static class EditorUtils
 		return visitor.CalcSize(param.CreateResolver()).x;
 	}
 
-	internal static Rect ViewResolver(this Rect var1)
+	internal static Rect CollapseToRightEdge(this Rect var1)
 	{
 		Rect result = new Rect(var1);
 		result.x = var1.x + var1.width;
 		return result;
 	}
 
-	public static Rect CollectResolver(this Rect init, float result)
+	public static Rect Shrink(this Rect init, float result)
 	{
-		return init.VerifyResolver(0f - result);
+		return init.Expand(0f - result);
 	}
 
-	public static Rect ResolveResolver(this Rect asset, float second)
+	public static Rect ShrinkHorizontally(this Rect asset, float second)
 	{
-		return asset.FillResolver(0f - second);
+		return asset.ExpandHorizontally(0f - second);
 	}
 
-	public static Rect ListResolver(this Rect reference, float attr)
+	public static Rect ShrinkVertically(this Rect reference, float attr)
 	{
-		return reference.WriteResolver(0f - attr);
+		return reference.ExpandVertically(0f - attr);
 	}
 
-	public static Rect VerifyResolver(this Rect def, float visitor)
+	public static Rect Expand(this Rect def, float visitor)
 	{
 		def.x -= visitor;
 		def.y -= visitor;
@@ -2879,68 +2879,68 @@ internal static class EditorUtils
 		return def;
 	}
 
-	public static Rect FillResolver(this Rect param, float pred)
+	public static Rect ExpandHorizontally(this Rect param, float pred)
 	{
 		param.x -= pred;
 		param.width += pred * 2f;
 		return param;
 	}
 
-	public static Rect WriteResolver(this Rect instance, float ivk)
+	public static Rect ExpandVertically(this Rect instance, float ivk)
 	{
 		instance.y -= ivk;
 		instance.height += ivk * 2f;
 		return instance;
 	}
 
-	public static Rect ForgotResolver(this Rect info, float pol)
+	public static Rect MoveRight(this Rect info, float pol)
 	{
 		info.x += pol;
 		return info;
 	}
 
-	public static Rect StopResolver(this Rect init, float pred)
+	public static Rect MoveDown(this Rect init, float pred)
 	{
 		init.y += pred;
 		return init;
 	}
 
-	public static Rect CheckResolver(this Rect task, float token)
+	public static Rect InsetLeft(this Rect task, float token)
 	{
 		task.width -= token;
 		task.x += token;
 		return task;
 	}
 
-	public static Rect PrepareResolver(this Rect setup, float vis)
+	public static Rect Widen(this Rect setup, float vis)
 	{
 		setup.width += vis;
 		return setup;
 	}
 
-	public static Rect AssetResolver(this Rect v, float pol)
+	public static Rect ExpandUp(this Rect v, float pol)
 	{
 		v.height += pol;
 		v.y -= pol;
 		return v;
 	}
 
-	public static Rect UpdateResolver(this Rect last, float b)
+	public static Rect ExpandDown(this Rect last, float b)
 	{
 		last.height += b;
 		return last;
 	}
 
-	public static Rect ChangeResolver(this ref Rect key, bool isconnection, float template, bool issecond2 = false, float config3 = -1f, bool allowx4 = false, bool comparev5 = true)
+	public static Rect SliceLeftIf(this ref Rect key, bool isconnection, float template, bool issecond2 = false, float config3 = -1f, bool allowx4 = false, bool comparev5 = true)
 	{
 		if (isconnection)
 		{
-			return key.SortResolver(template, issecond2, config3, allowx4, comparev5);
+			return key.SliceLeft(template, issecond2, config3, allowx4, comparev5);
 		}
 		return key;
 	}
 
-	public static Rect SortResolver(this ref Rect def, float visitor, bool isfield = false, float vis2 = -1f, bool iscont3 = false, bool isattr4 = true)
+	public static Rect SliceLeft(this ref Rect def, float visitor, bool isfield = false, float vis2 = -1f, bool iscont3 = false, bool isattr4 = true)
 	{
 		Rect result = def;
 		result.width = ((!isfield) ? (visitor * def.width / 100f) : visitor);
@@ -2956,7 +2956,7 @@ internal static class EditorUtils
 		return result;
 	}
 
-	public static Rect RegisterResolver(this ref Rect res, float b, bool comparetemp = false, float result2 = -1f, bool isord3 = false, bool compareconfig4 = true)
+	public static Rect SliceTop(this ref Rect res, float b, bool comparetemp = false, float result2 = -1f, bool isord3 = false, bool compareconfig4 = true)
 	{
 		Rect result3 = res;
 		result3.height = ((!comparetemp) ? (b * res.height / 100f) : b);
@@ -2970,16 +2970,16 @@ internal static class EditorUtils
 		return result3;
 	}
 
-	public static Rect LogoutResolver(this ref Rect def, bool updatecounter, float util, bool compareinit2 = false, float attr3 = -1f, bool acceptvalue4 = false, bool rejectpred5 = true)
+	public static Rect SliceRightIf(this ref Rect def, bool updatecounter, float util, bool compareinit2 = false, float attr3 = -1f, bool acceptvalue4 = false, bool rejectpred5 = true)
 	{
 		if (!updatecounter)
 		{
 			return def;
 		}
-		return def.PatchResolver(util, compareinit2, attr3, acceptvalue4, rejectpred5);
+		return def.SliceRight(util, compareinit2, attr3, acceptvalue4, rejectpred5);
 	}
 
-	public static Rect PatchResolver(this ref Rect res, float map, bool isserv = false, float v2 = -1f, bool isvisitor3 = false, bool istoken4 = true)
+	public static Rect SliceRight(this ref Rect res, float map, bool isserv = false, float v2 = -1f, bool isvisitor3 = false, bool istoken4 = true)
 	{
 		Rect result = res;
 		result.width = (isserv ? map : (map * res.width / 100f));
@@ -2992,19 +2992,19 @@ internal static class EditorUtils
 		return result;
 	}
 
-	public static Rect InterruptResolver(this Rect asset, float connection)
+	public static Rect WithWidth(this Rect asset, float connection)
 	{
 		asset.width = connection;
 		return asset;
 	}
 
-	public static Rect ManageResolver(this Rect param, float result)
+	public static Rect WithHeight(this Rect param, float result)
 	{
 		param.height = result;
 		return param;
 	}
 
-	public static Rect PrintResolver(this Rect setup, float pol)
+	public static Rect FitAspect(this Rect setup, float pol)
 	{
 		Rect result = setup;
 		if (setup.width / setup.height <= pol)
@@ -3020,7 +3020,7 @@ internal static class EditorUtils
 		return result;
 	}
 
-	internal static void SearchResolver(this AnimBool key, Action visitor, Action role = null)
+	internal static void FadeGroup(this AnimBool key, Action visitor, Action role = null)
 	{
 		if (key.faded != 0f)
 		{
@@ -3034,7 +3034,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static T RevertResolver<T>(this UnityEngine.Object last) where T : UnityEngine.Object
+	internal static T AsComponentOrAsset<T>(this UnityEngine.Object last) where T : UnityEngine.Object
 	{
 		if (typeof(T).IsSubclassOf(typeof(Component)))
 		{
@@ -3048,7 +3048,7 @@ internal static class EditorUtils
 		return last as T;
 	}
 
-	internal static void OrderPredicate<T>(this T reference, string col, bool moverole = false) where T : EditorWindow
+	internal static void SaveToPrefs<T>(this T reference, string col, bool moverole = false) where T : EditorWindow
 	{
 		string value = JsonUtility.ToJson(reference, prettyPrint: false);
 		if (!moverole)
@@ -3061,7 +3061,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void ComparePredicate<T>(this T task, string cfg, bool isthird = false) where T : EditorWindow
+	internal static void LoadFromPrefs<T>(this T task, string cfg, bool isthird = false) where T : EditorWindow
 	{
 		string defaultValue = JsonUtility.ToJson(task, prettyPrint: false);
 		JsonUtility.FromJsonOverwrite((!isthird) ? EditorPrefs.GetString(cfg, defaultValue) : PlayerPrefs.GetString(cfg, defaultValue), task);
@@ -3077,22 +3077,22 @@ internal static class EditorUtils
 		return new Vector2(task.x.RoundToNearest(b_Z), task.y.RoundToNearest(b_Z));
 	}
 
-	internal static float SetupPredicate(this Vector3 i)
+	internal static float MaxComponent(this Vector3 i)
 	{
 		return Mathf.Max(i.x, i.y, i.z);
 	}
 
-	internal static float EnablePredicate(this Vector3 last)
+	internal static float MinComponent(this Vector3 last)
 	{
 		return Mathf.Min(last.x, last.y, last.z);
 	}
 
-	internal static float PublishPredicate(this Vector3 info)
+	internal static float AverageComponent(this Vector3 info)
 	{
 		return (info.x + info.y + info.z) / 3f;
 	}
 
-	internal static Vector3 PopPredicate(this Vector3 item, Axis cont = Axis.X)
+	internal static Vector3 Negate(this Vector3 item, Axis cont = Axis.X)
 	{
 		float x = item.x * (float)(((cont & Axis.X) == 0) ? 1 : (-1));
 		float y = item.y * (float)(((cont & Axis.Y) == 0) ? 1 : (-1));
@@ -3100,7 +3100,7 @@ internal static class EditorUtils
 		return new Vector3(x, y, z);
 	}
 
-	internal static Vector3 ComputePredicate(this Vector3 ident, Axis selection)
+	internal static Vector3 Mask(this Vector3 ident, Axis selection)
 	{
 		float x = ident.x * (float)(((selection & Axis.X) != Axis.None) ? 1 : 0);
 		float y = ident.y * (float)(((selection & Axis.Y) != Axis.None) ? 1 : 0);
@@ -3121,12 +3121,12 @@ internal static class EditorUtils
 		return new Vector3(x, y, z);
 	}
 
-	internal static bool CallPredicate(this ReorderableList key)
+	internal static bool HasSelection(this ReorderableList key)
 	{
 		return key.index.IsValidIndex(key.list);
 	}
 
-	internal static IEnumerable<T> CancelPredicate<T>(this T asset) where T : Enum
+	internal static IEnumerable<T> GetFlags<T>(this T asset) where T : Enum
 	{
 		return Enum.GetValues(typeof(T)).Cast<T>().Where(delegate(T value)
 		{
@@ -3136,12 +3136,12 @@ internal static class EditorUtils
 		});
 	}
 
-	internal static T CountPredicate<T>(this T ident, GUIContent map, bool haveutil = true, params GUILayoutOption[] options) where T : UnityEngine.Object
+	internal static T ObjectField<T>(this T ident, GUIContent map, bool haveutil = true, params GUILayoutOption[] options) where T : UnityEngine.Object
 	{
 		return (T)EditorGUILayout.ObjectField(map, ident, typeof(T), haveutil, options);
 	}
 
-	internal static bool DisablePredicate(this AnimationCurve spec, float b, out Keyframe proc, out Keyframe result2)
+	internal static bool TryGetSurroundingKeys(this AnimationCurve spec, float b, out Keyframe proc, out Keyframe result2)
 	{
 		proc = default(Keyframe);
 		result2 = default(Keyframe);
@@ -3180,10 +3180,10 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static bool InsertPredicate(this AnimationCurve spec, float reg, out float role)
+	internal static bool TryGetTangentAt(this AnimationCurve spec, float reg, out float role)
 	{
 		role = 0f;
-		if (!spec.DisablePredicate(reg, out var proc, out var result))
+		if (!spec.TryGetSurroundingKeys(reg, out var proc, out var result))
 		{
 			return false;
 		}
@@ -3192,11 +3192,11 @@ internal static class EditorUtils
 			role = proc.outTangent;
 			return true;
 		}
-		role = QueryPredicate(proc, result, reg);
+		role = EstimateTangentBetween(proc, result, reg);
 		return true;
 	}
 
-	internal static float RestartPredicate(float reference, float col, float role, float result2, float result3)
+	internal static float CatmullRom(float reference, float col, float role, float result2, float result3)
 	{
 		float num = 2f * col;
 		float num2 = role - reference;
@@ -3205,7 +3205,7 @@ internal static class EditorUtils
 		return 0.5f * (num + num2 * result3 + num3 * result3 * result3 + num4 * result3 * result3 * result3);
 	}
 
-	internal static float QueryPredicate(Keyframe info, Keyframe pred, float control)
+	internal static float EstimateTangentBetween(Keyframe info, Keyframe pred, float control)
 	{
 		float num = pred.time - info.time;
 		float num2 = 57.29578f * Mathf.Atan(info.outTangent);
@@ -3214,8 +3214,8 @@ internal static class EditorUtils
 		float value2 = pred.value;
 		float reference = info.value + Mathf.Tan(num2 + 180f) * num;
 		float result = pred.value + Mathf.Tan(num3 + 180f) * num;
-		float num4 = RestartPredicate(reference, value, value2, result, control);
-		return (RestartPredicate(reference, value, value2, result, control + 1E-05f) - num4) / 1E-05f;
+		float num4 = CatmullRom(reference, value, value2, result, control);
+		return (CatmullRom(reference, value, value2, result, control + 1E-05f) - num4) / 1E-05f;
 	}
 
 	private static AnimationCurve AddPredicate(AnimationUtility.TangentMode var1 = AnimationUtility.TangentMode.Free, params Keyframe[] keyFrames)
@@ -3239,7 +3239,7 @@ internal static class EditorUtils
 		return animationCurve;
 	}
 
-	internal static float FindPredicate(this AnimationClip v)
+	internal static float GetEffectiveLength(this AnimationClip v)
 	{
 		if (!AnimationUtility.GetCurveBindings(v).Any() && !AnimationUtility.GetObjectReferenceCurveBindings(v).Any())
 		{
@@ -3272,7 +3272,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static UnityEditor.Animations.AnimatorControllerLayer VisitPredicate(this UnityEditor.Animations.AnimatorController task, string selection, float field, AvatarMask asset2 = null)
+	internal static UnityEditor.Animations.AnimatorControllerLayer AddLayer(this UnityEditor.Animations.AnimatorController task, string selection, float field, AvatarMask asset2 = null)
 	{
 		UnityEditor.Animations.AnimatorControllerLayer animatorControllerLayer = new UnityEditor.Animations.AnimatorControllerLayer
 		{
@@ -3290,7 +3290,7 @@ internal static class EditorUtils
 		return animatorControllerLayer;
 	}
 
-	private static bool DefinePredicate(AnimatorStateTransition item)
+	private static bool IsTagTransition(AnimatorStateTransition item)
 	{
 		if (!item.isExit || !item.mute || !(item.destinationState == null))
 		{
@@ -3299,9 +3299,9 @@ internal static class EditorUtils
 		return item.destinationStateMachine == null;
 	}
 
-	internal static void StartPredicate(this UnityEditor.Animations.AnimatorControllerLayer info, string caller)
+	internal static void AddTag(this UnityEditor.Animations.AnimatorControllerLayer info, string caller)
 	{
-		if (!info.SelectPredicate(caller))
+		if (!info.HasTag(caller))
 		{
 			AnimatorStateTransition animatorStateTransition = info.stateMachine.AddAnyStateTransition((AnimatorState)null);
 			animatorStateTransition.isExit = true;
@@ -3310,17 +3310,17 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void ReadPredicate(this UnityEditor.Animations.AnimatorControllerLayer i, string visitor)
+	internal static void RemoveTag(this UnityEditor.Animations.AnimatorControllerLayer i, string visitor)
 	{
-		AnimatorStateTransition transition = i.stateMachine.anyStateTransitions.First((AnimatorStateTransition tr) => DefinePredicate(tr) && tr.name == visitor);
+		AnimatorStateTransition transition = i.stateMachine.anyStateTransitions.First((AnimatorStateTransition tr) => IsTagTransition(tr) && tr.name == visitor);
 		i.stateMachine.RemoveAnyStateTransition(transition);
 	}
 
-	internal static bool SelectPredicate(this UnityEditor.Animations.AnimatorControllerLayer def, string result, bool iscontrol = true)
+	internal static bool HasTag(this UnityEditor.Animations.AnimatorControllerLayer def, string result, bool iscontrol = true)
 	{
 		return def.stateMachine.anyStateTransitions.Any(delegate(AnimatorStateTransition t)
 		{
-			if (!DefinePredicate(t))
+			if (!IsTagTransition(t))
 			{
 				return false;
 			}
@@ -3332,27 +3332,27 @@ internal static class EditorUtils
 		});
 	}
 
-	internal static IEnumerable<string> RemovePredicate(this UnityEditor.Animations.AnimatorControllerLayer config)
+	internal static IEnumerable<string> GetTags(this UnityEditor.Animations.AnimatorControllerLayer config)
 	{
-		return from t in config.stateMachine.anyStateTransitions.Where(DefinePredicate)
+		return from t in config.stateMachine.anyStateTransitions.Where(IsTagTransition)
 			select t.name;
 	}
 
-	internal static IEnumerable<string> InstantiatePredicate(this UnityEditor.Animations.AnimatorControllerLayer value)
+	internal static IEnumerable<string> GetSystemTags(this UnityEditor.Animations.AnimatorControllerLayer value)
 	{
-		return from s in value.RemovePredicate()
+		return from s in value.GetTags()
 			where s[0] == '_'
 			select s;
 	}
 
-	internal static IEnumerable<string> AwakePredicate(this UnityEditor.Animations.AnimatorControllerLayer res)
+	internal static IEnumerable<string> GetUserTags(this UnityEditor.Animations.AnimatorControllerLayer res)
 	{
-		return from s in res.RemovePredicate()
+		return from s in res.GetTags()
 			where s[0] != '_'
 			select s;
 	}
 
-	internal static void ResetPredicate(UnityEditor.Animations.AnimatorController info, UnityEditor.Animations.AnimatorController cust, out UnityEditor.Animations.AnimatorControllerLayer[] dir)
+	internal static void CopyLayers(UnityEditor.Animations.AnimatorController info, UnityEditor.Animations.AnimatorController cust, out UnityEditor.Animations.AnimatorControllerLayer[] dir)
 	{
 		try
 		{
@@ -3362,7 +3362,7 @@ internal static class EditorUtils
 			for (int i = 0; i < num; i++)
 			{
 				EditorUtility.DisplayProgressBar("Copying Layers", $"Copying layer {i + 1} of {num}", (float)i / (float)num);
-				dir[i] = CalculatePredicate(layers[i], cust);
+				dir[i] = CopyLayer(layers[i], cust);
 			}
 		}
 		finally
@@ -3371,7 +3371,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void FlushPredicate(UnityEditor.Animations.AnimatorController instance, UnityEditor.Animations.AnimatorController cont, out UnityEditor.Animations.AnimatorControllerLayer[] comp, out UnityEngine.AnimatorControllerParameter[] config2, bool isreference3 = false)
+	internal static void CopyLayersAndParameters(UnityEditor.Animations.AnimatorController instance, UnityEditor.Animations.AnimatorController cont, out UnityEditor.Animations.AnimatorControllerLayer[] comp, out UnityEngine.AnimatorControllerParameter[] config2, bool isreference3 = false)
 	{
 		try
 		{
@@ -3383,7 +3383,7 @@ internal static class EditorUtils
 			for (int i = 0; i < num; i++)
 			{
 				EditorUtility.DisplayProgressBar("Copying Layers", $"Copying layer {i + 1} of {num}", (float)i / (float)num);
-				comp[i] = CalculatePredicate(layers[i], cont);
+				comp[i] = CopyLayer(layers[i], cont);
 			}
 			for (int j = 0; j < parameters.Length; j++)
 			{
@@ -3399,7 +3399,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static UnityEngine.AnimatorControllerParameter[] ConnectPredicate(UnityEditor.Animations.AnimatorController asset, UnityEditor.Animations.AnimatorController selection, bool updatedic = false)
+	internal static UnityEngine.AnimatorControllerParameter[] CopyParameters(UnityEditor.Animations.AnimatorController asset, UnityEditor.Animations.AnimatorController selection, bool updatedic = false)
 	{
 		UnityEngine.AnimatorControllerParameter[] parameters = asset.parameters;
 		UnityEngine.AnimatorControllerParameter[] array = new UnityEngine.AnimatorControllerParameter[parameters.Length];
@@ -3414,7 +3414,7 @@ internal static class EditorUtils
 		return array;
 	}
 
-	internal static UnityEditor.Animations.AnimatorControllerLayer CalculatePredicate(UnityEditor.Animations.AnimatorControllerLayer value, UnityEditor.Animations.AnimatorController ivk, int row_role = -1, bool iscfg2 = false)
+	internal static UnityEditor.Animations.AnimatorControllerLayer CopyLayer(UnityEditor.Animations.AnimatorControllerLayer value, UnityEditor.Animations.AnimatorController ivk, int row_role = -1, bool iscfg2 = false)
 	{
 		_003C_003Ec__DisplayClass128_0 connection = default(_003C_003Ec__DisplayClass128_0);
 		connection.m_PublisherObserver = ivk;
@@ -3424,7 +3424,7 @@ internal static class EditorUtils
 		{
 			name = connection.m_PublisherObserver.MakeUniqueLayerName(connection.m_WrapperServer.name)
 		};
-		TestPredicate(connection.m_WrapperServer, connection.annotationServer);
+		CopyLayerSettings(connection.m_WrapperServer, connection.annotationServer);
 		connection.iteratorObserver = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
 		connection._ProcObserver = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
 		connection.annotationServer.stateMachine = ConnectError(connection.m_WrapperServer.stateMachine, ref connection);
@@ -3443,7 +3443,7 @@ internal static class EditorUtils
 		return connection.annotationServer;
 	}
 
-	internal static void TestPredicate(UnityEditor.Animations.AnimatorControllerLayer key, UnityEditor.Animations.AnimatorControllerLayer ord)
+	internal static void CopyLayerSettings(UnityEditor.Animations.AnimatorControllerLayer key, UnityEditor.Animations.AnimatorControllerLayer ord)
 	{
 		UnityEditor.Animations.AnimatorController animatorController = AssetDatabase.LoadAssetAtPath<UnityEditor.Animations.AnimatorController>(AssetDatabase.GetAssetPath(key.stateMachine));
 		float defaultWeight = key.defaultWeight;
@@ -3459,7 +3459,7 @@ internal static class EditorUtils
 		ord.syncedLayerIndex = key.syncedLayerIndex;
 	}
 
-	internal static float MapPredicate(this UnityEngine.AnimatorControllerParameter instance)
+	internal static float GetDefaultValue(this UnityEngine.AnimatorControllerParameter instance)
 	{
 		return instance.type switch
 		{
@@ -3470,7 +3470,7 @@ internal static class EditorUtils
 		};
 	}
 
-	internal static void ValidatePredicate(this UnityEngine.AnimatorControllerParameter setup, float cust)
+	internal static void SetDefaultValue(this UnityEngine.AnimatorControllerParameter setup, float cust)
 	{
 		switch (setup.type)
 		{
@@ -3488,7 +3488,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static UnityEngine.AnimatorControllerParameter CustomizePredicate(this UnityEditor.Animations.AnimatorController init, string counter, UnityEngine.AnimatorControllerParameterType tag, float instance2 = 0f)
+	internal static UnityEngine.AnimatorControllerParameter AddNewParameter(this UnityEditor.Animations.AnimatorController init, string counter, UnityEngine.AnimatorControllerParameterType tag, float instance2 = 0f)
 	{
 		UnityEngine.AnimatorControllerParameter animatorControllerParameter = new UnityEngine.AnimatorControllerParameter
 		{
@@ -3575,7 +3575,7 @@ internal static class EditorUtils
 		}
 		if (animatorControllerParameter2.type != proc)
 		{
-			$"Type mismatch! Parameter {pol} already exists in {task.name} but with type {animatorControllerParameter2.type} rather than {proc}".ReflectResolver(LogType.Warning);
+			$"Type mismatch! Parameter {pol} already exists in {task.name} but with type {animatorControllerParameter2.type} rather than {proc}".LogColored(LogType.Warning);
 		}
 		pred3 = false;
 		return animatorControllerParameter2;
@@ -3599,7 +3599,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static bool ClonePredicate(this AnimatorTransitionBase i)
+	internal static bool IsExitOrDangling(this AnimatorTransitionBase i)
 	{
 		if (i.isExit)
 		{
@@ -3612,20 +3612,20 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static int LoginPredicate(this AnimatorState def, StateMachineBehaviour reg)
+	internal static int IndexOfBehaviour(this AnimatorState def, StateMachineBehaviour reg)
 	{
 		return def.behaviours.FindIndex((StateMachineBehaviour b) => b == reg);
 	}
 
-	internal static void ReflectPredicate(this AnimatorState key, Type counter, bool isstate = false)
+	internal static void RemoveBehaviourOfType(this AnimatorState key, Type counter, bool isstate = false)
 	{
 		if (key.behaviours.TryFindIndex((StateMachineBehaviour b) => b.GetType() == counter, out var c))
 		{
-			key.DeletePredicate(c, isstate);
+			key.RemoveBehaviourAt(c, isstate);
 		}
 	}
 
-	internal static void DeletePredicate(this AnimatorState spec, int visitor_Ptr, bool verifytemp = false)
+	internal static void RemoveBehaviourAt(this AnimatorState spec, int visitor_Ptr, bool verifytemp = false)
 	{
 		if (visitor_Ptr < 0)
 		{
@@ -3658,7 +3658,7 @@ internal static class EditorUtils
 		EditorUtility.SetDirty(spec);
 	}
 
-	internal static bool CreatePredicate(IEnumerable<AnimatorCondition> key, IEnumerable<AnimatorCondition> b)
+	internal static bool ConditionSetsMatch(IEnumerable<AnimatorCondition> key, IEnumerable<AnimatorCondition> b)
 	{
 		Dictionary<AnimatorCondition, int> dictionary = new Dictionary<AnimatorCondition, int>();
 		foreach (AnimatorCondition item in key)
@@ -3684,20 +3684,20 @@ internal static class EditorUtils
 		return dictionary.Values.All((int c) => c == 0);
 	}
 
-	internal static void NewPredicate(this UnityEditor.Animations.AnimatorController first, Action<AnimatorStateMachine> result, Action<AnimatorState> dic, Action<AnimatorStateTransitionSet> config2)
+	internal static void Traverse(this UnityEditor.Animations.AnimatorController first, Action<AnimatorStateMachine> result, Action<AnimatorState> dic, Action<AnimatorStateTransitionSet> config2)
 	{
 		UnityEditor.Animations.AnimatorControllerLayer[] layers = first.layers;
 		for (int i = 0; i < layers.Length; i++)
 		{
-			layers[i].stateMachine.PushPredicate(result, dic, config2);
+			layers[i].stateMachine.ForEachGraphElement(result, dic, config2);
 		}
 	}
 
-	internal static void PushPredicate(this AnimatorStateMachine last, Action<AnimatorStateMachine> ivk, Action<AnimatorState> comp, Action<AnimatorStateTransitionSet> instance2, bool evaluateasset3 = true)
+	internal static void ForEachGraphElement(this AnimatorStateMachine last, Action<AnimatorStateMachine> ivk, Action<AnimatorState> comp, Action<AnimatorStateTransitionSet> instance2, bool evaluateasset3 = true)
 	{
 		if (ivk != null)
 		{
-			last.CollectPredicate(ivk, evaluateasset3);
+			last.ForEachStateMachine(ivk, evaluateasset3);
 		}
 		if (comp != null)
 		{
@@ -3705,11 +3705,11 @@ internal static class EditorUtils
 		}
 		if (instance2 != null)
 		{
-			last.ResolvePredicate(instance2);
+			last.ForEachTransition(instance2);
 		}
 	}
 
-	internal static void ViewPredicate(this UnityEditor.Animations.AnimatorController i, Action<AnimatorStateMachine> pred)
+	internal static void ForEachRootStateMachine(this UnityEditor.Animations.AnimatorController i, Action<AnimatorStateMachine> pred)
 	{
 		UnityEditor.Animations.AnimatorControllerLayer[] layers = i.layers;
 		foreach (UnityEditor.Animations.AnimatorControllerLayer animatorControllerLayer in layers)
@@ -3718,7 +3718,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void CollectPredicate(this AnimatorStateMachine init, Action<AnimatorStateMachine> col, bool containsthird = true)
+	internal static void ForEachStateMachine(this AnimatorStateMachine init, Action<AnimatorStateMachine> col, bool containsthird = true)
 	{
 		col(init);
 		if (containsthird)
@@ -3726,12 +3726,12 @@ internal static class EditorUtils
 			ChildAnimatorStateMachine[] stateMachines = init.stateMachines;
 			foreach (ChildAnimatorStateMachine childAnimatorStateMachine in stateMachines)
 			{
-				childAnimatorStateMachine.stateMachine.CollectPredicate(col);
+				childAnimatorStateMachine.stateMachine.ForEachStateMachine(col);
 			}
 		}
 	}
 
-	internal static void ResolvePredicate(this AnimatorStateMachine asset, Action<AnimatorStateTransitionSet> attr, bool moveserv = true)
+	internal static void ForEachTransition(this AnimatorStateMachine asset, Action<AnimatorStateTransitionSet> attr, bool moveserv = true)
 	{
 		if (!asset)
 		{
@@ -3777,21 +3777,21 @@ internal static class EditorUtils
 			ChildAnimatorStateMachine childAnimatorStateMachine2 = stateMachines[i];
 			if (childAnimatorStateMachine2.stateMachine != asset)
 			{
-				childAnimatorStateMachine2.stateMachine.ResolvePredicate(attr);
+				childAnimatorStateMachine2.stateMachine.ForEachTransition(attr);
 			}
 		}
 	}
 
-	internal static void ListPredicate(this UnityEditor.Animations.BlendTree var1, Action<AnimationClip> reg, bool dicreguired = true)
+	internal static void ForEachClip(this UnityEditor.Animations.BlendTree var1, Action<AnimationClip> reg, bool dicreguired = true)
 	{
-		var1.VerifyPredicate(delegate(AnimationClip c)
+		var1.AnyClip(delegate(AnimationClip c)
 		{
 			reg(c);
 			return false;
 		}, dicreguired);
 	}
 
-	internal static bool VerifyPredicate(this UnityEditor.Animations.BlendTree reference, Func<AnimationClip, bool> cust, bool rejectrule = true)
+	internal static bool AnyClip(this UnityEditor.Animations.BlendTree reference, Func<AnimationClip, bool> cust, bool rejectrule = true)
 	{
 		ChildMotion[] children = reference.children;
 		int num = 0;
@@ -3811,7 +3811,7 @@ internal static class EditorUtils
 						return true;
 					}
 				}
-				else if (rejectrule && childMotion.motion is UnityEditor.Animations.BlendTree reference2 && reference2.VerifyPredicate(cust))
+				else if (rejectrule && childMotion.motion is UnityEditor.Animations.BlendTree reference2 && reference2.AnyClip(cust))
 				{
 					break;
 				}
@@ -3821,16 +3821,16 @@ internal static class EditorUtils
 		return true;
 	}
 
-	internal static void FillPredicate(this UnityEditor.Animations.BlendTree res, Action<UnityEditor.Animations.BlendTree> ord, bool isserv = true, bool isvisitor2 = true)
+	internal static void ForEachBlendTree(this UnityEditor.Animations.BlendTree res, Action<UnityEditor.Animations.BlendTree> ord, bool isserv = true, bool isvisitor2 = true)
 	{
-		res.WritePredicate(delegate(UnityEditor.Animations.BlendTree t)
+		res.AnyBlendTree(delegate(UnityEditor.Animations.BlendTree t)
 		{
 			ord(t);
 			return false;
 		}, isserv, isvisitor2);
 	}
 
-	internal static bool WritePredicate(this UnityEditor.Animations.BlendTree key, Func<UnityEditor.Animations.BlendTree, bool> cont, bool excludec = true, bool isident2 = true)
+	internal static bool AnyBlendTree(this UnityEditor.Animations.BlendTree key, Func<UnityEditor.Animations.BlendTree, bool> cont, bool excludec = true, bool isident2 = true)
 	{
 		if (isident2 && cont(key))
 		{
@@ -3846,13 +3846,13 @@ internal static class EditorUtils
 			{
 				return true;
 			}
-			return excludec && blendTree.WritePredicate(cont, excludec: true, isident2: false);
+			return excludec && blendTree.AnyBlendTree(cont, excludec: true, isident2: false);
 		});
 	}
 
 	internal static void ForgotPredicate(this Motion config, Action<Motion> ivk)
 	{
-		config.CheckPredicate(delegate(UnityEditor.Animations.BlendTree t)
+		config.AnyMotion(delegate(UnityEditor.Animations.BlendTree t)
 		{
 			ivk(t);
 			return false;
@@ -3865,7 +3865,7 @@ internal static class EditorUtils
 
 	internal static void StopPredicate(this Motion var1, Action<UnityEditor.Animations.BlendTree> vis, Action<AnimationClip> consumer)
 	{
-		var1.CheckPredicate(delegate(UnityEditor.Animations.BlendTree t)
+		var1.AnyMotion(delegate(UnityEditor.Animations.BlendTree t)
 		{
 			vis(t);
 			return false;
@@ -3876,7 +3876,7 @@ internal static class EditorUtils
 		});
 	}
 
-	internal static bool CheckPredicate(this Motion i, Func<UnityEditor.Animations.BlendTree, bool> result, Func<AnimationClip, bool> pool)
+	internal static bool AnyMotion(this Motion i, Func<UnityEditor.Animations.BlendTree, bool> result, Func<AnimationClip, bool> pool)
 	{
 		if (!(i == null))
 		{
@@ -3896,7 +3896,7 @@ internal static class EditorUtils
 				ChildMotion[] children = blendTree.children;
 				foreach (ChildMotion childMotion in children)
 				{
-					if (childMotion.motion.CheckPredicate(result, pool))
+					if (childMotion.motion.AnyMotion(result, pool))
 					{
 						return true;
 					}
@@ -3970,7 +3970,7 @@ internal static class EditorUtils
 		return true;
 	}
 
-	internal static int SortPredicate(UnityEditor.Animations.AnimatorController i, bool extractselection = true)
+	internal static int GetWriteDefaultsMode(UnityEditor.Animations.AnimatorController i, bool extractselection = true)
 	{
 		if ((bool)i)
 		{
@@ -4020,14 +4020,14 @@ internal static class EditorUtils
 		return 0;
 	}
 
-	internal static Dictionary<UnityEngine.Object, AnimatorTransitionRef> RegisterPredicate(this AnimatorStateMachine def, Dictionary<UnityEngine.Object, AnimatorTransitionRef> cust = null, bool addtemplate = true)
+	internal static Dictionary<UnityEngine.Object, AnimatorTransitionRef> MapTransitionTargets(this AnimatorStateMachine def, Dictionary<UnityEngine.Object, AnimatorTransitionRef> cust = null, bool addtemplate = true)
 	{
 		if (cust == null)
 		{
 			cust = new Dictionary<UnityEngine.Object, AnimatorTransitionRef>();
 		}
 		_003C_003Ec__DisplayClass164_0 CS_0024_003C_003E8__locals0;
-		def.CollectPredicate(delegate(AnimatorStateMachine m)
+		def.ForEachStateMachine(delegate(AnimatorStateMachine m)
 		{
 			_003C_003Ec__DisplayClass164_1 _003C_003Ec__DisplayClass164_ = new _003C_003Ec__DisplayClass164_1();
 			_003C_003Ec__DisplayClass164_._ResolverServer = CS_0024_003C_003E8__locals0;
@@ -4036,7 +4036,7 @@ internal static class EditorUtils
 			{
 				return;
 			}
-			_003C_003Ec__DisplayClass164_._PageServer.ResolvePredicate(_003C_003Ec__DisplayClass164_.ManageSetter, moveserv: false);
+			_003C_003Ec__DisplayClass164_._PageServer.ForEachTransition(_003C_003Ec__DisplayClass164_.ManageSetter, moveserv: false);
 			foreach (AnimatorState item in _003C_003Ec__DisplayClass164_._PageServer.states.Select(_003C_003Ec.m_ConfigObserver.RateSetter))
 			{
 				if (!cust.ContainsKey(item))
@@ -4055,7 +4055,7 @@ internal static class EditorUtils
 		return cust;
 	}
 
-	internal static void LogoutPredicate(UnityEngine.Object config, bool isattr = false)
+	internal static void DestroyAssetObject(UnityEngine.Object config, bool isattr = false)
 	{
 		string assetPath = AssetDatabase.GetAssetPath(config);
 		UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
@@ -4079,13 +4079,13 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static bool PatchPredicate(UnityEngine.Object param, out UnityEngine.Object result)
+	internal static bool IsSubAsset(UnityEngine.Object param, out UnityEngine.Object result)
 	{
 		result = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(param));
 		return param != result;
 	}
 
-	internal static void InterruptPredicate(UnityEngine.Object asset, UnityEngine.Object counter, bool isutil = true, bool removeinstance2 = false)
+	internal static void AddSubAsset(UnityEngine.Object asset, UnityEngine.Object counter, bool isutil = true, bool removeinstance2 = false)
 	{
 		AssetDatabase.AddObjectToAsset(asset, counter);
 		if (isutil)
@@ -4100,16 +4100,16 @@ internal static class EditorUtils
 		EditorUtility.SetDirty(counter);
 	}
 
-	internal static void ManagePredicate(this UnityEngine.Object first)
+	internal static void SetDirty(this UnityEngine.Object first)
 	{
 		EditorUtility.SetDirty(first);
 	}
 
-	internal static void PrintPredicate(this UnityEngine.Object last)
+	internal static void MarkDirty(this UnityEngine.Object last)
 	{
 		try
 		{
-			if (!MapError(last))
+			if (!TryRecordPrefabModifications(last))
 			{
 				EditorUtility.SetDirty(last);
 			}
@@ -4190,7 +4190,7 @@ internal static class EditorUtils
 		return AssetDatabase.LoadAssetAtPath<T>(pol);
 	}
 
-	internal static T CompareRules<T>(T task) where T : UnityEngine.Object
+	internal static T CloneSerialized<T>(T task) where T : UnityEngine.Object
 	{
 		if ((bool)task)
 		{
@@ -4202,10 +4202,10 @@ internal static class EditorUtils
 		return null;
 	}
 
-	internal static T SetRules<T>(T reference, string vis, out bool proc, bool isinfo2 = true) where T : UnityEngine.Object
+	internal static T CloneToAsset<T>(T reference, string vis, out bool proc, bool isinfo2 = true) where T : UnityEngine.Object
 	{
-		proc = PatchPredicate(reference, out var _);
-		T val = CompareRules(reference);
+		proc = IsSubAsset(reference, out var _);
+		T val = CloneSerialized(reference);
 		if (!proc || isinfo2)
 		{
 			AssetDatabase.CreateAsset(val, vis);
@@ -4213,27 +4213,27 @@ internal static class EditorUtils
 		return val;
 	}
 
-	internal static T PostRules<T>(T setup, UnityEngine.Object counter) where T : UnityEngine.Object
+	internal static T CloneAsSubAsset<T>(T setup, UnityEngine.Object counter) where T : UnityEngine.Object
 	{
-		T val = CompareRules(setup);
-		InterruptPredicate(val, counter);
+		T val = CloneSerialized(setup);
+		AddSubAsset(val, counter);
 		return val;
 	}
 
-	internal static void SetupRules<T>(Action<T> key, string ord = "Create New File", string control = "New Asset", string asset2 = "asset") where T : UnityEngine.Object
+	internal static void CreateAssetViaSavePanel<T>(Action<T> key, string ord = "Create New File", string control = "New Asset", string asset2 = "asset") where T : UnityEngine.Object
 	{
-		if (!AssetDatabase.IsValidFolder(itemProperty))
+		if (!AssetDatabase.IsValidFolder(lastAssetFolder))
 		{
-			itemProperty = "Assets";
+			lastAssetFolder = "Assets";
 		}
-		control = Path.GetFileNameWithoutExtension(AssetDatabase.GenerateUniqueAssetPath(itemProperty + "/" + control + "." + asset2));
-		string text = EditorUtility.SaveFilePanel(ord, itemProperty, control, asset2);
+		control = Path.GetFileNameWithoutExtension(AssetDatabase.GenerateUniqueAssetPath(lastAssetFolder + "/" + control + "." + asset2));
+		string text = EditorUtility.SaveFilePanel(ord, lastAssetFolder, control, asset2);
 		if (!string.IsNullOrWhiteSpace(text))
 		{
 			text = FileUtil.GetProjectRelativePath(text);
 			if (text.StartsWith("Assets"))
 			{
-				itemProperty = Path.GetDirectoryName(text);
+				lastAssetFolder = Path.GetDirectoryName(text);
 				Type typeFromHandle = typeof(T);
 				UnityEngine.Object obj = ((typeFromHandle.IsSubclassOf(typeof(ScriptableObject)) || typeFromHandle == typeof(ScriptableObject)) ? ScriptableObject.CreateInstance(typeFromHandle) : (Activator.CreateInstance(typeFromHandle) as UnityEngine.Object));
 				AssetDatabase.CreateAsset(obj, text);
@@ -4241,18 +4241,18 @@ internal static class EditorUtils
 			}
 			else
 			{
-				"Path must be in the Assets folder!".CloneResolver(LogType.Warning).LoginResolver(LogType.Warning);
+				"Path must be in the Assets folder!".CloneResolver(LogType.Warning).Log(LogType.Warning);
 			}
 		}
 	}
 
-	internal static string EnableRules(string asset, string pol)
+	internal static string FolderField(string asset, string pol)
 	{
 		using (new GUILayout.HorizontalScope())
 		{
 			EditorGUILayout.PrefixLabel(pol);
 			EditorGUILayout.SelectableLabel(asset, EditorStyles.objectField, GUILayout.Height(16f), GUILayout.ExpandWidth(expand: true));
-			if (CallQueue(contents().selectFolder))
+			if (IconButton(contents().selectFolder))
 			{
 				string text = asset;
 				if (!text.StartsWith("Assets"))
@@ -4274,14 +4274,14 @@ internal static class EditorUtils
 				string projectRelativePath = FileUtil.GetProjectRelativePath(text2);
 				if (!projectRelativePath.StartsWith("Assets"))
 				{
-					"New Path must be a folder within Assets!".ReflectResolver(LogType.Warning);
+					"New Path must be a folder within Assets!".LogColored(LogType.Warning);
 					return asset;
 				}
 				asset = projectRelativePath;
 			}
 			using (new EditorGUI.DisabledScope(!AssetDatabase.IsValidFolder(asset)))
 			{
-				if (CallQueue(contents().ping))
+				if (IconButton(contents().ping))
 				{
 					EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(asset));
 				}
@@ -4290,7 +4290,7 @@ internal static class EditorUtils
 		return asset;
 	}
 
-	internal static void PublishRules(UnityEngine.Object last, string second)
+	internal static void AddNoteSubAsset(UnityEngine.Object last, string second)
 	{
 		AssetDatabase.AddObjectToAsset(new TextAsset(second)
 		{
@@ -4308,7 +4308,7 @@ internal static class EditorUtils
 	{
 		if (asset7 == null)
 		{
-			CancelRules(typeof(T), out asset7);
+			TryGetAssetExtension(typeof(T), out asset7);
 		}
 		bool isSet = pol3.isSet;
 		bool isValid = pol3.isValid;
@@ -4317,7 +4317,7 @@ internal static class EditorUtils
 			GUILayout.Label(i, GUILayout.MaxWidth(120f));
 			using (new GUILayout.HorizontalScope(EditorStyles.objectField, GUILayout.ExpandHeight(expand: true)))
 			{
-				GUIColorScope gUIColorScope = ((!isSet) ? null : new GUIColorScope(GUIColorScope.ColoringType.FG, isValid, configurationProperty, _WrapperProcessor));
+				GUIColorScope gUIColorScope = ((!isSet) ? null : new GUIColorScope(GUIColorScope.ColoringType.FG, isValid, validColor, warningColor));
 				GUILayout.Label(attr, styles().centeredBoldRichLabel);
 				if (isSet)
 				{
@@ -4330,11 +4330,11 @@ internal static class EditorUtils
 			{
 				miniTypeThumbnail = AssetPreview.GetMiniTypeThumbnail(typeof(GameObject));
 			}
-			GUI.DrawTexture(def.SortResolver(18f, isfield: true, 2f, iscont3: true, isattr4: false).VerifyResolver(-1f), miniTypeThumbnail);
+			GUI.DrawTexture(def.SliceLeft(18f, isfield: true, 2f, iscont3: true, isattr4: false).Expand(-1f), miniTypeThumbnail);
 			if (isSet)
 			{
 				Texture image = (isValid ? contents().upToDate.image : contents().warning.texture());
-				GUI.Label(def.PatchResolver(18f, isserv: true, 4f, isvisitor3: true, istoken4: false).VerifyResolver(-1f), isValid ? new GUIContent(image)
+				GUI.Label(def.SliceRight(18f, isserv: true, 4f, isvisitor3: true, istoken4: false).Expand(-1f), isValid ? new GUIContent(image)
 				{
 					tooltip = "All Good!"
 				} : new GUIContent(image)
@@ -4345,7 +4345,7 @@ internal static class EditorUtils
 			AddLinkCursor(def);
 			EventWrapper eventWrapper = new EventWrapper(Event.current).IsMouseDown().InRect(def);
 			int controlID = GUIUtility.GetControlID(FocusType.Keyboard, def);
-			if (containstask6 && GUIUtility.keyboardControl == controlID && VerifyQueue())
+			if (containstask6 && GUIUtility.keyboardControl == controlID && DeletePressed())
 			{
 				selection2(null);
 			}
@@ -4354,7 +4354,7 @@ internal static class EditorUtils
 				GUIUtility.keyboardControl = controlID;
 				if (state == null || (bool)eventWrapper.IsDoubleClick().IsLeftButton() || (bool)eventWrapper.IsRightButton())
 				{
-					ConcatList(state, typeof(T), null, null, loaddef3: false, null, null, delegate(UnityEngine.Object o)
+					ShowObjectPicker(state, typeof(T), null, null, loaddef3: false, null, null, delegate(UnityEngine.Object o)
 					{
 						if (containstask6 || o != null)
 						{
@@ -4364,32 +4364,32 @@ internal static class EditorUtils
 				}
 				else
 				{
-					PrintRules("ProjectBrowser", isattr: true);
+					FocusWindow("ProjectBrowser", isattr: true);
 					EditorGUIUtility.PingObject(state);
 				}
 				eventWrapper.Use();
 			}
-			InstantiateRules(def, selection2);
+			HandleDragAndDrop(def, selection2);
 			using (new GUILayout.HorizontalScope(GUILayout.MaxWidth(90f)))
 			{
 				GUILayout.FlexibleSpace();
 				visitor4?.Invoke();
-				MoveRules(selection2, state, second5, asset7, containstask6, loadpred4: false);
+				AssetButtons(selection2, state, second5, asset7, containstask6, loadpred4: false);
 			}
 		}
 	}
 
-	internal static void MoveRules<T>(Action<T> instance, T second, Action<T> rule = null, string token2 = "asset", bool acceptconfig3 = true, bool loadpred4 = true) where T : UnityEngine.Object
+	internal static void AssetButtons<T>(Action<T> instance, T second, Action<T> rule = null, string token2 = "asset", bool acceptconfig3 = true, bool loadpred4 = true) where T : UnityEngine.Object
 	{
 		if (instance != null)
 		{
 			string name = typeof(T).Name;
-			if (CallQueue(new GUIContent(contents().selectFolder)
+			if (IconButton(new GUIContent(contents().selectFolder)
 			{
 				tooltip = "Select from Project"
 			}))
 			{
-				ConcatList(second, typeof(T), null, null, loaddef3: false, null, null, delegate(UnityEngine.Object o)
+				ShowObjectPicker(second, typeof(T), null, null, loaddef3: false, null, null, delegate(UnityEngine.Object o)
 				{
 					if (acceptconfig3 || o != null)
 					{
@@ -4400,12 +4400,12 @@ internal static class EditorUtils
 			string text = "New " + name;
 			using (new EditorGUI.DisabledScope(disabled: false))
 			{
-				if (CallQueue(new GUIContent(contents().folderAdded)
+				if (IconButton(new GUIContent(contents().folderAdded)
 				{
 					tooltip = "Create " + text
 				}))
 				{
-					SetupRules(delegate(T f)
+					CreateAssetViaSavePanel(delegate(T f)
 					{
 						rule?.Invoke(f);
 						instance(f);
@@ -4415,25 +4415,25 @@ internal static class EditorUtils
 		}
 		if (loadpred4)
 		{
-			IncludeQueue(second);
+			PingButton(second);
 		}
 	}
 
-	internal static bool ConcatRules(this UnityEngine.Object key)
+	internal static bool IsNull(this UnityEngine.Object key)
 	{
 		return key == null;
 	}
 
-	internal static bool CallRules(this UnityEngine.Object instance, out bool cfg)
+	internal static bool IsMissing(this UnityEngine.Object instance, out bool cfg)
 	{
 		bool flag = (object)instance != null;
 		cfg = flag && instance == null;
 		return !flag | cfg;
 	}
 
-	internal static bool CancelRules(Type init, out string token)
+	internal static bool TryGetAssetExtension(Type init, out string token)
 	{
-		if (!m_SpecificationProperty.TryGetValue(init, out token))
+		if (!assetExtensions.TryGetValue(init, out token))
 		{
 			token = "asset";
 			return false;
@@ -4441,25 +4441,25 @@ internal static class EditorUtils
 		return true;
 	}
 
-	internal static void CountRules(Action spec)
+	internal static void DelayCall(Action spec)
 	{
 		bool num = _MethodProperty.Count == 0;
 		_MethodProperty.Enqueue(spec);
 		if (num)
 		{
-			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(InsertRules));
-			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Combine(EditorApplication.delayCall, new EditorApplication.CallbackFunction(InsertRules));
+			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(RunDelayedActions));
+			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Combine(EditorApplication.delayCall, new EditorApplication.CallbackFunction(RunDelayedActions));
 		}
 	}
 
-	internal static void DisableRules(Action config, bool isb = true)
+	internal static void DelayCallOnHierarchyGui(Action config, bool isb = true)
 	{
 		bool num = _SchemaProperty.Count == 0;
 		_SchemaProperty.Enqueue(config);
 		if (num)
 		{
-			EditorApplication.hierarchyWindowItemOnGUI = (EditorApplication.HierarchyWindowItemCallback)Delegate.Remove(EditorApplication.hierarchyWindowItemOnGUI, new EditorApplication.HierarchyWindowItemCallback(RestartRules));
-			EditorApplication.hierarchyWindowItemOnGUI = (EditorApplication.HierarchyWindowItemCallback)Delegate.Combine(EditorApplication.hierarchyWindowItemOnGUI, new EditorApplication.HierarchyWindowItemCallback(RestartRules));
+			EditorApplication.hierarchyWindowItemOnGUI = (EditorApplication.HierarchyWindowItemCallback)Delegate.Remove(EditorApplication.hierarchyWindowItemOnGUI, new EditorApplication.HierarchyWindowItemCallback(RunHierarchyDelayedCalls));
+			EditorApplication.hierarchyWindowItemOnGUI = (EditorApplication.HierarchyWindowItemCallback)Delegate.Combine(EditorApplication.hierarchyWindowItemOnGUI, new EditorApplication.HierarchyWindowItemCallback(RunHierarchyDelayedCalls));
 		}
 		if (isb)
 		{
@@ -4467,7 +4467,7 @@ internal static class EditorUtils
 		}
 	}
 
-	private static void InsertRules()
+	private static void RunDelayedActions()
 	{
 		while (_MethodProperty.Count != 0)
 		{
@@ -4481,10 +4481,10 @@ internal static class EditorUtils
 				Debug.LogException(exception);
 			}
 		}
-		EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(InsertRules));
+		EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(RunDelayedActions));
 	}
 
-	private static void RestartRules(int end_init, Rect connection)
+	private static void RunHierarchyDelayedCalls(int end_init, Rect connection)
 	{
 		while (_SchemaProperty.Count != 0)
 		{
@@ -4498,7 +4498,7 @@ internal static class EditorUtils
 				Debug.LogException(exception);
 			}
 		}
-		EditorApplication.hierarchyWindowItemOnGUI = (EditorApplication.HierarchyWindowItemCallback)Delegate.Remove(EditorApplication.hierarchyWindowItemOnGUI, new EditorApplication.HierarchyWindowItemCallback(RestartRules));
+		EditorApplication.hierarchyWindowItemOnGUI = (EditorApplication.HierarchyWindowItemCallback)Delegate.Remove(EditorApplication.hierarchyWindowItemOnGUI, new EditorApplication.HierarchyWindowItemCallback(RunHierarchyDelayedCalls));
 	}
 
 	internal static async Task<T> QueryRules<T>(this Task<T> config, Action<T> token, Action<Exception> c = null, Action last2 = null, Action connection3 = null, Action ident4 = null)
@@ -4593,7 +4593,7 @@ internal static class EditorUtils
 		return (T)obj;
 	}
 
-	internal static AvatarMask AddRules(UnityEditor.Animations.AnimatorController setup)
+	internal static AvatarMask CreateBaseLayerMask(UnityEditor.Animations.AnimatorController setup)
 	{
 		bool flag;
 		if ((flag = setup.layers[0].avatarMask != null) && EditorUtility.DisplayDialog("Existing Mask!", "The Base Layer already uses a mask! Continue Anyway?", "Continue", "Cancel"))
@@ -4604,34 +4604,34 @@ internal static class EditorUtils
 		{
 			return null;
 		}
-		AvatarMask avatarMask = RemoveRules();
-		avatarMask.ExcludeRules();
+		AvatarMask avatarMask = CreateEmptyMask();
+		avatarMask.EnsureRootTransformPath();
 		for (int i = 1; i < setup.layers.Length; i++)
 		{
 			UnityEditor.Animations.AnimatorControllerLayer animatorControllerLayer = setup.layers[i];
 			if ((bool)animatorControllerLayer.avatarMask)
 			{
-				avatarMask.DefineRules(animatorControllerLayer.avatarMask);
+				avatarMask.MergeFrom(animatorControllerLayer.avatarMask);
 			}
 		}
-		avatarMask.InitRules();
+		avatarMask.EnsureTransformPaths();
 		return avatarMask;
 	}
 
-	internal static AvatarMask InvokeRules(UnityEditor.Animations.AnimatorController asset, Transform cust)
+	internal static AvatarMask CreateCombinedMask(UnityEditor.Animations.AnimatorController asset, Transform cust)
 	{
-		AvatarMask avatarMask = RemoveRules();
-		avatarMask.ExcludeRules();
+		AvatarMask avatarMask = CreateEmptyMask();
+		avatarMask.EnsureRootTransformPath();
 		UnityEditor.Animations.AnimatorControllerLayer[] layers = asset.layers;
 		foreach (UnityEditor.Animations.AnimatorControllerLayer var in layers)
 		{
-			avatarMask.DefineRules(FindRules(var, cust));
+			avatarMask.MergeFrom(CreateMaskForLayer(var, cust));
 		}
-		avatarMask.InitRules();
+		avatarMask.EnsureTransformPaths();
 		return avatarMask;
 	}
 
-	internal static AvatarMask FindRules(UnityEditor.Animations.AnimatorControllerLayer var1, Transform reg)
+	internal static AvatarMask CreateMaskForLayer(UnityEditor.Animations.AnimatorControllerLayer var1, Transform reg)
 	{
 		AvatarMask m_PredicateServer = new AvatarMask();
 		Transform transform = reg;
@@ -4676,18 +4676,18 @@ internal static class EditorUtils
 						}
 						tempGameObjectHierarchy?.Destroy();
 					}
-					else if (item.type == typeof(Animator) && SelectRules(item.propertyName, out visitor))
+					else if (item.type == typeof(Animator) && TryGetBodyPart(item.propertyName, out visitor))
 					{
 						m_PredicateServer.SetHumanoidBodyPartActive(visitor, value: true);
 					}
 				}
 			});
 		});
-		m_PredicateServer.InitRules();
+		m_PredicateServer.EnsureTransformPaths();
 		return m_PredicateServer;
 	}
 
-	internal static void ExcludeRules(this AvatarMask spec, bool compareselection = false)
+	internal static void EnsureRootTransformPath(this AvatarMask spec, bool compareselection = false)
 	{
 		if (compareselection || spec.transformCount == 0)
 		{
@@ -4697,9 +4697,9 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void InitRules(this AvatarMask config, bool compareb = false)
+	internal static void EnsureTransformPaths(this AvatarMask config, bool compareb = false)
 	{
-		config.ExcludeRules();
+		config.EnsureRootTransformPath();
 		if (compareb || config.transformCount <= 1)
 		{
 			GameObject gameObject = new GameObject();
@@ -4711,14 +4711,14 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void VisitRules(this AvatarMask res, string connection)
+	internal static void AddTransformPath(this AvatarMask res, string connection)
 	{
 		TempGameObjectHierarchy tempGameObjectHierarchy = new TempGameObjectHierarchy(connection);
 		res.AddTransformPath(tempGameObjectHierarchy.gameObjects.Last().transform);
 		tempGameObjectHierarchy.Destroy();
 	}
 
-	internal static void DefineRules(this AvatarMask v, AvatarMask token)
+	internal static void MergeFrom(this AvatarMask v, AvatarMask token)
 	{
 		for (int i = 0; i < 13; i++)
 		{
@@ -4727,21 +4727,21 @@ internal static class EditorUtils
 				v.SetHumanoidBodyPartActive((AvatarMaskBodyPart)i, value: true);
 			}
 		}
-		List<(string, bool)> list = token.StartRules();
-		if (list.Count <= 0)
+		List<(string, bool)> transformPaths = token.GetTransformPaths();
+		if (transformPaths.Count <= 0)
 		{
 			return;
 		}
-		HashSet<string> setterServer = v.ReadRules();
-		foreach (var item2 in list.Where(((string, bool) s) => !setterServer.Contains(s.Item1) && s.Item2))
+		HashSet<string> setterServer = v.GetTransformPathSet();
+		foreach (var item2 in transformPaths.Where(((string, bool) s) => !setterServer.Contains(s.Item1) && s.Item2))
 		{
 			string item = item2.Item1;
-			v.VisitRules(item);
+			v.AddTransformPath(item);
 			setterServer.Add(item);
 		}
 	}
 
-	internal static List<(string, bool)> StartRules(this AvatarMask def)
+	internal static List<(string, bool)> GetTransformPaths(this AvatarMask def)
 	{
 		List<(string, bool)> list = new List<(string, bool)>();
 		int transformCount = def.transformCount;
@@ -4752,7 +4752,7 @@ internal static class EditorUtils
 		return list;
 	}
 
-	internal static HashSet<string> ReadRules(this AvatarMask task)
+	internal static HashSet<string> GetTransformPathSet(this AvatarMask task)
 	{
 		HashSet<string> hashSet = new HashSet<string>();
 		int transformCount = task.transformCount;
@@ -4763,7 +4763,7 @@ internal static class EditorUtils
 		return hashSet;
 	}
 
-	internal static bool SelectRules(string setup, out AvatarMaskBodyPart visitor)
+	internal static bool TryGetBodyPart(string setup, out AvatarMaskBodyPart visitor)
 	{
 		string[] source = new string[3] { "Arm", "Forearm", "Shoulder" };
 		string[] source2 = new string[3] { "Leg", "Foot", "Toes" };
@@ -4804,7 +4804,7 @@ internal static class EditorUtils
 		return true;
 	}
 
-	internal static AvatarMask RemoveRules()
+	internal static AvatarMask CreateEmptyMask()
 	{
 		AvatarMask avatarMask = new AvatarMask();
 		for (int i = 0; i < 13; i++)
@@ -4814,7 +4814,7 @@ internal static class EditorUtils
 		return avatarMask;
 	}
 
-	internal static void InstantiateRules<T>(Rect ident, Action<T> ivk, Func<T, bool> control = null, Action ident2 = null) where T : UnityEngine.Object
+	internal static void HandleDragAndDrop<T>(Rect ident, Action<T> ivk, Func<T, bool> control = null, Action ident2 = null) where T : UnityEngine.Object
 	{
 		Event current = Event.current;
 		if ((current.type == EventType.DragPerform || current.type == EventType.DragUpdated) && ident.Contains(current.mousePosition))
@@ -4839,7 +4839,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void AwakeRules<T>(Rect value, Action<IEnumerable<T>> ord, Func<T, bool> filter = null, Action asset2 = null) where T : UnityEngine.Object
+	internal static void HandleMultiDragAndDrop<T>(Rect value, Action<IEnumerable<T>> ord, Func<T, bool> filter = null, Action asset2 = null) where T : UnityEngine.Object
 	{
 		Event current = Event.current;
 		if ((current.type == EventType.DragPerform || current.type == EventType.DragUpdated) && value.Contains(current.mousePosition))
@@ -4868,29 +4868,29 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static PositionFlag ResetRules(PositionFlag key, Rect vis, PositionFlag util = PositionFlag.All)
+	internal static PositionFlag AnchorPicker(PositionFlag key, Rect vis, PositionFlag util = PositionFlag.All)
 	{
 		AddCursorRect(vis, MouseCursor.Pan);
 		float num = vis.width / 3f;
 		float num2 = vis.height / 3f;
-		foreach (PositionFlag item in PositionFlag.All.CancelPredicate())
+		foreach (PositionFlag flag in PositionFlag.All.GetFlags())
 		{
-			if (item == (PositionFlag)0 || (item & (item - 1)) != 0)
+			if (flag == (PositionFlag)0 || (flag & (flag - 1)) != 0)
 			{
 				continue;
 			}
 			Rect rect = vis;
-			if (item.PrintPage())
+			if (flag.PrintPage())
 			{
 				rect.x += num * 2f;
 			}
-			else if (!item.SearchPage())
+			else if (!flag.SearchPage())
 			{
 				rect.x += num;
 			}
-			if (!item.OrderResolver())
+			if (!flag.OrderResolver())
 			{
-				if (!item.RevertPage())
+				if (!flag.RevertPage())
 				{
 					rect.y += num2;
 				}
@@ -4908,21 +4908,21 @@ internal static class EditorUtils
 			key2.y += num4;
 			key2.width -= num3;
 			key2.height -= num3;
-			PostResolver(key2, Color.clear, Color.grey);
-			if (!util.HasFlag(item))
+			DrawRoundedRect(key2, Color.clear, Color.grey);
+			if (!util.HasFlag(flag))
 			{
-				PostResolver(rect, new Color(1f, 0.5f, 0.5f, 0.5f), Color.clear);
+				DrawRoundedRect(rect, new Color(1f, 0.5f, 0.5f, 0.5f), Color.clear);
 			}
 			else if (Event.current.type == EventType.Repaint)
 			{
 				if (rect.Contains(Event.current.mousePosition))
 				{
-					key = item;
-					PostResolver(rect, new Color(0.5f, 1f, 0.5f, 0.33f), Color.clear);
+					key = flag;
+					DrawRoundedRect(rect, new Color(0.5f, 1f, 0.5f, 0.33f), Color.clear);
 				}
 				else
 				{
-					PostResolver(rect, new Color(0.5f, 0.5f, 0.5f, 0.3f), Color.clear);
+					DrawRoundedRect(rect, new Color(0.5f, 0.5f, 0.5f, 0.3f), Color.clear);
 				}
 			}
 		}
@@ -4966,27 +4966,27 @@ internal static class EditorUtils
 		{
 			return;
 		}
-		AwakeRules<T>(controlRect, init.CalculateRules<T>);
-		if (DefineQueue(controlRect))
+		HandleMultiDragAndDrop<T>(controlRect, init.AddToArray<T>);
+		if (ClickArea(controlRect))
 		{
-			ConcatList(null, typeof(T), null, null, loaddef3: true, null, delegate(UnityEngine.Object o)
+			ShowObjectPicker(null, typeof(T), null, null, loaddef3: true, null, delegate(UnityEngine.Object o)
 			{
-				init.CalculateRules<_0021_00210>((IEnumerable<_0021_00210>)(object)new T[1] { o.RevertResolver<T>() });
+				init.AddToArray<_0021_00210>((IEnumerable<_0021_00210>)(object)new T[1] { o.AsComponentOrAsset<T>() });
 			});
 		}
 	}
 
-	internal static void CalculateRules<T>(this SerializedProperty config, IEnumerable<T> second) where T : UnityEngine.Object
+	internal static void AddToArray<T>(this SerializedProperty config, IEnumerable<T> second) where T : UnityEngine.Object
 	{
 		T[] enumerable = (second as T[]) ?? second.ToArray();
-		config.DestroyRules(delegate(SerializedProperty sp)
+		config.ForEachTargetProperty(delegate(SerializedProperty sp)
 		{
 			T[] array = enumerable;
 			for (int i = 0; i < array.Length; i++)
 			{
 				_003C_003Ec__DisplayClass210_1<T> _003C_003Ec__DisplayClass210_ = new _003C_003Ec__DisplayClass210_1<T>();
 				_003C_003Ec__DisplayClass210_.e = array[i];
-				if (sp.RateRules(_003C_003Ec__DisplayClass210_.MoveConnection) < 0)
+				if (sp.FindLastArrayIndex(_003C_003Ec__DisplayClass210_.MoveConnection) < 0)
 				{
 					sp.GetArrayElementAtIndex(++sp.arraySize - 1).objectReferenceValue = _003C_003Ec__DisplayClass210_.e;
 				}
@@ -4995,17 +4995,17 @@ internal static class EditorUtils
 		});
 	}
 
-	internal static void MapRules<T>(this SerializedProperty instance, IEnumerable<T> map) where T : UnityEngine.Object
+	internal static void RemoveFromArray<T>(this SerializedProperty instance, IEnumerable<T> map) where T : UnityEngine.Object
 	{
 		T[] enumerable = (map as T[]) ?? map.ToArray();
-		instance.DestroyRules(delegate(SerializedProperty sp)
+		instance.ForEachTargetProperty(delegate(SerializedProperty sp)
 		{
 			T[] array = enumerable;
 			for (int i = 0; i < array.Length; i++)
 			{
 				_003C_003Ec__DisplayClass212_1<T> _003C_003Ec__DisplayClass212_ = new _003C_003Ec__DisplayClass212_1<T>();
 				_003C_003Ec__DisplayClass212_.e = array[i];
-				int num = sp.RateRules(_003C_003Ec__DisplayClass212_.CallConnection);
+				int num = sp.FindLastArrayIndex(_003C_003Ec__DisplayClass212_.CallConnection);
 				if (num >= 0)
 				{
 					sp.DeleteArrayElementAtIndex(num);
@@ -5024,15 +5024,15 @@ internal static class EditorUtils
 	{
 		if (!extractfilter)
 		{
-			first.MapRules(result);
+			first.RemoveFromArray(result);
 		}
 		else
 		{
-			first.CalculateRules(result);
+			first.AddToArray(result);
 		}
 	}
 
-	internal static int RateRules(this SerializedProperty asset, Func<SerializedProperty, int, bool> attr)
+	internal static int FindLastArrayIndex(this SerializedProperty asset, Func<SerializedProperty, int, bool> attr)
 	{
 		int num = asset.arraySize - 1;
 		while (true)
@@ -5051,7 +5051,7 @@ internal static class EditorUtils
 		return num;
 	}
 
-	internal static void DestroyRules(this SerializedProperty instance, Action<SerializedProperty> pred)
+	internal static void ForEachTargetProperty(this SerializedProperty instance, Action<SerializedProperty> pred)
 	{
 		if (!instance.hasMultipleDifferentValues)
 		{
@@ -5093,7 +5093,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static void IncludeRules<T>(this IEnumerable<T> v, Func<T, string> counter)
+	internal static void LogEach<T>(this IEnumerable<T> v, Func<T, string> counter)
 	{
 		foreach (T item in v)
 		{
@@ -5101,7 +5101,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static IEnumerable<T> RunRules<T>(this IEnumerable<T> config, Func<T, T, bool> cont)
+	internal static IEnumerable<T> Distinct<T>(this IEnumerable<T> config, Func<T, T, bool> cont)
 	{
 		HashSet<T> seen = new HashSet<T>();
 		foreach (T element in config)
@@ -5114,12 +5114,12 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static IEnumerable<T> CloneRules<T>(this IEnumerable<T> info)
+	internal static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T> info)
 	{
 		return info.Where((T x) => x != null);
 	}
 
-	internal static IEnumerable<T> LoginRules<T>(this IEnumerable<T> setup, IEnumerable<T> reg, Func<T, T, bool> temp)
+	internal static IEnumerable<T> Except<T>(this IEnumerable<T> setup, IEnumerable<T> reg, Func<T, T, bool> temp)
 	{
 		T[] otherArr = (reg as T[]) ?? reg.ToArray();
 		foreach (T element in setup)
@@ -5131,7 +5131,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static IEnumerable<T> ReflectRules<T>(this IEnumerator init)
+	internal static IEnumerable<T> Cast<T>(this IEnumerator init)
 	{
 		while (init.MoveNext())
 		{
@@ -5139,7 +5139,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void CreateRules<T>(this IEnumerable asset, Action<T> connection)
+	internal static void ForEach<T>(this IEnumerable asset, Action<T> connection)
 	{
 		foreach (object item in asset)
 		{
@@ -5147,7 +5147,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static TT NewRules<T, TT>(this Dictionary<T, TT> ident, T pred, TT rule)
+	internal static TT GetValueOrDefault<T, TT>(this Dictionary<T, TT> ident, T pred, TT rule)
 	{
 		if (ident.TryGetValue(pred, out var value))
 		{
@@ -5156,7 +5156,7 @@ internal static class EditorUtils
 		return rule;
 	}
 
-	internal static GameObject PushRules(GameObject spec, Transform cont, bool istemplate = true, bool isconnection2 = true, bool havex3 = false)
+	internal static GameObject InstantiatePrefab(GameObject spec, Transform cont, bool istemplate = true, bool isconnection2 = true, bool havex3 = false)
 	{
 		GameObject gameObject = (GameObject)PrefabUtility.InstantiatePrefab(spec, cont);
 		if (istemplate)
@@ -5177,7 +5177,7 @@ internal static class EditorUtils
 		return gameObject;
 	}
 
-	internal static void ViewRules(GameObject var1)
+	internal static void RecordPrefabChange(GameObject var1)
 	{
 		if (PrefabUtility.IsPartOfAnyPrefab(var1))
 		{
@@ -5185,7 +5185,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static Dictionary<Transform, Transform> CollectRules(Transform asset, Transform col, bool usefield, params Transform[] transformsToFind)
+	internal static Dictionary<Transform, Transform> MapTransformsTo(Transform asset, Transform col, bool usefield, params Transform[] transformsToFind)
 	{
 		Dictionary<Transform, Transform> dictionary = new Dictionary<Transform, Transform>();
 		foreach (Transform transform in transformsToFind)
@@ -5208,7 +5208,7 @@ internal static class EditorUtils
 		return dictionary;
 	}
 
-	internal static Dictionary<T, T> ResolveRules<T>(Transform reference, Transform second, bool isutil, params T[] componentsToFind) where T : Component
+	internal static Dictionary<T, T> MapComponentsTo<T>(Transform reference, Transform second, bool isutil, params T[] componentsToFind) where T : Component
 	{
 		Dictionary<T, T> dictionary = new Dictionary<T, T>();
 		foreach (T val in componentsToFind)
@@ -5242,7 +5242,7 @@ internal static class EditorUtils
 		return dictionary;
 	}
 
-	internal static Component ListRules(this GameObject var1, Type counter)
+	internal static Component GetOrAddComponent(this GameObject var1, Type counter)
 	{
 		Component component = var1.GetComponent(counter);
 		if (component == null)
@@ -5262,7 +5262,7 @@ internal static class EditorUtils
 		return val;
 	}
 
-	internal static Type FillRules(string config)
+	internal static Type RequireQualifiedType(string config)
 	{
 		Type type = Type.GetType(config);
 		if (type == null)
@@ -5272,9 +5272,9 @@ internal static class EditorUtils
 		return type;
 	}
 
-	internal static Type WriteRules(string param)
+	internal static Type RequireType(string param)
 	{
-		Type type = ForgotRules(param);
+		Type type = FindType(param);
 		if (type == null)
 		{
 			throw new Exception("Type \"" + param + "\" not found.");
@@ -5282,7 +5282,7 @@ internal static class EditorUtils
 		return type;
 	}
 
-	internal static Type ForgotRules(string task)
+	internal static Type FindType(string task)
 	{
 		Type type = Type.GetType(task);
 		if (!(type != null))
@@ -5314,17 +5314,17 @@ internal static class EditorUtils
 		return type;
 	}
 
-	internal static GUIContent StopRules(this SerializedProperty param)
+	internal static GUIContent ToContent(this SerializedProperty param)
 	{
 		return new GUIContent(param.displayName, param.tooltip);
 	}
 
-	internal static T[] CheckRules<T>(params T[] arg)
+	internal static T[] Args<T>(params T[] arg)
 	{
 		return arg;
 	}
 
-	internal static object PrepareRules(this SerializedProperty asset)
+	internal static object GetValue(this SerializedProperty asset)
 	{
 		SerializedPropertyType propertyType = asset.propertyType;
 		switch (propertyType)
@@ -5385,7 +5385,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void AssetRules(this SerializedProperty def, object ivk)
+	internal static void SetValue(this SerializedProperty def, object ivk)
 	{
 		SerializedPropertyType propertyType = def.propertyType;
 		switch (propertyType)
@@ -5465,7 +5465,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static bool UpdateRules(string last, Func<string, bool> ivk, out string rule)
+	internal static bool TryMakeNameUnique(string last, Func<string, bool> ivk, out string rule)
 	{
 		rule = SortRules(last, ivk);
 		return rule != last;
@@ -5481,12 +5481,12 @@ internal static class EditorUtils
 	{
 		if (!cfg(instance))
 		{
-			if (!LogoutRules(instance, out var i))
+			if (!TryGetTrailingNumber(instance, out var i))
 			{
 				i = 1;
 			}
 			string arg;
-			for (arg = RegisterRules(instance); !cfg($"{arg} {i}"); i++)
+			for (arg = StripNumberSuffix(instance); !cfg($"{arg} {i}"); i++)
 			{
 			}
 			return $"{arg} {i}";
@@ -5494,12 +5494,12 @@ internal static class EditorUtils
 		return instance;
 	}
 
-	internal static string RegisterRules(string ident)
+	internal static string StripNumberSuffix(string ident)
 	{
 		return Regex.Replace(ident, "(?=.*) \\d+$", string.Empty);
 	}
 
-	internal static bool LogoutRules(string info, out int b)
+	internal static bool TryGetTrailingNumber(string info, out int b)
 	{
 		b = 0;
 		if (!string.IsNullOrWhiteSpace(info))
@@ -5515,7 +5515,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static void PatchRules()
+	internal static void UnmaximizeAllWindows()
 	{
 		EditorWindow[] array = Resources.FindObjectsOfTypeAll<EditorWindow>();
 		foreach (EditorWindow editorWindow in array)
@@ -5527,7 +5527,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static EditorWindow InterruptRules(string v)
+	internal static EditorWindow FindWindow(string v)
 	{
 		if (structProperty == null)
 		{
@@ -5535,7 +5535,7 @@ internal static class EditorUtils
 		}
 		if (!structProperty.ContainsKey(v))
 		{
-			Type type = ForgotRules(v);
+			Type type = FindType(v);
 			if (type == null)
 			{
 				return null;
@@ -5545,15 +5545,15 @@ internal static class EditorUtils
 		return Resources.FindObjectsOfTypeAll(structProperty[v]).FirstOrDefault() as EditorWindow;
 	}
 
-	internal static bool ManageRules(string i, out EditorWindow pol)
+	internal static bool TryFindWindow(string i, out EditorWindow pol)
 	{
-		pol = InterruptRules(i);
+		pol = FindWindow(i);
 		return pol != null;
 	}
 
-	internal static void PrintRules(string config, bool isattr = false)
+	internal static void FocusWindow(string config, bool isattr = false)
 	{
-		if (!ManageRules(config, out var pol))
+		if (!TryFindWindow(config, out var pol))
 		{
 			return;
 		}
@@ -5568,20 +5568,20 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void SearchRules(string task, object cfg)
+	internal static void SetGuiState(string task, object cfg)
 	{
-		if (serviceProperty == null)
+		if (guiStateCache == null)
 		{
-			serviceProperty = new Dictionary<string, object>();
+			guiStateCache = new Dictionary<string, object>();
 		}
-		serviceProperty[task] = cfg;
+		guiStateCache[task] = cfg;
 	}
 
-	internal static object RevertRules(string first)
+	internal static object GetGuiState(string first)
 	{
-		if (serviceProperty != null)
+		if (guiStateCache != null)
 		{
-			if (serviceProperty.TryGetValue(first, out var value))
+			if (guiStateCache.TryGetValue(first, out var value))
 			{
 				return value;
 			}
@@ -5593,9 +5593,9 @@ internal static class EditorUtils
 	internal static T OrderQueue<T>(string last, T attr)
 	{
 		object value;
-		if (serviceProperty != null)
+		if (guiStateCache != null)
 		{
-			return (T)((!serviceProperty.TryGetValue(last, out value)) ? ((object)attr) : value);
+			return (T)((!guiStateCache.TryGetValue(last, out value)) ? ((object)attr) : value);
 		}
 		return attr;
 	}
@@ -5609,7 +5609,7 @@ internal static class EditorUtils
 	{
 		if (var12 == proc)
 		{
-			SearchRules(init, attr);
+			SetGuiState(init, attr);
 		}
 	}
 
@@ -5663,20 +5663,20 @@ internal static class EditorUtils
 	{
 		if (!cont.HasValue)
 		{
-			cont = m_MapperProcessor;
+			cont = linkColor;
 		}
 		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
 			using (new GUIColorScope(GUIColorScope.ColoringType.FG, cont.Value))
 			{
 				bool result = Button(item, styles().toggleLabel, GUILayout.ExpandWidth(expand: false));
-				ConcatQueue(cont);
+				DrawLinkUnderline(cont);
 				return result;
 			}
 		}
 	}
 
-	internal static void ConcatQueue(Color? v = null)
+	internal static void DrawLinkUnderline(Color? v = null)
 	{
 		if (!v.HasValue)
 		{
@@ -5694,7 +5694,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static bool CallQueue(GUIContent setup, float cust = -1f, float consumer = -1f)
+	internal static bool IconButton(GUIContent setup, float cust = -1f, float consumer = -1f)
 	{
 		if (cust == -1f)
 		{
@@ -5787,7 +5787,7 @@ internal static class EditorUtils
 		return writevalue != flag;
 	}
 
-	internal static bool DefineQueue(Rect v = default(Rect))
+	internal static bool ClickArea(Rect v = default(Rect))
 	{
 		if (v == default(Rect))
 		{
@@ -5845,7 +5845,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static bool InstantiateQueue(Rect reference = default(Rect))
+	internal static bool RightClicked(Rect reference = default(Rect))
 	{
 		Event current = Event.current;
 		if (current.type == EventType.ContextClick)
@@ -5883,7 +5883,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void ResetQueue(Rect config, Action<float> col)
+	internal static void HandleScrollWheel(Rect config, Action<float> col)
 	{
 		Event current = Event.current;
 		if (current.type == EventType.ScrollWheel)
@@ -5930,7 +5930,7 @@ internal static class EditorUtils
 		ConnectQueue(GUILayoutUtility.GetLastRect(), res, iscfg, tag, def2, isivk3);
 	}
 
-	internal static void MapQueue(int idx_var1 = 2, int contHigh = 10, int state_start = 0)
+	internal static void Separator(int idx_var1 = 2, int contHigh = 10, int state_start = 0)
 	{
 		Rect rect = ((state_start <= 0) ? EditorGUILayout.GetControlRect(GUILayout.Height(idx_var1 + contHigh)) : EditorGUILayout.GetControlRect(GUILayout.Height(idx_var1 + contHigh), GUILayout.MaxWidth(state_start)));
 		rect.height = idx_var1;
@@ -5941,7 +5941,7 @@ internal static class EditorUtils
 		EditorGUI.DrawRect(rect, color);
 	}
 
-	internal static bool ValidateQueue(Rect def, int removeTOKENAt)
+	internal static bool CaptureHotControl(Rect def, int removeTOKENAt)
 	{
 		if (GUIUtility.hotControl != removeTOKENAt)
 		{
@@ -5956,7 +5956,7 @@ internal static class EditorUtils
 		return true;
 	}
 
-	public static Rect[] CustomizeQueue(Rect ident, int visitorPosition)
+	public static Rect[] SplitIntoGrid(Rect ident, int visitorPosition)
 	{
 		Rect[] array = new Rect[visitorPosition];
 		if (visitorPosition <= 0)
@@ -5978,7 +5978,7 @@ internal static class EditorUtils
 		return array;
 	}
 
-	internal static void RateQueue()
+	internal static void IconSpacer()
 	{
 		GUILayout.Label(GUIContent.none, GUILayout.Width(EditorGUIUtility.singleLineHeight));
 	}
@@ -6025,11 +6025,11 @@ internal static class EditorUtils
 		return dic;
 	}
 
-	internal static void IncludeQueue(UnityEngine.Object instance)
+	internal static void PingButton(UnityEngine.Object instance)
 	{
 		using (new EditorGUI.DisabledScope(instance == null))
 		{
-			if (CallQueue(new GUIContent(contents().ping)
+			if (IconButton(new GUIContent(contents().ping)
 			{
 				tooltip = "Ping in Project window"
 			}, 10f))
@@ -6039,7 +6039,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void RunQueue(Transform asset, TransformControlSettings caller)
+	internal static void TransformHandles(Transform asset, TransformControlSettings caller)
 	{
 		if (asset == null)
 		{
@@ -6068,7 +6068,7 @@ internal static class EditorUtils
 		if (flag3)
 		{
 			bool outputres = caller.rotationControl.ResolvePivotRotation(pivotRotation) == PivotRotation.Global;
-			CloneQueue(asset, caller.rotationControl.axis, outputres);
+			RotationHandles(asset, caller.rotationControl.axis, outputres);
 		}
 		if (flag4)
 		{
@@ -6084,21 +6084,21 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void CloneQueue(Transform param, Axis attr = Axis.X | Axis.Y | Axis.Z, bool outputres = true)
+	internal static void RotationHandles(Transform param, Axis attr = Axis.X | Axis.Y | Axis.Z, bool outputres = true)
 	{
 		if (attr != (Axis.X | Axis.Y | Axis.Z))
 		{
 			if (attr.HasFlag(Axis.X))
 			{
-				ReflectQueue(param, outputres ? Vector3.right : param.right);
+				AxisRotationHandle(param, outputres ? Vector3.right : param.right);
 			}
 			if (attr.HasFlag(Axis.Y))
 			{
-				ReflectQueue(param, outputres ? Vector3.up : param.up);
+				AxisRotationHandle(param, outputres ? Vector3.up : param.up);
 			}
 			if (attr.HasFlag(Axis.Z))
 			{
-				ReflectQueue(param, outputres ? Vector3.forward : param.forward);
+				AxisRotationHandle(param, outputres ? Vector3.forward : param.forward);
 			}
 			return;
 		}
@@ -6137,10 +6137,10 @@ internal static class EditorUtils
 	{
 	}
 
-	internal static void ReflectQueue(Transform first, Vector3 vis)
+	internal static void AxisRotationHandle(Transform first, Vector3 vis)
 	{
 		EditorGUI.BeginChangeCheck();
-		Quaternion rotation = DeleteQueue(first.position, first.rotation, vis);
+		Quaternion rotation = RotationDisc(first.position, first.rotation, vis);
 		if (EditorGUI.EndChangeCheck())
 		{
 			Undo.RecordObject(first, "Custom Tool Control");
@@ -6148,9 +6148,9 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static Quaternion DeleteQueue(Vector3 instance, Quaternion ord, Vector3 c)
+	internal static Quaternion RotationDisc(Vector3 instance, Quaternion ord, Vector3 c)
 	{
-		Handles.color = configurationProperty;
+		Handles.color = validColor;
 		return Handles.Disc(ord, instance, c, HandleUtility.GetHandleSize(instance), cutoffPlane: false, 0f);
 	}
 
@@ -6172,7 +6172,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static float NewQueue(Quaternion key, Vector3 pol, float util, bool asset2reguired = true, float init3 = 1f)
+	internal static float RadiusHandle(Quaternion key, Vector3 pol, float util, bool asset2reguired = true, float init3 = 1f)
 	{
 		float num = 90f;
 		Vector3[] array = new Vector3[4]
@@ -6244,7 +6244,7 @@ internal static class EditorUtils
 		return stylesInstance ?? (stylesInstance = new Styles());
 	}
 
-	internal static bool ViewQueue(EventCommands setup, string result = "", bool consumerinstall = true)
+	internal static bool CommandIssued(EventCommands setup, string result = "", bool consumerinstall = true)
 	{
 		if (!string.IsNullOrEmpty(result) && GUI.GetNameOfFocusedControl() != result)
 		{
@@ -6263,7 +6263,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static bool CollectQueue(KeyCode var1, string visitor = "", bool iscomp = true)
+	internal static bool KeyPressed(KeyCode var1, string visitor = "", bool iscomp = true)
 	{
 		if (!string.IsNullOrEmpty(visitor) && GUI.GetNameOfFocusedControl() != visitor)
 		{
@@ -6278,34 +6278,34 @@ internal static class EditorUtils
 		return num;
 	}
 
-	internal static bool ResolveQueue(string ident = "", bool readattr = true)
+	internal static bool SubmitPressed(string ident = "", bool readattr = true)
 	{
-		if (!CollectQueue(KeyCode.Return, ident, readattr))
+		if (!KeyPressed(KeyCode.Return, ident, readattr))
 		{
-			return CollectQueue(KeyCode.KeypadEnter, ident, readattr);
+			return KeyPressed(KeyCode.KeypadEnter, ident, readattr);
 		}
 		return true;
 	}
 
-	internal static bool ListQueue(string setup = "", bool addpol = true)
+	internal static bool CancelPressed(string setup = "", bool addpol = true)
 	{
-		return CollectQueue(KeyCode.Escape, setup, addpol);
+		return KeyPressed(KeyCode.Escape, setup, addpol);
 	}
 
-	internal static bool VerifyQueue(string last = "", bool havesecond = true)
+	internal static bool DeletePressed(string last = "", bool havesecond = true)
 	{
-		if (!ViewQueue(EventCommands.SoftDelete, last, havesecond))
+		if (!CommandIssued(EventCommands.SoftDelete, last, havesecond))
 		{
-			return ViewQueue(EventCommands.Delete, last, havesecond);
+			return CommandIssued(EventCommands.Delete, last, havesecond);
 		}
 		return true;
 	}
 
-	internal static bool FillQueue(string config = "", Action reg = null, Action temp = null)
+	internal static bool SubmitOrCancel(string config = "", Action reg = null, Action temp = null)
 	{
-		if (!ResolveQueue(config))
+		if (!SubmitPressed(config))
 		{
-			if (!ListQueue(config))
+			if (!CancelPressed(config))
 			{
 				return false;
 			}
@@ -6316,9 +6316,9 @@ internal static class EditorUtils
 		return true;
 	}
 
-	internal static bool WriteQueue(string task, Action counter = null, Action serv = null)
+	internal static bool SubmitOrCancelAndDefocus(string task, Action counter = null, Action serv = null)
 	{
-		if (FillQueue(task, counter, serv))
+		if (SubmitOrCancel(task, counter, serv))
 		{
 			GUI.FocusControl(null);
 			return true;
@@ -6338,13 +6338,13 @@ internal static class EditorUtils
 		}
 		if (regProcessor == null)
 		{
-			regProcessor = PrepareQueue();
+			regProcessor = CreateArrowMesh();
 		}
 		if (testsProcessor == null)
 		{
-			testsProcessor = AssetQueue();
+			testsProcessor = CreateArrowMaterial();
 		}
-		UpdateQueue(testsProcessor);
+		ConfigureArrowMaterial(testsProcessor);
 		float num = Vector3.Distance(last, pred);
 		Vector3 normalized = (pred - last).normalized;
 		Matrix4x4 matrix = Matrix4x4.TRS(last, Quaternion.LookRotation(normalized, c), new Vector3(num, num, num));
@@ -6370,19 +6370,19 @@ internal static class EditorUtils
 		}
 		if (regProcessor == null)
 		{
-			regProcessor = PrepareQueue();
+			regProcessor = CreateArrowMesh();
 		}
 		if (testsProcessor == null)
 		{
-			testsProcessor = AssetQueue();
+			testsProcessor = CreateArrowMaterial();
 		}
-		UpdateQueue(testsProcessor);
+		ConfigureArrowMaterial(testsProcessor);
 		testsProcessor.SetColor(_PropertyProcessor, dic.Value);
 		testsProcessor.SetPass(0);
 		Graphics.DrawMeshNow(regProcessor, config);
 	}
 
-	private static Mesh PrepareQueue()
+	private static Mesh CreateArrowMesh()
 	{
 		Mesh mesh = new Mesh();
 		mesh.MarkDynamic();
@@ -6427,14 +6427,14 @@ internal static class EditorUtils
 		return mesh;
 	}
 
-	private static Material AssetQueue()
+	private static Material CreateArrowMaterial()
 	{
 		Material material = new Material(Shader.Find("UI/Unlit/Text"));
-		UpdateQueue(material);
+		ConfigureArrowMaterial(material);
 		return material;
 	}
 
-	private static void UpdateQueue(Material i)
+	private static void ConfigureArrowMaterial(Material i)
 	{
 		i.hideFlags = HideFlags.DontSave;
 		i.SetInt("_Cull", 2);
@@ -6442,7 +6442,7 @@ internal static class EditorUtils
 		i.SetInt("_ZTest", 8);
 	}
 
-	internal static void ChangeQueue(HandleSphere key)
+	internal static void DrawSphereHandle(HandleSphere key)
 	{
 		Event current = Event.current;
 		key.onDraw?.Invoke(key);
@@ -6493,13 +6493,13 @@ internal static class EditorUtils
 
 	internal static void PatchQueue(VRCAvatarDescriptor setup, Vector3 visitor, bool isdir, out Vector3 caller2, out Quaternion visitor3, Vector3? x4 = null, Vector3? t5 = null)
 	{
-		setup.GetComponent<Animator>().InterruptQueue(out var b, isdir);
+		setup.GetComponent<Animator>().GetHandRotation(out var b, isdir);
 		Vector3 vector = b * Vector3.up;
 		Vector3 vector2 = b * Vector3.right * (isdir ? 1 : (-1));
 		visitor3 = b;
-		float num = setup.IncludeList();
-		float num2 = num * 0.02f;
-		caller2 = visitor + vector * num2 + vector2 * num2;
+		float avatarHeight = setup.GetAvatarHeight();
+		float num = avatarHeight * 0.02f;
+		caller2 = visitor + vector * num + vector2 * num;
 		if (x4.HasValue)
 		{
 			if (!isdir)
@@ -6508,7 +6508,7 @@ internal static class EditorUtils
 			}
 			Quaternion value = visitor3;
 			Vector3? vector3 = x4;
-			x4 = value * vector3 * num * 0.02f;
+			x4 = value * vector3 * avatarHeight * 0.02f;
 			caller2 += x4.Value;
 		}
 		if (t5.HasValue)
@@ -6525,7 +6525,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static bool InterruptQueue(this Animator asset, out Quaternion b, bool ispool = true)
+	internal static bool GetHandRotation(this Animator asset, out Quaternion b, bool ispool = true)
 	{
 		b = ((!ispool) ? Quaternion.Euler(0f, 0f, 90f) : Quaternion.Euler(0f, 0f, -90f));
 		try
@@ -6561,7 +6561,7 @@ internal static class EditorUtils
 		HumanBodyBones[] array = bones;
 		foreach (HumanBodyBones humanBodyBones in array)
 		{
-			Transform transform = ((!iscfg) ? key.GetBoneTransform(humanBodyBones) : key.RevertQueue(humanBodyBones));
+			Transform transform = ((!iscfg) ? key.GetBoneTransform(humanBodyBones) : key.GetBoneTransformOrFallback(humanBodyBones));
 			info4.Add(humanBodyBones, transform);
 			if (transform == null)
 			{
@@ -6575,7 +6575,7 @@ internal static class EditorUtils
 			for (int i = 0; i < array.Length; i++)
 			{
 				HumanBodyBones connection = array[i];
-				if (!key.OrderList(connection))
+				if (!key.HasBone(connection))
 				{
 					stringBuilder.AppendLine(connection.ToString());
 				}
@@ -6590,15 +6590,15 @@ internal static class EditorUtils
 		return flag;
 	}
 
-	internal static Transform RevertQueue(this Animator ident, HumanBodyBones attr, HumanBodyBones? role = null)
+	internal static Transform GetBoneTransformOrFallback(this Animator ident, HumanBodyBones attr, HumanBodyBones? role = null)
 	{
 		int num = (int)attr;
 		Transform transform = ident.GetBoneTransform(attr);
 		if (!transform)
 		{
-			if (!attr.CompareList() || num % 3 == 0)
+			if (!attr.IsFinger() || num % 3 == 0)
 			{
-				if (attr.SetList())
+				if (attr.IsToes())
 				{
 					num -= 14;
 					transform = ident.GetBoneTransform((HumanBodyBones)num);
@@ -6606,23 +6606,23 @@ internal static class EditorUtils
 			}
 			else
 			{
-				transform = ident.RevertQueue((HumanBodyBones)(--num));
+				transform = ident.GetBoneTransformOrFallback((HumanBodyBones)(--num));
 			}
 			if (transform == null && role.HasValue)
 			{
-				transform = ident.RevertQueue(role.Value);
+				transform = ident.GetBoneTransformOrFallback(role.Value);
 			}
 			return transform;
 		}
 		return transform;
 	}
 
-	internal static bool OrderList(this Animator var1, HumanBodyBones connection)
+	internal static bool HasBone(this Animator var1, HumanBodyBones connection)
 	{
 		return var1.GetBoneTransform(connection) != null;
 	}
 
-	internal static bool CompareList(this HumanBodyBones asset)
+	internal static bool IsFinger(this HumanBodyBones asset)
 	{
 		if (asset < HumanBodyBones.LeftThumbProximal)
 		{
@@ -6631,7 +6631,7 @@ internal static class EditorUtils
 		return asset <= HumanBodyBones.RightLittleDistal;
 	}
 
-	internal static bool SetList(this HumanBodyBones var1)
+	internal static bool IsToes(this HumanBodyBones var1)
 	{
 		if (var1 == HumanBodyBones.LeftToes)
 		{
@@ -6640,17 +6640,17 @@ internal static class EditorUtils
 		return var1 == HumanBodyBones.RightToes;
 	}
 
-	internal static bool PostList(this HumanBodyBones param)
+	internal static bool IsLeft(this HumanBodyBones param)
 	{
 		return param.ToString().StartsWith("Left");
 	}
 
-	internal static bool SetupList(this HumanBodyBones last)
+	internal static bool IsRight(this HumanBodyBones last)
 	{
 		return last.ToString().StartsWith("Right");
 	}
 
-	internal static bool EnableList(this HumanBodyBones last)
+	internal static bool IsSided(this HumanBodyBones last)
 	{
 		string text = last.ToString();
 		if (text.StartsWith("Left"))
@@ -6660,13 +6660,13 @@ internal static class EditorUtils
 		return text.StartsWith("Right");
 	}
 
-	internal static bool PublishList(int infoamount, out int ord)
+	internal static bool TryGetMirroredBoneIndex(int infoamount, out int ord)
 	{
-		ord = PopList(infoamount);
+		ord = GetMirroredBoneIndex(infoamount);
 		return ord != infoamount;
 	}
 
-	internal static int PopList(int tasklow)
+	internal static int GetMirroredBoneIndex(int tasklow)
 	{
 		if (tasklow <= 0)
 		{
@@ -6676,9 +6676,9 @@ internal static class EditorUtils
 		return tasklow + num;
 	}
 
-	internal static bool MoveList(this HumanBodyBones info, out HumanBodyBones map)
+	internal static bool TryGetMirroredBone(this HumanBodyBones info, out HumanBodyBones map)
 	{
-		if (!PublishList((int)info, out var ord))
+		if (!TryGetMirroredBoneIndex((int)info, out var ord))
 		{
 			map = info;
 			return false;
@@ -6687,7 +6687,7 @@ internal static class EditorUtils
 		return true;
 	}
 
-	internal static void ConcatList(UnityEngine.Object info, Type pol, UnityEngine.Object role = null, SerializedProperty pol2 = null, bool loaddef3 = true, List<int> task4 = null, Action<UnityEngine.Object> result5 = null, Action<UnityEngine.Object> config6 = null, bool rejectresult7 = true)
+	internal static void ShowObjectPicker(UnityEngine.Object info, Type pol, UnityEngine.Object role = null, SerializedProperty pol2 = null, bool loaddef3 = true, List<int> task4 = null, Action<UnityEngine.Object> result5 = null, Action<UnityEngine.Object> config6 = null, bool rejectresult7 = true)
 	{
 		if (observerProcessor == null)
 		{
@@ -6727,22 +6727,22 @@ internal static class EditorUtils
 		processorProcessor.Invoke(window, second2);
 	}
 
-	internal static void CallList(Type asset, Type visitor)
+	internal static void OverrideCustomEditor(Type asset, Type visitor)
 	{
 		if (!threadProcessor)
 		{
 			threadProcessor = true;
-			m_PolicyProcessor = FillRules("UnityEditor.CustomEditorAttributes, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-			m_SerializerProcessor = FillRules("UnityEditor.CustomEditorAttributes+MonoEditorType, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-			_PageProcessor = m_PolicyProcessor.RestartList("kSCustomMultiEditors");
-			resolverProcessor = m_SerializerProcessor.RestartList("m_InspectorType");
+			m_PolicyProcessor = RequireQualifiedType("UnityEditor.CustomEditorAttributes, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+			m_SerializerProcessor = RequireQualifiedType("UnityEditor.CustomEditorAttributes+MonoEditorType, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+			_PageProcessor = m_PolicyProcessor.GetAnyField("kSCustomMultiEditors");
+			resolverProcessor = m_SerializerProcessor.GetAnyField("m_InspectorType");
 		}
 		IList list = (IList)((IDictionary)_PageProcessor.GetValue(null))[asset];
 		resolverProcessor.SetValue(list[0], visitor);
-		CancelList();
+		RefreshInspectors();
 	}
 
-	internal static void CancelList()
+	internal static void RefreshInspectors()
 	{
 		if (_PredicateProcessor == null)
 		{
@@ -6752,15 +6752,15 @@ internal static class EditorUtils
 		_RulesProcessor.Invoke(null, null);
 	}
 
-	internal static IList CountList(this GenericMenu init)
+	internal static IList GetMenuItems(this GenericMenu init)
 	{
 		if (!errorProcessor)
 		{
 			errorProcessor = true;
-			queueProcessor = typeof(GenericMenu).RestartList("menuItems");
+			queueProcessor = typeof(GenericMenu).GetAnyField("menuItems");
 			if (queueProcessor == null)
 			{
-				queueProcessor = typeof(GenericMenu).RestartList("m_MenuItems");
+				queueProcessor = typeof(GenericMenu).GetAnyField("m_MenuItems");
 			}
 		}
 		if (!(queueProcessor == null))
@@ -6780,17 +6780,17 @@ internal static class EditorUtils
 		return init.GetMethod(result, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, template, null);
 	}
 
-	internal static FieldInfo RestartList(this Type i, string ord)
+	internal static FieldInfo GetAnyField(this Type i, string ord)
 	{
 		return i.GetField(ord, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 	}
 
-	internal static PropertyInfo QueryList(this Type i, string visitor)
+	internal static PropertyInfo GetAnyProperty(this Type i, string visitor)
 	{
 		return i.GetProperty(visitor, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 	}
 
-	internal static ConstructorInfo AddList(this Type param, Type[] selection)
+	internal static ConstructorInfo GetAnyConstructor(this Type param, Type[] selection)
 	{
 		return param.GetConstructor(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, selection, null);
 	}
@@ -7000,7 +7000,7 @@ internal static class EditorUtils
 		return result;
 	}
 
-	internal static void RemoveList(string first)
+	internal static void EnsureDirectoryExists(string first)
 	{
 		if (!Directory.Exists(first))
 		{
@@ -7012,7 +7012,7 @@ internal static class EditorUtils
 	{
 		bool flag = filter == PathOption.ForceFolder;
 		bool flag2;
-		var1 = ((flag2 = filter == PathOption.ForceFile) ? CalculateList(var1) : (flag ? ConnectList(var1) : FlushList(var1)));
+		var1 = ((flag2 = filter == PathOption.ForceFile) ? SanitizeFileName(var1) : (flag ? SanitizeFolderPath(var1) : SanitizePath(var1)));
 		if (!flag && (flag2 || !string.IsNullOrEmpty(Path.GetExtension(var1))))
 		{
 			string text = Path.GetDirectoryName(var1);
@@ -7056,14 +7056,14 @@ internal static class EditorUtils
 		{
 			if (!string.IsNullOrEmpty(i))
 			{
-				return InstantiateList(ConnectList(i) + "/" + CalculateList(reg), writestate);
+				return InstantiateList(SanitizeFolderPath(i) + "/" + SanitizeFileName(reg), writestate);
 			}
-			return InstantiateList(CalculateList(reg), writestate, PathOption.ForceFile);
+			return InstantiateList(SanitizeFileName(reg), writestate, PathOption.ForceFile);
 		}
-		return InstantiateList(ConnectList(i), writestate, PathOption.ForceFolder);
+		return InstantiateList(SanitizeFolderPath(i), writestate, PathOption.ForceFolder);
 	}
 
-	internal static string ResetList(UnityEngine.Object instance, string b = "", bool forcecomp = true)
+	internal static string PrepareSiblingAssetPath(UnityEngine.Object instance, string b = "", bool forcecomp = true)
 	{
 		string assetPath = AssetDatabase.GetAssetPath(instance);
 		string directoryName = Path.GetDirectoryName(assetPath);
@@ -7078,20 +7078,20 @@ internal static class EditorUtils
 		return AwakeList(directoryName, b, forcecomp);
 	}
 
-	internal static string FlushList(string param)
+	internal static string SanitizePath(string param)
 	{
 		if (!string.IsNullOrEmpty(param))
 		{
 			string extension = Path.GetExtension(param);
 			if (string.IsNullOrEmpty(extension))
 			{
-				return ConnectList(param);
+				return SanitizeFolderPath(param);
 			}
 			string directoryName = Path.GetDirectoryName(param);
-			string text = CalculateList(Path.GetFileNameWithoutExtension(param));
+			string text = SanitizeFileName(Path.GetFileNameWithoutExtension(param));
 			if (!string.IsNullOrEmpty(directoryName))
 			{
-				directoryName = ConnectList(directoryName);
+				directoryName = SanitizeFolderPath(directoryName);
 				return directoryName + "/" + text + extension;
 			}
 			return text + extension;
@@ -7100,7 +7100,7 @@ internal static class EditorUtils
 		return "EmptyPath";
 	}
 
-	internal static string ConnectList(string init)
+	internal static string SanitizeFolderPath(string init)
 	{
 		string _CustomerServer = Regex.Escape(new string(Path.GetInvalidPathChars()));
 		init = init.Replace('\\', '/');
@@ -7112,7 +7112,7 @@ internal static class EditorUtils
 		return init;
 	}
 
-	internal static string CalculateList(string setup)
+	internal static string SanitizeFileName(string setup)
 	{
 		string text = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
 		if (string.IsNullOrEmpty(setup))
@@ -7221,16 +7221,16 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static void CalcList(this VRCAvatarDescriptor item, bool iscfg = false)
+	internal static void FrameAvatar(this VRCAvatarDescriptor item, bool iscfg = false)
 	{
-		float num = item.IncludeList();
+		float avatarHeight = item.GetAvatarHeight();
 		Transform transform = item.transform;
 		Vector3 position = transform.position;
-		Vector3 vector = position + Vector3.up * num;
-		RateList((position + vector * 5f) / 6f, transform.forward, num * 0.66f, iscfg);
+		Vector3 vector = position + Vector3.up * avatarHeight;
+		RateList((position + vector * 5f) / 6f, transform.forward, avatarHeight * 0.66f, iscfg);
 	}
 
-	internal static float IncludeList(this VRCAvatarDescriptor first)
+	internal static float GetAvatarHeight(this VRCAvatarDescriptor first)
 	{
 		try
 		{
@@ -7247,7 +7247,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static Vector3 RunList(Vector3 param, Vector3 selection, Vector3 third)
+	internal static Vector3 ProjectOntoLine(Vector3 param, Vector3 selection, Vector3 third)
 	{
 		third = third.normalized;
 		float num = Vector3.Dot(selection - param, third);
@@ -7321,7 +7321,7 @@ internal static class EditorUtils
 		throw new ArgumentNullException("texture");
 	}
 
-	internal static Texture2D LoginList(Color res)
+	internal static Texture2D SharedColorTexture(Color res)
 	{
 		if (connectionProcessor == null)
 		{
@@ -7336,7 +7336,7 @@ internal static class EditorUtils
 		return connectionProcessor;
 	}
 
-	internal static Texture2D ReflectList(Color instance)
+	internal static Texture2D ColorTexture(Color instance)
 	{
 		Texture2D texture2D = new Texture2D(1, 1, TextureFormat.RGBA32, mipChain: false);
 		texture2D.filterMode = FilterMode.Point;
@@ -7401,7 +7401,7 @@ internal static class EditorUtils
 		return new Color(i, i, i, 1f);
 	}
 
-	internal static Texture2D ViewList(Texture2D task, int ivk_counter, int version_res, out Color[] asset2, bool applyattr3 = false)
+	internal static Texture2D ReadPixelsScaled(Texture2D task, int ivk_counter, int version_res, out Color[] asset2, bool applyattr3 = false)
 	{
 		task.filterMode = FilterMode.Point;
 		RenderTexture temporary = RenderTexture.GetTemporary(ivk_counter, version_res);
@@ -7421,7 +7421,7 @@ internal static class EditorUtils
 		return null;
 	}
 
-	internal static void CollectList(Transform asset, Transform ivk, Transform template, bool moveres2, bool isparam3, Axis vis4 = Axis.X, PlaneAxis reference5 = PlaneAxis.YZ, Axis vis6 = Axis.None)
+	internal static void MirrorTransform(Transform asset, Transform ivk, Transform template, bool moveres2, bool isparam3, Axis vis4 = Axis.X, PlaneAxis reference5 = PlaneAxis.YZ, Axis vis6 = Axis.None)
 	{
 		if (moveres2 && asset != asset.root)
 		{
@@ -7433,7 +7433,7 @@ internal static class EditorUtils
 					Transform boneTransform = componentInChildren.GetBoneTransform((HumanBodyBones)i);
 					if ((bool)boneTransform && boneTransform == asset.parent)
 					{
-						if (!PublishList(i, out var ord))
+						if (!TryGetMirroredBoneIndex(i, out var ord))
 						{
 							break;
 						}
@@ -7456,7 +7456,7 @@ internal static class EditorUtils
 		}
 		if (!template)
 		{
-			ivk.position = asset.position.PopPredicate(vis4);
+			ivk.position = asset.position.Negate(vis4);
 		}
 		else
 		{
@@ -7464,14 +7464,14 @@ internal static class EditorUtils
 			if (!isparam3)
 			{
 				Vector3 position2 = template.position;
-				Vector3 ident = position2 + (position - position2).PopPredicate(vis4) - position;
-				ident = ident.ComputePredicate(vis4);
+				Vector3 ident = position2 + (position - position2).Negate(vis4) - position;
+				ident = ident.Mask(vis4);
 				position += ident;
 				ivk.position = position;
 			}
 			else
 			{
-				Vector3 position3 = template.InverseTransformPoint(position).PopPredicate(vis4);
+				Vector3 position3 = template.InverseTransformPoint(position).Negate(vis4);
 				ivk.position = template.TransformPoint(position3);
 			}
 		}
@@ -7500,7 +7500,7 @@ internal static class EditorUtils
 		});
 	}
 
-	internal static void VerifyList(Transform setup, Vector3 map, Transform[] res, bool forcekey2 = true)
+	internal static void SetLocalScaleKeepingWorldPositions(Transform setup, Vector3 map, Transform[] res, bool forcekey2 = true)
 	{
 		if (forcekey2)
 		{
@@ -7616,7 +7616,7 @@ internal static class EditorUtils
 			for (int i = 0; i < array.Length; i++)
 			{
 				int num = ((i != 0) ? (i + 1) : i);
-				if (spec.UpdateList((VRCAvatarDescriptor.AnimLayerType)num, out var _))
+				if (spec.TryGetPlayableLayerController((VRCAvatarDescriptor.AnimLayerType)num, out var _))
 				{
 					list.Add((array[i], num));
 				}
@@ -7636,7 +7636,7 @@ internal static class EditorUtils
 		}
 	}
 
-	internal static bool UpdateList(this VRCAvatarDescriptor item, VRCAvatarDescriptor.AnimLayerType cust, out UnityEditor.Animations.AnimatorController proc)
+	internal static bool TryGetPlayableLayerController(this VRCAvatarDescriptor item, VRCAvatarDescriptor.AnimLayerType cust, out UnityEditor.Animations.AnimatorController proc)
 	{
 		proc = (from l in item.baseAnimationLayers.Concat(item.specialAnimationLayers)
 			where l.type == cust
@@ -7644,31 +7644,31 @@ internal static class EditorUtils
 		return proc != null;
 	}
 
-	internal static UnityEditor.Animations.AnimatorController ChangeList(this VRCAvatarDescriptor def, VRCAvatarDescriptor.AnimLayerType cont)
+	internal static UnityEditor.Animations.AnimatorController GetPlayableLayerController(this VRCAvatarDescriptor def, VRCAvatarDescriptor.AnimLayerType cont)
 	{
-		if (def.UpdateList(cont, out var proc))
+		if (def.TryGetPlayableLayerController(cont, out var proc))
 		{
 			return proc;
 		}
 		return null;
 	}
 
-	internal static bool SortList(this VRCAvatarDescriptor setup, VRCAvatarDescriptor.AnimLayerType attr, RuntimeAnimatorController role)
+	internal static bool SetPlayableLayerController(this VRCAvatarDescriptor setup, VRCAvatarDescriptor.AnimLayerType attr, RuntimeAnimatorController role)
 	{
 		_003C_003Ec__DisplayClass446_0 map = default(_003C_003Ec__DisplayClass446_0);
 		map._PrinterServer = attr;
 		map._WriterServer = role;
 		map._ParamsServer = setup;
-		if (ValidateError(map._ParamsServer.baseAnimationLayers, ref map))
+		if (TryAssignLayerController(map._ParamsServer.baseAnimationLayers, ref map))
 		{
 			return true;
 		}
-		return ValidateError(map._ParamsServer.specialAnimationLayers, ref map);
+		return TryAssignLayerController(map._ParamsServer.specialAnimationLayers, ref map);
 	}
 
 	internal static int RegisterList(this VRCAvatarDescriptor instance, VRCAvatarDescriptor.AnimLayerType second)
 	{
-		return SortPredicate(instance.ChangeList(second));
+		return GetWriteDefaultsMode(instance.GetPlayableLayerController(second));
 	}
 
 	internal static VRCAvatarDescriptor LogoutList(GameObject item, Action pol = null)
@@ -7688,31 +7688,31 @@ internal static class EditorUtils
 	}
 
 	[SpecialName]
-	internal static int RunError()
+	internal static int MaxParameterCost()
 	{
-		if (recordProcessor == 0)
+		if (cachedMaxParameterCost == 0)
 		{
 			try
 			{
-				recordProcessor = (int)ForgotRules("VRCExpressionParameters").GetField("MAX_PARAMETER_COST", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+				cachedMaxParameterCost = (int)FindType("VRCExpressionParameters").GetField("MAX_PARAMETER_COST", BindingFlags.Static | BindingFlags.Public).GetValue(null);
 			}
 			catch
 			{
 				Debug.LogWarning("Failed to dynamically get MAX_PARAMETER_COST. Falling back to 256");
-				recordProcessor = 256;
+				cachedMaxParameterCost = 256;
 			}
 		}
-		return recordProcessor;
+		return cachedMaxParameterCost;
 	}
 
-	internal static int PatchList(this VRCExpressionParameters def)
+	internal static int CalcSyncedTotalCost(this VRCExpressionParameters def)
 	{
 		int num = 0;
 		List<string> list = new List<string>();
 		VRCExpressionParameters.Parameter[] parameters = def.parameters;
 		foreach (VRCExpressionParameters.Parameter parameter in parameters)
 		{
-			if (!string.IsNullOrEmpty(parameter.name) && !list.Contains(parameter.name) && parameter.MoveError())
+			if (!string.IsNullOrEmpty(parameter.name) && !list.Contains(parameter.name) && parameter.IsNetworkSynced())
 			{
 				list.Add(parameter.name);
 				num += ((parameter.valueType == VRCExpressionParameters.ValueType.Bool) ? 1 : 8);
@@ -7721,7 +7721,7 @@ internal static class EditorUtils
 		return num;
 	}
 
-	internal static int InterruptList(this VRCExpressionParameters var1, bool includesecond = true, bool istemp = true)
+	internal static int GetRemainingCost(this VRCExpressionParameters var1, bool includesecond = true, bool istemp = true)
 	{
 		if (var1 == null)
 		{
@@ -7729,13 +7729,13 @@ internal static class EditorUtils
 			{
 				return 0;
 			}
-			return RunError();
+			return MaxParameterCost();
 		}
-		int num = (includesecond ? var1.PatchList() : var1.CalcTotalCost());
-		return RunError() - num;
+		int num = (includesecond ? var1.CalcSyncedTotalCost() : var1.CalcTotalCost());
+		return MaxParameterCost() - num;
 	}
 
-	internal static void ManageList(this VRCExpressionParameters info)
+	internal static void RemoveInvalidParameters(this VRCExpressionParameters info)
 	{
 		if (!info)
 		{
@@ -7803,20 +7803,20 @@ internal static class EditorUtils
 				result.errorCode = 1;
 				return result;
 			}
-			int num = ((!flag) ? ((!isproc) ? var1.CalcTotalCost() : var1.PatchList()) : 0);
+			int num = ((!flag) ? ((!isproc) ? var1.CalcTotalCost() : var1.CalcSyncedTotalCost()) : 0);
 			int num2 = 0;
 			foreach (VRCExpressionParameters.Parameter item in map)
 			{
-				if (item != null && !string.IsNullOrEmpty(item.name) && item.MoveError() && (flag || moveresult2 || var1.FindParameter(item.name) == null))
+				if (item != null && !string.IsNullOrEmpty(item.name) && item.IsNetworkSynced() && (flag || moveresult2 || var1.FindParameter(item.name) == null))
 				{
 					num2 += VRCExpressionParameters.TypeCost(item.valueType);
 				}
 			}
-			if (num + num2 <= RunError())
+			if (num + num2 <= MaxParameterCost())
 			{
 				return (true, string.Empty);
 			}
-			result = new ValidationResult(isparam: false, $"Expression Parameters would exceed the {RunError()} cost limit");
+			result = new ValidationResult(isparam: false, $"Expression Parameters would exceed the {MaxParameterCost()} cost limit");
 			result.errorCode = 2;
 			return result;
 		}
@@ -7891,7 +7891,7 @@ internal static class EditorUtils
 					}
 					break;
 					IL_00dd:
-					LogoutRules(text2, out var b2);
+					TryGetTrailingNumber(text2, out var b2);
 					m_EventServer = $" {b2}";
 				}
 			}
@@ -7917,7 +7917,7 @@ internal static class EditorUtils
 			def.parameters = def.parameters.Concat(list).ToArray();
 			if (ignorefield)
 			{
-				def.ManageList();
+				def.RemoveInvalidParameters();
 			}
 			EditorUtility.SetDirty(def);
 			return list.ToArray();
@@ -7928,54 +7928,54 @@ internal static class EditorUtils
 	internal static VRCExpressionParameters.Parameter PublishError(this VRCExpressionParameters.Parameter asset)
 	{
 		VRCExpressionParameters.Parameter parameter = new VRCExpressionParameters.Parameter();
-		asset.PopError(parameter);
+		asset.CopyTo(parameter);
 		return parameter;
 	}
 
-	internal static void PopError(this VRCExpressionParameters.Parameter def, VRCExpressionParameters.Parameter pol)
+	internal static void CopyTo(this VRCExpressionParameters.Parameter def, VRCExpressionParameters.Parameter pol)
 	{
 		pol.name = def.name;
 		pol.valueType = def.valueType;
 		pol.saved = def.saved;
 		pol.defaultValue = def.defaultValue;
-		pol.ComputeError(def.MoveError());
+		pol.SetNetworkSynced(def.IsNetworkSynced());
 	}
 
-	internal static void ComputeError(this VRCExpressionParameters.Parameter res, bool appendpred)
+	internal static void SetNetworkSynced(this VRCExpressionParameters.Parameter res, bool appendpred)
 	{
 		if (res != null)
 		{
-			if (!m_ConsumerProcessor)
+			if (!networkSyncedFieldResolved)
 			{
-				m_ConsumerProcessor = true;
-				helperProcessor = res.GetType().GetField("networkSynced", BindingFlags.Instance | BindingFlags.Public);
+				networkSyncedFieldResolved = true;
+				networkSyncedField = res.GetType().GetField("networkSynced", BindingFlags.Instance | BindingFlags.Public);
 			}
-			if (!(helperProcessor == null))
+			if (!(networkSyncedField == null))
 			{
-				helperProcessor.SetValue(res, appendpred);
+				networkSyncedField.SetValue(res, appendpred);
 			}
 		}
 	}
 
-	internal static bool MoveError(this VRCExpressionParameters.Parameter ident)
+	internal static bool IsNetworkSynced(this VRCExpressionParameters.Parameter ident)
 	{
 		if (ident == null)
 		{
 			return true;
 		}
-		if (!m_ConsumerProcessor)
+		if (!networkSyncedFieldResolved)
 		{
-			m_ConsumerProcessor = true;
-			helperProcessor = ident.GetType().GetField("networkSynced", BindingFlags.Instance | BindingFlags.Public);
+			networkSyncedFieldResolved = true;
+			networkSyncedField = ident.GetType().GetField("networkSynced", BindingFlags.Instance | BindingFlags.Public);
 		}
-		if (!(helperProcessor == null))
+		if (!(networkSyncedField == null))
 		{
-			return (bool)helperProcessor.GetValue(ident);
+			return (bool)networkSyncedField.GetValue(ident);
 		}
 		return true;
 	}
 
-	internal static VRCExpressionParameters ConcatError(this VRCAvatarDescriptor value, string pol, bool stripproc = false)
+	internal static VRCExpressionParameters GetOrCreateExpressionParameters(this VRCAvatarDescriptor value, string pol, bool stripproc = false)
 	{
 		VRCExpressionParameters vRCExpressionParameters = value.expressionParameters;
 		if ((bool)vRCExpressionParameters)
@@ -7997,7 +7997,7 @@ internal static class EditorUtils
 		return vRCExpressionParameters;
 	}
 
-	internal static void CallError(this VRCAvatarDescriptor instance, VRCExpressionParameters visitor)
+	internal static void SetExpressionParameters(this VRCAvatarDescriptor instance, VRCExpressionParameters visitor)
 	{
 		instance.expressionParameters = visitor;
 		if (!visitor)
@@ -8209,7 +8209,7 @@ internal static class EditorUtils
 		};
 	}
 
-	internal static bool DefineError(this VRCExpressionsMenu value, Func<VRCExpressionsMenu, bool> selection, HashSet<VRCExpressionsMenu> tag = null)
+	internal static bool AnyMenu(this VRCExpressionsMenu value, Func<VRCExpressionsMenu, bool> selection, HashSet<VRCExpressionsMenu> tag = null)
 	{
 		if (!(value == null))
 		{
@@ -8223,7 +8223,7 @@ internal static class EditorUtils
 				{
 					foreach (VRCExpressionsMenu.Control control in value.controls)
 					{
-						if (control.type != VRCExpressionsMenu.Control.ControlType.SubMenu || !control.subMenu.DefineError(selection, tag))
+						if (control.type != VRCExpressionsMenu.Control.ControlType.SubMenu || !control.subMenu.AnyMenu(selection, tag))
 						{
 							continue;
 						}
@@ -8238,7 +8238,7 @@ internal static class EditorUtils
 		return false;
 	}
 
-	internal static VRCExpressionsMenu StartError(this VRCAvatarDescriptor asset, string cfg, bool isdic = false)
+	internal static VRCExpressionsMenu GetOrCreateExpressionsMenu(this VRCAvatarDescriptor asset, string cfg, bool isdic = false)
 	{
 		VRCExpressionsMenu vRCExpressionsMenu = asset.expressionsMenu;
 		if ((bool)vRCExpressionsMenu)
@@ -8260,7 +8260,7 @@ internal static class EditorUtils
 		return vRCExpressionsMenu;
 	}
 
-	internal static void ReadError(this VRCAvatarDescriptor task, VRCExpressionsMenu pred)
+	internal static void SetExpressionsMenu(this VRCAvatarDescriptor task, VRCExpressionsMenu pred)
 	{
 		task.expressionsMenu = pred;
 		if (!pred)
@@ -8287,7 +8287,7 @@ internal static class EditorUtils
 			}
 			if (key.type == visitor.type)
 			{
-				if (!key.parameter.RemoveError(visitor.parameter))
+				if (!key.parameter.Matches(visitor.parameter))
 				{
 					return new ValidationResult(isparam: false, "Parameter does not match", 2);
 				}
@@ -8309,7 +8309,7 @@ internal static class EditorUtils
 					{
 						for (int i = 0; i < key.subParameters.Length; i++)
 						{
-							if (!key.subParameters[i].RemoveError(visitor.subParameters[i]))
+							if (!key.subParameters[i].Matches(visitor.subParameters[i]))
 							{
 								return new ValidationResult(isparam: false, "SubParameters do not match", 4);
 							}
@@ -8323,7 +8323,7 @@ internal static class EditorUtils
 		return true;
 	}
 
-	internal static bool RemoveError(this VRCExpressionsMenu.Control.Parameter spec, VRCExpressionsMenu.Control.Parameter caller)
+	internal static bool Matches(this VRCExpressionsMenu.Control.Parameter spec, VRCExpressionsMenu.Control.Parameter caller)
 	{
 		if (!((spec == null) ^ (caller == null)))
 		{
@@ -8345,7 +8345,7 @@ internal static class EditorUtils
 			{
 				return (T)value;
 			}
-			T val = CompareRules(def);
+			T val = CloneSerialized(def);
 			AssetDatabase.AddObjectToAsset(val, cfg.m_PublisherObserver);
 			if (cfg.configurationObserver)
 			{
@@ -8475,7 +8475,7 @@ internal static class EditorUtils
 	}
 
 	[CompilerGenerated]
-	internal static bool MapError(UnityEngine.Object v)
+	internal static bool TryRecordPrefabModifications(UnityEngine.Object v)
 	{
 		if (PrefabUtility.GetPrefabAssetType(v) == PrefabAssetType.NotAPrefab)
 		{
@@ -8486,7 +8486,7 @@ internal static class EditorUtils
 	}
 
 	[CompilerGenerated]
-	internal static bool ValidateError(VRCAvatarDescriptor.CustomAnimLayer[] def, ref _003C_003Ec__DisplayClass446_0 map)
+	internal static bool TryAssignLayerController(VRCAvatarDescriptor.CustomAnimLayer[] def, ref _003C_003Ec__DisplayClass446_0 map)
 	{
 		int num = 0;
 		while (true)

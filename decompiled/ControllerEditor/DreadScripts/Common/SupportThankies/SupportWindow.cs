@@ -36,7 +36,7 @@ internal class SupportWindow : EditorWindow
 
 	private static int m_Dic = 1;
 
-	private static int _Invocation = 1;
+	private static int rowCount = 1;
 
 	[SpecialName]
 	private static bool IsDone()
@@ -50,14 +50,14 @@ internal class SupportWindow : EditorWindow
 
 	private static void InitHeaderContent()
 	{
-		m_Prototype = new GUIContent(SupporterStrings.m_Model.RandomElement(), SupporterStrings.m_Tokenizer.RandomElement());
+		m_Prototype = new GUIContent(SupporterStrings.HeaderTexts.RandomElement(), SupporterStrings.HeaderTooltips.RandomElement());
 	}
 
 	public static void DrawButton()
 	{
 		Rect controlRect = EditorGUILayout.GetControlRect(false, 16f, GUIStyle.none, GUILayout.Width(16f));
 		controlRect.x -= 2f;
-		SupportWindowAssets.GetTextures().merchant.Draw(controlRect);
+		SupportWindowAssets.GetTextures().Icon.Draw(controlRect);
 		if (EditorGuiUtils.IsClicked(controlRect))
 		{
 			Open();
@@ -66,7 +66,7 @@ internal class SupportWindow : EditorWindow
 
 	public static void Open()
 	{
-		EditorWindow.GetWindow<SupportWindow>(SupporterStrings._Role.RandomElement()).titleContent.image = SupportWindowAssets.GetTextures().merchant.GetTexture();
+		EditorWindow.GetWindow<SupportWindow>(SupporterStrings.WindowTitles.RandomElement()).titleContent.image = SupportWindowAssets.GetTextures().Icon.GetTexture();
 	}
 
 	public void OnGUI()
@@ -77,11 +77,11 @@ internal class SupportWindow : EditorWindow
 		}
 		if (m_Advisor)
 		{
-			GUILayout.Label("Loading supporters...", SupportWindowAssets.GetStyles()._Pool);
+			GUILayout.Label("Loading supporters...", SupportWindowAssets.GetStyles().Header);
 		}
 		if (m_Indexer)
 		{
-			GUILayout.Label("Failed to load supporters.", SupportWindowAssets.GetStyles()._Pool);
+			GUILayout.Label("Failed to load supporters.", SupportWindowAssets.GetStyles().Header);
 			if (!string.IsNullOrWhiteSpace(issuer))
 			{
 				EditorGUILayout.HelpBox(issuer, MessageType.Error);
@@ -95,7 +95,7 @@ internal class SupportWindow : EditorWindow
 		{
 			using (new GUILayout.HorizontalScope("in bigtitle"))
 			{
-				GUILayout.Label(m_Prototype, SupportWindowAssets.GetStyles()._Pool);
+				GUILayout.Label(m_Prototype, SupportWindowAssets.GetStyles().Header);
 			}
 			DrawSupporters();
 		}
@@ -128,9 +128,9 @@ internal class SupportWindow : EditorWindow
 			m_Dic = num2;
 			m_Status = EditorLayoutUtils.CreateSplitterState(Enumerable.Repeat(1f, num2).ToArray());
 		}
-		if (_Invocation != num3)
+		if (rowCount != num3)
 		{
-			_Invocation = num3;
+			rowCount = num3;
 			code = EditorLayoutUtils.CreateSplitterState(Enumerable.Repeat(1f, num3).ToArray());
 		}
 		GUILayout.BeginArea(_Factory);
@@ -177,7 +177,7 @@ internal class SupportWindow : EditorWindow
 		Rect rect = GUILayoutUtility.GetRect(100f, 200f, 16f, 32f);
 		Rect setup = EditorGuiUtils.FitAspectRatio(rect, 6.25f);
 		GUI.DrawTexture(rect, EditorGuiUtils.GetColorTexture(Color.white), ScaleMode.StretchToFill, alphaBlend: false, 0f, new Color(0.075f, 0.765f, 1f), 0f, 8f);
-		SupportWindowAssets.GetTextures()._Authentication.Draw(setup);
+		SupportWindowAssets.GetTextures().KofiBanner.Draw(setup);
 		if (EditorGuiUtils.IsClicked(rect))
 		{
 			OpenKofi();
@@ -199,7 +199,7 @@ internal class SupportWindow : EditorWindow
 		WebRequestJob awb = new WebRequestJob("https://storage.googleapis.com/dreadscripts-c6b62.appspot.com/Dreadscripts/Supporters.txt", "GET");
 		try
 		{
-			UnityWebRequest request = awb._Algo;
+			UnityWebRequest request = awb.Request;
 			request.useHttpContinue = false;
 			request.downloadHandler = new DownloadHandlerBuffer();
 			request.timeout = 10;

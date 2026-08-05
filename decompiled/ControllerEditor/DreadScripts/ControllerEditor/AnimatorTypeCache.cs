@@ -525,7 +525,7 @@ internal static class AnimatorTypeCache
 		{
 			string text = "VRCAvatarDescriptor";
 			typeCache = new Dictionary<string, Type>();
-			Type type = EditorUtils.ForgotRules(text);
+			Type type = EditorUtils.FindType(text);
 			if (type != null)
 			{
 				sdkAvailable = true;
@@ -538,7 +538,7 @@ internal static class AnimatorTypeCache
 			{
 				return value;
 			}
-			Type type2 = EditorUtils.ForgotRules(spec);
+			Type type2 = EditorUtils.FindType(spec);
 			typeCache.Add(spec, type2);
 			return type2;
 		}

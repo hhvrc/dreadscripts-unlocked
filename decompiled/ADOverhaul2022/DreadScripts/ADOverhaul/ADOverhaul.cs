@@ -74,10 +74,10 @@ internal sealed class ADOverhaul
 			if (FlushConfiguration(this))
 			{
 				DrawSettingsGUI();
-				ADOEditorUtility.DisableStatus();
+				ADOEditorUtility.Separator();
 				GetConfiguration();
-				SortIdentifier();
-				ConcatIdentifier();
+				DrawToolHeader();
+				DrawAnnouncementBanner();
 				banner.Draw(this);
 			}
 		}
@@ -86,7 +86,7 @@ internal sealed class ADOverhaul
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				PushConfiguration();
+				DrawTargetAvatarSelector();
 			}
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
@@ -161,7 +161,7 @@ internal sealed class ADOverhaul
 
 		private void OnEnable()
 		{
-			PrintConfiguration(ref m_Predicate, ref _Collection, LogoutConfiguration);
+			RefreshSceneAvatars(ref selectedAvatar, ref sceneAvatars, RefreshAvatarTables);
 		}
 	}
 
@@ -265,7 +265,7 @@ internal sealed class ADOverhaul
 					break;
 				case 0:
 					handledErrors.Add(pendingError.Value);
-					RemoveSerializer(isi: true);
+					BugReporterOpen(isi: true);
 					break;
 				}
 			}
@@ -290,7 +290,7 @@ internal sealed class ADOverhaul
 					Respond(moveinstance: true);
 				}
 			}
-			ADOEditorUtility.DisableStatus();
+			ADOEditorUtility.Separator();
 		}
 
 		internal static bool HasPendingReport()
@@ -328,7 +328,7 @@ internal sealed class ADOverhaul
 
 		internal static void DrawWindow()
 		{
-			RemoveSerializer(_Service && pendingError.HasValue);
+			BugReporterOpen(isLicensed && pendingError.HasValue);
 			if (!requestSent)
 			{
 				requestSent = true;
@@ -341,31 +341,31 @@ internal sealed class ADOverhaul
 					("bug_exception", Uri.EscapeUriString(pendingError.Value.exceptionMessage))
 				});
 				StartConfiguration(list);
-				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+				OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 				{
 					bool flag = response.Item("success");
 					string text = response.Item("message");
 					responseReceived = true;
 					if (string.IsNullOrWhiteSpace(text))
 					{
-						NewIdentifier(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
+						Log(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
 						solution = response.Item("solution");
 						solutionComplete = response.Item("complete");
 					}
 				}, UnityEngine.Debug.LogException, null, null, delegate
 				{
 					isSearching = false;
-					CalculateIdentifier();
+					RepaintOpenWindowsDelayed();
 				});
 			}
-			InitConfiguration((!isSearching) ? "Bug Reporter" : "Finding a solution...", "If you have found a bug, please report it here!\nNote that the report is not anonymous. Abuse may result in blacklisting.");
+			DrawPanelHeader((!isSearching) ? "Bug Reporter" : "Finding a solution...", "If you have found a bug, please report it here!\nNote that the report is not anonymous. Abuse may result in blacklisting.");
 			using (new GUILayout.VerticalScope(EditorStyles.helpBox))
 			{
 				if (isSearching)
 				{
 					if (ADOEditorUtility.LoginStatus("Cancel", EditorStyles.toolbarButton))
 					{
-						RemoveSerializer(isi: false);
+						BugReporterOpen(isi: false);
 					}
 					return;
 				}
@@ -373,14 +373,14 @@ internal sealed class ADOverhaul
 				{
 					if (string.IsNullOrWhiteSpace(solution))
 					{
-						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._EventSerializer))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility.warningColor))
 						{
 							GUILayout.Label("No solution Found! Please write the steps to reproduce this issue below:");
 						}
-						thread = EditorGUILayout.TextArea(thread, GUILayout.MinHeight(54f));
-						if (!string.IsNullOrWhiteSpace(thread) && thread.Length > 2000)
+						bugReportText = EditorGUILayout.TextArea(bugReportText, GUILayout.MinHeight(54f));
+						if (!string.IsNullOrWhiteSpace(bugReportText) && bugReportText.Length > 2000)
 						{
-							thread = thread.Substring(0, 2000);
+							bugReportText = bugReportText.Substring(0, 2000);
 						}
 						if (!string.IsNullOrWhiteSpace(solution))
 						{
@@ -390,9 +390,9 @@ internal sealed class ADOverhaul
 						{
 							if (ADOEditorUtility.PatchStatus("Cancel", GUILayout.ExpandWidth(expand: false)))
 							{
-								RemoveSerializer(isi: false);
+								BugReporterOpen(isi: false);
 							}
-							using (new EditorGUI.DisabledScope(getter))
+							using (new EditorGUI.DisabledScope(isSendingBugReport))
 							{
 								if (!ADOEditorUtility.PatchStatus("Report Issue"))
 								{
@@ -404,23 +404,23 @@ internal sealed class ADOverhaul
 									("bug_version", pendingError.Value.version.ToString()),
 									("bug_name", pendingError.Value.name),
 									("bug_exception", pendingError.Value.exceptionMessage),
-									("feedback", Uri.EscapeUriString(thread))
+									("feedback", Uri.EscapeUriString(bugReportText))
 								});
 								StartConfiguration(list2);
-								getter = true;
-								OrderIdentifier(IncludeConfiguration(list2.ToArray())).CreateProcess(delegate(JsonObject response)
+								isSendingBugReport = true;
+								OrderIdentifier(IncludeConfiguration(list2.ToArray())).HandleTask(delegate(JsonObject response)
 								{
 									bool flag = response.Item("success");
 									string text = response.Item("message");
 									if (!string.IsNullOrEmpty(text))
 									{
-										NewIdentifier(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
+										Log(text, (!flag) ? CustomLogType.Warning : CustomLogType.Regular);
 									}
 								}, UnityEngine.Debug.LogException, null, null, delegate
 								{
-									RemoveSerializer(isi: false);
-									getter = false;
-									CalculateIdentifier();
+									BugReporterOpen(isi: false);
+									isSendingBugReport = false;
+									RepaintOpenWindowsDelayed();
 								});
 								return;
 							}
@@ -428,14 +428,14 @@ internal sealed class ADOverhaul
 					}
 					if (!solutionComplete)
 					{
-						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._EventSerializer))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility.warningColor))
 						{
 							GUILayout.Label("Known issue! Details:");
 						}
 					}
 					else
 					{
-						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._ObserverSerializer))
+						using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility.validColor))
 						{
 							GUILayout.Label("Solution Found!");
 						}
@@ -444,21 +444,21 @@ internal sealed class ADOverhaul
 					EditorGUILayout.SelectableLabel(solution, GUI.skin.label, GUILayout.ExpandHeight(expand: false));
 					if (ADOEditorUtility.PatchStatus("Ok"))
 					{
-						RemoveSerializer(isi: false);
+						BugReporterOpen(isi: false);
 					}
 					return;
 				}
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
 					GUILayout.Label(ADOEditorUtility.CustomizeRef().reponseSerializer, ADOEditorUtility.MapRef().m_ProducerSerializer);
-					using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility._BroadcasterSerializer))
+					using (new GUIColorScope(GUIColorScope.ColoringType.FG, ADOEditorUtility.errorColor))
 					{
 						GUILayout.Label("There was an issue contacting the server for a solution.");
 					}
 				}
 				if (ADOEditorUtility.PatchStatus("Cancel"))
 				{
-					RemoveSerializer(isi: false);
+					BugReporterOpen(isi: false);
 				}
 			}
 		}
@@ -471,7 +471,7 @@ internal sealed class ADOverhaul
 				{
 					pendingError = null;
 				}
-				RemoveSerializer(moveinstance);
+				BugReporterOpen(moveinstance);
 				handledErrors.Add(pendingError.Value);
 			}
 		}
@@ -1480,10 +1480,10 @@ internal sealed class ADOverhaul
 		internal BoolSetting a_VerifyOnProjectLoad = new BoolSetting(forcev: false);
 
 		[SerializeField]
-		internal BoolSetting gizmosActive = new BoolSetting(forcev: true, PhysBoneEditor.InterruptSingleton);
+		internal BoolSetting gizmosActive = new BoolSetting(forcev: true, PhysBoneEditor.ApplyGlobalGizmoSettings);
 
 		[SerializeField]
-		internal BoolSetting globalGizmo = new BoolSetting(forcev: true, PhysBoneEditor.InterruptSingleton);
+		internal BoolSetting globalGizmo = new BoolSetting(forcev: true, PhysBoneEditor.ApplyGlobalGizmoSettings);
 
 		[SerializeField]
 		internal BoolSetting editorAnimatedFoldouts = new BoolSetting(forcev: true);
@@ -1522,10 +1522,10 @@ internal sealed class ADOverhaul
 		internal EnumSetting toolOverlayAlignment = EnumSetting.FromEnum(ADOEditorUtility.PositionFlag.BottomRight);
 
 		[SerializeField]
-		internal FloatSetting gizmoBoneOpacity = new FloatSetting(0.5f, PhysBoneEditor.InterruptSingleton);
+		internal FloatSetting gizmoBoneOpacity = new FloatSetting(0.5f, PhysBoneEditor.ApplyGlobalGizmoSettings);
 
 		[SerializeField]
-		internal FloatSetting gizmoLimitOpacity = new FloatSetting(0.5f, PhysBoneEditor.InterruptSingleton);
+		internal FloatSetting gizmoLimitOpacity = new FloatSetting(0.5f, PhysBoneEditor.ApplyGlobalGizmoSettings);
 
 		[SerializeField]
 		internal FloatSetting handleSizeMultiplier = new FloatSetting(1f);
@@ -1734,7 +1734,7 @@ internal sealed class ADOverhaul
 		{
 			if (!FlushConfiguration())
 			{
-				if (!_Service)
+				if (!isLicensed)
 				{
 					EnableConfiguration(PreparePage);
 				}
@@ -1743,23 +1743,23 @@ internal sealed class ADOverhaul
 			{
 				if (!((Func<bool>)delegate
 				{
-					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-					return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+					return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 				})())
 				{
 					return;
 				}
 				base.serializedObject.Update();
 				ChangePage();
-				SelectIdentifier("Shape", _GetterIdentifier[0], null, delegate
+				DrawFoldoutBox("Shape", _GetterIdentifier[0], null, delegate
 				{
-					RunConfiguration(AssetPage(), new SerializedProperty[6] { m_RoleIdentifier, visitorIdentifier, invocationIdentifier, m_ListenerIdentifier, m_ParserIdentifier, m_PrinterIdentifier }, RegisterPage, isres2: false);
+					DrawShapeProperties(AssetPage(), new SerializedProperty[6] { m_RoleIdentifier, visitorIdentifier, invocationIdentifier, m_ListenerIdentifier, m_ParserIdentifier, m_PrinterIdentifier }, RegisterPage, isres2: false);
 				});
-				SelectIdentifier("Receiver", _GetterIdentifier[1], null, delegate
+				DrawFoldoutBox("Receiver", _GetterIdentifier[1], null, delegate
 				{
-					PushConfiguration();
+					DrawTargetAvatarSelector();
 					EditorGUILayout.PropertyField(m_ManagerIdentifier);
-					PrepareConfiguration(m_WorkerIdentifier);
+					DrawAvatarParameterField(m_WorkerIdentifier);
 					if (m_ManagerIdentifier.hasMultipleDifferentValues || m_ManagerIdentifier.enumValueIndex == 1)
 					{
 						EditorGUILayout.PropertyField(m_ItemIdentifier);
@@ -1775,31 +1775,31 @@ internal sealed class ADOverhaul
 						EditorGUI.indentLevel--;
 					}
 				});
-				SelectIdentifier("Filtering", _GetterIdentifier[2], null, delegate
+				DrawFoldoutBox("Filtering", _GetterIdentifier[2], null, delegate
 				{
-					PushConfiguration();
+					DrawTargetAvatarSelector();
 					using (new GUILayout.HorizontalScope())
 					{
-						RegisterConfiguration(m_DescriptorIdentifier, m_DescriptorIdentifier.SelectStatus(), null);
-						RegisterConfiguration(_StrategyIdentifier, _StrategyIdentifier.SelectStatus(), null);
-						RegisterConfiguration(globalIdentifier, globalIdentifier.SelectStatus(), null);
+						RegisterConfiguration(m_DescriptorIdentifier, m_DescriptorIdentifier.GetContent(), null);
+						RegisterConfiguration(_StrategyIdentifier, _StrategyIdentifier.GetContent(), null);
+						RegisterConfiguration(globalIdentifier, globalIdentifier.GetContent(), null);
 					}
 					m_AlgoIdentifier.DoLayoutList();
 				});
 				base.serializedObject.ApplyModifiedProperties();
 				GetConfiguration();
-				SortIdentifier();
+				DrawToolHeader();
 			}
 		}
 
 		private void method_0()
 		{
-			OrderConfiguration(AssetPage(), base.targets, 2, Color.cyan);
+			DrawShapeHandles(AssetPage(), base.targets, 2, Color.cyan);
 		}
 
 		private void CallPage(Rect setup, int version_attr, bool isserv, bool isvis2)
 		{
-			CustomizeConfiguration(m_RepositoryIdentifier, setup, version_attr);
+			DrawCollisionTagElement(m_RepositoryIdentifier, setup, version_attr);
 		}
 
 		private void RegisterPage()
@@ -1831,7 +1831,7 @@ internal sealed class ADOverhaul
 					break;
 				}
 			}
-			SortConfiguration(flag3, flag2, flag);
+			SetShapeCapabilities(flag3, flag2, flag);
 		}
 
 		private void ChangePage()
@@ -1852,19 +1852,19 @@ internal sealed class ADOverhaul
 			m_AlgoIdentifier = new ReorderableList(base.serializedObject, m_RepositoryIdentifier, draggable: true, displayHeader: true, displayAddButton: true, displayRemoveButton: false)
 			{
 				drawElementCallback = CallPage,
-				drawHeaderCallback = ConcatConfiguration
+				drawHeaderCallback = DrawCollisionTagsHeader
 			};
 		}
 
 		private void OnEnable()
 		{
-			SelectConfiguration(_GetterIdentifier, Repaint);
+			ResetFoldouts(_GetterIdentifier, Repaint);
 			MapConfiguration(RegisterPage);
 		}
 
 		private void OnDisable()
 		{
-			CancelConfiguration(isvar1: false);
+			SetShapeEditOverlayActive(isvar1: false);
 		}
 
 		[MenuItem("CONTEXT/VRCContactReceiver/ADOverhaul/To Sender", false, 897)]
@@ -1899,28 +1899,28 @@ internal sealed class ADOverhaul
 		{
 			if (m_IndexerIdentifier == null)
 			{
-				m_IndexerIdentifier = ADOEditorUtility.CancelStatus("VRCContactReceiver");
+				m_IndexerIdentifier = ADOEditorUtility.FindType("VRCContactReceiver");
 			}
 			if (poolIdentifier == null)
 			{
-				poolIdentifier = ADOEditorUtility.CancelStatus("VRCContactReceiverEditor");
+				poolIdentifier = ADOEditorUtility.FindType("VRCContactReceiverEditor");
 			}
 			_ThreadIdentifier = !insertasset;
-			ADOEditorUtility.RevertStatus(m_IndexerIdentifier, (!_ThreadIdentifier) ? poolIdentifier : typeof(ContactReceiverEditor));
+			ADOEditorUtility.OverrideCustomEditor(m_IndexerIdentifier, (!_ThreadIdentifier) ? poolIdentifier : typeof(ContactReceiverEditor));
 		}
 
 		[CompilerGenerated]
 		private void TestPage()
 		{
-			RunConfiguration(AssetPage(), new SerializedProperty[6] { m_RoleIdentifier, visitorIdentifier, invocationIdentifier, m_ListenerIdentifier, m_ParserIdentifier, m_PrinterIdentifier }, RegisterPage, isres2: false);
+			DrawShapeProperties(AssetPage(), new SerializedProperty[6] { m_RoleIdentifier, visitorIdentifier, invocationIdentifier, m_ListenerIdentifier, m_ParserIdentifier, m_PrinterIdentifier }, RegisterPage, isres2: false);
 		}
 
 		[CompilerGenerated]
 		private void InsertPage()
 		{
-			PushConfiguration();
+			DrawTargetAvatarSelector();
 			EditorGUILayout.PropertyField(m_ManagerIdentifier);
-			PrepareConfiguration(m_WorkerIdentifier);
+			DrawAvatarParameterField(m_WorkerIdentifier);
 			if (m_ManagerIdentifier.hasMultipleDifferentValues || m_ManagerIdentifier.enumValueIndex == 1)
 			{
 				EditorGUILayout.PropertyField(m_ItemIdentifier);
@@ -1940,12 +1940,12 @@ internal sealed class ADOverhaul
 		[CompilerGenerated]
 		private void EnablePage()
 		{
-			PushConfiguration();
+			DrawTargetAvatarSelector();
 			using (new GUILayout.HorizontalScope())
 			{
-				RegisterConfiguration(m_DescriptorIdentifier, m_DescriptorIdentifier.SelectStatus(), null);
-				RegisterConfiguration(_StrategyIdentifier, _StrategyIdentifier.SelectStatus(), null);
-				RegisterConfiguration(globalIdentifier, globalIdentifier.SelectStatus(), null);
+				RegisterConfiguration(m_DescriptorIdentifier, m_DescriptorIdentifier.GetContent(), null);
+				RegisterConfiguration(_StrategyIdentifier, _StrategyIdentifier.GetContent(), null);
+				RegisterConfiguration(globalIdentifier, globalIdentifier.GetContent(), null);
 			}
 			m_AlgoIdentifier.DoLayoutList();
 		}
@@ -1990,7 +1990,7 @@ internal sealed class ADOverhaul
 		{
 			if (!FlushConfiguration())
 			{
-				if (!_Service)
+				if (!isLicensed)
 				{
 					EnableConfiguration(SortProperty);
 				}
@@ -1999,21 +1999,21 @@ internal sealed class ADOverhaul
 			{
 				if (!((Func<bool>)delegate
 				{
-					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-					return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+					return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 				})())
 				{
 					return;
 				}
 				base.serializedObject.Update();
 				CompareProperty();
-				SelectIdentifier("Shape", _StructIdentifier[0], null, delegate
+				DrawFoldoutBox("Shape", _StructIdentifier[0], null, delegate
 				{
-					RunConfiguration(LogoutProperty(), new SerializedProperty[6] { attrIdentifier, objectIdentifier, m_ServiceIdentifier, _ReponseIdentifier, specificationIdentifier, _WrapperIdentifier }, NewProperty, isres2: false);
+					DrawShapeProperties(LogoutProperty(), new SerializedProperty[6] { attrIdentifier, objectIdentifier, m_ServiceIdentifier, _ReponseIdentifier, specificationIdentifier, _WrapperIdentifier }, NewProperty, isres2: false);
 				});
-				SelectIdentifier("Filtering", _StructIdentifier[1], null, delegate
+				DrawFoldoutBox("Filtering", _StructIdentifier[1], null, delegate
 				{
-					PushConfiguration();
+					DrawTargetAvatarSelector();
 					using (new GUILayout.VerticalScope())
 					{
 						_ParameterIdentifier.DoLayoutList();
@@ -2021,18 +2021,18 @@ internal sealed class ADOverhaul
 				});
 				base.serializedObject.ApplyModifiedProperties();
 				GetConfiguration();
-				SortIdentifier();
+				DrawToolHeader();
 			}
 		}
 
 		private void method_0()
 		{
-			OrderConfiguration(LogoutProperty(), base.targets, 1, Color.yellow);
+			DrawShapeHandles(LogoutProperty(), base.targets, 1, Color.yellow);
 		}
 
 		private void DestroyProperty(Rect config, int length_b, bool requiresc, bool isvis2)
 		{
-			CustomizeConfiguration(m_InfoIdentifier, config, length_b);
+			DrawCollisionTagElement(m_InfoIdentifier, config, length_b);
 		}
 
 		private void NewProperty()
@@ -2064,7 +2064,7 @@ internal sealed class ADOverhaul
 					break;
 				}
 			}
-			SortConfiguration(flag3, flag2, flag);
+			SetShapeCapabilities(flag3, flag2, flag);
 		}
 
 		private void CompareProperty()
@@ -2079,19 +2079,19 @@ internal sealed class ADOverhaul
 			_ParameterIdentifier = new ReorderableList(base.serializedObject, m_InfoIdentifier, draggable: true, displayHeader: true, displayAddButton: true, displayRemoveButton: false)
 			{
 				drawElementCallback = DestroyProperty,
-				drawHeaderCallback = ConcatConfiguration
+				drawHeaderCallback = DrawCollisionTagsHeader
 			};
 		}
 
 		private void OnEnable()
 		{
-			SelectConfiguration(_StructIdentifier, Repaint);
+			ResetFoldouts(_StructIdentifier, Repaint);
 			MapConfiguration(NewProperty);
 		}
 
 		private void OnDisable()
 		{
-			CancelConfiguration(isvar1: false);
+			SetShapeEditOverlayActive(isvar1: false);
 		}
 
 		[MenuItem("CONTEXT/VRCContactSender/ADOverhaul/To Receiver", false, 897)]
@@ -2126,26 +2126,26 @@ internal sealed class ADOverhaul
 		{
 			if (m_ModelIdentifier == null)
 			{
-				m_ModelIdentifier = ADOEditorUtility.CancelStatus("VRCContactSender");
+				m_ModelIdentifier = ADOEditorUtility.FindType("VRCContactSender");
 			}
 			if (m_ConfigIdentifier == null)
 			{
-				m_ConfigIdentifier = ADOEditorUtility.CancelStatus("VRCContactSenderEditor");
+				m_ConfigIdentifier = ADOEditorUtility.FindType("VRCContactSenderEditor");
 			}
 			_InterpreterIdentifier = !isinstance;
-			ADOEditorUtility.RevertStatus(m_ModelIdentifier, (!_InterpreterIdentifier) ? m_ConfigIdentifier : typeof(ContactSenderEditor));
+			ADOEditorUtility.OverrideCustomEditor(m_ModelIdentifier, (!_InterpreterIdentifier) ? m_ConfigIdentifier : typeof(ContactSenderEditor));
 		}
 
 		[CompilerGenerated]
 		private void CustomizeProperty()
 		{
-			RunConfiguration(LogoutProperty(), new SerializedProperty[6] { attrIdentifier, objectIdentifier, m_ServiceIdentifier, _ReponseIdentifier, specificationIdentifier, _WrapperIdentifier }, NewProperty, isres2: false);
+			DrawShapeProperties(LogoutProperty(), new SerializedProperty[6] { attrIdentifier, objectIdentifier, m_ServiceIdentifier, _ReponseIdentifier, specificationIdentifier, _WrapperIdentifier }, NewProperty, isres2: false);
 		}
 
 		[CompilerGenerated]
 		private void ConcatProperty()
 		{
-			PushConfiguration();
+			DrawTargetAvatarSelector();
 			using (new GUILayout.VerticalScope())
 			{
 				_ParameterIdentifier.DoLayoutList();
@@ -2160,28 +2160,28 @@ internal sealed class ADOverhaul
 
 	private sealed class PhysBoneColliderEditor : Editor
 	{
-		private static readonly AnimBool[] _FieldIdentifier = new AnimBool[1]
+		private static readonly AnimBool[] shapeFoldout = new AnimBool[1]
 		{
 			new AnimBool(value: true)
 		};
 
-		private static bool advisorIdentifier = true;
+		private static bool editorOverrideEnabled = true;
 
-		private SerializedProperty exporterIdentifier;
+		private SerializedProperty rootTransform;
 
-		private SerializedProperty _CreatorIdentifier;
+		private SerializedProperty shapeType;
 
-		private SerializedProperty m_DispatcherIdentifier;
+		private SerializedProperty insideBounds;
 
-		private SerializedProperty connectionIdentifier;
+		private SerializedProperty bonesAsSpheres;
 
-		private SerializedProperty expressionIdentifier;
+		private SerializedProperty radius;
 
-		private SerializedProperty _DecoratorIdentifier;
+		private SerializedProperty height;
 
-		private SerializedProperty paramIdentifier;
+		private SerializedProperty position;
 
-		private SerializedProperty _PrototypeIdentifier;
+		private SerializedProperty rotation;
 
 		private static Type m_BaseIdentifier;
 
@@ -2192,32 +2192,32 @@ internal sealed class ADOverhaul
 			if (FlushConfiguration())
 			{
 				base.serializedObject.Update();
-				AwakeProperty();
+				CacheProperties();
 				if (((Func<bool>)delegate
 				{
-					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-					return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+					return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 				})())
 				{
 					if (ReadConfiguration(base.targets))
 					{
 						InsertConfiguration();
 					}
-					SelectIdentifier("Shape", _FieldIdentifier[0], null, delegate
+					DrawFoldoutBox("Shape", shapeFoldout[0], null, delegate
 					{
-						RunConfiguration(RestartProperty(), new SerializedProperty[8] { _CreatorIdentifier, exporterIdentifier, expressionIdentifier, _DecoratorIdentifier, paramIdentifier, _PrototypeIdentifier, m_DispatcherIdentifier, connectionIdentifier }, EnableProperty, isres2: true);
+						DrawShapeProperties(RestartProperty(), new SerializedProperty[8] { shapeType, rootTransform, radius, height, position, rotation, insideBounds, bonesAsSpheres }, EnableProperty, isres2: true);
 					});
 					if (TestConfiguration(base.serializedObject, base.targets))
 					{
 						SceneView.RepaintAll();
-						_Rules = true;
+						colliderChangedDuringTest = true;
 					}
 					GetConfiguration();
-					SortIdentifier();
-					ConcatIdentifier();
+					DrawToolHeader();
+					DrawAnnouncementBanner();
 				}
 			}
-			else if (!_Service)
+			else if (!isLicensed)
 			{
 				EnableConfiguration(TestProperty);
 			}
@@ -2225,7 +2225,7 @@ internal sealed class ADOverhaul
 
 		public void method_0()
 		{
-			OrderConfiguration(RestartProperty(), base.targets, 0, Color.green);
+			DrawShapeHandles(RestartProperty(), base.targets, 0, Color.green);
 		}
 
 		[MenuItem("CONTEXT/VRCPhysBoneCollider/ADOverhaul/Move To Empty", false, 896)]
@@ -2271,21 +2271,21 @@ internal sealed class ADOverhaul
 		[MenuItem("CONTEXT/VRCPhysBoneCollider/ADOverhaul/Toggle Editor", false, 899)]
 		private static void TestProperty()
 		{
-			InsertProperty(advisorIdentifier);
+			InsertProperty(editorOverrideEnabled);
 		}
 
 		internal static void InsertProperty(bool isi = false)
 		{
 			if (m_BaseIdentifier == null)
 			{
-				m_BaseIdentifier = ADOEditorUtility.CancelStatus("VRCPhysBoneCollider");
+				m_BaseIdentifier = ADOEditorUtility.FindType("VRCPhysBoneCollider");
 			}
 			if (_RequestIdentifier == null)
 			{
-				_RequestIdentifier = ADOEditorUtility.CancelStatus("VRCPhysBoneColliderEditor");
+				_RequestIdentifier = ADOEditorUtility.FindType("VRCPhysBoneColliderEditor");
 			}
-			advisorIdentifier = !isi;
-			ADOEditorUtility.RevertStatus(m_BaseIdentifier, (!advisorIdentifier) ? _RequestIdentifier : typeof(PhysBoneColliderEditor));
+			editorOverrideEnabled = !isi;
+			ADOEditorUtility.OverrideCustomEditor(m_BaseIdentifier, (!editorOverrideEnabled) ? _RequestIdentifier : typeof(PhysBoneColliderEditor));
 		}
 
 		private void EnableProperty()
@@ -2317,36 +2317,36 @@ internal sealed class ADOverhaul
 					break;
 				}
 			}
-			SortConfiguration(flag3, flag2, flag);
+			SetShapeCapabilities(flag3, flag2, flag);
 		}
 
-		private void AwakeProperty()
+		private void CacheProperties()
 		{
-			exporterIdentifier = base.serializedObject.FindProperty("rootTransform");
-			_CreatorIdentifier = base.serializedObject.FindProperty("shapeType");
-			m_DispatcherIdentifier = base.serializedObject.FindProperty("insideBounds");
-			connectionIdentifier = base.serializedObject.FindProperty("bonesAsSpheres");
-			expressionIdentifier = base.serializedObject.FindProperty("radius");
-			_DecoratorIdentifier = base.serializedObject.FindProperty("height");
-			paramIdentifier = base.serializedObject.FindProperty("position");
-			_PrototypeIdentifier = base.serializedObject.FindProperty("rotation");
+			rootTransform = base.serializedObject.FindProperty("rootTransform");
+			shapeType = base.serializedObject.FindProperty("shapeType");
+			insideBounds = base.serializedObject.FindProperty("insideBounds");
+			bonesAsSpheres = base.serializedObject.FindProperty("bonesAsSpheres");
+			radius = base.serializedObject.FindProperty("radius");
+			height = base.serializedObject.FindProperty("height");
+			position = base.serializedObject.FindProperty("position");
+			rotation = base.serializedObject.FindProperty("rotation");
 		}
 
 		private void OnEnable()
 		{
-			SelectConfiguration(_FieldIdentifier, Repaint);
+			ResetFoldouts(shapeFoldout, Repaint);
 			MapConfiguration(EnableProperty);
 		}
 
 		public void OnDisable()
 		{
-			CancelConfiguration(isvar1: false);
+			SetShapeEditOverlayActive(isvar1: false);
 		}
 
 		[CompilerGenerated]
 		private void DisableProperty()
 		{
-			RunConfiguration(RestartProperty(), new SerializedProperty[8] { _CreatorIdentifier, exporterIdentifier, expressionIdentifier, _DecoratorIdentifier, paramIdentifier, _PrototypeIdentifier, m_DispatcherIdentifier, connectionIdentifier }, EnableProperty, isres2: true);
+			DrawShapeProperties(RestartProperty(), new SerializedProperty[8] { shapeType, rootTransform, radius, height, position, rotation, insideBounds, bonesAsSpheres }, EnableProperty, isres2: true);
 		}
 
 		UnityEngine.Object RestartProperty()
@@ -2439,8 +2439,8 @@ internal sealed class ADOverhaul
 
 			internal bool DeleteParams()
 			{
-				using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-				return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+				using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+				return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 			}
 
 			internal void DefineParams()
@@ -2534,9 +2534,9 @@ internal sealed class ADOverhaul
 				}, GUILayout.ExpandWidth(expand: false));
 				bool flag;
 				string text = ((!(flag = ADOSettings.Instance().globalGizmo)) ? "Local Setting" : "Global Setting");
-				using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.validColor, ADOEditorUtility.warningColor))
 				{
-					using (new ADOSettings.SettingsChangeScope(InterruptSingleton))
+					using (new ADOSettings.SettingsChangeScope(ApplyGlobalGizmoSettings))
 					{
 						ADOSettings.Instance().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
 					}
@@ -2622,7 +2622,7 @@ internal sealed class ADOverhaul
 						}
 					}
 				}
-				ResetAccount(SearchConfiguration(_WriterIdentifier, ResolveAccount()));
+				ResetAccount(DrawPropertyWithEditToggle(_WriterIdentifier, isEditingEndpoints()));
 				EditorGUILayout.PropertyField(classIdentifier);
 				using (new GUILayout.VerticalScope("box"))
 				{
@@ -2631,18 +2631,18 @@ internal sealed class ADOverhaul
 						GUILayout.Space(12f);
 						m_TemplateIdentifier.isExpanded = EditorGUILayout.Foldout(m_TemplateIdentifier.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
 						GUILayout.FlexibleSpace();
-						FindAccount(LoginConfiguration(ConnectAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+						FindAccount(DrawIconToggle(isCopyingIgnoreTransforms(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
 						EditorGUI.BeginChangeCheck();
-						ExcludeAccount(LoginConfiguration(FlushAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+						ExcludeAccount(DrawIconToggle(isSelectingIgnoreTransforms(), ADOEditorUtility.CustomizeRef().advisorSerializer));
 						if (EditorGUI.EndChangeCheck())
 						{
-							PublishSingleton();
+							RefreshIgnoreTransformStates();
 						}
 					}
 					if (m_TemplateIdentifier.isExpanded)
 					{
 						EditorGUI.indentLevel++;
-						ADOEditorUtility.OrderStatus<Transform>(m_TemplateIdentifier);
+						ADOEditorUtility.ObjectListField<Transform>(m_TemplateIdentifier);
 						EditorGUI.indentLevel--;
 					}
 				}
@@ -2653,7 +2653,7 @@ internal sealed class ADOverhaul
 				PostSingleton(6);
 				if (_ModelAuthentication)
 				{
-					StopConfiguration(consumerAuthentication, m_UtilsAuthentication);
+					DrawSelfOthersToggles(consumerAuthentication, m_UtilsAuthentication);
 				}
 				using (new GUILayout.VerticalScope(GUI.skin.box))
 				{
@@ -2662,18 +2662,18 @@ internal sealed class ADOverhaul
 						GUILayout.Space(12f);
 						m_SingletonAuthentication.isExpanded = EditorGUILayout.Foldout(m_SingletonAuthentication.isExpanded, "Colliders", toggleOnLabelClick: true);
 						GUILayout.FlexibleSpace();
-						RunParams(LoginConfiguration(RevertAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+						RunParams(DrawIconToggle(isCopyingColliders(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
 						EditorGUI.BeginChangeCheck();
-						CreateAccount(LoginConfiguration(ValidateAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+						CreateAccount(DrawIconToggle(isSelectingColliders(), ADOEditorUtility.CustomizeRef().advisorSerializer));
 						if (EditorGUI.EndChangeCheck())
 						{
-							MoveSingleton();
+							RefreshColliderStates();
 						}
 					}
 					if (m_SingletonAuthentication.isExpanded)
 					{
 						EditorGUI.indentLevel++;
-						ADOEditorUtility.OrderStatus<VRCPhysBoneCollider>(m_SingletonAuthentication);
+						ADOEditorUtility.ObjectListField<VRCPhysBoneCollider>(m_SingletonAuthentication);
 						EditorGUI.indentLevel--;
 					}
 				}
@@ -2685,8 +2685,8 @@ internal sealed class ADOverhaul
 				{
 					while (true)
 					{
-						StopConfiguration(comparatorAuthentication, _ProductAuthentication);
-						StopConfiguration(iteratorAuthentication, m_PredicateAuthentication);
+						DrawSelfOthersToggles(comparatorAuthentication, _ProductAuthentication);
+						DrawSelfOthersToggles(iteratorAuthentication, m_PredicateAuthentication);
 					}
 				}
 				EditorGUILayout.PropertyField(_CollectionAuthentication);
@@ -2698,14 +2698,14 @@ internal sealed class ADOverhaul
 				EditorGUILayout.PropertyField(_ValueIdentifier);
 				EditorGUILayout.PropertyField(resolverAuthentication);
 				EditorGUILayout.PropertyField(_FilterAuthentication);
-				PushConfiguration();
+				DrawTargetAvatarSelector();
 				using (new GUILayout.HorizontalScope())
 				{
-					if ((bool)(UnityEngine.Object)(object)m_Predicate)
+					if ((bool)(UnityEngine.Object)(object)selectedAvatar)
 					{
 						List<string> list = new List<string>();
-						string[] registry = m_Registry;
-						foreach (string text in registry)
+						string[] avatarParameterNames = ADOverhaul.avatarParameterNames;
+						foreach (string text in avatarParameterNames)
 						{
 							int num = text.LastIndexOf("_IsGrabbed", StringComparison.Ordinal);
 							if (num < 0)
@@ -2731,12 +2731,12 @@ internal sealed class ADOverhaul
 								tagAuthentication.stringValue = stringValue;
 							}
 						}
-						using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Predicate == null || string.IsNullOrEmpty(tagAuthentication.stringValue)))
+						using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)selectedAvatar == null || string.IsNullOrEmpty(tagAuthentication.stringValue)))
 						{
-							if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().m_DispatcherSerializer))
+							if (ADOEditorUtility.IconButton(ADOEditorUtility.CustomizeRef().m_DispatcherSerializer))
 							{
 								GenericMenu genericMenu = new GenericMenu();
-								using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Predicate.baseAnimationLayers.Concat(m_Predicate.specialAnimationLayers).GetEnumerator())
+								using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = selectedAvatar.baseAnimationLayers.Concat(selectedAvatar.specialAnimationLayers).GetEnumerator())
 								{
 									while (enumerator.MoveNext())
 									{
@@ -2748,12 +2748,12 @@ internal sealed class ADOverhaul
 											continue;
 										}
 										UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.m_MockAuthentication.parameters;
-										ADOEditorUtility.PhysBoneParameter[] visitorSerializer = ADOEditorUtility.m_VisitorSerializer;
-										for (int i = 0; i < visitorSerializer.Length; i++)
+										ADOEditorUtility.PhysBoneParameter[] physBoneParameters = ADOEditorUtility.physBoneParameters;
+										for (int i = 0; i < physBoneParameters.Length; i++)
 										{
 											_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
 											_003C_003Ec__DisplayClass108_2.advisorAuthentication = _003C_003Ec__DisplayClass108_;
-											_003C_003Ec__DisplayClass108_2._StateAuthentication = visitorSerializer[i];
+											_003C_003Ec__DisplayClass108_2._StateAuthentication = physBoneParameters[i];
 											_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.suffix;
 											if (!parameters.Any(_003C_003Ec__DisplayClass108_2.PatchImporter))
 											{
@@ -2779,7 +2779,7 @@ internal sealed class ADOverhaul
 				using (new EditorGUILayout.HorizontalScope())
 				{
 					GUILayoutUtils.LoginIterator(m_CodeIdentifier, null);
-					foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility.m_VisitorSerializer.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
+					foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility.physBoneParameters.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
 					{
 						using (new EditorGUILayout.VerticalScope())
 						{
@@ -2823,9 +2823,9 @@ internal sealed class ADOverhaul
 
 			internal void CheckImporter()
 			{
-				advisorAuthentication.m_MockAuthentication.FindProcess(_FieldAuthentication, _StateAuthentication.parameterType, 0f);
-				NewIdentifier($"Added {_FieldAuthentication} to {advisorAuthentication.configAuthentication.type} ({advisorAuthentication.m_MockAuthentication.name})");
-				SetupConfiguration();
+				advisorAuthentication.m_MockAuthentication.AddParameterIfMissing(_FieldAuthentication, _StateAuthentication.parameterType, 0f);
+				Log($"Added {_FieldAuthentication} to {advisorAuthentication.configAuthentication.type} ({advisorAuthentication.m_MockAuthentication.name})");
+				RefreshAvatarParameterNames();
 			}
 		}
 
@@ -2865,7 +2865,7 @@ internal sealed class ADOverhaul
 					Vector4 column = matrix.GetColumn(3);
 					float comp = m_TokenizerAuthentication.radius * m;
 					EditorGUI.BeginChangeCheck();
-					float num = ADOEditorUtility.CreateStatus(matrix.rotation, column, comp, !m_TokenizerAuthentication.showGizmos, ADOSettings.Instance().handleSizeMultiplier);
+					float num = ADOEditorUtility.RadiusHandle(matrix.rotation, column, comp, !m_TokenizerAuthentication.showGizmos, ADOSettings.Instance().handleSizeMultiplier);
 					if (EditorGUI.EndChangeCheck())
 					{
 						float delta = num / m - m_TokenizerAuthentication.radius;
@@ -2977,15 +2977,15 @@ internal sealed class ADOverhaul
 
 		private static bool _CallbackIdentifier = true;
 
-		private static VRCPhysBone[] _MessageIdentifier;
+		private static VRCPhysBone[] selectedPhysBones;
 
-		private static VRCPhysBone[] _PolicyIdentifier;
+		private static VRCPhysBone[] scenePhysBones;
 
-		private static VRCPhysBoneCollider[] m_MapperIdentifier;
+		private static VRCPhysBoneCollider[] sceneColliders;
 
-		private static Transform[] mappingIdentifier;
+		private static Transform[] candidateTransforms;
 
-		private static byte[] m_QueueIdentifier;
+		private static byte[] membershipStates;
 
 		private static Editor m_ProcessorIdentifier;
 
@@ -3101,23 +3101,23 @@ internal sealed class ADOverhaul
 
 		private static SerializedProperty m_InstanceAuthentication;
 
-		private static AlgoAuthentication[] taskAuthentication;
+		private static AlgoAuthentication[] bindings;
 
-		private static GUIContent[] m_CustomerAuthentication;
+		private static GUIContent[] bindingLabels;
 
-		private static int[] m_DatabaseAuthentication;
+		private static int[] bindingPopupValues;
 
-		private static Dictionary<int, int> _HelperAuthentication;
+		private static Dictionary<int, int> popupValueToBindingIndex;
 
-		private static Dictionary<int, int> _CandidateAuthentication;
+		private static Dictionary<int, int> bindingIndexToPopupValue;
 
-		private static bool m_ReaderAuthentication;
+		private static bool bindingLabelsBuilt;
 
-		private static int m_StubAuthentication = -1;
+		private static int editedBindingIndex = -1;
 
-		private static readonly ExclusiveSelectionState rulesAuthentication = new ExclusiveSelectionState(7);
+		private static readonly ExclusiveSelectionState toolModes = new ExclusiveSelectionState(7);
 
-		private static readonly string[] m_TestsAuthentication = new string[7] { "None", "End Position Edit", "Ignore Selection", "Ignore Copy", "Collision Selection", "Collision Copy", "Property Edit" };
+		private static readonly string[] toolModeNames = new string[7] { "None", "End Position Edit", "Ignore Selection", "Ignore Copy", "Collision Selection", "Collision Copy", "Property Edit" };
 
 		private static int _DefinitionAuthentication = -1;
 
@@ -3130,90 +3130,90 @@ internal sealed class ADOverhaul
 		private static bool threadAuthentication;
 
 		[SpecialName]
-		private static AlgoAuthentication CountAccount()
+		private static AlgoAuthentication activeBinding()
 		{
-			if (RemoveAccount())
+			if (isEditingProperty())
 			{
-				return taskAuthentication[m_StubAuthentication];
+				return bindings[editedBindingIndex];
 			}
 			return null;
 		}
 
 		[SpecialName]
-		private static bool RemoveAccount()
+		private static bool isEditingProperty()
 		{
-			if (m_StubAuthentication < 0)
+			if (editedBindingIndex < 0)
 			{
 				return false;
 			}
-			return rulesAuthentication.activeIndex == 6;
+			return toolModes.activeIndex == 6;
 		}
 
 		[SpecialName]
-		private static bool ResolveAccount()
+		private static bool isEditingEndpoints()
 		{
-			return rulesAuthentication.activeIndex == 1;
+			return toolModes.activeIndex == 1;
 		}
 
 		[SpecialName]
 		private static void ResetAccount(bool noinit)
 		{
-			rulesAuthentication.SetSelected(1, noinit);
+			toolModes.SetSelected(1, noinit);
 		}
 
 		[SpecialName]
-		private static bool FlushAccount()
+		private static bool isSelectingIgnoreTransforms()
 		{
-			return rulesAuthentication.activeIndex == 2;
+			return toolModes.activeIndex == 2;
 		}
 
 		[SpecialName]
 		private static void ExcludeAccount(bool isinfo)
 		{
-			rulesAuthentication.SetSelected(2, isinfo);
+			toolModes.SetSelected(2, isinfo);
 		}
 
 		[SpecialName]
-		private static bool ConnectAccount()
+		private static bool isCopyingIgnoreTransforms()
 		{
-			return rulesAuthentication.activeIndex == 3;
+			return toolModes.activeIndex == 3;
 		}
 
 		[SpecialName]
 		private static void FindAccount(bool updatelast)
 		{
-			rulesAuthentication.SetSelected(3, updatelast);
+			toolModes.SetSelected(3, updatelast);
 		}
 
 		[SpecialName]
-		private static bool ValidateAccount()
+		private static bool isSelectingColliders()
 		{
-			return rulesAuthentication.activeIndex == 4;
+			return toolModes.activeIndex == 4;
 		}
 
 		[SpecialName]
 		private static void CreateAccount(bool loadlast)
 		{
-			rulesAuthentication.SetSelected(4, loadlast);
+			toolModes.SetSelected(4, loadlast);
 		}
 
 		[SpecialName]
-		private static bool RevertAccount()
+		private static bool isCopyingColliders()
 		{
-			return rulesAuthentication.activeIndex == 5;
+			return toolModes.activeIndex == 5;
 		}
 
 		[SpecialName]
 		private static void RunParams(bool updatelast)
 		{
-			rulesAuthentication.SetSelected(5, updatelast);
+			toolModes.SetSelected(5, updatelast);
 		}
 
 		public override void OnInspectorGUI()
 		{
 			if (!FlushConfiguration())
 			{
-				if (!_Service)
+				if (!isLicensed)
 				{
 					EnableConfiguration(SelectSingleton);
 				}
@@ -3222,21 +3222,21 @@ internal sealed class ADOverhaul
 			{
 				if (!((Func<bool>)delegate
 				{
-					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-					return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+					using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+					return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 				})())
 				{
 					return;
 				}
 				ConcatSingleton();
 				base.serializedObject.Update();
-				PrintSingleton();
-				ReadConfiguration(_MessageIdentifier);
+				CacheProperties();
+				ReadConfiguration(selectedPhysBones);
 				EditorGUIUtility.labelWidth = 160f;
 				int num = 0;
 				AnimBool[] annotationIdentifier = _AnnotationIdentifier;
 				num = 1;
-				SelectIdentifier("Transforms", annotationIdentifier[0], null, delegate
+				DrawFoldoutBox("Transforms", annotationIdentifier[0], null, delegate
 				{
 					using (new GUILayout.HorizontalScope())
 					{
@@ -3256,7 +3256,7 @@ internal sealed class ADOverhaul
 							}
 						}
 					}
-					ResetAccount(SearchConfiguration(_WriterIdentifier, ResolveAccount()));
+					ResetAccount(DrawPropertyWithEditToggle(_WriterIdentifier, isEditingEndpoints()));
 					EditorGUILayout.PropertyField(classIdentifier);
 					using (new GUILayout.VerticalScope("box"))
 					{
@@ -3265,25 +3265,25 @@ internal sealed class ADOverhaul
 							GUILayout.Space(12f);
 							m_TemplateIdentifier.isExpanded = EditorGUILayout.Foldout(m_TemplateIdentifier.isExpanded, "Ignore Transforms", toggleOnLabelClick: true);
 							GUILayout.FlexibleSpace();
-							FindAccount(LoginConfiguration(ConnectAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+							FindAccount(DrawIconToggle(isCopyingIgnoreTransforms(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
 							EditorGUI.BeginChangeCheck();
-							ExcludeAccount(LoginConfiguration(FlushAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+							ExcludeAccount(DrawIconToggle(isSelectingIgnoreTransforms(), ADOEditorUtility.CustomizeRef().advisorSerializer));
 							if (EditorGUI.EndChangeCheck())
 							{
-								PublishSingleton();
+								RefreshIgnoreTransformStates();
 							}
 						}
 						if (m_TemplateIdentifier.isExpanded)
 						{
 							EditorGUI.indentLevel++;
-							ADOEditorUtility.OrderStatus<Transform>(m_TemplateIdentifier);
+							ADOEditorUtility.ObjectListField<Transform>(m_TemplateIdentifier);
 							EditorGUI.indentLevel--;
 						}
 					}
 				});
 				AnimBool[] annotationIdentifier2 = _AnnotationIdentifier;
 				num = 2;
-				SelectIdentifier("Forces", annotationIdentifier2[1], ViewSingleton, delegate
+				DrawFoldoutBox("Forces", annotationIdentifier2[1], ViewSingleton, delegate
 				{
 					bool flag = _ErrorIdentifier.enumValueIndex == 1;
 					PostSingleton(0);
@@ -3300,7 +3300,7 @@ internal sealed class ADOverhaul
 						EditorGUILayout.PropertyField(configurationAuthentication);
 					}
 				});
-				SelectIdentifier("Limits", _AnnotationIdentifier[num++], null, delegate
+				DrawFoldoutBox("Limits", _AnnotationIdentifier[num++], null, delegate
 				{
 					int enumValueIndex = _AccountAuthentication.enumValueIndex;
 					EditorGUILayout.PropertyField(_AccountAuthentication, new GUIContent("Type"));
@@ -3339,12 +3339,12 @@ internal sealed class ADOverhaul
 						CallConfiguration(consumerAuthentication, "Allow Collsion", null, GUILayout.ExpandWidth(expand: false));
 					};
 				}
-				SelectIdentifier("Collisions", _AnnotationIdentifier[num++], dir, delegate
+				DrawFoldoutBox("Collisions", _AnnotationIdentifier[num++], dir, delegate
 				{
 					PostSingleton(6);
 					if (_ModelAuthentication)
 					{
-						StopConfiguration(consumerAuthentication, m_UtilsAuthentication);
+						DrawSelfOthersToggles(consumerAuthentication, m_UtilsAuthentication);
 					}
 					using (new GUILayout.VerticalScope(GUI.skin.box))
 					{
@@ -3353,18 +3353,18 @@ internal sealed class ADOverhaul
 							GUILayout.Space(12f);
 							m_SingletonAuthentication.isExpanded = EditorGUILayout.Foldout(m_SingletonAuthentication.isExpanded, "Colliders", toggleOnLabelClick: true);
 							GUILayout.FlexibleSpace();
-							RunParams(LoginConfiguration(RevertAccount(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
+							RunParams(DrawIconToggle(isCopyingColliders(), ADOEditorUtility.CustomizeRef().m_ExporterSerializer));
 							EditorGUI.BeginChangeCheck();
-							CreateAccount(LoginConfiguration(ValidateAccount(), ADOEditorUtility.CustomizeRef().advisorSerializer));
+							CreateAccount(DrawIconToggle(isSelectingColliders(), ADOEditorUtility.CustomizeRef().advisorSerializer));
 							if (EditorGUI.EndChangeCheck())
 							{
-								MoveSingleton();
+								RefreshColliderStates();
 							}
 						}
 						if (m_SingletonAuthentication.isExpanded)
 						{
 							EditorGUI.indentLevel++;
-							ADOEditorUtility.OrderStatus<VRCPhysBoneCollider>(m_SingletonAuthentication);
+							ADOEditorUtility.ObjectListField<VRCPhysBoneCollider>(m_SingletonAuthentication);
 							EditorGUI.indentLevel--;
 						}
 					}
@@ -3378,20 +3378,20 @@ internal sealed class ADOverhaul
 						CallConfiguration(iteratorAuthentication, "Allow Posing", null, GUILayout.ExpandWidth(expand: false));
 					};
 				}
-				SelectIdentifier("Grab & Pose", _AnnotationIdentifier[num++], dir2, delegate
+				DrawFoldoutBox("Grab & Pose", _AnnotationIdentifier[num++], dir2, delegate
 				{
 					if (_ModelAuthentication)
 					{
 						while (true)
 						{
-							StopConfiguration(comparatorAuthentication, _ProductAuthentication);
-							StopConfiguration(iteratorAuthentication, m_PredicateAuthentication);
+							DrawSelfOthersToggles(comparatorAuthentication, _ProductAuthentication);
+							DrawSelfOthersToggles(iteratorAuthentication, m_PredicateAuthentication);
 						}
 					}
 					EditorGUILayout.PropertyField(_CollectionAuthentication);
 					EditorGUILayout.PropertyField(interceptorAuthentication);
 				});
-				SelectIdentifier("Stretch & Squish", _AnnotationIdentifier[num++], null, delegate
+				DrawFoldoutBox("Stretch & Squish", _AnnotationIdentifier[num++], null, delegate
 				{
 					ListSingleton(13);
 					ListSingleton(14);
@@ -3400,19 +3400,19 @@ internal sealed class ADOverhaul
 						ListSingleton(12);
 					}
 				});
-				SelectIdentifier("Options", _AnnotationIdentifier[num++], null, delegate
+				DrawFoldoutBox("Options", _AnnotationIdentifier[num++], null, delegate
 				{
 					EditorGUILayout.PropertyField(_ValueIdentifier);
 					EditorGUILayout.PropertyField(resolverAuthentication);
 					EditorGUILayout.PropertyField(_FilterAuthentication);
-					PushConfiguration();
+					DrawTargetAvatarSelector();
 					using (new GUILayout.HorizontalScope())
 					{
-						if ((bool)(UnityEngine.Object)(object)m_Predicate)
+						if ((bool)(UnityEngine.Object)(object)selectedAvatar)
 						{
 							List<string> list = new List<string>();
-							string[] registry = m_Registry;
-							foreach (string text in registry)
+							string[] avatarParameterNames = ADOverhaul.avatarParameterNames;
+							foreach (string text in avatarParameterNames)
 							{
 								int num2 = text.LastIndexOf("_IsGrabbed", StringComparison.Ordinal);
 								if (num2 < 0)
@@ -3438,12 +3438,12 @@ internal sealed class ADOverhaul
 									tagAuthentication.stringValue = stringValue;
 								}
 							}
-							using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)m_Predicate == null || string.IsNullOrEmpty(tagAuthentication.stringValue)))
+							using (new EditorGUI.DisabledScope((UnityEngine.Object)(object)selectedAvatar == null || string.IsNullOrEmpty(tagAuthentication.stringValue)))
 							{
-								if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().m_DispatcherSerializer))
+								if (ADOEditorUtility.IconButton(ADOEditorUtility.CustomizeRef().m_DispatcherSerializer))
 								{
 									GenericMenu genericMenu = new GenericMenu();
-									using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = m_Predicate.baseAnimationLayers.Concat(m_Predicate.specialAnimationLayers).GetEnumerator())
+									using (IEnumerator<VRCAvatarDescriptor.CustomAnimLayer> enumerator = selectedAvatar.baseAnimationLayers.Concat(selectedAvatar.specialAnimationLayers).GetEnumerator())
 									{
 										while (enumerator.MoveNext())
 										{
@@ -3453,12 +3453,12 @@ internal sealed class ADOverhaul
 											if (!(_003C_003Ec__DisplayClass108_.m_MockAuthentication == null))
 											{
 												UnityEngine.AnimatorControllerParameter[] parameters = _003C_003Ec__DisplayClass108_.m_MockAuthentication.parameters;
-												ADOEditorUtility.PhysBoneParameter[] visitorSerializer = ADOEditorUtility.m_VisitorSerializer;
-												for (int i = 0; i < visitorSerializer.Length; i++)
+												ADOEditorUtility.PhysBoneParameter[] physBoneParameters = ADOEditorUtility.physBoneParameters;
+												for (int i = 0; i < physBoneParameters.Length; i++)
 												{
 													_003C_003Ec__DisplayClass108_2 _003C_003Ec__DisplayClass108_2 = new _003C_003Ec__DisplayClass108_2();
 													_003C_003Ec__DisplayClass108_2.advisorAuthentication = _003C_003Ec__DisplayClass108_;
-													_003C_003Ec__DisplayClass108_2._StateAuthentication = visitorSerializer[i];
+													_003C_003Ec__DisplayClass108_2._StateAuthentication = physBoneParameters[i];
 													_003C_003Ec__DisplayClass108_2._FieldAuthentication = tagAuthentication.stringValue + _003C_003Ec__DisplayClass108_2._StateAuthentication.suffix;
 													if (!parameters.Any(_003C_003Ec__DisplayClass108_2.PatchImporter))
 													{
@@ -3483,7 +3483,7 @@ internal sealed class ADOverhaul
 						using (new EditorGUILayout.HorizontalScope())
 						{
 							GUILayoutUtils.LoginIterator(m_CodeIdentifier, null);
-							foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility.m_VisitorSerializer.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
+							foreach (ADOEditorUtility.PhysBoneParameter item in ADOEditorUtility.physBoneParameters.Where(_003C_003Ec.m_ManagerAuthentication.SortParams))
 							{
 								using (new EditorGUILayout.VerticalScope())
 								{
@@ -3497,7 +3497,7 @@ internal sealed class ADOverhaul
 						}
 					}
 				});
-				SelectIdentifier("Gizmos", _AnnotationIdentifier[num++], delegate
+				DrawFoldoutBox("Gizmos", _AnnotationIdentifier[num++], delegate
 				{
 					CallConfiguration(m_FactoryAuthentication, "Show Gizmos", delegate
 					{
@@ -3508,9 +3508,9 @@ internal sealed class ADOverhaul
 					}, GUILayout.ExpandWidth(expand: false));
 					bool flag;
 					string text = ((!(flag = ADOSettings.Instance().globalGizmo)) ? "Local Setting" : "Global Setting");
-					using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._EventSerializer))
+					using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.validColor, ADOEditorUtility.warningColor))
 					{
-						using (new ADOSettings.SettingsChangeScope(InterruptSingleton))
+						using (new ADOSettings.SettingsChangeScope(ApplyGlobalGizmoSettings))
 						{
 							ADOSettings.Instance().globalGizmo.SetValue(GUILayout.Toggle(flag, text, GUI.skin.button, GUILayout.ExpandWidth(expand: false)));
 						}
@@ -3528,103 +3528,103 @@ internal sealed class ADOverhaul
 						m_InstanceAuthentication.floatValue = EditorGUILayout.Slider("Limit Opacitiy", m_InstanceAuthentication.floatValue, 0f, 1f);
 					}
 				});
-				TestConfiguration(base.serializedObject, _MessageIdentifier, delegate(VRCPhysBone pb)
+				TestConfiguration(base.serializedObject, selectedPhysBones, delegate(VRCPhysBone pb)
 				{
 					pb.configHasUpdated = true;
 				});
 				GetConfiguration();
-				SortIdentifier();
+				DrawToolHeader();
 			}
 		}
 
 		private void method_0()
 		{
-			if (rulesAuthentication.activeIndex < 0)
+			if (toolModes.activeIndex < 0)
 			{
 				return;
 			}
-			VRCPhysBone vRCPhysBone = (VRCPhysBone)ChangeSingleton();
+			VRCPhysBone vRCPhysBone = (VRCPhysBone)TargetObject();
 			if (!(vRCPhysBone == null))
 			{
 				Tools.hidden = true;
 				ADOEditorUtility.BoneChainTree boneChainTree = new ADOEditorUtility.BoneChainTree(vRCPhysBone);
 				boneChainTree.BuildChains();
-				if (ResolveAccount())
+				if (isEditingEndpoints())
 				{
-					CustomizeSingleton(_MessageIdentifier, boneChainTree);
+					CustomizeSingleton(selectedPhysBones, boneChainTree);
 				}
-				if (RemoveAccount())
+				if (isEditingProperty())
 				{
-					CancelSingleton(_MessageIdentifier, boneChainTree, CountAccount());
+					CancelSingleton(selectedPhysBones, boneChainTree, activeBinding());
 				}
 			}
 		}
 
 		private static void VerifySingleton(SceneView task)
 		{
-			ADOEditorUtility.PublishStatus();
+			ADOEditorUtility.BeginDeferredCursorRects();
 			ConcatSingleton();
 			SetSingleton(task);
-			if (ValidateAccount())
+			if (isSelectingColliders())
 			{
 				bool flag = ADOSettings.Instance().onSceneNameLabels;
 				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag, ADOSettings.Instance().labelColor.GetValue()))
 				{
-					for (int i = 0; i < m_MapperIdentifier.Length; i++)
+					for (int i = 0; i < sceneColliders.Length; i++)
 					{
 						int _ExporterAuthentication = i;
-						VRCPhysBoneCollider _CreatorAuthentication = m_MapperIdentifier[_ExporterAuthentication];
-						ADOEditorUtility.SphereHandle first = ADOEditorUtility.SphereHandle.Create(_CreatorAuthentication.transform.TransformPoint(_CreatorAuthentication.position), flag ? _CreatorAuthentication.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.05f, _Iterator + i, delegate
+						VRCPhysBoneCollider _CreatorAuthentication = sceneColliders[_ExporterAuthentication];
+						ADOEditorUtility.SphereHandle first = ADOEditorUtility.SphereHandle.Create(_CreatorAuthentication.transform.TransformPoint(_CreatorAuthentication.position), flag ? _CreatorAuthentication.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.05f, handleControlIdBase + i, delegate
 						{
-							m_SingletonAuthentication.DestroyStatus<VRCPhysBoneCollider>(ADOEditorUtility.FillVal(m_QueueIdentifier, _ExporterAuthentication), _CreatorAuthentication);
+							m_SingletonAuthentication.DestroyStatus<VRCPhysBoneCollider>(ADOEditorUtility.CycleToggleState(membershipStates, _ExporterAuthentication), _CreatorAuthentication);
 						});
 						first.onDraw = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
-							Handles.color = ADOSettings.Instance().StateColors()[m_QueueIdentifier[_ExporterAuthentication]];
+							Handles.color = ADOSettings.Instance().StateColors()[membershipStates[_ExporterAuthentication]];
 							ADOEditorUtility.SphereHandle.DrawDefault(sc2);
 						};
-						ADOEditorUtility.InitStatus(first);
+						ADOEditorUtility.DrawSphereHandle(first);
 					}
 				}
 			}
-			if (FlushAccount())
+			if (isSelectingIgnoreTransforms())
 			{
 				bool flag2 = ADOSettings.Instance().onSceneNameLabels;
 				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag2, ADOSettings.Instance().labelColor.GetValue()))
 				{
-					for (int num = 0; num < mappingIdentifier.Length; num++)
+					for (int num = 0; num < candidateTransforms.Length; num++)
 					{
-						Transform _ConnectionAuthentication = mappingIdentifier[num];
+						Transform _ConnectionAuthentication = candidateTransforms[num];
 						int m_DispatcherAuthentication = num;
-						ADOEditorUtility.SphereHandle first2 = ADOEditorUtility.SphereHandle.Create(_ConnectionAuthentication.position, (!flag2) ? string.Empty : _ConnectionAuthentication.name, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, _Iterator + num, delegate
+						ADOEditorUtility.SphereHandle first2 = ADOEditorUtility.SphereHandle.Create(_ConnectionAuthentication.position, (!flag2) ? string.Empty : _ConnectionAuthentication.name, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, handleControlIdBase + num, delegate
 						{
-							m_TemplateIdentifier.DestroyStatus<Transform>(ADOEditorUtility.FillVal(m_QueueIdentifier, m_DispatcherAuthentication), _ConnectionAuthentication);
+							m_TemplateIdentifier.DestroyStatus<Transform>(ADOEditorUtility.CycleToggleState(membershipStates, m_DispatcherAuthentication), _ConnectionAuthentication);
 						});
 						first2.onDraw = delegate(ADOEditorUtility.SphereHandle sc2)
 						{
-							Handles.color = ADOSettings.Instance().StateColors()[m_QueueIdentifier[m_DispatcherAuthentication]];
+							Handles.color = ADOSettings.Instance().StateColors()[membershipStates[m_DispatcherAuthentication]];
 							ADOEditorUtility.SphereHandle.DrawDefault(sc2);
 						};
-						ADOEditorUtility.InitStatus(first2);
+						ADOEditorUtility.DrawSphereHandle(first2);
 					}
 				}
 			}
-			if (RevertAccount())
+			if (isCopyingColliders())
 			{
 				bool flag3 = ADOSettings.Instance().onSceneNameLabels;
 				Handles.color = ADOSettings.Instance().selectionColor.GetValue();
 				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag3, ADOSettings.Instance().labelColor.GetValue()))
 				{
-					for (int num2 = 0; num2 < _PolicyIdentifier.Length; num2++)
+					for (int num2 = 0; num2 < scenePhysBones.Length; num2++)
 					{
-						VRCPhysBone vRCPhysBone = _PolicyIdentifier[num2];
+						VRCPhysBone vRCPhysBone = scenePhysBones[num2];
 						int _ExpressionAuthentication = num2;
-						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.Create(vRCPhysBone.transform.position, flag3 ? vRCPhysBone.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, _Iterator + num2, delegate
+						ADOEditorUtility.DrawSphereHandle(ADOEditorUtility.SphereHandle.Create(vRCPhysBone.transform.position, flag3 ? vRCPhysBone.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, handleControlIdBase + num2, delegate
 						{
-							VRCPhysBone[] messageIdentifier = _MessageIdentifier;
-							for (int j = 0; j < messageIdentifier.Length; j++)
+							VRCPhysBone[] array = selectedPhysBones;
+							for (int j = 0; j < array.Length; j++)
 							{
-								messageIdentifier[j].colliders = _PolicyIdentifier[_ExpressionAuthentication].colliders.ToList();
+								array[j].colliders = scenePhysBones[_ExpressionAuthentication].colliders.ToList();
 							}
 							RunParams(updatelast: false);
 							if (m_ProcessorIdentifier != null)
@@ -3635,22 +3635,22 @@ internal sealed class ADOverhaul
 					}
 				}
 			}
-			if (ConnectAccount())
+			if (isCopyingIgnoreTransforms())
 			{
 				bool flag4 = ADOSettings.Instance().onSceneNameLabels;
 				Handles.color = ADOSettings.Instance().selectionColor.GetValue();
 				using (new GUIColorScope(GUIColorScope.ColoringType.FG, flag4, ADOSettings.Instance().labelColor.GetValue()))
 				{
-					for (int num3 = 0; num3 < _PolicyIdentifier.Length; num3++)
+					for (int num3 = 0; num3 < scenePhysBones.Length; num3++)
 					{
-						VRCPhysBone vRCPhysBone2 = _PolicyIdentifier[num3];
+						VRCPhysBone vRCPhysBone2 = scenePhysBones[num3];
 						int _DecoratorAuthentication = num3;
-						ADOEditorUtility.InitStatus(ADOEditorUtility.SphereHandle.Create(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, _Iterator + num3, delegate
+						ADOEditorUtility.DrawSphereHandle(ADOEditorUtility.SphereHandle.Create(vRCPhysBone2.transform.position, flag4 ? vRCPhysBone2.name : string.Empty, (float)ADOSettings.Instance().handleSizeMultiplier * 0.25f, handleControlIdBase + num3, delegate
 						{
-							VRCPhysBone[] messageIdentifier = _MessageIdentifier;
-							for (int j = 0; j < messageIdentifier.Length; j++)
+							VRCPhysBone[] array = selectedPhysBones;
+							for (int j = 0; j < array.Length; j++)
 							{
-								messageIdentifier[j].ignoreTransforms = _PolicyIdentifier[_DecoratorAuthentication].ignoreTransforms.ToList();
+								array[j].ignoreTransforms = scenePhysBones[_DecoratorAuthentication].ignoreTransforms.ToList();
 							}
 							FindAccount(updatelast: false);
 							if (m_ProcessorIdentifier != null)
@@ -3662,18 +3662,18 @@ internal sealed class ADOverhaul
 				}
 			}
 			Event current = Event.current;
-			if (Tools.current != Tool.View && !current.alt && (bool)ADOSettings.Instance().ignoreSceneClicks && rulesAuthentication.activeIndex > 0 && current.type == EventType.MouseDown && current.button == 0)
+			if (Tools.current != Tool.View && !current.alt && (bool)ADOSettings.Instance().ignoreSceneClicks && toolModes.activeIndex > 0 && current.type == EventType.MouseDown && current.button == 0)
 			{
-				GUIUtility.hotControl = _Iterator - 1;
+				GUIUtility.hotControl = handleControlIdBase - 1;
 				current.Use();
 			}
-			ADOEditorUtility.PrintStatus();
+			ADOEditorUtility.EndDeferredCursorRects();
 		}
 
 		private static void SetSingleton(SceneView info)
 		{
 			Rect ivk = info.AddStatus();
-			int num = rulesAuthentication.activeIndex;
+			int num = toolModes.activeIndex;
 			if (num < 0)
 			{
 				num = 0;
@@ -3688,9 +3688,9 @@ internal sealed class ADOverhaul
 					Rect lastRect;
 					using (new GUILayout.HorizontalScope())
 					{
-						using (new EditorGUI.DisabledScope(rulesAuthentication.activeIndex <= 0))
+						using (new EditorGUI.DisabledScope(toolModes.activeIndex <= 0))
 						{
-							if (ADOEditorUtility.ListStatus((!ADOSettings.Instance().ignoreSceneClicks) ? ADOEditorUtility.CustomizeRef().decoratorSerializer : ADOEditorUtility.CustomizeRef()._ParamSerializer))
+							if (ADOEditorUtility.IconButton((!ADOSettings.Instance().ignoreSceneClicks) ? ADOEditorUtility.CustomizeRef().decoratorSerializer : ADOEditorUtility.CustomizeRef()._ParamSerializer))
 							{
 								ADOSettings.Instance().ignoreSceneClicks.Toggle();
 							}
@@ -3698,48 +3698,48 @@ internal sealed class ADOverhaul
 						GUILayout.FlexibleSpace();
 						GUILayout.Label("ADO Tool:", ADOEditorUtility.MapRef().m_WriterSerializer);
 						lastRect = GUILayoutUtility.GetLastRect();
-						GUIContent content = new GUIContent(m_TestsAuthentication[num]);
+						GUIContent content = new GUIContent(toolModeNames[num]);
 						float x = GUI.skin.label.CalcSize(content).x;
 						EditorGUI.BeginChangeCheck();
-						int activeIndex = EditorGUILayout.Popup(GUIContent.none, num, m_TestsAuthentication, GUILayout.Width(x + 20f));
+						int activeIndex = EditorGUILayout.Popup(GUIContent.none, num, toolModeNames, GUILayout.Width(x + 20f));
 						if (EditorGUI.EndChangeCheck())
 						{
-							rulesAuthentication.activeIndex = activeIndex;
-							if (rulesAuthentication.activeIndex == 0)
+							toolModes.activeIndex = activeIndex;
+							if (toolModes.activeIndex == 0)
 							{
-								SetupSingleton();
+								ExitTool();
 							}
-							else if (rulesAuthentication.activeIndex == 6)
+							else if (toolModes.activeIndex == 6)
 							{
-								LogoutSingleton(0);
+								SetPropertyEditTarget(0);
 							}
 							else
 							{
-								LogoutSingleton(-1);
-								if (rulesAuthentication.activeIndex > 1 && rulesAuthentication.activeIndex < 4)
+								SetPropertyEditTarget(-1);
+								if (toolModes.activeIndex > 1 && toolModes.activeIndex < 4)
 								{
-									PublishSingleton();
+									RefreshIgnoreTransformStates();
 								}
 								else
 								{
-									MoveSingleton();
+									RefreshColliderStates();
 								}
 							}
 							SceneView.RepaintAll();
 						}
 						GUILayout.FlexibleSpace();
-						if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
+						if (ADOEditorUtility.IconButton(ADOEditorUtility.CustomizeRef().fieldSerializer))
 						{
 							ADOverhaulWindow.ShowWindow();
 						}
 					}
-					flag2 = ADOEditorUtility.VisitStatus(lastRect, _TokenizerIdentifier);
-					ADOEditorUtility.InsertStatus(lastRect, MouseCursor.Pan);
+					flag2 = ADOEditorUtility.HasMouseCapture(lastRect, _TokenizerIdentifier);
+					ADOEditorUtility.AddCursorRect(lastRect, MouseCursor.Pan);
 				}
 				if (flag2)
 				{
 					Handles.BeginGUI();
-					ADOSettings.Instance().toolSelectionOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk);
+					ADOSettings.Instance().toolSelectionOverlayAlignment.IntValue = (int)ADOEditorUtility.AnchorPicker(enumValue, ivk);
 					Handles.EndGUI();
 				}
 			}
@@ -3754,7 +3754,7 @@ internal sealed class ADOverhaul
 			bool drawGizmos = first.drawGizmos;
 			if (!drawGizmos)
 			{
-				WriteIdentifier(first, "Gizmos Disabled", delegate
+				DrawTitledOverlay(first, "Gizmos Disabled", delegate
 				{
 					GUILayout.Label("Handles are hidden.", ADOEditorUtility.MapRef().m_WriterSerializer);
 					if (ADOEditorUtility.PatchStatus("Enable Gizmos"))
@@ -3768,22 +3768,22 @@ internal sealed class ADOverhaul
 
 		private static void InvokeSingleton(SceneView value)
 		{
-			if (!ADOSettings.Instance().onSceneEditingOverlay || rulesAuthentication.activeIndex <= 0)
+			if (!ADOSettings.Instance().onSceneEditingOverlay || toolModes.activeIndex <= 0)
 			{
 				return;
 			}
-			bool _IssuerAuthentication = RemoveAccount();
+			bool _IssuerAuthentication = isEditingProperty();
 			bool codeAuthentication = ADOSettings.Instance().onSceneTooltip;
 			if (!_IssuerAuthentication && !codeAuthentication)
 			{
 				return;
 			}
-			bool m_PrototypeAuthentication = _MessageIdentifier.Length > 1;
-			bool flag = FlushAccount();
-			bool flag2 = ValidateAccount();
-			bool flag3 = ConnectAccount();
-			bool flag4 = RevertAccount();
-			bool callbackAuthentication = ResolveAccount();
+			bool m_PrototypeAuthentication = selectedPhysBones.Length > 1;
+			bool flag = isSelectingIgnoreTransforms();
+			bool flag2 = isSelectingColliders();
+			bool flag3 = isCopyingIgnoreTransforms();
+			bool flag4 = isCopyingColliders();
+			bool callbackAuthentication = isEditingEndpoints();
 			bool facadeAuthentication = flag || flag3;
 			bool _ComposerAuthentication = flag2 || flag4;
 			bool m_RequestAuthentication = flag3 || flag4;
@@ -3791,29 +3791,29 @@ internal sealed class ADOverhaul
 			float ivk = ((!codeAuthentication) ? 33 : ((!_IssuerAuthentication && !callbackAuthentication) ? 60 : (m_PrototypeAuthentication ? 100 : ((!_IssuerAuthentication) ? 60 : 80))));
 			float pol = ((!m_PrototypeAuthentication) ? 240 : 340);
 			Rect annotationAuthentication;
-			MoveIdentifier(value, delegate
+			DrawOverlay(value, delegate
 			{
 				using (new GUILayout.HorizontalScope())
 				{
 					string text = string.Concat(((!m_PrototypeAuthentication) ? "" : "Multi-") + (_BaseAuthentication ? "Editing" : ((!m_RequestAuthentication) ? "Selecting" : "Copying")), _IssuerAuthentication ? ":" : (facadeAuthentication ? " Ignore Transforms" : ((!_ComposerAuthentication) ? " End Position" : " Colliders")));
-					ADOEditorUtility.AssetStatus();
+					ADOEditorUtility.IconSpacer();
 					GUILayout.FlexibleSpace();
 					GUILayout.Label(text, ADOEditorUtility.MapRef().m_WriterSerializer);
 					annotationAuthentication = GUILayoutUtility.GetLastRect();
 					if (_IssuerAuthentication)
 					{
 						EditorGUI.BeginChangeCheck();
-						GUIContent content = m_CustomerAuthentication[m_StubAuthentication];
+						GUIContent content = bindingLabels[editedBindingIndex];
 						float x = GUI.skin.label.CalcSize(content).x;
-						int key = EditorGUILayout.IntPopup(GUIContent.none, _CandidateAuthentication[m_StubAuthentication], m_CustomerAuthentication, m_DatabaseAuthentication, GUILayout.Width(x + 20f));
+						int key = EditorGUILayout.IntPopup(GUIContent.none, bindingIndexToPopupValue[editedBindingIndex], bindingLabels, bindingPopupValues, GUILayout.Width(x + 20f));
 						if (EditorGUI.EndChangeCheck())
 						{
-							m_StubAuthentication = _HelperAuthentication[key];
+							editedBindingIndex = popupValueToBindingIndex[key];
 							SceneView.RepaintAll();
 						}
 					}
 					GUILayout.FlexibleSpace();
-					PublishIdentifier();
+					DrawSettingsButton();
 					return annotationAuthentication;
 				}
 			}, delegate
@@ -3876,7 +3876,7 @@ internal sealed class ADOverhaul
 				{
 					direction = initializerAuthentication;
 				}
-				Handles.color = ADOEditorUtility._EventSerializer;
+				Handles.color = ADOEditorUtility.warningColor;
 				EditorGUI.BeginChangeCheck();
 				Vector3 vector4 = Handles.Slider(vector, direction);
 				if (EditorGUI.EndChangeCheck())
@@ -3891,7 +3891,7 @@ internal sealed class ADOverhaul
 				}
 				if (flag)
 				{
-					SearchSingleton(transform.InverseTransformVector(vector2 - vector), ref vis);
+					ApplyEndpointOffset(transform.InverseTransformVector(vector2 - vector), ref vis);
 				}
 			}
 		}
@@ -3904,11 +3904,11 @@ internal sealed class ADOverhaul
 				return;
 			}
 			KeyCode keyCode = current.keyCode;
-			if (rulesAuthentication.activeIndex >= 0)
+			if (toolModes.activeIndex >= 0)
 			{
 				if (keyCode == KeyCode.Return || keyCode == KeyCode.KeypadEnter || keyCode == KeyCode.Escape)
 				{
-					SetupSingleton();
+					ExitTool();
 					current.Use();
 				}
 			}
@@ -3921,22 +3921,22 @@ internal sealed class ADOverhaul
 				switch (keyCode)
 				{
 				case KeyCode.E:
-					if (!RemoveAccount())
+					if (!isEditingProperty())
 					{
-						LogoutSingleton(0);
+						SetPropertyEditTarget(0);
 					}
 					else
 					{
-						SetupSingleton();
+						ExitTool();
 					}
-					if (_Account)
+					if (isTesting)
 					{
-						NewConfiguration();
+						ToggleTestMode();
 					}
 					current.Use();
 					break;
 				case KeyCode.T:
-					NewConfiguration();
+					ToggleTestMode();
 					current.Use();
 					break;
 				}
@@ -4067,7 +4067,7 @@ internal sealed class ADOverhaul
 						Vector4 column = matrix.GetColumn(3);
 						float comp2 = CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.radius * m;
 						EditorGUI.BeginChangeCheck();
-						float num9 = ADOEditorUtility.CreateStatus(matrix.rotation, column, comp2, !CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.showGizmos, ADOSettings.Instance().handleSizeMultiplier);
+						float num9 = ADOEditorUtility.RadiusHandle(matrix.rotation, column, comp2, !CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.showGizmos, ADOSettings.Instance().handleSizeMultiplier);
 						if (EditorGUI.EndChangeCheck())
 						{
 							float delta = num9 / m - CS_0024_003C_003E8__locals28.m_TokenizerAuthentication.radius;
@@ -4127,25 +4127,25 @@ internal sealed class ADOverhaul
 			Handles.color = color;
 		}
 
-		private static void LogoutSingleton(int end_v)
+		private static void SetPropertyEditTarget(int end_v)
 		{
-			if (end_v < 0 || (RemoveAccount() && m_StubAuthentication == end_v))
+			if (end_v < 0 || (isEditingProperty() && editedBindingIndex == end_v))
 			{
-				m_StubAuthentication = -1;
-				rulesAuthentication.SetSelected(6, ispred: false);
+				editedBindingIndex = -1;
+				toolModes.SetSelected(6, ispred: false);
 			}
 			else
 			{
-				m_StubAuthentication = end_v;
-				rulesAuthentication.Select(6);
+				editedBindingIndex = end_v;
+				toolModes.Select(6);
 			}
 			SceneView.RepaintAll();
 		}
 
-		internal static void SetupSingleton()
+		internal static void ExitTool()
 		{
-			rulesAuthentication.Clear();
-			m_StubAuthentication = -1;
+			toolModes.Clear();
+			editedBindingIndex = -1;
 		}
 
 		[MenuItem("CONTEXT/VRCPhysBone/[ADO] Toggle Editor", false, 899)]
@@ -4158,62 +4158,62 @@ internal sealed class ADOverhaul
 		{
 			if (m_TokenAuthentication == null)
 			{
-				m_TokenAuthentication = ADOEditorUtility.CancelStatus("VRCPhysBone");
+				m_TokenAuthentication = ADOEditorUtility.FindType("VRCPhysBone");
 			}
 			if (getterAuthentication == null)
 			{
-				getterAuthentication = ADOEditorUtility.CancelStatus("VRCPhysBoneEditor");
+				getterAuthentication = ADOEditorUtility.FindType("VRCPhysBoneEditor");
 			}
 			_CallbackIdentifier = !issetup;
-			ADOEditorUtility.RevertStatus(m_TokenAuthentication, (!_CallbackIdentifier) ? getterAuthentication : typeof(PhysBoneEditor));
+			ADOEditorUtility.OverrideCustomEditor(m_TokenAuthentication, (!_CallbackIdentifier) ? getterAuthentication : typeof(PhysBoneEditor));
 		}
 
-		private static void MoveSingleton()
+		private static void RefreshColliderStates()
 		{
-			m_QueueIdentifier = new byte[m_MapperIdentifier.Length];
+			membershipStates = new byte[sceneColliders.Length];
 			bool flag = true;
-			VRCPhysBone[] messageIdentifier = _MessageIdentifier;
-			foreach (VRCPhysBone vRCPhysBone in messageIdentifier)
+			VRCPhysBone[] array = selectedPhysBones;
+			foreach (VRCPhysBone vRCPhysBone in array)
 			{
-				for (int j = 0; j < m_QueueIdentifier.Length; j++)
+				for (int j = 0; j < membershipStates.Length; j++)
 				{
-					if (m_QueueIdentifier[j] == 2)
+					if (membershipStates[j] == 2)
 					{
 						continue;
 					}
 					List<VRCPhysBoneColliderBase> colliders = vRCPhysBone.colliders;
-					if (colliders != null && colliders.Contains(m_MapperIdentifier[j]))
+					if (colliders != null && colliders.Contains(sceneColliders[j]))
 					{
-						if (m_QueueIdentifier[j] != 0 || flag)
+						if (membershipStates[j] != 0 || flag)
 						{
-							m_QueueIdentifier[j] = 1;
+							membershipStates[j] = 1;
 						}
 						else
 						{
-							m_QueueIdentifier[j] = 2;
+							membershipStates[j] = 2;
 						}
 					}
-					else if (m_QueueIdentifier[j] == 1 && !flag)
+					else if (membershipStates[j] == 1 && !flag)
 					{
-						m_QueueIdentifier[j] = 2;
+						membershipStates[j] = 2;
 					}
 					else
 					{
-						m_QueueIdentifier[j] = 0;
+						membershipStates[j] = 0;
 					}
 				}
 				flag = false;
 			}
 		}
 
-		private static void PublishSingleton()
+		private static void RefreshIgnoreTransformStates()
 		{
-			VRCPhysBone[] messageIdentifier;
-			if (!FlushAccount())
+			VRCPhysBone[] array;
+			if (!isSelectingIgnoreTransforms())
 			{
 				bool flag = false;
-				messageIdentifier = _MessageIdentifier;
-				foreach (VRCPhysBone vRCPhysBone in messageIdentifier)
+				array = selectedPhysBones;
+				foreach (VRCPhysBone vRCPhysBone in array)
 				{
 					for (int num = vRCPhysBone.ignoreTransforms.Count - 1; num >= 0; num--)
 					{
@@ -4236,40 +4236,40 @@ internal sealed class ADOverhaul
 				}
 				if (flag)
 				{
-					NewIdentifier("Optimized ignore transforms.");
+					Log("Optimized ignore transforms.");
 				}
 				return;
 			}
-			m_QueueIdentifier = new byte[mappingIdentifier.Length];
+			membershipStates = new byte[candidateTransforms.Length];
 			bool flag2 = true;
-			messageIdentifier = _MessageIdentifier;
-			foreach (VRCPhysBone vRCPhysBone2 in messageIdentifier)
+			array = selectedPhysBones;
+			foreach (VRCPhysBone vRCPhysBone2 in array)
 			{
-				for (int num2 = 0; num2 < m_QueueIdentifier.Length; num2++)
+				for (int num2 = 0; num2 < membershipStates.Length; num2++)
 				{
-					if (m_QueueIdentifier[num2] == 2)
+					if (membershipStates[num2] == 2)
 					{
 						continue;
 					}
 					List<Transform> ignoreTransforms = vRCPhysBone2.ignoreTransforms;
-					if (ignoreTransforms != null && ignoreTransforms.Contains(mappingIdentifier[num2]))
+					if (ignoreTransforms != null && ignoreTransforms.Contains(candidateTransforms[num2]))
 					{
-						if (m_QueueIdentifier[num2] != 0 || flag2)
+						if (membershipStates[num2] != 0 || flag2)
 						{
-							m_QueueIdentifier[num2] = 1;
+							membershipStates[num2] = 1;
 						}
 						else
 						{
-							m_QueueIdentifier[num2] = 2;
+							membershipStates[num2] = 2;
 						}
 					}
-					else if (m_QueueIdentifier[num2] == 1 && !flag2)
+					else if (membershipStates[num2] == 1 && !flag2)
 					{
-						m_QueueIdentifier[num2] = 2;
+						membershipStates[num2] = 2;
 					}
 					else
 					{
-						m_QueueIdentifier[num2] = 0;
+						membershipStates[num2] = 0;
 					}
 				}
 				flag2 = false;
@@ -4281,7 +4281,7 @@ internal sealed class ADOverhaul
 			if (!threadAuthentication)
 			{
 				threadAuthentication = true;
-				float[] array = new float[ADOEditorUtility.m_VisitorSerializer.Count((ADOEditorUtility.PhysBoneParameter p) => p.hasBackingField)];
+				float[] array = new float[ADOEditorUtility.physBoneParameters.Count((ADOEditorUtility.PhysBoneParameter p) => p.hasBackingField)];
 				for (int num = 0; num < array.Length; num++)
 				{
 					array[num] = 1f / (float)array.Length;
@@ -4294,27 +4294,27 @@ internal sealed class ADOverhaul
 		{
 			m_ProcessorIdentifier = this;
 			CollectSingleton();
-			SelectConfiguration(_AnnotationIdentifier, Repaint);
-			InterruptSingleton();
-			PrintConfiguration(ref m_Predicate, ref _Collection);
-			LogoutConfiguration();
-			Transform root = ((VRCPhysBone)ChangeSingleton()).transform.root;
-			_MessageIdentifier = base.targets.Cast<VRCPhysBone>().ToArray();
-			m_MapperIdentifier = root.GetComponentsInChildren<VRCPhysBoneCollider>();
-			_PolicyIdentifier = root.GetComponentsInChildren<VRCPhysBone>();
-			mappingIdentifier = _MessageIdentifier.SelectMany((VRCPhysBone pb) => pb.GetRootTransform().GetComponentsInChildren<Transform>()).ToArray();
+			ResetFoldouts(_AnnotationIdentifier, Repaint);
+			ApplyGlobalGizmoSettings();
+			RefreshSceneAvatars(ref selectedAvatar, ref sceneAvatars);
+			RefreshAvatarTables();
+			Transform root = ((VRCPhysBone)TargetObject()).transform.root;
+			selectedPhysBones = base.targets.Cast<VRCPhysBone>().ToArray();
+			sceneColliders = root.GetComponentsInChildren<VRCPhysBoneCollider>();
+			scenePhysBones = root.GetComponentsInChildren<VRCPhysBone>();
+			candidateTransforms = selectedPhysBones.SelectMany((VRCPhysBone pb) => pb.GetRootTransform().GetComponentsInChildren<Transform>()).ToArray();
 			SceneView.duringSceneGui -= VerifySingleton;
 			SceneView.duringSceneGui += VerifySingleton;
 		}
 
 		private void OnDisable()
 		{
-			SetupSingleton();
+			ExitTool();
 			SceneView.duringSceneGui -= VerifySingleton;
 			Tools.hidden = false;
 		}
 
-		private void PrintSingleton()
+		private void CacheProperties()
 		{
 			_ValueIdentifier = base.serializedObject.FindProperty("version");
 			_ErrorIdentifier = base.serializedObject.FindProperty("integrationType");
@@ -4370,7 +4370,7 @@ internal sealed class ADOverhaul
 			m_FactoryAuthentication = base.serializedObject.FindProperty("showGizmos");
 			m_AttributeAuthentication = base.serializedObject.FindProperty("boneOpacity");
 			m_InstanceAuthentication = base.serializedObject.FindProperty("limitOpacity");
-			taskAuthentication = new AlgoAuthentication[15]
+			bindings = new AlgoAuthentication[15]
 			{
 				new AlgoAuthentication(_DicIdentifier, _ContainerIdentifier),
 				new AlgoAuthentication(m_SchemaIdentifier, bridgeIdentifier),
@@ -4388,30 +4388,30 @@ internal sealed class ADOverhaul
 				new AlgoAuthentication(m_ObserverAuthentication, broadcasterAuthentication, 0f, float.PositiveInfinity),
 				new AlgoAuthentication(m_EventAuthentication, m_RecordAuthentication)
 			};
-			if (m_ReaderAuthentication)
+			if (bindingLabelsBuilt)
 			{
 				return;
 			}
 			List<GUIContent> list = new List<GUIContent>();
-			_HelperAuthentication = new Dictionary<int, int>();
-			_CandidateAuthentication = new Dictionary<int, int>();
+			popupValueToBindingIndex = new Dictionary<int, int>();
+			bindingIndexToPopupValue = new Dictionary<int, int>();
 			int key = 0;
-			for (int i = 0; i < taskAuthentication.Length; i++)
+			for (int i = 0; i < bindings.Length; i++)
 			{
-				AlgoAuthentication algoAuthentication = taskAuthentication[i];
+				AlgoAuthentication algoAuthentication = bindings[i];
 				if (algoAuthentication._GlobalAuthentication)
 				{
 					list.Add(new GUIContent(algoAuthentication.roleAuthentication));
-					_HelperAuthentication.Add(key, i);
-					_CandidateAuthentication.Add(i, key++);
+					popupValueToBindingIndex.Add(key, i);
+					bindingIndexToPopupValue.Add(i, key++);
 				}
 			}
-			m_CustomerAuthentication = list.ToArray();
-			m_DatabaseAuthentication = _HelperAuthentication.Keys.ToArray();
-			m_ReaderAuthentication = true;
+			bindingLabels = list.ToArray();
+			bindingPopupValues = popupValueToBindingIndex.Keys.ToArray();
+			bindingLabelsBuilt = true;
 		}
 
-		internal static void InterruptSingleton()
+		internal static void ApplyGlobalGizmoSettings()
 		{
 			if ((bool)ADOSettings.Instance().globalGizmo)
 			{
@@ -4442,7 +4442,7 @@ internal sealed class ADOverhaul
 
 		private static void PostSingleton(int ID_key, GUIContent pol = null)
 		{
-			AlgoAuthentication algoAuthentication = taskAuthentication[ID_key];
+			AlgoAuthentication algoAuthentication = bindings[ID_key];
 			SerializedProperty visitorAuthentication = algoAuthentication.m_VisitorAuthentication;
 			SerializedProperty invocationAuthentication = algoAuthentication._InvocationAuthentication;
 			using (new GUILayout.HorizontalScope())
@@ -4456,11 +4456,11 @@ internal sealed class ADOverhaul
 					EditorGUILayout.PropertyField(visitorAuthentication);
 				}
 				UpdateSingleton(invocationAuthentication, string.Empty);
-				using (new GUIColorScope(GUIColorScope.ColoringType.BG, RemoveAccount() && CountAccount() == algoAuthentication, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, isEditingProperty() && activeBinding() == algoAuthentication, ADOEditorUtility.validColor, ADOEditorUtility.errorColor))
 				{
 					if (ADOEditorUtility.CallStatus(ADOEditorUtility.CustomizeRef().stateSerializer, ADOEditorUtility.MapRef().methodMethod, GUILayout.ExpandWidth(expand: false)))
 					{
-						LogoutSingleton(ID_key);
+						SetPropertyEditTarget(ID_key);
 					}
 				}
 			}
@@ -4468,7 +4468,7 @@ internal sealed class ADOverhaul
 
 		private static void ListSingleton(int var1)
 		{
-			if (taskAuthentication[var1]._GlobalAuthentication)
+			if (bindings[var1]._GlobalAuthentication)
 			{
 				PostSingleton(var1);
 			}
@@ -4480,7 +4480,7 @@ internal sealed class ADOverhaul
 			{
 				EditorGUILayout.PropertyField(visitor);
 				UpdateSingleton(template, string.Empty);
-				return LoginConfiguration(countparam, ADOEditorUtility.CustomizeRef().stateSerializer);
+				return DrawIconToggle(countparam, ADOEditorUtility.CustomizeRef().stateSerializer);
 			}
 		}
 
@@ -4502,25 +4502,25 @@ internal sealed class ADOverhaul
 		}
 
 		[CompilerGenerated]
-		internal static void SearchSingleton(Vector3 first, ref _003C_003Ec__DisplayClass116_0 vis)
+		internal static void ApplyEndpointOffset(Vector3 first, ref _003C_003Ec__DisplayClass116_0 vis)
 		{
 			Event current = Event.current;
 			bool alt = current.alt;
 			if (vis._MessageAuthentication.Length == 1)
 			{
-				LoginSingleton(vis._PolicyAuthentication, first);
+				OffsetEndpoint(vis._PolicyAuthentication, first);
 			}
 			else if (!alt)
 			{
 				if (current.shift)
 				{
-					Vector3 _MapperAuthentication = LoginSingleton(vis._PolicyAuthentication, first);
+					Vector3 _MapperAuthentication = OffsetEndpoint(vis._PolicyAuthentication, first);
 					VRCPhysBone[] array = vis._MessageAuthentication;
 					foreach (VRCPhysBone vRCPhysBone in array)
 					{
 						if (vRCPhysBone != vis._PolicyAuthentication)
 						{
-							PatchSingleton(vRCPhysBone, _WriterIdentifier.propertyPath, delegate(SerializedProperty sp)
+							EditProperty(vRCPhysBone, _WriterIdentifier.propertyPath, delegate(SerializedProperty sp)
 							{
 								sp.vector3Value = _MapperAuthentication;
 							});
@@ -4532,21 +4532,21 @@ internal sealed class ADOverhaul
 					VRCPhysBone[] array = vis._MessageAuthentication;
 					for (int i = 0; i < array.Length; i++)
 					{
-						LoginSingleton(array[i], first);
+						OffsetEndpoint(array[i], first);
 					}
 				}
 			}
 			else
 			{
-				LoginSingleton(vis._PolicyAuthentication, first);
+				OffsetEndpoint(vis._PolicyAuthentication, first);
 			}
 		}
 
 		[CompilerGenerated]
-		internal static Vector3 LoginSingleton(VRCPhysBone init, Vector3 map)
+		internal static Vector3 OffsetEndpoint(VRCPhysBone init, Vector3 map)
 		{
 			Vector3 m_ProcessorAuthentication = Vector3.zero;
-			PatchSingleton(init, _WriterIdentifier.propertyPath, delegate(SerializedProperty sp)
+			EditProperty(init, _WriterIdentifier.propertyPath, delegate(SerializedProperty sp)
 			{
 				sp.vector3Value += map;
 				m_ProcessorAuthentication = sp.vector3Value;
@@ -4555,7 +4555,7 @@ internal sealed class ADOverhaul
 		}
 
 		[CompilerGenerated]
-		internal static void PatchSingleton(VRCPhysBone v, string counter, Action<SerializedProperty> dir)
+		internal static void EditProperty(VRCPhysBone v, string counter, Action<SerializedProperty> dir)
 		{
 			SerializedObject obj = new SerializedObject(v);
 			obj.UpdateIfRequiredOrScript();
@@ -4564,7 +4564,7 @@ internal sealed class ADOverhaul
 			obj.ApplyModifiedProperties();
 		}
 
-		UnityEngine.Object ChangeSingleton()
+		UnityEngine.Object TargetObject()
 		{
 			return base.target;
 		}
@@ -4708,14 +4708,14 @@ internal sealed class ADOverhaul
 
 		internal bool CollectServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal bool PrintServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal ADOEditorUtility.ShapeSnapshot InterruptServer(UnityEngine.Object t2)
@@ -4735,32 +4735,32 @@ internal sealed class ADOverhaul
 
 		internal bool ListServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal bool ForgotServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal bool UpdateServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal bool SearchServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal bool LoginServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal Rect PatchServer()
@@ -4769,9 +4769,9 @@ internal sealed class ADOverhaul
 			{
 				bool ignorecaller;
 				string tooltip = ((!(ignorecaller = ADOSettings.Instance().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility.validColor, ADOEditorUtility.errorColor))
 				{
-					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
+					if (ADOEditorUtility.IconButton(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
 					{
 						tooltip = tooltip
 					}))
@@ -4784,49 +4784,49 @@ internal sealed class ADOverhaul
 				GUILayout.Label("Testing", ADOEditorUtility.MapRef().m_WriterSerializer);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
-				PublishIdentifier();
+				DrawSettingsButton();
 				return lastRect;
 			}
 		}
 
 		internal void CheckServer()
 		{
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.errorColor))
 			{
-				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.QueryStatus() || ADOEditorUtility.ComputeStatus())
+				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.CancelPressed() || ADOEditorUtility.SubmitPressed())
 				{
-					NewConfiguration();
+					ToggleTestMode();
 				}
 			}
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.secondaryActionColor))
 			{
 				if (ADOEditorUtility.PatchStatus("Restart"))
 				{
-					CompareConfiguration();
+					RestartTestMode();
 				}
 			}
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, hasUnappliedTestChanges, ADOEditorUtility.validColor))
 			{
-				using (new EditorGUI.DisabledScope(!m_Stub))
+				using (new EditorGUI.DisabledScope(!hasUnappliedTestChanges))
 				{
 					if (!ADOEditorUtility.PatchStatus("Apply All Changes"))
 					{
 						return;
 					}
-					foreach (UnityEngine.Object item in _Test.Keys.ToList())
+					foreach (UnityEngine.Object item in cloneHasUnappliedChanges.Keys.ToList())
 					{
-						if (_Test[item])
+						if (cloneHasUnappliedChanges[item])
 						{
-							UnityEngine.Object obj = candidate[item];
+							UnityEngine.Object obj = cloneToOriginal[item];
 							if (obj != null)
 							{
 								Undo.RecordObject(obj, "ADO - Apply Changes");
 								EditorUtility.CopySerialized(item, obj);
-								_Test[item] = false;
+								cloneHasUnappliedChanges[item] = false;
 							}
 						}
 					}
-					m_Stub = false;
+					hasUnappliedTestChanges = false;
 					InsertConfiguration();
 				}
 			}
@@ -4859,8 +4859,8 @@ internal sealed class ADOverhaul
 
 		internal bool PrepareServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal IEnumerable<string> ReadServer(VRCContactSender cs)
@@ -4909,7 +4909,7 @@ internal sealed class ADOverhaul
 
 		internal bool PopServer(string p)
 		{
-			return !ADOEditorUtility._AlgoSerializer.Contains(p);
+			return !ADOEditorUtility.reservedAvatarParameters.Contains(p);
 		}
 
 		internal bool InstantiateServer(VRCAvatarDescriptor a)
@@ -4924,23 +4924,23 @@ internal sealed class ADOverhaul
 
 		internal bool ManageServer(UnityEngine.Object b)
 		{
-			if (!(b != null) || !_Test.ContainsKey(b))
+			if (!(b != null) || !cloneHasUnappliedChanges.ContainsKey(b))
 			{
 				return false;
 			}
-			return candidate[b] != null;
+			return cloneToOriginal[b] != null;
 		}
 
 		internal bool RateServer(UnityEngine.Object b)
 		{
-			return _Test[b];
+			return cloneHasUnappliedChanges[b];
 		}
 
 		internal void CloneServer()
 		{
-			role = false;
-			m_Algo = false;
-			CalculateIdentifier();
+			isSendingFeedback = false;
+			feedbackPanelOpen = false;
+			RepaintOpenWindowsDelayed();
 		}
 
 		internal void ComputeServer()
@@ -4950,24 +4950,24 @@ internal sealed class ADOverhaul
 
 		internal bool QueryServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal void CountServer(Exception exception)
 		{
-			_Struct = false;
-			_Service = false;
-			indexer = true;
-			NewIdentifier($"Something went wrong while verifying license:\n\n{exception}", CustomLogType.Error);
+			isVerifyingLicense = false;
+			isLicensed = false;
+			licenseCheckRetryOffered = true;
+			Log($"Something went wrong while verifying license:\n\n{exception}", CustomLogType.Error);
 		}
 
 		internal void StartServer(JsonObject response)
 		{
-			_Rule = false;
+			isActivatingLicense = false;
 			QueryConfiguration(response, delegate
 			{
-				_Worker = false;
+				licenseKeyEntryRequired = false;
 				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 				AssetConfiguration(testkey: true);
 			});
@@ -4975,15 +4975,15 @@ internal sealed class ADOverhaul
 
 		internal void RemoveServer()
 		{
-			_Worker = false;
+			licenseKeyEntryRequired = false;
 			ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 			AssetConfiguration(testkey: true);
 		}
 
 		internal void ReflectServer(Exception exception)
 		{
-			_Rule = false;
-			NewIdentifier($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
+			isActivatingLicense = false;
+			Log($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
 		}
 
 		internal bool ResolveServer(ProcessRunner p)
@@ -5018,33 +5018,33 @@ internal sealed class ADOverhaul
 
 		internal bool ConnectServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal bool FindServer()
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		}
 
 		internal void AddServer()
 		{
 			List<(string, string)> list = CountConfiguration("transferlicenserequest");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0
 				{
 					composerContext = response
 				};
-				_Mock = false;
+				isRequestingTransferCode = false;
 				QueryConfiguration(_003C_003Ec__DisplayClass179_.composerContext, _003C_003Ec__DisplayClass179_.RestartReg);
 			}, delegate(Exception exception)
 			{
-				_Mock = false;
-				NewIdentifier($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-			}, null, null, CalculateIdentifier);
+				isRequestingTransferCode = false;
+				Log($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
+			}, null, null, RepaintOpenWindowsDelayed);
 		}
 
 		internal void ValidateServer(JsonObject response)
@@ -5053,62 +5053,62 @@ internal sealed class ADOverhaul
 			{
 				composerContext = response
 			};
-			_Mock = false;
+			isRequestingTransferCode = false;
 			QueryConfiguration(_003C_003Ec__DisplayClass179_.composerContext, _003C_003Ec__DisplayClass179_.RestartReg);
 		}
 
 		internal void CreateServer(Exception exception)
 		{
-			_Mock = false;
-			NewIdentifier($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
+			isRequestingTransferCode = false;
+			Log($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
 		}
 
 		internal void IncludeServer()
 		{
 			List<(string, string)> list = CountConfiguration("transferlicenseconfirm");
-			list.Add(("verification_code", descriptor));
+			list.Add(("verification_code", transferVerificationCode));
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 			{
-				state = false;
+				isConfirmingTransfer = false;
 				QueryConfiguration(response, delegate
 				{
-					_Info = false;
-					m_Config = false;
-					_Worker = false;
+					showingTransferPanel = false;
+					transferCodeSent = false;
+					licenseKeyEntryRequired = false;
 					AssetConfiguration(testkey: true);
 				});
 			}, delegate(Exception exception)
 			{
-				state = false;
-				NewIdentifier($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-			}, null, null, CalculateIdentifier);
+				isConfirmingTransfer = false;
+				Log($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
+			}, null, null, RepaintOpenWindowsDelayed);
 		}
 
 		internal void RevertServer(JsonObject response)
 		{
-			state = false;
+			isConfirmingTransfer = false;
 			QueryConfiguration(response, delegate
 			{
-				_Info = false;
-				m_Config = false;
-				_Worker = false;
+				showingTransferPanel = false;
+				transferCodeSent = false;
+				licenseKeyEntryRequired = false;
 				AssetConfiguration(testkey: true);
 			});
 		}
 
 		internal void RunWatcher()
 		{
-			_Info = false;
-			m_Config = false;
-			_Worker = false;
+			showingTransferPanel = false;
+			transferCodeSent = false;
+			licenseKeyEntryRequired = false;
 			AssetConfiguration(testkey: true);
 		}
 
 		internal void OrderWatcher(Exception exception)
 		{
-			state = false;
-			NewIdentifier($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
+			isConfirmingTransfer = false;
+			Log($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
 		}
 
 		internal void CalculateWatcher()
@@ -5119,7 +5119,7 @@ internal sealed class ADOverhaul
 
 		internal void CalcWatcher()
 		{
-			m_Algo.SetStatus();
+			feedbackPanelOpen.Toggle();
 		}
 
 		internal void DeleteWatcher()
@@ -5141,7 +5141,7 @@ internal sealed class ADOverhaul
 
 		internal void NewWatcher()
 		{
-			Application.OpenURL(m_Decorator[0].Item2);
+			Application.OpenURL(extraMenuLinks[0].Item2);
 		}
 
 		internal void CompareWatcher()
@@ -5161,20 +5161,20 @@ internal sealed class ADOverhaul
 
 		internal void SortWatcher(Exception exc)
 		{
-			NewIdentifier($"Something went wrong while checking for an update!\n\n{exc}", CustomLogType.Error);
+			Log($"Something went wrong while checking for an update!\n\n{exc}", CustomLogType.Error);
 		}
 
 		internal void InvokeWatcher()
 		{
-			m_Advisor = false;
-			CalculateIdentifier();
+			isCheckingForUpdate = false;
+			RepaintOpenWindowsDelayed();
 		}
 
 		internal async Task CustomizeWatcher()
 		{
 			await Task.Delay(3000);
 			ADOSettings.Instance().u_updateHidden.SetValue(nores: true);
-			CalculateIdentifier();
+			RepaintOpenWindowsDelayed();
 		}
 	}
 
@@ -5185,13 +5185,13 @@ internal sealed class ADOverhaul
 
 		internal void EnableWatcher()
 		{
-			bool reponse = _Reponse;
-			_Service = false;
-			_Reponse = false;
-			_Object = (listener = (m_Printer = string.Empty));
+			bool wasLicensedBeforeReset = ADOverhaul.wasLicensedBeforeReset;
+			isLicensed = false;
+			ADOverhaul.wasLicensedBeforeReset = false;
+			licenseToken = (licenseUsername = (licenseVariant = string.Empty));
 			ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 			SessionState.EraseBool(itemContext);
-			ResetConfiguration(reponse);
+			ResetConfiguration(wasLicensedBeforeReset);
 		}
 
 		internal string AwakeWatcher(string key, ref _003C_003Ec__DisplayClass132_1 _003C_003Ec__DisplayClass132_1_0, ref _003C_003Ec__DisplayClass132_2 _003C_003Ec__DisplayClass132_2_0)
@@ -5203,26 +5203,26 @@ internal sealed class ADOverhaul
 		{
 			List<(string, string)> list = CountConfiguration("verifylicense");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3
 				{
 					m_SetterContext = this,
 					_SystemContext = response
 				};
-				_Struct = false;
-				_Worker = true;
+				isVerifyingLicense = false;
+				licenseKeyEntryRequired = true;
 				QueryConfiguration(_003C_003Ec__DisplayClass132_._SystemContext, _003C_003Ec__DisplayClass132_.RateWatcher, delegate
 				{
-					bool reponse = _Reponse;
-					_Service = false;
-					_Reponse = false;
-					_Object = (listener = (m_Printer = string.Empty));
+					bool wasLicensedBeforeReset = ADOverhaul.wasLicensedBeforeReset;
+					isLicensed = false;
+					ADOverhaul.wasLicensedBeforeReset = false;
+					licenseToken = (licenseUsername = (licenseVariant = string.Empty));
 					ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 					SessionState.EraseBool(itemContext);
-					ResetConfiguration(reponse);
+					ResetConfiguration(wasLicensedBeforeReset);
 				}, comparesecond2: false);
-			}, _003C_003Ec.m_ProcAuthentication.CountServer, null, null, CalculateIdentifier);
+			}, _003C_003Ec.m_ProcAuthentication.CountServer, null, null, RepaintOpenWindowsDelayed);
 		}
 
 		internal void VisitWatcher(JsonObject response)
@@ -5232,17 +5232,17 @@ internal sealed class ADOverhaul
 				m_SetterContext = this,
 				_SystemContext = response
 			};
-			_Struct = false;
-			_Worker = true;
+			isVerifyingLicense = false;
+			licenseKeyEntryRequired = true;
 			QueryConfiguration(_003C_003Ec__DisplayClass132_._SystemContext, _003C_003Ec__DisplayClass132_.RateWatcher, delegate
 			{
-				bool reponse = _Reponse;
-				_Service = false;
-				_Reponse = false;
-				_Object = (listener = (m_Printer = string.Empty));
+				bool wasLicensedBeforeReset = ADOverhaul.wasLicensedBeforeReset;
+				isLicensed = false;
+				ADOverhaul.wasLicensedBeforeReset = false;
+				licenseToken = (licenseUsername = (licenseVariant = string.Empty));
 				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 				SessionState.EraseBool(itemContext);
-				ResetConfiguration(reponse);
+				ResetConfiguration(wasLicensedBeforeReset);
 			}, comparesecond2: false);
 		}
 
@@ -5280,24 +5280,24 @@ internal sealed class ADOverhaul
 				string text = _SystemContext.Item("date");
 				if (RemoveConfiguration() != text)
 				{
-					NewIdentifier("Date Mismatch! Please make sure your system's date is correct.\nLocal: " + setter + "  |  Remote: " + text, CustomLogType.Error);
-					indexer = true;
+					Log("Date Mismatch! Please make sure your system's date is correct.\nLocal: " + currentDateStamp + "  |  Remote: " + text, CustomLogType.Error);
+					licenseCheckRetryOffered = true;
 					m_SetterContext.EnableWatcher();
 					return;
 				}
-				listener = _SystemContext.Item("username");
-				m_Printer = _SystemContext.Item("variant");
-				_Object = _SystemContext.Item("token");
+				licenseUsername = _SystemContext.Item("username");
+				licenseVariant = _SystemContext.Item("variant");
+				licenseToken = _SystemContext.Item("token");
 				InstantiateConfiguration();
 				RestartConfiguration();
 				string def = _SystemContext.Item("message");
-				if (!_Reponse)
+				if (!wasLicensedBeforeReset)
 				{
-					NewIdentifier(def);
+					Log(def);
 				}
-				_Service = true;
+				isLicensed = true;
 				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
-				EditorPrefs.SetString("No1lKII9IzcBAbihub6nCg==LK", m_Repository);
+				EditorPrefs.SetString("No1lKII9IzcBAbihub6nCg==LK", licenseKey);
 				_003C_003Ec__DisplayClass132_4 _003C_003Ec__DisplayClass132_4_ = default(_003C_003Ec__DisplayClass132_4);
 				_003C_003Ec__DisplayClass132_4_.ruleContext = new AesManaged();
 				try
@@ -5308,11 +5308,11 @@ internal sealed class ADOverhaul
 					_003C_003Ec__DisplayClass132_5_._StructContext = new HMACSHA1(Encoding.UTF8.GetBytes(m_SetterContext.itemContext));
 					try
 					{
-						m_SetterContext.AssetWatcher("date", setter, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
-						m_SetterContext.AssetWatcher("u", listener, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
-						m_SetterContext.AssetWatcher("v", m_Printer, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
-						m_SetterContext.AssetWatcher("r", _Object, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
-						m_SetterContext.AssetWatcher("m", attr, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
+						m_SetterContext.AssetWatcher("date", currentDateStamp, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
+						m_SetterContext.AssetWatcher("u", licenseUsername, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
+						m_SetterContext.AssetWatcher("v", licenseVariant, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
+						m_SetterContext.AssetWatcher("r", licenseToken, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
+						m_SetterContext.AssetWatcher("m", hardwareId, ref _003C_003Ec__DisplayClass132_4_, ref _003C_003Ec__DisplayClass132_5_);
 					}
 					finally
 					{
@@ -5544,10 +5544,10 @@ internal sealed class ADOverhaul
 		{
 			if (!isCMD)
 			{
-				state = false;
-				_Mock = false;
-				_Struct = false;
-				_Rule = false;
+				isConfirmingTransfer = false;
+				isRequestingTransferCode = false;
+				isVerifyingLicense = false;
+				isActivatingLicense = false;
 			}
 			string text = (isCMD ? "CMD" : "Shell");
 			_WrapperContext.AppendLine("Failed " + text + " Parse");
@@ -5587,9 +5587,9 @@ internal sealed class ADOverhaul
 				{
 					Application.OpenURL("https://dreadrith.com/HWIDHelp");
 				}
-				_Struct = false;
-				_Rule = false;
-				CalculateIdentifier();
+				isVerifyingLicense = false;
+				isActivatingLicense = false;
+				RepaintOpenWindowsDelayed();
 				return;
 			}
 			_InfoContext = new CancellationTokenSource();
@@ -5631,7 +5631,7 @@ internal sealed class ADOverhaul
 					array[j] = BitConverter.ToString(sHA.ComputeHash(Encoding.UTF8.GetBytes(array[j]))).Replace("-", "");
 				}
 			}
-			attr = string.Join("-", array);
+			hardwareId = string.Join("-", array);
 			RestartConfiguration();
 			m_MockContext();
 		}
@@ -5662,8 +5662,8 @@ internal sealed class ADOverhaul
 
 		internal void RestartReg()
 		{
-			m_Strategy = composerContext.Item("transfer_email");
-			m_Config = true;
+			transferTargetEmail = composerContext.Item("transfer_email");
+			transferCodeSent = true;
 		}
 	}
 
@@ -5779,186 +5779,186 @@ internal sealed class ADOverhaul
 		public UnityEditor.Animations.AnimatorController _MethodSerializer;
 	}
 
-	private static bool m_Configuration;
+	private static bool physBoneReflectionResolved;
 
-	private static MethodInfo _Identifier;
+	private static MethodInfo physBoneManagerLateUpdate;
 
-	private static MethodInfo context;
+	private static MethodInfo physBoneManagerOnDestroy;
 
-	private static MethodInfo _Serializer;
+	private static MethodInfo physBoneStart;
 
-	private static MethodInfo method;
+	private static MethodInfo physBoneOnEnable;
 
-	private static MethodInfo utils;
+	private static MethodInfo physBoneOnDisable;
 
-	private static MethodInfo _Page;
+	private static MethodInfo physBoneColliderStart;
 
-	private static MethodInfo property;
+	private static MethodInfo physBoneColliderOnEnable;
 
-	private static MethodInfo _Singleton;
+	private static MethodInfo physBoneColliderOnDisable;
 
-	private static bool _Account;
+	private static bool isTesting;
 
-	private static PhysBoneManager _Params;
+	private static PhysBoneManager testPhysBoneManager;
 
-	private static GameObject importer;
+	private static GameObject testRoot;
 
-	private static GameObject[] m_Server;
+	private static GameObject[] testSourceRoots;
 
-	private static GameObject[] watcher;
+	private static GameObject[] selectedObjectsBeforeTest;
 
-	private static GameObject reg;
+	private static GameObject activeObjectBeforeTest;
 
-	private static VRCPhysBone[] _Process;
+	private static VRCPhysBone[] testPhysBones;
 
-	private static bool[] m_Val;
+	private static bool[] testPhysBoneEnabled;
 
-	private static bool[] m_Adapter;
+	private static bool[] testPhysBoneStarted;
 
-	private static VRCPhysBoneCollider[] proxy;
+	private static VRCPhysBoneCollider[] testColliders;
 
-	private static bool[] m_Comparator;
+	private static bool[] testColliderEnabled;
 
-	private static bool[] _Product;
+	private static bool[] testColliderStarted;
 
-	private static readonly int _Iterator = "ADOControlID".GetHashCode();
+	private static readonly int handleControlIdBase = "ADOControlID".GetHashCode();
 
-	private static VRCAvatarDescriptor m_Predicate;
+	private static VRCAvatarDescriptor selectedAvatar;
 
-	private static VRCAvatarDescriptor[] _Collection;
+	private static VRCAvatarDescriptor[] sceneAvatars;
 
-	private static string[] m_Registry;
+	private static string[] avatarParameterNames;
 
-	private static string[] m_Client;
+	private static string[] avatarCollisionTags;
 
-	private static string[] _Observer;
+	private static string[] avatarPlayableLayerNames;
 
-	private static int[] m_Broadcaster;
+	private static int[] avatarPlayableLayerTypes;
 
 	private static bool @event;
 
-	private static bool record;
+	private static bool editingRadius;
 
-	private static bool _Resolver;
+	private static bool editingHeight;
 
-	private static bool _Tag;
+	private static bool editingPosition;
 
-	private static bool filter;
+	private static bool editingRotation;
 
-	private static bool m_Factory;
+	private static bool shapeHasRadius;
 
-	private static bool _Attribute;
+	private static bool shapeHasHeight;
 
-	private static bool task;
+	private static bool shapeHasRotation;
 
-	private static readonly ADOEditorUtility.ResizeHandle customer = new ADOEditorUtility.ResizeHandle();
+	private static readonly ADOEditorUtility.ResizeHandle sceneViewPanelResizeHandle = new ADOEditorUtility.ResizeHandle();
 
-	private static readonly int m_Database = GUIUtility.GetControlID("ADOTooltipDragControlID".GetHashCode(), FocusType.Passive);
+	private static readonly int tooltipDragControlId = GUIUtility.GetControlID("ADOTooltipDragControlID".GetHashCode(), FocusType.Passive);
 
-	private static Dictionary<UnityEngine.Object, UnityEngine.Object> helper = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
+	private static Dictionary<UnityEngine.Object, UnityEngine.Object> originalToClone = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
 
-	private static Dictionary<UnityEngine.Object, UnityEngine.Object> candidate = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
+	private static Dictionary<UnityEngine.Object, UnityEngine.Object> cloneToOriginal = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
 
-	private static Dictionary<UnityEngine.Object, bool> _Test = new Dictionary<UnityEngine.Object, bool>();
+	private static Dictionary<UnityEngine.Object, bool> cloneHasUnappliedChanges = new Dictionary<UnityEngine.Object, bool>();
 
-	private static bool m_Stub;
+	private static bool hasUnappliedTestChanges;
 
-	private static bool _Rules;
+	private static bool colliderChangedDuringTest;
 
-	private static bool _Definition;
+	private static bool hasShownColliderRestartPrompt;
 
-	private static bool initializer;
+	private static bool bugReporterOpen;
 
-	private static bool getter;
+	private static bool isSendingBugReport;
 
-	private static string thread;
+	private static string bugReportText;
 
-	private static bool m_Algo;
+	private static bool feedbackPanelOpen;
 
-	private static bool role;
+	private static bool isSendingFeedback;
 
-	private static string m_Invocation;
+	private static string feedbackText;
 
-	private static string listener;
+	private static string licenseUsername;
 
-	private static string _Parser;
+	private static string licensedToDisplayName;
 
-	private static string m_Printer;
+	private static string licenseVariant;
 
-	private static string m_Repository = "";
+	private static string licenseKey = "";
 
-	private static string descriptor = "";
+	private static string transferVerificationCode = "";
 
-	private static string m_Strategy = "";
+	private static string transferTargetEmail = "";
 
-	private static string global;
+	private static string sessionId;
 
-	private static bool manager;
+	private static bool serverWarnedTooManyAttempts;
 
-	private static bool _Worker;
+	private static bool licenseKeyEntryRequired;
 
-	private static bool indexer;
+	private static bool licenseCheckRetryOffered;
 
-	private static bool m_Pool;
+	private static bool licenseCheckedThisSession;
 
-	private static float _System;
+	private static float retryAllowedAtRealtime;
 
-	private static string setter;
+	private static string currentDateStamp;
 
-	private static bool _Rule;
+	private static bool isActivatingLicense;
 
-	private static bool _Struct;
+	private static bool isVerifyingLicense;
 
-	private static string _Interpreter;
+	private static string unreadDeviceDateFingerprint;
 
-	private static string attr;
+	private static string hardwareId;
 
-	private static string _Object;
+	private static string licenseToken;
 
-	private static bool _Service;
+	private static bool isLicensed;
 
-	private static bool _Reponse;
+	private static bool wasLicensedBeforeReset;
 
-	private static bool specification;
+	private static bool licensedCallbacksFlushed;
 
-	private static Action m_Wrapper;
+	private static Action pendingLicensedCallbacks;
 
-	private static bool _Info;
+	private static bool showingTransferPanel;
 
-	private static bool m_Config;
+	private static bool transferCodeSent;
 
-	private static bool _Mock;
+	private static bool isRequestingTransferCode;
 
-	private static bool state;
+	private static bool isConfirmingTransfer;
 
-	private static bool m_Field;
+	private static bool isDownloadingUpdate;
 
-	private static bool m_Advisor;
+	private static bool isCheckingForUpdate;
 
-	private static bool exporter;
+	private static bool hasCheckedForUpdate;
 
-	private static bool creator;
+	private static bool updateAvailable;
 
-	private static readonly AnimBool dispatcher = new AnimBool();
+	private static readonly AnimBool updateFoldout = new AnimBool();
 
-	private static readonly AnimBool m_Connection = new AnimBool();
+	private static readonly AnimBool announcementFoldout = new AnimBool();
 
-	private static readonly SemVer m_Expression = new SemVer("0.11.1");
+	private static readonly SemVer version = new SemVer("0.11.1");
 
-	private static readonly (string, string)[] m_Decorator = new(string, string)[0];
+	private static readonly (string, string)[] extraMenuLinks = new(string, string)[0];
 
-	private static void RunConfiguration(UnityEngine.Object res, SerializedProperty[] visitor, Action tag, bool isres2)
+	private static void DrawShapeProperties(UnityEngine.Object res, SerializedProperty[] visitor, Action tag, bool isres2)
 	{
 		SerializedProperty serializedProperty = visitor[0];
-		SerializedProperty serializedProperty2 = visitor[1];
-		SerializedProperty serializedProperty3 = visitor[5];
-		SerializedProperty serializedProperty4 = (isres2 ? visitor[6] : null);
+		SerializedProperty property = visitor[1];
+		SerializedProperty serializedProperty2 = visitor[5];
+		SerializedProperty serializedProperty3 = (isres2 ? visitor[6] : null);
 		SerializedProperty spec = (isres2 ? visitor[7] : null);
 		int intValue = serializedProperty.intValue;
 		if (!((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
 			return;
@@ -5971,35 +5971,35 @@ internal sealed class ADOverhaul
 			{
 				if (intValue == 0)
 				{
-					filter = false;
-					_Resolver = false;
+					editingRotation = false;
+					editingHeight = false;
 				}
 				else if (intValue == 2)
 				{
-					_Resolver = false;
-					record = false;
+					editingHeight = false;
+					editingRadius = false;
 				}
 				tag();
 			}
-			if (isres2 && serializedProperty4 != null)
+			if (isres2 && serializedProperty3 != null)
 			{
-				using (new GUIColorScope(GUIColorScope.ColoringType.BG, serializedProperty4.boolValue, ADOEditorUtility.resolverSerializer, ADOEditorUtility._ObserverSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, serializedProperty3.boolValue, ADOEditorUtility.highlightColor, ADOEditorUtility.validColor))
 				{
-					serializedProperty4.boolValue = ADOEditorUtility.ChangeStatus(serializedProperty4.boolValue, (!serializedProperty4.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
+					serializedProperty3.boolValue = ADOEditorUtility.ChangeStatus(serializedProperty3.boolValue, (!serializedProperty3.boolValue) ? "Outside Bounds" : "Inside Bounds", GUI.skin.button, GUILayout.ExpandWidth(expand: false));
 				}
 			}
 		}
 		if (!((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
 			return;
 		}
 		using (new GUILayout.HorizontalScope())
 		{
-			EditorGUILayout.PropertyField(serializedProperty2, new GUIContent("Root"));
+			EditorGUILayout.PropertyField(property, new GUIContent("Root"));
 			if (GUILayout.Button(new GUIContent("S", "Set to Self"), GUILayout.Width(18f), GUILayout.Height(18f)))
 			{
 				Undo.RecordObject(res, "Set Root to Self");
@@ -6022,36 +6022,36 @@ internal sealed class ADOverhaul
 			{
 				using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
 				{
-					Vector3 eulerAngles = serializedProperty3.quaternionValue.eulerAngles;
+					Vector3 eulerAngles = serializedProperty2.quaternionValue.eulerAngles;
 					eulerAngles = EditorGUILayout.Vector3Field(new GUIContent("Rotation", "Rotation offset from the root transform"), eulerAngles);
 					if (changeCheckScope.changed)
 					{
-						serializedProperty3.quaternionValue = Quaternion.Euler(eulerAngles);
+						serializedProperty2.quaternionValue = Quaternion.Euler(eulerAngles);
 					}
 				}
-				using (new GUIColorScope(GUIColorScope.ColoringType.BG, filter, Color.green, Color.red))
+				using (new GUIColorScope(GUIColorScope.ColoringType.BG, editingRotation, Color.green, Color.red))
 				{
-					filter = GUILayout.Toggle(filter, ADOEditorUtility.CustomizeRef().stateSerializer, ADOEditorUtility.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
+					editingRotation = GUILayout.Toggle(editingRotation, ADOEditorUtility.CustomizeRef().stateSerializer, ADOEditorUtility.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
 				}
 			}
 		}
 		if (isres2)
 		{
-			ChangeConfiguration(spec);
+			DrawOptionalProperty(spec);
 		}
 	}
 
-	private static void OrderConfiguration(UnityEngine.Object task, UnityEngine.Object[] reg, int proc_Ptr, Color selection2)
+	private static void DrawShapeHandles(UnityEngine.Object task, UnityEngine.Object[] reg, int proc_Ptr, Color selection2)
 	{
 		_003C_003Ec__DisplayClass46_0 pool = default(_003C_003Ec__DisplayClass46_0);
 		pool.queueContext = task;
 		pool.m_ProcessorContext = reg;
 		if (Event.current.type == EventType.KeyDown && (Event.current.keyCode == KeyCode.Return || Event.current.keyCode == KeyCode.KeypadEnter || Event.current.keyCode == KeyCode.Escape))
 		{
-			filter = false;
-			_Tag = false;
-			_Resolver = false;
-			record = false;
+			editingRotation = false;
+			editingPosition = false;
+			editingHeight = false;
+			editingRadius = false;
 		}
 		if (!pool.queueContext)
 		{
@@ -6080,12 +6080,12 @@ internal sealed class ADOverhaul
 			pool.m_TokenizerContext = pool.m_ProcessorContext.Select((UnityEngine.Object t2) => new ADOEditorUtility.ShapeSnapshot((VRCContactReceiver)t2)).ToArray();
 		}
 		Transform rootTransform = pool.m_TokenizerContext[pool._ExceptionContext].rootTransform;
-		pool._ProducerContext = UpdateConfiguration(rootTransform);
+		pool._ProducerContext = GetMaxLossyScale(rootTransform);
 		int shapeType = pool.m_TokenizerContext[pool._ExceptionContext].shapeType;
 		if (!((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
 			return;
@@ -6100,7 +6100,7 @@ internal sealed class ADOverhaul
 		Vector3 vector4 = pool.m_ErrorContext - Mathf.Max(num * pool._ProducerContext, 0f) * (rootTransform.rotation * pool.m_TokenizerContext[pool._ExceptionContext].rotation * Vector3.up);
 		pool.m_ValueContext = (Event.current.shift ? 2 : (Event.current.alt ? 1 : 0));
 		pool.m_MappingContext = pool.m_ValueContext == 1;
-		if (_Tag)
+		if (editingPosition)
 		{
 			using EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope();
 			bool flag = Tools.pivotRotation == PivotRotation.Local;
@@ -6164,13 +6164,13 @@ internal sealed class ADOverhaul
 		}
 		if (!((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
 			return;
 		}
-		if (filter && shapeType != 0)
+		if (editingRotation && shapeType != 0)
 		{
 			using EditorGUI.ChangeCheckScope changeCheckScope2 = new EditorGUI.ChangeCheckScope();
 			Quaternion quaternion2 = Handles.RotationHandle(quaternion, pool.m_ErrorContext);
@@ -6202,7 +6202,7 @@ internal sealed class ADOverhaul
 				}
 			}
 		}
-		if (record && shapeType != 2)
+		if (editingRadius && shapeType != 2)
 		{
 			bool flag2 = shapeType == 1;
 			_003C_003Ec__DisplayClass46_1 third = default(_003C_003Ec__DisplayClass46_1);
@@ -6220,12 +6220,12 @@ internal sealed class ADOverhaul
 				CollectIdentifier(changeCheckScope4.changed, ref pool, ref third);
 			}
 		}
-		if (_Resolver && shapeType == 1)
+		if (editingHeight && shapeType == 1)
 		{
 			if (!((Func<bool>)delegate
 			{
-				using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-				return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+				using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+				return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 			})())
 			{
 				return;
@@ -6247,8 +6247,8 @@ internal sealed class ADOverhaul
 			}
 			if (!((Func<bool>)delegate
 			{
-				using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-				return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+				using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+				return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 			})())
 			{
 				return;
@@ -6261,75 +6261,75 @@ internal sealed class ADOverhaul
 		}
 	}
 
-	private static void CalculateConfiguration(SceneView res)
+	private static void DrawShapeEditOverlay(SceneView res)
 	{
-		if (!_Tag && !filter && !record && !_Resolver)
+		if (!editingPosition && !editingRotation && !editingRadius && !editingHeight)
 		{
 			return;
 		}
 		Tools.hidden = true;
 		if (((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
 			int num = 1;
-			if (m_Factory)
+			if (shapeHasRadius)
 			{
 				num++;
 			}
-			if (_Attribute)
+			if (shapeHasHeight)
 			{
 				num++;
 			}
-			if (task)
+			if (shapeHasRotation)
 			{
 				num++;
 			}
-			WriteIdentifier(res, "Editing", CalcConfiguration, 200f, 45 + 20 * num);
+			DrawTitledOverlay(res, "Editing", DrawShapeEditToggles, 200f, 45 + 20 * num);
 		}
 	}
 
-	private static void CalcConfiguration()
+	private static void DrawShapeEditToggles()
 	{
-		if (m_Factory)
+		if (shapeHasRadius)
 		{
-			PatchConfiguration("Radius", ref record);
+			PatchConfiguration("Radius", ref editingRadius);
 		}
-		if (_Attribute)
+		if (shapeHasHeight)
 		{
-			PatchConfiguration("Height", ref _Resolver);
+			PatchConfiguration("Height", ref editingHeight);
 		}
-		PatchConfiguration("Position", ref _Tag);
-		if (task)
+		PatchConfiguration("Position", ref editingPosition);
+		if (shapeHasRotation)
 		{
-			PatchConfiguration("Rotation", ref filter);
+			PatchConfiguration("Rotation", ref editingRotation);
 		}
 	}
 
-	private static void DeleteConfiguration(SceneView init)
+	private static void DrawTestModeOverlay(SceneView init)
 	{
-		if (!_Account)
+		if (!isTesting)
 		{
 			return;
 		}
 		Tools.hidden |= ADOSettings.Instance().hideToolsDuringTesting;
 		EditorApplication.playModeStateChanged -= FillConfiguration;
 		EditorApplication.playModeStateChanged += FillConfiguration;
-		if (importer != null)
+		if (testRoot != null)
 		{
-			ADOEditorUtility.ConnectStatus(importer.transform, counterinstall: true, skipthird: true, readparam2: false, usecaller3: false, ismap4: false, bool_0: true);
+			ADOEditorUtility.TransformHandles(testRoot.transform, counterinstall: true, skipthird: true, readparam2: false, usecaller3: false, ismap4: false, bool_0: true);
 		}
-		MoveIdentifier(init, delegate
+		DrawOverlay(init, delegate
 		{
 			using (new GUILayout.HorizontalScope())
 			{
 				bool ignorecaller;
 				string tooltip = ((!(ignorecaller = ADOSettings.Instance().hideToolsDuringTesting)) ? "Native tools are visible during test." : "Native tools are hidden during test.");
-				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+				using (new GUIColorScope(GUIColorScope.ColoringType.FG, ignorecaller, ADOEditorUtility.validColor, ADOEditorUtility.errorColor))
 				{
-					if (ADOEditorUtility.ListStatus(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
+					if (ADOEditorUtility.IconButton(new GUIContent(ADOEditorUtility.CustomizeRef().prototypeSerializer)
 					{
 						tooltip = tooltip
 					}))
@@ -6342,45 +6342,45 @@ internal sealed class ADOverhaul
 				GUILayout.Label("Testing", ADOEditorUtility.MapRef().m_WriterSerializer);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
-				PublishIdentifier();
+				DrawSettingsButton();
 				return lastRect;
 			}
 		}, delegate
 		{
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility._BroadcasterSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.errorColor))
 			{
-				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.QueryStatus() || ADOEditorUtility.ComputeStatus())
+				if (ADOEditorUtility.PatchStatus("Stop Testing") || ADOEditorUtility.CancelPressed() || ADOEditorUtility.SubmitPressed())
 				{
-					NewConfiguration();
+					ToggleTestMode();
 				}
 			}
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.secondaryActionColor))
 			{
 				if (ADOEditorUtility.PatchStatus("Restart"))
 				{
-					CompareConfiguration();
+					RestartTestMode();
 				}
 			}
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, m_Stub, ADOEditorUtility._ObserverSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, hasUnappliedTestChanges, ADOEditorUtility.validColor))
 			{
-				using (new EditorGUI.DisabledScope(!m_Stub))
+				using (new EditorGUI.DisabledScope(!hasUnappliedTestChanges))
 				{
 					if (ADOEditorUtility.PatchStatus("Apply All Changes"))
 					{
-						foreach (UnityEngine.Object item in _Test.Keys.ToList())
+						foreach (UnityEngine.Object item in cloneHasUnappliedChanges.Keys.ToList())
 						{
-							if (_Test[item])
+							if (cloneHasUnappliedChanges[item])
 							{
-								UnityEngine.Object obj = candidate[item];
+								UnityEngine.Object obj = cloneToOriginal[item];
 								if (obj != null)
 								{
 									Undo.RecordObject(obj, "ADO - Apply Changes");
 									EditorUtility.CopySerialized(item, obj);
-									_Test[item] = false;
+									cloneHasUnappliedChanges[item] = false;
 								}
 							}
 						}
-						m_Stub = false;
+						hasUnappliedTestChanges = false;
 						InsertConfiguration();
 					}
 				}
@@ -6388,161 +6388,161 @@ internal sealed class ADOverhaul
 		}, 200f, 104f);
 	}
 
-	private static void DefineConfiguration()
+	private static void TickTestSimulation()
 	{
-		if (!_Params)
+		if (!testPhysBoneManager)
 		{
-			NewConfiguration();
+			ToggleTestMode();
 			return;
 		}
-		_Identifier.Invoke(_Params, null);
-		for (int i = 0; i < _Process.Length; i++)
+		physBoneManagerLateUpdate.Invoke(testPhysBoneManager, null);
+		for (int i = 0; i < testPhysBones.Length; i++)
 		{
-			if ((bool)_Process[i])
+			if ((bool)testPhysBones[i])
 			{
-				bool flag = _Process[i].enabled && _Process[i].gameObject.activeInHierarchy;
-				if (m_Val[i] == flag)
+				bool flag = testPhysBones[i].enabled && testPhysBones[i].gameObject.activeInHierarchy;
+				if (testPhysBoneEnabled[i] == flag)
 				{
 					continue;
 				}
-				m_Val[i] = flag;
+				testPhysBoneEnabled[i] = flag;
 				if (!flag)
 				{
-					utils.Invoke(_Process[i], null);
+					physBoneOnDisable.Invoke(testPhysBones[i], null);
 					continue;
 				}
-				method.Invoke(_Process[i], null);
-				if (!m_Adapter[i])
+				physBoneOnEnable.Invoke(testPhysBones[i], null);
+				if (!testPhysBoneStarted[i])
 				{
-					m_Adapter[i] = true;
-					_Serializer.Invoke(_Process[i], null);
+					testPhysBoneStarted[i] = true;
+					physBoneStart.Invoke(testPhysBones[i], null);
 				}
 			}
-			else if (m_Val[i])
+			else if (testPhysBoneEnabled[i])
 			{
-				m_Val[i] = false;
-				utils.Invoke(_Process[i], null);
+				testPhysBoneEnabled[i] = false;
+				physBoneOnDisable.Invoke(testPhysBones[i], null);
 			}
 		}
-		for (int j = 0; j < proxy.Length; j++)
+		for (int j = 0; j < testColliders.Length; j++)
 		{
-			if (!proxy[j])
+			if (!testColliders[j])
 			{
-				if (m_Comparator[j])
+				if (testColliderEnabled[j])
 				{
-					m_Comparator[j] = false;
-					_Singleton.Invoke(proxy[j], null);
+					testColliderEnabled[j] = false;
+					physBoneColliderOnDisable.Invoke(testColliders[j], null);
 				}
 				continue;
 			}
-			bool flag2 = proxy[j].enabled && proxy[j].gameObject.activeInHierarchy;
-			if (m_Comparator[j] == flag2)
+			bool flag2 = testColliders[j].enabled && testColliders[j].gameObject.activeInHierarchy;
+			if (testColliderEnabled[j] == flag2)
 			{
 				continue;
 			}
-			m_Comparator[j] = flag2;
+			testColliderEnabled[j] = flag2;
 			if (flag2)
 			{
-				property.Invoke(proxy[j], null);
-				if (!_Product[j])
+				physBoneColliderOnEnable.Invoke(testColliders[j], null);
+				if (!testColliderStarted[j])
 				{
-					_Product[j] = true;
-					_Page.Invoke(proxy[j], null);
+					testColliderStarted[j] = true;
+					physBoneColliderStart.Invoke(testColliders[j], null);
 				}
 			}
 			else
 			{
-				_Singleton.Invoke(proxy[j], null);
+				physBoneColliderOnDisable.Invoke(testColliders[j], null);
 			}
 		}
 	}
 
-	private static void DestroyConfiguration()
+	private static void ResolvePhysBoneReflection()
 	{
-		if (!m_Configuration)
+		if (!physBoneReflectionResolved)
 		{
-			m_Configuration = true;
-			_Identifier = ListAuthentication(typeof(PhysBoneManager), "LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
-			context = ListAuthentication(typeof(PhysBoneManager), "OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Serializer = ListAuthentication(typeof(VRCPhysBoneBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
-			method = ListAuthentication(typeof(VRCPhysBoneBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
-			utils = ListAuthentication(typeof(VRCPhysBoneBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Page = ListAuthentication(typeof(VRCPhysBoneColliderBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
-			property = ListAuthentication(typeof(VRCPhysBoneColliderBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
-			_Singleton = ListAuthentication(typeof(VRCPhysBoneColliderBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneReflectionResolved = true;
+			physBoneManagerLateUpdate = ListAuthentication(typeof(PhysBoneManager), "LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneManagerOnDestroy = ListAuthentication(typeof(PhysBoneManager), "OnDestroy", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneStart = ListAuthentication(typeof(VRCPhysBoneBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneOnEnable = ListAuthentication(typeof(VRCPhysBoneBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneOnDisable = ListAuthentication(typeof(VRCPhysBoneBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneColliderStart = ListAuthentication(typeof(VRCPhysBoneColliderBase), "Start", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneColliderOnEnable = ListAuthentication(typeof(VRCPhysBoneColliderBase), "OnEnable", BindingFlags.Instance | BindingFlags.NonPublic);
+			physBoneColliderOnDisable = ListAuthentication(typeof(VRCPhysBoneColliderBase), "OnDisable", BindingFlags.Instance | BindingFlags.NonPublic);
 		}
 	}
 
-	private static void NewConfiguration()
+	private static void ToggleTestMode()
 	{
-		DestroyConfiguration();
-		_Account = !_Account;
+		ResolvePhysBoneReflection();
+		isTesting = !isTesting;
 		if (Application.isPlaying)
 		{
-			_Account = false;
+			isTesting = false;
 		}
-		if (_Account)
+		if (isTesting)
 		{
-			VerifyConfiguration();
+			StartTestMode();
 		}
 		else
 		{
-			SetConfiguration();
+			StopTestMode();
 		}
 	}
 
-	private static void CompareConfiguration()
+	private static void RestartTestMode()
 	{
-		if (_Account)
+		if (isTesting)
 		{
-			NewConfiguration();
+			ToggleTestMode();
 		}
-		NewConfiguration();
+		ToggleTestMode();
 	}
 
-	private static void VerifyConfiguration()
+	private static void StartTestMode()
 	{
-		_Definition |= ADOSettings.Instance().hasReadColliderTestingWarning;
-		watcher = Selection.gameObjects;
-		reg = Selection.activeGameObject;
-		helper = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
-		candidate = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
-		_Test = new Dictionary<UnityEngine.Object, bool>();
-		m_Stub = false;
+		hasShownColliderRestartPrompt |= ADOSettings.Instance().hasReadColliderTestingWarning;
+		selectedObjectsBeforeTest = Selection.gameObjects;
+		activeObjectBeforeTest = Selection.activeGameObject;
+		originalToClone = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
+		cloneToOriginal = new Dictionary<UnityEngine.Object, UnityEngine.Object>();
+		cloneHasUnappliedChanges = new Dictionary<UnityEngine.Object, bool>();
+		hasUnappliedTestChanges = false;
 		_003C_003Ec__DisplayClass54_0 pol = default(_003C_003Ec__DisplayClass54_0);
 		pol.bridgeContext = new List<Transform>();
-		m_Server = Selection.transforms.Select((Transform t) => t.root.gameObject).Distinct().ToArray();
-		VRCPhysBone[] componentsToFind = m_Server.SelectMany((GameObject o) => o.GetComponentsInChildren<VRCPhysBone>(includeInactive: true)).ToArray();
-		VRCPhysBoneColliderBase[] componentsToFind2 = m_Server.SelectMany((GameObject o) => o.GetComponentsInChildren<VRCPhysBoneColliderBase>(includeInactive: true)).ToArray();
-		if (m_Server.Length == 0)
+		testSourceRoots = Selection.transforms.Select((Transform t) => t.root.gameObject).Distinct().ToArray();
+		VRCPhysBone[] componentsToFind = testSourceRoots.SelectMany((GameObject o) => o.GetComponentsInChildren<VRCPhysBone>(includeInactive: true)).ToArray();
+		VRCPhysBoneColliderBase[] componentsToFind2 = testSourceRoots.SelectMany((GameObject o) => o.GetComponentsInChildren<VRCPhysBoneColliderBase>(includeInactive: true)).ToArray();
+		if (testSourceRoots.Length == 0)
 		{
-			NewIdentifier("No Active Objects with PhysBones found in the scene.", CustomLogType.Error);
+			Log("No Active Objects with PhysBones found in the scene.", CustomLogType.Error);
 			return;
 		}
-		importer = GameObject.Find("Physbone Tester");
-		if ((bool)importer)
+		testRoot = GameObject.Find("Physbone Tester");
+		if ((bool)testRoot)
 		{
-			UnityEngine.Object.DestroyImmediate(importer);
+			UnityEngine.Object.DestroyImmediate(testRoot);
 		}
-		importer = new GameObject("Physbone Tester")
+		testRoot = new GameObject("Physbone Tester")
 		{
 			hideFlags = (HideFlags.DontSaveInEditor | HideFlags.DontSaveInBuild)
 		};
-		importer.transform.position = reg.transform.position;
-		GameObject[] server = m_Server;
-		foreach (GameObject gameObject in server)
+		testRoot.transform.position = activeObjectBeforeTest.transform.position;
+		GameObject[] array = testSourceRoots;
+		foreach (GameObject gameObject in array)
 		{
-			GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject, gameObject.transform.position, gameObject.transform.rotation, importer.transform);
-			Dictionary<VRCPhysBone, VRCPhysBone> dictionary = ADOEditorUtility.SetupStatus(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind);
-			Dictionary<VRCPhysBoneColliderBase, VRCPhysBoneColliderBase> dictionary2 = ADOEditorUtility.SetupStatus(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind2);
-			VRCPhysBone component = reg.GetComponent<VRCPhysBone>();
+			GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject, gameObject.transform.position, gameObject.transform.rotation, testRoot.transform);
+			Dictionary<VRCPhysBone, VRCPhysBone> dictionary = ADOEditorUtility.MapComponents(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind);
+			Dictionary<VRCPhysBoneColliderBase, VRCPhysBoneColliderBase> dictionary2 = ADOEditorUtility.MapComponents(gameObject.transform, gameObject2.transform, skipfilter: true, componentsToFind2);
+			VRCPhysBone component = activeObjectBeforeTest.GetComponent<VRCPhysBone>();
 			if (component != null && dictionary.TryGetValue(component, out var value) && value != null)
 			{
 				Selection.activeGameObject = value.gameObject;
 			}
 			else
 			{
-				VRCPhysBoneColliderBase component2 = reg.GetComponent<VRCPhysBoneColliderBase>();
+				VRCPhysBoneColliderBase component2 = activeObjectBeforeTest.GetComponent<VRCPhysBoneColliderBase>();
 				if (component2 != null && dictionary2.TryGetValue(component2, out var value2) && value2 != null)
 				{
 					Selection.activeGameObject = value2.gameObject;
@@ -6552,62 +6552,62 @@ internal sealed class ADOverhaul
 			ViewIdentifier(dictionary2, ref pol);
 			gameObject.SetActive(value: false);
 		}
-		_Params = importer.AddComponent<PhysBoneManager>();
-		PhysBoneManager.Inst = _Params;
-		_Params.IsSDK = true;
-		_Params.Init();
-		_Process = importer.GetComponentsInChildren<VRCPhysBone>(includeInactive: true);
-		m_Val = new bool[_Process.Length];
-		m_Adapter = new bool[_Process.Length];
-		proxy = importer.GetComponentsInChildren<VRCPhysBoneCollider>(includeInactive: true);
-		m_Comparator = new bool[proxy.Length];
-		_Product = new bool[proxy.Length];
+		testPhysBoneManager = testRoot.AddComponent<PhysBoneManager>();
+		PhysBoneManager.Inst = testPhysBoneManager;
+		testPhysBoneManager.IsSDK = true;
+		testPhysBoneManager.Init();
+		testPhysBones = testRoot.GetComponentsInChildren<VRCPhysBone>(includeInactive: true);
+		testPhysBoneEnabled = new bool[testPhysBones.Length];
+		testPhysBoneStarted = new bool[testPhysBones.Length];
+		testColliders = testRoot.GetComponentsInChildren<VRCPhysBoneCollider>(includeInactive: true);
+		testColliderEnabled = new bool[testColliders.Length];
+		testColliderStarted = new bool[testColliders.Length];
 		UnityEngine.Object[] objects = pol.bridgeContext.Select((Transform t) => t.gameObject).ToArray();
 		Selection.objects = objects;
-		EditorApplication.update = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.update, new EditorApplication.CallbackFunction(DefineConfiguration));
-		EditorApplication.update = (EditorApplication.CallbackFunction)Delegate.Combine(EditorApplication.update, new EditorApplication.CallbackFunction(DefineConfiguration));
-		SceneView.duringSceneGui -= DeleteConfiguration;
-		SceneView.duringSceneGui += DeleteConfiguration;
+		EditorApplication.update = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.update, new EditorApplication.CallbackFunction(TickTestSimulation));
+		EditorApplication.update = (EditorApplication.CallbackFunction)Delegate.Combine(EditorApplication.update, new EditorApplication.CallbackFunction(TickTestSimulation));
+		SceneView.duringSceneGui -= DrawTestModeOverlay;
+		SceneView.duringSceneGui += DrawTestModeOverlay;
 	}
 
-	private static void SetConfiguration()
+	private static void StopTestMode()
 	{
-		EditorApplication.update = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.update, new EditorApplication.CallbackFunction(DefineConfiguration));
-		SceneView.duringSceneGui -= DeleteConfiguration;
-		UnityEngine.Object[] objects = watcher;
+		EditorApplication.update = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.update, new EditorApplication.CallbackFunction(TickTestSimulation));
+		SceneView.duringSceneGui -= DrawTestModeOverlay;
+		UnityEngine.Object[] objects = selectedObjectsBeforeTest;
 		Selection.objects = objects;
-		Selection.activeObject = reg;
-		context.Invoke(_Params, null);
-		if ((bool)importer)
+		Selection.activeObject = activeObjectBeforeTest;
+		physBoneManagerOnDestroy.Invoke(testPhysBoneManager, null);
+		if ((bool)testRoot)
 		{
-			UnityEngine.Object.DestroyImmediate(importer);
+			UnityEngine.Object.DestroyImmediate(testRoot);
 		}
-		foreach (GameObject item in m_Server.Where((GameObject o) => o))
+		foreach (GameObject item in testSourceRoots.Where((GameObject o) => o))
 		{
 			item.SetActive(value: true);
 		}
-		helper = (candidate = null);
-		_Test = null;
-		_Rules = false;
-		m_Stub = false;
+		originalToClone = (cloneToOriginal = null);
+		cloneHasUnappliedChanges = null;
+		colliderChangedDuringTest = false;
+		hasUnappliedTestChanges = false;
 	}
 
-	private static void SortConfiguration(bool isi, bool iscont, bool explicittemplate)
+	private static void SetShapeCapabilities(bool isi, bool iscont, bool explicittemplate)
 	{
-		m_Factory = isi;
-		_Attribute = iscont;
-		task = explicittemplate;
-		if (!m_Factory)
+		shapeHasRadius = isi;
+		shapeHasHeight = iscont;
+		shapeHasRotation = explicittemplate;
+		if (!shapeHasRadius)
 		{
-			record = false;
+			editingRadius = false;
 		}
-		if (!_Attribute)
+		if (!shapeHasHeight)
 		{
-			_Resolver = false;
+			editingHeight = false;
 		}
-		if (!task)
+		if (!shapeHasRotation)
 		{
-			filter = false;
+			editingRotation = false;
 		}
 	}
 
@@ -6617,24 +6617,24 @@ internal sealed class ADOverhaul
 		switch (indexOf_col)
 		{
 		case 2:
-			_Tag = SearchConfiguration(var1[4], _Tag);
+			editingPosition = DrawPropertyWithEditToggle(var1[4], editingPosition);
 			break;
 		case 0:
 			if (intValue != 2)
 			{
-				record = SearchConfiguration(var1[2], record);
+				editingRadius = DrawPropertyWithEditToggle(var1[2], editingRadius);
 			}
 			break;
 		case 1:
 			if (intValue == 1)
 			{
-				_Resolver = SearchConfiguration(var1[3], _Resolver);
+				editingHeight = DrawPropertyWithEditToggle(var1[3], editingHeight);
 			}
 			break;
 		}
 	}
 
-	private static void CustomizeConfiguration(SerializedProperty reference, Rect col, int remove_FIELDAt)
+	private static void DrawCollisionTagElement(SerializedProperty reference, Rect col, int remove_FIELDAt)
 	{
 		if (remove_FIELDAt >= reference.arraySize || remove_FIELDAt < 0)
 		{
@@ -6654,18 +6654,18 @@ internal sealed class ADOverhaul
 		position2.width = 28f;
 		if (!((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
 			return;
 		}
-		using (new EditorGUI.DisabledScope(!(UnityEngine.Object)(object)m_Predicate))
+		using (new EditorGUI.DisabledScope(!(UnityEngine.Object)(object)selectedAvatar))
 		{
-			int num = EditorGUI.Popup(position, -1, m_Client);
+			int num = EditorGUI.Popup(position, -1, avatarCollisionTags);
 			if (num != -1)
 			{
-				arrayElementAtIndex.stringValue = Regex.Replace(m_Client[num], "^Default/", string.Empty);
+				arrayElementAtIndex.stringValue = Regex.Replace(avatarCollisionTags[num], "^Default/", string.Empty);
 			}
 		}
 		EditorGUI.PropertyField(rect, arrayElementAtIndex, GUIContent.none);
@@ -6675,7 +6675,7 @@ internal sealed class ADOverhaul
 		}
 	}
 
-	private static void ConcatConfiguration(Rect v)
+	private static void DrawCollisionTagsHeader(Rect v)
 	{
 		GUIStyle style = new GUIStyle("boldlabel");
 		GUI.Label(v, "Collision Tags", style);
@@ -6683,26 +6683,26 @@ internal sealed class ADOverhaul
 
 	private static void MapConfiguration(Action config)
 	{
-		CancelConfiguration(isvar1: true);
+		SetShapeEditOverlayActive(isvar1: true);
 		config();
-		PrintConfiguration(ref m_Predicate, ref _Collection);
-		LogoutConfiguration();
+		RefreshSceneAvatars(ref selectedAvatar, ref sceneAvatars);
+		RefreshAvatarTables();
 	}
 
 	private static void FillConfiguration(PlayModeStateChange spec)
 	{
-		if (spec == PlayModeStateChange.ExitingEditMode && _Account)
+		if (spec == PlayModeStateChange.ExitingEditMode && isTesting)
 		{
-			NewConfiguration();
+			ToggleTestMode();
 		}
 	}
 
-	private static void CancelConfiguration(bool isvar1)
+	private static void SetShapeEditOverlayActive(bool isvar1)
 	{
-		SceneView.duringSceneGui -= CalculateConfiguration;
+		SceneView.duringSceneGui -= DrawShapeEditOverlay;
 		if (isvar1)
 		{
-			SceneView.duringSceneGui += CalculateConfiguration;
+			SceneView.duringSceneGui += DrawShapeEditOverlay;
 		}
 		else
 		{
@@ -6710,34 +6710,34 @@ internal sealed class ADOverhaul
 		}
 	}
 
-	private static void LogoutConfiguration()
+	private static void RefreshAvatarTables()
 	{
-		ADOEditorUtility.ConcatVal(m_Predicate, ref _Observer, ref m_Broadcaster);
-		if (!(UnityEngine.Object)(object)m_Predicate)
+		ADOEditorUtility.GetPopulatedPlayableLayers(selectedAvatar, ref avatarPlayableLayerNames, ref avatarPlayableLayerTypes);
+		if (!(UnityEngine.Object)(object)selectedAvatar)
 		{
-			m_Registry = Array.Empty<string>();
+			avatarParameterNames = Array.Empty<string>();
 		}
-		SetupConfiguration();
-		m_Client = ((UnityEngine.Component)(object)m_Predicate).GetComponentsInChildren<VRCContactSender>().SelectMany((VRCContactSender cs) => cs.collisionTags).Concat(((UnityEngine.Component)(object)m_Predicate).GetComponentsInChildren<VRCContactReceiver>().SelectMany((VRCContactReceiver cr) => cr.collisionTags))
-			.Except(ADOEditorUtility.m_RoleSerializer)
-			.Concat(ADOEditorUtility.m_RoleSerializer.Select((string s) => "Default/" + s))
+		RefreshAvatarParameterNames();
+		avatarCollisionTags = ((UnityEngine.Component)(object)selectedAvatar).GetComponentsInChildren<VRCContactSender>().SelectMany((VRCContactSender cs) => cs.collisionTags).Concat(((UnityEngine.Component)(object)selectedAvatar).GetComponentsInChildren<VRCContactReceiver>().SelectMany((VRCContactReceiver cr) => cr.collisionTags))
+			.Except(ADOEditorUtility.defaultCollisionTags)
+			.Concat(ADOEditorUtility.defaultCollisionTags.Select((string s) => "Default/" + s))
 			.Distinct()
 			.ToArray();
 	}
 
-	private static void SetupConfiguration()
+	private static void RefreshAvatarParameterNames()
 	{
-		m_Registry = (from p in (from rc in m_Predicate.baseAnimationLayers.Concat(m_Predicate.specialAnimationLayers)
+		avatarParameterNames = (from p in (from rc in selectedAvatar.baseAnimationLayers.Concat(selectedAvatar.specialAnimationLayers)
 				where !rc.isDefault && (bool)rc.animatorController
 				select AssetDatabase.LoadAssetAtPath<UnityEditor.Animations.AnimatorController>(AssetDatabase.GetAssetPath(rc.animatorController)) into c
 				where c
 				select c).SelectMany((UnityEditor.Animations.AnimatorController c) => c.parameters)
 			select p.name into p
-			where !ADOEditorUtility._AlgoSerializer.Contains(p)
+			where !ADOEditorUtility.reservedAvatarParameters.Contains(p)
 			select p).Distinct().ToArray();
 	}
 
-	private static void SelectConfiguration(AnimBool[] i, UnityAction col)
+	private static void ResetFoldouts(AnimBool[] i, UnityAction col)
 	{
 		for (int j = 0; j < i.Length; j++)
 		{
@@ -6764,11 +6764,11 @@ internal sealed class ADOverhaul
 
 	internal static bool MoveConfiguration()
 	{
-		NewIdentifier((!_Struct) ? "Please activate your license." : "Please wait for verification.", CustomLogType.Error, !_Service);
-		return _Service;
+		Log((!isVerifyingLicense) ? "Please activate your license." : "Please wait for verification.", CustomLogType.Error, !isLicensed);
+		return isLicensed;
 	}
 
-	internal static void PublishConfiguration(string[] info, int[] attr, string[] role, out string[] cfg2, out int[] pred3)
+	internal static void BuildLayerParameterOptions(string[] info, int[] attr, string[] role, out string[] cfg2, out int[] pred3)
 	{
 		List<string> list = new List<string>();
 		List<int> list2 = new List<int>();
@@ -6784,7 +6784,7 @@ internal sealed class ADOverhaul
 		pred3 = list2.ToArray();
 	}
 
-	internal static int[] CollectConfiguration(int idx_v, int contstart)
+	internal static int[] SplitDigits(int idx_v, int contstart)
 	{
 		string text = idx_v.ToString();
 		int[] array = new int[contstart];
@@ -6797,7 +6797,7 @@ internal sealed class ADOverhaul
 		return array;
 	}
 
-	internal static void PrintConfiguration(ref VRCAvatarDescriptor spec, ref VRCAvatarDescriptor[] cust, Action dir = null, Func<VRCAvatarDescriptor, bool> caller2 = null)
+	internal static void RefreshSceneAvatars(ref VRCAvatarDescriptor spec, ref VRCAvatarDescriptor[] cust, Action dir = null, Func<VRCAvatarDescriptor, bool> caller2 = null)
 	{
 		cust = UnityEngine.Object.FindObjectsOfType<VRCAvatarDescriptor>();
 		if ((bool)(UnityEngine.Object)(object)spec)
@@ -6818,16 +6818,16 @@ internal sealed class ADOverhaul
 		dir?.Invoke();
 	}
 
-	internal static bool InterruptConfiguration(ref VRCAvatarDescriptor var1, VRCAvatarDescriptor[] cust, Action helper = null, bool isresult2 = true, bool allowvalue3 = true, bool useasset4 = true, string res5 = "Avatar", string col6 = "The Targeted VRCAvatar", Action instance7 = null)
+	internal static bool DrawAvatarSelector(ref VRCAvatarDescriptor var1, VRCAvatarDescriptor[] cust, Action helper = null, bool isresult2 = true, bool allowvalue3 = true, bool useasset4 = true, string res5 = "Avatar", string col6 = "The Targeted VRCAvatar", Action instance7 = null)
 	{
-		if (!(UnityEngine.Object)(object)ViewConfiguration(ref var1, cust, helper, res5, col6, instance7))
+		if (!(UnityEngine.Object)(object)DrawAvatarPopup(ref var1, cust, helper, res5, col6, instance7))
 		{
 			return false;
 		}
-		return PostConfiguration(var1, isresult2, allowvalue3, useasset4);
+		return DrawAvatarWarnings(var1, isresult2, allowvalue3, useasset4);
 	}
 
-	private static VRCAvatarDescriptor ViewConfiguration(ref VRCAvatarDescriptor res, VRCAvatarDescriptor[] cfg, Action util = null, string token2 = "Avatar", string value3 = "The Targeted VRCAvatar", Action t4 = null)
+	private static VRCAvatarDescriptor DrawAvatarPopup(ref VRCAvatarDescriptor res, VRCAvatarDescriptor[] cfg, Action util = null, string token2 = "Avatar", string value3 = "The Targeted VRCAvatar", Action t4 = null)
 	{
 		using (new GUILayout.HorizontalScope())
 		{
@@ -6854,20 +6854,20 @@ internal sealed class ADOverhaul
 		return res;
 	}
 
-	private static bool PostConfiguration(VRCAvatarDescriptor setup, bool iscont = true, bool resreguired = true, bool loadpol2 = true)
+	private static bool DrawAvatarWarnings(VRCAvatarDescriptor setup, bool iscont = true, bool resreguired = true, bool loadpol2 = true)
 	{
-		if (!resreguired || !ListConfiguration(setup))
+		if (!resreguired || !DrawPrefabWarning(setup))
 		{
 			if (loadpol2)
 			{
-				return !ForgotConfiguration(setup, iscont);
+				return !DrawPlayableLayerWarning(setup, iscont);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	private static bool ListConfiguration(VRCAvatarDescriptor ident)
+	private static bool DrawPrefabWarning(VRCAvatarDescriptor ident)
 	{
 		if ((bool)(UnityEngine.Object)(object)ident)
 		{
@@ -6885,7 +6885,7 @@ internal sealed class ADOverhaul
 		return false;
 	}
 
-	private static bool ForgotConfiguration(VRCAvatarDescriptor spec, bool insertreg = true)
+	private static bool DrawPlayableLayerWarning(VRCAvatarDescriptor spec, bool insertreg = true)
 	{
 		if ((bool)(UnityEngine.Object)(object)spec)
 		{
@@ -6913,23 +6913,23 @@ internal sealed class ADOverhaul
 		return false;
 	}
 
-	private static float UpdateConfiguration(Transform i)
+	private static float GetMaxLossyScale(Transform i)
 	{
 		return Mathf.Max(i.lossyScale.x, i.lossyScale.y, i.lossyScale.z);
 	}
 
-	private static bool SearchConfiguration(SerializedProperty def, bool testtoken)
+	private static bool DrawPropertyWithEditToggle(SerializedProperty def, bool testtoken)
 	{
 		using (new GUILayout.HorizontalScope())
 		{
 			EditorGUILayout.PropertyField(def);
-			return LoginConfiguration(testtoken, ADOEditorUtility.CustomizeRef().stateSerializer);
+			return DrawIconToggle(testtoken, ADOEditorUtility.CustomizeRef().stateSerializer);
 		}
 	}
 
-	private static bool LoginConfiguration(bool movefirst, GUIContent vis)
+	private static bool DrawIconToggle(bool movefirst, GUIContent vis)
 	{
-		using (new GUIColorScope(GUIColorScope.ColoringType.BG, movefirst, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, movefirst, ADOEditorUtility.validColor, ADOEditorUtility.errorColor))
 		{
 			movefirst = ADOEditorUtility.PrepareStatus(movefirst, vis, ADOEditorUtility.MapRef().methodMethod, GUILayout.Width(18f), GUILayout.Height(18f));
 			return movefirst;
@@ -6943,7 +6943,7 @@ internal sealed class ADOverhaul
 
 	private static void CheckConfiguration(GUIContent item, ref bool pol, params GUILayoutOption[] options)
 	{
-		using (new GUIColorScope(GUIColorScope.ColoringType.BG, pol, ADOEditorUtility._ObserverSerializer, ADOEditorUtility._BroadcasterSerializer))
+		using (new GUIColorScope(GUIColorScope.ColoringType.BG, pol, ADOEditorUtility.validColor, ADOEditorUtility.errorColor))
 		{
 			pol = ADOEditorUtility.PrepareStatus(pol, item, GUI.skin.button, options);
 		}
@@ -6970,7 +6970,7 @@ internal sealed class ADOverhaul
 		}
 	}
 
-	private static void ChangeConfiguration(SerializedProperty spec)
+	private static void DrawOptionalProperty(SerializedProperty spec)
 	{
 		if (spec != null)
 		{
@@ -6978,7 +6978,7 @@ internal sealed class ADOverhaul
 		}
 	}
 
-	private static void StopConfiguration(SerializedProperty value, SerializedProperty token)
+	private static void DrawSelfOthersToggles(SerializedProperty value, SerializedProperty token)
 	{
 		using (new GUILayout.HorizontalScope())
 		{
@@ -7007,12 +7007,12 @@ internal sealed class ADOverhaul
 		}
 	}
 
-	private static void PushConfiguration()
+	private static void DrawTargetAvatarSelector()
 	{
-		InterruptConfiguration(ref m_Predicate, _Collection, LogoutConfiguration, isresult2: false, allowvalue3: false, useasset4: true, "Target Avatar");
+		DrawAvatarSelector(ref selectedAvatar, sceneAvatars, RefreshAvatarTables, isresult2: false, allowvalue3: false, useasset4: true, "Target Avatar");
 	}
 
-	private static void PrepareConfiguration(SerializedProperty task)
+	private static void DrawAvatarParameterField(SerializedProperty task)
 	{
 		_003C_003Ec__DisplayClass86_0 visitor = default(_003C_003Ec__DisplayClass86_0);
 		visitor.serializerSerializer = task;
@@ -7022,10 +7022,10 @@ internal sealed class ADOverhaul
 			int selectedIndex = -1;
 			using (EditorGUI.ChangeCheckScope changeCheckScope = new EditorGUI.ChangeCheckScope())
 			{
-				selectedIndex = EditorGUILayout.Popup(selectedIndex, m_Registry, "textfielddropdown", GUILayout.Width(18f));
+				selectedIndex = EditorGUILayout.Popup(selectedIndex, avatarParameterNames, "textfielddropdown", GUILayout.Width(18f));
 				if (changeCheckScope.changed)
 				{
-					visitor.serializerSerializer.stringValue = m_Registry[selectedIndex];
+					visitor.serializerSerializer.stringValue = avatarParameterNames[selectedIndex];
 				}
 			}
 			if (visitor.serializerSerializer.hasMultipleDifferentValues || string.IsNullOrEmpty(visitor.serializerSerializer.stringValue))
@@ -7037,34 +7037,34 @@ internal sealed class ADOverhaul
 			while (true)
 			{
 				controlRect = EditorGUILayout.GetControlRect(GUILayout.Width(50f));
-				PublishConfiguration(_Observer, m_Broadcaster, new string[3] { "Bool", "Int", "Float" }, out var cfg, out var pred);
+				BuildLayerParameterOptions(avatarPlayableLayerNames, avatarPlayableLayerTypes, new string[3] { "Bool", "Int", "Float" }, out var cfg, out var pred);
 				EditorGUI.BeginChangeCheck();
 				int idx_v = EditorGUI.IntPopup(controlRect, -1, cfg, pred);
 				if (!EditorGUI.EndChangeCheck())
 				{
 					break;
 				}
-				int[] array = CollectConfiguration(idx_v, 2);
-				if (m_Predicate.MapVal((VRCAvatarDescriptor.AnimLayerType)array[0], out field._MethodSerializer))
+				int[] array = SplitDigits(idx_v, 2);
+				if (selectedAvatar.TryGetAnimatorController((VRCAvatarDescriptor.AnimLayerType)array[0], out field._MethodSerializer))
 				{
 					switch (array[1])
 					{
 					default:
 						continue;
 					case 2:
-						PostIdentifier(field._MethodSerializer.FindProcess(visitor.serializerSerializer.stringValue, UnityEngine.AnimatorControllerParameterType.Float, 0f), ref visitor, ref field);
+						PostIdentifier(field._MethodSerializer.AddParameterIfMissing(visitor.serializerSerializer.stringValue, UnityEngine.AnimatorControllerParameterType.Float, 0f), ref visitor, ref field);
 						break;
 					case 0:
-						PostIdentifier(field._MethodSerializer.FindProcess(visitor.serializerSerializer.stringValue, UnityEngine.AnimatorControllerParameterType.Bool, 0f), ref visitor, ref field);
+						PostIdentifier(field._MethodSerializer.AddParameterIfMissing(visitor.serializerSerializer.stringValue, UnityEngine.AnimatorControllerParameterType.Bool, 0f), ref visitor, ref field);
 						break;
 					case 1:
-						PostIdentifier(field._MethodSerializer.FindProcess(visitor.serializerSerializer.stringValue, UnityEngine.AnimatorControllerParameterType.Int, 0f), ref visitor, ref field);
+						PostIdentifier(field._MethodSerializer.AddParameterIfMissing(visitor.serializerSerializer.stringValue, UnityEngine.AnimatorControllerParameterType.Int, 0f), ref visitor, ref field);
 						break;
 					}
 				}
 				else
 				{
-					NewIdentifier("Couldn't fetch selected playable layer!", CustomLogType.Error);
+					Log("Couldn't fetch selected playable layer!", CustomLogType.Error);
 				}
 				break;
 			}
@@ -7077,32 +7077,32 @@ internal sealed class ADOverhaul
 	{
 		using (new GUILayout.HorizontalScope())
 		{
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, _Account, ADOEditorUtility._BroadcasterSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, isTesting, ADOEditorUtility.errorColor))
 			{
 				bool isPlaying;
-				string asset = ((isPlaying = Application.isPlaying) ? "Editor is in PlayMode" : ((!_Account) ? "Test PhysBones in Scene" : "Stop Testing - ESC / Enter"));
+				string asset = ((isPlaying = Application.isPlaying) ? "Editor is in PlayMode" : ((!isTesting) ? "Test PhysBones in Scene" : "Stop Testing - ESC / Enter"));
 				using (new EditorGUI.DisabledScope(isPlaying))
 				{
 					if (ADOEditorUtility.PatchStatus(asset))
 					{
-						NewConfiguration();
+						ToggleTestMode();
 					}
 				}
 			}
-			if (!_Account)
+			if (!isTesting)
 			{
 				return false;
 			}
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.m_RecordSerializer))
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.secondaryActionColor))
 			{
 				if (ADOEditorUtility.PatchStatus("Restart", GUILayout.ExpandWidth(expand: false)))
 				{
-					CompareConfiguration();
+					RestartTestMode();
 				}
 			}
-			UnityEngine.Object[] array = param.Where((UnityEngine.Object b) => b != null && _Test.ContainsKey(b) && candidate[b] != null).ToArray();
-			bool flag = array.Any((UnityEngine.Object b) => _Test[b]);
-			using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility._ObserverSerializer))
+			UnityEngine.Object[] array = param.Where((UnityEngine.Object b) => b != null && cloneHasUnappliedChanges.ContainsKey(b) && cloneToOriginal[b] != null).ToArray();
+			bool flag = array.Any((UnityEngine.Object b) => cloneHasUnappliedChanges[b]);
+			using (new GUIColorScope(GUIColorScope.ColoringType.BG, flag, ADOEditorUtility.validColor))
 			{
 				using (new EditorGUI.DisabledScope(!flag))
 				{
@@ -7111,12 +7111,12 @@ internal sealed class ADOverhaul
 						UnityEngine.Object[] array2 = array;
 						foreach (UnityEngine.Object obj in array2)
 						{
-							UnityEngine.Object obj2 = candidate[obj];
+							UnityEngine.Object obj2 = cloneToOriginal[obj];
 							using (new ReflectionRestoreScope(obj2, false, "rootTransform", "ignoreTransforms", "colliders"))
 							{
 								Undo.RecordObject(obj2, "ADO - Apply Changes");
 								EditorUtility.CopySerialized(obj, obj2);
-								_Test[obj] = false;
+								cloneHasUnappliedChanges[obj] = false;
 							}
 						}
 						return true;
@@ -7137,10 +7137,10 @@ internal sealed class ADOverhaul
 				foreach (T item in reg)
 				{
 					proc?.Invoke(item);
-					if (_Account && _Test.ContainsKey(item))
+					if (isTesting && cloneHasUnappliedChanges.ContainsKey(item))
 					{
-						_Test[item] = true;
-						m_Stub = true;
+						cloneHasUnappliedChanges[item] = true;
+						hasUnappliedTestChanges = true;
 					}
 				}
 			}
@@ -7152,13 +7152,13 @@ internal sealed class ADOverhaul
 
 	private static void InsertConfiguration()
 	{
-		if (_Account && _Rules && !_Definition)
+		if (isTesting && colliderChangedDuringTest && !hasShownColliderRestartPrompt)
 		{
-			_Definition = true;
+			hasShownColliderRestartPrompt = true;
 			switch (EditorUtility.DisplayDialogComplex("Testing Restart Required", "Collider changes require a restart of the testing process. Do you want to restart testing?", "Yes", "No", "Don't ask again"))
 			{
 			case 0:
-				CompareConfiguration();
+				RestartTestMode();
 				break;
 			case 2:
 				ADOSettings.Instance().hasReadColliderTestingWarning.SetValue(nores: true);
@@ -7169,7 +7169,7 @@ internal sealed class ADOverhaul
 
 	private static void EnableConfiguration(Action ident)
 	{
-		if (_Struct || _Mock)
+		if (isVerifyingLicense || isRequestingTransferCode)
 		{
 			return;
 		}
@@ -7209,11 +7209,11 @@ internal sealed class ADOverhaul
 	}
 
 	[SpecialName]
-	private static void RemoveSerializer(bool isi)
+	private static void BugReporterOpen(bool isi)
 	{
-		bool flag = initializer;
-		initializer = isi;
-		if (!initializer && flag)
+		bool flag = bugReporterOpen;
+		bugReporterOpen = isi;
+		if (!bugReporterOpen && flag)
 		{
 			BugReporter.OnCompilationStarted(null);
 		}
@@ -7221,31 +7221,31 @@ internal sealed class ADOverhaul
 
 	private static void AwakeConfiguration()
 	{
-		InitConfiguration("Send Feedback for ADOverhaul", "If you have a suggestion, preference, or something to comment, please send it here!\nNote that the feedback is not anonymous. Abuse may result in blacklisting.");
-		m_Algo = _Service;
-		m_Invocation = EditorGUILayout.TextArea(m_Invocation, GUILayout.MinHeight(54f));
+		DrawPanelHeader("Send Feedback for ADOverhaul", "If you have a suggestion, preference, or something to comment, please send it here!\nNote that the feedback is not anonymous. Abuse may result in blacklisting.");
+		feedbackPanelOpen = isLicensed;
+		feedbackText = EditorGUILayout.TextArea(feedbackText, GUILayout.MinHeight(54f));
 		using (new GUILayout.HorizontalScope())
 		{
 			if (ADOEditorUtility.LoginStatus("Cancel", EditorStyles.toolbarButton, GUILayout.ExpandWidth(expand: false)))
 			{
-				m_Algo = false;
+				feedbackPanelOpen = false;
 			}
-			using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(m_Invocation) || role))
+			using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(feedbackText) || isSendingFeedback))
 			{
 				if (ADOEditorUtility.LoginStatus("Send Feedback", EditorStyles.toolbarButton))
 				{
-					if (m_Invocation.Length > 2000)
+					if (feedbackText.Length > 2000)
 					{
-						m_Invocation = m_Invocation.Substring(0, 2000);
+						feedbackText = feedbackText.Substring(0, 2000);
 					}
-					List<(string, string)> list = CountConfiguration("sendfeedback", new(string, string)[1] { ("feedback", Uri.EscapeUriString(m_Invocation)) });
+					List<(string, string)> list = CountConfiguration("sendfeedback", new(string, string)[1] { ("feedback", Uri.EscapeUriString(feedbackText)) });
 					StartConfiguration(list);
-					role = true;
-					OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(ComputeConfiguration, UnityEngine.Debug.LogException, null, null, delegate
+					isSendingFeedback = true;
+					OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(ComputeConfiguration, UnityEngine.Debug.LogException, null, null, delegate
 					{
-						role = false;
-						m_Algo = false;
-						CalculateIdentifier();
+						isSendingFeedback = false;
+						feedbackPanelOpen = false;
+						RepaintOpenWindowsDelayed();
 					});
 				}
 			}
@@ -7255,7 +7255,7 @@ internal sealed class ADOverhaul
 	[SpecialName]
 	private static float ResolveSerializer()
 	{
-		return _System - Time.realtimeSinceStartup;
+		return retryAllowedAtRealtime - Time.realtimeSinceStartup;
 	}
 
 	[SpecialName]
@@ -7270,12 +7270,12 @@ internal sealed class ADOverhaul
 		bool flag = RateConfiguration();
 		if (!ADOSettings.Instance().a_HasSucceededLastVerification)
 		{
-			_Worker = true;
-			m_Pool = flag;
+			licenseKeyEntryRequired = true;
+			licenseCheckedThisSession = flag;
 		}
 		if (flag && (bool)ADOSettings.Instance().a_VerifyOnProjectLoad)
 		{
-			ADOEditorUtility.AddProcess(delegate
+			ADOEditorUtility.DelayCall(delegate
 			{
 				AssetConfiguration(testkey: false);
 			});
@@ -7284,7 +7284,7 @@ internal sealed class ADOverhaul
 
 	private static void VisitConfiguration()
 	{
-		if (!m_Pool && (bool)ADOSettings.Instance().a_VerifyOnDisplay && RateConfiguration())
+		if (!licenseCheckedThisSession && (bool)ADOSettings.Instance().a_VerifyOnDisplay && RateConfiguration())
 		{
 			AssetConfiguration(testkey: false);
 		}
@@ -7293,13 +7293,13 @@ internal sealed class ADOverhaul
 	private static void AssetConfiguration(bool testkey)
 	{
 		_003C_003Ec__DisplayClass132_0 CS_0024_003C_003E8__locals10 = new _003C_003Ec__DisplayClass132_0();
-		if ((!ADOSettings.Instance().a_VerifyOnDisplay.GetValue() && !ADOSettings.Instance().a_VerifyOnProjectLoad.GetValue() && !testkey) || (_Worker && !indexer) || _Struct)
+		if ((!ADOSettings.Instance().a_VerifyOnDisplay.GetValue() && !ADOSettings.Instance().a_VerifyOnProjectLoad.GetValue() && !testkey) || (licenseKeyEntryRequired && !licenseCheckRetryOffered) || isVerifyingLicense)
 		{
 			return;
 		}
-		indexer = false;
-		_Struct = true;
-		m_Pool = true;
+		licenseCheckRetryOffered = false;
+		isVerifyingLicense = true;
+		licenseCheckedThisSession = true;
 		CS_0024_003C_003E8__locals10.itemContext = "No1lKII9IzcBAbihub6nCg==" + EditorAnalyticsSessionInfo.id;
 		try
 		{
@@ -7317,18 +7317,18 @@ internal sealed class ADOverhaul
 					{
 						if (RemoveConfiguration() == CS_0024_003C_003E8__locals10.AwakeWatcher("date", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_))
 						{
-							listener = CS_0024_003C_003E8__locals10.AwakeWatcher("u", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
-							m_Printer = CS_0024_003C_003E8__locals10.AwakeWatcher("v", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
-							_Object = CS_0024_003C_003E8__locals10.AwakeWatcher("r", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
-							attr = CS_0024_003C_003E8__locals10.AwakeWatcher("m", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
+							licenseUsername = CS_0024_003C_003E8__locals10.AwakeWatcher("u", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
+							licenseVariant = CS_0024_003C_003E8__locals10.AwakeWatcher("v", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
+							licenseToken = CS_0024_003C_003E8__locals10.AwakeWatcher("r", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
+							hardwareId = CS_0024_003C_003E8__locals10.AwakeWatcher("m", ref _003C_003Ec__DisplayClass132_1_, ref _003C_003Ec__DisplayClass132_2_);
 							InstantiateConfiguration();
 							RestartConfiguration();
-							_Service = true;
-							_Worker = true;
-							_Struct = false;
-							_Reponse = true;
+							isLicensed = true;
+							licenseKeyEntryRequired = true;
+							isVerifyingLicense = false;
+							wasLicensedBeforeReset = true;
 							ResolveConfiguration(istask: true);
-							CalcIdentifier();
+							RepaintOpenWindows();
 						}
 					}
 					finally
@@ -7350,79 +7350,79 @@ internal sealed class ADOverhaul
 		}
 		catch
 		{
-			NewIdentifier("failed to verify from cache.", CustomLogType.Warning);
+			Log("failed to verify from cache.", CustomLogType.Warning);
 		}
 		CloneConfiguration(delegate
 		{
 			List<(string, string)> list = CountConfiguration("verifylicense");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 			{
 				_003C_003Ec__DisplayClass132_3 _003C_003Ec__DisplayClass132_ = new _003C_003Ec__DisplayClass132_3();
 				_003C_003Ec__DisplayClass132_.m_SetterContext = CS_0024_003C_003E8__locals10;
 				_003C_003Ec__DisplayClass132_._SystemContext = response;
-				_Struct = false;
-				_Worker = true;
+				isVerifyingLicense = false;
+				licenseKeyEntryRequired = true;
 				QueryConfiguration(_003C_003Ec__DisplayClass132_._SystemContext, _003C_003Ec__DisplayClass132_.RateWatcher, delegate
 				{
-					bool reponse = _Reponse;
-					_Service = false;
-					_Reponse = false;
-					_Object = (listener = (m_Printer = string.Empty));
+					bool stripinstance = wasLicensedBeforeReset;
+					isLicensed = false;
+					wasLicensedBeforeReset = false;
+					licenseToken = (licenseUsername = (licenseVariant = string.Empty));
 					ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: false);
 					SessionState.EraseBool(CS_0024_003C_003E8__locals10.itemContext);
-					ResetConfiguration(reponse);
+					ResetConfiguration(stripinstance);
 				}, comparesecond2: false);
-			}, _003C_003Ec.m_ProcAuthentication.CountServer, null, null, CalculateIdentifier);
+			}, _003C_003Ec.m_ProcAuthentication.CountServer, null, null, RepaintOpenWindowsDelayed);
 		}, ispred: true);
 	}
 
 	private static void PopConfiguration()
 	{
-		_Rule = true;
+		isActivatingLicense = true;
 		if (!FindConfiguration())
 		{
-			NewIdentifier("Invalid License Key!", CustomLogType.Error);
+			Log("Invalid License Key!", CustomLogType.Error);
 			return;
 		}
 		CloneConfiguration(delegate
 		{
 			List<(string, string)> list = CountConfiguration("activatelicense");
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 			{
-				_Rule = false;
+				isActivatingLicense = false;
 				QueryConfiguration(response, delegate
 				{
-					_Worker = false;
+					licenseKeyEntryRequired = false;
 					ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 					AssetConfiguration(testkey: true);
 				});
 			}, delegate(Exception exception)
 			{
-				_Rule = false;
-				NewIdentifier($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
-			}, null, null, CalculateIdentifier);
+				isActivatingLicense = false;
+				Log($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
+			}, null, null, RepaintOpenWindowsDelayed);
 		}, ispred: true);
 	}
 
 	private static void InstantiateConfiguration()
 	{
-		_Parser = listener;
-		if (string.IsNullOrWhiteSpace(_Parser))
+		licensedToDisplayName = licenseUsername;
+		if (string.IsNullOrWhiteSpace(licensedToDisplayName))
 		{
 			return;
 		}
 		try
 		{
-			Match match = Regex.Match(_Parser, "(?i)(?:<color=#(?:[0-9a-f]{8}|[0-9a-f]{6})>)?.*?(#\\d{4})(?:<\\/color>)?$");
+			Match match = Regex.Match(licensedToDisplayName, "(?i)(?:<color=#(?:[0-9a-f]{8}|[0-9a-f]{6})>)?.*?(#\\d{4})(?:<\\/color>)?$");
 			if (match.Success)
 			{
-				_Parser = _Parser.Remove(match.Groups[1].Index, match.Groups[1].Length);
+				licensedToDisplayName = licensedToDisplayName.Remove(match.Groups[1].Index, match.Groups[1].Length);
 			}
-			if (_Parser.Length > 1 && _Parser[0] == '@')
+			if (licensedToDisplayName.Length > 1 && licensedToDisplayName[0] == '@')
 			{
-				_Parser = _Parser.Substring(1);
+				licensedToDisplayName = licensedToDisplayName.Substring(1);
 			}
 		}
 		catch
@@ -7432,38 +7432,38 @@ internal sealed class ADOverhaul
 
 	private static void RestartConfiguration()
 	{
-		string[] array = attr.Split(new char[1] { '-' });
+		string[] array = hardwareId.Split(new char[1] { '-' });
 		string[] array2 = RemoveConfiguration().Split(new char[1] { '/' });
 		array2[2] = array2[2].Substring(2, 2);
-		_Interpreter = array2[2] + array[0].Substring(0, 10) + array2[1] + array[2].Substring(0, 10) + array2[0];
+		unreadDeviceDateFingerprint = array2[2] + array[0].Substring(0, 10) + array2[1] + array[2].Substring(0, 10) + array2[0];
 	}
 
 	private static void ManageConfiguration()
 	{
-		if (string.IsNullOrWhiteSpace(global))
+		if (string.IsNullOrWhiteSpace(sessionId))
 		{
 			string key = "DreadScriptssid";
-			global = EditorPrefs.GetString(key, string.Empty);
-			if (string.IsNullOrWhiteSpace(global) || !Regex.IsMatch(global, "[0-9a-f]{32}"))
+			sessionId = EditorPrefs.GetString(key, string.Empty);
+			if (string.IsNullOrWhiteSpace(sessionId) || !Regex.IsMatch(sessionId, "[0-9a-f]{32}"))
 			{
-				global = GUID.Generate().ToString();
-				EditorPrefs.SetString(key, global);
+				sessionId = GUID.Generate().ToString();
+				EditorPrefs.SetString(key, sessionId);
 			}
 		}
 	}
 
 	private static bool RateConfiguration()
 	{
-		if (!string.IsNullOrWhiteSpace(m_Repository))
+		if (!string.IsNullOrWhiteSpace(licenseKey))
 		{
 			return true;
 		}
-		m_Repository = EditorPrefs.GetString("No1lKII9IzcBAbihub6nCg==LK", string.Empty);
+		licenseKey = EditorPrefs.GetString("No1lKII9IzcBAbihub6nCg==LK", string.Empty);
 		if (!AddConfiguration())
 		{
-			m_Repository = string.Empty;
+			licenseKey = string.Empty;
 		}
-		return !(_Worker = string.IsNullOrWhiteSpace(m_Repository));
+		return !(licenseKeyEntryRequired = string.IsNullOrWhiteSpace(licenseKey));
 	}
 
 	private static void CloneConfiguration(Action v, bool ispred = false)
@@ -7576,22 +7576,22 @@ internal sealed class ADOverhaul
 		{
 			if (!string.IsNullOrEmpty(text) && comparesecond2)
 			{
-				NewIdentifier(text);
+				Log(text);
 			}
 			selection?.Invoke();
 			return;
 		}
 		bool flag2 = i.Item("wait_warn");
 		float num2 = i.Item("wait_time");
-		manager |= flag2;
+		serverWarnedTooManyAttempts |= flag2;
 		if (!(num2 <= 0f))
 		{
-			_System = Time.realtimeSinceStartup + num2;
+			retryAllowedAtRealtime = Time.realtimeSinceStartup + num2;
 		}
 		comp?.Invoke();
 		if (!string.IsNullOrEmpty(text))
 		{
-			NewIdentifier(text, CustomLogType.Error);
+			Log(text, CustomLogType.Error);
 			if (!flag)
 			{
 				EditorUtility.DisplayDialog("Warning!", text, "Ok");
@@ -7610,10 +7610,10 @@ internal sealed class ADOverhaul
 		{
 			("command", i),
 			("product_id", "No1lKII9IzcBAbihub6nCg=="),
-			("version", m_Expression.ToString()),
-			("HWID", attr),
-			("SID", global),
-			("license_key", m_Repository)
+			("version", version.ToString()),
+			("HWID", hardwareId),
+			("SID", sessionId),
+			("license_key", licenseKey)
 		};
 		if (connection != null)
 		{
@@ -7640,21 +7640,21 @@ internal sealed class ADOverhaul
 		string text = EnableIdentifier(DateTime.UtcNow.Day.ToString());
 		string text2 = EnableIdentifier(DateTime.UtcNow.Month.ToString());
 		string text3 = DateTime.UtcNow.Year.ToString();
-		setter = text + "/" + text2 + "/" + text3;
-		return setter;
+		currentDateStamp = text + "/" + text2 + "/" + text3;
+		return currentDateStamp;
 	}
 
 	private static void ReflectConfiguration(Action value)
 	{
-		if (!_Service)
+		if (!isLicensed)
 		{
-			m_Wrapper = (Action)Delegate.Remove(m_Wrapper, value);
-			m_Wrapper = (Action)Delegate.Combine(m_Wrapper, value);
+			pendingLicensedCallbacks = (Action)Delegate.Remove(pendingLicensedCallbacks, value);
+			pendingLicensedCallbacks = (Action)Delegate.Combine(pendingLicensedCallbacks, value);
 		}
 		else if (((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
 			value?.Invoke();
@@ -7663,17 +7663,17 @@ internal sealed class ADOverhaul
 
 	private static void ResolveConfiguration(bool istask)
 	{
-		if (_Service && ((Func<bool>)delegate
+		if (isLicensed && ((Func<bool>)delegate
 		{
-			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + m_Repository));
-			return _Object == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(setter + attr)));
+			using HMACSHA256 hMACSHA = new HMACSHA256(Encoding.UTF8.GetBytes("of,ejcX?$0 &n*Uc{lG6_vk5)i!F:;/B]asd(H8[N 2lGc~H+rNjZafKv!W< -LypW.GY]U$w&>'htNSyCuYlEYmnmqX_cpVbS)nBoB=T)*A=ay`phI qK_$*1;O KG?" + licenseKey));
+			return licenseToken == Convert.ToBase64String(hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(currentDateStamp + hardwareId)));
 		})())
 		{
-			if (!specification)
+			if (!licensedCallbacksFlushed)
 			{
-				m_Wrapper?.Invoke();
+				pendingLicensedCallbacks?.Invoke();
 			}
-			specification = true;
+			licensedCallbacksFlushed = true;
 		}
 	}
 
@@ -7685,7 +7685,7 @@ internal sealed class ADOverhaul
 	private static string ExcludeSerializer()
 	{
 		string text = "";
-		if (manager)
+		if (serverWarnedTooManyAttempts)
 		{
 			text += "Too many failed attempts! Further failed attempts will result in getting your device blocked!\n";
 		}
@@ -7702,14 +7702,14 @@ internal sealed class ADOverhaul
 		{
 			using (new GUILayout.HorizontalScope(GUI.skin.box))
 			{
-				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(m_Printer) ? "Personal" : m_Printer), ADOEditorUtility.MapRef().m_ProcSerializer);
+				GUILayout.Label("License: " + (string.IsNullOrWhiteSpace(licenseVariant) ? "Personal" : licenseVariant), ADOEditorUtility.MapRef().m_ProcSerializer);
 				GUILayout.FlexibleSpace();
 			}
-			if (!string.IsNullOrWhiteSpace(_Parser))
+			if (!string.IsNullOrWhiteSpace(licensedToDisplayName))
 			{
 				using (new GUILayout.HorizontalScope(GUI.skin.box))
 				{
-					GUILayout.Label("Authorized For: " + _Parser, ADOEditorUtility.MapRef()._IdentifierMethod);
+					GUILayout.Label("Authorized For: " + licensedToDisplayName, ADOEditorUtility.MapRef()._IdentifierMethod);
 					return;
 				}
 			}
@@ -7718,7 +7718,7 @@ internal sealed class ADOverhaul
 
 	private static bool FlushConfiguration(EditorWindow first = null, float visitor = 0f)
 	{
-		if (!_Service)
+		if (!isLicensed)
 		{
 			if (Event.current.type == EventType.Repaint)
 			{
@@ -7728,31 +7728,31 @@ internal sealed class ADOverhaul
 			{
 				ADOEditorUtility.getterSerializer.Draw(first, visitor);
 			}
-			ConcatIdentifier();
-			if (_Rule || _Struct)
+			DrawAnnouncementBanner();
+			if (isActivatingLicense || isVerifyingLicense)
 			{
-				InitConfiguration(_Rule ? "Activating License..." : "Verifying License...", "Please wait till this finishes processing.");
+				DrawPanelHeader(isActivatingLicense ? "Activating License..." : "Verifying License...", "Please wait till this finishes processing.");
 				return false;
 			}
-			if (!_Info)
+			if (!showingTransferPanel)
 			{
-				if (!_Worker || indexer)
+				if (!licenseKeyEntryRequired || licenseCheckRetryOffered)
 				{
-					InitConfiguration("Check for License", "This will check for whether you already have a license for your device");
-					if (ADOEditorUtility.LoginStatus(indexer ? "Retry" : "Check", EditorStyles.toolbarButton))
+					DrawPanelHeader("Check for License", "This will check for whether you already have a license for your device");
+					if (ADOEditorUtility.LoginStatus(licenseCheckRetryOffered ? "Retry" : "Check", EditorStyles.toolbarButton))
 					{
 						AssetConfiguration(testkey: true);
 					}
 					return false;
 				}
-				InitConfiguration("Enter your license key", "Enter the license key you received with your purchase here. If your license was already activated, click on 'Transfer License'. For support, contact @Dreadrith.");
+				DrawPanelHeader("Enter your license key", "Enter the license key you received with your purchase here. If your license was already activated, click on 'Transfer License'. For support, contact @Dreadrith.");
 				bool flag = ConnectConfiguration(applyvar1: false);
 				if (ExcludeSerializer().Length > 0)
 				{
 					EditorGUILayout.HelpBox(ExcludeSerializer(), MessageType.Error);
 				}
 				bool flag2 = AddConfiguration() && !GetSerializer();
-				flag &= flag2 && !m_Pool;
+				flag &= flag2 && !licenseCheckedThisSession;
 				using (new EditorGUI.DisabledScope(!flag2))
 				{
 					if (ADOEditorUtility.PatchStatus("Activate") || flag)
@@ -7760,18 +7760,18 @@ internal sealed class ADOverhaul
 						PopConfiguration();
 					}
 				}
-				SortIdentifier(CreateConfiguration);
+				DrawToolHeader(CreateConfiguration);
 				return false;
 			}
 			ExcludeConfiguration();
 			return false;
 		}
-		if (m_Algo)
+		if (feedbackPanelOpen)
 		{
 			AwakeConfiguration();
 			return false;
 		}
-		if (!initializer)
+		if (!bugReporterOpen)
 		{
 			return true;
 		}
@@ -7781,16 +7781,16 @@ internal sealed class ADOverhaul
 
 	private static void ExcludeConfiguration()
 	{
-		InitConfiguration("Transferring License", "This is for moving your license to a new device or re-activating it in case it fails to recognize your device.");
-		if (m_Config)
+		DrawPanelHeader("Transferring License", "This is for moving your license to a new device or re-activating it in case it fails to recognize your device.");
+		if (transferCodeSent)
 		{
-			EditorGUILayout.HelpBox("A 6-digit verification code was sent to " + m_Strategy + ".\nIf this is not your email address, please contact support.\nIf you don't see the verification email, please check your spam folder.", MessageType.Info);
-			descriptor = EditorGUILayout.TextField("Verification Code", descriptor);
-			descriptor = Regex.Replace(descriptor, "[^0-9]", string.Empty, RegexOptions.Multiline);
-			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(!Regex.IsMatch(descriptor, "[0-9]{6}") || state);
+			EditorGUILayout.HelpBox("A 6-digit verification code was sent to " + transferTargetEmail + ".\nIf this is not your email address, please contact support.\nIf you don't see the verification email, please check your spam folder.", MessageType.Info);
+			transferVerificationCode = EditorGUILayout.TextField("Verification Code", transferVerificationCode);
+			transferVerificationCode = Regex.Replace(transferVerificationCode, "[^0-9]", string.Empty, RegexOptions.Multiline);
+			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(!Regex.IsMatch(transferVerificationCode, "[0-9]{6}") || isConfirmingTransfer);
 			try
 			{
-				if (ADOEditorUtility.PatchStatus(state ? "Transferring..." : "Transfer License"))
+				if (ADOEditorUtility.PatchStatus(isConfirmingTransfer ? "Transferring..." : "Transfer License"))
 				{
 					SetIdentifier();
 				}
@@ -7803,7 +7803,7 @@ internal sealed class ADOverhaul
 		else
 		{
 			EditorGUILayout.HelpBox("Use this to move your own license from another device.\nAfter entering your license key, press 'Send Verification Code' to send a 6-digit code to the email address associated with the license key.", MessageType.Info);
-			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(_Mock);
+			EditorGUI.DisabledScope disabledScope = new EditorGUI.DisabledScope(isRequestingTransferCode);
 			try
 			{
 				ConnectConfiguration(applyvar1: true);
@@ -7816,10 +7816,10 @@ internal sealed class ADOverhaul
 			{
 				EditorGUILayout.HelpBox(ExcludeSerializer(), MessageType.Error);
 			}
-			disabledScope = new EditorGUI.DisabledScope(!FindConfiguration() || _Mock);
+			disabledScope = new EditorGUI.DisabledScope(!FindConfiguration() || isRequestingTransferCode);
 			try
 			{
-				if (ADOEditorUtility.PatchStatus((!_Mock) ? "Send Verification Code" : "Sending Verification Code..."))
+				if (ADOEditorUtility.PatchStatus((!isRequestingTransferCode) ? "Send Verification Code" : "Sending Verification Code..."))
 				{
 					VerifyIdentifier();
 				}
@@ -7829,10 +7829,10 @@ internal sealed class ADOverhaul
 				((IDisposable)disabledScope/*cast due to .constrained prefix*/).Dispose();
 			}
 		}
-		SortIdentifier(CreateConfiguration);
+		DrawToolHeader(CreateConfiguration);
 	}
 
-	private static void InitConfiguration(string var1, string ord)
+	private static void DrawPanelHeader(string var1, string ord)
 	{
 		using (new GUILayout.HorizontalScope(ADOEditorUtility.MapRef()._MerchantSerializer))
 		{
@@ -7850,12 +7850,12 @@ internal sealed class ADOverhaul
 		using (new GUILayout.HorizontalScope())
 		{
 			string text = "ADOverhaulLicenseField";
-			if (ADOEditorUtility.ComputeStatus(text))
+			if (ADOEditorUtility.SubmitPressed(text))
 			{
 				GUI.FocusControl(null);
 				return true;
 			}
-			if (ADOEditorUtility.QueryStatus(text))
+			if (ADOEditorUtility.CancelPressed(text))
 			{
 				GUI.FocusControl(null);
 			}
@@ -7866,12 +7866,12 @@ internal sealed class ADOverhaul
 					EditorGUILayout.PrefixLabel("License Key");
 				}
 				GUI.SetNextControlName(text);
-				m_Repository = EditorGUILayout.TextField(string.Empty, m_Repository).Trim();
-				ADOEditorUtility.AwakeStatus("License Key", string.IsNullOrWhiteSpace(m_Repository), 80f);
+				licenseKey = EditorGUILayout.TextField(string.Empty, licenseKey).Trim();
+				ADOEditorUtility.AwakeStatus("License Key", string.IsNullOrWhiteSpace(licenseKey), 80f);
 			}
-			if (!m_Pool && AddConfiguration() && !GetSerializer())
+			if (!licenseCheckedThisSession && AddConfiguration() && !GetSerializer())
 			{
-				m_Pool = true;
+				licenseCheckedThisSession = true;
 				return true;
 			}
 		}
@@ -7880,7 +7880,7 @@ internal sealed class ADOverhaul
 
 	private static bool FindConfiguration()
 	{
-		if (_Info)
+		if (showingTransferPanel)
 		{
 			if (!GetSerializer() && AddConfiguration())
 			{
@@ -7897,14 +7897,14 @@ internal sealed class ADOverhaul
 
 	private static bool AddConfiguration()
 	{
-		return Regex.Match(m_Repository, "^[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}$").Success;
+		return Regex.Match(licenseKey, "^[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}$").Success;
 	}
 
 	private static bool ValidateConfiguration()
 	{
-		if (m_Config)
+		if (transferCodeSent)
 		{
-			return Regex.Match(descriptor, "^[a-zA-Z0-9]{6}$").Success;
+			return Regex.Match(transferVerificationCode, "^[a-zA-Z0-9]{6}$").Success;
 		}
 		return true;
 	}
@@ -7914,9 +7914,9 @@ internal sealed class ADOverhaul
 		using (new GUILayout.HorizontalScope())
 		{
 			GUILayout.FlexibleSpace();
-			if (ADOEditorUtility.InterruptStatus(_Info ? "Activate License" : "Transfer License"))
+			if (ADOEditorUtility.InterruptStatus(showingTransferPanel ? "Activate License" : "Transfer License"))
 			{
-				_Info = !_Info;
+				showingTransferPanel = !showingTransferPanel;
 			}
 		}
 	}
@@ -7971,12 +7971,12 @@ internal sealed class ADOverhaul
 		return RunIdentifier("https://us-central1-dreadscripts-c6b62.cloudfunctions.net/receiveCommand", first);
 	}
 
-	private static void CalculateIdentifier()
+	private static void RepaintOpenWindowsDelayed()
 	{
-		ADOEditorUtility.AddProcess(CalcIdentifier);
+		ADOEditorUtility.DelayCall(RepaintOpenWindows);
 	}
 
-	private static void CalcIdentifier()
+	private static void RepaintOpenWindows()
 	{
 		ADOverhaulWindow[] array = Resources.FindObjectsOfTypeAll<ADOverhaulWindow>();
 		for (int i = 0; i < array.Length; i++)
@@ -7985,7 +7985,7 @@ internal sealed class ADOverhaul
 		}
 	}
 
-	private static void DeleteIdentifier()
+	private static void DrawCreditLink()
 	{
 		using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
 		{
@@ -7993,27 +7993,27 @@ internal sealed class ADOverhaul
 			{
 				Application.OpenURL("https://dreadrith.com/links");
 			}
-			ADOEditorUtility.PostStatus();
+			ADOEditorUtility.MarkAsLink();
 		}
 	}
 
-	internal static bool DefineIdentifier(string config, bool wantselection = true)
+	internal static bool LogWarning(string config, bool wantselection = true)
 	{
-		return NewIdentifier(config, CustomLogType.Warning, wantselection);
+		return Log(config, CustomLogType.Warning, wantselection);
 	}
 
-	internal static bool DestroyIdentifier(string instance, bool ignorereg = true)
+	internal static bool LogError(string instance, bool ignorereg = true)
 	{
-		return NewIdentifier(instance, CustomLogType.Error, ignorereg);
+		return Log(instance, CustomLogType.Error, ignorereg);
 	}
 
-	internal static bool NewIdentifier(string def, CustomLogType reg = CustomLogType.Regular, bool includefilter = true)
+	internal static bool Log(string def, CustomLogType reg = CustomLogType.Regular, bool includefilter = true)
 	{
 		if (includefilter)
 		{
 			while (true)
 			{
-				Color color = ((reg == CustomLogType.Regular) ? ADOEditorUtility._ObserverSerializer : ((reg != CustomLogType.Warning) ? ADOEditorUtility._BroadcasterSerializer : ADOEditorUtility._EventSerializer));
+				Color color = ((reg == CustomLogType.Regular) ? ADOEditorUtility.validColor : ((reg != CustomLogType.Warning) ? ADOEditorUtility.errorColor : ADOEditorUtility.warningColor));
 				string message = "<color=#" + ColorUtility.ToHtmlStringRGB(color) + ">[ADOverhaul]</color> " + def.Replace("\\n", "\n");
 				switch (reg)
 				{
@@ -8035,11 +8035,11 @@ internal sealed class ADOverhaul
 		return includefilter;
 	}
 
-	internal static void CompareIdentifier(string task, bool removecust = true)
+	internal static void ThrowError(string task, bool removecust = true)
 	{
 		if (removecust)
 		{
-			throw new Exception("<color=#" + ColorUtility.ToHtmlStringRGB(ADOEditorUtility._BroadcasterSerializer) + ">[ADOverhaul]</color> " + task);
+			throw new Exception("<color=#" + ColorUtility.ToHtmlStringRGB(ADOEditorUtility.errorColor) + ">[ADOverhaul]</color> " + task);
 		}
 	}
 
@@ -8049,22 +8049,22 @@ internal sealed class ADOverhaul
 		switch (EditorUtility.DisplayDialogComplex("Terms of Service", message, "Continue", "Terms of Service", "Cancel"))
 		{
 		case 0:
-			_Mock = true;
+			isRequestingTransferCode = true;
 			CloneConfiguration(delegate
 			{
 				List<(string, string)> list = CountConfiguration("transferlicenserequest");
 				StartConfiguration(list);
-				OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+				OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 				{
 					_003C_003Ec__DisplayClass179_0 _003C_003Ec__DisplayClass179_ = new _003C_003Ec__DisplayClass179_0();
 					_003C_003Ec__DisplayClass179_.composerContext = response;
-					_Mock = false;
+					isRequestingTransferCode = false;
 					QueryConfiguration(_003C_003Ec__DisplayClass179_.composerContext, _003C_003Ec__DisplayClass179_.RestartReg);
 				}, delegate(Exception exception)
 				{
-					_Mock = false;
-					NewIdentifier($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-				}, null, null, CalculateIdentifier);
+					isRequestingTransferCode = false;
+					Log($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
+				}, null, null, RepaintOpenWindowsDelayed);
 			}, ispred: true);
 			break;
 		case 1:
@@ -8075,27 +8075,27 @@ internal sealed class ADOverhaul
 
 	private static void SetIdentifier()
 	{
-		state = true;
+		isConfirmingTransfer = true;
 		CloneConfiguration(delegate
 		{
 			List<(string, string)> list = CountConfiguration("transferlicenseconfirm");
-			list.Add(("verification_code", descriptor));
+			list.Add(("verification_code", transferVerificationCode));
 			StartConfiguration(list);
-			OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+			OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 			{
-				state = false;
+				isConfirmingTransfer = false;
 				QueryConfiguration(response, delegate
 				{
-					_Info = false;
-					m_Config = false;
-					_Worker = false;
+					showingTransferPanel = false;
+					transferCodeSent = false;
+					licenseKeyEntryRequired = false;
 					AssetConfiguration(testkey: true);
 				});
 			}, delegate(Exception exception)
 			{
-				state = false;
-				NewIdentifier($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
-			}, null, null, CalculateIdentifier);
+				isConfirmingTransfer = false;
+				Log($"Something went wrong transferring license! Please contact support.\n\n{exception}", CustomLogType.Error);
+			}, null, null, RepaintOpenWindowsDelayed);
 		}, ispred: true);
 	}
 
@@ -8105,54 +8105,54 @@ internal sealed class ADOverhaul
 		return ADOSettings.Instance().u_updateDay == RemoveConfiguration();
 	}
 
-	private static void SortIdentifier(Action first = null, Action<GenericMenu> col = null)
+	private static void DrawToolHeader(Action first = null, Action<GenericMenu> col = null)
 	{
 		using (new GUILayout.VerticalScope(GUI.skin.box))
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().m_SpecificationSerializer))
+				if (ADOEditorUtility.IconButton(ADOEditorUtility.CustomizeRef().m_SpecificationSerializer))
 				{
-					InvokeIdentifier(col);
+					ShowContextMenu(col);
 				}
-				if (!ADOSettings.Instance().u_updateHidden && creator && ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef()._ParameterSerializer))
+				if (!ADOSettings.Instance().u_updateHidden && updateAvailable && ADOEditorUtility.IconButton(ADOEditorUtility.CustomizeRef()._ParameterSerializer))
 				{
-					dispatcher.target = !dispatcher.target;
+					updateFoldout.target = !updateFoldout.target;
 				}
-				GUILayout.Label("v" + m_Expression, ADOEditorUtility.MapRef().m_AuthenticationMethod, GUILayout.ExpandWidth(expand: false));
+				GUILayout.Label("v" + version, ADOEditorUtility.MapRef().m_AuthenticationMethod, GUILayout.ExpandWidth(expand: false));
 				if (first == null)
 				{
 					GUILayout.FlexibleSpace();
-					DeleteIdentifier();
+					DrawCreditLink();
 				}
 				else
 				{
 					first();
 				}
 			}
-			if (creator)
+			if (updateAvailable)
 			{
-				CustomizeIdentifier();
+				DrawUpdateBanner();
 			}
 		}
 	}
 
-	private static void InvokeIdentifier(Action<GenericMenu> ident = null)
+	private static void ShowContextMenu(Action<GenericMenu> ident = null)
 	{
 		GenericMenu genericMenu = new GenericMenu();
-		genericMenu.AddItem(new GUIContent("Check For Update"), on: false, (!m_Advisor && !exporter) ? ((GenericMenu.MenuFunction)delegate
+		genericMenu.AddItem(new GUIContent("Check For Update"), on: false, (!isCheckingForUpdate && !hasCheckedForUpdate) ? ((GenericMenu.MenuFunction)delegate
 		{
 			SessionState.EraseString("No1lKII9IzcBAbihub6nCg==updateinfo");
 			FillIdentifier();
 		}) : null);
-		if (_Service)
+		if (isLicensed)
 		{
-			genericMenu.AddItem(new GUIContent("Send Feedback"), m_Algo, delegate
+			genericMenu.AddItem(new GUIContent("Send Feedback"), feedbackPanelOpen, delegate
 			{
-				m_Algo.SetStatus();
+				feedbackPanelOpen.Toggle();
 			});
 		}
-		if (_Service)
+		if (isLicensed)
 		{
 			if (ident != null)
 			{
@@ -8179,23 +8179,23 @@ internal sealed class ADOverhaul
 				Application.OpenURL("");
 			});
 		}
-		if (_Service)
+		if (isLicensed)
 		{
-			if (m_Decorator.Length != 0)
+			if (extraMenuLinks.Length != 0)
 			{
-				if (m_Decorator.Length <= 1)
+				if (extraMenuLinks.Length <= 1)
 				{
-					genericMenu.AddItem(new GUIContent(m_Decorator[0].Item1), on: false, delegate
+					genericMenu.AddItem(new GUIContent(extraMenuLinks[0].Item1), on: false, delegate
 					{
-						Application.OpenURL(m_Decorator[0].Item2);
+						Application.OpenURL(extraMenuLinks[0].Item2);
 					});
 				}
 				else
 				{
-					(string, string)[] decorator = m_Decorator;
-					for (int num = 0; num < decorator.Length; num++)
+					(string, string)[] array = extraMenuLinks;
+					for (int num = 0; num < array.Length; num++)
 					{
-						(string, string) tuple = decorator[num];
+						(string, string) tuple = array[num];
 						string item = tuple.Item1;
 						string _AnnotationContext = tuple.Item2;
 						string text = "Samples/" + item;
@@ -8221,17 +8221,17 @@ internal sealed class ADOverhaul
 		genericMenu.ShowAsContext();
 	}
 
-	private static void CustomizeIdentifier(bool isres = true)
+	private static void DrawUpdateBanner(bool isres = true)
 	{
 		if ((bool)ADOSettings.Instance().u_updateHidden)
 		{
 			return;
 		}
-		dispatcher.InvokeStatus(delegate
+		updateFoldout.FadeGroup(delegate
 		{
 			if (isres)
 			{
-				ADOEditorUtility.DisableStatus();
+				ADOEditorUtility.Separator();
 			}
 			EditorGUILayout.HelpBox($"Version {ADOSettings.Instance().u_updateVersion}\n--------------\n{ADOSettings.Instance().u_updateMessage}", MessageType.Info);
 			bool flag = !string.IsNullOrWhiteSpace(ADOSettings.Instance().u_updateLink);
@@ -8240,7 +8240,7 @@ internal sealed class ADOverhaul
 			{
 				if (flag)
 				{
-					using (new EditorGUI.DisabledScope(m_Field))
+					using (new EditorGUI.DisabledScope(isDownloadingUpdate))
 					{
 						if (ADOEditorUtility.LoginStatus("Download Update", EditorStyles.toolbarButton))
 						{
@@ -8257,10 +8257,10 @@ internal sealed class ADOverhaul
 					ADOSettings.Instance().u_updateHidden.SetValue(nores: true);
 				}
 			}
-		}, CalcIdentifier);
+		}, RepaintOpenWindows);
 	}
 
-	private static void ConcatIdentifier()
+	private static void DrawAnnouncementBanner()
 	{
 		if ((bool)ADOSettings.Instance().u_announcementHidden || string.IsNullOrWhiteSpace(ADOSettings.Instance().u_announcement))
 		{
@@ -8270,12 +8270,12 @@ internal sealed class ADOverhaul
 		{
 			Rect _CallbackContext = EditorGUILayout.GetControlRect(GUILayout.ExpandWidth(expand: true), GUILayout.Height(24f));
 			Rect setup = _CallbackContext;
-			GUI.Label(setup.SortStatus(24f, isres: true), ADOEditorUtility.CustomizeRef()._ObjectSerializer);
+			GUI.Label(setup.SliceLeft(24f, isres: true), ADOEditorUtility.CustomizeRef()._ObjectSerializer);
 			GUI.Label(setup, "Announcement", ADOEditorUtility.MapRef().m_ExceptionSerializer);
-			m_Connection.InvokeStatus(delegate
+			announcementFoldout.FadeGroup(delegate
 			{
 				_CallbackContext.height += 18f;
-				ADOEditorUtility.DisableStatus();
+				ADOEditorUtility.Separator();
 				EditorGUILayout.HelpBox(ADOSettings.Instance().u_announcement, MessageType.Info);
 				using (new GUILayout.HorizontalScope())
 				{
@@ -8283,16 +8283,16 @@ internal sealed class ADOverhaul
 					{
 						Application.OpenURL(ADOSettings.Instance().u_announcementLink);
 					}
-					if (_Service && ADOEditorUtility.LoginStatus("Hide", EditorStyles.toolbarButton))
+					if (isLicensed && ADOEditorUtility.LoginStatus("Hide", EditorStyles.toolbarButton))
 					{
 						ADOSettings.Instance().u_announcementHidden.SetValue(nores: true);
 						ADOSettings.Instance().u_announcementHiddenDate.SetValue(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 					}
 				}
-			}, CalcIdentifier);
-			if (ADOEditorUtility.ReadStatus(_CallbackContext))
+			}, RepaintOpenWindows);
+			if (ADOEditorUtility.ClickArea(_CallbackContext))
 			{
-				m_Connection.target = !m_Connection.target;
+				announcementFoldout.target = !announcementFoldout.target;
 			}
 		}
 	}
@@ -8302,14 +8302,14 @@ internal sealed class ADOverhaul
 	{
 		if (!ConnectSerializer() || string.IsNullOrWhiteSpace(ADOSettings.Instance().u_updateVersion.GetValue()))
 		{
-			ADOEditorUtility.AddProcess(delegate
+			ADOEditorUtility.DelayCall(delegate
 			{
 				CancelIdentifier(isparam: false);
 			});
 		}
 		else
 		{
-			SetupIdentifier(iskey: false);
+			ApplyCachedUpdateInfo(iskey: false);
 		}
 	}
 
@@ -8320,19 +8320,19 @@ internal sealed class ADOverhaul
 
 	private static void CancelIdentifier(bool isparam)
 	{
-		if ((!isparam && ConnectSerializer()) || exporter || m_Advisor)
+		if ((!isparam && ConnectSerializer()) || hasCheckedForUpdate || isCheckingForUpdate)
 		{
 			return;
 		}
-		m_Advisor = true;
+		isCheckingForUpdate = true;
 		OrderIdentifier(IncludeConfiguration(new List<(string, string)>
 		{
 			("command", "getdownloadinfo"),
 			("product_id", "No1lKII9IzcBAbihub6nCg=="),
-			("version", m_Expression.ToString())
-		})).CreateProcess(delegate(JsonObject response)
+			("version", version.ToString())
+		})).HandleTask(delegate(JsonObject response)
 		{
-			exporter = true;
+			hasCheckedForUpdate = true;
 			string value = ADOSettings.Instance().u_announcement.GetValue();
 			using (new ADOSettings.SettingsDeferScope())
 			{
@@ -8353,25 +8353,25 @@ internal sealed class ADOverhaul
 			{
 				ADOSettings.Instance().u_announcementHidden.SetValue(nores: false);
 			}
-			SetupIdentifier(isparam);
+			ApplyCachedUpdateInfo(isparam);
 		}, delegate(Exception exc)
 		{
-			NewIdentifier($"Something went wrong while checking for an update!\n\n{exc}", CustomLogType.Error);
+			Log($"Something went wrong while checking for an update!\n\n{exc}", CustomLogType.Error);
 		}, null, null, delegate
 		{
-			m_Advisor = false;
-			CalculateIdentifier();
+			isCheckingForUpdate = false;
+			RepaintOpenWindowsDelayed();
 		});
 	}
 
 	private static void LogoutIdentifier()
 	{
-		m_Field = true;
+		isDownloadingUpdate = true;
 		UnityWebRequest policyContext = new UnityWebRequest(ADOSettings.Instance().u_updateLink);
 		policyContext.downloadHandler = new DownloadHandlerFile("Assets/ADOverhaul.unitypackage");
 		policyContext.SendWebRequest().completed += delegate
 		{
-			m_Field = false;
+			isDownloadingUpdate = false;
 			string text = "Assets/ADOverhaul.unitypackage";
 			if (policyContext.isNetworkError || policyContext.isHttpError)
 			{
@@ -8386,7 +8386,7 @@ internal sealed class ADOverhaul
 		};
 	}
 
-	private static void SetupIdentifier(bool iskey)
+	private static void ApplyCachedUpdateInfo(bool iskey)
 	{
 		if ((bool)ADOSettings.Instance().u_announcementHidden)
 		{
@@ -8399,16 +8399,16 @@ internal sealed class ADOverhaul
 				ADOSettings.Instance().u_announcementHidden.SetValue(nores: false);
 			}
 		}
-		if (!(m_Expression < new SemVer(ADOSettings.Instance().u_updateVersion.GetValue())))
+		if (!(version < new SemVer(ADOSettings.Instance().u_updateVersion.GetValue())))
 		{
 			if (iskey)
 			{
-				NewIdentifier("Up to date!");
+				Log("Up to date!");
 				Task.Run(async delegate
 				{
 					await Task.Delay(3000);
 					ADOSettings.Instance().u_updateHidden.SetValue(nores: true);
-					CalculateIdentifier();
+					RepaintOpenWindowsDelayed();
 				});
 			}
 			else
@@ -8417,19 +8417,19 @@ internal sealed class ADOverhaul
 			}
 			return;
 		}
-		creator = true;
+		updateAvailable = true;
 		if (iskey)
 		{
 			ADOSettings.Instance().u_updateHidden.SetValue(nores: false);
-			dispatcher.target = true;
+			updateFoldout.target = true;
 		}
 		if (!ADOSettings.Instance().u_updateHidden)
 		{
-			NewIdentifier($"Update Available! <b>(v{ADOSettings.Instance().u_updateVersion})</b>");
+			Log($"Update Available! <b>(v{ADOSettings.Instance().u_updateVersion})</b>");
 		}
 	}
 
-	internal static void SelectIdentifier(string v, AnimBool caller, Action dir, Action task2)
+	internal static void DrawFoldoutBox(string v, AnimBool caller, Action dir, Action task2)
 	{
 		using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
 		{
@@ -8438,7 +8438,7 @@ internal sealed class ADOverhaul
 				GUILayout.Label(v, ADOEditorUtility.MapRef()._ConsumerMethod);
 				dir?.Invoke();
 			}
-			if (ADOEditorUtility.ReadStatus())
+			if (ADOEditorUtility.ClickArea())
 			{
 				caller.target = !caller.target;
 				if (!ADOSettings.Instance().editorAnimatedFoldouts)
@@ -8446,54 +8446,54 @@ internal sealed class ADOverhaul
 					caller.value = caller.target;
 				}
 			}
-			caller.InvokeStatus(task2);
+			caller.FadeGroup(task2);
 		}
 	}
 
-	internal static void WriteIdentifier(SceneView key, string reg, Action control, float key2, float task3)
+	internal static void DrawTitledOverlay(SceneView key, string reg, Action control, float key2, float task3)
 	{
-		MoveIdentifier(key, delegate
+		DrawOverlay(key, delegate
 		{
 			using (new GUILayout.HorizontalScope())
 			{
-				ADOEditorUtility.AssetStatus();
+				ADOEditorUtility.IconSpacer();
 				GUILayout.FlexibleSpace();
 				GUILayout.Label(reg, ADOEditorUtility.MapRef().m_WriterSerializer);
 				Rect lastRect = GUILayoutUtility.GetLastRect();
 				GUILayout.FlexibleSpace();
-				PublishIdentifier();
+				DrawSettingsButton();
 				return lastRect;
 			}
 		}, control, key2, task3);
 	}
 
-	internal static void MoveIdentifier(SceneView ident, Func<Rect> result, Action consumer, float pol2, float ivk3)
+	internal static void DrawOverlay(SceneView ident, Func<Rect> result, Action consumer, float pol2, float ivk3)
 	{
 		Rect ivk4 = ident.AddStatus();
 		ADOEditorUtility.PositionFlag enumValue = ADOSettings.Instance().toolOverlayAlignment.GetEnumValue<ADOEditorUtility.PositionFlag>();
 		bool flag;
-		using (new ADOEditorUtility.SceneViewPanel(ident, pol2, ivk3, enumValue, customer))
+		using (new ADOEditorUtility.SceneViewPanel(ident, pol2, ivk3, enumValue, sceneViewPanelResizeHandle))
 		{
 			Rect rect = result();
-			ADOEditorUtility.InsertStatus(rect, MouseCursor.Pan);
-			flag = ADOEditorUtility.VisitStatus(rect, m_Database);
+			ADOEditorUtility.AddCursorRect(rect, MouseCursor.Pan);
+			flag = ADOEditorUtility.HasMouseCapture(rect, tooltipDragControlId);
 			if (consumer != null)
 			{
-				ADOEditorUtility.DisableStatus(2, 0);
+				ADOEditorUtility.Separator(2, 0);
 				consumer();
 			}
 		}
 		if (flag)
 		{
 			Handles.BeginGUI();
-			ADOSettings.Instance().toolOverlayAlignment.IntValue = (int)ADOEditorUtility.RunStatus(enumValue, ivk4);
+			ADOSettings.Instance().toolOverlayAlignment.IntValue = (int)ADOEditorUtility.AnchorPicker(enumValue, ivk4);
 			Handles.EndGUI();
 		}
 	}
 
-	internal static void PublishIdentifier()
+	internal static void DrawSettingsButton()
 	{
-		if (ADOEditorUtility.ListStatus(ADOEditorUtility.CustomizeRef().fieldSerializer))
+		if (ADOEditorUtility.IconButton(ADOEditorUtility.CustomizeRef().fieldSerializer))
 		{
 			ADOverhaulWindow.ShowWindow();
 		}
@@ -8615,10 +8615,10 @@ internal sealed class ADOverhaul
 	{
 		foreach (KeyValuePair<T, T> item in instance)
 		{
-			helper.Add(item.Key, item.Value);
-			candidate.Add(item.Value, item.Key);
-			_Test.Add(item.Value, value: false);
-			if (watcher.Contains(item.Key.gameObject))
+			originalToClone.Add(item.Key, item.Value);
+			cloneToOriginal.Add(item.Value, item.Key);
+			cloneHasUnappliedChanges.Add(item.Value, value: false);
+			if (selectedObjectsBeforeTest.Contains(item.Key.gameObject))
 			{
 				pol.bridgeContext.Add(item.Value.transform);
 			}
@@ -8628,7 +8628,7 @@ internal sealed class ADOverhaul
 	[CompilerGenerated]
 	internal static void PostIdentifier(bool rejectkey, ref _003C_003Ec__DisplayClass86_0 visitor, ref _003C_003Ec__DisplayClass86_1 field)
 	{
-		NewIdentifier(rejectkey ? (visitor.serializerSerializer.stringValue + " added to " + field._MethodSerializer.name) : (visitor.serializerSerializer.stringValue + " already exists in " + field._MethodSerializer.name));
+		Log(rejectkey ? (visitor.serializerSerializer.stringValue + " added to " + field._MethodSerializer.name) : (visitor.serializerSerializer.stringValue + " already exists in " + field._MethodSerializer.name));
 	}
 
 	[CompilerGenerated]
@@ -8673,20 +8673,20 @@ internal sealed class ADOverhaul
 	{
 		List<(string, string)> list = CountConfiguration("activatelicense");
 		StartConfiguration(list);
-		OrderIdentifier(IncludeConfiguration(list.ToArray())).CreateProcess(delegate(JsonObject response)
+		OrderIdentifier(IncludeConfiguration(list.ToArray())).HandleTask(delegate(JsonObject response)
 		{
-			_Rule = false;
+			isActivatingLicense = false;
 			QueryConfiguration(response, delegate
 			{
-				_Worker = false;
+				licenseKeyEntryRequired = false;
 				ADOSettings.Instance().a_HasSucceededLastVerification.SetValue(nores: true);
 				AssetConfiguration(testkey: true);
 			});
 		}, delegate(Exception exception)
 		{
-			_Rule = false;
-			NewIdentifier($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
-		}, null, null, CalculateIdentifier);
+			isActivatingLicense = false;
+			Log($"Something went wrong activating license!\n\n{exception}", CustomLogType.Error);
+		}, null, null, RepaintOpenWindowsDelayed);
 	}
 
 	[CompilerGenerated]

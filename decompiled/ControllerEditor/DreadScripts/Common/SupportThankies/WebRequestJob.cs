@@ -7,20 +7,20 @@ namespace DreadScripts.Common.SupportThankies;
 
 internal readonly struct WebRequestJob : IDisposable
 {
-	internal readonly UnityWebRequest _Algo;
+	internal readonly UnityWebRequest Request;
 
-	private readonly int mapper;
+	private readonly int pollIntervalMilliseconds;
 
-	private readonly Action initializer;
+	private readonly Action onCompleted;
 
 	internal static object NewCode;
 
 	[SpecialName]
 	internal bool IsError()
 	{
-		if (!_Algo.isNetworkError)
+		if (!Request.isNetworkError)
 		{
-			return _Algo.isHttpError;
+			return Request.isHttpError;
 		}
 		return true;
 	}
@@ -36,24 +36,24 @@ internal readonly struct WebRequestJob : IDisposable
 		{
 			third = "GET";
 		}
-		_Algo = new UnityWebRequest(ident, third);
-		initializer = reg;
-		mapper = t2max;
+		Request = new UnityWebRequest(ident, third);
+		onCompleted = reg;
+		pollIntervalMilliseconds = t2max;
 	}
 
 	public void Dispose()
 	{
-		_Algo.Dispose();
+		Request.Dispose();
 	}
 
 	internal async Task Process()
 	{
-		UnityWebRequestAsyncOperation op = _Algo.SendWebRequest();
+		UnityWebRequestAsyncOperation op = Request.SendWebRequest();
 		while (!op.isDone)
 		{
-			await Task.Delay(mapper);
+			await Task.Delay(pollIntervalMilliseconds);
 		}
-		initializer?.Invoke();
+		onCompleted?.Invoke();
 	}
 
 	internal static bool LoginCode()

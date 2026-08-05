@@ -10,53 +10,53 @@ namespace DreadScripts.ControllerEditor;
 
 internal class MenuSelector : EditorWindow
 {
-	private MenuExpressionTreeView _ExceptionThread;
+	private MenuExpressionTreeView treeView;
 
-	private bool objectThread = true;
+	private bool showAssetPicker = true;
 
-	private int utilsThread = 1;
+	private int controlsToAdd = 1;
 
-	private Action<VRCExpressionsMenu> m_ValThread;
+	private Action<VRCExpressionsMenu> onMenuSelected;
 
-	internal static HashSet<VRCExpressionsMenu> valueThread = new HashSet<VRCExpressionsMenu>();
+	internal static HashSet<VRCExpressionsMenu> lastRootMenuStack = new HashSet<VRCExpressionsMenu>();
 
-	internal static VRCExpressionsMenu m_MerchantThread;
+	internal static VRCExpressionsMenu lastRootMenu;
 
 	[SpecialName]
-	private VRCExpressionsMenu DefineRecord()
+	private VRCExpressionsMenu rootMenu()
 	{
-		return _ExceptionThread.rootMenu;
+		return treeView.rootMenu;
 	}
 
 	[SpecialName]
-	private VRCExpressionsMenu[] ReadRecord()
+	private VRCExpressionsMenu[] menuStack()
 	{
-		return _ExceptionThread.menuStack;
+		return treeView.menuStack;
 	}
 
-	internal static void InvokeRecord(VRCExpressionsMenu reference, Action<VRCExpressionsMenu> caller, int column_c = 1, bool istoken2 = true)
+	internal static void Open(VRCExpressionsMenu reference, Action<VRCExpressionsMenu> caller, int column_c = 1, bool istoken2 = true)
 	{
 		MenuSelector window = EditorWindow.GetWindow<MenuSelector>("Menu Selector");
-		VRCExpressionsMenu asset = ((m_MerchantThread == null) ? reference : ((!valueThread.Contains(reference)) ? reference : m_MerchantThread));
-		window._ExceptionThread = new MenuExpressionTreeView(asset);
-		window._ExceptionThread.onMenuSelected = window.FindRecord;
-		window.m_ValThread = caller;
-		window.utilsThread = column_c;
-		window.objectThread = istoken2;
+		VRCExpressionsMenu asset = ((lastRootMenu == null) ? reference : ((!lastRootMenuStack.Contains(reference)) ? reference : lastRootMenu));
+		window.treeView = new MenuExpressionTreeView(asset);
+		window.treeView.onMenuSelected = window.TrySelect;
+		window.onMenuSelected = caller;
+		window.controlsToAdd = column_c;
+		window.showAssetPicker = istoken2;
 	}
 
-	private void FindRecord(VRCExpressionsMenu info)
+	private void TrySelect(VRCExpressionsMenu info)
 	{
-		if (!(info == null) && (bool)info.QueryError(utilsThread))
+		if (!(info == null) && (bool)info.QueryError(controlsToAdd))
 		{
-			m_ValThread?.Invoke(info);
+			onMenuSelected?.Invoke(info);
 			Close();
 		}
 	}
 
 	private void OnGUI()
 	{
-		if (_ExceptionThread == null)
+		if (treeView == null)
 		{
 			Close();
 			return;
@@ -69,10 +69,10 @@ internal class MenuSelector : EditorWindow
 		def.x += 4f;
 		def.y += def.height / 2f - 9f;
 		def.height = 18f;
-		Rect rect4 = def.SortResolver(120f, isfield: true);
-		Rect rect5 = def.PatchResolver(80f, isserv: true, 4f, isvisitor3: true);
-		Rect spec = def.PatchResolver(20f, isserv: true, 4f, isvisitor3: true);
-		_ExceptionThread.OnGUI(rect);
+		Rect rect4 = def.SliceLeft(120f, isfield: true);
+		Rect rect5 = def.SliceRight(80f, isserv: true, 4f, isvisitor3: true);
+		Rect spec = def.SliceRight(20f, isserv: true, 4f, isvisitor3: true);
+		treeView.OnGUI(rect);
 		EditorGUI.DrawRect(rect3, new Color(0.2f, 0.2f, 0.2f));
 		EditorGUI.DrawRect(rect2, new Color(0.25f, 0.25f, 0.25f));
 		EditorGUI.BeginChangeCheck();
@@ -80,27 +80,27 @@ internal class MenuSelector : EditorWindow
 		if (EditorGUI.EndChangeCheck())
 		{
 			MenuExpressionTreeView.showAllControls = showAllControls;
-			_ExceptionThread.Reload();
+			treeView.Reload();
 		}
-		using (new EditorGUI.DisabledScope(!_ExceptionThread.HasSelection() || _ExceptionThread.GetSelection().All((int ident) => !_ExceptionThread.controlMap.ContainsKey(ident) || !_ExceptionThread.controlMap[ident].RestartError(1))))
+		using (new EditorGUI.DisabledScope(!treeView.HasSelection() || treeView.GetSelection().All((int ident) => !treeView.controlMap.ContainsKey(ident) || !treeView.controlMap[ident].RestartError(1))))
 		{
 			if (GUI.Button(rect5, "Select"))
 			{
-				int key = _ExceptionThread.GetSelection().FirstOrDefault((int last_max) => _ExceptionThread.controlMap.ContainsKey(last_max) && (bool)_ExceptionThread.controlMap[last_max].RestartError(1));
-				VRCExpressionsMenu.Control control = _ExceptionThread.controlMap[key];
-				FindRecord(control.subMenu);
+				int key = treeView.GetSelection().FirstOrDefault((int last_max) => treeView.controlMap.ContainsKey(last_max) && (bool)treeView.controlMap[last_max].RestartError(1));
+				VRCExpressionsMenu.Control control = treeView.controlMap[key];
+				TrySelect(control.subMenu);
 			}
 		}
-		if (!objectThread)
+		if (!showAssetPicker)
 		{
 			return;
 		}
 		EditorUtils.AddLinkCursor(spec);
 		if (GUI.Button(spec, EditorUtils.contents().selectFolder, EditorUtils.styles().iconButton))
 		{
-			EditorUtils.ConcatList(null, typeof(VRCExpressionsMenu), null, null, loaddef3: false, null, delegate(UnityEngine.Object first)
+			EditorUtils.ShowObjectPicker(null, typeof(VRCExpressionsMenu), null, null, loaddef3: false, null, delegate(UnityEngine.Object first)
 			{
-				FindRecord(first as VRCExpressionsMenu);
+				TrySelect(first as VRCExpressionsMenu);
 			});
 		}
 	}
@@ -108,9 +108,9 @@ internal class MenuSelector : EditorWindow
 	[CompilerGenerated]
 	private bool ExcludeRecord(int ident)
 	{
-		if (_ExceptionThread.controlMap.ContainsKey(ident))
+		if (treeView.controlMap.ContainsKey(ident))
 		{
-			return !_ExceptionThread.controlMap[ident].RestartError(1);
+			return !treeView.controlMap[ident].RestartError(1);
 		}
 		return true;
 	}
@@ -118,16 +118,16 @@ internal class MenuSelector : EditorWindow
 	[CompilerGenerated]
 	private bool InitRecord(int last_max)
 	{
-		if (!_ExceptionThread.controlMap.ContainsKey(last_max))
+		if (!treeView.controlMap.ContainsKey(last_max))
 		{
 			return false;
 		}
-		return _ExceptionThread.controlMap[last_max].RestartError(1);
+		return treeView.controlMap[last_max].RestartError(1);
 	}
 
 	[CompilerGenerated]
 	private void VisitRecord(UnityEngine.Object first)
 	{
-		FindRecord(first as VRCExpressionsMenu);
+		TrySelect(first as VRCExpressionsMenu);
 	}
 }

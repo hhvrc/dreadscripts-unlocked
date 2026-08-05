@@ -404,9 +404,9 @@ internal static class ADOEditorUtility
 				selection = MouseCursor.ResizeUpRight;
 				goto IL_0339;
 				IL_0339:
-				InsertStatus(resizeZone.rect, selection);
+				AddCursorRect(resizeZone.rect, selection);
 				Rect rect = resizeZone.rect;
-				if (collectionSerializer)
+				if (IsUnity2022)
 				{
 					rect.y += 46f;
 				}
@@ -512,7 +512,7 @@ internal static class ADOEditorUtility
 			: this(ident, tag, first2_end + 2, value3, first4, reference5)
 		{
 			GUILayout.Label(result, MapRef().m_WriterSerializer);
-			DisableStatus(2, 0);
+			Separator(2, 0);
 		}
 
 		public SceneViewPanel(SceneView value, float visitor, int offsetdir, float res2 = 20f, PositionFlag ord3 = PositionFlag.BottomRight, ResizeHandle init4 = null)
@@ -533,7 +533,7 @@ internal static class ADOEditorUtility
 				init4.HandleResize(rect2, ord3.ResolveProcess(evaluateivk: true));
 			}
 			area = ResetProcess(rect2);
-			if (collectionSerializer)
+			if (IsUnity2022)
 			{
 				area.y += 46f;
 			}
@@ -583,49 +583,49 @@ internal static class ADOEditorUtility
 
 	internal class Contents
 	{
-		internal readonly CachedIcon _ParameterSerializer = NewVal("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
+		internal readonly CachedIcon _ParameterSerializer = TrimmedIcon("CollabConflict Icon", "ds-icon-updateAvailable", "Update Available");
 
-		internal readonly CachedIcon m_AttrSerializer = NewVal("Refresh", "ds-icon-checkForUpdate", "Check For Update");
+		internal readonly CachedIcon m_AttrSerializer = TrimmedIcon("Refresh", "ds-icon-checkForUpdate", "Check For Update");
 
-		internal readonly CachedIcon _ObjectSerializer = NewVal("console.infoicon.sml", "ds-icon-announcement");
+		internal readonly CachedIcon _ObjectSerializer = TrimmedIcon("console.infoicon.sml", "ds-icon-announcement");
 
-		internal readonly CachedIcon m_ServiceSerializer = NewVal("console.warnicon.sml", "ds-icon-warning");
+		internal readonly CachedIcon m_ServiceSerializer = TrimmedIcon("console.warnicon.sml", "ds-icon-warning");
 
-		internal readonly CachedIcon reponseSerializer = NewVal("console.erroricon.sml", "ds-icon-error");
+		internal readonly CachedIcon reponseSerializer = TrimmedIcon("console.erroricon.sml", "ds-icon-error");
 
-		internal readonly CachedIcon m_SpecificationSerializer = NewVal("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
+		internal readonly CachedIcon m_SpecificationSerializer = TrimmedIcon("VerticalLayoutGroup Icon", "ds-icon-hamMenu");
 
-		internal readonly CachedIcon wrapperSerializer = NewVal("_Help", "ds-icon-help");
+		internal readonly CachedIcon wrapperSerializer = TrimmedIcon("_Help", "ds-icon-help");
 
-		internal readonly GUIContent infoSerializer = ManageStatus("TestPassed", "Up to Date!");
+		internal readonly GUIContent infoSerializer = IconContent("TestPassed", "Up to Date!");
 
-		internal readonly GUIContent _ModelSerializer = ManageStatus("UnityEditor.InspectorWindow");
+		internal readonly GUIContent _ModelSerializer = IconContent("UnityEditor.InspectorWindow");
 
-		internal readonly GUIContent _ConfigSerializer = ManageStatus("Refresh", "Reset");
+		internal readonly GUIContent _ConfigSerializer = IconContent("Refresh", "Reset");
 
-		internal readonly GUIContent m_MockSerializer = ManageStatus("FolderOpened Icon", "Select a folder");
+		internal readonly GUIContent m_MockSerializer = IconContent("FolderOpened Icon", "Select a folder");
 
-		internal readonly GUIContent stateSerializer = ManageStatus("editicon.sml");
+		internal readonly GUIContent stateSerializer = IconContent("editicon.sml");
 
-		internal readonly GUIContent fieldSerializer = ManageStatus("settings");
+		internal readonly GUIContent fieldSerializer = IconContent("settings");
 
-		internal readonly GUIContent advisorSerializer = ManageStatus("Selectable Icon");
+		internal readonly GUIContent advisorSerializer = IconContent("Selectable Icon");
 
-		internal readonly GUIContent m_ExporterSerializer = ManageStatus("eyeDropper.Large");
+		internal readonly GUIContent m_ExporterSerializer = IconContent("eyeDropper.Large");
 
-		internal readonly GUIContent _CreatorSerializer = ManageStatus("Toolbar Minus", "Remove selection from list");
+		internal readonly GUIContent _CreatorSerializer = IconContent("Toolbar Minus", "Remove selection from list");
 
-		internal readonly GUIContent m_DispatcherSerializer = ManageStatus("CollabCreate Icon");
+		internal readonly GUIContent m_DispatcherSerializer = IconContent("CollabCreate Icon");
 
-		internal readonly GUIContent connectionSerializer = ManageStatus("IN LockButton");
+		internal readonly GUIContent connectionSerializer = IconContent("IN LockButton");
 
-		internal readonly GUIContent expressionSerializer = ManageStatus("IN LockButton on");
+		internal readonly GUIContent expressionSerializer = IconContent("IN LockButton on");
 
-		internal readonly GUIContent decoratorSerializer = ManageStatus("d_scenepicking_pickable_hover@2x");
+		internal readonly GUIContent decoratorSerializer = IconContent("d_scenepicking_pickable_hover@2x");
 
-		internal readonly GUIContent _ParamSerializer = ManageStatus("d_scenepicking_notpickable@2x");
+		internal readonly GUIContent _ParamSerializer = IconContent("d_scenepicking_notpickable@2x");
 
-		internal readonly GUIContent prototypeSerializer = ManageStatus("d_CustomTool@2x");
+		internal readonly GUIContent prototypeSerializer = IconContent("d_CustomTool@2x");
 
 		internal readonly GUIContent baseSerializer = new GUIContent("X", "Clear");
 
@@ -814,7 +814,7 @@ internal static class ADOEditorUtility
 			}
 		};
 
-		internal readonly Color[] m_SerializerMethod = new Color[3] { _BroadcasterSerializer, _ObserverSerializer, _EventSerializer };
+		internal readonly Color[] m_SerializerMethod = new Color[3] { errorColor, validColor, warningColor };
 
 		internal readonly GUIStyle methodMethod = new GUIStyle(GUI.skin.button)
 		{
@@ -1699,7 +1699,7 @@ internal static class ADOEditorUtility
 				{
 					e = array[i]
 				};
-				if (sp.CompareStatus(_003C_003Ec__DisplayClass24_.MapIterator) < 0)
+				if (sp.FindLastIndex(_003C_003Ec__DisplayClass24_.MapIterator) < 0)
 				{
 					int num = VerifyIterator(sp) + 1;
 					SetIterator(sp, num);
@@ -1785,7 +1785,7 @@ internal static class ADOEditorUtility
 			T[] array = enumerable;
 			for (int i = 0; i < array.Length; i++)
 			{
-				int num = sp.CompareStatus(new _003C_003Ec__DisplayClass26_1<T>
+				int num = sp.FindLastIndex(new _003C_003Ec__DisplayClass26_1<T>
 				{
 					e = array[i]
 				}.MoveIterator);
@@ -2049,29 +2049,29 @@ internal static class ADOEditorUtility
 
 	private static readonly Queue<Action> _IteratorSerializer = new Queue<Action>();
 
-	internal static string _PredicateSerializer = Application.unityVersion;
+	internal static string UnityVersion = Application.unityVersion;
 
-	internal static bool collectionSerializer = _PredicateSerializer.Contains("2022");
+	internal static bool IsUnity2022 = UnityVersion.Contains("2022");
 
-	private static readonly Stack<(Rect, MouseCursor)> interceptorSerializer = new Stack<(Rect, MouseCursor)>();
+	private static readonly Stack<(Rect, MouseCursor)> DeferredCursorRects = new Stack<(Rect, MouseCursor)>();
 
-	private static bool m_RegistrySerializer;
+	private static bool deferringCursorRects;
 
 	private static MethodInfo _ClientSerializer;
 
-	internal static Color _ObserverSerializer = new Color(0.56f, 0.94f, 0.47f);
+	internal static Color validColor = new Color(0.56f, 0.94f, 0.47f);
 
-	internal static Color _BroadcasterSerializer = new Color(1f, 0.25f, 0.25f);
+	internal static Color errorColor = new Color(1f, 0.25f, 0.25f);
 
-	internal static Color _EventSerializer = new Color(0.99f, 0.95f, 0f);
+	internal static Color warningColor = new Color(0.99f, 0.95f, 0f);
 
-	internal static Color m_RecordSerializer = new Color(0.3f, 0.7f, 1f);
+	internal static Color secondaryActionColor = new Color(0.3f, 0.7f, 1f);
 
-	internal static Color resolverSerializer = new Color(0.7f, 0.3f, 1f);
+	internal static Color highlightColor = new Color(0.7f, 0.3f, 1f);
 
-	internal static Color _TagSerializer = new Color(1f, 0.65f, 0f);
+	internal static Color cautionColor = new Color(1f, 0.65f, 0f);
 
-	internal static Color _FilterSerializer = new Color(1f, 0.5f, 0.7f);
+	internal static Color accentColor = new Color(1f, 0.5f, 0.7f);
 
 	internal static Contents factorySerializer;
 
@@ -2107,21 +2107,21 @@ internal static class ADOEditorUtility
 
 	private static Texture2D m_ThreadSerializer;
 
-	internal static readonly string[] _AlgoSerializer = new string[23]
+	internal static readonly string[] reservedAvatarParameters = new string[23]
 	{
 		"IsLocal", "Viseme", "Voice", "GestureLeft", "GestureRight", "GestureLeftWeight", "GestureRightWeight", "AngularY", "VelocityX", "VelocityY",
 		"VelocityZ", "VelocityMagnitude", "Upright", "Grounded", "Seated", "AFK", "TrackingType", "VRMode", "MuteSelf", "InStation",
 		"Earmuffs", "IsOnFriendsList", "AvatarVersion"
 	};
 
-	internal static readonly string[] m_RoleSerializer = new string[23]
+	internal static readonly string[] defaultCollisionTags = new string[23]
 	{
 		"Head", "Torso", "Hand", "Foot", "Finger", "FingerIndex", "FingerMiddle", "FingerRing", "FingerLittle", "HandL",
 		"FootL", "FingerL", "FingerIndexL", "FingerMiddleL", "FingerRingL", "FingerLittleL", "HandR", "FootR", "FingerR", "FingerIndexR",
 		"FingerMiddleR", "FingerRingR", "FingerLittleR"
 	};
 
-	internal static PhysBoneParameter[] m_VisitorSerializer = new PhysBoneParameter[5]
+	internal static PhysBoneParameter[] physBoneParameters = new PhysBoneParameter[5]
 	{
 		new PhysBoneParameter("_IsGrabbed", AnimatorControllerParameterType.Bool, "param_IsGrabbedValue"),
 		new PhysBoneParameter("_IsPosed", AnimatorControllerParameterType.Bool, "param_IsPosedValue"),
@@ -2257,11 +2257,11 @@ internal static class ADOEditorUtility
 		position.height += num;
 		if (cfg != Color.clear)
 		{
-			GUI.DrawTexture(reference, DestroyVal(cfg), ScaleMode.StretchToFill, alphaBlend: true, 0f, cfg, 0f, 8f);
+			GUI.DrawTexture(reference, SolidColorTexture(cfg), ScaleMode.StretchToFill, alphaBlend: true, 0f, cfg, 0f, 8f);
 		}
 		if (comp != Color.clear)
 		{
-			GUI.DrawTexture(position, DestroyVal(comp), ScaleMode.StretchToFill, alphaBlend: true, 0f, comp, key2, 8f);
+			GUI.DrawTexture(position, SolidColorTexture(comp), ScaleMode.StretchToFill, alphaBlend: true, 0f, comp, key2, 8f);
 		}
 		Rect result = reference;
 		result.x += 4f;
@@ -2271,7 +2271,7 @@ internal static class ADOEditorUtility
 		return result;
 	}
 
-	internal static bool FlushProcess(this AnimationCurve task, float col, out Keyframe field, out Keyframe pred2)
+	internal static bool TryGetSurroundingKeyframes(this AnimationCurve task, float col, out Keyframe field, out Keyframe pred2)
 	{
 		field = default(Keyframe);
 		pred2 = default(Keyframe);
@@ -2309,14 +2309,14 @@ internal static class ADOEditorUtility
 		return false;
 	}
 
-	internal static bool ExcludeProcess(this AnimationCurve item, float ord, out float dic)
+	internal static bool TryEvaluateTangent(this AnimationCurve item, float ord, out float dic)
 	{
 		dic = 0f;
-		if (item.FlushProcess(ord, out var field, out var pred))
+		if (item.TryGetSurroundingKeyframes(ord, out var field, out var pred))
 		{
 			if (field.time != pred.time)
 			{
-				dic = ConnectProcess(field, pred, ord);
+				dic = TangentBetween(field, pred, ord);
 				return true;
 			}
 			dic = field.outTangent;
@@ -2325,7 +2325,7 @@ internal static class ADOEditorUtility
 		return false;
 	}
 
-	internal static float InitProcess(float instance, float result, float helper, float first2, float info3)
+	internal static float CatmullRom(float instance, float result, float helper, float first2, float info3)
 	{
 		float num = 2f * result;
 		float num2 = helper - instance;
@@ -2334,7 +2334,7 @@ internal static class ADOEditorUtility
 		return 0.5f * (num + num2 * info3 + num3 * info3 * info3 + num4 * info3 * info3 * info3);
 	}
 
-	internal static float ConnectProcess(Keyframe instance, Keyframe pol, float serv)
+	internal static float TangentBetween(Keyframe instance, Keyframe pol, float serv)
 	{
 		float num = pol.time - instance.time;
 		float num2 = 57.29578f * Mathf.Atan(instance.outTangent);
@@ -2343,11 +2343,11 @@ internal static class ADOEditorUtility
 		float value2 = pol.value;
 		float instance2 = instance.value + Mathf.Tan(num2 + 180f) * num;
 		float first = pol.value + Mathf.Tan(num3 + 180f) * num;
-		float num4 = InitProcess(instance2, value, value2, first, serv);
-		return (InitProcess(instance2, value, value2, first, serv + 1E-05f) - num4) / 1E-05f;
+		float num4 = CatmullRom(instance2, value, value2, first, serv);
+		return (CatmullRom(instance2, value, value2, first, serv + 1E-05f) - num4) / 1E-05f;
 	}
 
-	internal static bool FindProcess(this AnimatorController ident, string cont, AnimatorControllerParameterType dir, float key2)
+	internal static bool AddParameterIfMissing(this AnimatorController ident, string cont, AnimatorControllerParameterType dir, float key2)
 	{
 		bool num = ident.parameters.All((AnimatorControllerParameter p) => p.name != cont);
 		if (num)
@@ -2364,18 +2364,18 @@ internal static class ADOEditorUtility
 		return num;
 	}
 
-	internal static void AddProcess(Action i)
+	internal static void DelayCall(Action i)
 	{
 		bool num = _IteratorSerializer.Count == 0;
 		_IteratorSerializer.Enqueue(i);
 		if (num)
 		{
-			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(ValidateProcess));
-			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Combine(EditorApplication.delayCall, new EditorApplication.CallbackFunction(ValidateProcess));
+			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(RunDelayedCalls));
+			EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Combine(EditorApplication.delayCall, new EditorApplication.CallbackFunction(RunDelayedCalls));
 		}
 	}
 
-	private static void ValidateProcess()
+	private static void RunDelayedCalls()
 	{
 		while (_IteratorSerializer.Count != 0)
 		{
@@ -2389,10 +2389,10 @@ internal static class ADOEditorUtility
 				UnityEngine.Debug.LogException(exception);
 			}
 		}
-		EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(ValidateProcess));
+		EditorApplication.delayCall = (EditorApplication.CallbackFunction)Delegate.Remove(EditorApplication.delayCall, new EditorApplication.CallbackFunction(RunDelayedCalls));
 	}
 
-	internal static async Task<T> CreateProcess<T>(this Task<T> res, Action<T> attr, Action<Exception> res = null, Action task2 = null, Action var13 = null, Action selection4 = null)
+	internal static async Task<T> HandleTask<T>(this Task<T> res, Action<T> attr, Action<Exception> res = null, Action task2 = null, Action var13 = null, Action selection4 = null)
 	{
 		object obj;
 		try
@@ -2484,7 +2484,7 @@ internal static class ADOEditorUtility
 		return (T)obj;
 	}
 
-	internal static void IncludeProcess<T>(Rect last, Action<T> attr, Func<T, bool> control = null, Action vis2 = null) where T : UnityEngine.Object
+	internal static void HandleDragAndDrop<T>(Rect last, Action<T> attr, Func<T, bool> control = null, Action vis2 = null) where T : UnityEngine.Object
 	{
 		Event current = Event.current;
 		if ((current.type == EventType.DragPerform || current.type == EventType.DragUpdated) && last.Contains(current.mousePosition))
@@ -2509,7 +2509,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static void RevertProcess<T>(Rect res, Action<IEnumerable<T>> ivk, Func<T, bool> rule = null, Action col2 = null) where T : UnityEngine.Object
+	internal static void HandleMultiDragAndDrop<T>(Rect res, Action<IEnumerable<T>> ivk, Func<T, bool> rule = null, Action col2 = null) where T : UnityEngine.Object
 	{
 		Event current = Event.current;
 		if ((current.type == EventType.DragPerform || current.type == EventType.DragUpdated) && res.Contains(current.mousePosition))
@@ -2536,31 +2536,31 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static PositionFlag RunStatus(PositionFlag info, Rect ivk, PositionFlag consumer = PositionFlag.All)
+	internal static PositionFlag AnchorPicker(PositionFlag info, Rect ivk, PositionFlag consumer = PositionFlag.All)
 	{
-		InsertStatus(ivk, MouseCursor.Pan);
+		AddCursorRect(ivk, MouseCursor.Pan);
 		float num = ivk.width / 3f;
 		float num2 = ivk.height / 3f;
-		foreach (PositionFlag item in PositionFlag.All.ConcatStatus())
+		foreach (PositionFlag flag in PositionFlag.All.GetFlags())
 		{
-			if (item == (PositionFlag)0 || (item & (item - 1)) != 0)
+			if (flag == (PositionFlag)0 || (flag & (flag - 1)) != 0)
 			{
 				continue;
 			}
 			Rect rect = ivk;
-			if (item.CountProcess())
+			if (flag.CountProcess())
 			{
 				rect.x += num * 2f;
 			}
-			else if (!item.StartProcess())
+			else if (!flag.StartProcess())
 			{
 				rect.x += num;
 			}
-			if (item.ReflectProcess())
+			if (flag.ReflectProcess())
 			{
 				rect.y += num2 * 2f;
 			}
-			else if (!item.RemoveProcess())
+			else if (!flag.RemoveProcess())
 			{
 				rect.y += num2;
 			}
@@ -2574,7 +2574,7 @@ internal static class ADOEditorUtility
 			reference.width -= num3;
 			reference.height -= num3;
 			GetProcess(reference, Color.clear, Color.grey);
-			if (!consumer.HasFlag(item))
+			if (!consumer.HasFlag(flag))
 			{
 				GetProcess(rect, new Color(1f, 0.5f, 0.5f, 0.5f), Color.clear);
 			}
@@ -2585,14 +2585,14 @@ internal static class ADOEditorUtility
 					GetProcess(rect, new Color(0.5f, 0.5f, 0.5f, 0.3f), Color.clear);
 					continue;
 				}
-				info = item;
+				info = flag;
 				GetProcess(rect, new Color(0.5f, 1f, 0.5f, 0.33f), Color.clear);
 			}
 		}
 		return info;
 	}
 
-	internal static void OrderStatus<T>(SerializedProperty asset) where T : UnityEngine.Object
+	internal static void ObjectListField<T>(SerializedProperty asset) where T : UnityEngine.Object
 	{
 		bool hasMultipleDifferentValues;
 		if (!(hasMultipleDifferentValues = asset.hasMultipleDifferentValues))
@@ -2629,27 +2629,27 @@ internal static class ADOEditorUtility
 		{
 			return;
 		}
-		RevertProcess<T>(controlRect, asset.CalcStatus<T>);
-		if (ReadStatus(controlRect))
+		HandleMultiDragAndDrop<T>(controlRect, asset.AddToArray<T>);
+		if (ClickArea(controlRect))
 		{
-			IncludeStatus(null, typeof(T), null, null, requirescol3: true, null, delegate(UnityEngine.Object o)
+			ShowObjectSelector(null, typeof(T), null, null, requirescol3: true, null, delegate(UnityEngine.Object o)
 			{
-				asset.CalcStatus<_0021_00210>((IEnumerable<_0021_00210>)(object)new T[1] { o.CustomizeStatus<T>() });
+				asset.AddToArray<_0021_00210>((IEnumerable<_0021_00210>)(object)new T[1] { o.CustomizeStatus<T>() });
 			});
 		}
 	}
 
-	internal static void CalcStatus<T>(this SerializedProperty task, IEnumerable<T> ord) where T : UnityEngine.Object
+	internal static void AddToArray<T>(this SerializedProperty task, IEnumerable<T> ord) where T : UnityEngine.Object
 	{
 		T[] enumerable = (ord as T[]) ?? ord.ToArray();
-		task.VerifyStatus(delegate(SerializedProperty sp)
+		task.ForEachTarget(delegate(SerializedProperty sp)
 		{
 			T[] array = enumerable;
 			for (int i = 0; i < array.Length; i++)
 			{
 				_003C_003Ec__DisplayClass24_1<T> _003C_003Ec__DisplayClass24_ = new _003C_003Ec__DisplayClass24_1<T>();
 				_003C_003Ec__DisplayClass24_.e = array[i];
-				if (sp.CompareStatus(_003C_003Ec__DisplayClass24_.MapIterator) < 0)
+				if (sp.FindLastIndex(_003C_003Ec__DisplayClass24_.MapIterator) < 0)
 				{
 					int num = _003C_003Ec__DisplayClass24_0<T>.VerifyIterator(sp) + 1;
 					_003C_003Ec__DisplayClass24_0<T>.SetIterator(sp, num);
@@ -2660,17 +2660,17 @@ internal static class ADOEditorUtility
 		});
 	}
 
-	internal static void DefineStatus<T>(this SerializedProperty v, IEnumerable<T> pred) where T : UnityEngine.Object
+	internal static void RemoveFromArray<T>(this SerializedProperty v, IEnumerable<T> pred) where T : UnityEngine.Object
 	{
 		T[] enumerable = (pred as T[]) ?? pred.ToArray();
-		v.VerifyStatus(delegate(SerializedProperty sp)
+		v.ForEachTarget(delegate(SerializedProperty sp)
 		{
 			T[] array = enumerable;
 			for (int i = 0; i < array.Length; i++)
 			{
 				_003C_003Ec__DisplayClass26_1<T> _003C_003Ec__DisplayClass26_ = new _003C_003Ec__DisplayClass26_1<T>();
 				_003C_003Ec__DisplayClass26_.e = array[i];
-				int num = sp.CompareStatus(_003C_003Ec__DisplayClass26_.MoveIterator);
+				int num = sp.FindLastIndex(_003C_003Ec__DisplayClass26_.MoveIterator);
 				if (num >= 0)
 				{
 					_003C_003Ec__DisplayClass26_0<T>.SetupIterator(sp, num);
@@ -2689,15 +2689,15 @@ internal static class ADOEditorUtility
 	{
 		if (!isfilter)
 		{
-			param.DefineStatus(counter);
+			param.RemoveFromArray(counter);
 		}
 		else
 		{
-			param.CalcStatus(counter);
+			param.AddToArray(counter);
 		}
 	}
 
-	internal static int CompareStatus(this SerializedProperty config, Func<SerializedProperty, int, bool> vis)
+	internal static int FindLastIndex(this SerializedProperty config, Func<SerializedProperty, int, bool> vis)
 	{
 		int num = config.arraySize - 1;
 		while (num >= 0)
@@ -2713,7 +2713,7 @@ internal static class ADOEditorUtility
 		return -1;
 	}
 
-	internal static void VerifyStatus(this SerializedProperty last, Action<SerializedProperty> counter)
+	internal static void ForEachTarget(this SerializedProperty last, Action<SerializedProperty> counter)
 	{
 		if (!last.hasMultipleDifferentValues)
 		{
@@ -2729,12 +2729,12 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static bool SetStatus(this ref bool instance)
+	internal static bool Toggle(this ref bool instance)
 	{
 		return instance = !instance;
 	}
 
-	internal static Rect SortStatus(this ref Rect setup, float attr, bool isres = false, float spec2 = -1f, bool getsetup3 = false, bool overrideres4 = true)
+	internal static Rect SliceLeft(this ref Rect setup, float attr, bool isres = false, float spec2 = -1f, bool getsetup3 = false, bool overrideres4 = true)
 	{
 		Rect result = setup;
 		result.width = ((!isres) ? (attr * setup.width / 100f) : attr);
@@ -2749,7 +2749,7 @@ internal static class ADOEditorUtility
 		return result;
 	}
 
-	internal static void InvokeStatus(this AnimBool value, Action result, Action serv = null)
+	internal static void FadeGroup(this AnimBool value, Action result, Action serv = null)
 	{
 		if (value.faded != 0f)
 		{
@@ -2777,7 +2777,7 @@ internal static class ADOEditorUtility
 		return ident as T;
 	}
 
-	internal static IEnumerable<T> ConcatStatus<T>(this T task) where T : Enum
+	internal static IEnumerable<T> GetFlags<T>(this T task) where T : Enum
 	{
 		return Enum.GetValues(typeof(T)).Cast<T>().Where(delegate(T value)
 		{
@@ -2787,7 +2787,7 @@ internal static class ADOEditorUtility
 		});
 	}
 
-	internal static void MapStatus<T>(this IEnumerable<T> info, Action<T> pol)
+	internal static void ForEach<T>(this IEnumerable<T> info, Action<T> pol)
 	{
 		foreach (T item in info)
 		{
@@ -2795,12 +2795,12 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	public static Func<T, bool> FillStatus<T>(this Func<T, bool> ident, Func<T, bool> connection)
+	public static Func<T, bool> And<T>(this Func<T, bool> ident, Func<T, bool> connection)
 	{
 		return (T arg) => ident(arg) && connection(arg);
 	}
 
-	internal static Type CancelStatus(string i)
+	internal static Type FindType(string i)
 	{
 		Type type = Type.GetType(i);
 		if (!(type != null))
@@ -2826,7 +2826,7 @@ internal static class ADOEditorUtility
 		return type;
 	}
 
-	internal static Dictionary<Transform, Transform> LogoutStatus(Transform task, Transform counter, bool isutil, params Transform[] transformsToFind)
+	internal static Dictionary<Transform, Transform> MapTransforms(Transform task, Transform counter, bool isutil, params Transform[] transformsToFind)
 	{
 		Dictionary<Transform, Transform> dictionary = new Dictionary<Transform, Transform>();
 		foreach (Transform transform in transformsToFind)
@@ -2848,7 +2848,7 @@ internal static class ADOEditorUtility
 		return dictionary;
 	}
 
-	internal static Dictionary<T, T> SetupStatus<T>(Transform param, Transform connection, bool skipfilter, params T[] componentsToFind) where T : Component
+	internal static Dictionary<T, T> MapComponents<T>(Transform param, Transform connection, bool skipfilter, params T[] componentsToFind) where T : Component
 	{
 		Dictionary<T, T> dictionary = new Dictionary<T, T>();
 		foreach (T val in componentsToFind)
@@ -2881,12 +2881,12 @@ internal static class ADOEditorUtility
 		return dictionary;
 	}
 
-	internal static GUIContent SelectStatus(this SerializedProperty config)
+	internal static GUIContent GetContent(this SerializedProperty config)
 	{
 		return new GUIContent(config.displayName, config.tooltip);
 	}
 
-	internal static object WriteStatus(this SerializedProperty ident)
+	internal static object GetValue(this SerializedProperty ident)
 	{
 		SerializedPropertyType propertyType = ident.propertyType;
 		switch (propertyType)
@@ -2947,7 +2947,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static void MoveStatus(this SerializedProperty ident, object b)
+	internal static void SetValue(this SerializedProperty ident, object b)
 	{
 		SerializedPropertyType propertyType = ident.propertyType;
 		switch (propertyType)
@@ -3027,28 +3027,28 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static void PublishStatus()
+	internal static void BeginDeferredCursorRects()
 	{
 		if (Event.current.type == EventType.Repaint)
 		{
-			m_RegistrySerializer = true;
-			CollectStatus();
+			deferringCursorRects = true;
+			ClearDeferredCursorRects();
 		}
 	}
 
-	internal static void CollectStatus()
+	internal static void ClearDeferredCursorRects()
 	{
-		interceptorSerializer.Clear();
+		DeferredCursorRects.Clear();
 	}
 
-	internal static void PrintStatus()
+	internal static void EndDeferredCursorRects()
 	{
 		if (Event.current.type == EventType.Repaint)
 		{
-			m_RegistrySerializer = false;
-			while (interceptorSerializer.Count > 0)
+			deferringCursorRects = false;
+			while (DeferredCursorRects.Count > 0)
 			{
-				var (screenRect, mouse) = interceptorSerializer.Pop();
+				var (screenRect, mouse) = DeferredCursorRects.Pop();
 				EditorGUIUtility.AddCursorRect(GUIUtility.ScreenToGUIRect(screenRect), mouse);
 			}
 		}
@@ -3070,13 +3070,13 @@ internal static class ADOEditorUtility
 			using (new GUIColorScope(GUIColorScope.ColoringType.FG, selection.Value))
 			{
 				bool result = CallStatus(info, MapRef()._SchemaSerializer, GUILayout.ExpandWidth(expand: false));
-				PostStatus(selection);
+				MarkAsLink(selection);
 				return result;
 			}
 		}
 	}
 
-	internal static void PostStatus(Color? item = null)
+	internal static void MarkAsLink(Color? item = null)
 	{
 		if (!item.HasValue)
 		{
@@ -3094,7 +3094,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static bool ListStatus(GUIContent item, float cont = -1f, float field = -1f)
+	internal static bool IconButton(GUIContent item, float cont = -1f, float field = -1f)
 	{
 		if (cont == -1f)
 		{
@@ -3108,7 +3108,7 @@ internal static class ADOEditorUtility
 			}
 		}
 		bool result = GUILayout.Button(item, MapRef().m_ProducerSerializer, GUILayout.Width(cont), GUILayout.Height(field));
-		TestStatus();
+		AddLinkCursor();
 		return result;
 	}
 
@@ -3154,7 +3154,7 @@ internal static class ADOEditorUtility
 			field = GUI.skin.button;
 		}
 		bool result = GUI.Button(spec, pred, field);
-		TestStatus();
+		AddLinkCursor();
 		return result;
 	}
 
@@ -3180,17 +3180,17 @@ internal static class ADOEditorUtility
 			tag = GUI.skin.button;
 		}
 		bool result = GUILayout.Toggle(isinstance, map, tag, options);
-		TestStatus();
+		AddLinkCursor();
 		return result;
 	}
 
-	internal static bool ReadStatus(Rect value = default(Rect))
+	internal static bool ClickArea(Rect value = default(Rect))
 	{
 		if (value == default(Rect))
 		{
 			value = GUILayoutUtility.GetLastRect();
 		}
-		TestStatus(value);
+		AddLinkCursor(value);
 		Event current = Event.current;
 		if (current.type == EventType.MouseDown && current.button == 0)
 		{
@@ -3199,7 +3199,7 @@ internal static class ADOEditorUtility
 		return false;
 	}
 
-	internal static void TestStatus(Rect task = default(Rect), bool readvis = false)
+	internal static void AddLinkCursor(Rect task = default(Rect), bool readvis = false)
 	{
 		if (Event.current.type == EventType.Repaint)
 		{
@@ -3207,23 +3207,23 @@ internal static class ADOEditorUtility
 			{
 				task = GUILayoutUtility.GetLastRect();
 			}
-			InsertStatus(task, MouseCursor.Link, readvis);
+			AddCursorRect(task, MouseCursor.Link, readvis);
 		}
 	}
 
-	internal static void InsertStatus(Rect i, MouseCursor selection, bool dofilter = false)
+	internal static void AddCursorRect(Rect i, MouseCursor selection, bool dofilter = false)
 	{
 		if (!GUI.enabled && !dofilter)
 		{
 			return;
 		}
-		if (m_RegistrySerializer)
+		if (deferringCursorRects)
 		{
-			if (collectionSerializer)
+			if (IsUnity2022)
 			{
 				i.y += 46f;
 			}
-			interceptorSerializer.Push((GUIUtility.GUIToScreenRect(i), selection));
+			DeferredCursorRects.Push((GUIUtility.GUIToScreenRect(i), selection));
 		}
 		else if (Event.current.type == EventType.Repaint)
 		{
@@ -3252,7 +3252,7 @@ internal static class ADOEditorUtility
 		EnableStatus(GUILayoutUtility.GetLastRect(), param, rejectcont, pool, visitor2, haveparam3);
 	}
 
-	internal static void DisableStatus(int param_count = 2, int minpred = 10)
+	internal static void Separator(int param_count = 2, int minpred = 10)
 	{
 		Rect controlRect = EditorGUILayout.GetControlRect(GUILayout.Height(param_count + minpred));
 		controlRect.height = param_count;
@@ -3263,7 +3263,7 @@ internal static class ADOEditorUtility
 		EditorGUI.DrawRect(controlRect, color);
 	}
 
-	internal static bool VisitStatus(Rect v, int cfg_X)
+	internal static bool HasMouseCapture(Rect v, int cfg_X)
 	{
 		if (GUIUtility.hotControl != cfg_X)
 		{
@@ -3278,13 +3278,13 @@ internal static class ADOEditorUtility
 		return true;
 	}
 
-	internal static void AssetStatus()
+	internal static void IconSpacer()
 	{
 		GUILayout.Label(GUIContent.none, GUILayout.Width(EditorGUIUtility.singleLineHeight));
 	}
 
 	[SpecialName]
-	private static MethodInfo SortRef()
+	private static MethodInfo textFieldDropDownMethod()
 	{
 		return _ClientSerializer ?? (_ClientSerializer = FlushAdapter(typeof(EditorGUI), "TextFieldDropDown", BindingFlags.Static | BindingFlags.NonPublic, (Binder)null, new Type[4]
 		{
@@ -3302,19 +3302,19 @@ internal static class ADOEditorUtility
 
 	internal static string InstantiateStatus(GUIContent instance, string ord, string[] template, params GUILayoutOption[] layoutOptins)
 	{
-		if (!(SortRef() != null))
+		if (!(textFieldDropDownMethod() != null))
 		{
 			return ord;
 		}
 		Rect rect = GUILayoutUtility.GetRect(GUIContent.none, EditorStyles.textField, layoutOptins);
-		return (string)SortRef().Invoke(null, new object[4] { rect, instance, ord, template });
+		return (string)textFieldDropDownMethod().Invoke(null, new object[4] { rect, instance, ord, template });
 	}
 
 	internal static string RestartStatus(Rect task, string ivk, string consumer, string[] key2)
 	{
-		if (SortRef() != null)
+		if (textFieldDropDownMethod() != null)
 		{
-			return (string)SortRef().Invoke(null, new object[4]
+			return (string)textFieldDropDownMethod().Invoke(null, new object[4]
 			{
 				task,
 				new GUIContent(ivk),
@@ -3325,7 +3325,7 @@ internal static class ADOEditorUtility
 		return consumer;
 	}
 
-	internal static GUIContent ManageStatus(string task, string pol = null)
+	internal static GUIContent IconContent(string task, string pol = null)
 	{
 		return new GUIContent(EditorGUIUtility.IconContent(task))
 		{
@@ -3345,7 +3345,7 @@ internal static class ADOEditorUtility
 		return _AttributeSerializer ?? (_AttributeSerializer = new Styles());
 	}
 
-	internal static bool RateStatus(EventCommands ident, string connection = "", bool getc = true)
+	internal static bool CommandIssued(EventCommands ident, string connection = "", bool getc = true)
 	{
 		if (!string.IsNullOrEmpty(connection) && GUI.GetNameOfFocusedControl() != connection)
 		{
@@ -3364,7 +3364,7 @@ internal static class ADOEditorUtility
 		return false;
 	}
 
-	internal static bool CloneStatus(KeyCode ident, string ord = "", bool isstate = true)
+	internal static bool KeyPressed(KeyCode ident, string ord = "", bool isstate = true)
 	{
 		if (string.IsNullOrEmpty(ord) || !(GUI.GetNameOfFocusedControl() != ord))
 		{
@@ -3379,37 +3379,37 @@ internal static class ADOEditorUtility
 		return false;
 	}
 
-	internal static bool ComputeStatus(string last = "", bool isord = true)
+	internal static bool SubmitPressed(string last = "", bool isord = true)
 	{
-		if (!CloneStatus(KeyCode.Return, last, isord))
+		if (!KeyPressed(KeyCode.Return, last, isord))
 		{
-			return CloneStatus(KeyCode.KeypadEnter, last, isord);
+			return KeyPressed(KeyCode.KeypadEnter, last, isord);
 		}
 		return true;
 	}
 
-	internal static bool QueryStatus(string key = "", bool isb = true)
+	internal static bool CancelPressed(string key = "", bool isb = true)
 	{
-		return CloneStatus(KeyCode.Escape, key, isb);
+		return KeyPressed(KeyCode.Escape, key, isb);
 	}
 
-	internal static bool CountStatus(string item = "", bool injectcounter = true)
+	internal static bool DeletePressed(string item = "", bool injectcounter = true)
 	{
-		if (RateStatus(EventCommands.SoftDelete, item, injectcounter))
+		if (CommandIssued(EventCommands.SoftDelete, item, injectcounter))
 		{
 			return true;
 		}
-		return RateStatus(EventCommands.Delete, item, injectcounter);
+		return CommandIssued(EventCommands.Delete, item, injectcounter);
 	}
 
-	internal static bool StartStatus(string reference = "", Action ord = null, Action control = null)
+	internal static bool SubmitOrCancel(string reference = "", Action ord = null, Action control = null)
 	{
-		if (ComputeStatus(reference))
+		if (SubmitPressed(reference))
 		{
 			ord?.Invoke();
 			return true;
 		}
-		if (QueryStatus(reference))
+		if (CancelPressed(reference))
 		{
 			control?.Invoke();
 			return true;
@@ -3417,9 +3417,9 @@ internal static class ADOEditorUtility
 		return false;
 	}
 
-	internal static bool RemoveStatus(string reference, Action result = null, Action filter = null)
+	internal static bool SubmitOrCancelAndDefocus(string reference, Action result = null, Action filter = null)
 	{
-		if (!StartStatus(reference, result, filter))
+		if (!SubmitOrCancel(reference, result, filter))
 		{
 			return false;
 		}
@@ -3439,13 +3439,13 @@ internal static class ADOEditorUtility
 		}
 		if (m_InstanceSerializer == null)
 		{
-			m_InstanceSerializer = GetStatus();
+			m_InstanceSerializer = CreateSpindleMesh();
 		}
 		if (m_TaskSerializer == null)
 		{
-			m_TaskSerializer = FlushStatus();
+			m_TaskSerializer = CreateSpindleMaterial();
 		}
-		ExcludeStatus(m_TaskSerializer);
+		ConfigureHandleMaterial(m_TaskSerializer);
 		float num = Vector3.Distance(reference, selection);
 		Vector3 normalized = (selection - reference).normalized;
 		Matrix4x4 matrix = Matrix4x4.TRS(reference, Quaternion.LookRotation(normalized, rule), new Vector3(num, num, num));
@@ -3471,19 +3471,19 @@ internal static class ADOEditorUtility
 		}
 		if (m_InstanceSerializer == null)
 		{
-			m_InstanceSerializer = GetStatus();
+			m_InstanceSerializer = CreateSpindleMesh();
 		}
 		if (m_TaskSerializer == null)
 		{
-			m_TaskSerializer = FlushStatus();
+			m_TaskSerializer = CreateSpindleMaterial();
 		}
-		ExcludeStatus(m_TaskSerializer);
+		ConfigureHandleMaterial(m_TaskSerializer);
 		m_TaskSerializer.SetColor(customerSerializer, temp.Value);
 		m_TaskSerializer.SetPass(0);
 		Graphics.DrawMeshNow(m_InstanceSerializer, res);
 	}
 
-	private static Mesh GetStatus()
+	private static Mesh CreateSpindleMesh()
 	{
 		Mesh mesh = new Mesh();
 		mesh.MarkDynamic();
@@ -3528,14 +3528,14 @@ internal static class ADOEditorUtility
 		return mesh;
 	}
 
-	private static Material FlushStatus()
+	private static Material CreateSpindleMaterial()
 	{
 		Material material = new Material(Shader.Find("UI/Unlit/Text"));
-		ExcludeStatus(material);
+		ConfigureHandleMaterial(material);
 		return material;
 	}
 
-	private static void ExcludeStatus(Material last)
+	private static void ConfigureHandleMaterial(Material last)
 	{
 		last.hideFlags = HideFlags.DontSave;
 		last.SetInt("_Cull", 2);
@@ -3543,7 +3543,7 @@ internal static class ADOEditorUtility
 		last.SetInt("_ZTest", 8);
 	}
 
-	internal static void InitStatus(SphereHandle first)
+	internal static void DrawSphereHandle(SphereHandle first)
 	{
 		Event current = Event.current;
 		first.onDraw?.Invoke(first);
@@ -3569,7 +3569,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static void ConnectStatus(Transform instance, bool counterinstall = false, bool skipthird = false, bool readparam2 = false, bool usecaller3 = false, bool ismap4 = false, bool bool_0 = false)
+	internal static void TransformHandles(Transform instance, bool counterinstall = false, bool skipthird = false, bool readparam2 = false, bool usecaller3 = false, bool ismap4 = false, bool bool_0 = false)
 	{
 		if (instance == null)
 		{
@@ -3638,15 +3638,15 @@ internal static class ADOEditorUtility
 
 	internal static Rect ValidateStatus(Rect reference)
 	{
-		if (!collectionSerializer)
+		if (!IsUnity2022)
 		{
 			reference.y += 40f;
 		}
-		reference.height -= ((!collectionSerializer) ? 21f : 27f);
+		reference.height -= ((!IsUnity2022) ? 21f : 27f);
 		return reference;
 	}
 
-	internal static float CreateStatus(Quaternion param, Vector3 vis, float comp, bool iscol2 = true, float map3 = 1f)
+	internal static float RadiusHandle(Quaternion param, Vector3 vis, float comp, bool iscol2 = true, float map3 = 1f)
 	{
 		float num = 90f;
 		Vector3[] array = new Vector3[4]
@@ -3698,7 +3698,7 @@ internal static class ADOEditorUtility
 		return comp;
 	}
 
-	internal static void IncludeStatus(UnityEngine.Object i, Type ord, UnityEngine.Object comp = null, SerializedProperty reference2 = null, bool requirescol3 = true, List<int> param4 = null, Action<UnityEngine.Object> selection5 = null, Action<UnityEngine.Object> counter6 = null, bool isinstance7 = true)
+	internal static void ShowObjectSelector(UnityEngine.Object i, Type ord, UnityEngine.Object comp = null, SerializedProperty reference2 = null, bool requirescol3 = true, List<int> param4 = null, Action<UnityEngine.Object> selection5 = null, Action<UnityEngine.Object> counter6 = null, bool isinstance7 = true)
 	{
 		if (candidateSerializer == null)
 		{
@@ -3738,7 +3738,7 @@ internal static class ADOEditorUtility
 		helperSerializer.Invoke(window, second2);
 	}
 
-	internal static void RevertStatus(Type config, Type selection)
+	internal static void OverrideCustomEditor(Type config, Type selection)
 	{
 		if (_StubSerializer == null)
 		{
@@ -3749,10 +3749,10 @@ internal static class ADOEditorUtility
 		}
 		IList list = (testsSerializer.GetValue(null) as IDictionary)[config] as IList;
 		_DefinitionSerializer.SetValue(list[0], selection);
-		RunVal();
+		RefreshInspectors();
 	}
 
-	internal static void RunVal()
+	internal static void RefreshInspectors()
 	{
 		if (_InitializerSerializer == null)
 		{
@@ -3834,7 +3834,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	private static Texture2D DefineVal(Texture2D info, float second = 0.2f, int consumer_max = 1)
+	private static Texture2D TrimTransparentBorder(Texture2D info, float second = 0.2f, int consumer_max = 1)
 	{
 		if (info == null)
 		{
@@ -3899,7 +3899,7 @@ internal static class ADOEditorUtility
 		return null;
 	}
 
-	internal static Texture2D DestroyVal(Color info)
+	internal static Texture2D SolidColorTexture(Color info)
 	{
 		if (m_ThreadSerializer == null)
 		{
@@ -3914,13 +3914,13 @@ internal static class ADOEditorUtility
 		return m_ThreadSerializer;
 	}
 
-	internal static CachedIcon NewVal(string asset, string ivk, string field = "")
+	internal static CachedIcon TrimmedIcon(string asset, string ivk, string field = "")
 	{
 		Texture2D last = null;
 		GUIContent gUIContent = EditorGUIUtility.IconContent(asset);
 		if (gUIContent != null && gUIContent.image != null)
 		{
-			last = DefineVal(gUIContent.image as Texture2D);
+			last = TrimTransparentBorder(gUIContent.image as Texture2D);
 		}
 		return new CachedIcon(last, ivk, field);
 	}
@@ -4002,7 +4002,7 @@ internal static class ADOEditorUtility
 		return vRCPhysBoneCollider;
 	}
 
-	internal static void ConcatVal(VRCAvatarDescriptor param, ref string[] attr, ref int[] util)
+	internal static void GetPopulatedPlayableLayers(VRCAvatarDescriptor param, ref string[] attr, ref int[] util)
 	{
 		string[] array = new string[8] { "Base", "Additive", "Gesture", "Action", "FX", "Sitting", "TPose", "IKPose" };
 		if ((bool)(UnityEngine.Object)(object)param)
@@ -4011,7 +4011,7 @@ internal static class ADOEditorUtility
 			for (int i = 0; i < array.Length; i++)
 			{
 				int num = ((i != 0) ? (i + 1) : i);
-				if (param.MapVal((VRCAvatarDescriptor.AnimLayerType)num, out var _))
+				if (param.TryGetAnimatorController((VRCAvatarDescriptor.AnimLayerType)num, out var _))
 				{
 					list.Add((array[i], num));
 				}
@@ -4031,7 +4031,7 @@ internal static class ADOEditorUtility
 		}
 	}
 
-	internal static bool MapVal(this VRCAvatarDescriptor init, VRCAvatarDescriptor.AnimLayerType b, out AnimatorController dic)
+	internal static bool TryGetAnimatorController(this VRCAvatarDescriptor init, VRCAvatarDescriptor.AnimLayerType b, out AnimatorController dic)
 	{
 		dic = (from l in init.baseAnimationLayers.Concat(init.specialAnimationLayers)
 			where l.type == b
@@ -4039,7 +4039,7 @@ internal static class ADOEditorUtility
 		return dic != null;
 	}
 
-	internal static bool FillVal(byte[] reference, int numcol, bool calccontrol = true)
+	internal static bool CycleToggleState(byte[] reference, int numcol, bool calccontrol = true)
 	{
 		switch (reference[numcol])
 		{

@@ -338,7 +338,7 @@ internal class EditorPrefsConfig
 			}
 			catch (Exception arg)
 			{
-				$"Failed to load settings from {prefsKey}:\n{arg}".LoginResolver(LogType.Error);
+				$"Failed to load settings from {prefsKey}:\n{arg}".Log(LogType.Error);
 				LoadDefaults();
 			}
 		}

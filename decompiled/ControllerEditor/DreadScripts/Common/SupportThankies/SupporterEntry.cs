@@ -7,93 +7,93 @@ namespace DreadScripts.Common.SupportThankies;
 
 internal class SupporterEntry
 {
-	internal readonly string m_Queue;
+	internal readonly string rawEntry;
 
-	internal readonly List<TextFragment> error;
+	internal readonly List<TextFragment> nameFragments;
 
-	internal readonly List<TextFragment> m_Setter;
+	internal readonly List<TextFragment> prefixFragments;
 
-	internal readonly List<TextFragment> m_Connection;
+	internal readonly List<TextFragment> suffixFragments;
 
-	internal readonly RemoteTexture m_Consumer;
+	internal readonly RemoteTexture backgroundTexture;
 
-	internal readonly RemoteTexture.TextureLayoutMethod adapter;
+	internal readonly RemoteTexture.TextureLayoutMethod backgroundLayout;
 
-	internal readonly Color? m_Interpreter;
+	internal readonly Color? backgroundColor;
 
-	internal readonly Color? _Watcher;
+	internal readonly Color? borderColor;
 
-	internal readonly Color? candidate;
+	internal readonly Color? nameColor;
 
-	internal readonly string _Product;
+	internal readonly string tooltip;
 
-	internal readonly string _Expression;
+	internal readonly string onClickUrl;
 
-	internal readonly object system = EditorLayoutUtils.CreateSplitterState(global::_003CModule_003E.smethod_5<float[]>(1991865236));
+	internal readonly object splitterState = EditorLayoutUtils.CreateSplitterState(global::_003CModule_003E.smethod_5<float[]>(1991865236));
 
-	internal Rect worker;
+	internal Rect cardRect;
 
 	internal SupporterEntry(string spec)
 	{
-		m_Queue = spec;
-		TryExtractAttribute("onclick", out _Expression);
-		_Product = ((!TryExtractAttribute("tooltip", out var col)) ? SupporterStrings.decorator.RandomElement() : col);
-		if (!TryExtractAttribute("bgtype", out var col2) || !Enum.TryParse<RemoteTexture.TextureLayoutMethod>(col2, ignoreCase: true, out adapter))
+		rawEntry = spec;
+		TryExtractAttribute("onclick", out onClickUrl);
+		tooltip = ((!TryExtractAttribute("tooltip", out var col)) ? SupporterStrings.SupporterTooltips.RandomElement() : col);
+		if (!TryExtractAttribute("bgtype", out var col2) || !Enum.TryParse<RemoteTexture.TextureLayoutMethod>(col2, ignoreCase: true, out backgroundLayout))
 		{
-			adapter = RemoteTexture.TextureLayoutMethod.Pattern;
+			backgroundLayout = RemoteTexture.TextureLayoutMethod.Pattern;
 		}
 		if (TryExtractAttribute("name", out var col3))
 		{
-			error = TextFragment.Parse(col3);
+			nameFragments = TextFragment.Parse(col3);
 		}
 		if (TryExtractAttribute("prefix", out var col4))
 		{
-			m_Setter = TextFragment.Parse(col4);
+			prefixFragments = TextFragment.Parse(col4);
 		}
 		if (TryExtractAttribute("suffix", out var col5))
 		{
-			m_Connection = TextFragment.Parse(col5);
+			suffixFragments = TextFragment.Parse(col5);
 		}
 		if (TryExtractAttribute("namecolor", out var col6))
 		{
-			candidate = ((!ColorUtility.TryParseHtmlString(col6, out var color)) ? ((Color?)null) : new Color?(color));
+			nameColor = ((!ColorUtility.TryParseHtmlString(col6, out var color)) ? ((Color?)null) : new Color?(color));
 		}
 		if (TryExtractAttribute("bgcolor", out var col7))
 		{
-			m_Interpreter = (ColorUtility.TryParseHtmlString(col7, out var color2) ? new Color?(color2) : ((Color?)null));
+			backgroundColor = (ColorUtility.TryParseHtmlString(col7, out var color2) ? new Color?(color2) : ((Color?)null));
 		}
 		if (TryExtractAttribute("bordercolor", out var col8))
 		{
-			_Watcher = ((!ColorUtility.TryParseHtmlString(col8, out var color3)) ? ((Color?)null) : new Color?(color3));
+			borderColor = ((!ColorUtility.TryParseHtmlString(col8, out var color3)) ? ((Color?)null) : new Color?(color3));
 		}
 		if (TryExtractAttribute("bgimage", out var col9))
 		{
-			m_Consumer = new RemoteTexture(col9, overridesecond: true, col9);
+			backgroundTexture = new RemoteTexture(col9, overridesecond: true, col9);
 		}
 	}
 
 	internal void DrawCard(float v = 20f)
 	{
-		Rect rect = worker.Shrink(2f);
-		using (new GuiColorScope(GuiColorScope.ColoringType.General, (!m_Interpreter.HasValue) ? GUI.color : GUI.color.AlphaBlend(m_Interpreter.Value)))
+		Rect rect = cardRect.Shrink(2f);
+		using (new GuiColorScope(GuiColorScope.ColoringType.General, (!backgroundColor.HasValue) ? GUI.color : GUI.color.AlphaBlend(backgroundColor.Value)))
 		{
-			m_Consumer?.Draw(rect, adapter);
+			backgroundTexture?.Draw(rect, backgroundLayout);
 		}
-		EditorGuiUtils.DrawRoundedBox(rect, (m_Consumer != null) ? Color.clear : (m_Interpreter ?? new Color(0f, 0f, 0f, 0.4f)), _Watcher.GetValueOrDefault(), 1f);
+		EditorGuiUtils.DrawRoundedBox(rect, (backgroundTexture != null) ? Color.clear : (backgroundColor ?? new Color(0f, 0f, 0f, 0.4f)), borderColor.GetValueOrDefault(), 1f);
 		using (new GUILayout.VerticalScope())
 		{
 			using (new GUILayout.VerticalScope())
 			{
 				GUILayout.FlexibleSpace();
-				EditorLayoutUtils.BeginSplit(system, null, false);
+				EditorLayoutUtils.BeginSplit(splitterState, null, false);
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.Space(8f);
-					if (m_Setter != null)
+					if (prefixFragments != null)
 					{
-						foreach (TextFragment item in m_Setter)
+						foreach (TextFragment prefixFragment in prefixFragments)
 						{
-							item.DrawLayout(SupportWindowAssets.GetStyles().repository, v);
+							prefixFragment.DrawLayout(SupportWindowAssets.GetStyles().Prefix, v);
 						}
 					}
 					else
@@ -104,13 +104,13 @@ internal class SupporterEntry
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.FlexibleSpace();
-					if (error != null)
+					if (nameFragments != null)
 					{
-						using (new GuiColorScope(GuiColorScope.ColoringType.General, candidate ?? GUI.color))
+						using (new GuiColorScope(GuiColorScope.ColoringType.General, nameColor ?? GUI.color))
 						{
-							foreach (TextFragment item2 in error)
+							foreach (TextFragment nameFragment in nameFragments)
 							{
-								item2.DrawLayout(SupportWindowAssets.GetStyles().composer, v);
+								nameFragment.DrawLayout(SupportWindowAssets.GetStyles().Name, v);
 							}
 						}
 					}
@@ -119,15 +119,15 @@ internal class SupporterEntry
 				using (new GUILayout.HorizontalScope())
 				{
 					GUILayout.FlexibleSpace();
-					if (m_Connection == null)
+					if (suffixFragments == null)
 					{
 						GUILayout.Label(GUIContent.none);
 					}
 					else
 					{
-						foreach (TextFragment item3 in m_Connection)
+						foreach (TextFragment suffixFragment in suffixFragments)
 						{
-							item3.DrawLayout(SupportWindowAssets.GetStyles().m_Mapping, v);
+							suffixFragment.DrawLayout(SupportWindowAssets.GetStyles().Suffix, v);
 						}
 					}
 					GUILayout.Space(8f);
@@ -137,21 +137,21 @@ internal class SupporterEntry
 			}
 			if (Event.current.type == EventType.Repaint)
 			{
-				worker = GUILayoutUtility.GetLastRect();
+				cardRect = GUILayoutUtility.GetLastRect();
 			}
 			GUILayout.Space(4f);
 		}
-		GUI.Label(worker, new GUIContent(string.Empty, _Product));
-		if (!string.IsNullOrWhiteSpace(_Expression) && EditorGuiUtils.IsClicked(worker))
+		GUI.Label(cardRect, new GUIContent(string.Empty, tooltip));
+		if (!string.IsNullOrWhiteSpace(onClickUrl) && EditorGuiUtils.IsClicked(cardRect))
 		{
-			Application.OpenURL(_Expression);
+			Application.OpenURL(onClickUrl);
 		}
 	}
 
 	internal bool TryExtractAttribute(string v, out string col)
 	{
 		string pattern = "<" + v + "=(.*?)>(?:<|$)";
-		Match match = Regex.Match(m_Queue, pattern);
+		Match match = Regex.Match(rawEntry, pattern);
 		bool success = match.Success;
 		col = (success ? match.Groups[1].Value : null);
 		return success;

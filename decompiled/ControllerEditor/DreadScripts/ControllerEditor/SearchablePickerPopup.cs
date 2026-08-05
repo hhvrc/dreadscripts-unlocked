@@ -65,11 +65,11 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 	{
 		hover = 
 		{
-			background = EditorUtils.ReflectList(new Color(0.302f, 0.302f, 0.302f))
+			background = EditorUtils.ColorTexture(new Color(0.302f, 0.302f, 0.302f))
 		},
 		active = 
 		{
-			background = EditorUtils.ReflectList(new Color(0.1725f, 0.3647f, 0.5294f))
+			background = EditorUtils.ColorTexture(new Color(0.1725f, 0.3647f, 0.5294f))
 		}
 	};
 
@@ -114,7 +114,7 @@ internal class SearchablePickerPopup<T> : PopupWindowContent
 				if (!string.IsNullOrEmpty(title))
 				{
 					GUILayout.Label(title, EditorUtils.styles().centeredBoldRichLabel);
-					EditorUtils.MapQueue();
+					EditorUtils.Separator();
 				}
 				if (hasSearch)
 				{

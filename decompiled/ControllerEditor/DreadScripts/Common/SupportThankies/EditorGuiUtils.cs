@@ -6,7 +6,7 @@ namespace DreadScripts.Common.SupportThankies;
 
 internal static class EditorGuiUtils
 {
-	private static Texture2D facade;
+	private static Texture2D colorTexture;
 
 	internal static T RandomElement<T>(this T[] ident)
 	{
@@ -78,20 +78,20 @@ internal static class EditorGuiUtils
 
 	internal static Texture2D GetColorTexture(Color instance)
 	{
-		if (facade == null)
+		if (colorTexture == null)
 		{
 			while (true)
 			{
-				facade = new Texture2D(1, 1, TextureFormat.RGBAFloat, mipChain: false)
+				colorTexture = new Texture2D(1, 1, TextureFormat.RGBAFloat, mipChain: false)
 				{
 					filterMode = FilterMode.Point,
 					anisoLevel = 0
 				};
 			}
 		}
-		facade.SetPixel(0, 0, instance);
-		facade.Apply();
-		return facade;
+		colorTexture.SetPixel(0, 0, instance);
+		colorTexture.Apply();
+		return colorTexture;
 	}
 
 	internal static void SaveTextureToSession(byte[] config, string selection)

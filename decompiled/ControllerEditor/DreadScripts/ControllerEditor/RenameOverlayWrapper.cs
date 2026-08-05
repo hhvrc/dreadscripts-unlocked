@@ -52,19 +52,19 @@ internal class RenameOverlayWrapper
 		initialized = true;
 		try
 		{
-			renameOverlayType = EditorUtils.FillRules("UnityEditor.RenameOverlay, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+			renameOverlayType = EditorUtils.RequireQualifiedType("UnityEditor.RenameOverlay, UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 			beginRenameMethod = renameOverlayType.GetMethod("BeginRename");
 			endRenameMethod = renameOverlayType.GetMethod("EndRename");
 			isRenamingMethod = renameOverlayType.GetMethod("IsRenaming");
 			onGUIMethod = renameOverlayType.GetMethod("OnGUI", new Type[1] { typeof(GUIStyle) });
 			onEventMethod = renameOverlayType.GetMethod("OnEvent");
 			clearMethod = renameOverlayType.GetMethod("Clear");
-			editFieldRectField = renameOverlayType.RestartList("m_EditFieldRect");
-			userAcceptedRenameField = renameOverlayType.RestartList("m_UserAcceptedRename");
-			originalNameField = renameOverlayType.RestartList("m_OriginalName");
-			nameField = renameOverlayType.RestartList("m_Name");
-			userDataField = renameOverlayType.RestartList("m_UserData");
-			isWaitingForDelayField = renameOverlayType.RestartList("m_IsWaitingForDelay");
+			editFieldRectField = renameOverlayType.GetAnyField("m_EditFieldRect");
+			userAcceptedRenameField = renameOverlayType.GetAnyField("m_UserAcceptedRename");
+			originalNameField = renameOverlayType.GetAnyField("m_OriginalName");
+			nameField = renameOverlayType.GetAnyField("m_Name");
+			userDataField = renameOverlayType.GetAnyField("m_UserData");
+			isWaitingForDelayField = renameOverlayType.GetAnyField("m_IsWaitingForDelay");
 		}
 		catch (Exception)
 		{

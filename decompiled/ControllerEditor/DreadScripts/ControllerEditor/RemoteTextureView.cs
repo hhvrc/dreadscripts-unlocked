@@ -8,48 +8,48 @@ namespace DreadScripts.ControllerEditor;
 
 internal sealed class RemoteTextureView
 {
-	private Texture2D candidatePolicy;
+	private Texture2D cachedTexture;
 
-	private bool _ProductPolicy = true;
+	private bool cacheLookupAllowed = true;
 
-	internal Action _ExpressionPolicy;
+	internal Action onClick;
 
-	private readonly string systemPolicy;
+	private readonly string url;
 
-	private readonly bool workerPolicy;
+	private readonly bool autoDownload;
 
-	private readonly string _FilterPolicy;
+	private readonly string sessionKey;
 
-	internal bool m_StubPolicy;
+	internal bool isLoaded;
 
-	internal bool m_ReaderPolicy;
+	internal bool isDownloading;
 
-	private bool _BridgePolicy;
+	private bool downloadAttempted;
 
-	private bool m_StrategyPolicy;
+	private bool layoutSettled;
 
 	[SpecialName]
-	internal Texture2D CountHelper()
+	internal Texture2D texture()
 	{
-		if (m_StubPolicy)
+		if (isLoaded)
 		{
-			if (_ProductPolicy && !candidatePolicy)
+			if (cacheLookupAllowed && !cachedTexture)
 			{
-				EnableHelper();
+				TryLoadFromCache();
 			}
-			return candidatePolicy;
+			return cachedTexture;
 		}
-		if (m_ReaderPolicy)
+		if (isDownloading)
 		{
 			return null;
 		}
-		if (!workerPolicy || _BridgePolicy)
+		if (!autoDownload || downloadAttempted)
 		{
 			return null;
 		}
-		_BridgePolicy = true;
-		m_ReaderPolicy = true;
-		SetupHelper();
+		downloadAttempted = true;
+		isDownloading = true;
+		Download();
 		return null;
 	}
 
@@ -63,19 +63,19 @@ internal sealed class RemoteTextureView
 
 	internal RemoteTextureView(Action instance, string cont, bool controlstop, string second2, bool removeident3 = false)
 	{
-		systemPolicy = cont;
-		workerPolicy = controlstop;
-		_FilterPolicy = second2;
-		_ExpressionPolicy = instance;
+		url = cont;
+		autoDownload = controlstop;
+		sessionKey = second2;
+		onClick = instance;
 	}
 
-	internal void SetupHelper()
+	internal void Download()
 	{
-		if (EnableHelper())
+		if (TryLoadFromCache())
 		{
 			return;
 		}
-		UnityWebRequest m_ExporterPolicy = new UnityWebRequest(systemPolicy)
+		UnityWebRequest m_ExporterPolicy = new UnityWebRequest(url)
 		{
 			downloadHandler = new DownloadHandlerBuffer()
 		};
@@ -89,14 +89,14 @@ internal sealed class RemoteTextureView
 			try
 			{
 				byte[] data = m_ExporterPolicy.downloadHandler.data;
-				candidatePolicy = new Texture2D(0, 0);
-				candidatePolicy.LoadImage(data);
-				candidatePolicy.Apply();
-				m_StubPolicy = true;
-				if (!string.IsNullOrWhiteSpace(_FilterPolicy))
+				cachedTexture = new Texture2D(0, 0);
+				cachedTexture.LoadImage(data);
+				cachedTexture.Apply();
+				isLoaded = true;
+				if (!string.IsNullOrWhiteSpace(sessionKey))
 				{
-					CachedTextureContent.SaveTextureToSession(data, _FilterPolicy);
-					_ProductPolicy = true;
+					CachedTextureContent.SaveTextureToSession(data, sessionKey);
+					cacheLookupAllowed = true;
 				}
 			}
 			finally
@@ -104,42 +104,42 @@ internal sealed class RemoteTextureView
 				m_ExporterPolicy.Dispose();
 			}
 		};
-		m_ReaderPolicy = false;
+		isDownloading = false;
 	}
 
-	internal bool EnableHelper()
+	internal bool TryLoadFromCache()
 	{
-		if (_ProductPolicy && !string.IsNullOrWhiteSpace(_FilterPolicy))
+		if (cacheLookupAllowed && !string.IsNullOrWhiteSpace(sessionKey))
 		{
-			_ProductPolicy = false;
-			Texture2D texture2D = CachedTextureContent.LoadTextureFromSession(_FilterPolicy);
+			cacheLookupAllowed = false;
+			Texture2D texture2D = CachedTextureContent.LoadTextureFromSession(sessionKey);
 			if (texture2D != null)
 			{
-				candidatePolicy = texture2D;
-				m_StubPolicy = true;
-				m_ReaderPolicy = false;
-				_ProductPolicy = true;
+				cachedTexture = texture2D;
+				isLoaded = true;
+				isDownloading = false;
+				cacheLookupAllowed = true;
 			}
 		}
-		return candidatePolicy;
+		return cachedTexture;
 	}
 
-	internal void PublishHelper(float instance = 7f)
+	internal void Draw(float instance = 7f)
 	{
-		if (!CancelHelper())
+		if (!IsReady())
 		{
-			ConcatHelper(instance);
+			DrawPlaceholderLayout(instance);
 			return;
 		}
-		Rect aspectRect = GUILayoutUtility.GetAspectRect((float)CountHelper().width / (float)CountHelper().height);
-		MoveHelper(aspectRect);
+		Rect aspectRect = GUILayoutUtility.GetAspectRect((float)texture().width / (float)texture().height);
+		DrawTexture(aspectRect);
 	}
 
 	internal void PopHelper(EditorWindow res, float result = 0f, float serv = 60f, float first2 = 7f)
 	{
 		if (res == null)
 		{
-			PublishHelper(first2);
+			Draw(first2);
 		}
 		else
 		{
@@ -149,12 +149,12 @@ internal sealed class RemoteTextureView
 
 	internal void ComputeHelper(float key, float ivk, float dir = 0f, float col2 = 60f, float x3 = 7f)
 	{
-		if (!CancelHelper())
+		if (!IsReady())
 		{
-			ConcatHelper(x3);
+			DrawPlaceholderLayout(x3);
 			return;
 		}
-		float num = (float)CountHelper().height / (float)CountHelper().width;
+		float num = (float)texture().height / (float)texture().width;
 		float num2 = key;
 		float num3 = num2 * num;
 		float num4 = ivk - col2;
@@ -165,40 +165,40 @@ internal sealed class RemoteTextureView
 		}
 		Rect rect = GUILayoutUtility.GetRect(num2, num3, GUILayout.ExpandWidth(expand: false));
 		rect.x += (key - num2) / 2f + dir;
-		MoveHelper(rect);
+		DrawTexture(rect);
 	}
 
-	private void MoveHelper(Rect init)
+	private void DrawTexture(Rect init)
 	{
-		if (_ExpressionPolicy != null && EditorUtils.DefineQueue(init))
+		if (onClick != null && EditorUtils.ClickArea(init))
 		{
-			_ExpressionPolicy();
+			onClick();
 		}
-		GUI.DrawTexture(init, CountHelper());
+		GUI.DrawTexture(init, texture());
 	}
 
-	private void ConcatHelper(float res = 7f)
+	private void DrawPlaceholderLayout(float res = 7f)
 	{
 		Rect aspectRect = GUILayoutUtility.GetAspectRect(res);
-		CallHelper(aspectRect);
+		DrawPlaceholder(aspectRect);
 	}
 
-	private void CallHelper(Rect def)
+	private void DrawPlaceholder(Rect def)
 	{
 		GUI.Box(def, GUIContent.none);
 	}
 
-	internal bool CancelHelper()
+	internal bool IsReady()
 	{
-		if (!m_StrategyPolicy)
+		if (!layoutSettled)
 		{
-			if (CountHelper() == null)
+			if (texture() == null)
 			{
 				return false;
 			}
 			if (Event.current.type == EventType.Layout)
 			{
-				m_StrategyPolicy = true;
+				layoutSettled = true;
 			}
 			return true;
 		}

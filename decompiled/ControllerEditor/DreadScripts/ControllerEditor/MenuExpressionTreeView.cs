@@ -240,7 +240,7 @@ internal class MenuExpressionTreeView : TreeView
 	{
 		rootMenu = instance;
 		Reload();
-		MenuSelector.m_MerchantThread = instance;
-		MenuSelector.valueThread = new HashSet<VRCExpressionsMenu>(menuStack);
+		MenuSelector.lastRootMenu = instance;
+		MenuSelector.lastRootMenuStack = new HashSet<VRCExpressionsMenu>(menuStack);
 	}
 }

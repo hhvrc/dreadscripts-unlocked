@@ -18,25 +18,25 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 		ToggleGroup
 	}
 
-	private bool m_ParamPolicy;
+	private bool inRow;
 
-	private object[] _ModelPolicy;
+	private object[] values;
 
-	private GUIContent[] m_TokenizerPolicy;
+	private GUIContent[] labels;
 
-	private FieldType[] m_DecoratorPolicy;
+	private FieldType[] fieldTypes;
 
-	internal bool[] comparatorPolicy;
+	internal bool[] rowToggles;
 
-	private Action<object[]> exceptionPolicy;
+	private Action<object[]> onConfirm;
 
-	private Func<object[], bool[]> m_ObjectPolicy;
+	private Func<object[], bool[]> validate;
 
-	private readonly Dictionary<int, Type> m_UtilsPolicy = new Dictionary<int, Type>();
+	private readonly Dictionary<int, Type> objectTypes = new Dictionary<int, Type>();
 
 	string DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.title => string.Empty;
 
-	internal static QuickInputWindow CreateHelper(string info, FieldType[] second, GUIContent[] dic, Action<object[]> map2, Func<object[], bool[]> second3 = null)
+	internal static QuickInputWindow Create(string info, FieldType[] second, GUIContent[] dic, Action<object[]> map2, Func<object[], bool[]> second3 = null)
 	{
 		int num = second.Length;
 		while (true)
@@ -72,11 +72,11 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 				}
 				QuickInputWindow quickInputWindow = DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.Create();
 				quickInputWindow.titleContent.text = info;
-				quickInputWindow._ModelPolicy = array;
-				quickInputWindow.m_DecoratorPolicy = second;
-				quickInputWindow.m_TokenizerPolicy = dic;
-				quickInputWindow.exceptionPolicy = map2;
-				quickInputWindow.m_ObjectPolicy = second3;
+				quickInputWindow.values = array;
+				quickInputWindow.fieldTypes = second;
+				quickInputWindow.labels = dic;
+				quickInputWindow.onConfirm = map2;
+				quickInputWindow.validate = second3;
 				return quickInputWindow;
 				IL_001e:
 				num2++;
@@ -84,46 +84,46 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 		}
 	}
 
-	internal void NewHelper(int instancelow, object caller)
+	internal void SetValue(int instancelow, object caller)
 	{
-		_ModelPolicy[instancelow] = caller;
+		values[instancelow] = caller;
 	}
 
-	internal void PushHelper(int instance_Position, Type cfg)
+	internal void SetObjectType(int instance_Position, Type cfg)
 	{
-		if (m_UtilsPolicy.ContainsKey(instance_Position))
+		if (objectTypes.ContainsKey(instance_Position))
 		{
 			Debug.LogWarning($"{instance_Position} is already set as {cfg.Name}");
 		}
 		else
 		{
-			m_UtilsPolicy.Add(instance_Position, cfg);
+			objectTypes.Add(instance_Position, cfg);
 		}
 	}
 
-	internal Vector2 ViewHelper()
+	internal Vector2 GetSize()
 	{
-		return new Vector2(370f, 26 * m_DecoratorPolicy.Length + 28 + ((!string.IsNullOrEmpty(helpMessage)) ? 38 : 0));
+		return new Vector2(370f, 26 * fieldTypes.Length + 28 + ((!string.IsNullOrEmpty(helpMessage)) ? 38 : 0));
 	}
 
-	internal void CollectHelper(Vector2 asset)
+	internal void ShowAt(Vector2 asset)
 	{
-		ShowAt(asset, ViewHelper());
+		ShowAt(asset, GetSize());
 	}
 
 	void DreadScripts.ControllerEditor.UtilityWindowBase<QuickInputWindow>.OnCustomGUI()
 	{
-		if (_ModelPolicy != null)
+		if (values != null)
 		{
-			bool[] array = m_ObjectPolicy?.Invoke(_ModelPolicy);
+			bool[] array = validate?.Invoke(values);
 			canConfirm = array == null || !array.Any((bool b) => b);
-			bool flag = comparatorPolicy != null;
-			for (int num = 0; num < m_DecoratorPolicy.Length; num++)
+			bool flag = rowToggles != null;
+			for (int num = 0; num < fieldTypes.Length; num++)
 			{
-				if (flag && comparatorPolicy[num])
+				if (flag && rowToggles[num])
 				{
-					m_ParamPolicy = !m_ParamPolicy;
-					if (!m_ParamPolicy)
+					inRow = !inRow;
+					if (!inRow)
 					{
 						EditorGUILayout.EndHorizontal();
 					}
@@ -134,44 +134,44 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 				}
 				using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
 				{
-					switch (m_DecoratorPolicy[num])
+					switch (fieldTypes[num])
 					{
 					case FieldType.ToggleGroup:
 						EditorGUI.BeginChangeCheck();
-						_ModelPolicy[num] = EditorGUILayout.Toggle(m_TokenizerPolicy[num], (bool)_ModelPolicy[num]);
+						values[num] = EditorGUILayout.Toggle(labels[num], (bool)values[num]);
 						if (!EditorGUI.EndChangeCheck())
 						{
 							break;
 						}
-						if ((bool)_ModelPolicy[num])
+						if ((bool)values[num])
 						{
-							for (int num2 = 0; num2 < m_DecoratorPolicy.Length; num2++)
+							for (int num2 = 0; num2 < fieldTypes.Length; num2++)
 							{
-								if (m_DecoratorPolicy[num2] == FieldType.ToggleGroup && num2 != num)
+								if (fieldTypes[num2] == FieldType.ToggleGroup && num2 != num)
 								{
-									_ModelPolicy[num2] = false;
+									values[num2] = false;
 								}
 							}
 						}
 						else
 						{
-							_ModelPolicy[num] = true;
+							values[num] = true;
 						}
 						break;
 					case FieldType.Float:
-						_ModelPolicy[num] = EditorGUILayout.FloatField(m_TokenizerPolicy[num], (float)_ModelPolicy[num]);
+						values[num] = EditorGUILayout.FloatField(labels[num], (float)values[num]);
 						break;
 					case FieldType.Toggle:
-						_ModelPolicy[num] = EditorGUILayout.Toggle(m_TokenizerPolicy[num], (bool)_ModelPolicy[num]);
+						values[num] = EditorGUILayout.Toggle(labels[num], (bool)values[num]);
 						break;
 					case FieldType.Object:
-						_ModelPolicy[num] = EditorGUILayout.ObjectField(m_TokenizerPolicy[num], (UnityEngine.Object)_ModelPolicy[num], (!m_UtilsPolicy.ContainsKey(num)) ? _ModelPolicy[num].GetType() : m_UtilsPolicy[num], true);
+						values[num] = EditorGUILayout.ObjectField(labels[num], (UnityEngine.Object)values[num], (!objectTypes.ContainsKey(num)) ? values[num].GetType() : objectTypes[num], true);
 						break;
 					case FieldType.Integer:
-						_ModelPolicy[num] = EditorGUILayout.IntField(m_TokenizerPolicy[num], (int)_ModelPolicy[num]);
+						values[num] = EditorGUILayout.IntField(labels[num], (int)values[num]);
 						break;
 					case FieldType.String:
-						_ModelPolicy[num] = EditorGUILayout.TextField(m_TokenizerPolicy[num], (string)_ModelPolicy[num]);
+						values[num] = EditorGUILayout.TextField(labels[num], (string)values[num]);
 						break;
 					}
 					if (!canConfirm && array[num])
@@ -180,9 +180,9 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 					}
 				}
 			}
-			if (m_ParamPolicy)
+			if (inRow)
 			{
-				m_ParamPolicy = false;
+				inRow = false;
 				EditorGUILayout.EndHorizontal();
 			}
 		}
@@ -194,6 +194,6 @@ internal class QuickInputWindow : DreadScripts.ControllerEditor.UtilityWindowBas
 
 	internal override void OnCustomConfirm()
 	{
-		exceptionPolicy(_ModelPolicy);
+		onConfirm(values);
 	}
 }

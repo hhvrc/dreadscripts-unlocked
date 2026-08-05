@@ -6,49 +6,49 @@ namespace DreadScripts.Common.SupportThankies;
 
 internal struct TextFragment
 {
-	internal GUIContent _Reader;
+	internal GUIContent content;
 
-	internal RemoteTexture bridge;
+	internal RemoteTexture image;
 
-	internal bool strategy;
+	internal bool isImage;
 
 	private static object CompareCode;
 
 	internal TextFragment(GUIContent reference)
 	{
-		_Reader = reference;
-		bridge = null;
-		strategy = false;
+		content = reference;
+		image = null;
+		isImage = false;
 	}
 
 	internal TextFragment(RemoteTexture res)
 	{
-		_Reader = GUIContent.none;
-		bridge = res;
-		strategy = true;
+		content = GUIContent.none;
+		image = res;
+		isImage = true;
 	}
 
 	internal void DrawLayout(GUIStyle last, float b = 20f)
 	{
-		if (strategy)
+		if (isImage)
 		{
-			GUILayout.Label(bridge.GetTexture(), last, GUILayout.Width(b), GUILayout.Height(b));
+			GUILayout.Label(image.GetTexture(), last, GUILayout.Width(b), GUILayout.Height(b));
 		}
 		else
 		{
-			GUILayout.Label(_Reader, last, GUILayout.ExpandWidth(expand: false), GUILayout.Height(b));
+			GUILayout.Label(content, last, GUILayout.ExpandWidth(expand: false), GUILayout.Height(b));
 		}
 	}
 
 	internal void DrawRect(Rect spec)
 	{
-		if (strategy)
+		if (isImage)
 		{
-			bridge.Draw(spec);
+			image.Draw(spec);
 		}
 		else
 		{
-			GUI.Label(spec, _Reader, SupportWindowAssets.GetStyles().composer);
+			GUI.Label(spec, content, SupportWindowAssets.GetStyles().Name);
 		}
 	}
 
