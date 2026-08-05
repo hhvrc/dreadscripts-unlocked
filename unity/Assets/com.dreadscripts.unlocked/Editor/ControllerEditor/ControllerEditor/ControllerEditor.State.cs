@@ -124,7 +124,7 @@
 //   m_InterceptorAnnotation -> NOT PORTED, line 8130 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   creatorAnnotation -> NOT PORTED, line 8132 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   m_EventAnnotation -> NOT PORTED, line 8134 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   infoAnnotation -> NOT PORTED, line 8136 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   repaintTargetTypes       -> unchanged,                        line 8136  (see CORRECTION below)
 //   facadeAnnotation -> NOT PORTED, line 8142 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   advisorAnnotation -> NOT PORTED, line 8144 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   m_CallbackAnnotation -> NOT PORTED, line 8146 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
@@ -306,33 +306,39 @@
 //     initialiser names `QueryAlgo` (the state-created callback, decompiled line 16038), which is
 //     not ported. It is the MethodInfo emitted by a transpiler at decompiled line 17222. Declaring
 //     it without its initialiser would change behaviour, so it is left out entirely.
-//   * The six `[SpecialName]` accessors at lines 8508-8569 -- `LogoutMapper`/`PatchMapper`
-//     (ActiveController), `ManageMapper`/`PrintMapper` (RootStateMachine), `RevertMapper`/
-//     `OrderInitializer` (ActiveStateMachine). They are NOT pure accessors: each getter lazily
-//     initialises through a helper and each setter fires a change notification, and the notifiers
-//     live outside this region -- `InstantiateAnnotation` (9703), `DisableMapper` (16776),
-//     `DefineAnnotation` (9655), `FlushAnnotation` (9732), `RemoveAnnotation` (9698),
-//     `RestartVisitor` (10837). `DisableMapper` in particular rebuilds the whole layer-category tree
-//     and depends on a dozen unported members. Porting the getters without them would silently drop
-//     the lazy initialisation, and stubbing is not allowed, so all six are deferred to whoever ports
-//     `DisableMapper`. When they land they should be:
-//         LogoutMapper/PatchMapper       -> internal static AnimatorController ActiveController
-//         ManageMapper/PrintMapper       -> private  static AnimatorStateMachine RootStateMachine
-//         RevertMapper/OrderInitializer  -> private  static AnimatorStateMachine ActiveStateMachine
-//     Several already-ported files list `LogoutMapper()` as a blocker; `ActiveController` is the
-//     name they should compile against.
+//   * The six `[SpecialName]` accessors at lines 8508-8569 are RESOLVED and no longer omitted. They
+//     are the three properties over `currentController`, `rootStateMachine` and
+//     `activeStateMachine`, and they are declared -- complete, with both accessors -- in
+//     ControllerEditor.ControllerContext.cs, whose header owns their MAP entries. What deferred them
+//     was that neither the lazy initialisation in each getter nor the change notification in each
+//     setter could be written while `DisableMapper` was unported; that member has since landed as
+//     `RebuildLayerCategories` in ControllerEditor.LayerCategory.cs, and its five siblings as
+//     ControllerEditor.LayerCategoryNotifications.cs. The names they landed under are the ones this
+//     header reserved:
+//         ActiveController/PatchMapper       -> internal static AnimatorController ActiveController
+//         RootStateMachine/PrintMapper       -> private  static AnimatorStateMachine RootStateMachine
+//         ActiveStateMachine/OrderInitializer-> private  static AnimatorStateMachine ActiveStateMachine
+//     The obfuscated names this entry used to use for the three getters -- `LogoutMapper`,
+//     `ManageMapper`, `RevertMapper` -- no longer exist in the snapshot; a rename pass has already
+//     given those three their English names there. Files still citing them as blockers are citing a
+//     name that is gone.
 //
-// ILSpy artifact noted, not ported: `PatchMapper` (line 8519) decompiles as
-// `if (_Container != v) { while (true) { _Container = v; DisableMapper(); } }`. The `while (true)`
-// is a decompilation artifact around a straight-line body, not an infinite loop -- the same shape
-// appears throughout this assembly wherever a two-statement block follows an inequality test.
+// CORRECTION, line 8136. This table used to record `infoAnnotation` at that line as licence state
+// and mark it NOT PORTED with the licence fields. That was wrong: `renames/ControllerEditor.json`
+// maps `infoAnnotation#0x040000e9` to `repaintTargetTypes`, and the declaration is
+// `new Type[2] { typeof(ControllerEditor), typeof(ControllerEditorWindow) }` -- the list of the
+// tool's own window types, read by nothing but the repaint that follows a state-machine change. It
+// sits at 8136 because the licence fields happen to surround it, which is presumably how it was
+// swept up. It is declared below and read by `RepaintContextViewers` in
+// ControllerEditor.LayerCategoryNotifications.cs. No licence field was reinstated by this
+// correction, and nothing else in 8090-8148 is anything but licence state.
 //
 // The two `_003C_003Ec__DisplayClass*` structs immediately preceding line 7962 are compiler-
 // generated capture classes belonging to methods in other regions and are not part of this port.
 // No obfuscator scaffolding (always-null statics paired with null-check predicates, marker types)
 // was found inside 7962-8499.
 //
-// THE LICENSING FIELDS ARE GONE. Twenty-eight fields drove the vendor's activation, verification
+// THE LICENSING FIELDS ARE GONE. Twenty-seven fields drove the vendor's activation, verification
 // and transfer flow against a server that has been shut down. They were originally declared but left
 // unwritten, on the reasoning that later ports of the regions reading them would need the names to
 // exist and agree. That reasoning expired on 2026-08-05, when the licence code itself was removed:
@@ -751,6 +757,25 @@ namespace DreadScripts.ControllerEditor
         /// The message typed into the feedback panel. Truncated to 2000 characters on submission.
         /// </summary>
         private static string feedbackText;
+
+        #endregion
+
+        #region Repaint targets
+
+        /// <summary>
+        /// The tool's own window types, repainted as a set whenever the state machine on show
+        /// changes -- see <c>RepaintContextViewers</c>.
+        /// </summary>
+        /// <remarks>
+        /// A type list rather than a list of instances because neither window is a singleton and
+        /// neither registers itself anywhere: the repaint finds them with
+        /// <see cref="Resources.FindObjectsOfTypeAll(Type)"/> at the moment it needs them.
+        /// </remarks>
+        private static readonly Type[] repaintTargetTypes =
+        {
+            typeof(ControllerEditor),
+            typeof(ControllerEditorWindow)
+        };
 
         #endregion
 

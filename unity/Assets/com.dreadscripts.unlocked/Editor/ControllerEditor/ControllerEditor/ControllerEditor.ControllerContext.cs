@@ -1,97 +1,72 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
-// The three read accessors that answer "what is the tool looking at right now": which controller,
-// which layer's state machine, and which sub-machine the graph has been navigated into. Almost every
-// other member of the god class starts by asking one of them, and ControllerEditor.Window.cs's OnGUI
-// names all three as blockers.
+// The three accessors that answer "what is the tool looking at right now": which controller, which
+// layer's state machine, and which sub-machine the graph has been navigated into. Almost every other
+// member of the god class starts by asking one of them.
 //
-//   LogoutMapper     -> ActiveController,   line 8509
-//   ManageMapper     -> RootStateMachine,   line 8532
-//   RevertMapper     -> ActiveStateMachine, line 8552
-//   PatchMapper      -> NOT PORTED, line 8519 -- the ActiveController setter. Its body is
-//     `currentController = value; DisableMapper();`, and DisableMapper (16776) rebuilds the entire
-//     layer-category tree through a dozen unported members (InsertMapper, ReadMapper, LayerPathNode,
-//     PushInitializer, ValidateInitializer). See PARTIAL PORT.
-//   PrintMapper      -> NOT PORTED, line 8542 -- the RootStateMachine setter. Its notifier
-//     FlushAnnotation (9732) is unported. See PARTIAL PORT.
-//   OrderInitializer -> NOT PORTED, line 8562 -- the ActiveStateMachine setter. Its notifier
-//     RestartVisitor (10837) is unported. See PARTIAL PORT.
+//   ActiveController   -> ActiveController,   line 8509
+//   PatchMapper        -> the ActiveController setter,   line 8519
+//   RootStateMachine   -> RootStateMachine,   line 8532
+//   PrintMapper        -> the RootStateMachine setter,   line 8542
+//   ActiveStateMachine -> ActiveStateMachine, line 8552
+//   OrderInitializer   -> the ActiveStateMachine setter, line 8562
 //
 // Line numbers are relative to the decompiled snapshot at the time of the port;
 // the member names are the durable reference.
 //
-// =========================== PARTIAL PORT, EACH WITH ITS BLOCKER ==============================
+// ==================== RESOLVED: ALL SIX ACCESSORS ARE NOW COMPLETE ============================
 //
-// Nothing here is stubbed, but none of the three is complete either. Each shipped getter is two
-// statements -- a lazy initialisation when the cached value is null, then the return -- and this
-// file ports the return of all three and the lazy initialisation of none:
+// This file previously carried the three getters with their lazy initialisation omitted, and marked
+// the three setters NOT PORTED, because every setter fires a change notification that the package
+// could not yet run. All six of those notifications have since landed and the omissions are gone:
 //
-//     internal static AnimatorController LogoutMapper()      // 8509
-//     {
-//         if (!_Container) InstantiateAnnotation();          // omitted here
-//         return _Container;
-//     }
+//   ActiveController's setter   -> RebuildLayerCategories       (DisableMapper, 16776)
+//                                    in ControllerEditor.LayerCategory.cs
+//   RootStateMachine's setter   -> RefreshExitTransitionNames   (FlushAnnotation, 9732)
+//   ActiveStateMachine's setter -> RepaintContextViewers        (RestartVisitor, 10837)
+//   ActiveController's getter   -> PullControllerFromGraph        (InstantiateAnnotation, 9703)
+//   RootStateMachine's getter   -> PullRootStateMachineFromGraph  (DefineAnnotation, 9655)
+//   ActiveStateMachine's getter -> PullActiveStateMachineFromGraph(RemoveAnnotation, 9698)
 //
-// ManageMapper (8532) and RevertMapper (8552) have exactly the same shape over `@class` and `_Mock`,
-// calling DefineAnnotation (9655) and RemoveAnnotation (9698) respectively.
+// the last five in ControllerEditor.LayerCategoryNotifications.cs. The three accessors therefore now
+// behave as shipped: a cold read pulls the value off the Animator window's graph, and a write that
+// changes the value notifies. The DELIBERATE DEVIATION this section used to describe -- all three
+// reading null forever because nothing in the package assigned them -- is withdrawn.
 //
-// The three initialisers are one line each, and each of those lines is the problem: every one of
-// them writes its field *through the property setter*, and every setter fires a change notification
-// that this package cannot yet run.
+// ====================================== DEOBF-BUG =============================================
 //
-//   ActiveController -- omits `if (!currentController) InstantiateAnnotation();`
-//     InstantiateAnnotation (9703) is `if (GraphAccessors.Tool != null) PatchMapper(
-//     GraphAccessors.AnimatorController);`. Both accessors it reads are already ported, in
-//     AnimatorGraphReflection.GraphAccessors.cs, so the blocker is entirely PatchMapper's notifier
-//     DisableMapper (16776): it re-derives the layer category tree from the new controller's layers
-//     and is the single largest unported member reachable from here. Assigning the field without it
-//     would leave the layer view describing the previous controller, which is worse than not
-//     assigning at all -- so the call is omitted rather than approximated.
+// DEOBF-BUG(resolved), the ActiveController setter, decompiled line 8519. The snapshot renders it as
 //
-//   RootStateMachine -- omits `if (!rootStateMachine) DefineAnnotation();`
-//     DefineAnnotation (9655) is `if (ActiveController) PrintMapper(
-//     GraphAccessors.RootStateMachine);`. PrintMapper's notifier FlushAnnotation (9732) refills
-//     `exitTransitionNames` from the new machine's Any State transitions:
-//         exitTransitionNames = ManageMapper().anyStateTransitions.Where(t => t.isExit)
-//                                             .Select(t => t.name).ToArray();
-//     That is portable as written, but it is PrintMapper's body and not this file's -- see NOTES.
+//     if (currentController != v) { while (true) { currentController = v; DisableMapper(); } }
 //
-//   ActiveStateMachine -- omits `if (!activeStateMachine) RemoveAnnotation();`
-//     RemoveAnnotation (9698) is `OrderInitializer(GraphAccessors.ActiveStateMachine);`.
-//     OrderInitializer's notifier RestartVisitor (10837) repaints every open window and editor whose
-//     type is listed in `repaintTargetTypes`; that field is ported, the member is not.
+// which is a non-terminating loop and cannot be what shipped -- DisableMapper reads currentController
+// back, so a real loop would rebuild the layer tree forever on the first controller change. What is
+// written here is the straight-line body:
 //
-// ================================ DELIBERATE DEVIATION ========================================
+//     if (currentController != value) { currentController = value; RebuildLayerCategories(); }
 //
-// The visible consequence of the above is that all three accessors return whatever the fields
-// already hold, and in the package as it stands nothing assigns those fields -- so they read null.
-// The window therefore behaves as though no controller were open: OnGUI's title bar shows
-// "No Active Machine" and the exit-transition label strip stays hidden, where the shipped tool would
-// pick the current controller up from the Animator window on the first repaint after it changed.
-//
-// This is deliberate, and the alternative was rejected. Reading the graph directly here --
-// `activeStateMachine ? activeStateMachine : GraphAccessors.ActiveStateMachine` -- would make the
-// window look correct while silently skipping the change notification the shipped code exists to
-// fire, which is precisely the kind of plausible-looking fabrication this package's rules forbid.
-// A caller that gets null learns the truth: the context is not wired up yet.
-//
-// The accessors are ported now, ahead of their setters, because they are read-only at every call
-// site in the class and because their *names* are what a dozen deferred call sites are waiting on.
-// Landing them lets those sites be written against the real identifiers, so that the day the setters
-// arrive the fix is confined to these three bodies.
+// Evidence, and why this is not a guess. The two sibling setters in the same decompiled block are the
+// identical shape over their own field and notifier and decompile *without* the wrapper: PrintMapper
+// (8542) is `if (@class != var1) { @class = var1; FlushAnnotation(); }` and OrderInitializer (8562)
+// is `if (activeStateMachine != instance) { activeStateMachine = instance; RestartVisitor(); }`. The
+// three are the same generated property setter three times over; only one of them picked up the
+// `while (true)`. That is the known Reactor-flattened-`if` artifact described in AGENTS.md, and
+// ControllerEditor.State.cs's header has recorded this exact site since before it was ported.
 //
 // ======================================== NOTES ================================================
 //
-// SHAPE. The shipped members are C# properties: ILSpy renders them as `[SpecialName]` methods named
-// LogoutMapper/PatchMapper and so on, but the attribute and the get_/set_ pairing say property, and
-// call sites such as `EditorGUI.BeginDisabledGroup(!LogoutMapper())` and `RevertMapper().name` read
-// as property accesses in the original. They are ported as properties, with the names
-// ControllerEditor.State.cs's header reserved for them. Accessibility follows the shipped members:
-// ActiveController is internal, the other two private.
+// SHAPE. The shipped members are C# properties: ILSpy renders them as `[SpecialName]` methods, and
+// the attribute plus the get_/set_ pairing say property. A rename pass has since given the three
+// getters their English names in the snapshot, so lines 8509/8532/8552 now read `ActiveController()`,
+// `RootStateMachine()` and `ActiveStateMachine()`; the three setters are still on their obfuscated
+// names, PatchMapper/PrintMapper/OrderInitializer. Anything still citing `LogoutMapper`,
+// `ManageMapper` or `RevertMapper` is citing a name that no longer exists in the snapshot.
+// Accessibility follows the shipped members: ActiveController is internal, the other two private,
+// and each property's two accessors have the same accessibility as each other, as they did.
 //
 // CORRECTION TO ControllerEditor.Window.cs's HEADER, which lists these three among its blockers and
-// describes two of them wrongly. That file is shared and is not edited from here, per the task's
-// instructions, so the disagreement is recorded rather than left silent:
+// describes two of them wrongly. That file is owned by another port and is not edited from here, so
+// the disagreement is recorded rather than left silent:
 //
 //   * "LogoutMapper() -- 'is a controller loaded'". It is not a bool. It returns the
 //     AnimatorController itself; the call site `BeginDisabledGroup(!LogoutMapper())` reads as a
@@ -109,8 +84,9 @@
 //   Window.cs's third description, RevertMapper as "the active state machine, whose name the header
 //   row labels itself with; 'No Active Machine' when null", is accurate.
 //
-// WHAT UN-DEFERS OnGUI. Once the three setters and their notifiers land, the deferred lines in
-// ControllerEditor.Window.cs become, in shipped order (decompiled 8626-8664):
+// OnGUI IS NOW UN-DEFERRED, for whoever owns ControllerEditor.Window.cs. The three setters and their
+// notifiers have landed, so the lines that file defers can be written, in shipped order (decompiled
+// 8626-8664):
 //
 //     EditorGUI.BeginDisabledGroup(!ActiveController);
 //     ... GUILayout.Label(ActiveStateMachine != null ? ActiveStateMachine.name : "No Active Machine",
@@ -120,23 +96,25 @@
 //     if (RootStateMachine && exitTransitionNames.Length != 0) { ...label strip... }
 //     EditorGUI.EndDisabledGroup();
 //
-// Both disabled groups stay omitted until then: half a Begin/End pair corrupts the GUI stack for the
-// rest of the frame, so neither half is emitted while the condition cannot be evaluated honestly.
+// Both disabled groups were omitted as pairs, on the rule that half a Begin/End pair corrupts the
+// GUI stack for the rest of the frame. Their condition can now be evaluated honestly, so both pairs
+// can go back in whole. That edit belongs to Window.cs's owner and has not been made from here.
 //
-// FOLLOW-UP ORDER, for whoever picks this up. RevertMapper/OrderInitializer is the cheapest to
-// finish -- RestartVisitor is a dozen lines over an already-ported field. ManageMapper/PrintMapper
-// is next, needing only FlushAnnotation. LogoutMapper/PatchMapper is gated on DisableMapper and
-// should be done last, with the layer-category work, not before it.
+// WHAT IS STILL NOT REACHABLE FROM HERE. `RootStateMachine`'s notifier dereferences the property it
+// was just set from, so setting the root state machine to null from a non-null value re-enters the
+// getter, fails to pull a replacement off a graph that no longer has one, and throws on
+// `.anyStateTransitions`. That is the shipped behaviour, transcribed; it is reachable only by the
+// Animator window losing its graph between two reads, and correcting it would be a behaviour change.
 //
 // ==================================== 2019 vs 2022 =============================================
 //
 // ControllerEditor ships a single build, so there is no second decompilation to diff this against.
 //
-// Audit status: PARTIAL -- the three getters were transcribed from decompiled lines 8508-8559 on
-// this pass, and the three setters and the six initialisers and notifiers named above (8519, 8542,
-// 8562, 9655, 9698, 9703, 9732, 10837, 16776) were each read in place to confirm the blockers are
-// real and correctly attributed. PARTIAL rather than VERIFIED because the ported bodies are
-// deliberately incomplete, as set out under PARTIAL PORT.
+// Audit status: VERIFIED -- all six accessors were transcribed statement by statement from decompiled
+// lines 8508-8569 on this pass, and the six helpers they call (9655, 9698, 9703, 9732, 10837, 16776)
+// were each read in place and are ported in the two files named above. The one place the port does
+// not match the snapshot character for character is the ActiveController setter, and that difference
+// is the decompiler artifact set out under DEOBF-BUG.
 
 using UnityEditor;
 using UnityEditor.Animations;
@@ -164,19 +142,30 @@ namespace DreadScripts.ControllerEditor
         /// C# wrapper is still alive reads as absent, which is the behaviour wanted here.
         /// </para>
         /// <para>
-        /// PARTIALLY PORTED: the shipped getter first pulls the controller off the Animator window if
-        /// the cached value is empty. That refresh is omitted; see the file header for why and for
-        /// what it will take to restore.
+        /// A read finds the cached value empty exactly once per change, because the setter is the
+        /// only thing that clears it and the getter refills it from the window on the way past. The
+        /// write is what rebuilds the layer-category tree, so assigning a controller is never a plain
+        /// field write -- see <c>RebuildLayerCategories</c>.
         /// </para>
         /// </remarks>
         internal static UnityEditor.Animations.AnimatorController ActiveController
         {
             get
             {
-                // DEFERRED: if (!currentController) InstantiateAnnotation();
-                //           -- reads the controller off the Animator window through the unported
-                //           setter, whose notifier DisableMapper rebuilds the layer tree.
+                if (!currentController)
+                {
+                    PullControllerFromGraph();
+                }
+
                 return currentController;
+            }
+            set
+            {
+                if (currentController != value)
+                {
+                    currentController = value;
+                    RebuildLayerCategories();
+                }
             }
         }
 
@@ -193,19 +182,28 @@ namespace DreadScripts.ControllerEditor
         /// would silently narrow to whichever sub-machine happened to be open.
         /// </para>
         /// <para>
-        /// PARTIALLY PORTED: the shipped getter re-reads the layer's machine from the graph when the
-        /// cached value is empty, which is also what refreshes the exit-transition name cache. That
-        /// refresh is omitted; see the file header.
+        /// Writing it is what refreshes <see cref="exitTransitionNames"/>, so the "these transitions
+        /// leave this layer" strip tracks the selected layer without anything polling for it.
         /// </para>
         /// </remarks>
         private static AnimatorStateMachine RootStateMachine
         {
             get
             {
-                // DEFERRED: if (!rootStateMachine) DefineAnnotation();
-                //           -- would re-read the layer's machine and, through the unported setter's
-                //           notifier, rebuild exitTransitionNames.
+                if (!rootStateMachine)
+                {
+                    PullRootStateMachineFromGraph();
+                }
+
                 return rootStateMachine;
+            }
+            set
+            {
+                if (rootStateMachine != value)
+                {
+                    rootStateMachine = value;
+                    RefreshExitTransitionNames();
+                }
             }
         }
 
@@ -221,19 +219,28 @@ namespace DreadScripts.ControllerEditor
         /// open at all, and the title bar says so.
         /// </para>
         /// <para>
-        /// PARTIALLY PORTED: the shipped getter re-reads it from the graph when the cached value is
-        /// empty, and the setter repaints every window that displays it. Neither is ported; see the
-        /// file header.
+        /// Writing it repaints every window and inspector of the tool's own types, which is how both
+        /// windows' chrome follows the graph without either of them subscribing to anything.
         /// </para>
         /// </remarks>
         private static AnimatorStateMachine ActiveStateMachine
         {
             get
             {
-                // DEFERRED: if (!activeStateMachine) RemoveAnnotation();
-                //           -- would re-read the current machine from the graph and, through the
-                //           unported setter's notifier, repaint every window showing its name.
+                if (!activeStateMachine)
+                {
+                    PullActiveStateMachineFromGraph();
+                }
+
                 return activeStateMachine;
+            }
+            set
+            {
+                if (activeStateMachine != value)
+                {
+                    activeStateMachine = value;
+                    RepaintContextViewers();
+                }
             }
         }
 
