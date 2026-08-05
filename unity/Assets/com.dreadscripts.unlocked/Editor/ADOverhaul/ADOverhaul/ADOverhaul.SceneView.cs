@@ -74,13 +74,18 @@
 // recorded here.
 //
 //   DrawShapeEditOverlay (6060) -- the shape-handle overlay. Subscribed and unsubscribed ONLY by
-//       CancelConfiguration (6496), which is NOT PORTED YET (deferred in ADOverhaul.Lifecycle.cs).
-//       It does `duringSceneGui -= CalculateConfiguration` first and then re-adds it when its
-//       argument is true. The remove-then-add idiom is what keeps the handler single-registered
-//       across the several inspector OnEnables that call it; on the false path it also restores
-//       Tools.hidden, because CalculateConfiguration sets it unconditionally. Until
-//       CancelConfiguration lands, DrawShapeEditOverlay is reachable but never subscribed: it is
-//       ported so that landing CancelConfiguration is a one-line change rather than a new port.
+//       CancelConfiguration (6496), which has since landed in ADOverhaul.Lifecycle.cs as
+//       SetShapeEditOverlayActive(bool), so the subscription below is now real code rather than a
+//       deferred note. It does `duringSceneGui -= DrawShapeEditOverlay` first and then re-adds it
+//       when its argument is true; the remove-then-add idiom is what keeps the handler
+//       single-registered across the several inspector OnEnables that reach it (the OnEnable half
+//       via MapConfiguration, the OnDisable half directly). On the false path it also restores
+//       Tools.hidden, because DrawShapeEditOverlay sets it unconditionally and never clears it.
+//       Both of those were re-read against decompiled 6700-6711 when that member was ported, and
+//       both hold. The overlay is still not reached at runtime, but the blocker has moved one step
+//       out: what is missing now is the three inspectors that call SetShapeEditOverlayActive --
+//       ContactReceiverEditor, ContactSenderEditor and PhysBoneColliderEditor -- none of which is
+//       ported.
 //   DrawTestModeOverlay (6107) -- the test-mode overlay. Added by StartTestMode (6365-6366, again
 //       remove-then-add) when test mode starts, removed by StopTestMode (6372) when it stops.
 //       StopTestMode is reached from ToggleTestMode, which is also what FillConfiguration (6488)
@@ -197,8 +202,10 @@
 // numbers, as the reference until someone sweeps them.
 //
 // Audit status: PARTIAL -- the twelve MAP line numbers above were checked against decompiled/
-// ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs and each now lands on the member named; the
-// helper and inlining tables further down were not re-verified.
+// ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs and each now lands on the member named, and
+// the DrawShapeEditOverlay half of the registration audit was re-read against CancelConfiguration
+// (decompiled 6700-6711) and its four call sites when that member was ported; the helper and
+// inlining tables further down were not re-verified.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -221,11 +228,11 @@ namespace DreadScripts.ADOverhaul
         /// while any of the four edit toggles is on.
         /// </summary>
         /// <remarks>
-        /// A <c>SceneView.duringSceneGui</c> handler. It hides Unity's own transform tools for as
-        /// long as an edit toggle is on, because the tool's handles and Unity's would otherwise
-        /// overlap on the same object; restoring <see cref="Tools.hidden"/> is
-        /// <c>CancelConfiguration</c>'s job, not this method's -- see the registration audit in the
-        /// file header.
+        /// A <c>SceneView.duringSceneGui</c> handler, subscribed and unsubscribed by
+        /// <see cref="SetShapeEditOverlayActive"/> (ADOverhaul.Lifecycle.cs). It hides Unity's own
+        /// transform tools for as long as an edit toggle is on, because the tool's handles and
+        /// Unity's would otherwise overlap on the same object; restoring <see cref="Tools.hidden"/>
+        /// is that method's job, not this one's -- see the registration audit in the file header.
         /// <para>
         /// The panel is sized from the number of rows <see cref="DrawShapeEditToggles"/> will
         /// actually draw: a base of one for the always-present Position row, plus one for each shape

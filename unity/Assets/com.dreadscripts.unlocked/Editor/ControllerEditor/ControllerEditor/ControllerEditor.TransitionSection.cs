@@ -1,6 +1,7 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
 //   ReflectVisitor -> DrawTransitionSection, line 12529
+//   DeleteAnnotation -> DrawCollapsibleSection, line 9920, in ControllerEditor.CollapsibleSection.cs
 //
 // Line numbers are relative to the decompiled snapshot at the time of the port;
 // the member names are the durable reference.
@@ -52,20 +53,15 @@
 //
 // The guard is ported for real. The three statements inside it are not, and nothing stands in for
 // them: this file declares no empty helper, no placeholder Action and no substitute drawing code.
-// Four decompiled members are missing from the package, and all four are needed before a single
-// one of the three calls can be written.
+// Three decompiled members are still missing from the package, and each of the three calls needs
+// its own one before it can be written.
 //
-//   DeleteAnnotation (decompiled 9920) -- the collapsible-section helper every one of the three
-//     statements calls. It takes the section's body as an `Action`, the header label, the
-//     BoolSetting that remembers whether the section is expanded, whether the body is boxed, and an
-//     index used to key the section's measured height in EditorUtils's GUI-state relay. When the
-//     setting is off it draws the label as a toolbar button that toggles it back on; when it is on
-//     it draws the body beside a thin full-height button that collapses it again. It is portable
-//     -- its own dependencies (EditorUtils.Button, SetGuiStateOnEvent, GetGuiState, and
-//     BoolSetting.Toggle) all exist in the package -- but it belongs to a different decompiled
-//     region and porting it here would claim a member another wave is likely assigned, which is the
-//     duplicate-port mistake this repo has already paid for twice. It is named as a blocker rather
-//     than ported.
+// RESOLVED since the first pass: DeleteAnnotation (decompiled 9920), the collapsible-section
+// helper all three statements call, is now ported as DrawCollapsibleSection in
+// ControllerEditor.CollapsibleSection.cs -- see the MAP entry above. It was left as a blocker here
+// only to avoid claiming a member belonging to a different decompiled region; it has a file of its
+// own now, and neither this file nor ControllerEditor.StateSection.cs claims decompiled line 9920.
+// It does not on its own unblock any of the three calls, because each still needs its body.
 //
 //   DeleteVisitor (decompiled 12544) -- the body of the first section, the "Transition Count"
 //     list. Draws one clickable row per entry of `selectedTransitionEdits` in three columns, with a
@@ -94,11 +90,14 @@
 //
 // ControllerEditor ships a single build, so there is no second decompilation to diff this against.
 //
-// Audit status: PARTIAL -- the guard, the three call targets, the three setting names and the
-// interpolated "Transition Count" label were transcribed from decompiled lines 12529-12542 on this
-// pass, and the four blocker line numbers above were each opened and confirmed to land on the
-// member named. The bodies of those four blockers were read only far enough to describe them and
-// were not diffed statement by statement, which is why this is PARTIAL rather than VERIFIED.
+// Audit status: PARTIAL -- the guard, the three call targets, the three setting names, the three
+// slot indices (0, 1, 2) and the interpolated "Transition Count" label were transcribed from
+// decompiled lines 12529-12542, re-checked in place on the pass that resolved DeleteAnnotation.
+// The three remaining blocker line numbers above were each opened and confirmed to land on the
+// member named; their bodies were read only far enough to describe them and were not diffed
+// statement by statement, which is why this is PARTIAL rather than VERIFIED. DeleteAnnotation
+// itself was diffed in full against decompiled lines 9920-9943, in
+// ControllerEditor.CollapsibleSection.cs, which carries that audit.
 
 using UnityEditor;
 
@@ -129,11 +128,12 @@ namespace DreadScripts.ControllerEditor
         /// saved settings.
         /// </para>
         /// <para>
-        /// The three sub-section bodies, and the helper itself, are not ported yet. See the file
-        /// header: each is named there with the members that block it, and nothing is stubbed in
-        /// their place -- the guard below is real, and the body it guards is genuinely absent rather
-        /// than faked. The licence predicate that the shipped guard ANDs into this test is also
-        /// dropped; see the file header.
+        /// The helper is ported -- it is <see cref="DrawCollapsibleSection"/> in
+        /// ControllerEditor.CollapsibleSection.cs -- but the three sub-section bodies it would be
+        /// handed are not. See the file header: each is named there with the members that block it,
+        /// and nothing is stubbed in their place -- the guard below is real, and the body it guards
+        /// is genuinely absent rather than faked. The licence predicate that the shipped guard ANDs
+        /// into this test is also dropped; see the file header.
         /// </para>
         /// </remarks>
         private void DrawTransitionSection()
@@ -143,10 +143,11 @@ namespace DreadScripts.ControllerEditor
                 return;
             }
 
-            // DEFERRED, in shipped order. Each line is one call to the collapsible-section helper
-            // (decompiled DeleteAnnotation, line 9920), passing the sub-section's body as an
-            // Action, its header label, the setting that remembers whether it is expanded, whether
-            // its body is drawn boxed, and the index that keys its measured height:
+            // DEFERRED, in shipped order. Each line is one call to DrawCollapsibleSection
+            // (decompiled DeleteAnnotation, line 9920, now ported), passing the sub-section's body
+            // as an Action, its header label, the setting that remembers whether it is expanded,
+            // whether its body is drawn boxed, and the index that keys its measured height. Only
+            // the three bodies are still missing:
             //
             //   (DrawSelectedTransitionList, $"Transition Count: {selectedTransitionEdits.Count}",
             //    EditorSettings.Instance.showTransitionsCount,     boxed: true,  index 0)

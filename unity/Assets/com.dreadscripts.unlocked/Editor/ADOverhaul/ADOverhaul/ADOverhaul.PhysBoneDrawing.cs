@@ -1,11 +1,17 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the two members that draw a dynamics component's shape -- the inspector block and
-// the scene-view handles. Line numbers are relative to the current snapshot; the decompiled names
-// are the durable reference.
+// the scene-view handles. Line numbers are relative to the snapshot at the time of the port -- see
+// the audit note at the end for the offset since; the decompiled names are the durable reference.
 //
 //   RunConfiguration    -> DrawShapeProperties, line 5746
 //   OrderConfiguration  -> DrawShapeHandles,    line 5840
+//
+// Used by the region above, but owned by another file. DrawPropertyWithEditToggle is called
+// directly, three times; DrawIconToggle only through it -- this file has no direct reference to it:
+//
+//   SearchConfiguration -> DrawPropertyWithEditToggle, line 6717, in ADOverhaul.AvatarSelection.cs
+//   LoginConfiguration  -> DrawIconToggle, line 6726, in ADOverhaul.AvatarSelection.cs
 //
 // Members folded into the two above rather than given their own declarations:
 //
@@ -13,22 +19,23 @@
 //                                  the three consecutive calls at 5812-5814, and its whole body is
 //                                  a switch that selects which of the three rows to draw, so it is
 //                                  expressed here as the three rows themselves.
-//   SearchConfiguration      6717  one "property field + scene-edit toggle" row.
-//   LoginConfiguration       6726  the scene-edit toggle button in that row.
 //   ChangeConfiguration      6769  a null-guarded EditorGUILayout.PropertyField.
 //   UpdateConfiguration      6712  Mathf.Max over a Transform's lossyScale.
 //   CollectIdentifier        8299  } compiler-generated liftings of three local functions of
 //   PrintIdentifier          8352  } OrderConfiguration (note their DisplayClass46_* parameters);
 //   InterruptIdentifier      8366  } restored here as local functions, per the lambda rule.
 //
-// SearchConfiguration and LoginConfiguration are the only two of those that are genuinely shared:
-// LoginConfiguration is also called from decompiled lines 3064, 3066, 3152, 3154 and 4279, and
-// SearchConfiguration from 3055, all inside inspector regions that are not ported yet. They are
-// reproduced here as private local functions (ShapePropertyRow / SceneEditToggle) rather than as
-// file-level methods, deliberately: a file-level helper would collide by name with whatever the
-// port of decompiled 6400-6800 chooses to call them, and this file must not be able to break that
-// region's compilation. When that region lands, these two local functions should be deleted and
-// their call sites pointed at the shared port. Nothing else in this file duplicates ported code.
+// SearchConfiguration and LoginConfiguration are genuinely shared: besides the three calls the
+// folded InvokeConfiguration makes, LoginConfiguration was recorded at port time as also called
+// from 3064, 3066, 3152, 3154 and 4279 and SearchConfiguration from 3055 -- inspector regions
+// ported elsewhere or still to come. They were briefly reproduced here as private local functions
+// (ShapePropertyRow / SceneEditToggle) rather than as file-level methods, so that this file could
+// not claim a name the port of decompiled 6400-6800 would want and break that region's
+// compilation. That port has since landed as ADOverhaul.AvatarSelection.cs; both bodies were
+// diffed statement by statement against it and against decompiled SearchConfiguration and
+// LoginConfiguration, found equivalent, and deleted on 2026-08-05, and the three rows now call the
+// shared DrawPropertyWithEditToggle directly. It is a member of the same partial class, so nothing
+// had to be widened to reach it. Nothing in this file duplicates ported code.
 //
 // The four compiler-generated capture structs this region uses (_003C_003Ec__DisplayClass46_0,
 // _1, _2 and _3, decompiled 5468-5512) are artifacts of the closures above and are not ported; the
@@ -47,7 +54,7 @@
 // Reused rather than reimplemented (all checked before writing anything here):
 //   ADOEditorUtility.contents.edit / styles.compactIconButton  the pencil toggle and its style
 //   ADOEditorUtility.ToggleButton                              decompiled ChangeStatus/PrepareStatus
-//   ADOEditorUtility.validColor / errorColor / highlightColor   the palette
+//   ADOEditorUtility.validColor / highlightColor               the palette
 //   DreadScripts.Common.GUIColorScope                          the conditional tint scope
 //   DreadScripts.ControllerEditor.PhysBoneColliderSnapshot     decompiled ADOEditorUtility.cs's
 //     nested ShapeSnapshot (line 1264) is the same struct under a different obfuscated name, and
@@ -67,6 +74,13 @@
 // arms of the local-pivot branch inside it, which the two builds emit inverted from each other
 // (2019 tests `==` and 2022 tests `!=` on the same pair). The only real textual difference is the
 // snapshot's component field, called `target` in 2019 and `source` in 2022.
+//
+// Audit status: PARTIAL -- SearchConfiguration and LoginConfiguration were re-diffed against the
+// snapshot on 2026-08-05, when the local copies of them were deleted in favour of the shared port;
+// the rest of the file has not been re-checked since it was written. Every decompiled line number
+// in the three entry blocks at the top predates the 561e9ec re-snapshot and is uniformly 204 low
+// (SearchConfiguration is at 6921 and LoginConfiguration at 6930 today); the line numbers quoted in
+// prose were not re-checked. The member names are the durable reference either way.
 
 using System;
 using System.Linq;
@@ -185,15 +199,15 @@ namespace DreadScripts.ADOverhaul
             // re-read the type property, which the field above may have just changed.
             if (shapeType.intValue != 2)
             {
-                editingRadius = ShapePropertyRow(shapeProperties[2], editingRadius);
+                editingRadius = DrawPropertyWithEditToggle(shapeProperties[2], editingRadius);
             }
 
             if (shapeType.intValue == 1)
             {
-                editingHeight = ShapePropertyRow(shapeProperties[3], editingHeight);
+                editingHeight = DrawPropertyWithEditToggle(shapeProperties[3], editingHeight);
             }
 
-            editingPosition = ShapePropertyRow(shapeProperties[4], editingPosition);
+            editingPosition = DrawPropertyWithEditToggle(shapeProperties[4], editingPosition);
 
             if (shapeType.enumValueIndex != 0)
             {
@@ -230,25 +244,6 @@ namespace DreadScripts.ADOverhaul
             if (isPhysBoneCollider && bonesAsSpheres != null)
             {
                 EditorGUILayout.PropertyField(bonesAsSpheres);
-            }
-
-            // One property field with the pencil toggle that puts its value on a scene handle.
-            // See the file header: local, not a method, so it cannot clash with the shared port.
-            bool ShapePropertyRow(SerializedProperty property, bool editing)
-            {
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.PropertyField(property);
-                    return SceneEditToggle(editing, ADOEditorUtility.contents.edit);
-                }
-            }
-
-            bool SceneEditToggle(bool editing, GUIContent content)
-            {
-                using (new GUIColorScope(GUIColorScope.ColoringType.BG, editing, ADOEditorUtility.validColor, ADOEditorUtility.errorColor))
-                {
-                    return ADOEditorUtility.ToggleButton(editing, content, ADOEditorUtility.styles.compactIconButton, GUILayout.Width(18f), GUILayout.Height(18f));
-                }
             }
         }
 
