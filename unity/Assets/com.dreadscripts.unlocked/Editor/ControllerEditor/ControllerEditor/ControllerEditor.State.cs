@@ -565,7 +565,14 @@ namespace DreadScripts.ControllerEditor
         private static List<AnimatorState> multiTransitionStates = new List<AnimatorState>();
 
         /// <summary>States in the Unity selection.</summary>
-        private static List<AnimatorState> selectedStates = new List<AnimatorState>();
+        /// <remarks>
+        /// <c>internal</c> rather than the shipped <c>private</c>, because the types that read it —
+        /// BehaviourPropertyMultiEditor and TrackingControlEditor — were private nested classes of
+        /// this one in the assembly and are top-level types here, so private would put it out of
+        /// their reach. Widening follows from the hoist rather than being a separate decision: the
+        /// assembly is internal throughout, so nothing outside it can see the field either way.
+        /// </remarks>
+        internal static List<AnimatorState> selectedStates = new List<AnimatorState>();
 
         /// <summary>
         /// The graph's own node selection, which is not the same thing as the Unity selection: it
@@ -699,7 +706,11 @@ namespace DreadScripts.ControllerEditor
         /// one. Only then is <see cref="trackingControlEditor"/> meaningful, since the editor edits
         /// the behaviours as a single set.
         /// </summary>
-        private static bool allStatesHaveTrackingControl;
+        /// <remarks>
+        /// <c>internal</c> for the same reason as <see cref="selectedStates"/>: TrackingControlEditor
+        /// reads and clears it, and was a private nested type of this class in the assembly.
+        /// </remarks>
+        internal static bool allStatesHaveTrackingControl;
 
         #endregion
 

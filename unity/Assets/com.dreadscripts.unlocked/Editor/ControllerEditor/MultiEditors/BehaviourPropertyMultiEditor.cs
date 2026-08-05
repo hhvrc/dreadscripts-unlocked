@@ -6,6 +6,7 @@
 //     .ctor(ParameterDriverBinding, int)             -> .ctor,                         line 242
 //     AddMatch                                       -> AddMatch,                      line 249
 //     ApplyToAll                                     -> ApplyToAll,                    line 255
+//     RemoveFromAll                                  -> RemoveFromAll,                 line 265
 //   ControllerEditor.RestartAnnotation               -> inlined into ApplyToAll,       line 9578
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
@@ -19,14 +20,21 @@
 // the entire point of the type - its body is inlined here verbatim, including the fields it does
 // *not* copy (see ApplyToAll's remarks).
 //
-// Deferred member (depends on code that is not ported yet, omitted rather than stubbed):
-//   RemoveFromAll(), line 265 - after dropping the entry from each driver it walks the window's
-//   private static selected-state list (`m_AlgoAnnotation`, line 8024) to delete any driver
-//   behaviour left with no parameters, using the EditorUtils extensions LoginPredicate and
-//   DeletePredicate (EditorUtils.cs lines 3615 and 3628). None of those are ported yet.
+// RemoveFromAll was deferred when this file was written and landed on 2026-08-05; the type is
+// complete. Every dependency it was waiting on had in fact already been ported, under the English
+// names that replaced the obfuscated ones this note was written against: `m_AlgoAnnotation` is
+// ControllerEditor.selectedStates (ControllerEditor.State.cs), LoginPredicate is
+// EditorUtils.IndexOfBehaviour and DeletePredicate is EditorUtils.RemoveBehaviourAt (both in
+// EditorUtils.Behaviours.cs). Nothing new had to be derived -- the note had simply gone stale
+// against the renames, which is worth knowing when reading the other deferral notes in this folder.
+//
+// The one real change the port needed: ControllerEditor.selectedStates is `internal` rather than the
+// shipped `private`, because this type could reach a private static of the window when it was nested
+// inside it and cannot now that it is top-level. That file's own remarks record it.
 
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Animations;
 
 namespace DreadScripts.ControllerEditor
 {
@@ -109,6 +117,38 @@ namespace DreadScripts.ControllerEditor
                 target.DeferApply = false;
 
                 EditorUtility.SetDirty(driver.behaviour);
+            }
+        }
+
+        /// <summary>
+        /// Drops this row's entry from every target driver, and deletes any driver behaviour the
+        /// removal left with no parameters at all.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <see cref="AnimatorTypeCache.ParameterDriverBinding.RemoveParameter"/> reports whether
+        /// the driver it just edited has run out of entries. An empty driver is not useful and the
+        /// shipped tool does not leave one behind, so it is removed from every selected state — not
+        /// only from the state the row was opened on, since one behaviour asset can be shared.
+        /// </para>
+        /// <para>
+        /// The removal is undoable and the lookup is by reference, so a state that does not carry
+        /// this behaviour yields index -1 and <see cref="EditorUtils.RemoveBehaviourAt"/> returns
+        /// without touching it.
+        /// </para>
+        /// </remarks>
+        internal void RemoveFromAll()
+        {
+            foreach ((AnimatorTypeCache.ParameterDriverBinding driver, int index) in targets)
+            {
+                bool driverIsNowEmpty = driver.RemoveParameter(index);
+                EditorUtility.SetDirty(driver.behaviour);
+
+                if (driverIsNowEmpty)
+                {
+                    ControllerEditor.selectedStates.ForEach<AnimatorState>(
+                        s => s.RemoveBehaviourAt(s.IndexOfBehaviour(driver.behaviour), withUndo: true));
+                }
             }
         }
     }
