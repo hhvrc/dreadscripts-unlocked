@@ -32,21 +32,29 @@
 // body regions of the god class; none is blocked on anything subtle.
 //
 //   OnGUI, after the header block:
-//     LogoutMapper()       -- "is a controller loaded", gates the disabled group. See DEVIATION.
-//     RevertMapper()       -- the active state machine, whose name the header row labels itself
-//                             with; "No Active Machine" when null.
-//     ManageMapper()       -- "is a VRC avatar loaded", gates the exit-transition label strip.
-//     ReflectVisitor()     -- the controller/layer section.
-//     DestroyVisitor()     -- the state section.
-//     ValidateVisitor()    -- the transition section.
 //     DefineVisitor()      -- the parameter section.
-//     IncludeAnnotation()  -- the animated show/hide wrapper the four sections are nested in.
 //     HarmonyPatchManager.LoginReg() -- the deferred-patch pump, run once per repaint.
 //
+//   The rest of OnGUI's body has since landed and is no longer deferred. LogoutMapper,
+//   ManageMapper and RevertMapper are ported as the ActiveController / RootStateMachine /
+//   ActiveStateMachine properties in ControllerEditor.ControllerContext.cs, so the two disabled
+//   groups, the machine-name label and the exit-transition strip are all restored here.
+//   ReflectVisitor, DestroyVisitor and ValidateVisitor are ported as DrawTransitionSection,
+//   DrawStateSection and DrawControllerSection, and IncludeAnnotation as SeparatorIf; those three
+//   Draw calls are themselves partial, and each names its own blockers in its own file.
+//
+//   Note the shipped names do NOT say what they draw: ReflectVisitor (12529) draws the TRANSITION
+//   section -- its three rows are Transition Count, Transition Settings, Transition Conditions --
+//   and ValidateVisitor (11806) draws the CONTROLLER section, gated on editingController. The
+//   ported names follow the behaviour, not the obfuscated name.
+//
 //   OnEnable:
-//     PrintWrapper       (8836) -- the Undo.undoRedoPerformed handler; needs UpdateVisitor.
-//     SortAlgo                  -- the playmodeStateChanged handler.
+//     PrintWrapper       (8836) -- the Undo.undoRedoPerformed handler; needs UpdateVisitor, which
+//                                  is itself unported: see ControllerEditor.Refresh.cs.
 //     CalculateAnnotation, MapVisitor, CancelAnnotation -- the three first-open initialisers.
+//     SortAlgo is ported (as ApplyGraphBackground, ControllerEditor.Refresh.cs) but is NOT
+//     subscribed here: it is a graph-background applier driven by a settings change, not the
+//     playmodeStateChanged handler this header previously called it.
 //
 //   OnFocus is not ported at all rather than ported empty: its entire body is one call to
 //   ManageWrapper (8676), the selection-sync routine, which is both unported and itself licence
@@ -55,16 +63,14 @@
 //   OnDisable's Undo.undoRedoPerformed unsubscribe is omitted, because OnEnable's matching
 //   subscribe is: both name PrintWrapper. Porting one half would leave the delegate unbalanced.
 //
-// ================================ DELIBERATE DEVIATION ========================================
+// ============================ FORMER DEVIATION, NOW WITHDRAWN =================================
 //
-// The shipped OnGUI wraps its header block in EditorGUI.BeginDisabledGroup(!LogoutMapper()), ends
-// that group midway through the header row so the manual and settings buttons stay live, and opens
-// a second one that runs to the end of the block. With LogoutMapper unported there is no condition
-// to pass, and an unbalanced Begin/End pair corrupts the whole inspector's GUI stack for the rest
-// of the frame -- so both groups are omitted rather than passed a placeholder. The visible effect
-// is that the title bar reads as enabled when no controller is loaded, where the shipped tool greys
-// it out. Restoring this is a two-line change once LogoutMapper lands, and the call sites are
-// marked below.
+// This header used to record that both of OnGUI's EditorGUI disabled groups were omitted, because
+// LogoutMapper was unported and an unbalanced Begin/End pair corrupts Unity's GUI stack for the
+// rest of the frame. LogoutMapper has since landed as the ActiveController property, so both groups
+// are restored, in the shipped shape: the first opens before the title box and closes midway
+// through the header row so the manual and settings buttons stay live with no controller loaded,
+// and the second opens after them and closes past the exit-transition strip.
 //
 // ==================================== 2019 vs 2022 =============================================
 //
@@ -157,18 +163,19 @@ namespace DreadScripts.ControllerEditor
                     }
                 }
 
-                // DEFERRED: EditorGUI.BeginDisabledGroup(!LogoutMapper()) -- see DEVIATION above.
+                EditorGUI.BeginDisabledGroup(!ActiveController);
                 using (new GUILayout.VerticalScope(EditorUtils.styles.bigTitleBackground))
                 {
                     using (new GUILayout.HorizontalScope())
                     {
                         GUILayout.Space(18f);
+                        GUILayout.Label(ActiveStateMachine ? ActiveStateMachine.name : "No Active Machine",
+                            EditorUtils.styles.centeredMiniLabel, GUILayout.ExpandWidth(expand: true));
 
-                        // DEFERRED: the active state machine's name, or "No Active Machine".
-                        //           Needs RevertMapper (the active machine accessor).
-                        GUILayout.Label(string.Empty, EditorUtils.styles.centeredMiniLabel, GUILayout.ExpandWidth(expand: true));
+                        // The manual and settings buttons stay live with no controller loaded, which
+                        // is why the shipped body closes the group here and opens a second one below.
+                        EditorGUI.EndDisabledGroup();
 
-                        // DEFERRED: EditorGUI.EndDisabledGroup() -- pairs with the group above.
                         if (EditorUtils.Button(EditorUtils.contents.inspectorWindow, GUIStyle.none, GUILayout.Width(18f), GUILayout.Height(18f))
                             && EditorUtility.DisplayDialog("Instructions", "Open Controller Editor's Online Manual?", "Open", "Cancel"))
                         {
@@ -180,19 +187,35 @@ namespace DreadScripts.ControllerEditor
                             ControllerEditorWindow.ShowWindow();
                         }
 
-                        // DEFERRED: EditorGUI.BeginDisabledGroup(!LogoutMapper()) -- second group.
+                        EditorGUI.BeginDisabledGroup(!ActiveController);
                     }
 
-                    // DEFERRED: the exit-transition label strip, drawn when a VRC avatar is loaded
-                    //           and exitTransitionNames is non-empty. Needs ManageMapper.
+                    if (RootStateMachine && exitTransitionNames.Length != 0)
+                    {
+                        using (new GUILayout.HorizontalScope())
+                        {
+                            GUILayout.FlexibleSpace();
+                            for (int j = 0; j < exitTransitionNames.Length; j++)
+                            {
+                                GUILayout.Label(exitTransitionNames[j], "AssetLabel");
+                            }
+
+                            GUILayout.FlexibleSpace();
+                        }
+                    }
                 }
 
-                // DEFERRED: EditorGUI.EndDisabledGroup() -- pairs with the second group.
+                EditorGUI.EndDisabledGroup();
                 EditorUtils.Separator();
 
-                // DEFERRED, in shipped order: ReflectVisitor(), IncludeAnnotation(...),
-                // DestroyVisitor(), IncludeAnnotation(...), ValidateVisitor(), DefineVisitor(),
-                // HarmonyPatchManager.LoginReg(). See the file header for what each one draws.
+                DrawTransitionSection();
+                SeparatorIf(transitionSectionVisible && (stateSectionVisible || EditorSettings.Instance.editingController.value));
+                DrawStateSection();
+                SeparatorIf(stateSectionVisible && EditorSettings.Instance.editingController.value);
+                DrawControllerSection();
+
+                // DEFERRED, still: DefineVisitor() -- the parameter section -- and
+                // HarmonyPatchManager.LoginReg(), the deferred-patch pump. See the file header.
             }
         }
 
