@@ -10,11 +10,13 @@
 //
 // Two regions, collected here because the second is written entirely in terms of the first. The
 // three sequence helpers (2555-2584) open a run of small LINQ-ish extensions in the decompiled
-// class; their neighbours are left to other partials -- InitResolver (line 2586) is a hideFlags
-// toggle, and the members before InvokeResolver are the SerializedProperty helpers. The three
-// AnimatorState helpers are contiguous and complete; their neighbours ClonePredicate (line 3605,
-// a transition dead-end test) and CreatePredicate (line 3660, a condition-list multiset compare)
-// belong to the transition/condition region and are not ported here.
+// class; their neighbours belong to other partials -- InitResolver (line 2586) is a hideFlags
+// toggle, ported in EditorUtils.UnityObjects.cs as SetDontSave, and the members immediately before
+// InvokeResolver are the IConstraint activation helpers. The three AnimatorState helpers are
+// contiguous and complete; their neighbours ClonePredicate (line 3605, a transition dead-end test)
+// and CreatePredicate (line 3660, a condition-list multiset compare) belong to the
+// transition/condition region and are ported in EditorUtils.AnimatorGraph.cs as IsExitOrDangling
+// and ConditionSetsMatch.
 //
 // IndexOf's decompiled body increments its counter inside checked(), a detail of the original's
 // compilation context rather than intent -- an index can only overflow past int.MaxValue elements,
@@ -22,6 +24,16 @@
 //
 // Nothing here was already ported under another name; the package was searched for each member and
 // for each of these English names before the file was added.
+//
+// NOTES
+// The rename maps have since settled on FindIndex / TryFindIndex for FindResolver / ExcludeResolver,
+// so the current export/ snapshot shows those two under names this file does not use. The ported
+// names IndexOf / TryGetIndex are left as they are -- the left MAP column is the durable key -- but
+// the divergence is recorded here so the next reader does not read it as a missing member.
+// Audit status: VERIFIED -- all six bodies diffed statement by statement against export/. Two
+// shape-only differences, both behaviour-preserving: IndexOf's counter increment is `checked` in the
+// decompilation, and RemoveBehaviourAt's decompiled form negates the main-asset test and nests the
+// destroy pair in the else, which is the same three-way choice written the other way round.
 
 using System;
 using System.Collections.Generic;

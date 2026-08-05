@@ -7,11 +7,10 @@
 // taken by the expression-parameter cost helpers, which are a different subject: those are about
 // the VRChat *expression* parameter budget, this is about *animator* parameter names.
 //
-// Adjacent in the decompiled file and deliberately not ported here: interpreterProcessor
-// (line 2244), the 23 built-in contact collision tags. It is the same table the ADOverhaul side
-// already ships as ADOEditorUtility.defaultCollisionTags, it has no caller among the members being
-// reconstructed in this pass, and it belongs to whichever partial ends up owning the contact
-// helpers rather than here.
+// Adjacent in the decompiled file and not ported here: interpreterProcessor (line 2244), the 23
+// built-in contact collision tags. It is the same table the ADOverhaul side already ships as
+// ADOEditorUtility.defaultCollisionTags, and it belongs with the contact helpers rather than here;
+// it has since landed in EditorUtils.ContactTags.cs.
 //
 // DIVERGENCE FROM THE ADOVERHAUL TWIN -- READ BEFORE "DEDUPLICATING".
 // ADOEditorUtility.reservedAvatarParameters (Editor/ADOverhaul/ADOEditorUtility.VRChatTables.cs) is
@@ -22,6 +21,10 @@
 // shipped with the list it shipped with, and the list is a behavioural input: it decides which
 // parameters a picker hides and which names a rename refuses. Unifying them would silently change
 // what ADOverhaul does, which is exactly the kind of "fix" this reconstruction does not make.
+// Audit status: VERIFIED -- all 28 strings compared element by element and in order against
+// EditorUtils.reservedAvatarParameters in export/ControllerEditor. The divergence note above was
+// re-checked too: export/ADOverhaul2022 ADOEditorUtility.reservedAvatarParameters is the same list
+// truncated to 23, stopping at AvatarVersion, exactly as described.
 
 namespace DreadScripts.ControllerEditor
 {

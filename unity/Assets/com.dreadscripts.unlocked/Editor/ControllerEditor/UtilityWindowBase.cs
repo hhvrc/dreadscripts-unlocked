@@ -1,4 +1,15 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/UtilityWindowBase.cs
+//
+// NOT PORTED
+// The decompile also carries `private static readonly PropertyInfo positionProperty` (a reflected
+// lookup of EditorWindow.position) which nothing in the assembly reads -- ShowAt sets
+// `base.position` directly. Dropped as dead, along with the unreferenced CancelClient/
+// RestartClient decoy pair.
+//
+// Audit status: VERIFIED -- diffed in full against export/. The five fields, Create, CloseAll,
+// ShowAt, Confirm, OnGUI and the three abstract members all match statement for statement; the
+// two mangled explicit-interface names are the Title/OnCustomGUI pair described in the class
+// remarks.
 
 using DreadScripts.Common;
 using UnityEditor;

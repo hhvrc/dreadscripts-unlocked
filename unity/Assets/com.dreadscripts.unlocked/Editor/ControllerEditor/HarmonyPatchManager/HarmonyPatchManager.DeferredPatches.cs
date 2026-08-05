@@ -12,6 +12,18 @@
 // ViewProduct (line 2430), which returns whether it is null. Nothing anywhere in the assembly
 // assigns ConnectProduct, so ViewProduct is a constant true. Obfuscator/licensing scaffolding
 // with no behaviour behind it.
+//
+// Audit status: VERIFIED -- every member this file declares was diffed statement by statement
+// against export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs: PatchSwapEntry
+// and its six fields and constructor (2404-2436), deferredPatches (2559), IncludeReg (2688),
+// RunReg (2695) and ApplyDeferredPatch (2709). All five cited line numbers still land on the named
+// member in the current snapshot. The unported-members note was checked too: ViewProduct is
+// `return ConnectProduct == null` and ConnectProduct has no assignment anywhere in the decompiled
+// assembly (grep: only its declaration at 2418 and that one read at 2432), so the constant-true
+// reading holds. Differences, all behaviour-preserving: `readonly` is added to the deferredPatches
+// field, which the shipped code declares as a plain `private static` but never reassigns; and
+// RunReg's local-then-store (`PatchSwapEntry value = ...; deferredPatches[reference] = value;`) is
+// written as a single indexer assignment here.
 
 using System;
 using System.Collections.Generic;

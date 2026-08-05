@@ -1,8 +1,8 @@
 # File header format
 
 Every `.cs` file in this package opens with a comment block recording where its
-contents came from in `decompiled/` and what was decided during the port. The
-format below is what `tools/check-headers.py` enforces.
+contents came from in `reverse-engineering/export/` and what was decided during the port. The
+format below is what `reverse-engineering/tools/check-headers.py` enforces.
 
 The point of the strictness is that the header is *machine-checkable*. Two
 reconciliations of parallel ports have already turned on being able to ask "which
@@ -43,7 +43,7 @@ others. All are indented three spaces.
 
 What separates the fifth form from the first four is that it carries **no line
 number**. That is the whole rule: an entry with a line number stands on its own
-and is checked against `decompiled/`; an entry without one is a sub-entry, and
+and is checked against `reverse-engineering/export/`; an entry without one is a sub-entry, and
 belongs to whatever introduced the block it sits in.
 
 - **`line <N>`** — the member is declared in *this* file. The checker verifies
@@ -60,7 +60,7 @@ belongs to whatever introduced the block it sits in.
   whatever the block is about. A nested class gets one entry with its line range
   followed by a sub-entry per field; a recovered parameter list gets a paragraph
   ending in `:` followed by a sub-entry per parameter. Sub-entries name nothing
-  the checker can locate in `decompiled/`, so they are not checked — which is
+  the checker can locate in `reverse-engineering/export/`, so they are not checked — which is
   also why they must not carry a line number. If a member deserves a line number,
   it is a top-level entry.
 
@@ -76,7 +76,17 @@ Two shorthands are allowed in the `<ported name>` column:
   `the styles accessor`, `lifted to a top-level type`, `dissolved into <member>`.
   The checker does not verify these, so prefer a real name where one exists.
 
-`<decompiled name>` is the obfuscated identifier as it appears in `decompiled/`.
+`<decompiled name>` is the identifier the member had in `reverse-engineering/export/` **at the
+time this file was ported**. It is deliberately not required to still match: once
+a name is chosen it gets written back into the rename maps, and the next
+re-snapshot shows the member under its new, English name. Refreshing every left
+column after every re-export would be permanent churn for no gain, and would
+break the join below, which older notes and commit messages are written against.
+
+So: treat the left column as a stable historical key, not a live pointer. If you
+need to find the member in the current snapshot and the name has moved, the
+rename maps resolve it — obfuscated name in the key, current name in the value.
+
 It is the join key: every `(decompiled file, line)` must be claimed exactly once
 across the package. Duplicate claims are how a member ported twice under two
 different names gets caught — the C# compiler cannot see those.
@@ -115,7 +125,7 @@ otherwise.
 
 ## Known debt
 
-`decompiled/` was re-snapshotted in `561e9ec`, which renumbered every file and
+`reverse-engineering/export/` was re-snapshotted in `561e9ec`, which renumbered every file and
 renamed some obfuscated members. Headers written before that commit carry stale
 line numbers. They are still correct on member names. The checker reports stale
 numbers as warnings, not errors, until that sweep is done.

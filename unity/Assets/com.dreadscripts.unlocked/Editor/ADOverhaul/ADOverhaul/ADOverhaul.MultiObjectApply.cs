@@ -8,16 +8,18 @@
 // Line numbers are relative to the current snapshot; the decompiled names are the durable
 // reference. Field references go through the table in ADOverhaul.State.cs.
 //
-// PARTIAL PORT. The other two members of the region are left out rather than stubbed. Both are now
-// blocked on nothing but the test-mode entry points in ADOverhaul.SceneView.cs, which are still
-// deferred there: NewConfiguration (6272, the toggle) and CompareConfiguration (6290, the restart).
+// PARTIAL PORT. The other two members of the region are left out rather than stubbed. Neither is
+// blocked on anything any more: the test-mode entry points they need -- NewConfiguration (6272, the
+// toggle) and CompareConfiguration (6290, the restart) -- have since landed in
+// ADOverhaul.SceneView.cs as ToggleTestMode and RestartTestMode. They are simply still unported.
 // ADOSettings, which used to block InsertConfiguration as well, has since landed at
 // Editor/ADOverhaul/ADOSettings/ and is no longer an obstacle -- the one setting it needs reads and
 // writes as `ADOSettings.instance.hasReadColliderTestingWarning.value`, whose setter persists on its
 // own, so the decompiled `.SetValue(true)` plus save is a single assignment here.
 //
 // When they land, both take `internal` for the same reason as the member below: their call sites are
-// the inspector types this reconstruction lifted out of the class.
+// the inspector types this reconstruction lifted out of the class. The "Needs ..." notes on the two
+// entries below record what each one calls, not what is still missing -- both callees exist now.
 //
 //   ReadConfiguration    line 6872 -- the test-mode toolbar drawn above every PhysBone and collider
 //       inspector: a "Test PhysBones in Scene" / "Stop Testing - ESC / Enter" toggle (disabled and
@@ -53,6 +55,15 @@
 // 6925 (CalculateSystem / PopSystem / CallSystem) with the same dialog strings and the same
 // evaluation order; only the two switch arms of the restart prompt are emitted in the opposite
 // order, which does not matter.
+//
+// Audit status: VERIFIED -- ApplyModifiedProperties, the only member this file declares, diffed
+// statement by statement against TestConfiguration<T> in the 2022 snapshot: the destroyed-target
+// early out, the `hasModifiedProperties` capture, the per-target callback, the isTesting /
+// cloneHasUnappliedChanges pair and the trailing ApplyModifiedProperties all match. The two unported
+// members were re-read as well; their descriptions above are accurate, but the claim that they were
+// blocked was not -- ToggleTestMode and RestartTestMode have landed in ADOverhaul.SceneView.cs, and
+// the PARTIAL PORT note has been corrected to say so. The 2019 counterparts were checked for the
+// switch-arm ordering claim. Line numbers not checked -- located by name.
 
 using System;
 using System.Collections.Generic;

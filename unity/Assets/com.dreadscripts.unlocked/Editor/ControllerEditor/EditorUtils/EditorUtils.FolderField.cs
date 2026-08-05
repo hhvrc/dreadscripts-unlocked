@@ -4,12 +4,40 @@
 // member names are the durable reference.
 //
 // This is the "Generated Assets Path" row of the settings window, which
-// ControllerEditorWindow.Defaults (DrawOtherDefaults) records as DEFERRED pending this method. That
-// deferral can now be closed: the call is
-//   EditorSettings.Instance.saveFolder.value = EditorUtils.FolderField(saveFolder, "Generated Assets Path");
-// with the shipped write-back guard at decompiled ControllerEditor.cs line 3834 preserved.
+// ControllerEditorWindow.Defaults (DrawOtherDefaults) used to record as DEFERRED pending this
+// method. THAT DEFERRAL IS NOW CLOSED -- the call site was written on 2026-08-05 and reads:
+//
+//   string pickedFolder = EditorUtils.FolderField(EditorSettings.Instance.saveFolder, "Generated Assets Path");
+//   if (!string.IsNullOrEmpty(pickedFolder))
+//   {
+//       EditorSettings.Instance.saveFolder.Value = pickedFolder;
+//   }
+//
+// with the shipped write-back guard at decompiled ControllerEditor.cs line 3834 preserved. The
+// setting is passed by StringSetting's implicit string conversion; the write-back is through
+// `Value` (StringSetting's property is capitalised, unlike BoolSetting's `value`). An earlier draft
+// of this header wrote `.value` here, which does not compile -- corrected rather than left to be
+// rediscovered.
+//
+// The guard is very nearly dead and is kept because it shipped: this method returns `path`
+// unchanged on cancel and on an out-of-project pick, so the only way it yields empty is if the
+// stored setting was already empty, in which case the assignment is a no-op anyway.
 //
 // A shipped bug in the "walk up to a real folder" step is preserved verbatim; see the remarks.
+//
+// Audit status: VERIFIED -- FolderField is the only member this file declares and it was diffed
+// statement by statement against export EditorUtils.cs lines 4249-4290 on 2026-08-05: the
+// PrefixLabel, the SelectableLabel styled as an objectField with its two layout options, the
+// selectFolder IconButton branch with its StartsWith/strip loop, the OpenFolderPanel call and both
+// of its early returns, the GetProjectRelativePath check with its LogColored warning text, the
+// assignment back into `path`, and the ping button inside its DisabledScope. Both SHIPPED BUG
+// behaviours described in the remarks were confirmed present in export rather than inferred: the
+// loop calls Path.GetDirectoryName (platform separator) against AssetDatabase.IsValidFolder
+// (forward slashes), and the StartsWith("Assets") test admits a separator-less string that then
+// strips to empty. The `while` here is a real, terminating loop, not the known de4dot
+// non-terminating-`while` fault -- it has a condition and the body changes what that condition
+// reads. Parameters renamed from the decompiled `asset`/`pol` to `path`/`label`; call order and
+// defaults unchanged.
 
 using System.IO;
 using UnityEditor;

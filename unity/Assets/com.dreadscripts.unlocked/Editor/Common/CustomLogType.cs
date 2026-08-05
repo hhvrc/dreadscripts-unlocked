@@ -4,6 +4,10 @@
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, line 2149
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference. The 2019 and 2022 ADOverhaul builds agree exactly.
+//
+// Audit status: VERIFIED -- all three shipped copies (ControllerEditor, ADOverhaul 2022 and 2019)
+// read back against this file member by member. Same three members, same names, same declaration
+// order, so the same implicit values 0/1/2; no explicit values and no [Flags] in any copy.
 
 namespace DreadScripts.Common
 {

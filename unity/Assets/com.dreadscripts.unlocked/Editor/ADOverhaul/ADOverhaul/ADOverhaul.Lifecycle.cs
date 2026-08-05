@@ -121,7 +121,7 @@
 // begin at 6713, 6728 and 6740. They were NOT re-based, because ADOverhaul.AvatarSelection.cs still
 // carries the same pre-561e9ec numbering and claims 6684 and 6740 for ForgotConfiguration and
 // CheckConfiguration (really 6888 and 6944): re-basing ResetFoldouts to its true 6740 would leave
-// two files claiming one decompiled line, which tools/check-headers.py reports as a double port.
+// two files claiming one decompiled line, which reverse-engineering/tools/check-headers.py reports as a double port.
 // Re-base the two files in one change when the snapshot sweep reaches them.
 //
 // The line numbers in the prose sections above are pre-561e9ec throughout, and the offset is close

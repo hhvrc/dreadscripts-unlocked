@@ -14,9 +14,13 @@
 // itself, so it is private here; that also keeps a later wave from colliding with the name.
 //
 // PushResolver (line 2842), the text-width measurement helper, is the third member of this region
-// and is deliberately not ported: it is not in this pass's assigned set and belongs with the
-// layout/measurement helpers. It is the clearest example of the safe use of TempContent below --
-// it passes the content straight to GUIStyle.CalcSize and lets it go.
+// and is not ported here: it belongs with the layout/measurement helpers, and has since landed in
+// EditorUtils.GuiContent.cs as GetTextWidth. It is the clearest example of the safe use of
+// TempContent below -- it passes the content straight to GUIStyle.CalcSize and lets it go.
+// Audit status: VERIFIED -- the field initialiser and TempContent's four statements diffed against
+// export/ CreateResolver, and DeleteResolver confirmed to be the single forward the collapse note
+// describes. The only deviation is visibility: sharedContent is internal in the decompilation and
+// private here, as the header records.
 
 using UnityEngine;
 

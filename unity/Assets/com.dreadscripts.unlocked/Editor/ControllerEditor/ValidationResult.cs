@@ -1,4 +1,9 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ValidationResult.cs
+//
+// Audit status: VERIFIED -- diffed in full against export/. The four fields, the constructor, all
+// five implicit conversions and ToString match statement for statement; only the declaration order
+// of the bool/string conversions differs. The unreferenced static pair RateStatus/PostStatus is
+// not ported, as an obfuscator decoy (see the same treatment in ReorderableListHelper.cs).
 
 namespace DreadScripts.ControllerEditor
 {

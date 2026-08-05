@@ -1,4 +1,8 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/MenuControlTreeItem.cs
+//
+// Audit status: VERIFIED -- diffed in full against export/ControllerEditor/DreadScripts/
+// ControllerEditor/MenuControlTreeItem.cs. Base type, the one readonly field and the one
+// constructor all match; the only change is the constructor parameter name.
 
 using UnityEditor.IMGUI.Controls;
 using VRC.SDK3.Avatars.ScriptableObjects;

@@ -1,4 +1,8 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/CallbackMethodAttribute.cs
+//
+// Audit status: VERIFIED -- attribute usage, base class and both constructors diffed statement by
+// statement against export/. Only the obfuscated parameter names (key_Ptr, setup, flags_token)
+// differ.
 
 using System;
 

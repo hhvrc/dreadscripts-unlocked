@@ -11,14 +11,19 @@
 // order. Call sites written against FlushQueue therefore need the `draw` argument skipped by name,
 // or their trailing arguments moved along one place.
 //
-// Deliberately not ported here: CalculateQueue (line 5923) and TestQueue (line 5928), the two
-// layout-flow overloads that pass GUILayoutUtility.GetLastRect() to ConnectQueue. They are the
-// counterpart of ADOEditorUtility.OverlayLabel(string, ...), they add nothing but that one call,
-// and nothing being unblocked in this pass uses them.
+// Not ported here: CalculateQueue (line 5923) and TestQueue (line 5928), the two layout-flow
+// overloads that pass GUILayoutUtility.GetLastRect() to ConnectQueue. They add nothing but that one
+// call and were left out of this pass; they have since landed in
+// EditorUtils.LayoutOverlayLabels.cs, collapsed into a single OverlayLabel(string, ...).
 //
-// The ADOverhaul twin of the label method (ADOEditorUtility.Gui.cs, OverlayLabel) is
-// character-for-character the same logic, which is where the name comes from; the two products
-// carry independent copies and are left independent.
+// The ADOverhaul twin of the label method is decompiled EnableStatus in export/ADOverhaul2022
+// ADOEditorUtility.cs -- character-for-character the same logic, down to the +/- 2.5f nudge and the
+// noteLeft/noteRight style pick. It is not ported on the ADOverhaul side yet, so there is no package
+// file to point at; the two products carry independent copies and are left independent.
+// Audit status: VERIFIED -- both bodies diffed statement by statement against export/, including
+// which branch of the alignLeft test adds and which subtracts (alignLeft adds), and the inverted
+// style pick that goes with it. One shape-only difference: the decompiled guard is a positive
+// `if (draw && !(width <= reserved + inset))` wrapping the body, written here as an early return.
 
 using System;
 using UnityEngine;

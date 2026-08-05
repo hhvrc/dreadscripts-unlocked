@@ -5,20 +5,24 @@
 // member names are the durable reference.
 //
 // EditorUtils.OverlayLabels.cs ported the Rect-based label and recorded these two as left for their
-// proper owner. They are one method: CalculateQueue's body is TestQueue's with the `draw` flag
-// hard-wired to true, which is already its default, so the obfuscator-split pair collapses the way
-// EditorUtils.Buttons.cs collapses its own. Only the parameter *order* differs between the two
-// decompiled signatures -- CalculateQueue puts `draw` last and TestQueue puts it second -- and the
-// form kept below is TestQueue's, because it is the one the shipped call sites use and it matches
-// the Rect overload's order.
+// proper owner. They are one method: CalculateQueue has no `draw` parameter at all and hard-wires
+// the flag to true when forwarding, which is already the Rect overload's default, so the
+// obfuscator-split pair collapses the way EditorUtils.Buttons.cs collapses its own. Its other four
+// parameters are TestQueue's minus `draw`, in the same order. The form kept below is TestQueue's,
+// because it is the one the shipped call sites use and it matches the Rect overload's order; a call
+// site written against CalculateQueue therefore has to skip `draw` by name.
 //
-// They live in a separate file from the Rect overload only because that file is another wave's and
-// may not be edited; the two belong together and can be merged whenever the ownership constraint is
-// lifted.
+// They live in a separate file from the Rect overload only because that file was another wave's and
+// could not be edited at the time; the two belong together and can be merged whenever that is
+// convenient.
 //
-// The counterpart in the other product, ADOEditorUtility.OverlayLabel(string, ...)
-// (Editor/ADOverhaul/ADOEditorUtility/ADOEditorUtility.Gui.cs), is the same one-line forward. The
-// two copies are left independent, as everywhere else in this reconstruction.
+// The counterpart in the other product is the same one-line forward: decompiled AwakeStatus in
+// export/ADOverhaul2022 ADOEditorUtility.cs, forwarding GUILayoutUtility.GetLastRect() to
+// EnableStatus. Neither is ported on the ADOverhaul side yet, so there is no package file to point
+// at; the two products' copies are left independent, as everywhere else in this reconstruction.
+// Audit status: VERIFIED -- the single body is TestQueue's forward, argument for argument, against
+// export/. CalculateQueue's signature was re-read at the same time, which is what turned up the
+// wrong `draw`-parameter claim this header used to carry.
 
 using UnityEngine;
 

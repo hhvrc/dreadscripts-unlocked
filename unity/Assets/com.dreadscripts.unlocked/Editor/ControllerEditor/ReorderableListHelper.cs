@@ -4,6 +4,19 @@
 // one again here. The unused static pair CustomizeStruct/SearchStruct is deliberately not ported:
 // the field is never assigned and the method never called anywhere in the assembly, which makes
 // both obfuscator decoys rather than part of the type.
+//
+// DEOBF-BUG
+// DrawHeaderButtons has no recoverable ordering: de4dot leaves the FlexibleSpace stranded in an
+// empty `while (true)` after the two buttons, with the whole body under an inverted
+// `if (!drawFlexibleSpace)`. The order written here is inferred from the call sites. See the
+// remarks on the method.
+//
+// Audit status: PARTIAL -- the nine fields, the Index accessor pair (a property again here), both
+// constructors, DrawElement, Draw, ClampIndex and DrawTitle were diffed against export/ and match
+// statement for statement, including DrawElement's inverted remove-button branch and Draw's
+// selection-change check. DrawHeaderButtons is NOT verified: its statements are all present and
+// individually match, but their order is reconstructed from the call sites rather than read off
+// export/, for the reason above.
 
 using System;
 using System.Collections;

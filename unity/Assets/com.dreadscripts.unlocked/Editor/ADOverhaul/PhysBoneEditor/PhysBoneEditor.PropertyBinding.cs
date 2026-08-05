@@ -30,6 +30,16 @@
 // scene tool and the property picker popup read it. It is ported in full.
 //
 // 2019 vs 2022: identical apart from obfuscated member names.
+//
+// Audit status: VERIFIED -- the type diffed member by member against AlgoAuthentication in the 2022
+// snapshot: all ten readonly fields with their types, both constructors including the `?.displayName`
+// chained call and the default parameter values (0f, 1f, 0), and the second constructor's
+// assignments, where hasValue/hasCurve are computed before the paths that depend on them, exactly as
+// here. Two shape changes, neither behavioural: the fields are grouped differently (the snapshot
+// interleaves the paths between the properties and the bounds; the MAP's line numbers reflect the
+// snapshot's order, not this file's), and the type is `sealed` here where the snapshot has a plain
+// `internal class` with no subclasses. The per-member line numbers were checked against the snapshot
+// and are all exact; the type's range ends at 2400, two lines short of the 2402 recorded above.
 
 using UnityEditor;
 

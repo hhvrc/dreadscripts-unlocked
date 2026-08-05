@@ -103,31 +103,50 @@
 //       EditorUtils (decompiled EditorUtils.cs line 2226) and is not in the package; adding it
 //       would mean editing a shared file. Absent rather than stubbed.
 //
-// ─── DEFERRED: blocked on the unported static ControllerEditor god-class ─────────────────────────
-// The 13,700-line static ControllerEditor body (decompiled lines 4835-18535) has no port yet, and
-// this window is one of its callers. These are omitted rather than stubbed so the package keeps
-// compiling; each notes what it is waiting on. The rest of the member it sits in is ported.
+// ─── DEFERRED ────────────────────────────────────────────────────────────────────────────────────
+// This section used to read "blocked on the unported static ControllerEditor god-class". That
+// premise is gone: ControllerEditor is now ported across the files in ControllerEditor/, and every
+// member listed below except one has landed. Re-derived on 2026-08-05, and the picture is now two
+// quite different kinds of problem which were previously conflated.
 //
-//   OnGUI      -- nothing further; see the licence section above.
-//   IncludeTests, the aw_enableOverride change handler       line 3363-3368
-//       On toggling "Overriding" the shipped build calls TestInitializer(null) (line 15253) to tear
-//       down the proxy AnimatorController the animation-window override drives, and clears
-//       _AlgoVisitor / m_VisitorVisitor (lines 8282, 8280), the override's root GameObject and its
-//       "root was chosen" flag. All three are private statics of the god-class. The setting still
-//       draws and still persists; only the teardown is missing, so a stale override survives the
-//       toggle until the god-class port restores it.
+// (a) VISIBILITY, not missing code. The shipped ControllerEditorWindow is a class nested inside
+//     ControllerEditor, which is what let it touch ControllerEditor's private statics freely. This
+//     port lifts it to a top-level type, so those accesses no longer compile. The members exist and
+//     resolve by name; they are `private`. Confirmed by compiling the call sites -- five CS0122
+//     "inaccessible due to its protection level" errors, no CS0103 or CS0117. Closing these needs
+//     `internal` on three members, in files this port does not own; it needs no new code.
+//
 //   CloneTests, the copy and paste buttons                   line 3634-3649
-//       Blocked on CustomizeAlgo (line 14693), which CopySerialized's one AnimatorStateTransition
-//       onto another while preserving conditions/destination/name, and on the _ObserverAnnotation
-//       clipboard field (line 8040). Both are god-class members. The "Restore Defaults" button in
+//       Needs ControllerEditor.CopyTransitionSettings (line 14693, ControllerEditor.TransitionCopy.cs
+//       line 80) and the clipboard field ControllerEditor.copiedTransitionSettings (line 8040,
+//       ControllerEditor.State.cs line 627). Both `private static`. The "Restore Defaults" button in
 //       the same row IS ported.
 //   ReflectTests, the "Sample From Active StateMachine" button  line 3822-3829
-//       Blocked on RevertMapper() (line 8552), the accessor for the state machine currently shown
-//       in the Animator window. The three default-position fields above it are ported.
+//       Needs ControllerEditor.ActiveStateMachine (line 8552, ControllerEditor.ControllerContext.cs
+//       line 226), `private static`. The three default-position fields above it are ported.
+//
+// (b) GENUINELY UNPORTED -- one member, and it is not on ControllerEditor's window side at all.
+//
+//   IncludeTests, the aw_enableOverride change handler       line 3363-3368
+//       Needs TestInitializer (line 15253), the setter for the proxy AnimatorController the
+//       Animation-window override drives. Nothing in the package claims that line, and it pulls in
+//       three further unported members (InstantiateInitializer, FlushInitializer,
+//       forceGameObjectSelectionUpdate). The two fields it clears alongside --
+//       overrideAnimationRoot (8282) and overrideAnimationRootActive (8280) -- ARE ported, at
+//       ControllerEditor.State.cs lines 1119 and 1112, but are `private`, so this one needs both
+//       kinds of fix. The setting still draws and still persists; only the teardown is missing, so
+//       a stale override survives the toggle. Full detail at the call site in
+//       ControllerEditorWindow.Cosmetics.cs.
+//
+//   OnGUI      -- nothing further; see the licence section above.
+//
+// ─── CLOSED SINCE THE LAST PASS ─────────────────────────────────────────────────────────────────
 //   ReflectTests, the "Generated Assets Path" row            line 3834-3838
-//       Blocked on EditorUtils.EnableRules (decompiled EditorUtils.cs line 4249), the folder field
-//       with its OpenFolderPanel and ping buttons. Not in the package, and EditorUtils is a shared
-//       file this port may not extend.
+//       Was blocked on EditorUtils.EnableRules (decompiled EditorUtils.cs line 4249). That has
+//       landed as EditorUtils.FolderField (EditorUtils.FolderField.cs) and is `internal`, so the
+//       row is restored at the end of DrawOtherDefaults with the shipped write-back guard intact.
+//       The note that "EditorUtils is a shared file this port may not extend" was the reason it
+//       waited; the extension was made by whoever owns that partial, not here.
 //
 // ─── DELIBERATE DEVIATION ───────────────────────────────────────────────────────────────────────
 // Six labels in the cosmetics tab are built by the string extension `CreateResolver`
@@ -139,16 +158,32 @@
 // version carries an aliasing hazard that this does not.
 //
 // ─── DECOMPILER ARTIFACTS NOT PORTED ────────────────────────────────────────────────────────────
-//   `while (true)` in OnEnable (line 3845) -- see the remarks on OnEnable below.
+//   DEOBF-BUG(guessed): the `while (true)` in OnEnable (line 3845) -- see the marker on OnEnable
+//       below for what export/ shows, what is written instead, and what would settle it.
 //   `[CompilerGenerated]` on NewTests (line 3909) -- NewTests is ordinary hand-written code that
 //       the obfuscator merely marked; the attribute is not carried over.
 //   `[SpecialName]` on PushTests -- it was a property getter, restored as IsProSkin.
 //
 // A shipped bug in RebuildTransitionSerializedObject is preserved verbatim; see that method.
 //
-// Audit status: PARTIAL -- the class, field and method lines cited above were spot-checked against
-// decompiled/ in this pass (3190, 3192, 3203, 3205, 3275, 3301, 3307, 3313, 3841, 3909 all land on
-// the member named); the method bodies and the NOT PORTED / DEFERRED sections were not re-verified.
+// Audit status: VERIFIED -- every member this file declares was diffed against export
+// ControllerEditor.cs on 2026-08-05.
+//   * The whole field run at 3203-3298 was read in one pass and matches name for name, in order,
+//     in type and in modifier, including the three string[] initialisers element for element. The
+//     single field in that range NOT ported is _BaseMapper (3273), dropped deliberately: it is
+//     declared once and read once and assigned nowhere in the assembly, which was re-confirmed by
+//     grepping export for every occurrence of the name.
+//   * IsProSkin (3301), ShowWindow (3307) including its menu path/priority/title, OnGUI (3313) and
+//     OnEnable (3841) match statement for statement. OnGUI is written as a switch where the
+//     decompiler emitted if/else over a temporary; same dispatch, same order.
+//   * The DEFERRED section was re-derived from scratch rather than carried over, and was materially
+//     wrong before this pass -- three of its four entries claimed missing code that has since
+//     landed. Each entry's current blocker was confirmed by compiling the call site and reading the
+//     error, not by inspection.
+//   * The NOT PORTED (licence) section was re-checked against OnGUI at 3313-3339: OrderVisitor,
+//     RevertAnnotation, DefineVisitor and the setterProcessor banner are the four calls dropped,
+//     and they are the four the shipped body makes. Nothing else in this file's range is omitted.
+// One deviation from export/ is deliberate and marked DEOBF-BUG(guessed); see OnEnable.
 
 using System;
 using UnityEditor;
@@ -328,11 +363,35 @@ namespace DreadScripts.ControllerEditor
         }
 
         /// <remarks>
+        /// <para>
         /// Both rebuilds run on every enable, unconditionally. The shipped code guards them with a
-        /// <c>_BaseMapper</c> flag (line 3273) that nothing in the assembly ever assigns, so the
-        /// guard is always taken and is dropped here along with the dead field. ILSpy additionally
-        /// renders the guarded body as <c>while (true) { … }</c>; that is an artifact -- the shipped
-        /// window plainly does not hang when opened -- and the loop is not reproduced.
+        /// <c>_BaseMapper</c> flag (line 3273) that nothing in the assembly ever assigns -- it is
+        /// declared once and read once, both verified against export/ -- so the guard is always
+        /// taken, and it is dropped here along with the dead field.
+        /// </para>
+        /// <para>
+        /// DEOBF-BUG(guessed). export/ shows the guarded body as a non-terminating loop:
+        /// <c>if (!_BaseMapper) { while (true) { RebuildTransitionSerializedObject();
+        /// RebuildStateSerializedObject(); } }</c>, whose body contains no break, return or throw.
+        /// What is written instead is the two calls, once, unguarded.
+        /// </para>
+        /// <para>
+        /// This matches the known de4dot fault exactly -- a Reactor-flattened <c>if</c> recovered as
+        /// a <c>while</c> -- which was itself established elsewhere by tracing the obfuscated IL.
+        /// Two things make the reconstruction safe: the loop body is carried over unchanged, so
+        /// nothing about its <em>shape</em> is being guessed, and the loop as written would hang the
+        /// editor thread the first time the settings window was opened, which the shipped tool
+        /// plainly did not do. What remains genuinely unestablished is only whether the body runs
+        /// once or not at all, and the never-assigned <c>_BaseMapper</c> settles that as "once".
+        /// </para>
+        /// <para>
+        /// It is marked (guessed) rather than (resolved) because neither form of evidence the
+        /// project accepts for (resolved) is available here: there is no IL trace of this specific
+        /// method, and ControllerEditor ships a single build, so there is no second decompilation of
+        /// it to diff against. An IL trace of this method is the only thing that would settle it.
+        /// export/ will keep showing the loop until de4dot's control-flow recovery changes -- do not
+        /// "fix" this back to match it.
+        /// </para>
         /// </remarks>
         private void OnEnable()
         {

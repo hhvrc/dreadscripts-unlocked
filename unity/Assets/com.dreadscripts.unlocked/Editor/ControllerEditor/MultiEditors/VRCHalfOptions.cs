@@ -5,6 +5,12 @@
 //
 // The type was a private nested enum of the ControllerEditor window and is lifted to top level
 // here, matching the convention already used for PhysBoneEditor.
+//
+// Audit status: VERIFIED -- diffed against the `private enum VRCHalfOptions` still at line 430 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, which declares exactly
+// `Set = 0, Random = 2`; the explicit values the remarks call load-bearing are the shipped ones, not
+// a port decision. Line 9337 is still the single call site, and it picks between this type and
+// VRCFullOptions on parameter type before casting the result back to ChangeType.
 
 namespace DreadScripts.ControllerEditor
 {

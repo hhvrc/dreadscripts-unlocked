@@ -12,6 +12,14 @@
 // exactly as for the other SDK-touching types in this folder (PhysBoneChainData,
 // PhysBoneColliderSnapshot, MenuControlTreeItem). The shipped assembly likewise referenced the SDK
 // unconditionally, so a tool built on this helper simply is not usable without it.
+//
+// Audit status: VERIFIED -- all five static fields and their initialisers, the Avatar property and
+// all eight methods were diffed statement by statement against export/, including every default
+// parameter value, the "Avatar"/"The Targeted VRCAvatar" strings, both HelpBox messages, the
+// baseAnimationLayers[3]/[4] comparison and the length > 3 guards. Where the decompiled source
+// nests the conditions (RefreshIssues, DrawWarnings, DrawActionLayerWarning) the port uses early
+// returns; each was checked to be the same predicate. The MAP line number was re-checked against
+// the current export/ snapshot and still lands on the Avatar getter.
 
 using System;
 using System.Linq;

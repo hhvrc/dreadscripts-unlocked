@@ -1,4 +1,24 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ReflectionMemberRef.cs
+//
+// The three [SpecialName] accessors GetFirstParameterType/GetMembers/GetMember were properties
+// before the obfuscator split them, and are properties (FirstParameterType/Members/Member) again
+// here. The decompile's [CompilerGenerated] FillRecord is the lambda inside Member.
+//
+// DELIBERATE DEVIATION
+// Members casts element-wise (`.Cast<T>().ToArray()`) where the shipped build casts the whole
+// array (`(T[])Type.GetMember(...)`). Type.GetMember is declared to return MemberInfo[], so
+// whether that array cast succeeds depends on the runtime handing back a covariant array; the
+// element-wise cast produces the same T[] without depending on it. The reason it is written down
+// rather than treated as cosmetic: this is the one place the port could differ observably, by
+// succeeding where the shipped build would have thrown InvalidCastException.
+//
+// Audit status: VERIFIED -- diffed in full against export/. The eight fields, all five
+// constructors (including which two pass matchExactSignature false and which two pass true, and
+// the shared default BindingFlags now named AnyMember) and all three accessors match statement for
+// statement. The Member getter's branch conditions were checked against the decompile's inverted
+// form -- `Length != 1 && FirstParameterType != null` selects the overload scan, everything else
+// takes Members[0] -- as was the exact/loose match test inside the scan. The unreferenced static
+// pair StopDecorator/ReflectDecorator is not ported, as an obfuscator decoy.
 
 using System;
 using System.Linq;

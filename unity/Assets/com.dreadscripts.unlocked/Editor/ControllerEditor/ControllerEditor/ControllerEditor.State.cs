@@ -348,7 +348,8 @@
 // They are recorded above as NOT PORTED entries rather than dropped from the table, so that
 // "removed on purpose" stays distinguishable from "overlooked" -- and the decision itself lives in
 // ../../../vendor-backend/EXCLUDED.md, not here, because a file's header dies with the file.
-// The protocol they served is specified in ../../../DRM.md and answered by ../../../drm_server/.
+// The protocol they served is specified in reverse-engineering/DRM.md, at the repository root, and
+// answered by drm_server/ beside it.
 //
 // Audit status: PARTIAL -- the two omissions were re-checked against decompiled/ on this pass and
 // are exactly where the table says: line 8162 is

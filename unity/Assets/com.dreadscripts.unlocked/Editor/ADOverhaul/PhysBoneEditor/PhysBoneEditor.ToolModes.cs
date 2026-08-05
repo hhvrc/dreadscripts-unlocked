@@ -23,6 +23,14 @@
 // and CountAccount have no setter in the original and stay read-only.
 //
 // 2019 vs 2022: identical, including the seven mode names and their order.
+//
+// Audit status: VERIFIED -- every member diffed statement by statement against the 2022 snapshot,
+// which carries these names now: the three fields with their initialisers and the seven mode strings
+// in order, all seven [SpecialName] accessor pairs (each getter's index comparison and each setter's
+// SetSelected index), SetPropertyEditTarget's two branches and trailing SceneView.RepaintAll, and
+// ExitTool. The asymmetry the header flags -- SetSelected(6, false) to dismiss, Select(6) to arm --
+// is what the snapshot does. Every line number in the MAP was checked against the current snapshot
+// and every one is exact, which is not true of the sibling PhysBoneEditor files.
 
 using UnityEditor;
 

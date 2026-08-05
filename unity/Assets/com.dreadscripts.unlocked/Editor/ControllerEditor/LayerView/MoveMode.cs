@@ -8,6 +8,15 @@
 //
 // The behaviour described below is read from PatchVisitor (line 13170) and the Copy branch of the
 // batch-action dispatcher (line 13130), neither of which is ported.
+//
+// Audit status: VERIFIED -- the three members and their implicit ordinals were diffed against the
+// `private enum MoveMode` still at line 2174 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; names and order are
+// identical, and the type really is ActionMode minus CurrentStatemachine. The shared-ordinals claim
+// was confirmed at the call site: the Copy branch of the dispatcher passes `(int)copySourceScope`
+// into the same PatchVisitor(int) selector that ActionMode is cast into. The prose line numbers for
+// PatchVisitor and the Copy branch are two to three lines stale (13173 and 13132 now); left alone
+// as ordinary snapshot drift.
 
 namespace DreadScripts.ControllerEditor
 {

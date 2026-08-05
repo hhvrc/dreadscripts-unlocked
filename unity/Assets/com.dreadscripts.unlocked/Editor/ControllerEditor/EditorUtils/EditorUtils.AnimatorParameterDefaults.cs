@@ -18,6 +18,10 @@
 //
 // CustomizePredicate is NOT another spelling of GetOrAddParameter and must not be collapsed into
 // it: it skips the existence check entirely and always calls AddParameter. Hence the distinct name.
+// Audit status: VERIFIED -- all four bodies diffed statement by statement against export/. Two
+// shape-only differences, both behaviour-preserving: GetDefaultValue's decompiled form is a switch
+// *expression* written here as a switch statement, and SetDefaultValue's decompiled form carries an
+// empty `case (AnimatorControllerParameterType)2:` (Trigger) that is dropped as a no-op.
 
 using UnityEditor.Animations;
 using UnityEngine;

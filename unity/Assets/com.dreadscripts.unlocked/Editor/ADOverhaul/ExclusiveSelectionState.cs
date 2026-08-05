@@ -1,4 +1,32 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ExclusiveSelectionState.cs
+//
+// The whole file is one type; every member is ported and keeps its decompiled name, except the
+// backing array `toggles`, which becomes `_toggles`.
+//
+// DELIBERATE DEVIATION
+//
+// Resize tests `activeIndex >= 0` here where both shipped builds test `activeIndex > 0`. With the
+// shipped test a selection on the first toggle was silently lost on every resize: activeIndex stayed
+// 0 while the freshly allocated array had that entry off, so the set reported a selection the toggle
+// row did not draw. This is the one place the port does not reproduce shipped behaviour; it is fixed
+// rather than preserved because the caller (PhysBoneEditor's tool modes) resizes only on construction
+// and the stale state is unreachable from the UI, so preserving it would encode a defect no user can
+// observe. Recorded here rather than left in a code comment alone.
+//
+// NOTES
+//
+// Two shape changes, neither behavioural. Select() calls Clear() instead of inlining
+// `if (activeIndex >= 0) _toggles[activeIndex] = false;` -- Clear also writes activeIndex = -1, which
+// the next statement overwrites. SetSelected() is restructured from the decompiled straight-line form
+// (`if (activeIndex == i) { if (selected) return; Clear(); } if (activeIndex >= 0 && selected)
+// _toggles[activeIndex] = false; if (selected) activeIndex = i; _toggles[i] = selected;`) into the
+// two-branch form below; both agree on every input, given that only activeIndex is ever true.
+//
+// Audit status: VERIFIED -- the whole type diffed member by member against the 2022 snapshot: the
+// field, activeIndex's -1 seed, the constructor, Resize, Select, SetSelected and Clear. The only
+// behavioural difference is the Resize bound recorded under DELIBERATE DEVIATION above, which was
+// documented only in a code comment before this pass; the two restructurings under NOTES were traced
+// case by case and are equivalent.
 
 namespace DreadScripts.ADOverhaul
 {

@@ -33,6 +33,20 @@
 // If the window's controller ever diverged from the argument, the original would keep the argument
 // controller in `others` and drop the window's controller instead; that situation cannot arise
 // today.
+//
+// Audit status: VERIFIED -- the struct, all six list fields and the constructor were diffed
+// statement by statement against `private struct MethodVisitor` at line 36 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; every cited line (36,
+// 38, 40, 42, 44, 46, 48, 50, 52, 103) still lands on the named member. Field types, the six list
+// allocations, the `if (!instance) return;` guard, the LoadAllAssetsAtPath call and the type-test
+// order (AnimatorTransitionBase, AnimatorState, BlendTree, StateMachineBehaviour,
+// AnimatorStateMachine, else) all match; the port only flattens the decompiler's inverted, nested
+// if/else chain into a positive else-if ladder, which preserves the order exactly. The two notes
+// were re-checked and both hold: VerifyIndexer is `return DisableIndexer == null`, DisableIndexer
+// has no assignment anywhere in the assembly, and the deviation is real -- the shipped constructor
+// compares against `ActiveController()` (line 8509, the member the note calls LogoutMapper) rather
+// than its own `instance` argument, and the sole construction in the assembly is still
+// `new MethodVisitor(ActiveController())` at line 18360, so the two are the same object there.
 
 using System.Collections.Generic;
 using UnityEditor;

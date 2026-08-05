@@ -42,6 +42,14 @@
 // read pixels back on the CPU, where ReadPixels alone suffices, so this was unobservable in the
 // shipped tools -- but the type hands its texture out through an implicit Texture2D conversion, and
 // anything that draws that texture would get garbage. Apply() is called here.
+//
+// Audit status: VERIFIED -- all three shipped copies (ControllerEditor's top-level
+// ReadableTextureScope, ADOverhaul 2022 and 2019's nested ReadableTexture) diffed statement by
+// statement against this file: both fields, the constructor, Dispose and the implicit Texture2D
+// conversion. The three are identical apart from the constructor parameter name, confirmed by
+// diffing them against each other. Every difference this file has from them is one of the five
+// deviations listed above; nothing else in the constructor changed -- the width/height capture, the
+// GetTemporary call, the Blit, the new Texture2D and the ReadPixels rect are transcribed.
 
 using System;
 using UnityEngine;

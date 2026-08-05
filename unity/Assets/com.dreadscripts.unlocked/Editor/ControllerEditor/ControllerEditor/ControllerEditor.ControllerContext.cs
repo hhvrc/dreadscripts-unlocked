@@ -64,41 +64,23 @@
 // Accessibility follows the shipped members: ActiveController is internal, the other two private,
 // and each property's two accessors have the same accessibility as each other, as they did.
 //
-// CORRECTION TO ControllerEditor.Window.cs's HEADER, which lists these three among its blockers and
-// describes two of them wrongly. That file is owned by another port and is not edited from here, so
-// the disagreement is recorded rather than left silent:
+// THE TWO CORRECTIONS THIS HEADER USED TO CARRY ARE SPENT. It recorded, at length, that
+// ControllerEditor.Window.cs's header listed these three accessors among its blockers and described
+// two of them wrongly -- LogoutMapper as "is a controller loaded" when it returns the
+// AnimatorController itself and only reads as a bool through UnityEngine.Object's implicit
+// conversion, and ManageMapper as "is a VRC avatar loaded" when it has nothing to do with VRChat and
+// returns the selected layer's root state machine. Window.cs no longer says either of those things:
+// its header now names all three as ported here and describes what they are. The disagreement was
+// recorded rather than fixed because that file belonged to another port at the time; there is
+// nothing left to disagree with, so the record goes rather than being kept as a description of a
+// sentence that no longer exists.
 //
-//   * "LogoutMapper() -- 'is a controller loaded'". It is not a bool. It returns the
-//     AnimatorController itself; the call site `BeginDisabledGroup(!LogoutMapper())` reads as a
-//     bool only because UnityEngine.Object defines an implicit conversion that is true for a live
-//     object and false for a null or destroyed one. "Is a controller loaded" is what that one call
-//     site does with the value, not what the member returns.
-//
-//   * "ManageMapper() -- 'is a VRC avatar loaded'". It has nothing to do with VRChat or with
-//     avatars. It returns the selected layer's root state machine. The strip it gates (decompiled
-//     8651-8662) is `if ((bool)ManageMapper() && exitTransitionNames.Length != 0)`, and
-//     `exitTransitionNames` holds the names of that machine's Any State transitions that target
-//     Exit -- an "these transitions leave this layer" reminder drawn as asset labels. The VRChat
-//     reading is presumably from an avatar controller being where one usually sees such a strip.
-//
-//   Window.cs's third description, RevertMapper as "the active state machine, whose name the header
-//   row labels itself with; 'No Active Machine' when null", is accurate.
-//
-// OnGUI IS NOW UN-DEFERRED, for whoever owns ControllerEditor.Window.cs. The three setters and their
-// notifiers have landed, so the lines that file defers can be written, in shipped order (decompiled
-// 8626-8664):
-//
-//     EditorGUI.BeginDisabledGroup(!ActiveController);
-//     ... GUILayout.Label(ActiveStateMachine != null ? ActiveStateMachine.name : "No Active Machine",
-//                         EditorUtils.styles.centeredMiniLabel, GUILayout.ExpandWidth(true));
-//     EditorGUI.EndDisabledGroup();   // manual and settings buttons stay live
-//     ... EditorGUI.BeginDisabledGroup(!ActiveController);
-//     if (RootStateMachine && exitTransitionNames.Length != 0) { ...label strip... }
-//     EditorGUI.EndDisabledGroup();
-//
-// Both disabled groups were omitted as pairs, on the rule that half a Begin/End pair corrupts the
-// GUI stack for the rest of the frame. Their condition can now be evaluated honestly, so both pairs
-// can go back in whole. That edit belongs to Window.cs's owner and has not been made from here.
+// The same applies to the "OnGUI IS NOW UN-DEFERRED" note that followed it, which spelled out the
+// six lines Window.cs could write once these accessors landed -- the two `BeginDisabledGroup`/
+// `EndDisabledGroup` pairs, the machine-name label and the exit-transition strip, omitted as pairs
+// on the rule that half a Begin/End pair corrupts the GUI stack for the rest of the frame. They are
+// written, at decompiled 8626-8664's shape, in ControllerEditor.Window.cs. A note telling another
+// file to make an edit it has made is the second copy of a fact, and the copy that rots.
 //
 // WHAT IS STILL NOT REACHABLE FROM HERE. `RootStateMachine`'s notifier dereferences the property it
 // was just set from, so setting the root state machine to null from a non-null value re-enters the

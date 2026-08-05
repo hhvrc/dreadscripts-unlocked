@@ -2,6 +2,16 @@
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/GUIColorScope.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/GUIColorScope.cs
+//
+// Audit status: VERIFIED -- both copies diffed statement by statement against this file: the
+// ColoringType enum (All = 7 written out as BG | FG | General), all four constructors, the colour
+// application and Dispose. Two shape changes, neither behavioural: the shipped Color[3] savedColors
+// is split into three named fields in the same order (0 background, 1 content, 2 general), and the
+// shipped Capture() is folded into Apply(), which called it unconditionally anyway. That makes the
+// params-Color[] constructor's double Capture() -- once directly, once via ApplyColor -- a single
+// call here; capturing twice in a row recorded the same three values both times. The [Flags]
+// attribute is added here and is on neither shipped copy; it documents the enum without changing
+// anything, since HasFlag does not consult it.
 
 using System;
 using UnityEngine;

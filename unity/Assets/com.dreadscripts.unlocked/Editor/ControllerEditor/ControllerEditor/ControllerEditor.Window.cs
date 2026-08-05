@@ -7,8 +7,8 @@
 //
 //   InterruptWrapper -> ShowWindow,  line 8578
 //   OnGUI            -> OnGUI,       line 8583
-//   OnFocus          -> NOT PORTED, line 8831 -- its whole body is one call to ManageWrapper (8676),
-//     the selection-sync routine, which is itself unported and licence gated; see PARTIAL PORT.
+//   OnFocus          -> OnFocus,     line 8831
+//   PrintWrapper     -> OnUndoRedo,  line 8836
 //   OnDisable        -> OnDisable,   line 8842
 //   OnEnable         -> OnEnable,    line 8857
 // ShowWindow is the [MenuItem] entry point; the attribute sits one line above the declaration, at
@@ -27,13 +27,27 @@
 //
 // =========================== PARTIAL PORT, EACH WITH ITS BLOCKER ==============================
 //
-// Nothing below is stubbed. These are the calls the shipped bodies make that this port omits
-// because their targets do not exist in the package yet. All of them live in the still-unported
-// body regions of the god class; none is blocked on anything subtle.
+// Nothing below is stubbed. Three calls the shipped bodies make are still omitted because their
+// targets do not exist in the package yet.
 //
-//   OnGUI, after the header block:
-//     DefineVisitor()      -- the parameter section.
-//     HarmonyPatchManager.LoginReg() -- the deferred-patch pump, run once per repaint.
+//   OnGUI, after the section run:
+//     DefineVisitor() (10978) -- the parameter section, the fourth and last thing OnGUI draws. It
+//       is unported: no member of the package declares it under any name, and it is the root of a
+//       region (the parameter list, its add/remove/rename gestures and its own reorderable list)
+//       that has not been started.
+//     HarmonyPatchManager.LoginReg() (HarmonyPatchManager.cs 2716) -- the patch-failure banner,
+//       drawn into the tool's toolbar once per repaint. It is deferred in
+//       Editor/ControllerEditor/HarmonyPatchManager/HarmonyPatchManager.cs, which owns it. Note
+//       that the blocker that file records for it -- EditorUtils.CountRules, the delay-call
+//       marshal -- has since landed as EditorUtils.DelayCall in EditorUtils.Callbacks.cs, so
+//       LoginReg looks unblocked now; that is a call for HarmonyPatchManager's owner to make, not
+//       one to make from here, and it is reported rather than acted on.
+//
+//   OnEnable:
+//     CancelAnnotation (9296) -- the first-open build of the parameter-driver ReorderableList. Its
+//       three callbacks, CountAnnotation (9304), DisableAnnotation and InsertAnnotation, are all
+//       unported, so the list cannot be constructed as shipped. Its two siblings in that same
+//       three-call tail have landed and are written out below.
 //
 //   The rest of OnGUI's body has since landed and is no longer deferred. LogoutMapper,
 //   ManageMapper and RevertMapper are ported as the ActiveController / RootStateMachine /
@@ -48,20 +62,50 @@
 //   and ValidateVisitor (11806) draws the CONTROLLER section, gated on editingController. The
 //   ported names follow the behaviour, not the obfuscated name.
 //
-//   OnEnable:
-//     PrintWrapper       (8836) -- the Undo.undoRedoPerformed handler; needs UpdateVisitor, which
-//                                  is itself unported: see ControllerEditor.Refresh.cs.
-//     CalculateAnnotation, MapVisitor, CancelAnnotation -- the three first-open initialisers.
-//     SortAlgo is ported (as ApplyGraphBackground, ControllerEditor.Refresh.cs) but is NOT
-//     subscribed here: it is a graph-background applier driven by a settings change, not the
-//     playmodeStateChanged handler this header previously called it.
+// ============================ FORMER DEFERRALS, NOW WITHDRAWN =================================
 //
-//   OnFocus is not ported at all rather than ported empty: its entire body is one call to
-//   ManageWrapper (8676), the selection-sync routine, which is both unported and itself licence
-//   gated. An empty OnFocus would be a fabrication, not a partial port.
+// Three of this file's four lifecycle members were partly or wholly deferred and no longer are:
 //
-//   OnDisable's Undo.undoRedoPerformed unsubscribe is omitted, because OnEnable's matching
-//   subscribe is: both name PrintWrapper. Porting one half would leave the delegate unbalanced.
+//   OnFocus -- was not ported at all, on the grounds that its whole body is one call to
+//     ManageWrapper (8676), "which is both unported and itself licence gated". That routine is
+//     ported, as SyncSelection in ControllerEditor.SelectionSync.cs, with the licence gate dropped
+//     under the package-wide rule. OnFocus is therefore written out, and is still one statement.
+//
+//   PrintWrapper -- the Undo.undoRedoPerformed handler, ported below as OnUndoRedo. Its recorded
+//     blocker was UpdateVisitor, "which is itself unported: see ControllerEditor.Refresh.cs".
+//     UpdateVisitor is ported, as RefreshSharedConditions in ControllerEditor.ConditionMatching.cs;
+//     ControllerEditor.Refresh.cs's NOT PORTED narrative predates that and has been removed. With
+//     the handler back, OnEnable's subscribe and OnDisable's unsubscribe go back in as a pair --
+//     they were omitted as a pair, and porting one half would have left the delegate unbalanced.
+//
+//   OnEnable's three first-open initialisers -- CalculateAnnotation, MapVisitor, CancelAnnotation.
+//     The first two are ported (RefreshInspectorProperties in ControllerEditor.InspectorRefresh.cs
+//     and RebuildConditionList in ControllerEditor.ConditionList.cs) and are called below in the
+//     shipped order. Only CancelAnnotation is still deferred; see above.
+//
+//   OnEnable's play-mode subscription. This header used to state, flatly, that ApplyGraphBackground
+//     "is NOT subscribed here: it is a graph-background applier driven by a settings change, not the
+//     playmodeStateChanged handler this header previously called it". That is wrong, and it was the
+//     only claim in this file contradicted by export/ rather than merely gone stale. Decompiled
+//     8862-8863 are
+//
+//         EditorApplication.playmodeStateChanged -= ApplyGraphBackground;
+//         EditorApplication.playmodeStateChanged += ApplyGraphBackground;
+//
+//     -- the same remove-then-add shape as the Undo pair on the two lines above them, over the
+//     member ControllerEditor.Refresh.cs ports as ApplyGraphBackground. Both lines are written out
+//     below. It is a settings-change applier *and* a play-mode handler; those are not alternatives,
+//     because entering play mode rebuilds Unity's editor styles and drops the background the
+//     cosmetic settings had written into them.
+//
+//     `EditorApplication.playmodeStateChanged` is the pre-2019.3 lower-case-m `CallbackFunction`
+//     field, superseded by `playModeStateChanged` (an `Action<PlayModeStateChange>`, which is what
+//     ADOverhaul.SceneView.cs uses because its shipped build already did). It is deprecated but
+//     still declared in the reference assemblies this package compiles against, which was checked by
+//     compiling it rather than assumed, so the shipped lines are written literally with no adapter.
+//     If a future Unity drops it, the honest replacement is the one-line adapter and a DELIBERATE
+//     DEVIATION note -- not silently dropping the subscription, which is what the removed claim
+//     above amounted to.
 //
 // ============================ FORMER DEVIATION, NOW WITHDRAWN =================================
 //
@@ -76,10 +120,15 @@
 //
 // ControllerEditor ships a single build, so there is no second decompilation to diff this against.
 //
-// Audit status: PARTIAL -- the five MAP entries were re-checked against decompiled/ControllerEditor/
+// Audit status: PARTIAL -- the six MAP entries were re-checked against export/ControllerEditor/
 // DreadScripts/ControllerEditor/ControllerEditor.cs and each lands on the member named (8577 was the
-// [MenuItem] attribute line, corrected to 8578; ManageWrapper corrected from 8672 to 8676). The
-// bodies were not re-diffed statement by statement, which is why this is PARTIAL rather than VERIFIED.
+// [MenuItem] attribute line, corrected to 8578; ManageWrapper corrected from 8672 to 8676). On the
+// pass that landed OnFocus and OnUndoRedo, decompiled 8831-8870 was diffed statement for statement:
+// OnFocus's single call, OnUndoRedo's two, OnDisable's four statements including the unsubscribe,
+// and OnEnable's whole body -- the two delegate pairs in their shipped order (Undo first, play mode
+// second, each written remove-then-add), the mixed-value pair's null guard, and the three-call tail
+// of which two are now written and the third is deferred. OnGUI's body was not re-diffed on this
+// pass, which is why this stays PARTIAL rather than becoming VERIFIED.
 
 using UnityEditor;
 using UnityEditor.Animations;
@@ -109,13 +158,13 @@ namespace DreadScripts.ControllerEditor
         }
 
         /// <summary>
-        /// Draws the window: the section toolbar, the title bar, and -- once they are ported -- the
-        /// four editor sections.
+        /// Draws the window: the section toolbar, the title bar, and three of the four editor
+        /// sections.
         /// </summary>
         /// <remarks>
-        /// See the file header. The licence gate this body opened with is dropped, the two disabled
-        /// groups around the title bar are omitted as a documented deviation, and the section calls
-        /// after the separator are deferred on unported targets.
+        /// See the file header. The licence gate this body opened with is dropped; the two disabled
+        /// groups around the title bar are drawn as shipped; and of the calls after the section run
+        /// only the parameter section and the patch-failure banner are still deferred.
         /// </remarks>
         private void OnGUI()
         {
@@ -215,25 +264,63 @@ namespace DreadScripts.ControllerEditor
                 DrawControllerSection();
 
                 // DEFERRED, still: DefineVisitor() -- the parameter section -- and
-                // HarmonyPatchManager.LoginReg(), the deferred-patch pump. See the file header.
+                // HarmonyPatchManager.LoginReg(), the patch-failure banner. See the file header.
             }
         }
 
         /// <summary>
-        /// Clears the three transition-editing modes when the window is closed or reloaded.
+        /// Re-reads everything derived from the selection when the window is focused.
         /// </summary>
         /// <remarks>
-        /// These three are session state, not settings: a mode armed by a button in the transition
-        /// section must not survive the window going away, or the next open would start mid-gesture.
-        /// The shipped body also unsubscribes <c>PrintWrapper</c> from
-        /// <see cref="Undo.undoRedoPerformed"/>; that half is omitted here because
-        /// <see cref="OnEnable"/>'s matching subscribe is. See the file header.
+        /// One statement, as shipped. Focus is the tool's cheapest "something may have changed while
+        /// you were elsewhere" signal: the graph selection lives behind reflection and raises no
+        /// event, so returning to this window is one of the two moments a full re-read is worth
+        /// doing. The other is Unity's own <see cref="Selection.selectionChanged"/>, which the
+        /// shipped code subscribes to the same routine.
+        /// </remarks>
+        private void OnFocus()
+        {
+            SyncSelection();
+        }
+
+        /// <summary>
+        /// Rebuilds the shared condition rows after an undo or redo, and repaints.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// An undo can rewrite the conditions of a transition that is still selected, which leaves
+        /// the shared rows describing conditions that no longer exist while the selection itself is
+        /// unchanged -- so <see cref="SyncSelection"/>, which diffs on the selection, would find
+        /// nothing to do. That is why the undo handler goes straight to
+        /// <see cref="RefreshSharedConditions"/> instead.
+        /// </para>
+        /// <para>
+        /// It is an instance method because it repaints this window, which is also why the
+        /// subscription is made in <see cref="OnEnable"/> rather than statically.
+        /// </para>
+        /// </remarks>
+        private void OnUndoRedo()
+        {
+            RefreshSharedConditions();
+            Repaint();
+        }
+
+        /// <summary>
+        /// Clears the three transition-editing modes and drops the undo subscription when the
+        /// window is closed or reloaded.
+        /// </summary>
+        /// <remarks>
+        /// The three modes are session state, not settings: a mode armed by a button in the
+        /// transition section must not survive the window going away, or the next open would start
+        /// mid-gesture.
         /// </remarks>
         private void OnDisable()
         {
             makeMultipleTransitionsMode = false;
             redirectTransitionsMode = false;
             replicateTransitionsMode = false;
+
+            Undo.undoRedoPerformed -= OnUndoRedo;
         }
 
         /// <summary>
@@ -254,13 +341,28 @@ namespace DreadScripts.ControllerEditor
         /// and leak nothing into the project. The shipped code does not destroy them either.
         /// </para>
         /// <para>
-        /// See the file header for the Undo and play-mode subscriptions and the three initialisers
-        /// this body also makes, all of which are deferred on unported targets.
+        /// The undo subscription is written as a remove followed by an add, which is what the
+        /// shipped body does and is not redundant: a domain reload can run OnEnable against a
+        /// delegate list that survived it, and removing a handler that is not subscribed is a no-op.
+        /// </para>
+        /// <para>
+        /// See the file header for the play-mode subscription this body also makes, which cannot be
+        /// written against a modern Unity, and for the one first-open initialiser still deferred.
         /// </para>
         /// </remarks>
         private void OnEnable()
         {
             activeWindow = this;
+
+            Undo.undoRedoPerformed -= OnUndoRedo;
+            Undo.undoRedoPerformed += OnUndoRedo;
+
+            // The graph background is a GUIStyle held in a static field of Unity's own graph code,
+            // and entering or leaving play mode rebuilds those styles -- so the cosmetic background
+            // has to be written back over the top afterwards or it reverts. Same remove-then-add
+            // shape, for the same reason.
+            EditorApplication.playmodeStateChanged -= ApplyGraphBackground;
+            EditorApplication.playmodeStateChanged += ApplyGraphBackground;
 
             if (mixedValueTransitionPair == null)
             {
@@ -300,6 +402,15 @@ namespace DreadScripts.ControllerEditor
             }
 
             transitionInspectorSerialized = mixedValueTransitionSerialized;
+
+            // The first-open initialisers, in shipped order. The property banks are refreshed
+            // against the SerializedObject assigned on the line above, then the condition list is
+            // built so the condition editor has something to draw on the very first frame.
+            RefreshInspectorProperties();
+            RebuildConditionList();
+
+            // DEFERRED: CancelAnnotation() -- the parameter-driver ReorderableList, the third of
+            //           these three. See the file header for the callbacks it needs.
         }
 
         #endregion

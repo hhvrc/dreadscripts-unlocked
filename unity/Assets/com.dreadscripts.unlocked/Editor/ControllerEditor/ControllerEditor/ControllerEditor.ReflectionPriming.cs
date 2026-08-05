@@ -104,21 +104,28 @@
 //     QueryList(name)             -> GetProperty(name, PrimingBindingFlags)
 //   That is a spelling change only; the binding flags and the resolution result are identical.
 //
-//   DEFERRED, decompiled InstantiateMapper lines 17095-17106: the tail of the method builds the two
-//   RenameOverlayWrapper instances --
-//     indexerVisitor  (line 8402) wraps the layer view's own overlay, via
-//       `new RenameOverlayWrapper(() => layerControllerViewType.GetMethod("get_renameOverlay")
-//                                          .Invoke(ReadAnnotation(), null))`
-//     _IssuerVisitor  (line 8404) is a second, freshly constructed overlay whose onEndRename runs
-//       RestartAlgo(RevertMapper(), m_AlgoAnnotation, _IssuerVisitor.Name()) when the rename was
-//       accepted.
-//   Both are shared UI state read all over the layer view (decompiled lines 6265, 8690, 16401,
-//   16403, 16527) rather than reflection handles, so the fields belong in ControllerEditor.State.cs,
-//   which another port owns; and the closures need ReadAnnotation (line 6258), RevertMapper (8552),
-//   RestartAlgo (14376) and m_AlgoAnnotation, none of which are ported. Omitted rather than stubbed.
-//   Note for whoever lands it: that lookup is a plain `GetMethod("get_renameOverlay")`, i.e. public
-//   binding only, unlike every other lookup in the region -- port it literally, including the null
-//   it will return if Unity ever makes the property non-public.
+//   FORMERLY DEFERRED, decompiled InstantiateMapper lines 17095-17103: the tail of the method builds
+//   the two RenameOverlayWrapper instances and is now written out. It was deferred because its two
+//   fields (indexerVisitor 8402 and _IssuerVisitor 8404, which are shared UI state read all over the
+//   layer view rather than reflection handles) belonged in ControllerEditor.State.cs, and because
+//   ReadAnnotation, RevertMapper, RestartAlgo and m_AlgoAnnotation were all unported. Every one of
+//   those has since landed: the fields are `layerRenameOverlay` and `stateRenameOverlay` in
+//   ControllerEditor.State.cs, ReadAnnotation is GetLayerControllerView in
+//   ControllerEditor.LayerCategory.cs, RevertMapper is the ActiveStateMachine property in
+//   ControllerEditor.ControllerContext.cs, m_AlgoAnnotation is `selectedStates`, and RestartAlgo is
+//   ported as RenameStates in ControllerEditor.StateRenaming.cs.
+//
+//   The old note also mis-described the second overlay, and the correction matters to anyone
+//   reading it: it said _IssuerVisitor is "a second, freshly constructed overlay whose onEndRename
+//   runs RestartAlgo(...)", as though the handler were a constructor argument. It is not. The
+//   snapshot is `stateRenameOverlay = new RenameOverlayWrapper();` -- the parameterless constructor,
+//   which creates an overlay of its own -- followed by a separate assignment to its `onEndRename`
+//   field. Both statements are written out below, separately, as they stand.
+//
+//   That first lookup is a plain `GetMethod("get_renameOverlay")`, i.e. public binding only, unlike
+//   every other lookup in the region. It is ported literally, including the null it will return if
+//   Unity ever makes the property non-public, rather than being quietly promoted to
+//   PrimingBindingFlags for consistency with its neighbours.
 //
 //   NOT PORTED, decompiled line 8906 RevertWrapper / line 15867: the only caller of this priming
 //   chain is RevertWrapper, which runs the whole chain inside an inline HMAC-SHA256 licence check
@@ -157,7 +164,11 @@
 //
 // Audit status: PARTIAL -- rebuildGraphMethod's field line was corrected from 8348 to 8346 against
 // decompiled/ on 2026-08-05 (8348 is filterVisitor, which ControllerEditor.State.cs owns); the
-// remaining entries were not re-checked.
+// remaining field entries were not re-checked. The one region audited since is the tail of
+// PrimeMenuAndLayerEditorReflection, which was deferred and is now written out: decompiled
+// 17095-17103 was diffed statement for statement, which is what turned up that the old deferral note
+// described the second overlay wrongly (see the correction in the PARTIAL PORT section), and each of
+// the four members it named as blockers was traced to where it is now ported.
 
 using System;
 using System.Reflection;
@@ -636,8 +647,24 @@ namespace DreadScripts.ControllerEditor
             liveLinkProperty = animatorControllerToolType.GetProperty("liveLink", PrimingBindingFlags);
             selectedLayerIndexProperty = layerControllerViewType.GetProperty("selectedLayerIndex", PrimingBindingFlags);
 
-            // Omitted here: the two RenameOverlayWrapper instances the decompiled method goes on to
-            // build. See the deferral note in this file's header.
+            // The layer view's own overlay, reached lazily: the view object does not exist until the
+            // Animator window has been opened, so this constructor stores the getter and resolves
+            // nothing. Deliberately a public-only GetMethod -- see this file's header.
+            layerRenameOverlay = new RenameOverlayWrapper(
+                () => layerControllerViewType.GetMethod("get_renameOverlay").Invoke(GetLayerControllerView(), null));
+
+            // The state rename overlay is the tool's own, constructed here rather than borrowed,
+            // because the graph has no overlay for renaming a state in place.
+            stateRenameOverlay = new RenameOverlayWrapper();
+            stateRenameOverlay.onEndRename = delegate(bool accepted)
+            {
+                // Cancelled renames leave every name alone. Accepted ones apply the typed name to
+                // the whole selection, which is what makes an in-graph rename a multi-rename.
+                if (accepted)
+                {
+                    RenameStates(ActiveStateMachine, selectedStates, stateRenameOverlay.Name);
+                }
+            };
         }
 
         /// <summary>

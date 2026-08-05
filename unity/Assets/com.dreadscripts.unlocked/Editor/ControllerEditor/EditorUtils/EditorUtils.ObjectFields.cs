@@ -7,6 +7,9 @@
 // as an assignment at the call site -- `x = x.ObjectField(label)` rather than a four-argument call
 // with a typeof() and a cast -- and because ControllerEditorWindow.Defaults (DrawOtherDefaults)
 // currently inlines it with a note pointing here. That inlining can now be replaced by a call.
+// Audit status: VERIFIED -- the single body, its generic constraint and its four-argument forward to
+// EditorGUILayout.ObjectField diffed against export/. The DrawOtherDefaults inlining the note above
+// describes was re-checked and is still there.
 
 using UnityEditor;
 using UnityEngine;

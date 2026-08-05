@@ -1,7 +1,17 @@
 // Shared by both tools: ADOverhaul and ControllerEditor shipped their own copy of this
-// type. Reconstructed from both, which differ only in obfuscated parameter names:
+// type. Reconstructed from both. They are not merely renamings of each other: they differ in
+// the write path, which is broken in one of them and correct in the other. See the comment on
+// TrySetValue for which was followed and why.
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionAccessor.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ObjectReflector.cs
+//
+// Audit status: VERIFIED -- every member of both copies diffed statement by statement against this
+// file: the constructor and its member-table build, the [SpecialName] GetValue/SetValue pair
+// restored as this[string], TryGetValue, TrySetValue, both Invoke overloads and the private
+// Invoke(string, Type, object[]). The three static TryFilterBy* helpers are consolidated into one
+// TrySingle(candidates, predicate, out matches); the predicates and the order they are applied in
+// are unchanged. Behaviour matches ControllerEditor's copy exactly, and ADOverhaul's except for the
+// TrySetValue fall-through described below.
 
 using System;
 using System.Collections.Generic;

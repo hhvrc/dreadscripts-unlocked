@@ -2,6 +2,10 @@
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ScrollViewScope.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/ScrollViewScope.cs
+//
+// Audit status: VERIFIED -- both copies diffed statement by statement against this file. The
+// `began` field, the ref-Vector2 constructor with its try/catch, and Dispose are transcribed
+// exactly; the two shipped copies are byte-identical apart from the constructor parameter name.
 
 using System;
 using UnityEngine;

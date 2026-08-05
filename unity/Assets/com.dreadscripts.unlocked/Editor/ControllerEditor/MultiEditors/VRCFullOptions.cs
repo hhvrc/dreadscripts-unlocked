@@ -10,6 +10,14 @@
 // .ChangeType, which is already ported. It is *not* a duplicate to be collapsed into it: it exists
 // solely as the type handed to EditorGUI.EnumPopup (line 9337) so that the popup's option list can
 // be swapped at runtime, and deleting it would change what that popup shows. See VRCHalfOptions.
+//
+// Audit status: VERIFIED -- diffed against the `private enum VRCFullOptions` still at line 423 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; same three members,
+// same order, no explicit values on either side. Both supporting claims were checked:
+// AnimatorTypeCache.ParameterDriverBinding.ParameterEntry.ChangeType is `Set, Add, Random` with no
+// explicit values (AnimatorTypeCache.cs line 16), so the two really are value-for-value identical;
+// and line 9337 is still the sole use, an EnumPopup whose selected value is boxed as either this
+// type or VRCHalfOptions and cast straight back to ChangeType.
 
 namespace DreadScripts.ControllerEditor
 {

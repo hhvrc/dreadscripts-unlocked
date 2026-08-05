@@ -17,6 +17,13 @@
 // method disagreeing is what settles it. The same de4dot fault is confirmed on
 // AnimatorTypeCache.ParameterEntry.Source, where tracing the original Reactor IL showed a plain `if`
 // turned into a `while`. decompiled/ keeps the loop until that recovery is fixed; do not restore it.
+//
+// Audit status: VERIFIED -- all three shipped copies diffed statement by statement against this
+// file. Both methods match in every copy: the extension method is a single call through
+// GUIUtility.ScreenToGUIRect(sceneView.position), and the chrome subtraction is the same +40f y
+// offset under the not-2022 branch and the same 27f/21f height reduction. The one divergence is the
+// DEOBF-BUG above -- ControllerEditor's copy renders the y offset as `while (true)`, both ADOverhaul
+// copies as `if`, and this file follows the `if`.
 
 using UnityEditor;
 using UnityEngine;

@@ -1,4 +1,17 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EventExtensions.cs
+//
+// NOTES
+// The private Where(EventWrapper, Func<Event, bool>) helper is not a decompiled member. Each of the
+// six tests below is written out in full in the decompiled source as the same validity check, the
+// same single assignment and the same return; only the predicate differs. They are factored through
+// one helper here. The predicates capture nothing, so the compiler caches one delegate per call
+// site and the refactor costs no allocation.
+//
+// Audit status: VERIFIED -- all seven decompiled methods were diffed statement by statement against
+// export/. InRect is transcribed literally, including the default(Rect) sentinel and the
+// GetLastRect fallback; the other six differ only by the factoring recorded above, and each
+// predicate was checked against the condition it replaces (ContextClick, MouseDown, MouseUp,
+// button == 0, button == 1, clickCount == 2).
 
 using System;
 using UnityEngine;

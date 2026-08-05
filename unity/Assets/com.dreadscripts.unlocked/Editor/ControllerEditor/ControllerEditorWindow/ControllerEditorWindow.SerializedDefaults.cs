@@ -6,6 +6,17 @@
 //
 // Both members are ported in full. RebuildTransitionSerializedObject carries a shipped bug, which
 // is reproduced exactly and documented on the method.
+//
+// Audit status: VERIFIED -- both members were diffed statement by statement against export
+// ControllerEditor.cs lines 3853-3907 on 2026-08-05. All 16 FindProperty paths in
+// RebuildStateSerializedObject and all 10 in RebuildTransitionSerializedObject match string for
+// string and in order. The SHIPPED BUG is confirmed present in export exactly as described: the
+// null branch at 3855-3858 creates the transition without building a SerializedObject over it,
+// while the six FindProperty calls at 3867-3872 sit outside the if/else and run unconditionally.
+// The asymmetry against RebuildStateSerializedObject -- which creates the missing state and then
+// binds unconditionally -- is the original's. The requiresStateRename one-shot and its
+// ApplyModifiedPropertiesWithoutUndo match. The range contains no goto, no residual switch
+// dispatch, no `while (true)` and no unresolved smethod_N, so no deobfuscator fault applies here.
 
 using UnityEditor;
 using UnityEditor.Animations;

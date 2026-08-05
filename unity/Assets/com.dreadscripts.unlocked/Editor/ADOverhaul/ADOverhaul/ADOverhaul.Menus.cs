@@ -180,12 +180,23 @@
 //
 // No behavioural divergence anywhere in this region. The 2019 counterparts are ADOverhaul2019
 // ADOverhaul.cs lines 7883-8069 and 8162-8271, under a different obfuscated name set (UpdateStruct,
-// InsertStruct, PrepareStruct, ConnectStruct, CompareStruct, InterruptStruct, ComputeStruct,
-// StartStruct), and they are identical statement for statement including the two dead
+// InsertStruct, PrepareStruct, ListStruct, ConnectStruct, CompareStruct, InterruptStruct,
+// ComputeStruct, StartStruct), and they are identical statement for statement including the two dead
 // IsNullOrWhiteSpace("") guards and the empty extra-links array. The only differences are the usual
 // ILSpy ones: ConnectStruct emits the up-to-date test's two arms in the opposite order with the
 // branch polarity inverted, and the extra-links loop spells its tuple deconstruction differently.
 // No spurious `while (true)` loop appears in either build's copy of these members.
+//
+// Audit status: VERIFIED -- all twelve members diffed statement by statement against the 2022
+// snapshot (the nine region members plus RepaintOpenWindowsDelayed / RepaintOpenWindows /
+// DrawCreditLink, all carrying those names there now). Every documented removal was confirmed
+// against the snapshot rather than assumed: the "Check For Update" item, the two "Verify/..."
+// toggles, the four `isLicensed` guards (including the announcement banner's "Hide"), and the
+// "Download Update" button with its `u_updateLink` guard are each present there and absent here, and
+// the two surviving AddSeparator calls are the ones the gate left behind. The style corrections were
+// re-derived: m_AuthenticationMethod is the one with contentOffset (-3, 1.5), m_ProcSerializer the
+// one without. The 2019 claims were re-checked too, and one name was missing from the list above and
+// has been added (ListStruct, the announcement banner). Line numbers not checked -- located by name.
 
 using System;
 using System.Globalization;

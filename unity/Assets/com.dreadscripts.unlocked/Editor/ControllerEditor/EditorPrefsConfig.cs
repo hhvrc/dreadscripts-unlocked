@@ -10,6 +10,26 @@
 // its own window settings are persisted by a separate mechanism under the EditorPrefs key
 // "yOk0XCnENLMO6DIF8cYpSg==SettingsJSON" -- so the format documented below is the whole of the
 // on-disk contract this type is responsible for.
+//
+// NOTES
+// Save and Load call into the shared JSON reader/writer, which lives in Common/Json.cs and owns the
+// mapping from the decompiled names: EditorUtils.InvokeList is Json.ToJsonObject,
+// EditorUtils.ExporterObserver is JsonObject (its UpdateError method is the indexer), and
+// EditorUtils.RegistryObserver is JsonValue (m_WriterObserver, _RequestObserver, _PrinterObserver
+// and importerObserver are hasValue, boolValue, floatValue and stringValue). Do not restate that
+// mapping here; Common/Json.cs is its home, including the note on the case-insensitive bool compare
+// this type depends on.
+//
+// Audit status: VERIFIED -- the nested PrefsChangeScope, all nine fields, both constructors, Draw,
+// DrawDefault, all four Hide and all four Show overloads, LoadDefaults, LoadDefault,
+// TryGetDefaultValue, both indexers, both GetValue overloads, Save and Load were diffed statement by
+// statement against export/. The three type dispatches (DrawDefault, TryGetDefaultValue, Load) were
+// checked arm by arm against the decompiled nesting, and every member reached through the JSON
+// reader was checked against its declaration in Common/Json.cs. Two cosmetic differences, neither
+// affecting behaviour: `values.Select(kvp => kvp).ToArray()` is written `values.ToArray()`, and
+// Hide(Enum) binds the Hide(string) overload where the decompiled source wraps the key in a
+// one-element array to reach Hide(params string[]) -- Add and UnionWith of one item are the same
+// operation on the same HashSet.
 
 using System;
 using System.Collections.Generic;

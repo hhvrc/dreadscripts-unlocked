@@ -11,11 +11,21 @@
 // PARTIAL PORT OF PublishSingleton. The decompiled method is two unrelated routines behind one
 // branch on the Ignore Selection tool being armed: the branch ported here recomputes the membership
 // states, and the other branch prunes each PhysBone's ignore list of nulls, of entries that are not
-// under its root, and of entries already covered by an ancestor entry. That pruning branch reports
-// its result through ADOverhaul.NewIdentifier (line 7806), which is not ported, so it is left out
-// rather than reproduced without its user-visible feedback.
+// under its root, and of entries already covered by an ancestor entry. That pruning branch is left
+// out. It was originally deferred because it reports through ADOverhaul.NewIdentifier (line 7806),
+// which was unported at the time; that reason has expired -- NewIdentifier is now
+// ADOverhaul.Log, ported in ADOverhaul.Logging.cs -- so the branch is simply still unported, not
+// blocked. It also calls EditorUtility.SetDirty on every selected PhysBone, which the membership
+// branch does not.
 //
 // 2019 vs 2022: identical.
+//
+// Audit status: VERIFIED -- membershipStates and both refresh methods diffed statement by statement
+// against the 2022 snapshot (RefreshColliderStates / RefreshIgnoreTransformStates there now),
+// including the absorbing-2 skip, the first-pass baseline flag and the three-way state assignment,
+// which the snapshot writes as a nested if/else and this file as a cast conditional over the same
+// conditions. The unported pruning branch was read in full to confirm the split described above, and
+// its stated blocker was found to be stale and corrected. Line numbers not checked -- located by name.
 
 using System.Collections.Generic;
 using UnityEngine;

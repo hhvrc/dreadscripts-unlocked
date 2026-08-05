@@ -1,4 +1,25 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/SelectionPool.cs
+//
+// DELIBERATE DEVIATION
+// Two places where this knowingly differs from the shipped build:
+//   * Resize tests `selectedIndex >= 0` where the shipped build tests `selectedIndex > 0`, so a
+//     selection on entry 0 is no longer silently dropped on every resize. See the body comment.
+//   * Select and SetSelected raise onSelectionChanged AFTER writing selections[index], where the
+//     shipped build raises it in between -- so a handler that reads the pool back sees the new
+//     selection here and saw it still unset before. Nothing in either assembly reads the pool from
+//     inside the handler, so no shipped behaviour turns on it, but it is a real ordering change
+//     and not a transcription.
+//
+// NOTES
+// SetSelected's shipped body is a flattened four-way branch on (selectedIndex == index, selected)
+// that collapses to the Select/ClearSelection delegation written here; its trailing unconditional
+// `selections[index] = selected` is dead in the one case not covered, because only the selected
+// entry is ever true.
+//
+// Audit status: VERIFIED -- diffed in full against export/. The three fields, the constructor,
+// Resize, Select, SetSelected and ClearSelection were each compared statement for statement,
+// including tracing SetSelected's flattened form through all four input cases. The two
+// differences found are recorded above rather than left implicit.
 
 using System;
 

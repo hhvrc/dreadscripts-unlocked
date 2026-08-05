@@ -23,6 +23,20 @@
 // `while (true)` with gotos -- so it is the one reproduced here. The consequence either way is that
 // the Top and Bottom zones are inert: they get no cursor and cannot start a drag. See
 // ResizeHandle.Drag.cs for the matching unreachable branch there.
+//
+// Audit status: VERIFIED -- ResizeZone and all three methods diffed statement by statement against
+// both snapshots. All eight zone rects were checked term by term against both (the -thickness
+// origins, the +thickness insets, the width/height - band shortenings) and the index each carries
+// matches its array slot. The cursor switch was traced through the decompiled binary search in both:
+// Left/Right to ResizeHorizontal, TopLeft/BottomRight to ResizeUpLeft, TopRight/BottomLeft to
+// ResizeUpRight, Middle and Middle|Right to Arrow, everything else -- which in practice means Top and
+// Bottom -- to the skip. The event handling matches too: the pendingReset/MouseUp block before the
+// zone loop, the `(zone.position & enabledZones) < zone.position` mask test, the 46f hit-test
+// correction applied to a copy while the cursor rect keeps the original, the double-click arming, and
+// the drag tail where a zero delta still advances lastMousePosition. The three-way `continue` /
+// `break` / abandon divergence is exactly as described above and ControllerEditor's form is the one
+// reproduced. Every line number in both MAP blocks was checked against the current snapshot and is
+// sound. Unity2022MouseOffset is a named constant for the snapshots' literal 46f.
 
 using UnityEditor;
 using UnityEngine;

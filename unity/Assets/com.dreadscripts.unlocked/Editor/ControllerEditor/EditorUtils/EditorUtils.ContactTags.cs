@@ -17,6 +17,10 @@
 // the reason set out at length in ADOEditorUtility.VRChatTables.cs and EditorUtils.
 // ReservedParameterNames.cs -- these lists date their build and are behavioural inputs, and making
 // two products share one would mean a later edit for one silently changing the other.
+// Audit status: VERIFIED -- all 23 strings compared element by element and in order against
+// EditorUtils.defaultCollisionTags in export/ControllerEditor. The "identical to the ADOverhaul
+// copy" claim above was re-checked too: export/ADOverhaul2022 ADOEditorUtility.defaultCollisionTags
+// is the same 23 strings in the same order.
 
 namespace DreadScripts.ControllerEditor
 {

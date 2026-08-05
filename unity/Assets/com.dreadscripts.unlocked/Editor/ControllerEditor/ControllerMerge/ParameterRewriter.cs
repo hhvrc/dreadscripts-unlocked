@@ -36,6 +36,26 @@
 //     part of the animator object graph and nothing here goes looking for them, so a renamed
 //     parameter loses its menu control and its expression-parameter entry without any warning.
 //   * Nothing here registers an Undo operation; see the remarks on Rewrite.
+//
+// Audit status: VERIFIED -- the three fields and all six methods were diffed against export
+// ControllerEditor.cs on 2026-08-05, against the hoisted closure at lines 7128-7260 and, for
+// RewriteState and RewriteTransition, additionally against their inlined duplicates at the SetAlgo
+// call site (13493 and 13527), which confirms the header's claim that the two printings are the
+// same bodies.
+// Three deliberate, behaviour-preserving rewrites, none of them silent:
+//   * Matches is written as `if (exactMatch) return reference == oldName; return
+//     reference.Contains(oldName);`. Export nests the same three outcomes inside an inverted
+//     compound guard (`if (!exact || !(s == old)) { if (!exact) return Contains; return false; }
+//     return true;`). Truth table checked case by case: identical, including the null behaviour the
+//     remarks on Matches describe.
+//   * RewriteState hoists `state.transitions` into a local instead of re-indexing the property each
+//     iteration. Unity returns a fresh array per call but the AnimatorStateTransition elements are
+//     the same references, and the write-back is per transition, so the result is identical.
+//   * RewriteTransition collapses the original's per-edit read/write of the conditions array to one
+//     read and one write. Already documented on the method; the array is a detached copy either
+//     way.
+// The range contains no goto, no residual switch dispatch, no `while (true)` and no unresolved
+// smethod_N, so no deobfuscator fault applies here.
 
 using System.Linq;
 using UnityEditor;

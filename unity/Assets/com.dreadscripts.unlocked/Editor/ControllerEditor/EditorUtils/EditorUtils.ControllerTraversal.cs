@@ -17,14 +17,19 @@
 // nothing but a loop that calls it, and it was not ported anywhere else. It is the short-circuiting
 // counterpart of ForEachState, so the two are named as a pair: ForEachState / AnyState.
 //
-// Not ported: NewPredicate (line 3687), the controller-level ForEachGraphElement. It is a two-line
-// loop over ForEachGraphElement, it is not in the assigned set, and its single decompiled caller is
-// in the unported god class -- adding it now would be adding a member with no caller.
+// Not ported here: NewPredicate (line 3687), the controller-level ForEachGraphElement. It was
+// deferred when this file was written -- a two-line loop over ForEachGraphElement whose only
+// decompiled caller was in the unported god class -- and has since landed in
+// EditorUtils.AnimatorGraph.cs as Traverse(AnimatorController, ...).
 //
 // UpdatePredicate's decompiled body is a `while (true)` with break/continue, produced by control-
 // flow flattening rather than written that way; it is restored below as the loop it started as. The
 // ADOverhaul builds carry no counterpart to cross-check against, but the flattened form has exactly
 // one exit per branch and the translation is unambiguous.
+// Audit status: VERIFIED -- all six bodies diffed statement by statement against export/, including
+// AnyState(AnimatorStateMachine)'s Where/Any self-reference guard and the order of its three exits.
+// UpdatePredicate's flattened while(true) was traced branch by branch: index past end returns false,
+// a layer whose machine matches breaks to `return true`, otherwise advance.
 
 using System;
 using System.Linq;

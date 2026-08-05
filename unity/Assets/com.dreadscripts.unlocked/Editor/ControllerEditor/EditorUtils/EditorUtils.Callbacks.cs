@@ -11,28 +11,29 @@
 // already existed and is owned by another port, so the member lands here instead. See the note at
 // the bottom of this header about the claim its header currently makes.
 //
-// The immediate neighbours of the delayed-call pump are deliberately left to other partials, being
-// the same shape of code over different editor callbacks: DisableRules (line 4456) / RestartRules
-// (line 4489) are the identical queue-and-drain pair driven by
-// EditorApplication.hierarchyWindowItemOnGUI rather than delayCall, and CancelRules (line 4434) is
-// an unrelated dictionary lookup. They are not needed by anything ported so far.
+// The immediate neighbours of the delayed-call pump belong to other partials, being the same shape
+// of code over different editor callbacks: DisableRules (line 4455) / RestartRules (line 4487) are
+// the identical queue-and-drain pair driven by EditorApplication.hierarchyWindowItemOnGUI rather
+// than delayCall, ported in EditorUtils.DelayedCalls.cs as DelayCallOnHierarchyGui /
+// RunHierarchyDelayedCalls, and CancelRules (line 4434) is an unrelated dictionary lookup, ported in
+// EditorUtils.AssetTypes.cs as TryGetAssetExtension.
 //
-// Duplication with ADOverhaul: DelayCall / RunDelayedActions are the same code as
-// ADOEditorUtility.DelayCall / RunDelayedActions in Editor/ADOverhaul/ADOEditorUtility/
-// ADOEditorUtility.Events.cs, and the names are kept identical so the correspondence is obvious.
-// The queue is deliberately NOT shared: each product shipped its own static class holding its own
-// Queue<Action> instance, and folding them together would merge two independent delayed-action
-// queues into one - a real behavioural change, since a drain triggered by one product would then
-// run the other product's pending work.
+// Duplication with ADOverhaul: DelayCall is the same code as ADOEditorUtility.DelayCall in
+// Editor/ADOverhaul/ADOEditorUtility/ADOEditorUtility.DelayedCalls.cs, whose drain is named
+// RunDelayedCalls rather than RunDelayedActions and whose queue is a separate field. The queue is
+// deliberately NOT shared: each product shipped its own static class holding its own Queue<Action>
+// instance, and folding them together would merge two independent delayed-action queues into one - a
+// real behavioural change, since a drain triggered by one product would then run the other product's
+// pending work.
 //
-// Correction to EditorUtils.Types.cs's header: it records FillRules as "deliberately not ported
-// here [...] Nothing in the reconstructed package calls it". The second half is true only of the
-// package as it stands today, and only because RenameOverlayWrapper - the one ported type that
-// used it - was rebuilt on TypeResolver. In the shipped assembly FillRules has roughly thirty call
-// sites, all in the not-yet-ported ControllerEditor god class (the Harmony patch-target lookups at
-// decompiled ControllerEditor.cs lines 6735-6736, 8975, 15282-15288, 15694-15704, 15867-15897,
-// 16166-16167, 17077-17121) plus RenameOverlayWrapper.cs line 55. That header should be corrected
-// to say the member is ported in EditorUtils.Callbacks.cs as RequireQualifiedType.
+// Correction still owed by EditorUtils.Types.cs's header: it records FillRules (line 5265) as
+// "deliberately not ported here", which has not been true since this file landed it as
+// RequireQualifiedType. The rest of that note is now accurate - it was corrected on its own terms
+// after this paragraph was first written - so all that remains is the not-ported claim itself.
+// Audit status: VERIFIED -- delayedActions, DelayCall, RunDelayedActions and RequireQualifiedType
+// diffed statement by statement against export/, including both Delegate.Remove/Combine pairs and
+// the exception text. One shape-only difference: the decompiled DelayCall tests `Count == 0` and
+// arms inside the true branch, written here as `Count != 0` into a negated branch.
 
 using System;
 using System.Collections.Generic;

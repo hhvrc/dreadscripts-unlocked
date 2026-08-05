@@ -1,4 +1,10 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/TransformControlSettings.cs
+//
+// Audit status: VERIFIED -- diffed in full against export/. The four serialized fields, the
+// constructor and the three [SpecialName] accessors (properties again here) match, including the
+// `uniformScaleOnly: false` on PositionAndRotation. The unreferenced static pair
+// ListDecorator/CalcDecorator is not ported, on the same reading as the CustomizeStruct/
+// SearchStruct pair in ReorderableListHelper.cs: never assigned, never called, obfuscator decoys.
 
 using System;
 using UnityEngine;

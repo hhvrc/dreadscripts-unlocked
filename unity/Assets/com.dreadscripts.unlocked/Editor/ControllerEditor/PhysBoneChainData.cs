@@ -1,4 +1,11 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneChainData.cs
+//
+// Audit status: VERIFIED -- diffed in full against export/. The five fields, the constructor,
+// BuildChain and BuildChains match statement for statement, and [SpecialName] GetBoneMatrices is
+// the BoneMatrices property. Two shape-only changes, both behaviour-preserving: the decompile's
+// two identical virtual-bone object initialisers are factored into the private NewVirtualBone
+// helper (not a decompiled member), and its `child`/`boneTransformData2` locals -- always assigned
+// the same instance on both branches -- are the single `virtualBone` local here.
 
 using System.Collections.Generic;
 using System.Linq;

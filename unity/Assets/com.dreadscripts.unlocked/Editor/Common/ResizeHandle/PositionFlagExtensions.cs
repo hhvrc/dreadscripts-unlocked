@@ -11,18 +11,28 @@
 //     StartProcess    -> IsAnchoredLeft,   line 2142
 //     RemoveProcess   -> IsAnchoredTop,    line 2151
 //     ReflectProcess  -> IsAnchoredBottom, line 2160
-//     ResolveProcess  -> GetResizeEdges,   line 2168
+//     ResolveProcess  -> GetResizeEdges,   line 2169
 // The ADOverhaul2019 build declares the same five methods at lines 2135-2171
 // (PrintAccount / FindAccount / CollectAccount / ValidateAccount / RestartAccount) with identical
 // bodies; there is no divergence between any of the three snapshots. The only textual difference is
-// that ILSpy rendered the right-edge and bottom-edge predicates with their first two tests negated
-// in the ADOverhaul snapshots and un-negated in ControllerEditor's -- the same boolean either way.
+// in how ILSpy rendered two of the predicates: the right-edge one has its first two tests negated in
+// both ADOverhaul builds, and the bottom-edge one in the 2022 build only, where ControllerEditor and
+// ADOverhaul2019 render both un-negated -- the same boolean either way.
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
 // All five were free-standing extension methods on PositionFlag in the shipped assemblies, declared
 // far outside ResizeHandle's body and shared between the resize code and the panel-layout code, so
 // they are ported as extensions here rather than folded into either caller.
+//
+// Audit status: VERIFIED -- all five diffed statement by statement against all three snapshots. The
+// four anchor predicates match test for test (each names its edge and its two corners, in that
+// order). GetResizeEdges was traced through the goto-and-nested-if binary search the decompiler
+// emitted in every snapshot: the eight single-value arms produce the edge sets recorded here, every
+// unmatched value lands on Middle, and the two filters are applied after the switch, on the shared
+// tail all arms jump to. Two corrections: ResolveProcess is at snapshot line 2169, not 2168, and the
+// negation note above overstated itself -- ADOverhaul2019's bottom-edge predicate is un-negated like
+// ControllerEditor's, so only the 2022 build has both negated.
 
 namespace DreadScripts.Common
 {

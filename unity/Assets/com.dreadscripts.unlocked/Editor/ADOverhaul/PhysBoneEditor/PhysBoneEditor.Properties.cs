@@ -12,7 +12,7 @@
 //   _CandidateAuthentication       -> bindingIndexToPopupValue, line 257
 //   m_ReaderAuthentication         -> bindingLabelsBuilt, line 262
 //
-// The fifty-five SerializedProperty statics are renamed to the serialized field each one resolves,
+// The fifty-four SerializedProperty statics are renamed to the serialized field each one resolves,
 // so the mapping is read off the FindProperty call rather than listed here:
 //
 //   _ValueIdentifier -> version                m_UtilsAuthentication  -> collisionFilter
@@ -43,7 +43,19 @@
 //   _FilterAuthentication -> resetWhenDisabled     m_FactoryAuthentication -> showGizmos
 //   m_AttributeAuthentication -> boneOpacity       m_InstanceAuthentication -> limitOpacity
 //
-// 2019 vs 2022: the same fifty-five properties resolved in the same order. No divergence.
+// 2019 vs 2022: the same fifty-four properties resolved in the same order. No divergence.
+//
+// Audit status: VERIFIED -- every declaration and every statement diffed against the 2022 snapshot.
+// All fifty-four decompiled-to-ported name pairs in the table above were checked mechanically against
+// the FindProperty call each one carries in the snapshot; all fifty-four agree, including the three
+// limitRotation axes, which come from FindPropertyRelative on limitRotation rather than from the
+// serialized object. The fifteen-entry bindings array was compared entry by entry (operand order,
+// the -1 lower bound on gravity, radius's infinite upper bound and handle mode 1, the two angle
+// ranges, the three explicit "Limit Rotation" labels, maxStretch's infinite bound) and the
+// label/index table build below it likewise. The 2019 snapshot was compared property for property in
+// order and matches. One correction: the count was stated as fifty-five in two places and is
+// fifty-four -- the snapshot's PhysBoneEditor declares exactly fifty-four SerializedProperty statics
+// and CacheProperties resolves exactly fifty-four. Line numbers not checked -- located by name.
 
 using System.Collections.Generic;
 using System.Linq;

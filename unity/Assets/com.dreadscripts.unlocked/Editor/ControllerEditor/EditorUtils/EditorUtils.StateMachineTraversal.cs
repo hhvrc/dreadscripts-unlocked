@@ -8,12 +8,16 @@
 // 3680-3940 -- PushPredicate (3696, runs all three walkers in one pass), ViewPredicate (3712, the
 // layers of a controller), CollectPredicate (3721, nested state machines), PreparePredicate (3910,
 // ForEachState over a whole controller), UpdatePredicate (3940, a short-circuiting ForEachState).
-// Only the two below are needed to unblock the members this pass is clearing, and each of the
-// others is a one-liner over them that whichever partial ends up owning the controller-level
-// helpers can add; they are recorded here so the family is not lost, not stubbed.
+// Only the two below were needed to unblock the members this pass was clearing; each of the others
+// is a one-liner over them and they were recorded here so the family was not lost. All five have
+// since landed in EditorUtils.ControllerTraversal.cs, which owns the controller-level helpers.
 //
 // The obfuscator's names carry no information: "AssetPredicate" walks states and "ResolvePredicate"
 // walks transitions. Neither is a predicate and neither touches assets.
+// Audit status: VERIFIED -- both bodies diffed statement by statement against export/, including
+// ForEachTransition's four transition cases in their shipped order (entry, any-state, state,
+// machine), the machine-transition pair being read and written through the parent, the `if
+// (!stateMachine)` Unity truth test, and the immediate-self-reference guard on both recursions.
 
 using System;
 using UnityEditor.Animations;

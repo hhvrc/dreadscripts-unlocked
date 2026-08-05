@@ -15,9 +15,9 @@
 //
 // ==================================== NOTES ===================================================
 //
-// THE FILE NAME IS WRONG AND IS KEPT ONLY BECAUSE IT WAS ASSIGNED. This file was commissioned as
-// "ControllerSection" on the strength of ControllerEditor.Window.cs's header, which lists
-// `ReflectVisitor()` as "the controller/layer section". That description does not survive contact
+// THE FILE NAME WAS WRONG AND HAS BEEN CORRECTED. This file was commissioned as "ControllerSection"
+// on the strength of an older revision of ControllerEditor.Window.cs's header, which listed
+// `ReflectVisitor()` as "the controller/layer section". That description did not survive contact
 // with the decompiled body. Decompiled line 12529 reads
 //
 //     private void ReflectVisitor()
@@ -35,11 +35,16 @@
 // (decompiled line 8238), `_DefinitionAnnotation` is `selectedTransitionEdits` (line 8030), and all
 // three settings it reads are the `showTransition*` ones. Every observable thing about the member
 // says transitions, not controllers or layers: it is the root of the window's TRANSITION section,
-// the first of the four sections OnGUI draws. The ported member is therefore named
-// DrawTransitionSection rather than being given a name the code would contradict. The file name is
-// left as assigned so the orchestration that expects this path still finds it; renaming the file
-// and correcting Window.cs's header are both changes to shared files, which this port is not
-// permitted to make. Whoever integrates this should fix both together.
+// the first of the four sections OnGUI draws.
+//
+// So the ported member is DrawTransitionSection, this file is ControllerEditor.TransitionSection.cs,
+// and Window.cs's header now says outright that "the shipped names do NOT say what they draw:
+// ReflectVisitor (12529) draws the TRANSITION section". The three things this note used to ask a
+// later integration pass to do -- rename the file, keep the .meta with it, correct Window.cs -- are
+// all done, and the paragraph is kept only because "ControllerSection" is the name this file is
+// referred to by in older notes and commit messages, and someone following one of those needs to
+// land here rather than on ControllerEditor.ControllerSection.cs, which is a different file drawing
+// a different section (ValidateVisitor, 11806).
 //
 // Nothing in this file draws a controller or a layer. If you came here looking for the layer list,
 // it remains unported and it is not ReflectVisitor.

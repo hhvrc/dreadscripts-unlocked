@@ -12,35 +12,54 @@
 // that window because it is not window code: it takes an animator object graph and edits it, has no
 // GUI, and the window is only one of its callers.
 //
+// Audit status: VERIFIED -- RenameParameter is the only member this file declares, and its body was
+// diffed statement by statement against export ControllerEditor.cs lines 13483-13545 on 2026-08-05:
+// the IsVRCSDKAvailable guard around the driver rewrite, both walker calls with their recursion
+// flags off, the early return on !recurse, and the recursion over stateMachines.Select(c =>
+// c.stateMachine) with the three captured arguments forwarded. The three delegate bodies the
+// decompilation shows inline belong to ParameterRewriter.cs, which claims and documents them; they
+// were not re-derived here. The range contains no goto, no residual switch dispatch, no
+// `while (true)` and no unresolved smethod_N, so no deobfuscator fault applies.
+//
 // ============================================================================================
-// DEFERRED -- NOT PORTED, AND WHY. Nothing below is stubbed; the members simply do not exist in
-// the package yet, so that it keeps compiling.
+// STILL DEFERRED -- but re-derived on 2026-08-05, and the headline has changed: none of the three
+// members below is blocked on missing code any more. Every dependency they were waiting on has
+// landed. They are unwritten, not blocked. Nothing below is stubbed.
 //
 //   CompareAlgo, line 13426 -- the merge itself: copies a source controller's layers into a
 //     destination, applying a list of parameter renames to the copies as it goes so they do not
-//     collide with names the destination already has. Blocked on three unported EditorUtils
-//     members, none of which is a shared file this port may add to:
+//     collide with names the destination already has.
+//
+//     ITS BLOCKERS ARE ALL CLEARED as of 2026-08-05. All three named EditorUtils members have
+//     landed, and all three are `internal`:
 //       * EditorUtils.ResetPredicate (EditorUtils.cs line 3355), the progress-bar-wrapped bulk
-//         layer copy. Recorded as deferred by the port of EditorUtils.AnimatorParameters.cs, which
-//         explains the chain: it is a loop over CalculatePredicate (3417), the deep layer clone,
-//         which drags in the whole object-graph remapping machinery.
+//         layer copy -> EditorUtils.CopyLayers, EditorUtils.LayerCopying.cs line 368. The chain the
+//         old note described is resolved with it: CalculatePredicate (3417), the deep layer clone,
+//         is ported as CopyLayer in the same file.
 //       * EditorUtils.SetRules<T> (EditorUtils.cs line 4205), the "duplicate this asset to that
-//         path" helper.
+//         path" helper -> EditorUtils.CloneToAsset<T>, EditorUtils.Assets.cs line 210.
 //       * EditorUtils.InterruptPredicate (EditorUtils.cs line 4088), the sub-asset re-parenting
-//         helper.
+//         helper -> EditorUtils.AddSubAsset, EditorUtils.Assets.cs line 103.
 //     CompareAlgo's own closure, _003C_003Ec__DisplayClass378_0 (line 6995) -- CloneServer, the
 //     %Parameter% token substitution in copied layer and state names; ReflectServer, the
 //     externalise-an-embedded-motion step; DeleteServer, the motion deduplication and animation
-//     curve rebinding -- comes with it and is deferred with it. The last two are what need
-//     SetRules and InterruptPredicate.
+//     curve rebinding -- is restored as ordinary lambdas whenever CompareAlgo is. The last two are
+//     what needed SetRules and InterruptPredicate, so they are unblocked too.
+//
+//     So CompareAlgo is NOT blocked -- it is unwritten. This pass established that and stopped
+//     there rather than attempting the reconstruction without the budget to verify it. Note for
+//     whoever writes it: CopyLayers takes `out AnimatorControllerLayer[]` for the copied layers,
+//     and neither it nor CopyLayer registers any Undo, which matches the shipped merge's own
+//     "confirming registers no Undo anywhere" behaviour noted under ParameterRenameWindow below.
 //
 //   ParameterRenameWindow, lines 3998-4155 -- the dialog CompareAlgo is driven from. Its
 //     OnCustomConfirm (line 4092) is a call to CompareAlgo and its OnCustomGUI (line 4048) is
 //     abstract on UtilityWindowBase<T>, so the type cannot be written at all until CompareAlgo
-//     exists: both members are required overrides and neither may be stubbed. This is the same
-//     conclusion an earlier pass reached. What has changed since is that its other two blockers
-//     have cleared -- EditorUtils.reservedAvatarParameters has landed with 28 entries, and
-//     RenameParameter below is now available -- so CompareAlgo is the only thing still holding it.
+//     exists: both members are required overrides and neither may be stubbed. That ordering still
+//     holds, but it is now a sequencing constraint rather than a blocker -- CompareAlgo has nothing
+//     left standing in its way either (see above), so this whole family is unwritten rather than
+//     blocked. Its other two blockers cleared earlier: EditorUtils.reservedAvatarParameters has
+//     landed with 28 entries, and RenameParameter below is available.
 //     Notes worth keeping for whoever finishes it, all verified against the decompiled source:
 //       * It is a merge conflict dialog, not a rename dialog. It is only ever opened by OrderAlgo,
 //         which is handed a source and a destination controller; the row list is the source's

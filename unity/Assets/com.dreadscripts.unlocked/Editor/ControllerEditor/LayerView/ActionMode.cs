@@ -8,6 +8,17 @@
 //
 // The behaviour described below is read from InterruptVisitor (line 13191) and PatchVisitor
 // (line 13170), neither of which is ported.
+//
+// Audit status: VERIFIED -- the four members and their implicit ordinals were diffed against the
+// `private enum ActionMode` still at line 2166 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; names and order are
+// identical and the enum has no explicit values there either. The load-bearing-ordinals claim was
+// re-derived rather than taken on trust: the layer selector (PatchVisitor, now line 13173) takes a
+// plain `int` and is called as `PatchVisitor((int)actionScope)` and `PatchVisitor((int)
+// copySourceScope)`, and its switch selects on `case 0` every layer, on `case 1` the layers with a
+// matching muted any-state exit transition, and on `case 2` and `case 3` alike the layer owning the
+// current root state machine, exactly as described. The prose line numbers for PatchVisitor and InterruptVisitor are
+// two to three lines stale (13173 and 13192 now); left alone as ordinary snapshot drift.
 
 namespace DreadScripts.ControllerEditor
 {

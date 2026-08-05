@@ -1,4 +1,9 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/TemporaryTransform.cs
+//
+// Audit status: VERIFIED -- diffed in full against export/. Both constructors, Destroy and the
+// implicit Transform conversion match statement for statement; the four HideFlags are the same
+// set, lifted to the TemporaryFlags constant, and `if (gameObject)` is the same Unity null test
+// the decompile spells `if ((bool)gameObject)`.
 
 using UnityEngine;
 

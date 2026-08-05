@@ -14,6 +14,13 @@
 //   m_UtilsPolicy       -> objectTypes
 // Line numbers are relative to the port at the time it was written; the member names are the
 // durable reference.
+//
+// Audit status: VERIFIED -- diffed in full against export/. The nested FieldType enum, all eight
+// fields, the Title accessor and every method match statement for statement. Create's
+// switch-in-a-`while (true)` is the decompiler's flattening of the plain default-value loop
+// written here (each case's `goto IL_001e` is the loop increment), and the boxed int on the Float
+// case is reproduced as shipped, as the body comment records. OnCustomGUI's inverted null guard,
+// the row-toggle handling and the ToggleGroup change-check block all match.
 
 using System;
 using System.Collections.Generic;

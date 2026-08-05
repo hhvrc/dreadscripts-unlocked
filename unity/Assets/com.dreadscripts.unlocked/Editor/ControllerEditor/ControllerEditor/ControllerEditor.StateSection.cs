@@ -41,32 +41,39 @@
 //   DeleteAnnotation(RunVisitor,   "VRC Parameter Drivers", showVRCDrivers,   iscont2: false, 5)
 //   DeleteAnnotation(CloneVisitor, "VRC Tracking Control",  showVRCTracking,  iscont2: false, 6)
 //
-// Blockers, none of them subtle -- all five are members of the god class's still-unported body
-// regions:
+// THE HELPER IS NO LONGER A BLOCKER; THE FOUR ROW BODIES ARE. This section used to name five
+// blockers, DeleteAnnotation first among them. DeleteAnnotation (9920) has landed as
+// DrawCollapsibleSection in ControllerEditor.CollapsibleSection.cs -- a file created to own that one
+// member precisely because it is shared between this section, the transition section and the
+// controller section, which is the "risk of a second copy" this note used to describe. It is fully
+// available from here. What is still deferred is the four row bodies it would be handed, and nothing
+// else:
 //
-//   DeleteAnnotation (9920) -- the collapsible-row helper the section is built out of. Draws
-//     `def()` inside a box with a 7px vertical strip beside it that collapses the row, or, when the
-//     row is already collapsed, just a toolbar button carrying the row's title. Its own
-//     dependencies are all present in the package already (EditorUtils.Button,
-//     EditorUtils.SetGuiStateOnEvent / GetGuiState, BoolSetting.Toggle), so it is portable today --
-//     it is left alone only because it is shared with the transition and controller sections and
-//     porting it from here would risk a second copy. It is unclaimed; see the task notes.
 //   GetVisitor   (12110) -- the "State Count" row: the selection summary, the deselect button and
 //     the per-state list.
 //   CalcVisitor  (12388) -- the "State Settings" row: the multi-edit AnimatorState inspector.
-//   RunVisitor   (12481) -- the "VRC Parameter Drivers" row.
-//   CloneVisitor (12488) -- the "VRC Tracking Control" row.
+//   RunVisitor   (12481) -- the "VRC Parameter Drivers" row. Also blocked on the parameter-driver
+//     ReorderableList that CancelAnnotation (9296) builds, which is deferred in
+//     ControllerEditor.Window.cs's OnEnable for the same reason: its three callbacks are unported.
+//   CloneVisitor (12488) -- the "VRC Tracking Control" row. Its data is ready --
+//     `allStatesHaveTrackingControl` and `trackingControlEditor` are written every selection change
+//     by RefreshTrackingControlEditor (ControllerEditor.TrackingControlSync.cs) -- so this is the
+//     shallowest of the four; only the row body itself is missing.
 //
-// The `iscont2` argument is DeleteAnnotation's "box this row" flag and `visitor3counter` is the
-// row's identity in EditorUtils' GUI-state dictionary, under the key `CollapsePart{n}`, which is
+// All four rows are still omitted together, because a section root that draws two of its four rows
+// and silently skips the others is worse than one that draws none: nothing on screen would say the
+// section is incomplete. They go in as a set.
+//
+// The `iscont2` argument is DrawCollapsibleSection's "box this row" flag and `visitor3counter` is
+// the row's identity in EditorUtils' GUI-state dictionary, under the key `CollapsePart{n}`, which is
 // how the collapse strip learns the height of the row it sits next to. The literals 3-6 are
-// therefore not free: they are shared with the rows of the other sections, which use the remaining
-// numbers. Whoever ports DeleteAnnotation must keep them.
+// therefore not free: they are shared with the rows of the other sections, which use 0-2 (see
+// ControllerEditor.TransitionSection.cs). Whoever lands these four rows must keep them.
 //
 // No GUI scope is opened here. Every layout scope of the shipped method lives inside
-// DeleteAnnotation, on the far side of the deferral, so this port cannot leave a Begin without its
-// End -- see the house rule about unbalanced GUI scopes. That is why the deferral can be clean
-// here where ControllerEditor.Window.cs had to record a deviation.
+// DrawCollapsibleSection, on the far side of the deferral, so this port cannot leave a Begin without
+// its End -- see the house rule about unbalanced GUI scopes. That is why the deferral can be clean
+// here where ControllerEditor.Window.cs once had to record a deviation.
 //
 // ======================================== NOTES ================================================
 //
@@ -90,11 +97,14 @@
 //
 // ControllerEditor ships a single build, so there is no second decompilation to diff this against.
 //
-// Audit status: PARTIAL -- decompiled lines 12086-12108 were read in place on this pass and every
-// statement above the deferral is transcribed from them, as is the argument list of each of the
-// four deferred rows. The five blocking members were confirmed to exist at the lines named
-// (12110, 12388, 12481, 12488, 9920) and confirmed absent from the package by search. Their bodies
-// were not read beyond what the one-line descriptions above claim, which is why this is PARTIAL.
+// Audit status: PARTIAL -- decompiled lines 12086-12108 were read in place and every statement above
+// the deferral is transcribed from them, as is the argument list of each of the four deferred rows.
+// On the pass that corrected the blocker list, all five formerly-blocking members were re-checked:
+// 9920 is ported (DrawCollapsibleSection, ControllerEditor.CollapsibleSection.cs, which was read to
+// confirm it takes the same five arguments in the same order), and 12110, 12388, 12481 and 12488 are
+// still absent from the package under any name. Their bodies were read only far enough to establish
+// that and to check the two extra dependencies now recorded for RunVisitor and CloneVisitor, which
+// is why this is PARTIAL.
 
 using UnityEditor;
 
@@ -138,8 +148,9 @@ namespace DreadScripts.ControllerEditor
                 + (entryNodeSelected ? 1 : 0)
                 + (exitNodeSelected ? 1 : 0);
 
-            // DEFERRED, in shipped order, each a DeleteAnnotation row (the collapsible-row helper,
-            // decompiled 9920, unported):
+            // DEFERRED, in shipped order. The helper is available -- DrawCollapsibleSection, in
+            // ControllerEditor.CollapsibleSection.cs -- so what is missing is the four row bodies
+            // it would be handed, and only those:
             //   GetVisitor   as $"State Count: {selectedStateCount}", EditorSettings.Instance.showStateCount,    boxed,   slot 3
             //   CalcVisitor  as "State Settings",                     EditorSettings.Instance.showStateSettings, boxed,   slot 4
             //   and, when AnimatorTypeCache.IsVRCSDKAvailable():

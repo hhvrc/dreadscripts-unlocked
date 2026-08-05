@@ -3,6 +3,12 @@
 // Every delegate is ported under its decompiled name; the obfuscator left this family alone
 // because the names are load-bearing at the call sites. Line numbers are relative to the
 // decompiled snapshot. See HarmonyPatchManager.cs for the type-level header.
+//
+// Audit status: VERIFIED -- the thirty delegate declarations were extracted from
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs lines 2436-2494 and
+// text-diffed against the thirty declared here: identical character for character, including
+// variance modifiers and parameter names. The cited range is still exact in the current snapshot,
+// and it contains nothing but these declarations, so nothing in it is unported.
 
 namespace DreadScripts.ControllerEditor
 {

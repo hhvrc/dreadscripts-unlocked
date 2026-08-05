@@ -13,6 +13,8 @@
 //   propertyInitializer         -> existingClipsExpanded,    line 4475
 //   _ProcessorInitializer       -> labels,                   line 4477
 //   UtilityWindowBase<>.title   -> Title,                    line 4485
+//   RegisterTests/LogoutTests   -> AdvancedMode (property),  lines 4488, 4494
+//   InterruptTests/ManageTests  -> MergeByDefault (property),lines 4500, 4506
 //   UpdateTests                 -> CalculateWindowSize,      line 4819
 //   ChangeTests                 -> RefreshMergeMode,         line 4824
 //   SortTests                   -> ShowAt(Vector2),          line 4829
@@ -23,38 +25,64 @@
 //   OnCustomGUI, the UtilityWindowBase explicit implementation (line 4678) -> QuickToggleWindow.Gui.cs
 //   OnCustomConfirm (line 4768) -> QuickToggleWindow.ClipWriting.cs
 //
-// DEFERRED — not ported, because each depends on code that has no port yet. The package has to
-// keep compiling, so these members are simply absent rather than stubbed:
+// CLOSED ON 2026-08-05 -- the two [SpecialName] accessor pairs, previously deferred:
+//
+//   RegisterTests()/LogoutTests(bool)  lines 4488, 4494 -> AdvancedMode
+//   InterruptTests()/ManageTests(bool) lines 4500, 4506 -> MergeByDefault
+//
+// Both were blocked on the ControllerEditor settings singleton, which has since landed:
+// EditorSettings.advancedQuickToggle and .mergeQuickToggle are `internal BoolSetting` fields at
+// EditorSettings.Fields.cs lines 243 and 250. ILSpy rendered each pair as two [SpecialName]
+// methods; they are restored as the properties they were. Neither has a ported caller yet -- their
+// only shipped caller is AssetTests below -- so they are deliberately live-but-unused rather than
+// omitted, because they are complete faithful ports and not stubs.
+//
+// STILL DEFERRED, and no longer for the reason previously recorded:
 //
 //   AssetTests(List<AnimatorState>, Transform, List<GameObject>)   line 4511
 //       The factory, and by far the largest member: it seeds the window from the states the user
 //       selected in the graph and builds the whole ReorderableList with its four callbacks (the
 //       per-row target field, the component-type picker, the property picker and the On/Off or
-//       property/value editors). Blocked on the ControllerEditor settings singleton
-//       (EditorSettings.GetInstance().advancedQuickToggle / .mergeQuickToggle / .defaultState) and
-//       on three EditorUtils members that are not in the package yet: FlushQueue (ConnectQueue),
-//       ResetQueue and the Type extension InstantiateResolver. Its own dependencies that *are*
-//       ported and would be reused verbatim: SearchablePickerPopup<T>, ReorderableListHelper<T>,
-//       ComponentQueue, GUIColorScope, EditorUtils.SliceLeft (decompiled SortResolver) and
-//       EditorUtils.HandleMultiDragAndDrop (decompiled AwakeRules).
-//   [SpecialName] RegisterTests()/LogoutTests(bool)  lines 4488, 4494
-//       The advanced/simple mode property; a straight EditorSettings.advancedQuickToggle accessor
-//       pair, which ILSpy rendered as two methods.
-//   [SpecialName] InterruptTests()/ManageTests(bool) lines 4500, 4506
-//       Likewise for EditorSettings.mergeQuickToggle, the default merge-vs-replace choice.
+//       property/value editors).
+//
+//       ITS BLOCKERS ARE ALL CLEARED. Every dependency the old note named as missing is now in the
+//       package, verified by name on 2026-08-05:
+//         * EditorSettings.advancedQuickToggle / .mergeQuickToggle -- EditorSettings.Fields.cs
+//           lines 243, 250; .defaultState -- line 466.
+//         * EditorUtils FlushQueue/ConnectQueue -> EditorUtils.OverlayLabel
+//           (EditorUtils.OverlayLabels.cs; the two decompiled methods are collapsed into one, so
+//           call sites written against FlushQueue must skip the `draw` argument by name).
+//         * EditorUtils ResetQueue -> EditorUtils.HandleScrollWheel (same file, line 5886).
+//         * The Type extension InstantiateResolver -> EditorUtils.Is(this Type, Type)
+//           (EditorUtils.Types.cs, decompiled line 2659).
+//       Its already-ported dependencies, unchanged: SearchablePickerPopup<T>,
+//       ReorderableListHelper<T>, ComponentQueue, GUIColorScope, EditorUtils.SliceLeft (decompiled
+//       SortResolver) and EditorUtils.HandleMultiDragAndDrop (decompiled AwakeRules).
+//
+//       It is therefore not blocked -- it is simply not written yet. This pass established that and
+//       stopped there rather than attempting a ~200-line reconstruction it could not also verify;
+//       whoever picks it up should not go looking for a blocker, because there is not one.
+//       Two API differences to expect against the decompiled text: ComponentQueue.PropertyName,
+//       .ComponentIndex and .GameObject are properties here where the decompilation shows accessor
+//       methods, and SearchablePickerPopup.PickerEntry.FirstExtra() is the property `firstExtra`.
 //
 // The compiler-generated closure classes <>c (line 4159), <>c__DisplayClass18_0 (4256),
 // <>c__DisplayClass18_1 (4399) and <>c__DisplayClass18_2 (4440) are decompiler artifacts of the
 // lambdas inside AssetTests and are not types the author wrote; they are not ported, and would be
-// restored as ordinary lambdas whenever AssetTests is.
+// restored as ordinary lambdas whenever AssetTests is. Every one of their bodies is a one-liner.
 //
 // Nothing obfuscator scaffolding-shaped (always-null statics, marker classes, licence gates) is
 // present in this type; every member above is live code.
 //
-// Audit status: PARTIAL -- the MAP block was re-checked against decompiled/ on 2026-08-05: the type
-// at ControllerEditor.cs line 4157 and the cross-file entries (4485, 4678, 4768) plus 4819/4824/4829
-// and the field run starting at 4452 all land on the member named. The DEFERRED list's line numbers
-// and its blocker prose were not re-derived.
+// Audit status: VERIFIED -- every member this file declares was diffed against export
+// ControllerEditor.cs on 2026-08-05. The eleven fields at 4452-4483 match in type, order and
+// initialiser, including both array initialisers element for element; Title (4485), AdvancedMode
+// (4488-4497), MergeByDefault (4500-4509), CalculateWindowSize (4819), RefreshMergeMode (4824) and
+// ShowAt (4829) match statement for statement. RefreshMergeMode is written as an if/else where the
+// decompiler emitted a nested conditional expression; same evaluation order, same result. The
+// blocker prose for the one remaining deferral (AssetTests) was re-derived from scratch on this
+// pass and every dependency it names was confirmed present by file and line -- it is no longer a
+// blocker list but a note that nothing blocks it.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -149,6 +177,37 @@ namespace DreadScripts.ControllerEditor
         };
 
         internal override string Title => "CEditor QuickToggle";
+
+        /// <summary>
+        /// Whether the list rows edit an arbitrary animatable property and a numeric value
+        /// (advanced), or just an On/Off toggle (simple).
+        /// </summary>
+        /// <remarks>
+        /// This is a view of <see cref="EditorSettings.advancedQuickToggle"/> rather than window
+        /// state, so the mode the user last chose is the one the next window opens in. Both
+        /// accessors go through the setting, which is what makes the toggle button in the list
+        /// header persist immediately.
+        /// </remarks>
+        private static bool AdvancedMode
+        {
+            get => EditorSettings.Instance.advancedQuickToggle;
+            set => EditorSettings.Instance.advancedQuickToggle.value = value;
+        }
+
+        /// <summary>
+        /// The merge-or-replace choice a newly opened window starts every state on: true merges into
+        /// the clip already on the state, false replaces it.
+        /// </summary>
+        /// <remarks>
+        /// Distinct from <see cref="mergeMode"/>, which is a summary of the per-state flags as they
+        /// stand now. This is only ever read when the window is built and when the header button
+        /// flips it; see <see cref="RefreshMergeMode"/> for the live summary.
+        /// </remarks>
+        private static bool MergeByDefault
+        {
+            get => EditorSettings.Instance.mergeQuickToggle;
+            set => EditorSettings.Instance.mergeQuickToggle.value = value;
+        }
 
         /// <summary>
         /// The size the window wants: a fixed frame plus one row per target, plus the help box and

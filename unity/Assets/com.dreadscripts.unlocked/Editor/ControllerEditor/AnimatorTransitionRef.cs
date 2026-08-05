@@ -1,4 +1,19 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AnimatorTransitionRef.cs
+//
+// NOTES
+// StateTransitions and StateMachineTransitions carry [SpecialName] in the decompiled source, i.e.
+// they are property getters ILSpy could not recombine; they are restored as properties here.
+//
+// NOT PORTED
+// The `private static object AssetSystem` field and the `SelectSystem()` method that only tested it
+// for null. Protector licence-check scaffolding, the same pattern recorded in Common/SphereHandle.cs
+// and ADOverhaul/PhysBoneParameter.cs: nothing assigns the field, so the predicate is a constant
+// `true`, and no caller reads either member. (The sibling type AnimatorStateTransitionSet keeps its
+// copy of this pair instead of dropping it -- see the note there.)
+//
+// Audit status: VERIFIED -- all five fields, both constructors and both accessors were diffed
+// statement by statement against export/, including which constructor nulls which field. The two
+// dropped scaffolding members are recorded above.
 
 using System.Collections.Generic;
 using UnityEditor.Animations;

@@ -8,6 +8,14 @@
 //
 // Used by the transition-condition inspector at line 11659 and by the VRC parameter-driver inspector
 // at line 9358, neither of which is ported.
+//
+// Audit status: VERIFIED -- diffed against the `private enum BoolModes` still at line 2201 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs. Same two members, same
+// values: the decompiled source writes `True = 1, False` and the port spells the implicit 2 on
+// False explicitly, which is the only difference. Both cited call sites still hold -- line 11659 is
+// `selected = (BoolModes)...mode` in the condition editor, and line 9358 is the parameter-driver
+// bool field mapping True/False onto 1/0 -- so the AnimatorConditionMode.If/IfNot pairing is
+// confirmed from use, not just from the numbering.
 
 using UnityEngine;
 

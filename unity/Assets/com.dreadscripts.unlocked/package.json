@@ -2,7 +2,7 @@
   "name": "com.dreadscripts.unlocked",
   "displayName": "DreadScripts - Unlocked",
   "version": "0.1.0",
-  "description": "Restored builds of two discontinued DreadScripts Unity Editor tools, Controller Editor and Avatar Dynamics Overhaul, reconstructed from the shipped assemblies after the vendor's license server was permanently shut down. The two tools shared most of their code, so they are consolidated here as one package. The original tools are the work of Dreadrith; this package is a community restoration and is not affiliated with or endorsed by DreadScripts.",
+  "description": "Restored builds of two discontinued DreadScripts Unity Editor tools, Controller Editor and Avatar Dynamics Overhaul, reconstructed from the shipped assemblies after the vendor's license server was permanently shut down. The two tools shared most of their code, so they are consolidated here as one package. The original tools are the work of their author; this package is a community restoration and is not affiliated with or endorsed by them.",
   "unity": "2022.3",
   "type": "tool",
   "author": {

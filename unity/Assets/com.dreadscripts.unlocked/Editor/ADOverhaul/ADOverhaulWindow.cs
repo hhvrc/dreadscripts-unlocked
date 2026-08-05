@@ -5,6 +5,7 @@
 //
 //   ADOverhaulWindow            -> lifted to a top-level type, line 35
 //   enum EasyDynamicsFunctions  -> same, line 37
+//   banner                      -> same, line 48
 //   selectedFunction            -> same, line 50
 //   editorFoldout               -> same, line 60
 //   handlesFoldout              -> same, line 62
@@ -54,45 +55,42 @@
 // only ever read "License: Personal" -- a permanent, misleading reminder of a gate that no longer
 // applies. It is licence UI reachable only through the dead endpoint and is not reproduced.
 //
-// =========================== DEFERRED, EACH WITH ITS BLOCKER =============================
+// =========================== DEFERRED: NONE REMAIN IN OnGUI ==============================
 //
-// Nothing below is stubbed. Each is a call the decompiled OnGUI makes that this port omits because
-// its target does not exist in the package yet.
-//
-//   banner.Draw(this)  line 81   -- see the field note below. The only genuinely blocked call left
-//                                   in this window; BannerDownloader is still unported.
-//
-// UNBLOCKED, kept out of OnGUI only because nobody has revisited it. Both of the calls this header
-// used to list as deferred have since landed in ADOverhaul.Menus.cs and can be added back to OnGUI
-// as a mechanical change:
+// All three calls this header previously listed as deferred have since had their blockers cleared
+// and are restored in OnGUI, in the decompiled order. Recorded here because the deferrals were
+// documented and their removal should be traceable:
 //
 //   SortIdentifier()   line 7904 -- the boxed header row (hamburger button, update-available
 //                                   toggle, "v<version>" label, credit link). Ported as
-//                                   ADOverhaul.DrawToolHeader.
+//                                   ADOverhaul.DrawToolHeader in ADOverhaul.Menus.cs (line 218),
+//                                   `internal static`, both parameters optional. Called with no
+//                                   arguments here, as decompiled.
 //   ConcatIdentifier() line 8059 -- the announcement banner. Ported as
-//                                   ADOverhaul.DrawAnnouncementBanner.
+//                                   ADOverhaul.DrawAnnouncementBanner in ADOverhaul.Menus.cs
+//                                   (line 402), `internal static`, no parameters.
+//   banner.Draw(this)  line 81   -- the author's artwork strip. ADOEditorUtility.BannerDownloader
+//                                   has landed (ADOEditorUtility.BannerDownloader.cs, decompiled
+//                                   ADOEditorUtility.cs lines 918-1101); the type is
+//                                   `internal sealed` and the EditorWindow overload of Draw is
+//                                   `internal void Draw(EditorWindow window, float offsetX = 0f,
+//                                   float reservedHeight = 60f)`. The `banner` field is restored
+//                                   below with it.
 //
-// Fields, all `private static`, omitted with their sole readers:
+// The earlier note here argued that substituting Common/RemoteTexture.cs or
+// ControllerEditor/RemoteTextureView.cs for BannerDownloader would be wrong, because both paint a
+// placeholder GUI.Box while the image is missing where BannerDownloader paints nothing at all. That
+// reasoning stands but is now moot: the real type is ported and is used, so no substitution is
+// being made. What it predicted about behaviour still holds and is worth keeping -- the URL now
+// 404s, the download fails, the failure is swallowed silently, and CanDraw() short-circuits the
+// draw, so the restored call paints nothing on every frame. It is restored because it is the
+// shipped code, not because it will show anything.
+//
+// Fields, all `private static`, still omitted with their sole readers:
 //   m_Param           line 44  -- selected index for a two-tab toolbar named by `prototype`;
 //                                 nothing in either build reads or writes it.
 //   prototype         line 46  -- { "Easy Dynamics", "Cosmetic" }, the labels of that same unbuilt
 //                                 toolbar. Also unread.
-//   banner            line 48  -- an ADOEditorUtility.BannerDownloader (ADOEditorUtility.cs line
-//                                 918) for
-//                                 https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png,
-//                                 read only by OnGUI. BannerDownloader is not ported; the two types
-//                                 in the package that are nearly it -- Common/RemoteTexture.cs and
-//                                 ControllerEditor/RemoteTextureView.cs -- are deliberately NOT
-//                                 substituted for it, because both paint a placeholder GUI.Box while
-//                                 the image is missing and BannerDownloader paints nothing at all
-//                                 (its CanDraw() short-circuits the whole draw). Substituting either
-//                                 would put a grey rectangle at the bottom of this window that the
-//                                 shipped tool never had. That distinction is the whole of the
-//                                 user-visible difference today: the URL now 404s, so the download
-//                                 fails, the failure is swallowed silently, and the shipped
-//                                 BannerDownloader draws nothing on every frame forever. Omitting
-//                                 the field and its draw call reproduces that exactly, so this
-//                                 omission costs the window nothing at present.
 //   m_Issuer, facade,
 //   m_Composer,
 //   m_Annotation      lines 52-58 -- four bools with no reader anywhere in either build.
@@ -110,11 +108,19 @@
 // anywhere near this file is the RefreshAvatarTables one noted above, which belongs to the outer
 // class.
 //
-// Audit status: PARTIAL -- every line number in the MAP block above was re-checked against
-// decompiled/ADOverhaul2022 on this pass; the class itself is at line 35 and the enum at line 37
-// (the header previously said 51 and 62, which are a blank line and `handlesFoldout`), and the
-// remaining nine were confirmed correct. The prose sections below the MAP block were not
-// re-derived.
+// Audit status: VERIFIED -- every member this file declares was diffed statement by statement
+// against export/ADOverhaul2022 on 2026-08-05: the enum and its three values, all four surviving
+// fields (banner, selectedFunction, the three foldout flags), ShowWindow's menu path/priority/title,
+// OnGUI, DrawEasyDynamicsGUI, DrawSettingsGUI and OnEnable. DrawSettingsGUI matches call for call
+// including the two DrawEnumPopup<PositionFlag> sites and the conditional labelColor row. The
+// obfuscated GUIContent field names it reads through were resolved by their literal labels rather
+// than taken on trust: m_RequestSerializer="Handle Size"=handleSize, issuerSerializer="Animated
+// Foldouts"=animatedFoldouts, _FacadeSerializer="Show Name Labels"=showNameLabels,
+// _MapperSerializer="Function"=function, queueSerializer="Tooltips"=tooltips, all confirmed against
+// export ADOEditorUtility.cs lines 632-654. The three previously deferred OnGUI calls were verified
+// unblocked and restored on this pass. What is deliberately absent -- the licence gate,
+// GetConfiguration, the two unreachable feedback/bug-reporter guards and the six unread fields --
+// is documented above and was re-confirmed against export, not merely carried over.
 
 using DreadScripts.Common;
 using UnityEditor;
@@ -141,6 +147,21 @@ namespace DreadScripts.ADOverhaul
             EasyTouch,
             EasyPat
         }
+
+        /// <summary>
+        /// The author's promotional artwork, drawn at the bottom of the window.
+        /// </summary>
+        /// <remarks>
+        /// The URL 404s today, so the fetch fails, the failure is swallowed, and
+        /// <see cref="ADOEditorUtility.BannerDownloader.CanDraw"/> short-circuits every draw. The
+        /// window therefore shows nothing here -- which is exactly what the shipped build does now,
+        /// and why this is restored as-is rather than substituted for one of the package's other
+        /// remote-image types, both of which would paint a placeholder box the tool never had.
+        /// </remarks>
+        private static readonly ADOEditorUtility.BannerDownloader banner = new ADOEditorUtility.BannerDownloader(
+            "https://raw.githubusercontent.com/Dreadrith/DreadScripts/main/Other/DreadBanner.png",
+            autoDownload: true,
+            "DreadBanner.png");
 
         /// <summary>The setup chosen in the Easy Dynamics pane. Never read outside that pane.</summary>
         private static EasyDynamicsFunctions selectedFunction = EasyDynamicsFunctions.EasyGrab;
@@ -173,22 +194,21 @@ namespace DreadScripts.ADOverhaul
         }
 
         /// <summary>
-        /// Draws the settings pane, followed by the horizontal rule that separates it from the
-        /// window's footer.
+        /// Draws the settings pane, the horizontal rule beneath it, and the window's footer: the
+        /// tool header row, the announcement banner and the artwork.
         /// </summary>
         /// <remarks>
-        /// See the file header: the shipped body wrapped all of this in the licence gate, and
-        /// followed the separator with the licence strip, the header row, the announcement banner
-        /// and the artwork. The gate and the licence strip are dropped. Of the remaining three only
-        /// the artwork is still blocked, on the unported BannerDownloader; the header row and the
-        /// announcement banner have since landed as <see cref="ADOverhaul.DrawToolHeader"/> and
-        /// <see cref="ADOverhaul.DrawAnnouncementBanner"/> and should be restored here. The footer
-        /// is empty until they are.
+        /// See the file header: the shipped body wrapped all of this in the licence gate and drew
+        /// the licence strip between the separator and the header row. The gate and the strip are
+        /// dropped. The remaining three calls are the shipped ones, in the shipped order.
         /// </remarks>
         private void OnGUI()
         {
             DrawSettingsGUI();
             ADOEditorUtility.Separator();
+            ADOverhaul.DrawToolHeader();
+            ADOverhaul.DrawAnnouncementBanner();
+            banner.Draw(this);
         }
 
         /// <summary>

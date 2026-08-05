@@ -8,6 +8,9 @@
 // stays out of Common. No shipped code references the type -- it survives in the assembly with no
 // call sites -- so the meaning of the members below is read off the names and off how Write
 // Defaults is handled elsewhere in the tool, not off a use.
+//
+// Audit status: VERIFIED -- diffed in full against the nested enum in export/EditorUtils.cs
+// (still at line 1060 in the current snapshot); the three members and their order match exactly.
 
 namespace DreadScripts.ControllerEditor
 {

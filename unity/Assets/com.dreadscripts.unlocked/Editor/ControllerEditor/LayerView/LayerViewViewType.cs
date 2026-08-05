@@ -8,6 +8,16 @@
 // decompiled type is nested inside a god-class that is not ported, so it becomes a top-level
 // `internal` type in the same namespace. Nothing outside that class named it, so the change of
 // nesting has no call-site consequences.
+//
+// Audit status: VERIFIED -- the three members and their implicit ordinals were diffed against the
+// `private enum LayerViewViewType` still at line 3019 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; names and order are
+// identical. The remarks were checked against use: the value is held in the single static
+// `layerViewType` (line 8380, initialised to DefaultView), the picker at line 16267 does build its
+// menu with `Enum.GetValues(typeof(LayerViewViewType))` and `ToString().Humanize()`, the
+// DefaultView guards that hand drawing back to Unity are at 16121/16223/16779/17006, and the tree
+// builder at 16792-16818 files a layer under each of its tags and untagged layers under the base
+// category, exactly as described.
 
 namespace DreadScripts.ControllerEditor
 {

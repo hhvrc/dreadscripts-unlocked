@@ -3,6 +3,10 @@
 // class, lines 439-449. Lifted to a top-level type, as this package does with the other enums the
 // decompiled god-class carries as nested members (LayerViewViewType, OptionState, OrientationState).
 // Read through EditorSettings.GetStateCosmetics(); stored in the stateCosmetics setting.
+// Audit status: VERIFIED -- all eight members and their values diffed against
+// EditorSettings.StateCosmeticOptions in export/; the absent [Flags] attribute and the flags-mask
+// draw (EnumSetting.DrawEnumPopup's second bool selects EditorGUILayout.EnumFlagsField) were both
+// confirmed at the declaration and at the one call site.
 
 using System;
 

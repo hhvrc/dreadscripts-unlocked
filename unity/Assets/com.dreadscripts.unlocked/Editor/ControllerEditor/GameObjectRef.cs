@@ -1,4 +1,20 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/GameObjectRef.cs
+//
+// NOTES
+// Transform, Components and Item all carry [SpecialName] in the decompiled source; the first two are
+// property getters and Item is the indexer named by the type's [DefaultMember("Item")] attribute.
+// All three are restored as properties/an indexer here. The Component and Transform constructors
+// chain to the GameObject one rather than repeating its two assignments.
+//
+// NOT PORTED
+// The `private static object PushDecorator` field and the `PrepareDecorator()` method that only
+// tested it for null. Protector licence-check scaffolding, the same pattern recorded in
+// Common/SphereHandle.cs and ADOverhaul/PhysBoneParameter.cs: nothing assigns the field, so the
+// predicate is a constant `true`, and no caller reads either member.
+//
+// Audit status: VERIFIED -- both fields, all three constructors, Transform, Components, the
+// indexer, GetComponent<T> and the implicit GameObject operator were diffed statement by statement
+// against export/. The two dropped scaffolding members are recorded above.
 
 using UnityEngine;
 

@@ -10,9 +10,14 @@
 // identical and the helper is easier to point a <see cref> at -- and is private because nothing else
 // ever called it.
 //
-// Deliberately not ported: ManagePredicate (line 4103), whose whole body is EditorUtility.SetDirty.
-// It is the unconditional version of the method below, adds nothing over calling SetDirty directly,
-// and is a plausible member of another partial's region.
+// Not ported here: ManagePredicate (line 4103), whose whole body is EditorUtility.SetDirty. It is
+// the unconditional version of the method below and was left out as adding nothing over calling
+// SetDirty directly; it has since landed in EditorUtils.SetDirty.cs, whose header sets out when a
+// call site should pick it over MarkDirty.
+// Audit status: VERIFIED -- both bodies diffed statement by statement against export/, including the
+// bare catch, the GameObject/Component scene-marking order and the prefab early-out. The only
+// deviation is visibility: TryRecordPrefabModifications is internal in the decompilation and private
+// here, as the header records.
 
 using UnityEditor;
 using UnityEditor.SceneManagement;

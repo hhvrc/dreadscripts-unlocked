@@ -5,8 +5,19 @@
 // the durable reference.
 //
 // This is the window body only. The per-row drawing lives in the ReorderableList callbacks built
-// by the factory (decompiled AssetTests, line 4511), which is deferred — see the header of
-// QuickToggleWindow.cs for why.
+// by the factory (decompiled AssetTests, line 4511), which is still unwritten — see the header of
+// QuickToggleWindow.cs, which records that its blockers have all since cleared.
+//
+// Audit status: VERIFIED -- OnCustomGUI is the only member this file declares, and it was diffed
+// statement by statement against export ControllerEditor.cs lines 4678-4766 on 2026-08-05: the
+// null-targetList self-close, the root ObjectField in its helpBox, the targetList.Draw(), the
+// early return when no state has a clip, the foldout header with its help-icon tooltip, the
+// three-way mergeMode summary and its GUIColorScope, the cycle switch (case 0 sets replace-all,
+// cases 1 and 2 set merge-all), and the per-clip rows with their skip conditions and the
+// RefreshMergeMode call. Two deliberate, behaviour-preserving rewrites: the `res`/`res2` ternaries
+// are written as C# conditional expressions in the same order, and the decompiler's separate loop
+// variables (i/j/k) are renamed. The range contains no goto, no residual switch dispatch, no
+// `while (true)` and no unresolved smethod_N, so no deobfuscator fault applies here.
 
 using DreadScripts.Common;
 using UnityEditor;

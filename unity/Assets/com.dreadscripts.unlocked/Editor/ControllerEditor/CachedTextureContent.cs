@@ -1,4 +1,25 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/CachedTextureContent.cs
+//
+// DEOBF-BUG
+// The `texture` getter loops `while (true) Load();` in the decompiled source, which would hang the
+// editor on the first cache miss. It is read as a single `Load()` here; see the comment at that
+// statement for why a miss then settles rather than repeating.
+//
+// NOTES
+// content and texture carry [SpecialName] in the decompiled source, i.e. they are the accessor pairs
+// of properties ILSpy could not recombine; they are restored as properties here.
+//
+// This type reached the decompiler fully obfuscated -- it was `ErrorPolicy`, with every field and
+// method renamed. The names in export/ are this project's own, assigned in renames/ and applied by
+// the re-export, and this port shortens four of them further, export/ name first:
+// LoadTextureFromSession -> LoadTexture, SaveTextureToSession -> SaveTexture, IntsToBytes ->
+// ToBytes, BytesToInts -> ToInts. Nothing here is a vendor identifier.
+//
+// Audit status: VERIFIED -- all five fields, the constructor, both property accessor pairs, Load,
+// RebuildContent, both static session helpers, both conversion helpers and the implicit GUIContent
+// operator were diffed statement by statement against export/, including the SessionState calls and
+// the EraseIntArray on a corrupt entry. Everything matches apart from the loop recorded above; the
+// port returns null from the catch where the decompiled source falls through to the same return.
 
 using System;
 using UnityEditor;
@@ -15,10 +36,6 @@ namespace DreadScripts.ControllerEditor
     /// editor happens on every recompile and would leave toolbar icons blank until something rebuilt
     /// them. SessionState persists across reloads but stores only primitives, hence the PNG bytes
     /// smuggled through as an int array.
-    /// <para>
-    /// The member names here are the vendor's own — this type reached the decompiler with its names
-    /// intact — so they are kept as they were rather than renamed to match the rest of the port.
-    /// </para>
     /// </remarks>
     internal sealed class CachedTextureContent
     {

@@ -1,4 +1,14 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/EventWrapper.cs
+//
+// NOT PORTED
+// The `internal static object NewDecorator` field and the `LoginDecorator()` method that only
+// tested it for null. This is the protector's licence-check scaffolding, the same pattern recorded
+// in Common/SphereHandle.cs and ADOverhaul/PhysBoneParameter.cs: nothing ever assigns the field, so
+// the predicate is a constant `true`, and no caller in either build reads either member.
+//
+// Audit status: VERIFIED -- both fields, the constructor, Use() and both implicit operators were
+// diffed statement by statement against export/ and match. The two dropped scaffolding members are
+// recorded above.
 
 using UnityEngine;
 

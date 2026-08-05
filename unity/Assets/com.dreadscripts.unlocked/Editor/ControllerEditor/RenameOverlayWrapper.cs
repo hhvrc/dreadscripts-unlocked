@@ -20,6 +20,25 @@
 // The [SpecialName] accessor pairs (Instance/EditFieldRect/UserAcceptedRename/IsRenaming/UserData/
 // IsWaitingForDelay/Name/OriginalName) were properties before the obfuscator split them into
 // get/set methods, and are properties again here.
+//
+// DELIBERATE DEVIATION
+// The rewrite above changes when binding happens and how it fails. Shipped: one eager
+// EnsureInitialized() guarded by a static `initialized` flag binds all thirteen members on the
+// first construction, and a failure is logged and rethrown as whatever reflection threw. Here:
+// EnsureInitialized() resolves only the type, each member binds lazily on first use, and a missing
+// type is logged identically but rethrown as a new Exception naming it. No call site inspects the
+// exception, and the log line is unchanged, so the observable difference is confined to which
+// exception type escapes a Unity version that has dropped UnityEditor.RenameOverlay.
+//
+// Audit status: PARTIAL -- every member was matched one-to-one against export/ and checked for
+// behavioural equivalence: all thirteen bindings (same member names, same GUIStyle disambiguation
+// on OnGUI), the three constructors (including that the Func<object> one deliberately resolves
+// nothing), ResolveInstance, the eight accessor pairs, both BeginRename overloads -- with the rect
+// still written after BeginRename, not before -- EndRename, OnGUI, OnEvent and Clear. Not marked
+// VERIFIED because this file re-expresses rather than transcribes: the eager static-FieldInfo
+// binding was rewritten onto TypeResolver/ReflectionMemberRef, so no statement-level diff against
+// export/ is possible, and the rewrite inherits TypeResolver.ResolvedType, whose own body is
+// unverifiable (see TypeResolver.cs).
 
 using System;
 using System.Reflection;

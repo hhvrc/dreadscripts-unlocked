@@ -326,7 +326,13 @@ namespace DreadScripts.ControllerEditor
         /// selection, a changed matching option, an added or removed condition. See the file header
         /// for why it carries no decompiled line number of its own.
         /// </remarks>
-        private static void RefreshSharedConditions()
+        /// <remarks>
+        /// <c>internal</c> rather than the shipped <c>private</c> so that
+        /// <see cref="EditorSettings.onMatchingOptionsChanged"/> can be pointed at it. EditorSettings
+        /// is a separate type here, where the shipped build reached this method from inside the same
+        /// god class; the widening follows from that split, not from a change in intent.
+        /// </remarks>
+        internal static void RefreshSharedConditions()
         {
             sharedConditionEditors = BuildSharedConditionEditors(selectedTransitions);
             RebuildConditionList();

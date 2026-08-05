@@ -81,6 +81,18 @@
 //                                     a state the shipped build never produced.
 //   OnDisable()           line 2341 — ADOverhaul.CancelConfiguration (6496).
 //
+// The blocker names above are the ones the decompiled snapshot carried when this file was written,
+// and several of those blockers have landed since. Re-checked during the audit pass: RunConfiguration
+// is now ADOverhaul.DrawShapeProperties, OrderConfiguration is DrawShapeHandles, SortConfiguration is
+// SetShapeCapabilities, SelectConfiguration is ResetFoldouts, CancelConfiguration is
+// SetShapeEditOverlayActive, TestConfiguration is ApplyModifiedProperties, SelectIdentifier is
+// DrawFoldoutBox, SortIdentifier is DrawToolHeader, ConcatIdentifier is DrawAnnouncementBanner, and
+// ADOEditorUtility.CancelStatus / RevertStatus are FindType / OverrideCustomEditor -- all ported. What
+// is still missing is FlushConfiguration, GetConfiguration, EnableConfiguration, MoveConfiguration,
+// ReadConfiguration, InsertConfiguration and MapConfiguration, plus the licence statics, which the
+// port declines to declare (see ADOverhaul.State.cs). So the members above stay unported, but for a
+// shorter list of reasons than the one recorded when they were first triaged.
+//
 // Two members are pure decompiler artifacts and are not ported at all:
 //   RestartProperty() (2352) and DisableProperty() (2347). The first is ILSpy's rendering of a
 //   lambda's capture of `this.target`; the second is the lifted body of the closure passed to
@@ -160,6 +172,20 @@
 // (`if (!QuerySystem()) { ...; return; }`) and 2022 inverts it into if/else. Same evaluation order,
 // same effect. Everything else differs only in obfuscated identifiers, including the helper names
 // (2019: ResolveManager/RevertManager, CallTask; 2022: CancelStatus/RevertStatus, InsertProperty).
+//
+// Audit status: VERIFIED -- everything this file declares was diffed against the 2022 snapshot's
+// PhysBoneColliderEditor: shapeFoldout (a one-element array seeded true), editorOverrideEnabled
+// (true), the eight SerializedProperty fields, and CacheProperties statement by statement including
+// its resolve order, which is not the declaration order. The two positional conventions the header
+// pins down were re-derived from the snapshot rather than taken on trust: the eight-element array
+// passed to DrawShapeProperties is [shapeType, rootTransform, radius, height, position, rotation,
+// insideBounds, bonesAsSpheres], and EnableProperty's switch maps Capsule to all three capabilities,
+// Sphere to radius, Plane (the default arm) to rotation, passed to SetShapeCapabilities in the order
+// radius, height, rotation. Both artifact members were confirmed to be what the header says.
+// One caveat: the MAP's line numbers for the state block (122-187) do not point into the stated
+// decompiled region (2161-2356) or anywhere near these members in the snapshot; they were not used,
+// and are left for the package-wide line-number sweep rather than fixed piecemeal here. The unported
+// entries' numbers (2190-2352) are sound. The stale blocker list was corrected, see above.
 
 using UnityEditor;
 using UnityEditor.AnimatedValues;

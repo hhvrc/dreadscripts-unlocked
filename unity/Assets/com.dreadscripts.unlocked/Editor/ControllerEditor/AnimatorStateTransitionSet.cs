@@ -17,6 +17,21 @@
 // accessors of properties that ILSpy could not recombine; they are restored as properties here.
 // The two state-machine constructors differ only in whether a parent is supplied, so they are
 // collapsed into one with an optional parameter.
+//
+// NOTES
+// The MAP above is not exhaustive. The nested TransitionSourceType enum, the AnimatorState
+// constructor, Remove, the three implicit operators and the SetupSystem/ExcludeSystem pair are all
+// ported and were audited, but carry no MAP line.
+//
+// Unlike its siblings in this folder, this type keeps the protector's SetupSystem/ExcludeSystem
+// scaffolding rather than dropping it; see the doc comments on those two members.
+//
+// Audit status: VERIFIED -- all six fields, all three decompiled constructors (against the two
+// ported ones), all nine accessors, Remove and the three implicit operators were diffed statement by
+// statement against export/. The switch arms in SourceName and Remove were checked case by case,
+// including which owner each removal path goes through and the "!AnyState" and "Exit" literals. The
+// MAP line numbers were re-checked against the current export/ snapshot and all eleven still land on
+// the member they name.
 
 using UnityEditor.Animations;
 

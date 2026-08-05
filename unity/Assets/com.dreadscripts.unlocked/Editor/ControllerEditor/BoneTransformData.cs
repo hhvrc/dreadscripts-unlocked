@@ -1,4 +1,21 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/BoneTransformData.cs
+//
+// DELIBERATE DEVIATION
+// NormalizedDepth guards against a zero maxDepth; the decompiled source does not. It computes
+// `1f / chain.maxDepth * depth`, which on a single-bone chain (maxDepth == 0) is Infinity * 0, i.e.
+// NaN, and a NaN reaches AnimationCurve.Evaluate through EvaluateAtDepth and every gizmo scaled off
+// this value. The guard returns 0f for that case, which is what the root of a chain should read.
+// Note the shape change as well: the decompiled expression multiplies by the reciprocal where this
+// divides, so the two also differ in float rounding at the last bit.
+//
+// NOTES
+// Position, MaxScale and NormalizedDepth carry [SpecialName] in the decompiled source, i.e. they
+// are property getters ILSpy could not recombine; they are restored as properties here.
+// EvaluateCurve is renamed to EvaluateAtDepth.
+//
+// Audit status: VERIFIED -- all nine fields, the three accessors and EvaluateAtDepth were diffed
+// statement by statement against export/. Everything matches apart from the NormalizedDepth guard
+// recorded above; EvaluateAtDepth's null/length-under-2 test and its 1f fallback are literal.
 
 using UnityEngine;
 

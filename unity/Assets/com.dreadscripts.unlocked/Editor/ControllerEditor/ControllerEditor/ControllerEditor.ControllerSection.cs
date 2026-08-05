@@ -24,12 +24,6 @@
 // Nothing here is stubbed. These are the calls the shipped body makes that this port omits because
 // their targets are not in the package yet.
 //
-//   LogoutMapper()      (8509) -- "the controller being edited". The whole section is wrapped in
-//     `new EditorGUI.DisabledScope(LogoutMapper() == null)`, which greys the form out when no
-//     controller is loaded. It is one of the six [SpecialName] accessors ControllerEditor.State.cs
-//     defers to whoever ports DisableMapper; that header records the name it will land under,
-//     `ActiveController`. See DELIBERATE DEVIATION.
-//
 //   LogoutVisitor()    (13048) -- the batch-action dispatcher, i.e. everything the Apply button
 //     actually does. The button and the EditorGUI.BeginDisabledGroup/EndDisabledGroup pair that
 //     computes its enabled state are omitted together; see DELIBERATE DEVIATION.
@@ -42,15 +36,7 @@
 //
 // ================================ DELIBERATE DEVIATION ========================================
 //
-// 1. THE OUTER DISABLED SCOPE IS OMITTED. `EditorGUI.DisabledScope` is self-balancing, so the risk
-//    rule 4 guards against does not arise -- but its *condition* is `LogoutMapper() == null`, and
-//    there is no honest value to pass in its place. Passing `false` would assert "a controller is
-//    always loaded", which is the fabrication this port is meant to avoid, and passing `true` would
-//    grey the section out permanently. The scope is therefore left out entirely. The visible effect
-//    is that the controller form reads as enabled with no controller loaded, where the shipped tool
-//    greyed it out. Restoring it is a one-line change once `ActiveController` lands.
-//
-// 2. THE APPLY BUTTON IS OMITTED, WITH ITS DISABLED GROUP. Its only statement is the call to the
+// 1. THE APPLY BUTTON IS OMITTED, WITH ITS DISABLED GROUP. Its only statement is the call to the
 //    unported `LogoutVisitor()`. A button drawn without it would look like a working control and do
 //    nothing, which is worse than an absent one. `EditorGUI.BeginDisabledGroup` and its matching
 //    `EndDisabledGroup` bracket only that button, so dropping all three keeps the GUI stack
@@ -79,17 +65,30 @@
 //   declaration from its initialiser across the `BeginChangeCheck` that separates them. The dead
 //   `-1` store is dropped; the two popups are written as plain initialisations.
 //
+// ============================ FORMER DEFERRAL, NOW WITHDRAWN ==================================
+//
+// THE OUTER DISABLED SCOPE IS BACK. This header used to carry it as the first of two deliberate
+// deviations: `new EditorGUI.DisabledScope(LogoutMapper() == null)` wraps the whole section and
+// greys the form out when no controller is loaded, and it was left out entirely because "there is no
+// honest value to pass in its place" -- `false` would have asserted that a controller is always
+// loaded and `true` would have greyed the section out permanently. LogoutMapper has since landed as
+// the ActiveController property in ControllerEditor.ControllerContext.cs, so the condition can be
+// written as shipped, and it is. The note said restoring it would be a one-line change; it was, plus
+// the indent.
+//
 // ======================================= NOTES =================================================
 //
-// THIS FILE'S NAME IS WRONG, AND SO IS ONE LINE OF ControllerEditor.Window.cs. Both call
-// `ValidateVisitor` "the transition section". It is not: its first statement is
-// `if (!EditorSettings.Instance.editingController) return;`, every field it touches belongs to the
-// layer/parameter batch-action bank (decompiled 8246-8266), and in OnGUI's section run (decompiled
-// 8666-8671) it is the *fourth* call, after `ReflectVisitor` and `DestroyVisitor`. It draws the
-// controller section's batch-action toolbar. The ported member is named for what it does rather
-// than for the mislabel; the file name is kept as specified because renaming it would strand the
-// .meta guid, and Window.cs is not edited here because it is shared. Both are worth correcting in
-// the integration pass -- see the task notes.
+// THIS FILE'S NAME WAS QUESTIONED AND IS RIGHT. An earlier revision of this header recorded that the
+// file name was wrong "and so is one line of ControllerEditor.Window.cs", because both called
+// `ValidateVisitor` "the transition section". `ValidateVisitor` is the CONTROLLER section: its first
+// statement is `if (!EditorSettings.Instance.editingController) return;`, every field it touches
+// belongs to the layer/parameter batch-action bank (decompiled 8246-8266), and in OnGUI's section
+// run (decompiled 8666-8671) it is the fourth call, after `ReflectVisitor` and `DestroyVisitor`. So
+// the file name, ControllerEditor.ControllerSection.cs, says exactly what the file does and needs no
+// change; what was wrong was the Window.cs line, which now reads "ValidateVisitor (11806) draws the
+// CONTROLLER section, gated on editingController". The sibling file that genuinely was misnamed --
+// commissioned as "ControllerSection" while drawing the transition section -- is
+// ControllerEditor.TransitionSection.cs, and it has been renamed; its header records that.
 //
 // The action/scope/destination pickers are plain `EnumPopup`s sized to their own current value
 // (`GetTextWidth(...) + 28f`), so each popup is exactly as wide as the entry it is showing and
@@ -105,10 +104,14 @@
 //
 // ControllerEditor ships a single build, so there is no second decompilation to diff this against.
 //
-// Audit status: PARTIAL -- the MAP entry was checked against decompiled/ and line 11806 is
-// `private void ValidateVisitor()`; the three deferred targets were each confirmed absent from the
-// package and present at the cited decompiled lines. The body was transcribed statement by
-// statement from 11806-11945, but has not been run in the editor, which is why this is PARTIAL.
+// Audit status: PARTIAL -- the MAP entry was checked against export/ and line 11806 is the member
+// named. On the pass that restored the outer disabled scope, that scope was diffed against export
+// (`using (new EditorGUI.DisabledScope(ActiveController() == null))` immediately inside the
+// editingController early return and immediately outside the box scope, closing after the last
+// statement of the body), and the two remaining deferred targets were re-confirmed absent from the
+// package under any name: nothing declares LogoutVisitor or CustomizeVisitor, and no ported member
+// claims decompiled 13048 or 11948. The rest of the body was transcribed statement by statement from
+// 11806-11945 on an earlier pass and has not been run in the editor, which is why this is PARTIAL.
 
 using UnityEditor;
 using UnityEngine;
@@ -139,9 +142,9 @@ namespace DreadScripts.ControllerEditor
         /// [tag]".
         /// </para>
         /// <para>
-        /// See the file header: the licence gate this body contained is dropped, and the outer
-        /// disabled scope, the Apply button and the trailing panel row are omitted with their
-        /// blockers named.
+        /// See the file header: the licence gate this body contained is dropped, the outer disabled
+        /// scope is drawn as shipped, and the Apply button and the trailing panel row are omitted
+        /// with their blockers named.
         /// </para>
         /// </remarks>
         private void DrawControllerSection()
@@ -151,202 +154,206 @@ namespace DreadScripts.ControllerEditor
                 return;
             }
 
-            // DEFERRED: using (new EditorGUI.DisabledScope(ActiveController == null)) -- see the
-            //           DELIBERATE DEVIATION section of the file header.
-            using (new GUILayout.VerticalScope(GUI.skin.box))
+            // The whole section is greyed out with no controller loaded. EditorGUI.DisabledScope
+            // is self-balancing, so this is a scope rather than the Begin/End pair used further
+            // down; see the file header for why it was omitted until ActiveController landed.
+            using (new EditorGUI.DisabledScope(ActiveController == null))
             {
-                // The licence gate sat here, inside the box and before anything else. Dropped.
-
-                // Which operands the chosen action needs. Named for what they gate rather than for
-                // the flag/flag2/flag3/flag4 the decompiler produced.
-                bool needsSourceName = false;      // the "from" parameter name
-                bool needsReplacementName = false; // the "to" parameter name, plus the word "With"
-                bool needsTagField = false;        // the free-text tag
-                bool needsScopeSelector = false;   // the word "In" and the ActionMode popup
-
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope(GUI.skin.box))
                 {
-                    selectedAction = (ControllerAction)EditorGUILayout.EnumPopup(
-                        selectedAction, GUILayout.Width(selectedAction.GetTextWidth() + 28f));
+                    // The licence gate sat here, inside the box and before anything else. Dropped.
 
-                    switch (selectedAction)
+                    // Which operands the chosen action needs. Named for what they gate rather than for
+                    // the flag/flag2/flag3/flag4 the decompiler produced.
+                    bool needsSourceName = false;      // the "from" parameter name
+                    bool needsReplacementName = false; // the "to" parameter name, plus the word "With"
+                    bool needsTagField = false;        // the free-text tag
+                    bool needsScopeSelector = false;   // the word "In" and the ActionMode popup
+
+                    using (new GUILayout.HorizontalScope())
                     {
-                        case ControllerAction.ReplaceParameter:
-                            needsSourceName = true;
-                            needsReplacementName = true;
-                            needsScopeSelector = true;
-                            break;
+                        selectedAction = (ControllerAction)EditorGUILayout.EnumPopup(
+                            selectedAction, GUILayout.Width(selectedAction.GetTextWidth() + 28f));
 
-                        case ControllerAction.RemoveParameter:
-                            needsSourceName = true;
-                            needsScopeSelector = true;
-                            break;
-
-                        case ControllerAction.RemoveTag:
-                            needsSourceName = true;
-                            needsScopeSelector = true;
-                            break;
-
-                        case ControllerAction.Copy:
-                            // Copy carries its own source and destination pickers, below.
-                            break;
-
-                        case ControllerAction.RemoveLayersWithTag:
-                            // Always runs over the whole controller, so it takes a tag and no scope.
-                            needsTagField = true;
-                            break;
-
-                        default:
-                            // TagCurrentLayerWith: a tag, applied to the selected layer.
-                            needsTagField = true;
-                            break;
-                    }
-
-                    // A scoped action pointed at tagged layers needs somewhere to type the tag too.
-                    if (needsScopeSelector && actionScope == ActionMode.LayersTaggedWith)
-                    {
-                        needsTagField = true;
-                    }
-
-                    if (needsSourceName)
-                    {
-                        // The text field and the 12px popup beside it are one composite control:
-                        // "textfielddropdowntext" is the body, "textfielddropdown" the arrow. The
-                        // popup is drawn with no selection (-1) so it never shows a current value --
-                        // it exists only to write a parameter name into the field.
-                        EditorGUIUtility.labelWidth = 40f;
-                        actionSourceName = EditorGUILayout.TextField(string.Empty, actionSourceName, "textfielddropdowntext");
-                        EditorGUIUtility.labelWidth = 0f;
-
-                        EditorGUI.BeginChangeCheck();
-                        int picked = EditorGUILayout.Popup(-1, parameterNames ?? new string[0], "textfielddropdown", GUILayout.Width(12f));
-                        if (EditorGUI.EndChangeCheck())
+                        switch (selectedAction)
                         {
-                            actionSourceName = parameterNames[picked];
+                            case ControllerAction.ReplaceParameter:
+                                needsSourceName = true;
+                                needsReplacementName = true;
+                                needsScopeSelector = true;
+                                break;
+
+                            case ControllerAction.RemoveParameter:
+                                needsSourceName = true;
+                                needsScopeSelector = true;
+                                break;
+
+                            case ControllerAction.RemoveTag:
+                                needsSourceName = true;
+                                needsScopeSelector = true;
+                                break;
+
+                            case ControllerAction.Copy:
+                                // Copy carries its own source and destination pickers, below.
+                                break;
+
+                            case ControllerAction.RemoveLayersWithTag:
+                                // Always runs over the whole controller, so it takes a tag and no scope.
+                                needsTagField = true;
+                                break;
+
+                            default:
+                                // TagCurrentLayerWith: a tag, applied to the selected layer.
+                                needsTagField = true;
+                                break;
                         }
-                    }
 
-                    if (needsTagField && actionScope != ActionMode.LayersTaggedWith)
-                    {
-                        actionFilterText = EditorGUILayout.TextField(actionFilterText);
-                    }
-
-                    if (needsReplacementName)
-                    {
-                        GUILayout.Label("With", GUILayout.Width(32f));
-
-                        EditorGUIUtility.labelWidth = 40f;
-                        actionReplacementName = EditorGUILayout.TextField(string.Empty, actionReplacementName, "textfielddropdowntext");
-                        EditorGUIUtility.labelWidth = 0f;
-
-                        EditorGUI.BeginChangeCheck();
-                        int picked = EditorGUILayout.Popup(-1, parameterNames ?? new string[0], "textfielddropdown", GUILayout.Width(12f));
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            actionReplacementName = parameterNames[picked];
-                        }
-                    }
-
-                    if (needsScopeSelector)
-                    {
-                        GUILayout.Label("In", GUILayout.Width(15f));
-                        actionScope = (ActionMode)EditorGUILayout.EnumPopup(actionScope, GUILayout.Width(140f));
-                    }
-
-                    // The other half of the tag field: after the scope popup, so the row reads
-                    // "In [Layers Tagged With] [tag]".
-                    if (needsTagField && actionScope == ActionMode.LayersTaggedWith)
-                    {
-                        actionFilterText = EditorGUILayout.TextField(actionFilterText);
-                    }
-
-                    if (selectedAction == ControllerAction.Copy)
-                    {
-                        // Copy uses MoveMode rather than ActionMode for its source -- the same first
-                        // three scopes, minus the state-machine one, which has no meaning when whole
-                        // layers are being copied. See MoveMode's header on the shared ordinals.
-                        copySourceScope = (MoveMode)EditorGUILayout.EnumPopup(
-                            copySourceScope, GUILayout.Width(copySourceScope.GetTextWidth() + 28f));
-
-                        if (copySourceScope == MoveMode.LayersTaggedWith)
+                        // A scoped action pointed at tagged layers needs somewhere to type the tag too.
+                        if (needsScopeSelector && actionScope == ActionMode.LayersTaggedWith)
                         {
                             needsTagField = true;
+                        }
+
+                        if (needsSourceName)
+                        {
+                            // The text field and the 12px popup beside it are one composite control:
+                            // "textfielddropdowntext" is the body, "textfielddropdown" the arrow. The
+                            // popup is drawn with no selection (-1) so it never shows a current value --
+                            // it exists only to write a parameter name into the field.
+                            EditorGUIUtility.labelWidth = 40f;
+                            actionSourceName = EditorGUILayout.TextField(string.Empty, actionSourceName, "textfielddropdowntext");
+                            EditorGUIUtility.labelWidth = 0f;
+
+                            EditorGUI.BeginChangeCheck();
+                            int picked = EditorGUILayout.Popup(-1, parameterNames ?? new string[0], "textfielddropdown", GUILayout.Width(12f));
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                actionSourceName = parameterNames[picked];
+                            }
+                        }
+
+                        if (needsTagField && actionScope != ActionMode.LayersTaggedWith)
+                        {
                             actionFilterText = EditorGUILayout.TextField(actionFilterText);
                         }
 
-                        GUILayout.Label("To", GUILayout.Width(20f));
-
-                        // copyDestination is the one instance field in this method; the Copy panel's
-                        // destination is per-window and resets with it. See ControllerEditor.State.cs.
-                        copyDestination = (MoveDestination)EditorGUILayout.EnumPopup(
-                            copyDestination, GUILayout.Width(copyDestination.GetTextWidth() + 28f));
-
-                        if (copyDestination == MoveDestination.Controller)
+                        if (needsReplacementName)
                         {
-                            actionTargetController = (UnityEditor.Animations.AnimatorController)EditorGUILayout.ObjectField(
-                                actionTargetController, typeof(UnityEditor.Animations.AnimatorController), false);
+                            GUILayout.Label("With", GUILayout.Width(32f));
+
+                            EditorGUIUtility.labelWidth = 40f;
+                            actionReplacementName = EditorGUILayout.TextField(string.Empty, actionReplacementName, "textfielddropdowntext");
+                            EditorGUIUtility.labelWidth = 0f;
+
+                            EditorGUI.BeginChangeCheck();
+                            int picked = EditorGUILayout.Popup(-1, parameterNames ?? new string[0], "textfielddropdown", GUILayout.Width(12f));
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                actionReplacementName = parameterNames[picked];
+                            }
+                        }
+
+                        if (needsScopeSelector)
+                        {
+                            GUILayout.Label("In", GUILayout.Width(15f));
+                            actionScope = (ActionMode)EditorGUILayout.EnumPopup(actionScope, GUILayout.Width(140f));
+                        }
+
+                        // The other half of the tag field: after the scope popup, so the row reads
+                        // "In [Layers Tagged With] [tag]".
+                        if (needsTagField && actionScope == ActionMode.LayersTaggedWith)
+                        {
+                            actionFilterText = EditorGUILayout.TextField(actionFilterText);
+                        }
+
+                        if (selectedAction == ControllerAction.Copy)
+                        {
+                            // Copy uses MoveMode rather than ActionMode for its source -- the same first
+                            // three scopes, minus the state-machine one, which has no meaning when whole
+                            // layers are being copied. See MoveMode's header on the shared ordinals.
+                            copySourceScope = (MoveMode)EditorGUILayout.EnumPopup(
+                                copySourceScope, GUILayout.Width(copySourceScope.GetTextWidth() + 28f));
+
+                            if (copySourceScope == MoveMode.LayersTaggedWith)
+                            {
+                                needsTagField = true;
+                                actionFilterText = EditorGUILayout.TextField(actionFilterText);
+                            }
+
+                            GUILayout.Label("To", GUILayout.Width(20f));
+
+                            // copyDestination is the one instance field in this method; the Copy panel's
+                            // destination is per-window and resets with it. See ControllerEditor.State.cs.
+                            copyDestination = (MoveDestination)EditorGUILayout.EnumPopup(
+                                copyDestination, GUILayout.Width(copyDestination.GetTextWidth() + 28f));
+
+                            if (copyDestination == MoveDestination.Controller)
+                            {
+                                actionTargetController = (UnityEditor.Animations.AnimatorController)EditorGUILayout.ObjectField(
+                                    actionTargetController, typeof(UnityEditor.Animations.AnimatorController), false);
+                            }
                         }
                     }
+
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (selectedAction == ControllerAction.RemoveParameter || selectedAction == ControllerAction.ReplaceParameter)
+                        {
+                            matchWholeWord = EditorGUILayout.Toggle(
+                                new GUIContent("Match Whole Word", "Apply to parameters that match exactly. Otherwise apply to parameters that contain it"),
+                                matchWholeWord);
+                        }
+                        else if (selectedAction == ControllerAction.Copy)
+                        {
+                            addRequiredParameters = EditorGUILayout.Toggle(
+                                new GUIContent("Add Required Parameters", "Add the parameters used by the Source to the destination Controller. Adds Suffix if Suffix isn't empty."),
+                                addRequiredParameters, GUILayout.Width(180f));
+
+                            GUILayout.FlexibleSpace();
+
+                            EditorGUIUtility.labelWidth = 50f;
+                            copiedParameterSuffix = EditorGUILayout.TextField(
+                                new GUIContent("Suffix:", "Add a Suffix to all the Parameters in the newly copied layers. Adds a Suffix to the added parameters if enabled."),
+                                copiedParameterSuffix);
+                            EditorGUIUtility.labelWidth = 0f;
+                        }
+                        else
+                        {
+                            // No options for this action; the flexible space is what right-aligns the
+                            // Apply button in the shipped layout.
+                            GUILayout.FlexibleSpace();
+                        }
+
+                        // DEFERRED: EditorGUI.BeginDisabledGroup(applyBlocked), the Apply button whose
+                        //           body is LogoutVisitor(), and EditorGUI.EndDisabledGroup(). All three
+                        //           are omitted together so the pair stays balanced; see the header.
+                        //
+                        //   bool applyBlocked =
+                        //       (string.IsNullOrEmpty(actionSourceName) && needsSourceName)
+                        //       || (string.IsNullOrEmpty(actionReplacementName) && needsReplacementName)
+                        //       || (string.IsNullOrEmpty(actionFilterText) && needsTagField)
+                        //       || (selectedAction == ControllerAction.Copy
+                        //           && copyDestination == MoveDestination.Controller
+                        //           && !actionTargetController);
+                        //   EditorGUI.BeginDisabledGroup(applyBlocked);
+                        //   if (EditorUtils.Button("Apply", "minibutton", GUILayout.Width(140f)))
+                        //   {
+                        //       LogoutVisitor();
+                        //   }
+                        //   EditorGUI.EndDisabledGroup();
+                        //
+                        // Apply was live only once every field the current action needs had been filled
+                        // in, and -- for a Copy into a named controller -- once that controller had been
+                        // assigned.
+                    }
+
+                    EditorGUILayout.Space();
+                    EditorUtils.Separator();
+                    EditorGUILayout.Space();
+
+                    // DEFERRED: CustomizeVisitor() -- the Write Defaults / sub-asset panel row. See the
+                    //           PARTIAL PORT section of the file header.
                 }
-
-                using (new GUILayout.HorizontalScope())
-                {
-                    if (selectedAction == ControllerAction.RemoveParameter || selectedAction == ControllerAction.ReplaceParameter)
-                    {
-                        matchWholeWord = EditorGUILayout.Toggle(
-                            new GUIContent("Match Whole Word", "Apply to parameters that match exactly. Otherwise apply to parameters that contain it"),
-                            matchWholeWord);
-                    }
-                    else if (selectedAction == ControllerAction.Copy)
-                    {
-                        addRequiredParameters = EditorGUILayout.Toggle(
-                            new GUIContent("Add Required Parameters", "Add the parameters used by the Source to the destination Controller. Adds Suffix if Suffix isn't empty."),
-                            addRequiredParameters, GUILayout.Width(180f));
-
-                        GUILayout.FlexibleSpace();
-
-                        EditorGUIUtility.labelWidth = 50f;
-                        copiedParameterSuffix = EditorGUILayout.TextField(
-                            new GUIContent("Suffix:", "Add a Suffix to all the Parameters in the newly copied layers. Adds a Suffix to the added parameters if enabled."),
-                            copiedParameterSuffix);
-                        EditorGUIUtility.labelWidth = 0f;
-                    }
-                    else
-                    {
-                        // No options for this action; the flexible space is what right-aligns the
-                        // Apply button in the shipped layout.
-                        GUILayout.FlexibleSpace();
-                    }
-
-                    // DEFERRED: EditorGUI.BeginDisabledGroup(applyBlocked), the Apply button whose
-                    //           body is LogoutVisitor(), and EditorGUI.EndDisabledGroup(). All three
-                    //           are omitted together so the pair stays balanced; see the header.
-                    //
-                    //   bool applyBlocked =
-                    //       (string.IsNullOrEmpty(actionSourceName) && needsSourceName)
-                    //       || (string.IsNullOrEmpty(actionReplacementName) && needsReplacementName)
-                    //       || (string.IsNullOrEmpty(actionFilterText) && needsTagField)
-                    //       || (selectedAction == ControllerAction.Copy
-                    //           && copyDestination == MoveDestination.Controller
-                    //           && !actionTargetController);
-                    //   EditorGUI.BeginDisabledGroup(applyBlocked);
-                    //   if (EditorUtils.Button("Apply", "minibutton", GUILayout.Width(140f)))
-                    //   {
-                    //       LogoutVisitor();
-                    //   }
-                    //   EditorGUI.EndDisabledGroup();
-                    //
-                    // Apply was live only once every field the current action needs had been filled
-                    // in, and -- for a Copy into a named controller -- once that controller had been
-                    // assigned.
-                }
-
-                EditorGUILayout.Space();
-                EditorUtils.Separator();
-                EditorGUILayout.Space();
-
-                // DEFERRED: CustomizeVisitor() -- the Write Defaults / sub-asset panel row. See the
-                //           PARTIAL PORT section of the file header.
             }
         }
 

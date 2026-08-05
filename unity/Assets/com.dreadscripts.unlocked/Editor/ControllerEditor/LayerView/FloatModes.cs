@@ -7,6 +7,12 @@
 // LIFTED OUT OF ControllerEditor, following the convention already used for PhysBoneEditor.
 //
 // Used by the transition-condition inspector at line 11664, which is not ported.
+//
+// Audit status: VERIFIED -- diffed against the `private enum FloatModes` still at line 2187 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs. Same two members, same
+// values: the decompiled source writes `Greater = 3, Less` and the port spells the implicit 4 on
+// Less explicitly, which is the only difference. Line 11664 still holds the
+// `selected = (FloatModes)...mode` cast the remarks describe.
 
 using UnityEngine;
 

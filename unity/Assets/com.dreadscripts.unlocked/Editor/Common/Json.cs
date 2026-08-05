@@ -20,10 +20,10 @@
 //     static CallVisitor                   -> Json.ToJsonObject,      line 10782
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //     JsonObject / JsonValue,              lines 605-742
-//     static InstantiateSystem             -> Json.ToJsonObject,      line 7705
 //     static IncludeConfiguration          -> Json.ToJsonObject,      line 7720
 //   decompiled/ADOverhaul2019/DreadScripts/ADOverhaul/ADOverhaul.cs
 //     JsonObject / JsonValue,              lines 605-742 (no divergence from the 2022 build)
+//     static InstantiateSystem             -> Json.ToJsonObject,      line 7705
 //
 // Placed in DreadScripts.Common rather than nested inside EditorUtils, where the first port put it:
 // nothing about it is EditorUtils-specific, the nesting was only an artifact of which decompiled
@@ -53,6 +53,19 @@
 // Deliberately unported: ExporterObserver.AssetError(bool) (line 1202) and its equivalents in the
 // other three copies, a debug dump of the parsed pairs that nothing in any assembly calls, and the
 // *Candidate static null-check stubs the obfuscator injected into both structs.
+//
+// Audit status: VERIFIED -- all four copies of the reader and all four copies of the writer diffed
+// statement by statement against this file: both structs' fields, both constructors, the
+// [DefaultMember("Item")] indexer, both ToString overrides, the three implicit conversions and
+// ToJsonObject. The regex literal, the group-2-then-group-3 value selection, the empty-key skip,
+// the Length > 1 / Length != 2 quote-stripping ladder and the float.TryParse are identical in every
+// copy. The one substantive difference between the copies is the bool comparison recorded in the
+// deviation note above: EditorUtils compares stringValue.ToLower() == "true", the other three
+// compare stringValue == "true", re-confirmed in all four during this audit. The single-copy
+// members named as unported (AssetError/ToString(bool) and the *Candidate stubs) were also confirmed
+// present in all four and absent here. One MAP entry was corrected in the same pass: `static
+// InstantiateSystem` was listed under ADOverhaul2022, which declares exactly one writer
+// (IncludeConfiguration); InstantiateSystem is the ADOverhaul2019 copy and now sits under that file.
 
 using System.Collections.Generic;
 using System.Text;

@@ -6,6 +6,11 @@
 // member names are the durable reference. The enum is nested inside EditorUtils /
 // ADOEditorUtility in the shipped assemblies; it is lifted to the namespace here because it is
 // shared.
+//
+// Audit status: VERIFIED -- both copies read back against this file member by member. All eleven
+// members match in spelling and declaration order, so the same implicit values 0-10; no explicit
+// values in either copy. Spelling matters here beyond style, since the names are converted to
+// Unity's command strings -- see the remarks below.
 
 namespace DreadScripts.Common
 {

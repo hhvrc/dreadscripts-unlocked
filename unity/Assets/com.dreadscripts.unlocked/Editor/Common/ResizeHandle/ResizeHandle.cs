@@ -49,6 +49,17 @@
 //
 // Split across ResizeHandle.cs (state and rect maths), ResizeHandle.Zones.cs (grip hit-testing and
 // cursors) and ResizeHandle.Drag.cs (per-grip offset maths).
+//
+// Audit status: VERIFIED -- everything this file declares was diffed statement by statement against
+// both snapshots: the ten fields with their initialisers, the UniformResize accessor pair (whose
+// left/right/top/bottom reconciliation cascade the decompiler emits as nested if/else in the reverse
+// order, same priority), the constructor, ResetSize, GetResizedRect (including the clamp order, the
+// `bounds.width - rect.x` size limit the header calls out, and the sentinel rewrite of default(Rect))
+// and both pivot helpers. Every line number in both MAP blocks was checked against the current
+// snapshot and every one is exact. Two named constants below have no counterpart in either snapshot,
+// which spells both as literals: MinimumSize is the local `10f` in GetResizedRect, and
+// ResetCancelDistanceSquared is `new Vector2(15f, 15f).sqrMagnitude` in ResizeHandle.Zones.cs, whose
+// value is 450 -- same number, computed once at compile time instead of per drag event.
 
 using System;
 using UnityEngine;

@@ -6,15 +6,31 @@
 //
 // DELIBERATE DEVIATION — the body of OnCustomConfirm is NOT ported.
 //
-// This is the one member of the type that writes to the project, and it is the one member whose
-// dependencies are all still missing. It needs, none of which exist in the package yet:
+// This is the one member of the type that writes to the project. Its dependency list was
+// re-derived on 2026-08-05 and is now down to a single missing member; the old claim that they
+// were "all still missing" is out of date.
+//
+//   STILL MISSING:
 //   * ControllerEditor.RateAnnotation(bool, string)      (decompiled ControllerEditor.cs:9818) —
-//     the warn-and-return-the-condition helper that both of its guard clauses are built on;
-//   * EditorSettings.GetInstance().saveFolder            — the output folder setting;
-//   * ControllerEditor.LogoutMapper()                    (decompiled ControllerEditor.cs:8509) —
-//     the currently edited AnimatorController, whose name is a path segment;
-//   * EditorUtils.InvokePredicate(TangentMode, params (float, float)[])  (EditorUtils.cs:3226) and
-//     EditorUtils.FindPredicate(this AnimationClip)                      (EditorUtils.cs:3242).
+//     the warn-and-return-the-condition helper that both of its guard clauses are built on.
+//     Nothing in the package claims line 9818. Note for whoever ports it: it is NOT the same
+//     member as ControllerEditor.LogWarning (line 10876), which IS ported and is `internal`.
+//     The two have identical bodies — `Log(message, CustomLogType.Warning, condition)` — and
+//     differ only in parameter ORDER, RateAnnotation taking (bool, string) so it reads as a guard.
+//     They are two distinct shipped members; 9818 belongs to ControllerEditor.Logging.cs's region,
+//     not to this file's, so it must be ported there rather than substituted for here.
+//
+//   SINCE LANDED, all `internal` and reachable from this type:
+//   * EditorSettings.saveFolder — EditorSettings.Fields.cs line 414 (StringSetting).
+//   * ControllerEditor.LogoutMapper() (8509) is now ControllerEditor.ActiveController,
+//     ControllerEditor.ControllerContext.cs line 133. `internal static`, so unlike the deferrals in
+//     ControllerEditorWindow this one carries no visibility problem.
+//   * EditorUtils.InvokePredicate (EditorUtils.cs:3226) is now EditorUtils.CreateCurve,
+//     EditorUtils.AnimationCurves.cs line 175.
+//   * EditorUtils.FindPredicate (EditorUtils.cs:3242) is now EditorUtils.GetEffectiveLength,
+//     EditorUtils.AnimationCurves.cs line 207.
+//   * EditorUtils.PrepareAssetPath(string, string, bool), named in the remarks below —
+//     EditorUtils.Paths.cs line 191.
 //
 // UtilityWindowBase<T>.OnCustomConfirm is abstract, so the override cannot simply be omitted the
 // way the other deferred members were: without it this type would not compile, and a compiling
@@ -23,6 +39,24 @@
 // because the only thing that opens this window is the equally deferred factory. The full shipped
 // behaviour is documented below so that whoever ports the remaining dependencies can restore it
 // without going back to the decompile.
+//
+// Audit status: PARTIAL.
+//   Checked on 2026-08-05: the dependency list above was re-derived member by member against
+//   export/ and against the package, and four of its five entries were found to have landed since
+//   it was written; each is now cited by ported name, file and line, and the one that has not
+//   (RateAnnotation, 9818) was confirmed absent by grepping the package for that line and by
+//   reading its export body to establish that the ported LogWarning is a different member rather
+//   than a rename of it.
+//   NOT checked: the shipped behaviour of OnCustomConfirm itself — the three numbered steps, the
+//   five user-visible consequences and the SHIPPED BUG in the blend-tree guard, all documented in
+//   the remarks below — was NOT re-derived from export on this pass. It is carried over from the
+//   pass that wrote it. That prose is the only description of this member anywhere in the package,
+//   and the member is unported, so nothing verifies it by construction; treat it as unconfirmed
+//   until someone diffs it against export ControllerEditor.cs line 4768 et seq.
+//   The empty override itself is intentional and is not a stub of a guessed behaviour: it does
+//   nothing, it is required because UtilityWindowBase<T>.OnCustomConfirm is abstract, and nothing
+//   in the ported package can reach it because the only thing that opens this window is the
+//   equally unwritten factory.
 
 namespace DreadScripts.ControllerEditor
 {

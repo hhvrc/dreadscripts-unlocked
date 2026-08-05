@@ -1,52 +1,42 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs
 //
-// The refresh routines the Controller Editor runs when something *outside* the GUI changes what the
-// window is showing: an undo that rewrote the transitions the condition editors were built from, and
-// a settings edit that changes the Animator window's graph background. Neither is called from OnGUI;
-// both are event handlers, which is why they are grouped here rather than with the drawing code.
+// The refresh routine the Controller Editor runs when something *outside* the GUI changes what the
+// window is showing: a settings edit, or a play-mode transition, that invalidates the Animator
+// window's graph background. It is not called from OnGUI; it is an event handler, which is why it is
+// here rather than with the drawing code.
 //
-// The two entries below deliberately carry no line number. That is not an oversight -- the numbers
-// are 12980 and 15852 respectively, and the reason they are not written in the MAP column is set out
-// under NOTES, "WHY THESE ENTRIES HAVE NO LINE NUMBER". The members this file is responsible for are:
-//   UpdateVisitor -> NOT PORTED, see the NOT PORTED section
-//   SortAlgo      -> ApplyGraphBackground
+// The entry below deliberately carries no line number. That is not an oversight -- the number is
+// 15852, and the reason it is not written in the MAP column is set out under NOTES, "WHY THIS ENTRY
+// HAS NO LINE NUMBER". The member this file is responsible for is:
+//   SortAlgo -> ApplyGraphBackground
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference.
 //
-// ======================================= NOT PORTED ===========================================
+// ======================================= NOTES ================================================
 //
-// UpdateVisitor (decompiled 12980) is not ported, and is not written as an empty method, because
-// there is nothing of it left once its two statements are removed. Its entire body is:
+// THIS FILE USED TO OWN A SECOND MEMBER AND A LONG NOT PORTED SECTION. Both are gone, and what they
+// said is now wrong in every particular, so the note is kept short rather than deleted silently:
 //
-//     sharedConditionEditors = AssetVisitor(selectedTransitions);
-//     MapVisitor();
+//   UpdateVisitor (decompiled 12980) was recorded here as unported, with its two statements --
+//   `sharedConditionEditors = AssetVisitor(selectedTransitions); MapVisitor();` -- and a chain of
+//   five blockers behind them (AssetVisitor 12961, PrepareVisitor 12951, CheckVisitor 12924,
+//   WriteVisitor 12859, MapVisitor 11763), described as "roughly 160 further lines of the god class,
+//   spanning the whole condition-editor subsystem".
 //
-// and both calls are blocked:
+//   That subsystem has since landed, in six files: ControllerEditor.ConditionMatching.cs (which is
+//   where UpdateVisitor itself is now ported, as RefreshSharedConditions, and where AssetVisitor,
+//   CheckVisitor, WriteVisitor and PrepareVisitor live as BuildSharedConditionEditors,
+//   IntersectConditionEditors, ConditionsMatch and BuildConditionEditors), .ConditionList.cs (where
+//   MapVisitor is RebuildConditionList), .ConditionListHeader.cs, .ConditionRow.cs,
+//   .ConditionClipboard.cs and .ConditionMergeSplit.cs. Nothing in the old chain is outstanding.
 //
-//   AssetVisitor (12961) folds a list of transitions down to the conditions they all share, by
-//   building the first transition's condition editors and then intersecting that list against each
-//   further transition. It is nine lines and would be easy, except that it delegates to
-//   CheckVisitor (12924), which decides whether two AnimatorConditions are "the same condition"
-//   through WriteVisitor (12859) -- a 49-line field-by-field comparison that also reports which
-//   fields differed, so the surviving editor can be marked mixed-value. WriteVisitor is unported.
+//   The two knock-on claims that section made are both stale as well. ControllerEditor.Window.cs's
+//   Undo handler (PrintWrapper, 8836) named UpdateVisitor as its blocker and is now ported there as
+//   OnUndoRedo. EditorSettings.ChangeHooks.cs's `onMatchingOptionsChanged` seam, which that section
+//   said "stays null", is assigned to ControllerEditor.RefreshSharedConditions in that file today.
 //
-//   MapVisitor (11763) rebuilds the three ReorderableLists that draw the condition editors
-//   (sharedConditionList, allConditionList, focusedConditionList). Every list it builds names four
-//   unported callbacks -- PrepareVisitor (12951), TestVisitor, CalculateVisitor and FillVisitor --
-//   as its element, header and add handlers. It is also licence gated; that gate would be dropped
-//   under this package's usual rule, but dropping it does not make the body portable.
-//
-// Porting UpdateVisitor therefore means porting AssetVisitor, PrepareVisitor, CheckVisitor,
-// WriteVisitor and MapVisitor first: roughly 160 further lines of the god class, spanning the whole
-// condition-editor subsystem. That is a port of its own and is deliberately not smuggled in here.
-// The knock-on effect is that ControllerEditor.Window.cs's deferred Undo handler (PrintWrapper,
-// decompiled 8836) stays deferred -- see the PARTIAL PORT list in that file's header, which names
-// UpdateVisitor as its blocker. This file does not change that; it only records precisely why.
-//
-// The same chain is what stops EditorSettings.onMatchingOptionsChanged (the seam in
-// EditorSettings.ChangeHooks.cs that the shipped code satisfies with UpdateVisitor) from being
-// wired up. It stays null, and toggling "show matching options" persists correctly while simply not
-// rebuilding the editors -- exactly the behaviour that file's header already promises.
+// The MAP entry is not reassigned to ControllerEditor.ConditionMatching.cs from here, because that
+// file already claims the member itself, in the same no-line-number form and for the same reason.
 //
 // ======================================== DEOBF-BUG ===========================================
 //
@@ -63,30 +53,38 @@
 // boolean-flattening leaves behind throughout this assembly. The coherent form -- one test on the
 // cosmetics master switch -- is what is written below; the behaviour is identical.
 //
-// ========================================== NOTES =============================================
+// ========================================== NOTES, CONTINUED ==================================
 //
-// WHY THESE ENTRIES HAVE NO LINE NUMBER. Decompiled lines 12980 and 15852 are already claimed, with
-// line numbers, by Editor/ControllerEditor/EditorSettings/EditorSettings.ChangeHooks.cs, which maps
-// them onto the two assignable seams onMatchingOptionsChanged and onGraphBackgroundChanged. Those
-// seams exist precisely because these two methods were unported when the settings class landed. Per
-// HEADER-FORMAT.md every (decompiled file, line) pair must be claimed exactly once, so writing the
-// numbers here would make tools/check-headers.py report both lines as claimed by two files. The
-// numbers are stated in prose above instead, and the correct fix is a two-line edit to
-// ChangeHooks.cs -- demoting its 12980 and 15852 entries to sub-entries under the introducer it
-// already has, since a seam is not a port of the member that used to fill it -- after which this
-// header should take the numbers back. That edit is out of scope for this file and is reported to
+// WHY THIS ENTRY HAS NO LINE NUMBER. Decompiled line 15852 is already claimed, with a line number,
+// by Editor/ControllerEditor/EditorSettings/EditorSettings.ChangeHooks.cs, which maps it onto the
+// assignable seam onGraphBackgroundChanged. That seam exists precisely because this method was
+// unported when the settings class landed. Per HEADER-FORMAT.md every (decompiled file, line) pair
+// must be claimed exactly once, so writing the number here would make reverse-engineering/tools/check-headers.py report
+// 15852 as claimed by two files. The number is stated in prose above instead, and the correct fix is
+// a one-line edit to ChangeHooks.cs -- demoting its 15852 entry to a sub-entry under the introducer
+// it already has, since a seam is not a port of the member that used to fill it -- after which this
+// header should take the number back. That edit is out of scope for this file and is reported to
 // the caller rather than made.
 //
-// WIRING. In the shipped build SortAlgo is not subscribed to anything: it is passed directly as the
-// change callback of four settings (graphBackgroundIsTexture, cosmeticGraphActive,
-// gridBackgroundColor and graphBackgroundTexture, decompiled 1247-1359) and is additionally called
-// outright at 15918 and inside a SettingsChangeScope at 3525. In this package those four settings
-// instead raise EditorSettings.onGraphBackgroundChanged, so making ApplyGraphBackground live is one
-// assignment to that field. This file does not make it, because the assignment belongs in the
-// window's OnEnable -- ControllerEditor.Window.cs, which this port is not permitted to edit. Until
-// it is added, editing a graph-background setting persists the value and does not repaint the
-// Animator window's background; nothing is broken by the omission, it simply does not take effect
-// until the next domain reload primes the style some other way.
+// WIRING, CORRECTED. This note used to open "In the shipped build SortAlgo is not subscribed to
+// anything". That is wrong, and export/ contradicts it directly: decompiled 8862-8863, in the
+// window's OnEnable, are `EditorApplication.playmodeStateChanged -= SortAlgo;` followed by `+=`.
+// Entering or leaving play mode rebuilds Unity's editor styles, which drops the background this
+// method writes into them, so the subscription is not incidental -- without it the cosmetic
+// background survives until the first play-mode entry and then silently reverts. That pair is now
+// written out in ControllerEditor.Window.cs.
+//
+// The rest of the note stands. SortAlgo is *also* passed directly as the change callback of four
+// settings (graphBackgroundIsTexture, cosmeticGraphActive, gridBackgroundColor and
+// graphBackgroundTexture, decompiled 1247-1359), and is additionally called outright at 15918 and
+// inside a SettingsChangeScope at 3525. In this package those four settings instead raise
+// EditorSettings.onGraphBackgroundChanged, which nothing assigns yet, so editing a graph-background
+// setting still persists the value without re-applying it. Wiring it is the same one-line field
+// initialiser that ChangeHooks.cs already uses for onMatchingOptionsChanged -- but that assignment
+// lives in ChangeHooks.cs, which this port does not own, and it additionally needs
+// ApplyGraphBackground widened from private to internal here, exactly as RefreshSharedConditions was
+// widened for the other seam. Neither half is done unilaterally: half a paired edit leaves either a
+// widened member nothing reads or a reference that does not compile. It is reported to the caller.
 //
 // THE GUI.skin GUARD. ApplyGraphBackground opens with a try/catch around a null test on GUI.skin
 // that then returns either way. That looks pointless and is not: outside a GUI callback Unity's
@@ -97,10 +95,13 @@
 //
 // Audit status: PARTIAL -- ApplyGraphBackground was transcribed statement by statement from
 // decompiled 15852-15887 and the field names were taken from ControllerEditor.State.cs's rename
-// table rather than re-derived. The blocker chain recorded under NOT PORTED was walked in the
-// decompiled source (12980 -> 12961 -> 12924 -> 12859, and 12980 -> 11763) and each named line
-// lands on the member claimed; the bodies of those blockers were read only far enough to establish
-// that they are unported, not audited in full.
+// table rather than re-derived; the body itself was not re-diffed on the pass that rewrote this
+// header. What was re-checked on that pass is everything the header asserts about the rest of the
+// package: each of the five members the deleted NOT PORTED section named was located in export/ and
+// then found in the package under the ported name recorded above; every call site of SortAlgo in
+// export/ was enumerated, which is what turned up the OnEnable subscription at 8862-8863 that the
+// WIRING note had denied; and the state of the two ChangeHooks.cs seams was read from that file
+// rather than assumed.
 
 using System.Reflection;
 using UnityEditor;
@@ -140,8 +141,9 @@ namespace DreadScripts.ControllerEditor
         /// </para>
         /// <para>
         /// See the file header for the guard this opens with, for the redundant double test the
-        /// decompiler left in the colour choice, and for the subscription that makes this method
-        /// fire, which is not made here.
+        /// decompiler left in the colour choice, and for its two callers: the play-mode
+        /// subscription, which is made in ControllerEditor.Window.cs's <c>OnEnable</c>, and the
+        /// four cosmetic settings, whose seam is not assigned yet.
         /// </para>
         /// </remarks>
         private static void ApplyGraphBackground()

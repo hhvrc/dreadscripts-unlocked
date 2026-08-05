@@ -71,6 +71,14 @@
 // 2019 vs 2022: identical behaviour. The 2019 build (lines 7781-7818, names SelectStruct /
 // RunStruct / StopStruct / WriteStruct) differs only in the order the decompiler emits the switch
 // arms and in the absence of the spurious loop discussed above.
+//
+// Audit status: VERIFIED -- all four members diffed statement by statement against the 2022
+// snapshot (now Log / LogWarning / LogError / ThrowError there, per renames/ADOverhaul2022.json).
+// The colour selection, the "[ADOverhaul]" prefix, the "\\n" expansion and the three switch arms
+// match; the removed `while (true)` / `default: continue;` wrapper is present in the snapshot
+// exactly as this header describes. The three unported members were also re-read: VerifyIdentifier,
+// SetIdentifier and ConnectSerializer are still absent here and their descriptions above still match
+// the snapshot. Line numbers not checked -- located by name.
 
 using System;
 using DreadScripts.Common;

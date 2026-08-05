@@ -1,4 +1,15 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/TypeResolver.cs
+//
+// DEOBF-BUG
+// ResolvedType has no recoverable body: de4dot leaves `if (!resolved) { while (true) { resolved =
+// true; } }` where the lookup was, so the getter below is inferred, not transcribed. See the
+// remarks on the property.
+//
+// Audit status: PARTIAL -- the four fields, both constructors and the implicit Type conversion
+// were diffed against export/ and match exactly, and the [SpecialName] ResolvedType accessor is
+// confirmed to be a property. ResolvedType's BODY is NOT verified and cannot be from this
+// snapshot: there is nothing in export/ to diff it against. Re-derive it if de4dot's control-flow
+// recovery improves.
 
 using System;
 using System.Reflection;

@@ -7,6 +7,10 @@
 // The ADOverhaul2019 build declares the same enum with the same values (line 25 there too).
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
+//
+// Audit status: VERIFIED -- all ten members and their values diffed against all three snapshots,
+// which declare them identically and still at the lines recorded above (ControllerEditor 518,
+// both ADOverhaul builds 25). [Flags] is on the decompiled enum too, and All is -1 in all three.
 
 using System;
 

@@ -9,6 +9,25 @@
 // reads, alongside a sixth such field that is never even written. Show(Rect, Action, Action)
 // drops them. The shipped Open has no call sites in either assembly, so nothing depended on the
 // wider signature.
+//
+// Also dropped: the Debug.Log("Failed close") and Debug.Log("Failed destroy??") diagnostics the
+// shipped close path emitted from its two catch blocks. Both fire on a routine teardown race, say
+// nothing a user or a maintainer can act on, and are the only console output this type produced.
+// The catch blocks themselves are reproduced.
+//
+// Audit status: VERIFIED -- both shipped copies diffed member by member against this file: the
+// fields, the private initializer, OnGUI, OnLostFocus and the static entry point. Two members are
+// rewrites rather than transcriptions, both documented above or in the remarks below, and both were
+// checked against the shipped control flow case by case:
+//   - OnGUI. The shipped int pass counter is incremented on every OnGUI call and mapped to
+//     0 = measure, 1 = resize, anything else = draw. This file's Phase advances only on repaint, as
+//     the remarks explain. The transparent measure pass, the `measureAction ?? drawAction` choice,
+//     the VerticalScope(ExpandWidth(false)), the early return on a non-repaint event, the
+//     GetLastRect measurement and the position assignment are otherwise transcribed; the inline
+//     save/restore of the three GUI colours is expressed as a GUIColorScope over the same three.
+//   - Show. The shipped Open forwarded its five surplus arguments to the initializer; the narrowing
+//     is described above. The close-the-previous-window sequence, the CreateInstance, the
+//     ShowUtility and the trailing position assignment are transcribed in the same order.
 
 using System;
 using UnityEditor;

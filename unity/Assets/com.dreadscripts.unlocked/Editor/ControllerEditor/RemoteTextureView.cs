@@ -29,6 +29,22 @@
 //
 // The two constructors carry a trailing bool that the shipped build never reads; it is kept so the
 // call signatures still match the original.
+//
+// DELIBERATE DEVIATION
+// Download's completion handler tests `request.result` instead of the shipped build's
+// isHttpError/isNetworkError, which are obsolete in the editor versions this package targets. The
+// mapping is UnityWebRequest.Result.ProtocolError / ConnectionError respectively, so the set of
+// responses treated as failures is unchanged. Everything else about the network path -- one lazy
+// GET per instance, no headers, failures silently dropped -- is as shipped, and is deliberately
+// kept: see the class remarks.
+//
+// Audit status: VERIFIED -- diffed in full against export/. All ten fields, the texture accessor,
+// both constructors, Download, TryLoadFromCache, Draw, both DrawFitted overloads, DrawTexture,
+// DrawPlaceholderLayout, DrawPlaceholder and IsReady match statement for statement, including the
+// `isDownloading = false` at the end of Download (set while the request is still in flight, kept
+// as shipped) and the cacheLookupAllowed set/clear sequence in TryLoadFromCache. The line numbers
+// above were re-checked and all twenty still point at the right members in the current snapshot.
+// The only behavioural change is the UnityWebRequest.result deviation noted above.
 
 using System;
 using UnityEditor;

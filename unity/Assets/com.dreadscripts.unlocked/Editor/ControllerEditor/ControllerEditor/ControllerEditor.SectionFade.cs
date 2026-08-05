@@ -32,15 +32,22 @@
 // with the work item, even though "fade" describes the mistaken reading above rather than what the
 // member does. Nothing in this file fades anything.
 //
-// The call sites, for whoever un-defers them in OnGUI, are (decompiled 8666-8671):
+// The call sites are (decompiled 8666-8671); all but the last are written out in
+// ControllerEditor.Window.cs's OnGUI:
 //
-//     ReflectVisitor();                                              // controller/layer section
+//     ReflectVisitor();                                              // TRANSITION section
 //     IncludeAnnotation(parserAnnotation && (_Descriptor || EditorSettings.GetInstance()
 //                                            .editingController.GetValue()));
 //     DestroyVisitor();                                              // state section
 //     IncludeAnnotation(_Descriptor && EditorSettings.GetInstance().editingController.GetValue());
-//     ValidateVisitor();                                             // transition section
-//     DefineVisitor();                                               // parameter section
+//     ValidateVisitor();                                             // CONTROLLER section
+//     DefineVisitor();                                               // parameter section, deferred
+//
+// The two section labels in capitals were the other way round here until this pass, repeating the
+// mislabel that ControllerEditor.Window.cs's header used to carry. ReflectVisitor (12529) draws the
+// transition section and ValidateVisitor (11806) draws the controller section; the two files that
+// port them, ControllerEditor.TransitionSection.cs and ControllerEditor.ControllerSection.cs, each
+// set out the evidence. The obfuscated names say nothing either way.
 //
 // where `parserAnnotation` is transitionSectionVisible and `_Descriptor` is stateSectionVisible in
 // this package's names (see ControllerEditor.State.cs). Those conditions belong to the call site,

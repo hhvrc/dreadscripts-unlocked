@@ -1,12 +1,14 @@
 // Reconstructed from: decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
 // Ported region: the private static field bank of the outer ADOverhaul class, lines 5578-5744 of the
-// current snapshot -- all 84 fields, nothing omitted. Line numbers move with the snapshot; the
-// decompiled names below are the durable reference, and every later port of an ADOverhaul member
-// should map its field references through this table rather than re-deriving names.
+// current snapshot -- 84 fields, of which the 58 non-licensing ones are declared here and the 26
+// licensing ones are deliberately left out, each listed as NOT PORTED below. Line numbers move with
+// the snapshot; the decompiled names below are the durable reference, and every later port of an
+// ADOverhaul member should map its field references through this table rather than re-deriving names.
 //
 // The decompiled type is `internal sealed class ADOverhaul` with an all-static member list and no
-// instance constructor of its own. It is reconstructed as `internal static partial class` so the
+// instance constructor of its own. It is reconstructed as `internal sealed partial class` -- the
+// shipped modifiers plus `partial`, so the
 // remaining ~3,000 lines can be ported a region at a time into sibling files; that is a
 // representation change only, and the nested editor types that were lifted out of it (see
 // PhysBoneEditor, PhysBoneColliderEditor, ADOverhaulWindow) are unaffected.
@@ -115,20 +117,23 @@
 // obfuscated identifiers, which are drawn at random from a design-pattern word list and are
 // systematically misleading (`m_Expression` is the version number, `customer` is a resize handle,
 // `task` is a bool, `_Serializer`/`method`/`utils`/`property` are MethodInfos for four unrelated
-// Unity messages). Two fields could not be given a confident role and are documented as such rather
-// than guessed at: `@event` and `_Interpreter` -- see their summaries.
+// Unity messages). Two fields could not be given a confident role and were documented as such rather
+// than guessed at: `@event`, whose summary is below, and `_Interpreter`, which is one of the
+// licensing fields and so has no declaration here to carry one.
 //
-// LICENSING FIELDS ARE PORTED, THE LICENSING CODE IS NOT. Twenty-six of these fields exist only to
-// drive the vendor's activation/verification/transfer flow against a server that no longer answers.
-// They are declared here because the members that read them are interleaved with functional code
-// throughout the class -- the version banner, the settings pane and several inspector headers all
-// sit inside methods that also touch `isLicensed` -- so later agents porting those regions need the
-// names to already exist and to agree. Declaring a field commits to nothing; whether any given
-// reader is ported is that reader's decision. `hardwareId`, `sessionId` and `licenseKey` in
-// particular are only ever *populated* by machine-fingerprinting code (decompiled 5407-5432, 7237,
-// 7257) that is not ported and should not be.
+// NEITHER THE LICENSING FIELDS NOR THE LICENSING CODE ARE PORTED. Twenty-six of these fields exist
+// only to drive the vendor's activation/verification/transfer flow against a server that no longer
+// answers. An earlier revision of this port declared them anyway, on the reasoning that the members
+// reading them are interleaved with functional code throughout the class and later regions would
+// need the names to already exist and agree. That is not how those regions actually landed: every
+// ported reader drops its licence gate outright (see the gate-removal notes in ADOverhaul.Menus.cs
+// and ADOverhaul.AvatarSelection.cs), so nothing in the package references any of the twenty-six,
+// and declaring them would only be dead state. They are listed as NOT PORTED above and are absent
+// from the body below. `hardwareId`, `sessionId` and `licenseKey` in particular are only ever
+// *populated* by machine-fingerprinting code (decompiled 5407-5432, 7237, 7257) that is not ported
+// and should not be.
 //
-// Nothing is omitted from this range, and no obfuscator scaffolding was found in it: unlike the
+// Nothing else is omitted from this range, and no obfuscator scaffolding was found in it: unlike the
 // compiler-generated display classes elsewhere in the file, this bank contains no always-null
 // statics paired with null-check predicates. The four `_003C_003Ec__DisplayClass*` structs that
 // immediately precede line 5578 are captured-variable artifacts belonging to methods in other
@@ -143,6 +148,18 @@
 // 2019 vs 2022: the same 84 fields in the same order with the same types and the same three
 // initialiser values (2019 lines 5559-5725, under a completely different set of obfuscated names).
 // No divergence.
+//
+// Audit status: VERIFIED -- all 58 declarations below diffed field by field against the 2022
+// snapshot's bank (which now carries these names): every type, every `readonly`, every initialiser
+// expression matches, and the 26 fields not declared here are exactly the licensing block listed as
+// NOT PORTED. The 2019 bank was compared type-for-type in declaration order and is identical, and
+// the three literal initialisers ("ADOControlID", "ADOTooltipDragControlID", SemVer "0.11.1") are
+// the same in both builds. The regrouping into #regions reorders the declarations relative to the
+// snapshot; the MAP's split ranges already record that. Two header paragraphs were wrong and have
+// been corrected: they claimed all 84 fields were ported and that the licensing fields were declared
+// here, which contradicted both the MAP and the body; and the class was described as reconstructed
+// `internal static partial` where both the snapshot and the body below say `sealed`. Line numbers not
+// checked -- located by name.
 
 using System;
 using System.Collections.Generic;

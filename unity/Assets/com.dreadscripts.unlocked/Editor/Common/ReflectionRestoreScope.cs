@@ -2,6 +2,14 @@
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ReflectionRestoreScope.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/PropertyRestoreScope.cs
+//
+// Audit status: VERIFIED -- both copies diffed statement by statement against this file: the four
+// fields, both constructors, the snapshot delegate and Dispose. The shipped anonymous snapshot
+// delegate passed to ToDictionary is lifted to the named private Snapshot(string) method, and the
+// two Dispose loops (one per branch of logMissingMembers) are folded into one loop with the branch
+// inside it; iteration order and the accessor call made per entry are unchanged. The two shipped
+// copies agree statement for statement, including the broken List<T> copy and the unreachable
+// `== typeof(Array)` disjunct that the Snapshot comment documents departing from.
 
 using System;
 using System.Collections;

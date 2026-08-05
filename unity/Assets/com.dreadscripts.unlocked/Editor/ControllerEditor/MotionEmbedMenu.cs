@@ -11,8 +11,8 @@
 //   static ExtractMotion(MenuCommand)   -> ExtractMotion(MenuCommand),  line 2267
 //   static ExtractMotion(AnimatorState) -> ExtractMotion(AnimatorState),line 2272
 //   static RemoveFromAsset(Motion)      -> RemoveFromAsset,             line 2287
-//   static ValidateRename(MenuCommand)  -> ValidateRename,              line 2303
-//   static RenameMotion(MenuCommand)    -> RenameMotion(MenuCommand),   line 2314
+//   static ValidateRename(MenuCommand)  -> ValidateRename,              line 2304
+//   static RenameMotion(MenuCommand)    -> RenameMotion(MenuCommand),   line 2315
 //   static RenameMotion(Motion)         -> RenameMotion(Motion),        line 2324
 //   static MarkScenesDirty()            -> MarkScenesDirty,             line 2359
 //   static IsEmbedded(Object)           -> IsEmbedded,                  line 2374
@@ -43,6 +43,17 @@
 //     normal save. Both call EditorSceneManager.MarkAllScenesDirty (see MarkScenesDirty).
 //   * No object is ever destroyed — the Motion instance survives the move; only its owning file
 //     changes.
+//
+// Audit status: VERIFIED -- all fifteen ported members diffed statement for statement against the
+// nested MotionEmbedMenu in export/ControllerEditor.cs (lines 2207-2400 in the current snapshot,
+// which the line numbers above still match; ValidateRename and RenameMotion(MenuCommand) were off
+// by one and have been corrected). Both MenuItem attributes per command verified, including the
+// validate-variant paths. RemoveFromAsset's loop is transcribed literally. RenameMotion(Motion)'s
+// `while (true)` is confirmed to be a linear scan of Resources.FindObjectsOfTypeAll<EditorWindow>
+// for the first non-null window whose type name is "InspectorWindow", with a bare `return` on
+// exhaustion -- the FirstOrDefault + null check here is that, exactly. The NOT PORTED claim above
+// was re-checked: the dropped SanitizeFileName is character-for-character identical to
+// SanitizeFileName in export/EditorUtils.cs (still line 7115), and both call sites delegate to it.
 
 using System.IO;
 using System.Linq;

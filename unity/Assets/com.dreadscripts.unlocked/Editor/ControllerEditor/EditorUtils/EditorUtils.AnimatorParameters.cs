@@ -18,18 +18,23 @@
 // It is written out below as the plain foreach it started as; the ordering -- first name match
 // wins, type mismatch warns but still returns the existing parameter -- is preserved exactly.
 //
-// Deliberately not ported here, though they sit in the same run of the decompiled file and are the
-// same subject: CustomizePredicate (3491, adds unconditionally without the existence check),
-// CalcPredicate (3541, IncludePredicate discarding the out flag), MapPredicate (3462, reads a
-// parameter's default as a float) and ValidatePredicate (3473, writes one). None is needed by the
-// members this pass unblocks, and each is a plausible member of another partial's region.
+// Not ported here, though they sit in the same run of the decompiled file and are the same subject:
+// CustomizePredicate (3491, adds unconditionally without the existence check), CalcPredicate (3541,
+// IncludePredicate discarding the out flag), MapPredicate (3462, reads a parameter's default as a
+// float) and ValidatePredicate (3473, writes one). They were deferred when this file was written and
+// have since landed in EditorUtils.AnimatorParameterDefaults.cs, which owns the default-value
+// subject; do not re-port them here.
 //
-// Also deliberately not ported: ResetPredicate (line 3355) and FlushPredicate (line 3374), the
-// progress-bar-wrapped bulk layer/parameter copy routines. ResetPredicate was in the assigned set
-// but its body is a loop over CalculatePredicate (line 3417), the deep layer clone, which drags in
-// the whole ConnectError/CalculateError/TestError object-graph remapping machinery and its captured
-// -variable struct. None of that is ported yet, so ResetPredicate cannot compile and is recorded
-// here as deferred rather than stubbed.
+// Likewise deferred here and since landed elsewhere: ResetPredicate (line 3355) and FlushPredicate
+// (line 3374), the progress-bar-wrapped bulk layer/parameter copy routines, are in
+// EditorUtils.LayerCopying.cs as CopyLayers / CopyLayersAndParameters, together with
+// CalculatePredicate (line 3417) and the ConnectError/CalculateError/TestError object-graph
+// remapping machinery whose absence was the original blocker.
+// Audit status: VERIFIED -- all four bodies diffed statement by statement against export/.
+// IncludePredicate's flattened while(true)/continue/break form was walked branch by branch against
+// the foreach written here: first name match wins, a type mismatch warns and still returns the
+// existing parameter with wasAdded false, and the not-found path sets wasAdded true before
+// constructing. The warning string is character-for-character the decompiled interpolation.
 
 using UnityEditor.Animations;
 using UnityEngine;

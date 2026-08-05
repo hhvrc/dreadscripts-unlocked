@@ -1,4 +1,35 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/BatchOperationContext.cs
+//
+// DEOBF-BUG
+// Reset loops `while (progressBarShown) EditorUtility.ClearProgressBar();` in the decompiled source
+// and never clears the flag, so a reset after a progress bar had been shown would hang the editor.
+// It is read as an `if` here, plus a `progressBarShown = false` assignment. See the comment at that
+// statement for which half is the confirmed de4dot fault and which half is a guess.
+//
+// DELIBERATE DEVIATION
+// Reset uses `errorLog?.Clear()` where the decompiled source has an unguarded `errorLog.Clear()`.
+// errorLog is only allocated by Run, so the decompiled Reset throws NullReferenceException on a
+// context that has been configured but not yet run -- which is a legitimate way to use a fluent
+// builder. The null-conditional makes that case a no-op.
+//
+// NOT PORTED
+// The `internal static object InstantiateSystem` field and the `RevertSystem()` method that only
+// tested it for null. Protector licence-check scaffolding, the same pattern recorded in
+// Common/SphereHandle.cs and ADOverhaul/PhysBoneParameter.cs: nothing assigns the field, so the
+// predicate is a constant `true`, and no caller reads either member.
+//
+// NOTES
+// Renamed members, decompiled name first: m_MethodServer -> contextName, _SchemaServer -> operation,
+// info -> detail, continueOnError -> suppressDialog, progressBarActive -> progressBarShown,
+// SetTitle -> WithTitle, SetInfo -> WithDetail, MoveContext -> WithOperation, NextStep -> Step,
+// ShowProgressBar -> ShowProgress, SetContinueOnError -> SuppressDialog. suppressDialog holds the
+// same value as continueOnError with no inversion -- when the flag is set the dialog is skipped and
+// the exception is swallowed, and the two names describe the two halves of that one effect.
+//
+// Audit status: VERIFIED -- all ten fields and all eight methods were diffed statement by statement
+// against export/, including the error-string concatenation order, the contextName prefix, the
+// dialog text and button labels, the systemCopyBuffer write, the rethrow and the finally block.
+// Everything matches apart from the two items recorded above.
 
 using System;
 using System.Text;

@@ -8,6 +8,15 @@
 //
 // The behaviour described below is read from the Copy branch of the batch-action dispatcher
 // (line 13130) and the toolbar that drives it (line 11908), neither of which is ported.
+//
+// Audit status: VERIFIED -- both members and their implicit ordinals were diffed against the
+// `private enum MoveDestination` still at line 2181 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; names and order are
+// identical. The remarks were checked at the call sites: the EnumPopup is still at line 11908, the
+// Copy branch resolves the destination as `copyDestination != Controller ? ActiveController() :
+// actionTargetController` with no same-controller guard, and the Apply button's disabling condition
+// (line 11933) includes `selectedAction == Copy && copyDestination == Controller &&
+// !actionTargetController`, which is exactly the default-value consequence described above.
 
 namespace DreadScripts.ControllerEditor
 {

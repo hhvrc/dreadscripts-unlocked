@@ -11,7 +11,25 @@
 // return here only because the guarded body is now the whole method.
 //
 // One omission lives in this file: the change handler behind the "Overriding" toggle (decompiled
-// lines 3363-3368), which is blocked on the unported god-class. It is marked at its call site.
+// lines 3363-3368). It is marked at its call site, which carries the current blocker in full. In
+// short, and unlike the other deferrals this port started with, it is still genuinely blocked on
+// missing code: TestInitializer (line 15253) has no port anywhere in the package, and the two
+// fields it clears alongside are ported but `private` on ControllerEditor.
+//
+// Audit status: PARTIAL.
+//   Checked on 2026-08-05, statement by statement against export ControllerEditor.cs:
+//     * DrawBehavioursAndCosmeticsTab (3340) and DrawAnimationWindowSection (3341-3390) -- the two
+//       members that bracket the deferral -- match, including the five aw_* settings rows, the
+//       GUIColorScope over the master toggle and the early return on the collapsed foldout.
+//     * The deferred change handler at 3363-3368 was re-derived in full from export, which is how
+//       its blocker was corrected; the previous note's claim that all three targets were unported
+//       was wrong, and is now stated accurately at the call site.
+//   NOT checked: the nine remaining section bodies -- DrawAnimatorWindowSection, DrawLayerOptions,
+//     DrawParameterOptions, DrawTransitionOptions, DrawNodeOptions, DrawColorOptions,
+//     DrawTransitionColors, DrawGraphColors, DrawNodeColors -- which together carry decompiled
+//     lines 3391-3608. Their split from the single 270-line IncludeTests is documented above and
+//     their structure was not re-derived on this pass. This file is the one in its folder that
+//     still needs a full member-by-member diff.
 //
 // The decompiled method ends in a chain of early `return`s inside nested `using` blocks (lines
 // 3390, 3486, 3599). Every one of them sits in the tail position of its enclosing scope, so they
@@ -72,12 +90,32 @@ namespace DreadScripts.ControllerEditor
                             EditorSettings.Instance.aw_enableOverride.Draw(new GUIContent("Overriding", "Allows you to explicitly set the controller for selecting clips, and explicitly set the root to change what the paths are relative to."));
                             if (EditorGUI.EndChangeCheck())
                             {
-                                // DEFERRED. The shipped build tears the override down here --
-                                // TestInitializer(null) at decompiled line 15253 disposes the proxy
-                                // AnimatorController, and the override root and its "root was
-                                // chosen" flag (lines 8282, 8280) are cleared. All three are private
-                                // statics of the unported static ControllerEditor class, so a stale
-                                // override currently survives this toggle.
+                                // DEFERRED. The shipped build tears the override down here, in
+                                // three statements (decompiled lines 3365-3367):
+                                //     TestInitializer(null);
+                                //     overrideAnimationRoot = null;
+                                //     overrideAnimationRootActive = false;
+                                //
+                                // The two fields HAVE since been ported -- overrideAnimationRoot
+                                // (line 8282) and overrideAnimationRootActive (line 8280) are at
+                                // ControllerEditor.State.cs lines 1119 and 1112 -- but both are
+                                // `private static` on ControllerEditor, which this window cannot
+                                // reach now that it is a separate top-level type rather than a
+                                // nested one.
+                                //
+                                // TestInitializer itself (line 15253) is the genuine remaining gap:
+                                // nothing in the package claims that line. It is the setter for the
+                                // proxy AnimatorController the Animation-window override drives --
+                                // passed null it destroys the proxy GameObject, passed a controller
+                                // it assigns the controller and pushes the proxy into the Animation
+                                // window through the reflected EditGameObjectInternal. It depends
+                                // in turn on three more unported god-class members
+                                // (InstantiateInitializer, FlushInitializer,
+                                // forceGameObjectSelectionUpdate) and on animationWindowType.
+                                //
+                                // So this needs both a port of TestInitializer and `internal` on
+                                // the two fields. The setting still draws and still persists; only
+                                // the teardown is missing, so a stale override survives the toggle.
                             }
 
                             EditorSettings.Instance.aw_enablePropertyEditing.Draw(new GUIContent("Edit Property", "Allows you to drag and drop objects to properties and to edit the properties of the curves with right-click context menu."));

@@ -38,7 +38,14 @@ namespace DreadScripts.ControllerEditor
         /// rebuilds its per-condition multi-editors in response, because which conditions are
         /// grouped together depends on the matching options.
         /// </summary>
-        internal static Action onMatchingOptionsChanged;
+        /// <remarks>
+        /// Wired to <see cref="ControllerEditor.RefreshSharedConditions"/> on 2026-08-05, once that
+        /// method landed. Until then this stayed null and toggling the option silently did nothing.
+        /// A field initialiser rather than an <c>[InitializeOnLoadMethod]</c> hook, matching
+        /// ADOSettings' gizmo seam: the shipped build has no such hook, and the CLR runs this type's
+        /// initialiser before the first read, which happens inside the setting's own callback.
+        /// </remarks>
+        internal static Action onMatchingOptionsChanged = ControllerEditor.RefreshSharedConditions;
 
         /// <summary>
         /// Raised when anything that feeds the Animator window's graph background changes -- the

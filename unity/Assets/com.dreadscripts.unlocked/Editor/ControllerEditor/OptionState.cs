@@ -1,4 +1,7 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/OptionState.cs
+//
+// Audit status: VERIFIED -- diffed in full against export/; the three members and their
+// declaration order match exactly.
 
 namespace DreadScripts.ControllerEditor
 {

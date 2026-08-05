@@ -1,4 +1,29 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/AxisControlSettings.cs
+//
+// DELIBERATE DEVIATION
+// The three preset fields (allowed, forced, off) are `public static` in the decompiled source and
+// `public static readonly` here. They are shared instances of a mutable struct: without readonly a
+// caller writing `AxisControlSettings.off.axis = ...` would silently repoint the preset for every
+// later reader. Nothing in either build assigns them after the initialisers, so this cannot change
+// observable behaviour; it only makes the accident uncompilable.
+//
+// NOT PORTED
+// The `internal static object CompareDecorator` field and the `PublishDecorator()` method that only
+// tested it for null. Protector licence-check scaffolding, the same pattern recorded in
+// Common/SphereHandle.cs and ADOverhaul/PhysBoneParameter.cs: nothing assigns the field, so the
+// predicate is a constant `true`, and no caller reads either member.
+//
+// NOTES
+// The private AllAxes constant is not a decompiled member; it names the `Axis.X | Axis.Y | Axis.Z`
+// literal that the decompiled source repeats in five places.
+//
+// Audit status: VERIFIED -- all three fields, the three static presets and their constructor
+// arguments, all four constructors, IsEnabled and ResolvePivotRotation were diffed statement by
+// statement against export/. IsEnabled is rewritten from the decompiled nested form
+// (`axis > None && state > Off`, then `state != Forced`) into an early-return; the two are
+// equivalent given OptionState's declaration order (Off, Allowed, Forced -- checked in
+// export/OptionState.cs) and Axis.None being the zero of a flags enum. ResolvePivotRotation is the
+// same switch as a statement rather than an expression.
 
 using System;
 using UnityEditor;

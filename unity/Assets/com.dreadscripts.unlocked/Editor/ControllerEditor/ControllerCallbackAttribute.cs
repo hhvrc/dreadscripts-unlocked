@@ -1,4 +1,7 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/ControllerCallbackAttribute.cs
+//
+// Audit status: VERIFIED -- attribute usage, base class and both constructors diffed statement by
+// statement against export/. Only the obfuscated parameter names (no__task, info, next_col) differ.
 
 using System;
 

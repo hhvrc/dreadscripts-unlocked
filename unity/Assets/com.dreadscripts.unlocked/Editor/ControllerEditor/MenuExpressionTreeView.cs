@@ -2,6 +2,14 @@
 // Member names are unchanged from the decompiled source; only locals were renamed, since the
 // decompiler had reduced them to num/flag artifacts. The goto-based ternary chain in RowGUI and the
 // two rects it computes but never uses are decompiler noise and are not reproduced.
+//
+// Audit status: VERIFIED -- diffed in full against export/. All five fields, the constructor and
+// all eight members (BuildRoot, RowGUI, CanMultiSelect, DoesItemMatchSearch,
+// CanChangeExpandedState, DoubleClickedItem, ContextClickedItem, SetRootMenu) match statement for
+// statement. Checked in particular that the resolved goto chain in RowGUI reproduces the
+// decompile's num2/num3 flags exactly (isSubMenu / hasSubMenu), that the truncation loop's exit
+// test is the same comparison with the sense inverted, and that the final GUI.Label draws into
+// rowRect -- not into the two dead rects -- as the decompile has it.
 
 using System;
 using System.Collections.Generic;

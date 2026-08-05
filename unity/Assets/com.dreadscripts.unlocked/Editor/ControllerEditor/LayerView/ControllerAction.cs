@@ -8,6 +8,19 @@
 //
 // The behaviour described below is read from the batch-action dispatcher (LogoutVisitor, line 13048)
 // and the toolbar that drives it (line 11830). Neither is ported.
+//
+// Audit status: VERIFIED -- the six members and their implicit ordinals were diffed against the
+// `private enum ControllerAction` still at line 2156 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; names and order are
+// identical. Every behavioural claim in the member docs was re-read out of the dispatcher
+// (LogoutVisitor, still line 13048) rather than trusted: the parameter-list rewrite in
+// ReplaceParameter/RemoveParameter really is gated on `actionScope != ActionMode.CurrentController`;
+// TagCurrentLayerWith really is a no-op when a matching transition exists and writes an any-state
+// transition with isExit, mute and the tag as its name; RemoveTag matches on name *and* isExit;
+// and the SHIPPED INCONSISTENCY on RemoveLayersWithTag is real -- it matches
+// `anyStateTransitions.Any(t => t.name == actionFilterText)` with no isExit test, and iterates
+// ActiveController().layers directly, ignoring the scope selector. The toolbar line 11830 still
+// holds the EnumPopup for this type.
 
 namespace DreadScripts.ControllerEditor
 {

@@ -1,4 +1,16 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneColliderSnapshot.cs
+//   Apply()                        -> Restore,                     line 205
+//   Apply(ContactBase)             -> ApplyTo(ContactBase),        line 226
+//   Apply(VRCPhysBoneCollider)     -> ApplyTo(VRCPhysBoneCollider), line 235
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference. The three same-named methods are split into Restore (write back onto
+// the source) and ApplyTo (write onto another component) so the call sites read unambiguously.
+//
+// Audit status: VERIFIED -- diffed in full against export/. The eight fields, both constructors
+// and all three Apply overloads match statement for statement. Restore's contact branch delegates
+// to ApplyTo(ContactBase) instead of repeating the five assignments the decompile inlines there;
+// the two are identical, including the shapeType asymmetry documented on Restore. The
+// unreferenced static pair SetupDecorator/ExcludeDecorator is not ported, as an obfuscator decoy.
 
 using UnityEngine;
 using VRC.Dynamics;

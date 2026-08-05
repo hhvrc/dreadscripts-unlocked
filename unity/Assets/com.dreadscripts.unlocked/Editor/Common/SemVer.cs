@@ -11,6 +11,14 @@
 // Not ported: the private, never-called Equals(SemVer) overload present in all three
 // sources — dead code, most likely the residue of a stripped IEquatable<T> implementation.
 // It only forwarded to operator ==, which Equals(object) already does.
+//
+// Audit status: VERIFIED -- all three shipped copies diffed statement by statement against this
+// file: both constructors, all six operators, Equals(object), GetHashCode and ToString. The three
+// [SpecialName][CompilerGenerated] Major()/Minor()/Patch() methods are the getters of get-only
+// auto-properties and are restored as such. ControllerEditor's and ADOverhaul2019's operator > have
+// exactly the branch shape reproduced here; ADOverhaul2022's is the inverted-test rendering of the
+// same decision tree, checked case by case to agree on every ordering. GetHashCode reproduces the
+// 397 multipliers and their nesting exactly.
 
 namespace DreadScripts.Common
 {

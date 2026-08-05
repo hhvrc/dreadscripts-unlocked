@@ -7,6 +7,11 @@
 // LIFTED OUT OF ControllerEditor, following the convention already used for PhysBoneEditor.
 //
 // Used by the transition-condition inspector at line 11670, which is not ported.
+//
+// Audit status: VERIFIED -- diffed against the `private enum IntModes` still at line 2193 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs; all four members carry
+// the same explicit values there (3, 4, 6, 7), gap at 5 included. Line 11670 still holds the
+// `selected = (IntModes)...mode` cast the remarks describe.
 
 using UnityEngine;
 

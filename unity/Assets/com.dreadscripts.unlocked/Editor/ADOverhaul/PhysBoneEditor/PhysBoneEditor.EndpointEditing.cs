@@ -18,6 +18,15 @@
 // ADOEditorUtility.BoneChainTree and BoneNode types.
 //
 // 2019 vs 2022: identical.
+//
+// Audit status: VERIFIED -- all three members diffed statement by statement against the 2022
+// snapshot (they carry the names ApplyEndpointOffset / OffsetEndpoint / EditProperty there now). The
+// modifier chain's order and polarity, the shift branch's skip of the dragged bone, the captured
+// endpoint value and EditProperty's UpdateIfRequiredOrScript / FindProperty / ApplyModifiedProperties
+// sequence all match. The dissolved capture struct was checked against its declaration: it holds
+// exactly the two fields named above and nothing else. Two cosmetic differences not worth a section:
+// the snapshot marks OffsetEndpoint and EditProperty [CompilerGenerated] and `internal`, and they are
+// plain `private` here. Line numbers not checked -- located by name.
 
 using System;
 using UnityEditor;

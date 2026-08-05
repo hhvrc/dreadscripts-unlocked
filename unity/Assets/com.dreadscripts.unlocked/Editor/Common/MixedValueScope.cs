@@ -2,6 +2,11 @@
 // type. Reconstructed from both, which differ only in obfuscated parameter names:
 //   decompiled/ADOverhaul2022/DreadScripts/ADOverhaul/ShowMixedValueScope.cs
 //   decompiled/ControllerEditor/DreadScripts/ControllerEditor/MixedValueScope.cs
+//
+// Audit status: VERIFIED -- both copies diffed statement by statement against this file: the
+// previous-value field, both constructors and Dispose. The SerializedProperty constructor chains to
+// the bool one instead of repeating its two statements, as both shipped copies do; identical order
+// of effects.
 
 using System;
 using UnityEditor;

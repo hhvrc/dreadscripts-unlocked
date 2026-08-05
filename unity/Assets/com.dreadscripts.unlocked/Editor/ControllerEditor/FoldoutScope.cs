@@ -1,4 +1,10 @@
 // Reconstructed from: decompiled/ControllerEditor/DreadScripts/ControllerEditor/FoldoutScope.cs
+//
+// Audit status: VERIFIED -- both fields, all five constructors (including which overload each
+// chains to and the iscfg/label/style arguments it passes), Dispose and the implicit bool operator
+// were diffed statement by statement against export/. The only rewrites are cosmetic: the
+// `style ?? EditorStyles.foldout` coalesce replaces the equivalent `if (style == null)` assignment,
+// and ILSpy's `bool num`/`bool flag` duplication of the expanded flag is collapsed.
 
 using System;
 using UnityEditor;

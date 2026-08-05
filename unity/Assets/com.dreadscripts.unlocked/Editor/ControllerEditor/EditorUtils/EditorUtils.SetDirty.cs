@@ -8,6 +8,8 @@
 // because the choice between the two is a real one that the shipped call sites make deliberately --
 // see the remarks -- and because omitting it would leave nothing to point at from the places that
 // must NOT use MarkDirty.
+// Audit status: VERIFIED -- the single body is the one EditorUtility.SetDirty call the decompiled
+// ManagePredicate makes, on the same receiver.
 
 using UnityEditor;
 using UnityEngine;

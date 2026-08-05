@@ -33,8 +33,19 @@
 // field, including the object references that the remapping passes then rewrite.
 //
 // Not ported here: ConnectPredicate (line 3402), the parameters-only counterpart of
-// CopyLayersAndParameters. It is a plain loop over GetOrAddParameter with a progress bar, is not in
-// this pass's assigned set, and belongs with the parameter helpers rather than with the layer copy.
+// CopyLayersAndParameters. It is a plain loop over GetOrAddParameter with a progress bar and belongs
+// with the parameter helpers rather than with the layer copy; it has since landed in
+// EditorUtils.AnimatorLayers.cs as CopyParameters.
+// Audit status: VERIFIED -- CopyLayer, CopyLayerSettings, CopyLayers and CopyLayersAndParameters
+// diffed statement by statement against export/, and each of the seven [CompilerGenerated] siblings
+// (InstantiateError, AwakeError, ResetError, FlushError, ConnectError, CalculateError, TestError)
+// diffed against the local function it was restored as, with every `ref` capture-struct field
+// resolved to the local it stands for (m_PublisherObserver=destination, configurationObserver=
+// registerUndo, m_WrapperServer=source, annotationServer=copy, iteratorObserver=clones,
+// _ProcObserver=sources). The three-pass order and the trailing defaultState remap were checked in
+// place. The cross-file CloneSerialized entry was checked to the extent that
+// EditorUtils.Assets.cs declares it and its body matches decompiled CompareRules; that file's own
+// audit owns it.
 
 using System.Collections.Generic;
 using UnityEditor;

@@ -31,6 +31,19 @@
 // The one real change the port needed: ControllerEditor.selectedStates is `internal` rather than the
 // shipped `private`, because this type could reach a private static of the window when it was nested
 // inside it and cannot now that it is top-level. That file's own remarks record it.
+//
+// Audit status: VERIFIED -- all seven declared members were diffed statement by statement against
+// `private class BehaviourPropertyMultiEditor` at line 234 of
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs, and every cited line
+// (234, 236, 238, 240, 242, 249, 255, 265) still lands on the named member. The inlined
+// RestartAnnotation (still line 9578) was read and transcribed field for field: DeferApply true,
+// Chance, Name, Value, ChangeType, ValueMin, ValueMax, DeferApply false, in that order and no
+// others -- Source (a ParameterEntry member) and LocalOnly (a driver member) are genuinely absent
+// from it, as the ApplyToAll remarks claim. Differences are syntactic only: the decompiled tuple
+// accesses Item1/Item2 are written with element names here, and
+// `EditorUtils.ForEach(selectedStates, delegate(AnimatorState s) ...)` is written in extension form
+// as `ControllerEditor.selectedStates.ForEach<AnimatorState>(...)`, binding to the same
+// `ForEach<T>(this IEnumerable, Action<T>)` overload.
 
 using System.Collections.Generic;
 using UnityEditor;

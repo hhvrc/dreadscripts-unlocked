@@ -11,12 +11,32 @@
 // is a leaf helper and putting it beside the six call sites in ControllerEditorWindow.Cosmetics.cs
 // would have been the only reason to.
 //
-// Three omissions live in this file, each blocked on the unported static ControllerEditor class or
-// on an EditorUtils member the package does not have. All three are marked at their call sites, and
-// listed with their blockers in ControllerEditorWindow.cs:
-//   * the transition copy/paste buttons (decompiled lines 3634-3649)
-//   * the "Sample From Active StateMachine" button (lines 3822-3829)
-//   * the "Generated Assets Path" folder row (lines 3834-3838)
+// This file used to record three omissions. One is now closed and two remain, and the reason the
+// two remain has changed -- none of them is waiting on unported code any more:
+//
+//   * CLOSED: the "Generated Assets Path" folder row (decompiled lines 3834-3838). Its blocker,
+//     EditorUtils.EnableRules, has landed as EditorUtils.FolderField (EditorUtils.FolderField.cs)
+//     and is `internal`, so the row is restored at the end of DrawOtherDefaults with the shipped
+//     write-back guard intact.
+//   * STILL OMITTED: the transition copy/paste buttons (lines 3634-3649).
+//   * STILL OMITTED: the "Sample From Active StateMachine" button (lines 3822-3829).
+//
+// Both remaining omissions are blocked on VISIBILITY, not on missing code. Every member they call
+// -- CopyTransitionSettings, copiedTransitionSettings, ActiveStateMachine -- is now ported, but all
+// three are `private static` on ControllerEditor while this window is a separate top-level type
+// here; the shipped build had it nested inside ControllerEditor, which is what gave it access.
+// Compiling the calls produces five CS0122 "inaccessible due to its protection level" errors with
+// every name resolving, which is the evidence. Closing them needs those three members widened to
+// `internal` in ControllerEditor's own files. Each call site below carries the detail.
+//
+// Audit status: VERIFIED -- all five members this file declares were diffed statement by statement
+// against export ControllerEditor.cs on 2026-08-05: DrawDefaultsTab (3610), DrawTransitionDefaults
+// (3628), DrawStateDefaults (3690), DrawOtherDefaults (3794) and DrawNodeColorField (3909). Two
+// deliberate, behaviour-preserving rewrites are worth naming rather than leaving implicit: the
+// switch in DrawDefaultsTab and the mirror / cycle-offset branches in DrawStateDefaults are written
+// in ascending / positive-test order where the decompiler emitted them inverted, which changes
+// nothing at runtime. The restored folder row was diffed against 3834-3838. The two omitted buttons
+// were diffed too -- that is how their blockers were re-derived -- but they are not written here.
 
 using DreadScripts.Common;
 using UnityEditor;
@@ -71,9 +91,16 @@ namespace DreadScripts.ControllerEditor
                 GUILayout.FlexibleSpace();
 
                 // DEFERRED: the copy and paste buttons that sat here (decompiled lines 3634-3649).
-                // They move settings between the template and a clipboard transition via the
-                // god-class members CustomizeAlgo (line 14693) and _ObserverAnnotation (line 8040),
-                // neither of which is ported.
+                // The blocker has changed and is now purely one of visibility, not of missing code.
+                // Both members they need HAVE landed:
+                //   ControllerEditor.CopyTransitionSettings   (line 14693, ControllerEditor.TransitionCopy.cs)
+                //   ControllerEditor.copiedTransitionSettings (line 8040,  ControllerEditor.State.cs, line 627)
+                // but both are declared `private static` on ControllerEditor, and this window is a
+                // separate top-level type here where the shipped build had it nested inside
+                // ControllerEditor -- which is exactly what gave it access. Verified by compiling
+                // the call: four CS0122 "inaccessible due to its protection level" errors, one per
+                // reference, with the names resolving correctly. Writing the buttons therefore needs
+                // those two members widened to `internal`, an edit to files this port does not own.
 
                 if (EditorUtils.Button(EditorUtils.contents.restoreDefaults, GUI.skin.label, GUILayout.Width(20f), GUILayout.Height(20f))
                     && EditorUtility.DisplayDialog("Restoring Default Settings", "Are you sure you want to restore the default settings?", "Restore", "Cancel"))
@@ -307,16 +334,24 @@ namespace DreadScripts.ControllerEditor
 
                         // DEFERRED: the "Sample From Active StateMachine" button (decompiled lines
                         // 3822-3829), which copies the three positions off whichever state machine
-                        // the Animator window is currently showing. Blocked on the god-class
-                        // accessor RevertMapper() (line 8552).
+                        // the Animator window is currently showing. Same visibility blocker as the
+                        // copy/paste buttons above, and no longer a missing-code one: the accessor
+                        // has landed as ControllerEditor.ActiveStateMachine (line 8552,
+                        // ControllerEditor.ControllerContext.cs, line 226) but is `private static`
+                        // on ControllerEditor. Verified by compiling the reference: CS0122, name
+                        // resolved. Needs widening to `internal` in a file this port does not own.
                     }
                 }
             }
 
-            // DEFERRED: the "Generated Assets Path" folder row (decompiled lines 3834-3838), which
-            // draws EditorSettings.saveFolder through EditorUtils.EnableRules (decompiled
-            // EditorUtils.cs line 4249) and writes back any folder the user picks. EnableRules is
-            // not in the package, and lives on the shared EditorUtils partials.
+            // Where the tool writes anything it generates. The setting is passed by its implicit
+            // string conversion and written back explicitly, because the field is drawn by a helper
+            // that deliberately owns no storage -- see EditorUtils.FolderField.
+            string pickedFolder = EditorUtils.FolderField(EditorSettings.Instance.saveFolder, "Generated Assets Path");
+            if (!string.IsNullOrEmpty(pickedFolder))
+            {
+                EditorSettings.Instance.saveFolder.Value = pickedFolder;
+            }
         }
 
         /// <summary>

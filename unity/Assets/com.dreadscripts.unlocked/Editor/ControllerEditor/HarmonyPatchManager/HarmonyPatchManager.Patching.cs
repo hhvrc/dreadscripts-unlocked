@@ -19,6 +19,16 @@
 //
 // The lambdas that select the parameter types in PatchBySignature and PatchConstructor were
 // hoisted by the compiler into a _003C_003Ec closure cache; they are restored inline.
+//
+// Audit status: VERIFIED -- all seven declared methods were diffed statement by statement against
+// export/ControllerEditor/DreadScripts/ControllerEditor/ControllerEditor.cs (MapReg 2631,
+// PatchByParameterType 2636, PatchBySignature 2641, RateReg 2646, DestroyReg 2662, GetReg 2667,
+// CalcReg 2672 -- every cited line still lands on the named member). The two closure-cache methods
+// the port inlines were read and are both `return p.ParameterType`, so the restored lambdas are
+// faithful. The dropped-harmonyId claim was re-checked against the decompiled bodies: MapReg,
+// PatchByParameterType and PatchBySignature really do not forward it, DestroyReg and GetReg do.
+// Remaining differences are formatting only: RateReg and CalcReg assign their three HarmonyMethod
+// ternaries to locals before the Patch call, which the port folds into the argument list.
 
 using System;
 using System.Linq;

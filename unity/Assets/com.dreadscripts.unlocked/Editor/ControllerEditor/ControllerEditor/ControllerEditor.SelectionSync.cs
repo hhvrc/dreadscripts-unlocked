@@ -18,32 +18,62 @@
 //
 // =========================== PARTIAL PORT, EACH WITH ITS BLOCKER ==============================
 //
-// Nothing below is stubbed. These are calls the shipped body makes that this port omits because
-// their targets are not in the package yet. Each omission is marked at its position in the method
-// with a DEFERRED comment, in shipped order, so the routine can be completed in place.
+// Nothing below is stubbed. Two of the shipped body's calls are still omitted because their targets
+// are not in the package yet. Each omission is marked at its position in the method with a DEFERRED
+// comment, so the routine can be completed in place.
 //
 //   StartInitializer (15195) -- pushes the selected state's clip into the Animation window when
 //     both `aw_active` and `aw_autoSwitchClip` are on. The whole `if` is omitted rather than left
 //     with an empty body, because an empty body would read as "this case does nothing", which is a
-//     fabrication. StartInitializer is blocked on the Animation window reflection handles
-//     (InitInitializer and the clip setter), which are not ported.
-//   AssetVisitor (12961) -- builds the "Shared Conditions" editor rows by intersecting the
-//     condition lists of every selected transition. Its result is the only writer of
-//     `sharedConditionEditors`, so with it deferred that list keeps whatever it last held; the
-//     "All Conditions" rows, which are built inline here, are unaffected.
-//   MapVisitor (11763) -- refreshes the AnimatorState inspector's SerializedProperty bank from the
-//     new state selection. Itself licence gated, and blocked on the property-refresh helpers.
-//   RunAlgo (14801) -- picks what the transition inspector edits (the focused transition, the
-//     selected state transitions, or the mixed-value pair) and re-reads its properties.
-//   CalculateAnnotation (9768) -- two calls, LoginVisitor + PushVisitor, that rebuild the graph
-//     node caches; neither is ported.
-//   ConnectAnnotation (9739) -- rebuilds `parameterNames` / `boolParameterNames` /
-//     `floatParameterNames` from the active controller. Blocked on the ActiveController accessor
-//     (decompiled LogoutMapper), which ControllerEditor.State.cs's header defers as a group.
-//   CallAnnotation (9263) and MoveAnnotation (9222) -- the VRChat behaviour multi-editors, which
-//     rebuild `parameterDriverBindings` and `trackingControlEditor` from the selected states. They
-//     sit together inside `if (AnimatorTypeCache.IsVRCSDKAvailable())`; the guard is omitted with
-//     them, since a guard around nothing asserts a decision this port has not made.
+//     fabrication. Its blocker is now exactly one accessor pair: InitInitializer (15175), which
+//     reads `animationWindowStateProperty` off FindInitializer (15160), the cached Animation window
+//     lookup. Neither is ported. The other half of the blocker this header used to name -- "the
+//     clip setter" -- is obsolete: `activeAnimationClipProperty` is resolved in
+//     ControllerEditor.ReflectionPriming.cs (line 504), and the `animationWindow` field, the
+//     `animationWindowType` handle and `animationWindowStateProperty` all exist, so landing the
+//     Animation-window link is those two accessors and nothing else.
+//   CallAnnotation (9263) -- the VRChat parameter-driver multi-editor, which rebuilds
+//     `parameterDriverBindings` and `parameterDriverEditors` from the selected states. Blocked on
+//     PopAnnotation (9148), the per-binding editor folder it calls once per driver found, and on
+//     CancelAnnotation (9296), the ReorderableList rebuild it ends with, whose three callbacks
+//     (CountAnnotation 9304, DisableAnnotation, InsertAnnotation) are all unported. Its sibling
+//     MoveAnnotation has landed, so the `if (AnimatorTypeCache.IsVRCSDKAvailable())` guard the two
+//     share is now written out around the one call it can make rather than omitted -- the guard is
+//     no longer a guard around nothing.
+//
+// ============================ FORMER DEFERRALS, NOW WITHDRAWN =================================
+//
+// Six calls this header used to defer have since landed and are written at their shipped positions:
+//
+//   AssetVisitor (12961)       -> BuildSharedConditionEditors, in ControllerEditor.ConditionMatching.cs
+//   MapVisitor (11763)         -> RebuildConditionList, in ControllerEditor.ConditionList.cs
+//   RunAlgo (14801)            -> RebuildTransitionInspector, in ControllerEditor.InspectorRefresh.cs
+//   CalculateAnnotation (9768) -> RefreshInspectorProperties, in ControllerEditor.InspectorRefresh.cs
+//   ConnectAnnotation (9739)   -> RefreshParameterNames, in ControllerEditor.ParameterNames.cs
+//   MoveAnnotation (9222)      -> RefreshTrackingControlEditor, in ControllerEditor.TrackingControlSync.cs
+//
+// CORRECTION, because this header described two of them wrongly and the wrong descriptions were
+// what made them look harder to land than they were:
+//
+//   * MapVisitor was recorded as "refreshes the AnimatorState inspector's SerializedProperty bank
+//     from the new state selection". It does not touch a SerializedProperty. It rebuilds the three
+//     condition ReorderableLists -- focused, shared and whole-selection -- and is ported as
+//     RebuildConditionList. The member that refreshes the two inspector property banks is
+//     CalculateAnnotation, three statements further down. The old entry also called MapVisitor
+//     "blocked on the property-refresh helpers"; it never was. Its licence gate is real, and is
+//     recorded where the member is ported.
+//
+//   * CalculateAnnotation was recorded as "two calls, LoginVisitor + PushVisitor, that rebuild the
+//     graph node caches". The two calls are right and the description of them is not: LoginVisitor
+//     and PushVisitor are the state and transition SerializedProperty banks (RefreshStateProperties
+//     and RefreshTransitionProperties). Nothing here rebuilds a graph node cache.
+//
+// ConnectAnnotation's recorded blocker -- "the ActiveController accessor, which
+// ControllerEditor.State.cs's header defers as a group" -- was satisfied when that accessor landed
+// as the ActiveController property in ControllerEditor.ControllerContext.cs, so the member itself
+// was ported rather than left waiting; likewise MoveAnnotation, whose whole dependency set
+// (`allStatesHaveTrackingControl`, TrackingControlEditor, AnimatorTypeCache.TrackingControlType) was
+// already in the package.
 //
 // ==================================== DEOBF-BUG ===============================================
 //
@@ -75,9 +105,14 @@
 // case where those accessors return null.
 //
 // Audit status: PARTIAL -- the body was transcribed statement by statement against decompiled lines
-// 8676-8829 and the field names were taken from the rename table in ControllerEditor.State.cs. The
-// eight deferred targets were opened in decompiled/ and the blocker recorded above is what each one
-// actually needs; their bodies were not otherwise reviewed.
+// 8676-8829 and the field names were taken from the rename table in ControllerEditor.State.cs. On
+// the pass that landed the six former deferrals, every one of the eight calls the shipped body makes
+// was re-opened in export/ and re-checked: the six now written out were confirmed to be ported under
+// the names listed above, at the shipped positions and in the shipped order (AssetVisitor before the
+// state filtering, MapVisitor after the condition-editor diff, RunAlgo immediately before
+// CalculateAnnotation, ConnectAnnotation before the VRChat guard, MoveAnnotation second inside it);
+// and the two still deferred were followed one level further into their own blockers, which is what
+// the notes above now name. The bodies of those two were read only far enough to establish that.
 
 using System;
 using System.Collections.Generic;
@@ -117,15 +152,18 @@ namespace DreadScripts.ControllerEditor
         /// being typed) that must survive a selection change which keeps the transition it edits.
         /// </para>
         /// <para>
-        /// See the file header for the licence gate that wrapped this body and for the eight calls
-        /// deferred on unported targets.
+        /// See the file header for the licence gate that wrapped this body and for the two calls
+        /// still deferred on unported targets.
         /// </para>
         /// </remarks>
         private static void SyncSelection()
         {
             // DEFERRED: when the Animation window integration is enabled and set to auto-switch,
             //           the selected state's clip is pushed into the Animation window here.
-            //           Needs StartInitializer (decompiled 15195).
+            //           Needs StartInitializer (decompiled 15195), which is unported because
+            //           InitInitializer (15175) and FindInitializer (15160) are. Everything else
+            //           it touches -- activeAnimationClipProperty, animationWindow,
+            //           animationWindowType, animationWindowStateProperty -- is in the package.
 
             // A rename typed onto a graph node is committed, not discarded, when the selection moves
             // away from it -- so the overlay ends with acceptChanges: true.
@@ -231,8 +269,9 @@ namespace DreadScripts.ControllerEditor
 
             selectedTransitions = selectedTransitionEdits.Select(t => t.transition).ToList();
 
-            // DEFERRED: sharedConditionEditors = AssetVisitor(selectedTransitions) -- the shared
-            //           condition rows. See the file header.
+            // The only writer of the "Shared Conditions" rows: the conditions every selected
+            // transition has in common. The "All Conditions" rows are built inline further down.
+            sharedConditionEditors = BuildSharedConditionEditors(selectedTransitions);
 
             AnimatorState[] selectedStateAssets = Selection.GetFiltered<AnimatorState>(SelectionMode.Editable);
             selectedStates = selectedStateAssets.ToList();
@@ -284,14 +323,17 @@ namespace DreadScripts.ControllerEditor
                 }
             }
 
-            // DEFERRED: MapVisitor() -- refreshes the AnimatorState inspector properties from
-            //           selectedStatesSerialized, which was just reassigned above.
+            // Both row sets have just been replaced wholesale, and a ReorderableList binds to the
+            // IList it was constructed from, so the list has to be rebuilt rather than repainted.
+            RebuildConditionList();
 
             selectedStateTransitions =
                 Selection.GetFiltered<AnimatorStateTransition>(SelectionMode.Editable).ToList();
 
-            // DEFERRED: RunAlgo() -- chooses and re-reads the transition inspector's target.
-            // DEFERRED: CalculateAnnotation() -- rebuilds the graph node caches.
+            // In this order, and not the other way round: re-pointing the SerializedObject
+            // invalidates every property handle taken from the old one.
+            RebuildTransitionInspector();
+            RefreshInspectorProperties();
 
             // The bulk modes act on the set that was selected when the mode started, so the pending
             // list is only refreshed while neither mode is armed.
@@ -308,9 +350,15 @@ namespace DreadScripts.ControllerEditor
                 multiTransitionStateMachines = selectedStateMachines;
             }
 
-            // DEFERRED: ConnectAnnotation() -- rebuilds the parameter name caches.
-            // DEFERRED: if (AnimatorTypeCache.IsVRCSDKAvailable()) { CallAnnotation(); MoveAnnotation(); }
-            //           -- the VRChat parameter-driver and tracking-control multi-editors.
+            RefreshParameterNames();
+
+            if (AnimatorTypeCache.IsVRCSDKAvailable())
+            {
+                // DEFERRED: CallAnnotation() -- the parameter-driver multi-editor, which the
+                //           shipped body calls here, before the tracking-control one. See the
+                //           file header for the two members it is blocked on.
+                RefreshTrackingControlEditor();
+            }
 
             // Both sections are sticky: the setting forces them open, and so does having something
             // of that kind selected, but nothing here closes a section the setting has opened.
