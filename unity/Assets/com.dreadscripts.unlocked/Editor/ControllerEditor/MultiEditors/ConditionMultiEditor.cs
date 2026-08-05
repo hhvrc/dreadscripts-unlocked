@@ -11,6 +11,7 @@
 //     SetParameter                           -> SetParameter,           line 160
 //     SetMode                                -> SetMode,                line 177
 //     SetThreshold                           -> SetThreshold,           line 194
+//     Invert                                 -> Invert,                 line 211
 //     RemoveFromAll                          -> RemoveFromAll,          line 217
 //     MarkMixedValues                        -> MarkMixedValues,        line 225
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
@@ -19,11 +20,30 @@
 // The type was a private nested type of the ControllerEditor window and is lifted to top level
 // here, matching the convention already used for PhysBoneEditor.
 //
-// Deferred member (depends on code that is not ported yet, omitted rather than stubbed):
-//   Invert(), line 211 - flips the condition's comparison mode via the window's private static
-//   ResolveAlgo(AnimatorCondition) (line 15115), which in turn reads the window's EditorSettings
-//   singleton. Neither is ported. Once the window class lands, Invert is
-//   `condition = Invert(condition); ApplyToAll(Invert);`.
+// ======================================== NOTES ================================================
+//
+// The type is complete: every member of decompiled ControllerEditor.ConditionMultiEditor
+// (lines 109-232) is ported here.
+//
+// Invert was deferred when this file was written and landed on 2026-08-05. Its blocker was the
+// window's condition-reversal helper, decompiled `ResolveAlgo` (line 15115), which was unported;
+// it is now ControllerEditor.InvertCondition(AnimatorCondition), in
+// ControllerEditor/ControllerEditor.ConditionInversion.cs, together with the three members it in
+// turn needed. That file's header records the one accessibility change the call below required -- the
+// helper is `internal` there where the shipped member is `private`, because this type could reach a
+// private static of the window while it was nested inside it and cannot now that it is top-level.
+// The same widening was already made to ControllerEditor.selectedStates for
+// BehaviourPropertyMultiEditor; see that file.
+//
+// ==================================== 2019 vs 2022 =============================================
+//
+// ControllerEditor ships a single build, so there is no second decompilation to diff this against.
+//
+// Audit status: VERIFIED -- every member re-diffed statement by statement against decompiled lines
+// 109-232 on the pass that added Invert, after the member-rename sweep that renumbered the file;
+// all fifteen line numbers above still land on the member named. The two ApplyToAll overloads
+// destructure the tuple where the decompilation reads Item1/Item2, and RemoveFromAll records no
+// undo, as shipped.
 
 using System;
 using System.Collections.Generic;
@@ -177,6 +197,30 @@ namespace DreadScripts.ControllerEditor
             });
 
             mixedValues[2] = false;
+        }
+
+        /// <summary>Reverses this row's condition, and the matching condition on every target.</summary>
+        /// <remarks>
+        /// <para>
+        /// Each target is reversed from <em>its own</em> value rather than from this row's, so a
+        /// row whose targets disagree stays disagreeing instead of being flattened onto the
+        /// displayed value -- the same reasoning as the other setters' use of the
+        /// <see cref="ApplyToAll(Func{AnimatorCondition, AnimatorCondition})"/> overload.
+        /// </para>
+        /// <para>
+        /// The mixed-value flags are deliberately left alone, unlike in the setters. Reversal does
+        /// not make the targets agree, so a field that was mixed before is still mixed after.
+        /// </para>
+        /// <para>
+        /// Whether the thresholds move as well as the comparisons is decided per call by
+        /// <see cref="ControllerEditor.InvertCondition(AnimatorCondition)"/>, from the user's
+        /// setting and the control key.
+        /// </para>
+        /// </remarks>
+        internal void Invert()
+        {
+            condition = ControllerEditor.InvertCondition(condition);
+            ApplyToAll(ControllerEditor.InvertCondition);
         }
 
         /// <summary>Deletes this row's condition from every target.</summary>

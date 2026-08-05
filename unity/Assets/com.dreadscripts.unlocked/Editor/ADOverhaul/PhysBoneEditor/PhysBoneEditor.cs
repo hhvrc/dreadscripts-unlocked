@@ -14,7 +14,7 @@
 //   PhysBoneEditor.MembershipStates.cs  MoveSingleton / PublishSingleton (lines 3967-4073)
 //   PhysBoneEditor.EndpointEditing.cs   SearchSingleton / LoginSingleton / PatchSingleton
 //                                       (lines 4301-4361)
-//   PhysBoneEditor.GizmoSettings.cs     InterruptSingleton (line 4210)
+//   PhysBoneEditor.GizmoSettings.cs     ApplyGlobalGizmoSettings (line 4414)
 //
 // Members in this file:
 //
@@ -92,10 +92,12 @@
 //
 // Audit status: PARTIAL -- the six MAP entries above were re-checked against decompiled/ and their
 // line numbers corrected (the field block is at 2980-2988 and ChangeSingleton at 4567 in the
-// post-561e9ec snapshot, not 2776-2784/4363). The sibling-partial list and the omitted-member
-// table still carry pre-re-snapshot numbers and were not re-checked; the numbers each
-// sibling partial states in its own header are the ones kept current. The omitted-member table
-// above was likewise not re-checked.
+// post-561e9ec snapshot, not 2776-2784/4363). In the sibling-partial list, only the
+// PhysBoneEditor.GizmoSettings.cs entry has been re-checked -- its member is named
+// ApplyGlobalGizmoSettings in the current snapshot, not InterruptSingleton, and is declared at 4414,
+// not 4210. The remaining sibling entries and the omitted-member table below still carry
+// pre-re-snapshot numbers and were not re-checked; the numbers each sibling partial states in its
+// own header are the ones kept current.
 
 using UnityEditor;
 using UnityEngine;
