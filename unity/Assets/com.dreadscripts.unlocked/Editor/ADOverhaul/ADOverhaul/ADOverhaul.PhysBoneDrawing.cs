@@ -125,7 +125,7 @@ namespace DreadScripts.ADOverhaul
         /// Reading the old value is what makes this work -- the toggles being cleared are the ones
         /// that were on-screen a moment ago.
         /// </remarks>
-        private static void DrawShapeProperties(UnityEngine.Object target, SerializedProperty[] shapeProperties, Action onShapeTypeChanged, bool isPhysBoneCollider)
+        internal static void DrawShapeProperties(UnityEngine.Object target, SerializedProperty[] shapeProperties, Action onShapeTypeChanged, bool isPhysBoneCollider)
         {
             SerializedProperty shapeType = shapeProperties[0];
             SerializedProperty rootTransform = shapeProperties[1];
@@ -275,7 +275,7 @@ namespace DreadScripts.ADOverhaul
         /// is the shipped behaviour and is what VRChat's own gizmos do too.
         /// </para>
         /// </remarks>
-        private static void DrawShapeHandles(UnityEngine.Object target, UnityEngine.Object[] targets, int componentKind, Color handleColor)
+        internal static void DrawShapeHandles(UnityEngine.Object target, UnityEngine.Object[] targets, int componentKind, Color handleColor)
         {
             // Enter or Escape anywhere in the scene view drops out of every editing mode at once.
             if (Event.current.type == EventType.KeyDown

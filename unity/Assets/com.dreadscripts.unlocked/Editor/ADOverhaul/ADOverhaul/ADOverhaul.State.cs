@@ -149,6 +149,14 @@
 // initialiser values (2019 lines 5559-5725, under a completely different set of obfuscated names).
 // No divergence.
 //
+// DELIBERATE DEVIATION
+// isTesting, selectedAvatar, sceneAvatars, avatarParameterNames and colliderChangedDuringTest
+// widened from `private` to `internal`, for the lifted-out inspectors: PhysBoneEditor's OnEnable
+// refreshes the avatar selection, its Options section lists the avatar's parameters and its Ctrl+E
+// shortcut tests isTesting, and PhysBoneColliderEditor's OnInspectorGUI raises
+// colliderChangedDuringTest when an edit lands during a test run. See the visibility note in
+// ADOverhaul.MultiObjectApply.cs.
+//
 // Audit status: VERIFIED -- all 58 declarations below diffed field by field against the 2022
 // snapshot's bank (which now carries these names): every type, every `readonly`, every initialiser
 // expression matches, and the 26 fields not declared here are exactly the licensing block listed as
@@ -234,7 +242,7 @@ namespace DreadScripts.ADOverhaul
         /// simulates their PhysBones in the editor, so changes can be previewed without entering
         /// play mode. It is force-disabled while the editor is playing.
         /// </remarks>
-        private static bool isTesting;
+        internal static bool isTesting;
 
         /// <summary>
         /// The <see cref="PhysBoneManager"/> added to <see cref="testRoot"/>, which owns the
@@ -328,7 +336,7 @@ namespace DreadScripts.ADOverhaul
         /// Set when a collider inspector commits a change during test mode. Collider changes cannot
         /// be picked up by the running simulation, so this triggers the restart prompt.
         /// </summary>
-        private static bool colliderChangedDuringTest;
+        internal static bool colliderChangedDuringTest;
 
         /// <summary>
         /// Whether the "Testing Restart Required" prompt has already been answered, so it is not
@@ -375,17 +383,17 @@ namespace DreadScripts.ADOverhaul
         /// The avatar the inspectors resolve parameter names, collision tags and playable layers
         /// against. Chosen from <see cref="sceneAvatars"/> by the "Target Avatar" picker.
         /// </summary>
-        private static VRCAvatarDescriptor selectedAvatar;
+        internal static VRCAvatarDescriptor selectedAvatar;
 
         /// <summary>Every avatar descriptor in the open scenes, refreshed alongside the selection.</summary>
-        private static VRCAvatarDescriptor[] sceneAvatars;
+        internal static VRCAvatarDescriptor[] sceneAvatars;
 
         /// <summary>
         /// Animator parameter names gathered from <see cref="selectedAvatar"/>'s non-default
         /// playable layers, minus the VRChat-reserved ones. Feeds the parameter-name dropdown next
         /// to contact receivers' parameter fields.
         /// </summary>
-        private static string[] avatarParameterNames;
+        internal static string[] avatarParameterNames;
 
         /// <summary>
         /// Collision tags in use anywhere under <see cref="selectedAvatar"/>, with VRChat's default

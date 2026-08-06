@@ -123,6 +123,15 @@
 // DrawPlayableLayerWarning's humanoid test as the fallthrough rather than the early exit, and
 // renders RefreshSceneAvatars' preferred-avatar ternary the other way round. Same expressions.
 //
+// DELIBERATE DEVIATION
+// Six members widened from `private` to `internal`: DrawTargetAvatarSelector,
+// DrawPropertyWithEditToggle, DrawIconToggle, both DrawPropertyToggleButton overloads and
+// DrawSelfOthersToggles. All six are drawn by PhysBoneEditor.OnInspectorGUI, which the shipped
+// build reached from inside this class because the inspector was nested in it. This
+// reconstruction lifts the inspectors out to top-level types, so the calls now cross a type
+// boundary. Same assembly, same reachable set -- the same widening already recorded in
+// ADOverhaul.MultiObjectApply.cs, for the same reason.
+//
 // Audit status: PARTIAL -- PostIdentifier was relocated to its true line (8629) in reverse-engineering/export/ on
 // 2026-08-05; the rest of the MAP block's line numbers predate the 561e9ec re-snapshot and were not
 // re-checked.
@@ -370,7 +379,7 @@ namespace DreadScripts.ADOverhaul
         /// serviceable here; only the Action-layer bug, which would send a parameter to the wrong
         /// controller, is worth reporting.
         /// </remarks>
-        private static void DrawTargetAvatarSelector()
+        internal static void DrawTargetAvatarSelector()
         {
             DrawAvatarSelector(ref selectedAvatar, sceneAvatars, RefreshAvatarTables, warnNonHumanoid: false, checkPrefab: false, checkPlayableLayers: true, "Target Avatar");
         }
@@ -559,7 +568,7 @@ namespace DreadScripts.ADOverhaul
         /// A property field with the small "edit through the scene view" toggle beside it, and
         /// returns the toggle's new state.
         /// </summary>
-        private static bool DrawPropertyWithEditToggle(SerializedProperty property, bool editing)
+        internal static bool DrawPropertyWithEditToggle(SerializedProperty property, bool editing)
         {
             using (new GUILayout.HorizontalScope())
             {
@@ -572,7 +581,7 @@ namespace DreadScripts.ADOverhaul
         /// A square 18px icon toggle, tinted green while on and red while off, for the scene-view
         /// editing switches that sit at the end of a field row.
         /// </summary>
-        private static bool DrawIconToggle(bool value, GUIContent content)
+        internal static bool DrawIconToggle(bool value, GUIContent content)
         {
             using (new GUIColorScope(GUIColorScope.ColoringType.BG, value, ADOEditorUtility.validColor, ADOEditorUtility.errorColor))
             {
@@ -604,7 +613,7 @@ namespace DreadScripts.ADOverhaul
         /// serialized property, with a third tint for a multi-selection that disagrees.
         /// </summary>
         /// <param name="onChanged">Runs after the property is written, only when it changed.</param>
-        private static void DrawPropertyToggleButton(SerializedProperty property, string label, Action onChanged = null, params GUILayoutOption[] options)
+        internal static void DrawPropertyToggleButton(SerializedProperty property, string label, Action onChanged = null, params GUILayoutOption[] options)
         {
             DrawPropertyToggleButton(property, new GUIContent(label), onChanged, options);
         }
@@ -615,7 +624,7 @@ namespace DreadScripts.ADOverhaul
         /// distinguishes the mixed case, which the button itself cannot show, so the button falls
         /// back to drawing the property's own (arbitrary) value in the mixed colour.
         /// </remarks>
-        private static void DrawPropertyToggleButton(SerializedProperty property, GUIContent content, Action onChanged = null, params GUILayoutOption[] options)
+        internal static void DrawPropertyToggleButton(SerializedProperty property, GUIContent content, Action onChanged = null, params GUILayoutOption[] options)
         {
             int tintIndex = property.hasMultipleDifferentValues ? 2 : (property.boolValue ? 1 : 0);
 
@@ -670,7 +679,7 @@ namespace DreadScripts.ADOverhaul
         /// silently widen the labels of anything else drawing afterwards.
         /// </para>
         /// </remarks>
-        private static void DrawSelfOthersToggles(SerializedProperty permission, SerializedProperty filter)
+        internal static void DrawSelfOthersToggles(SerializedProperty permission, SerializedProperty filter)
         {
             using (new GUILayout.HorizontalScope())
             {

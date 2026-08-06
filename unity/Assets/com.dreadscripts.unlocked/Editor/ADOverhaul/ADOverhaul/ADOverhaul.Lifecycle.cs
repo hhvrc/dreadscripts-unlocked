@@ -13,15 +13,16 @@
 // none of the named blockers existed; most of them have landed since, so each entry now records
 // whether it is still blocked or merely unwritten.
 //
-//   MapConfiguration     line 6480  -- runs an action between a scene-GUI re-subscribe and an avatar
-//                                     rescan. FULLY UNBLOCKED, merely unwritten: all three of its
-//                                     callees are now ported -- CancelConfiguration as
-//                                     SetShapeEditOverlayActive here, PrintConfiguration (line 6596)
-//                                     as RefreshSceneAvatars in ADOverhaul.AvatarSelection.cs, and
-//                                     LogoutConfiguration as RefreshAvatarTables here. Nothing would
-//                                     call it yet: its only call sites are the OnEnable of
-//                                     ContactReceiverEditor, ContactSenderEditor and
-//                                     PhysBoneColliderEditor, and none of those three is ported.
+//   MapConfiguration     line 6684  -- PORTED, as BeginShapeInspectorSession below. All three of
+//                                     its call sites exist and reach it: the OnEnable of
+//                                     PhysBoneColliderEditor, ContactSenderEditor and
+//                                     ContactReceiverEditor.
+//                                     It gets no MAP entry: its current-snapshot line, 6684, is
+//                                     claimed by ADOverhaul.AvatarSelection.cs, which still carries
+//                                     pre-561e9ec numbering in which 6684 is ForgotConfiguration.
+//                                     That is the line-number debt the NOTES below already describe,
+//                                     not a double port; the entry can be added when the numbering
+//                                     sweep reaches AvatarSelection.cs.
 //   FillConfiguration    line 6488  -- a PlayModeStateChange handler; on ExitingEditMode it toggles
 //                                     PhysBone test mode off so the temporary "Physbone Tester"
 //                                     hierarchy does not survive into play mode. NOT MISSING: it is
@@ -31,12 +32,10 @@
 //                                     beside it. Nothing should be added here for it; see that
 //                                     file's header. Its blocker NewConfiguration (line 6272) is
 //                                     ported there too, as ToggleTestMode.
-//   WriteConfiguration   line 6552  -- see the [DidReloadScripts] note below. Still blocked. Needs
-//                                     PhysBoneEditor.WriteSingleton,
-//                                     PhysBoneColliderEditor.InsertProperty,
-//                                     ContactSenderEditor.InvokeProperty and
-//                                     ContactReceiverEditor.ReadPage; the two contact editors are
-//                                     not ported as types at all.
+//   WriteConfiguration   line 6552  -- PORTED, but not here: it is ADOverhaul.InspectorInstall.cs,
+//                                     which owns it and the display class holding its body. Only
+//                                     one of its four installer calls is reproduced -- see that
+//                                     file for which three are omitted and why.
 //   MapIdentifier        line 8096  -- see the [InitializeOnLoadMethod] audit below. Of the three it
 //                                     names, SetupIdentifier (line 8185) is ported as
 //                                     ApplyCachedUpdateInfo in ADOverhaul.Menus.cs and
@@ -92,13 +91,15 @@
 //
 // ================================= [DidReloadScripts] note =====================================
 //
-// WriteConfiguration (line 6552) is the one piece of reload plumbing that is genuinely functional.
-// It reflects UnityEditor.CustomEditorAttributes' private static s_Initialized field, polls it every
-// 200 ms for up to 30 tries, and once Unity has built its custom-editor table re-registers
-// ADOverhaul's four replacement inspectors over the VRChat SDK's own. It has to wait because the
-// table is built lazily and overwriting it before Unity populates it would be undone. Its
-// captured-variable display class (_003C_003Ec__DisplayClass66_0, line 5522) is a decompiler
-// artifact; the original was a local async lambda. Deferred only for its four missing call targets.
+// WriteConfiguration (line 6552) is the one piece of reload plumbing that is genuinely functional,
+// and it has since been ported into ADOverhaul.InspectorInstall.cs. It reflects
+// UnityEditor.CustomEditorAttributes' private static s_Initialized field, polls it every 200 ms for
+// up to 30 tries, and once Unity has built its custom-editor table re-registers the replacement
+// inspectors over the VRChat SDK's own. It has to wait because the table is built lazily and
+// overwriting it before Unity populates it would be undone. Its captured-variable display class
+// (_003C_003Ec__DisplayClass66_0, line 5522) is a decompiler artifact; the original was a local
+// async lambda, and it is folded back into one method there. Nothing about it is deferred any more;
+// this paragraph is kept because the region it describes is this file's.
 //
 // SHIPPED BUG PRESERVED in RefreshAvatarTables -- see the remarks on that method. The 2019 build
 // does not have it, and this is the one place in this region where the two builds diverge.
@@ -127,6 +128,12 @@
 // The line numbers in the prose sections above are pre-561e9ec throughout, and the offset is close
 // to but not exactly 204 (attributes and blank lines moved with the members), so take the decompiled
 // member names as the reference rather than arithmetic on those numbers.
+//
+// DELIBERATE DEVIATION
+// RefreshAvatarTables, RefreshAvatarParameterNames and ResetFoldouts widened from `private` to
+// `internal`. PhysBoneEditor.OnEnable calls the first and third, and the add-missing-parameter
+// menu in PhysBoneEditor.OnInspectorGUI calls the second. See the visibility note in
+// ADOverhaul.MultiObjectApply.cs for why the lift-out forces this.
 //
 // Audit status: PARTIAL -- SetShapeEditOverlayActive was transcribed statement by statement from
 // decompiled 6700-6711, cross-checked against 2019's ResolveSystem, and its call sites at 1867,
@@ -167,12 +174,14 @@ namespace DreadScripts.ADOverhaul
         /// scene view with no transform gizmo and nothing left drawing to explain why.
         /// </para>
         /// <para>
-        /// Nothing in the package reaches this yet: the three inspector <c>OnEnable</c>/
-        /// <c>OnDisable</c> pairs and <c>MapConfiguration</c>, which is what the <c>OnEnable</c> half
-        /// goes through, are all still unported -- see the PARTIAL PORT list in the file header.
+        /// All three shape inspectors reach this now: each <c>OnDisable</c> calls it directly with
+        /// <see langword="false"/>, and each <c>OnEnable</c> reaches it with <see langword="true"/>
+        /// through <see cref="BeginShapeInspectorSession"/>. That is why the unsubscribe above is
+        /// unconditional rather than paired -- three inspectors enabling in succession would
+        /// otherwise stack three subscriptions.
         /// </para>
         /// </remarks>
-        private static void SetShapeEditOverlayActive(bool active)
+        internal static void SetShapeEditOverlayActive(bool active)
         {
             SceneView.duringSceneGui -= DrawShapeEditOverlay;
 
@@ -184,6 +193,27 @@ namespace DreadScripts.ADOverhaul
             {
                 Tools.hidden = false;
             }
+        }
+
+        /// <summary>
+        /// Brings up the shared state a shape inspector needs on enable: the scene-view overlay, the
+        /// inspector's own initialisation, and the avatar tables its fields read from.
+        /// </summary>
+        /// <param name="onEnable">
+        /// The inspector's own enable work, run between the two. For the collider inspector this is
+        /// the shape-capability recompute, which has to happen before anything draws and after the
+        /// overlay is live.
+        /// </param>
+        /// <remarks>
+        /// Shared by the three shape inspectors -- collider, contact sender and contact receiver --
+        /// which all need the same three steps in the same order and differ only in the middle one.
+        /// </remarks>
+        internal static void BeginShapeInspectorSession(Action onEnable)
+        {
+            SetShapeEditOverlayActive(true);
+            onEnable();
+            RefreshSceneAvatars(ref selectedAvatar, ref sceneAvatars);
+            RefreshAvatarTables();
         }
 
         /// <summary>
@@ -201,7 +231,7 @@ namespace DreadScripts.ADOverhaul
         /// large enough that the possibility of a decompiler slip cannot be ruled out entirely, and
         /// any caller that can pass a null avatar should be read with that in mind.
         /// </remarks>
-        private static void RefreshAvatarTables()
+        internal static void RefreshAvatarTables()
         {
             ADOEditorUtility.GetPopulatedPlayableLayers(selectedAvatar, ref avatarPlayableLayerNames, ref avatarPlayableLayerTypes);
             if (!selectedAvatar)
@@ -235,7 +265,7 @@ namespace DreadScripts.ADOverhaul
         /// runtime controller or a scene instance, and only the asset carries the parameter list the
         /// dropdown should offer.
         /// </remarks>
-        private static void RefreshAvatarParameterNames()
+        internal static void RefreshAvatarParameterNames()
         {
             avatarParameterNames = selectedAvatar.baseAnimationLayers
                 .Concat(selectedAvatar.specialAnimationLayers)
@@ -262,7 +292,7 @@ namespace DreadScripts.ADOverhaul
         /// foldouts do not snap shut on every selection change. A null entry is a first run and
         /// starts closed.
         /// </remarks>
-        private static void ResetFoldouts(AnimBool[] foldouts, UnityAction onValueChanged)
+        internal static void ResetFoldouts(AnimBool[] foldouts, UnityAction onValueChanged)
         {
             for (int i = 0; i < foldouts.Length; i++)
             {

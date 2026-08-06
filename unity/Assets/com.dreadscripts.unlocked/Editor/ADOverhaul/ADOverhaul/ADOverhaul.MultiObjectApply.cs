@@ -1,36 +1,26 @@
 // Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// Ported region: the shared commit path that every replacement inspector routes its edits through,
-// decompiled lines 6872-6964.
+// Ported region: the shared commit path that every replacement inspector routes its edits through
+// (decompiled lines 6872-6964), and the test-mode toolbar they all draw above it (7076-7128).
 //
 //   TestConfiguration<T> -> ApplyModifiedProperties<T>, line 6926
+//   ReadConfiguration    -> DrawTestModeToolbar,        line 7076
 //
 // Line numbers are relative to the current snapshot; the decompiled names are the durable
 // reference. Field references go through the table in ADOverhaul.State.cs.
 //
-// PARTIAL PORT. The other two members of the region are left out rather than stubbed. Neither is
-// blocked on anything any more: the test-mode entry points they need -- NewConfiguration (6272, the
-// toggle) and CompareConfiguration (6290, the restart) -- have since landed in
-// ADOverhaul.SceneView.cs as ToggleTestMode and RestartTestMode. They are simply still unported.
-// ADOSettings, which used to block InsertConfiguration as well, has since landed at
+// PARTIAL PORT. One member of the region is still left out rather than stubbed, and it is not
+// blocked on anything: the test-mode entry point it needs -- CompareConfiguration (6290, the
+// restart) -- has landed in ADOverhaul.SceneView.cs as RestartTestMode. It is simply still
+// unported. ADOSettings, which used to block it as well, has since landed at
 // Editor/ADOverhaul/ADOSettings/ and is no longer an obstacle -- the one setting it needs reads and
 // writes as `ADOSettings.instance.hasReadColliderTestingWarning.value`, whose setter persists on its
 // own, so the decompiled `.SetValue(true)` plus save is a single assignment here.
 //
-// When they land, both take `internal` for the same reason as the member below: their call sites are
-// the inspector types this reconstruction lifted out of the class. The "Needs ..." notes on the two
-// entries below record what each one calls, not what is still missing -- both callees exist now.
+// When it lands it takes `internal` for the same reason as the two members below: its call sites are
+// the inspector types this reconstruction lifted out of the class. The "Needs ..." note on the entry
+// below records what it calls, not what is still missing -- the callee exists now.
 //
-//   ReadConfiguration    line 6872 -- the test-mode toolbar drawn above every PhysBone and collider
-//       inspector: a "Test PhysBones in Scene" / "Stop Testing - ESC / Enter" toggle (disabled and
-//       relabelled "Editor is in PlayMode" while playing), a "Restart" button, and an "Apply
-//       Changes" button that is enabled only when one of the passed objects is a test-mode clone
-//       with unapplied edits. Applying copies each clone back onto its original with
-//       EditorUtility.CopySerialized inside a ReflectionRestoreScope that preserves the original's
-//       rootTransform, ignoreTransforms and colliders -- those are scene references that must not
-//       follow the clone -- records an Undo step named "ADO - Apply Changes", and clears the
-//       clone's dirty flag. Needs NewConfiguration (line 6272, the test-mode toggle) and
-//       CompareConfiguration (line 6290, the restart).
 //   InsertConfiguration  line 6949 -- the collider restart prompt, raised at most once per test
 //       session. Guarded by `isTesting && colliderChangedDuringTest && !hasShownColliderRestartPrompt`,
 //       and it sets hasShownColliderRestartPrompt before showing anything, so the prompt cannot
@@ -46,7 +36,7 @@
 // Visibility: all three are `private` in the decompiled source, which worked because their callers
 // were nested inside the same class. The inspectors have been lifted out to top-level types in this
 // reconstruction (PhysBoneEditor, PhysBoneColliderEditor and the two contact editors), so the
-// member below is `internal` instead, and so are the other two when they land. Same assembly, same
+// two members below are `internal` instead, and so is the third when it lands. Same assembly, same
 // reachable set; it is a consequence of the nesting change recorded in ADOverhaul.State.cs, not a
 // widening of the shipped API. The same widening has been applied to DrawAvatarParameterField in
 // ADOverhaul.AvatarSelection.cs, which has the contact editors as its only call sites.
@@ -56,7 +46,7 @@
 // evaluation order; only the two switch arms of the restart prompt are emitted in the opposite
 // order, which does not matter.
 //
-// Audit status: VERIFIED -- ApplyModifiedProperties, the only member this file declares, diffed
+// Audit status: PARTIAL -- ApplyModifiedProperties, the member this file declared first, diffed
 // statement by statement against TestConfiguration<T> in the 2022 snapshot: the destroyed-target
 // early out, the `hasModifiedProperties` capture, the per-target callback, the isTesting /
 // cloneHasUnappliedChanges pair and the trailing ApplyModifiedProperties all match. The two unported
@@ -64,9 +54,13 @@
 // blocked was not -- ToggleTestMode and RestartTestMode have landed in ADOverhaul.SceneView.cs, and
 // the PARTIAL PORT note has been corrected to say so. The 2019 counterparts were checked for the
 // switch-arm ordering claim. Line numbers not checked -- located by name.
+// DrawTestModeToolbar was transcribed statement by statement from decompiled 7076-7128 and matches;
+// its 2019 counterpart was not read, so this file is PARTIAL rather than VERIFIED.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using DreadScripts.Common;
 using UnityEditor;
 using UnityEngine;
 
@@ -74,6 +68,98 @@ namespace DreadScripts.ADOverhaul
 {
     internal sealed partial class ADOverhaul
     {
+        /// <summary>
+        /// The test-mode toolbar every replacement inspector draws above its own content: the
+        /// test-mode toggle, a restart button and an "Apply Changes" button.
+        /// </summary>
+        /// <param name="objects">
+        /// The objects the calling inspector is editing. Only those that are test-mode clones with
+        /// an original still alive are considered by "Apply Changes"; anything else is ignored, so
+        /// an inspector can pass its whole selection.
+        /// </param>
+        /// <returns>
+        /// True on the frame "Apply Changes" was pressed, so the caller can rebuild anything it
+        /// derived from the objects it just overwrote.
+        /// </returns>
+        /// <remarks>
+        /// Only the toggle is drawn outside test mode; the other two buttons appear once test mode
+        /// is running. The toggle is disabled and relabelled while the editor is playing, because
+        /// test mode builds a temporary scene hierarchy and play mode owns the scene.
+        /// <para>
+        /// Applying copies the clone back over the original with
+        /// <see cref="EditorUtility.CopySerialized"/>, which would otherwise carry the clone's
+        /// <c>rootTransform</c>, <c>ignoreTransforms</c> and <c>colliders</c> across with it -- all
+        /// three point into the temporary hierarchy. The <see cref="ReflectionRestoreScope"/> saves
+        /// the original's own values for those three and puts them back afterwards.
+        /// </para>
+        /// </remarks>
+        internal static bool DrawTestModeToolbar(IEnumerable<UnityEngine.Object> objects)
+        {
+            using (new GUILayout.HorizontalScope())
+            {
+                using (new GUIColorScope(GUIColorScope.ColoringType.BG, isTesting, ADOEditorUtility.errorColor))
+                {
+                    bool isPlaying = Application.isPlaying;
+                    string label = isPlaying
+                        ? "Editor is in PlayMode"
+                        : isTesting
+                            ? "Stop Testing - ESC / Enter"
+                            : "Test PhysBones in Scene";
+
+                    using (new EditorGUI.DisabledScope(isPlaying))
+                    {
+                        if (ADOEditorUtility.Button(label))
+                        {
+                            ToggleTestMode();
+                        }
+                    }
+                }
+
+                if (!isTesting)
+                {
+                    return false;
+                }
+
+                using (new GUIColorScope(GUIColorScope.ColoringType.BG, ADOEditorUtility.secondaryActionColor))
+                {
+                    if (ADOEditorUtility.Button("Restart", null, GUILayout.ExpandWidth(false)))
+                    {
+                        RestartTestMode();
+                    }
+                }
+
+                UnityEngine.Object[] clones = objects
+                    .Where(o => o != null && cloneHasUnappliedChanges.ContainsKey(o) && cloneToOriginal[o] != null)
+                    .ToArray();
+
+                bool anyUnapplied = clones.Any(clone => cloneHasUnappliedChanges[clone]);
+
+                using (new GUIColorScope(GUIColorScope.ColoringType.BG, anyUnapplied, ADOEditorUtility.validColor))
+                {
+                    using (new EditorGUI.DisabledScope(!anyUnapplied))
+                    {
+                        if (ADOEditorUtility.Button("Apply Changes", null, GUILayout.ExpandWidth(false)))
+                        {
+                            foreach (UnityEngine.Object clone in clones)
+                            {
+                                UnityEngine.Object original = cloneToOriginal[clone];
+                                using (new ReflectionRestoreScope(original, false, "rootTransform", "ignoreTransforms", "colliders"))
+                                {
+                                    Undo.RecordObject(original, "ADO - Apply Changes");
+                                    EditorUtility.CopySerialized(clone, original);
+                                    cloneHasUnappliedChanges[clone] = false;
+                                }
+                            }
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Commits an inspector's pending edits and reports whether there were any, marking each of
         /// <paramref name="targets"/> as needing to be applied back to its original if test mode is

@@ -14,17 +14,18 @@
 //   m_DispatcherIdentifier  -> insideBounds,          line 175
 //   connectionIdentifier    -> bonesAsSpheres,        line 181
 //   AwakeProperty()         -> CacheProperties(),     line 187
-//   m_BaseIdentifier        -> not ported (see below)
-//   _RequestIdentifier      -> not ported (see below)
-//   OnInspectorGUI()        -> not ported (see below)
-//   method_0()              -> not ported (see below)
+//   m_BaseIdentifier        -> colliderType,          line 2186
+//   _RequestIdentifier      -> sdkColliderEditorType, line 2188
+//   OnInspectorGUI()        -> unchanged,             line 2190
+//   method_0()              -> OnSceneGUI,            line 2226
 //   PushProperty()          -> not ported (see below)
 //   PrepareProperty()       -> not ported (see below)
 //   ReadProperty()          -> not ported (see below)
-//   TestProperty()          -> not ported (see below)
-//   InsertProperty(bool)    -> not ported (see below)
-//   EnableProperty()        -> not ported (see below)
-//   OnEnable() / OnDisable()-> not ported (see below)
+//   TestProperty()          -> ToggleEditorOverride,  line 2271
+//   InsertProperty(bool)    -> InstallEditorOverride, line 2277
+//   EnableProperty()        -> RecomputeShapeCapabilities, line 2291
+//   OnEnable()              -> unchanged,             line 2335
+//   OnDisable()             -> unchanged,             line 2341
 //   DisableProperty()       -> not ported, decompiler artifact
 //   RestartProperty()       -> not ported, decompiler artifact
 //
@@ -36,21 +37,11 @@
 //
 // ── PARTIAL PORT ────────────────────────────────────────────────────────────────────────────────
 //
-// What is here is the editor's state: the foldout animation, the override flag, the eight cached
-// SerializedProperty handles and the method that resolves them. Everything else in the shipped
-// class is a call into ADOverhaul's private static surface, none of which is ported. Nothing below
-// is stubbed; the unported members and their blocking dependencies are:
+// The editor draws and registers itself now: state, shape panel, scene handles, enable/disable pair
+// and the inspector override are all here. What is left out is the three context-menu conversion
+// commands, each of which sits behind the licence gate and one or two unported helpers. Nothing
+// below is stubbed; the unported members and their blocking dependencies are:
 //
-//   OnInspectorGUI()      line 2190 — the whole body. Blocked on ADOverhaul.FlushConfiguration
-//                                     (7515), ReadConfiguration (6872), InsertConfiguration (6949),
-//                                     SelectIdentifier (8228), RunConfiguration (5746),
-//                                     TestConfiguration (6926), GetConfiguration (7495),
-//                                     SortIdentifier (7904), ConcatIdentifier (8059),
-//                                     EnableConfiguration (6966), and the `_Service` /
-//                                     `_Rules` licence statics.
-//   method_0()            line 2226 — the scene-view drawing entry point; see the note on scene
-//                                     geometry below. Blocked on ADOverhaul.OrderConfiguration
-//                                     (5840).
 //   PushProperty()        line 2231 — [MenuItem "CONTEXT/VRCPhysBoneCollider/ADOverhaul/Move To
 //                                     Empty", priority 896]. Body is self-contained
 //                                     (ComponentUtility copy/paste onto a new sibling GameObject
@@ -66,20 +57,12 @@
 //   ReadProperty()        line 2260 — [MenuItem ".../To Receiver", 898]. Blocked on
 //                                     MoveConfiguration and on `SortVal(this VRCPhysBoneCollider,
 //                                     GameObject)` (ADOEditorUtility.cs 3966).
-//   TestProperty()        line 2271 — [MenuItem ".../Toggle Editor", 899]. One line:
-//                                     InsertProperty(editorOverrideEnabled).
-//   InsertProperty(bool)  line 2277 — installs or removes the custom inspector; see the note on
-//                                     inspector registration below. Blocked on
-//                                     ADOEditorUtility.CancelStatus (2803) and RevertStatus (3741).
-//   EnableProperty()      line 2291 — recomputes which shape dimensions are editable across the
-//                                     current multi-selection; see the note on shape dimensions
-//                                     below. Blocked on ADOverhaul.SortConfiguration (6391).
-//   OnEnable()            line 2335 — ADOverhaul.SelectConfiguration (6536) + MapConfiguration
-//                                     (6480). Deliberately left out rather than half-ported: a live
-//                                     OnEnable that reinitialised the AnimBool without also
-//                                     subscribing the scene-view callback would leave the editor in
-//                                     a state the shipped build never produced.
-//   OnDisable()           line 2341 — ADOverhaul.CancelConfiguration (6496).
+// (TestProperty and InsertProperty were on this list and have since been ported; they are MAP
+// entries above, and the registration note below has been rewritten accordingly.)
+// (OnInspectorGUI, method_0, EnableProperty, OnEnable and OnDisable were on this list and have
+// since been ported; they are MAP entries above. The half-ported-OnEnable concern recorded here
+// no longer applies: OnEnable now goes through ADOverhaul.BeginShapeInspectorSession, which
+// subscribes the scene-view overlay, and OnDisable unsubscribes it.)
 //
 // The blocker names above are the ones the decompiled snapshot carried when this file was written,
 // and several of those blockers have landed since. Re-checked during the audit pass: RunConfiguration
@@ -87,16 +70,27 @@
 // SetShapeCapabilities, SelectConfiguration is ResetFoldouts, CancelConfiguration is
 // SetShapeEditOverlayActive, TestConfiguration is ApplyModifiedProperties, SelectIdentifier is
 // DrawFoldoutBox, SortIdentifier is DrawToolHeader, ConcatIdentifier is DrawAnnouncementBanner, and
-// ADOEditorUtility.CancelStatus / RevertStatus are FindType / OverrideCustomEditor -- all ported. What
-// is still missing is FlushConfiguration, GetConfiguration, EnableConfiguration, MoveConfiguration,
-// ReadConfiguration, InsertConfiguration and MapConfiguration, plus the licence statics, which the
-// port declines to declare (see ADOverhaul.State.cs). So the members above stay unported, but for a
-// shorter list of reasons than the one recorded when they were first triaged.
+// ADOEditorUtility.CancelStatus / RevertStatus are FindType / OverrideCustomEditor -- all ported.
+// Since then ReadConfiguration has landed as ADOverhaul.DrawTestModeToolbar, InsertConfiguration as
+// PromptForColliderRestart and MapConfiguration as BeginShapeInspectorSession, which is what let the
+// inspector body follow. What is still missing is FlushConfiguration, GetConfiguration,
+// EnableConfiguration and MoveConfiguration, plus the licence statics, which the port declines to
+// declare (see ADOverhaul.State.cs) -- the first three are the activation gate and are never coming
+// back, and MoveConfiguration is the gate check the three conversion commands each open with.
 //
 // Two members are pure decompiler artifacts and are not ported at all:
 //   RestartProperty() (2352) and DisableProperty() (2347). The first is ILSpy's rendering of a
 //   lambda's capture of `this.target`; the second is the lifted body of the closure passed to
 //   SelectIdentifier in OnInspectorGUI, marked [CompilerGenerated]. Neither is a real member.
+//
+// ── LICENCE GATE, NOT PORTED ────────────────────────────────────────────────────────────────────
+//
+// The shipped OnInspectorGUI is wrapped in the same activation gate as PhysBoneEditor's: an outer
+// `if (FlushConfiguration())` whose else-branch draws the activation panel, and an inner inline
+// Func<bool> that HMAC-SHA256s two outer-class strings against a hard-coded key and draws nothing
+// unless the digest matches. Both are dropped, and the body they guarded runs unconditionally.
+// GetConfiguration, the two-label "License: ..." / "Authorized For: ..." banner drawn between the
+// commit and DrawToolHeader, is dropped with them.
 //
 // ── Inspector registration: there is NO [CustomEditor] attribute ────────────────────────────────
 //
@@ -111,10 +105,14 @@
 // ("CONTEXT/VRCPhysBoneCollider/ADOverhaul/Toggle Editor"), and is re-applied after every domain
 // reload from ADOverhaul's startup path (ADOverhaul.cs 5552).
 //
-// Consequence for this port: because no attribute is reproduced (there was none) and
-// InsertProperty is not ported, adding this file does NOT change the inspector for
-// VRCPhysBoneCollider. The VRChat SDK's own inspector stays in place. The type compiles as an
-// unreferenced Editor subclass that Unity never instantiates.
+// Consequence for this port: InstallEditorOverride IS ported now, and ADOverhaul.InspectorInstall.cs
+// calls it after every domain reload, so this type DOES take over the VRCPhysBoneCollider inspector.
+//
+// OnInspectorGUI is ported too, so what draws is ADOverhaul's shape panel rather than Unity's
+// default property list. The per-component toggle
+// ("CONTEXT/VRCPhysBoneCollider/ADOverhaul/Toggle Editor") still hands the SDK's inspector back for
+// the session. The three context-menu conversion commands remain unported -- see the list above --
+// so this inspector's gear menu is shorter than the shipped one's.
 //
 // ── Scene geometry ──────────────────────────────────────────────────────────────────────────────
 //
@@ -186,9 +184,19 @@
 // decompiled region (2161-2356) or anywhere near these members in the snapshot; they were not used,
 // and are left for the package-wide line-number sweep rather than fixed piecemeal here. The unported
 // entries' numbers (2190-2352) are sound. The stale blocker list was corrected, see above.
+//
+// Second pass, when the inspector body landed: OnInspectorGUI, OnSceneGUI, OnEnable, OnDisable,
+// RecomputeShapeCapabilities and the override installer were each transcribed statement by statement
+// from 2190-2229, 2271-2289 and 2291-2341. The capability switch was re-derived a second time from
+// the snapshot's numeric cases -- 0 Sphere, 1 Capsule, default Plane -- and matches the mapping this
+// header already recorded. The two dropped members on that path are the licence gate and
+// GetConfiguration, both noted above. The 2019 build was not read for the new members.
 
+using System;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
+using UnityEngine;
+using VRC.SDK3.Dynamics.PhysBone.Components;
 
 namespace DreadScripts.ADOverhaul
 {
@@ -196,10 +204,11 @@ namespace DreadScripts.ADOverhaul
     /// ADOverhaul's replacement inspector for <c>VRCPhysBoneCollider</c>.
     /// </summary>
     /// <remarks>
-    /// Only the editor's cached state is reconstructed here — the drawing, the context-menu commands
-    /// and the runtime inspector-override installation all call into ADOverhaul's private static
-    /// surface, which is not ported. See the file header for the full list and for the two positional
-    /// conventions (the property-array order and the shape/dimension mapping) that this class fixes.
+    /// The shape panel, the scene handles, the enable/disable pair and the runtime inspector-override
+    /// installation are all reconstructed. What is not is the three context-menu conversion commands,
+    /// each of which opens with the licence gate. See the file header for that list and for the two
+    /// positional conventions (the property-array order and the shape/dimension mapping) this class
+    /// fixes.
     /// </remarks>
     internal sealed class PhysBoneColliderEditor : Editor
     {
@@ -220,6 +229,54 @@ namespace DreadScripts.ADOverhaul
         /// the override during startup after every domain reload.
         /// </summary>
         private static bool editorOverrideEnabled = true;
+
+        /// <summary>The component type being replaced, resolved lazily by name.</summary>
+        private static Type colliderType;
+
+        /// <summary>
+        /// VRChat's own collider inspector, which the override displaces and the toggle puts back.
+        /// </summary>
+        private static Type sdkColliderEditorType;
+
+        /// <summary>
+        /// Context-menu entry that swaps between this inspector and VRChat's.
+        /// </summary>
+        /// <remarks>
+        /// The SDK's collider inspector carries fields and warnings this one does not reproduce, so
+        /// the escape hatch is worth having even now that the shape panel draws.
+        /// </remarks>
+        [MenuItem("CONTEXT/VRCPhysBoneCollider/ADOverhaul/Toggle Editor", false, 899)]
+        private static void ToggleEditorOverride()
+        {
+            InstallEditorOverride(editorOverrideEnabled);
+        }
+
+        /// <summary>
+        /// Points Unity's editor table for <c>VRCPhysBoneCollider</c> at this inspector, or back at
+        /// the SDK's.
+        /// </summary>
+        /// <param name="revert">
+        /// True to restore VRChat's inspector. The default installs this one, which is what the
+        /// post-reload hook wants.
+        /// </param>
+        internal static void InstallEditorOverride(bool revert = false)
+        {
+            if (colliderType == null)
+            {
+                colliderType = ADOEditorUtility.FindType("VRCPhysBoneCollider");
+            }
+
+            if (sdkColliderEditorType == null)
+            {
+                sdkColliderEditorType = ADOEditorUtility.FindType("VRCPhysBoneColliderEditor");
+            }
+
+            editorOverrideEnabled = !revert;
+
+            ADOEditorUtility.OverrideCustomEditor(
+                colliderType,
+                !editorOverrideEnabled ? sdkColliderEditorType : typeof(PhysBoneColliderEditor));
+        }
 
         // The eight properties the shape section edits. They are resolved once per OnInspectorGUI
         // rather than in OnEnable because the shipped editor is re-pointed at a new selection without
@@ -258,6 +315,109 @@ namespace DreadScripts.ADOverhaul
         /// Whether the affected bones collide as spheres instead of as their own shapes.
         /// </summary>
         private SerializedProperty bonesAsSpheres;
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            CacheProperties();
+
+            // Applying test-mode changes can move colliders the running simulation is using, which
+            // is what the restart prompt exists to offer.
+            if (ADOverhaul.DrawTestModeToolbar(targets))
+            {
+                ADOverhaul.PromptForColliderRestart();
+            }
+
+            ADOverhaul.DrawFoldoutBox("Shape", shapeFoldout[0], null, () =>
+                ADOverhaul.DrawShapeProperties(
+                    target,
+                    new[] { shapeType, rootTransform, radius, height, position, rotation, insideBounds, bonesAsSpheres },
+                    RecomputeShapeCapabilities,
+                    isPhysBoneCollider: true));
+
+            if (ADOverhaul.ApplyModifiedProperties(serializedObject, targets))
+            {
+                SceneView.RepaintAll();
+                ADOverhaul.colliderChangedDuringTest = true;
+            }
+
+            ADOverhaul.DrawToolHeader();
+            ADOverhaul.DrawAnnouncementBanner();
+        }
+
+        /// <summary>Draws the collider's shape handles in the scene view.</summary>
+        /// <remarks>
+        /// Component kind 0 is the collider; the same helper draws contacts under the other kinds.
+        /// </remarks>
+        public void OnSceneGUI()
+        {
+            ADOverhaul.DrawShapeHandles(target, targets, 0, Color.green);
+        }
+
+        private void OnEnable()
+        {
+            ADOverhaul.ResetFoldouts(shapeFoldout, Repaint);
+            ADOverhaul.BeginShapeInspectorSession(RecomputeShapeCapabilities);
+        }
+
+        public void OnDisable()
+        {
+            ADOverhaul.SetShapeEditOverlayActive(false);
+        }
+
+        /// <summary>
+        /// Works out which of radius, height and rotation are meaningful across the whole selection
+        /// and tells the shape drawing code, so a mixed selection offers the union of what its
+        /// shapes support.
+        /// </summary>
+        /// <remarks>
+        /// Sphere contributes radius, capsule contributes all three, and plane -- the default arm --
+        /// contributes rotation. The loop stops early once all three are on, since nothing further
+        /// can change the answer.
+        /// <para>
+        /// The switch arms read oddly against that description because the decompiled cases are
+        /// keyed on the enum's numeric values: case 0 is Sphere, case 1 is Capsule, and the default
+        /// arm is Plane. Transcribed by value rather than rewritten to named cases, so it stays
+        /// diffable against the snapshot.
+        /// </para>
+        /// </remarks>
+        private void RecomputeShapeCapabilities()
+        {
+            serializedObject.ApplyModifiedProperties();
+
+            bool hasRotation = false;
+            bool hasHeight = false;
+            bool hasRadius = false;
+
+            foreach (UnityEngine.Object inspected in targets)
+            {
+                VRCPhysBoneCollider collider = (VRCPhysBoneCollider)inspected;
+
+                if (hasRadius && hasHeight && hasRotation)
+                {
+                    break;
+                }
+
+                switch ((int)collider.shapeType)
+                {
+                    case 0:
+                        hasRadius = true;
+                        break;
+
+                    case 1:
+                        hasRotation = true;
+                        hasHeight = true;
+                        hasRadius = true;
+                        break;
+
+                    default:
+                        hasRotation = true;
+                        break;
+                }
+            }
+
+            ADOverhaul.SetShapeCapabilities(hasRadius, hasHeight, hasRotation);
+        }
 
         /// <summary>
         /// Resolves the eight shape properties against the current <see cref="Editor.serializedObject"/>.

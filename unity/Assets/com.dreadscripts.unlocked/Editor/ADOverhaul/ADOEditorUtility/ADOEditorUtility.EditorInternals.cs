@@ -19,7 +19,8 @@
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and
 // member names are the durable reference.
 // Audit status: VERIFIED against reverse-engineering/export/ -- every statement below was transcribed from the region
-// above.
+// above. OverrideCustomEditor was re-checked against the snapshot on 2026-08-05, against
+// ControllerEditor's independent copy, and against both string dumps; see the ONE TABLE note below.
 //
 // DEOBF-BUG(resolved): SortRef carried [SpecialName] with no matching setter, which is how ILSpy
 // renders a property getter it could not re-form. It is restored as a lazily-initialised property
@@ -33,6 +34,32 @@
 // fail soft (null method, logged nothing) rather than to throw at the call site, except
 // OverrideCustomEditor, which dereferences its lookups directly and would throw. That is shipped
 // behaviour.
+//
+// NOTES
+// ONE TABLE, NOT TWO -- settled, do not "fix" this again. OverrideCustomEditor writes only
+// kSCustomMultiEditors. Unity 2022.3 keeps a second Type-keyed table beside it, kSCustomEditors, and
+// it is tempting to conclude that a single-object inspector reads the other one and that the write
+// is therefore incomplete. A second write was added on that reasoning and then reverted, because the
+// evidence says the shipped single write is what the author wrote and is sufficient:
+//
+//   - The string "kSCustomEditors" exists nowhere in either product. Not in export/, not in
+//     dumps/ADOverhaul2022.txt (740 decrypted strings), not in dumps/intercepted.txt
+//     (1318 ControllerEditor strings). These fields are resolved by string-literal name, so a write
+//     that de4dot failed to reconstruct would still have left its literal in the constant pool.
+//   - The reflection block declares exactly two FieldInfo statics, both assigned and both read.
+//     A dropped write would have left a third, unused.
+//   - ControllerEditor's independent copy (EditorUtils.cs 6730, a different assembly built five
+//     months later and deobfuscated through a different de4dot path) has the identical single-write
+//     shape. Two separate decompilations agreeing rules out a decompiler artifact.
+//   - The method decompiles as straight-line code, so unresolved switch/XOR control flow -- the
+//     failure mode that does silently drop statements -- is not in play here.
+//
+// CONFIRMED BY OBSERVATION, 2026-08-05, Unity 2022.3.22f1: with only kSCustomMultiEditors written,
+// the replacement inspector draws for a single selected PhysBone. So 2022.3's single-object lookup
+// reads that table or falls back to it, and the shipped single write is sufficient. This was checked
+// by reverting the second write and confirming the inspector still rendered -- not inferred.
+// DreadTools/Diagnostics/Report Inspector Override State prints Unity's own resolution for both
+// selection shapes; re-check that before touching this.
 //
 // The ObjectSelector lookup handles two shapes of the same internal method because Unity changed it:
 // an instance `Show(Object, Type, Object, bool, List<int>, Action<Object>, Action<Object>, bool)`

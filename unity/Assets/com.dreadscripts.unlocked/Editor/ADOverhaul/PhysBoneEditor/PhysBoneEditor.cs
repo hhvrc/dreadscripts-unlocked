@@ -15,6 +15,12 @@
 //   PhysBoneEditor.EndpointEditing.cs   SearchSingleton / LoginSingleton / PatchSingleton
 //                                       (lines 4301-4361)
 //   PhysBoneEditor.GizmoSettings.cs     ApplyGlobalGizmoSettings (line 4414)
+//   PhysBoneEditor.Installation.cs      the editor-table override and its context-menu toggle
+//                                       (lines 2978, 3126-3128, 4152-4169)
+//   PhysBoneEditor.InspectorGUI.cs      OnInspectorGUI and everything it draws with -- the eight
+//                                       foldout bodies, the row/curve helpers, the keyboard
+//                                       shortcuts, and OnEnable/OnDisable (lines 2974-2976, 3130,
+//                                       3212, 3899, 4279-4315, 4428-4502)
 //
 // Members in this file:
 //
@@ -32,15 +38,17 @@
 //
 // NOT A [CustomEditor]. Despite deriving from Editor, this type carries no CustomEditor attribute —
 // there is no such attribute anywhere in the decompiled assembly. ADOverhaul installs it by
-// reflecting into UnityEditor's internal `CustomEditorAttributes.kSCustomMultiEditors` table and
-// overwriting the `m_InspectorType` recorded for VRCPhysBone (ADOEditorUtility.RevertStatus, line
-// 3741 of ADOEditorUtility.cs), which is what lets the [ADO] Toggle Editor context menu swap back
-// and forth with VRChat's own VRCPhysBoneEditor at runtime. Because that installation path is not
-// ported, adding this type does not change which inspector Unity draws for a PhysBone.
+// reflecting into UnityEditor's internal editor table and overwriting the `m_InspectorType` recorded
+// for VRCPhysBone (ADOEditorUtility.OverrideCustomEditor), which is what lets the [ADO] Toggle Editor
+// context menu swap back and forth with VRChat's own VRCPhysBoneEditor at runtime. That installation
+// path IS ported: see PhysBoneEditor.Installation.cs for the override itself and
+// ADOverhaul.InspectorInstall.cs for the [DidReloadScripts] hook that reapplies it, since the write
+// does not survive a domain reload.
 //
-// LARGELY NOT PORTED. Only the parts that compile against what exists in this package today are
-// here; everything reachable from OnInspectorGUI or the scene-view GUI is left out, because those
-// bodies call members of the unported outer ADOverhaul class (SelectIdentifier, CallConfiguration,
+// LARGELY NOT PORTED. The inspector layout has since landed in PhysBoneEditor.InspectorGUI.cs,
+// which also took OnEnable/OnDisable, the row and curve helpers and the keyboard shortcuts with
+// it. What is still out is the scene-view GUI, whose bodies call members of the unported outer
+// ADOverhaul class (SelectIdentifier, CallConfiguration,
 // LoginConfiguration, StopConfiguration, PushConfiguration, ReadConfiguration, TestConfiguration,
 // GetConfiguration, SortIdentifier, NewIdentifier, WriteIdentifier, MoveIdentifier,
 // PublishIdentifier, SelectConfiguration, PrintConfiguration, LogoutConfiguration,
@@ -52,43 +60,30 @@
 //
 //   _003C_003Ec (display class)                 2404   lambda cache; folded into its call sites
 //   _003C_003Ec.DeleteParams                    2440   licence gate, see note below
-//   _003C_003Ec__DisplayClass108_1 / _2         2599/2607  "add missing parameter" menu closures
 //   _003C_003Ec__DisplayClass120_0 / _1 / _2    2638/2742/2755  property-edit drag handles (BoneNode)
-//   _AnnotationIdentifier                       2770   AnimBool[8] section foldout animations
-//   m_CodeIdentifier                            2772   GUILayoutUtils table state for the play-mode readout
-//   _CallbackIdentifier                         2774   whether the ADO inspector is installed
 //   m_ProcessorIdentifier                       2786   the live editor instance, for Repaint()
+//                                                      (OnEnable's assignment to it is omitted with
+//                                                      it -- see PhysBoneEditor.InspectorGUI.cs)
 //   _TokenizerIdentifier                        2788   control id for dragging the tool overlay
 //   m_ExceptionIdentifier                       2790   ResizeHandle for the tool overlay
 //   _DefinitionAuthentication                   2918   hot control of the endpoint slider
 //   initializerAuthentication                   2920   remembered endpoint slider direction
-//   m_TokenAuthentication / getterAuthentication 2922  cached VRCPhysBone / VRCPhysBoneEditor types
-//   threadAuthentication                        2926   one-shot guard for CollectSingleton
-//   OnInspectorGUI                              3008   the entire inspector layout
 //   method_0 (OnSceneGUI)                       3336   endpoint and property-edit scene handles
 //   VerifySingleton                             3359   static SceneView.duringSceneGui handler
 //   SetSingleton                                3469   the on-scene tool-selection overlay
 //   SortSingleton                               3548   "Gizmos Disabled" warning panel
 //   InvokeSingleton                             3565   the on-scene editing/tooltip overlay
 //   CustomizeSingleton                          3636   endpoint position handles
-//   ConcatSingleton                             3695   Ctrl+E / Ctrl+T and Enter/Escape shortcuts
 //   MapSingleton                                3742   walks a BoneChainTree evaluating a curve
 //   FillSingleton                               3756   curve-key editing maths for a dragged handle
 //   CancelSingleton                             3832   the property-edit scene handles
-//   CollectSingleton                            4075   builds the play-mode parameter readout table
-//   OnEnable / OnDisable                        4089/4106  scene-callback registration and target caching
-//   ViewSingleton                               4224   the "Advanced" integration-type toggle
-//   PostSingleton / ListSingleton               4239/4265  one property + curve + edit-button row
-//   ForgotSingleton                             4273   unused variant of PostSingleton
-//   UpdateSingleton                             4283   the inline curve field
-//   SelectSingleton / WriteSingleton            3948/3953  the [ADO] Toggle Editor context menu
 //
-// LICENCE GATE, NOT PORTED. OnInspectorGUI (line 3008) opens by invoking an inline
-// Func<bool> that HMAC-SHA256s two outer-class strings against a hard-coded key and returns without
-// drawing anything if the digest does not match; _003C_003Ec.DeleteParams is the same check hoisted
-// into the lambda cache. This is the protector's activation gate, identical in shape to the
-// remnants removed from PhysBoneParameter and ObfuscationMarker, and it is deliberately not
-// reproduced.
+// LICENCE GATE, NOT PORTED. OnInspectorGUI opens by invoking an inline Func<bool> that
+// HMAC-SHA256s two outer-class strings against a hard-coded key and returns without drawing
+// anything if the digest does not match; _003C_003Ec.DeleteParams is the same check hoisted into
+// the lambda cache. This is the protector's activation gate, identical in shape to the remnants
+// removed from PhysBoneParameter and ObfuscationMarker, and it is deliberately not reproduced --
+// see PhysBoneEditor.InspectorGUI.cs, which owns the method it guarded.
 //
 // Audit status: PARTIAL -- the six MAP entries above were re-checked against reverse-engineering/export/ and their
 // line numbers corrected (the field block is at 2980-2988 and ChangeSingleton at 4567 in the
@@ -97,7 +92,8 @@
 // ApplyGlobalGizmoSettings in the current snapshot, not InterruptSingleton, and is declared at 4414,
 // not 4210. The remaining sibling entries and the omitted-member table below still carry
 // pre-re-snapshot numbers and were not re-checked; the numbers each sibling partial states in its
-// own header are the ones kept current.
+// own header are the ones kept current. The entries this file's omission table lost when
+// PhysBoneEditor.InspectorGUI.cs landed were removed by name, not by re-checking their numbers.
 
 using UnityEditor;
 using UnityEngine;

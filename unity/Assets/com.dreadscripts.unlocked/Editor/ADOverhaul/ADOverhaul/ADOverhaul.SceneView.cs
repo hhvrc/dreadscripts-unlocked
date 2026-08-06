@@ -201,6 +201,11 @@
 // carry the pre-561e9ec numbering and were NOT re-based; treat the member names, not those
 // numbers, as the reference until someone sweeps them.
 //
+// DELIBERATE DEVIATION
+// ToggleTestMode and RestartTestMode widened from `private` to `internal`: the test-mode toolbar
+// in ADOverhaul.MultiObjectApply.cs and PhysBoneEditor's Ctrl+T shortcut are their call sites,
+// and the latter is a lifted-out type. See the visibility note in ADOverhaul.MultiObjectApply.cs.
+//
 // Audit status: PARTIAL -- the twelve MAP line numbers above were checked against reverse-engineering/export/
 // ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs and each now lands on the member named, and
 // the DrawShapeEditOverlay half of the registration audit was re-read against CancelConfiguration
@@ -394,7 +399,7 @@ namespace DreadScripts.ADOverhaul
         /// Starts test mode if it is off and stops it if it is on, and is the single entry point for
         /// both. Never starts while the editor is playing, where the real simulation already runs.
         /// </summary>
-        private static void ToggleTestMode()
+        internal static void ToggleTestMode()
         {
             ResolvePhysBoneReflection();
 
@@ -424,7 +429,7 @@ namespace DreadScripts.ADOverhaul
         /// guard is there so that pressing "Restart" while not testing starts a session rather than
         /// stopping one that does not exist. Confirmed against the 2019 build, which is identical.
         /// </remarks>
-        private static void RestartTestMode()
+        internal static void RestartTestMode()
         {
             if (isTesting)
             {
@@ -923,7 +928,7 @@ namespace DreadScripts.ADOverhaul
         /// be declared twice; see the file header. Nothing on any path is destructive.
         /// </para>
         /// </remarks>
-        private static void PromptForColliderRestart()
+        internal static void PromptForColliderRestart()
         {
             if (!isTesting || !colliderChangedDuringTest || hasShownColliderRestartPrompt)
             {
@@ -964,7 +969,7 @@ namespace DreadScripts.ADOverhaul
         /// capsule from reappearing when they switch that collider to a sphere. Position is
         /// unconditional and so has no capability flag.
         /// </remarks>
-        private static void SetShapeCapabilities(bool hasRadius, bool hasHeight, bool hasRotation)
+        internal static void SetShapeCapabilities(bool hasRadius, bool hasHeight, bool hasRotation)
         {
             shapeHasRadius = hasRadius;
             shapeHasHeight = hasHeight;
@@ -1009,7 +1014,7 @@ namespace DreadScripts.ADOverhaul
         /// avatar is set, since the tag list is gathered from that avatar.
         /// </para>
         /// </remarks>
-        private static void DrawCollisionTagElement(SerializedProperty collisionTags, Rect rowRect, int index)
+        internal static void DrawCollisionTagElement(SerializedProperty collisionTags, Rect rowRect, int index)
         {
             if (index >= collisionTags.arraySize || index < 0)
             {
@@ -1059,7 +1064,7 @@ namespace DreadScripts.ADOverhaul
         /// into the shared style table, so that the port stays a faithful mirror of the original;
         /// the cost is a small per-frame allocation, not a behavioural difference.
         /// </remarks>
-        private static void DrawCollisionTagsHeader(Rect headerRect)
+        internal static void DrawCollisionTagsHeader(Rect headerRect)
         {
             GUIStyle style = new GUIStyle("boldlabel");
             GUI.Label(headerRect, "Collision Tags", style);
