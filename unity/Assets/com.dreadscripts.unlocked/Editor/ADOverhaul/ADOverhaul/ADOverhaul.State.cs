@@ -68,12 +68,12 @@
 //   task             -> shapeHasRotation,  line 5648
 //
 //   -- Bug report and feedback panels (decompiled 5666-5678) --
-//   initializer      -> bugReporterOpen,      line 5666
-//   getter           -> isSendingBugReport,   line 5668
-//   thread           -> bugReportText,        line 5670
-//   m_Algo           -> feedbackPanelOpen,    line 5672
-//   role             -> isSendingFeedback,    line 5674
-//   m_Invocation     -> feedbackText,         line 5676
+//   initializer -> NOT PORTED, line 5666 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   getter -> NOT PORTED, line 5668 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   thread -> NOT PORTED, line 5670 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   m_Algo -> NOT PORTED, line 5672 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   role -> NOT PORTED, line 5674 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   m_Invocation -> NOT PORTED, line 5676 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
 //
 //   -- Licensing (decompiled 5678-5728, defunct; see the note below) --
 //   listener -> NOT PORTED, line 5678 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
@@ -447,36 +447,6 @@ namespace DreadScripts.ADOverhaul
         /// Whether the shape type being drawn is orientable. Gates <see cref="editingRotation"/>.
         /// </summary>
         private static bool shapeHasRotation;
-
-        #endregion
-
-        #region Bug report and feedback panels
-
-        /// <summary>
-        /// Whether the shared bug-reporter panel is taking over the inspector. Toggled through a
-        /// setter that fires the compilation-started reset when it closes.
-        /// </summary>
-        private static bool bugReporterOpen;
-
-        /// <summary>Whether a bug report is in flight, which disables the submit button.</summary>
-        private static bool isSendingBugReport;
-
-        /// <summary>
-        /// The reproduction steps typed into the bug-reporter panel. Truncated to 2000 characters
-        /// on submission.
-        /// </summary>
-        private static string bugReportText;
-
-        /// <summary>Whether the feedback panel is taking over the inspector.</summary>
-        private static bool feedbackPanelOpen;
-
-        /// <summary>Whether a feedback message is in flight, which disables the send button.</summary>
-        private static bool isSendingFeedback;
-
-        /// <summary>
-        /// The message typed into the feedback panel. Truncated to 2000 characters on submission.
-        /// </summary>
-        private static string feedbackText;
 
         #endregion
 

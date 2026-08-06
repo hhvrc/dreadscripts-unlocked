@@ -132,6 +132,10 @@
 // dropped. The `AddSeparator` calls around them are kept, since they separate the injection point
 // from what follows rather than belonging to the toggles.
 //
+// Menu and credit edits, not from the shipped build: "Send Feedback" and "ToS and Privacy
+// Policy" removed (both pointed at the dead vendor endpoint), "Report a Bug" and "GitHub
+// Repository" added in their place, and the footer credit retitled to "Restored by @HeavenVR".
+//
 // ======================= SHIPPED DEAD CODE PRESERVED, NOT SILENTLY DROPPED ======================
 //
 // ShowContextMenu's "Documentation" (line 7971) and "Changelog" (line 8005) items are each guarded by
@@ -197,6 +201,8 @@
 // re-derived: m_AuthenticationMethod is the one with contentOffset (-3, 1.5), m_ProcSerializer the
 // one without. The 2019 claims were re-checked too, and one name was missing from the list above and
 // has been added (ListStruct, the announcement banner). Line numbers not checked -- located by name.
+// ShowContextMenu and DrawCreditLink have since been edited on purpose and no longer match the
+// snapshot; see the note above. The rest of both members is still the transcription described here.
 
 using System;
 using System.Globalization;
@@ -210,6 +216,9 @@ namespace DreadScripts.ADOverhaul
 {
     internal sealed partial class ADOverhaul
     {
+        /// <summary>This restoration's repository, linked from the menu and the credit label.</summary>
+        private const string RestorationRepositoryUrl = "https://github.com/hhvrc/dreadscripts-unlocked";
+
         /// <summary>
         /// Draws the boxed header row every ADOverhaul surface opens with: the hamburger menu button,
         /// the update-banner toggle when an update is waiting, the tool's version, and then either
@@ -269,24 +278,18 @@ namespace DreadScripts.ADOverhaul
         /// Builds and shows the hamburger menu.
         /// </summary>
         /// <param name="extraMenuItems">
-        /// Invoked with the menu part-built, after "Send Feedback" and before the separators, so a
-        /// surface's own entries appear as their own section. A separator is added after it, on top
-        /// of the one that always follows -- two <see cref="GenericMenu.AddSeparator"/> calls in a
-        /// row, which Unity collapses into one line.
+        /// Invoked with the menu part-built and before the separators, so a surface's own entries
+        /// appear as their own section. A separator is added after it, on top of the one that always
+        /// follows -- two <see cref="GenericMenu.AddSeparator"/> calls in a row, which Unity
+        /// collapses into one line.
         /// </param>
         /// <remarks>
-        /// See this file's header for what was removed: the "Check For Update" item, whose request is
-        /// dead, and the two "Verify/..." items, which drove the licence check. The two
+        /// See this file's header for what was removed and what replaced it. The two
         /// <c>IsNullOrWhiteSpace("")</c> guards below are shipped dead code and are kept deliberately.
         /// </remarks>
         internal static void ShowContextMenu(Action<GenericMenu> extraMenuItems = null)
         {
             GenericMenu menu = new GenericMenu();
-
-            menu.AddItem(new GUIContent("Send Feedback"), feedbackPanelOpen, delegate
-            {
-                feedbackPanelOpen.Toggle();
-            });
 
             if (extraMenuItems != null)
             {
@@ -340,9 +343,14 @@ namespace DreadScripts.ADOverhaul
                 });
             }
 
-            menu.AddItem(new GUIContent("ToS and Privacy Policy"), false, delegate
+            menu.AddItem(new GUIContent("Report a Bug"), false, delegate
             {
-                Application.OpenURL("https://dreadrith.com/license-tos");
+                Application.OpenURL(RestorationRepositoryUrl + "/issues");
+            });
+
+            menu.AddItem(new GUIContent("GitHub Repository"), false, delegate
+            {
+                Application.OpenURL(RestorationRepositoryUrl);
             });
 
             menu.ShowAsContext();
@@ -687,25 +695,22 @@ namespace DreadScripts.ADOverhaul
             }
         }
 
-        /// <summary>Draws the author credit at the foot of the window, as a link.</summary>
+        /// <summary>Draws the restoration credit at the foot of the window, as a link.</summary>
         /// <remarks>
         /// The label is a <see cref="GUILayout.Button(GUIContent, GUIStyle, GUILayoutOption[])"/>
         /// with its background colour cleared, so it reads as text but behaves as a link. The URL is
         /// duplicated as the tooltip so hovering shows where it goes, matching the shipped build.
         ///
-        /// This is the author's personal links page, not vendor infrastructure, so unlike the
-        /// update and licence endpoints it is left intact rather than dropped as dead. Whether it
-        /// still resolves is not something this package should assert either way.
         /// </remarks>
         private static void DrawCreditLink()
         {
             using (new GUIColorScope(GUIColorScope.ColoringType.BG, Color.clear))
             {
                 if (GUILayout.Button(
-                        new GUIContent("Made By @Dreadrith ♡", "https://dreadrith.com/links"),
+                        new GUIContent("Restored by @HeavenVR ♡", RestorationRepositoryUrl),
                         ADOEditorUtility.styles.linkNote))
                 {
-                    Application.OpenURL("https://dreadrith.com/links");
+                    Application.OpenURL(RestorationRepositoryUrl);
                 }
 
                 ADOEditorUtility.MarkAsLink();

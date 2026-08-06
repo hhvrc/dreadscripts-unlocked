@@ -51,7 +51,7 @@
 //       transfer back or again for 30 days.", ok: "Continue", cancel: "Terms of Service",
 //       alt: "Cancel"). Note the button assignment: the *cancel* slot holds "Terms of Service" and
 //       the *alt* slot holds "Cancel", so dismissing the dialog with Escape -- which Unity reports
-//       as the cancel slot -- opens https://dreadrith.com/license-tos in a browser instead of doing
+//       as the cancel slot -- opens the vendor's terms page in a browser instead of doing
 //       nothing, while the button captioned "Cancel" is the one that does nothing. Only "Continue"
 //       starts the transfer, so nothing destructive proceeds unconfirmed; the misfire is a stray
 //       browser tab. Beyond the dialog it needs CloneConfiguration, CountConfiguration,

@@ -95,12 +95,12 @@
 //   DECLARED ELSEWHERE, see the DECLARED ELSEWHERE section below.
 //
 //   -- Bug report, feedback, licensing and update banner (decompiled 8078-8164; see the note below) --
-//   m_WatcherAnnotation      -> bugReporterOpen,                 line 8078
+//   m_WatcherAnnotation -> NOT PORTED, line 8078 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
 //   candidateAnnotation      -> unusedLicensingFlag,             line 8080
 //   _ProductAnnotation       -> unusedLicensingText,             line 8082
-//   m_ExpressionAnnotation   -> feedbackPanelOpen,               line 8084
-//   systemAnnotation         -> isSendingFeedback,               line 8086
-//   m_WorkerAnnotation       -> feedbackText,                    line 8088
+//   m_ExpressionAnnotation -> NOT PORTED, line 8084 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   systemAnnotation -> NOT PORTED, line 8086 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   m_WorkerAnnotation -> NOT PORTED, line 8088 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
 //   m_FilterAnnotation -> NOT PORTED, line 8090 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   stubAnnotation -> NOT PORTED, line 8092 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   m_ReaderAnnotation -> NOT PORTED, line 8094 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
@@ -722,13 +722,7 @@ namespace DreadScripts.ControllerEditor
 
         #endregion
 
-        #region Bug report and feedback panels
-
-        /// <summary>
-        /// Whether the shared bug-reporter panel is taking over the window. Written through a setter
-        /// that resets the reporter when it closes.
-        /// </summary>
-        private static bool bugReporterOpen;
+        #region Licensing remnants
 
         /// <summary>
         /// Declared between the bug reporter and the feedback panel and never read or written
@@ -747,17 +741,6 @@ namespace DreadScripts.ControllerEditor
         /// here.
         /// </summary>
         private static string unusedLicensingText;
-
-        /// <summary>Whether the feedback panel is taking over the window.</summary>
-        private static bool feedbackPanelOpen;
-
-        /// <summary>Whether a feedback message is in flight, which disables the send button.</summary>
-        private static bool isSendingFeedback;
-
-        /// <summary>
-        /// The message typed into the feedback panel. Truncated to 2000 characters on submission.
-        /// </summary>
-        private static string feedbackText;
 
         #endregion
 
