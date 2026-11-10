@@ -28,6 +28,86 @@
           "zipSHA256": "cb6780717b2817feff81db86bd2cc77b6b7bf487c6d631a1f5aa54c436775ab7"
         }
       }
+    },
+    "com.dreadscripts.unlocked.adoverhaul": {
+      "versions": {
+        "0.2.0": {
+          "name": "com.dreadscripts.unlocked.adoverhaul",
+          "displayName": "DreadScripts - Avatar Dynamics Overhaul (Unlocked)",
+          "version": "0.2.0",
+          "description": "Restored build of DreadScripts Avatar Dynamics Overhaul, a discontinued Unity Editor tool that replaces the inspectors for VRChat PhysBones and Contacts, reconstructed from the shipped assembly after the vendor's license server was permanently shut down. The original tools are the work of their author; this package is a community restoration and is not affiliated with or endorsed by them.",
+          "unity": "2022.3",
+          "type": "tool",
+          "author": {
+            "name": "dreadscripts-unlocked contributors",
+            "url": "https://github.com/hhvrc/dreadscripts-unlocked"
+          },
+          "gitDependencies": {},
+          "vpmDependencies": {
+            "com.vrchat.avatars": "^3.0.0",
+            "com.dreadscripts.unlocked.common": "0.2.0"
+          },
+          "legacyFolders": {},
+          "legacyFiles": {},
+          "legacyPackages": [
+            "com.dreadscripts.unlocked"
+          ],
+          "url": "https://github.com/hhvrc/dreadscripts-unlocked/releases/download/v0.2.0/com.dreadscripts.unlocked.adoverhaul-0.2.0.zip",
+          "zipSHA256": "019dedcf06583592958bf93d635e2d1c4b2be24dd01d8aa596f0612d391a282c"
+        }
+      }
+    },
+    "com.dreadscripts.unlocked.common": {
+      "versions": {
+        "0.2.0": {
+          "name": "com.dreadscripts.unlocked.common",
+          "displayName": "DreadScripts - Unlocked (Common)",
+          "version": "0.2.0",
+          "description": "Editor code shared by the restored DreadScripts tools, Controller Editor and Avatar Dynamics Overhaul. Installed automatically as a dependency of either; it adds nothing on its own. The original tools are the work of their author; this package is a community restoration and is not affiliated with or endorsed by them.",
+          "unity": "2022.3",
+          "type": "tool",
+          "author": {
+            "name": "dreadscripts-unlocked contributors",
+            "url": "https://github.com/hhvrc/dreadscripts-unlocked"
+          },
+          "gitDependencies": {},
+          "vpmDependencies": {
+            "com.vrchat.avatars": "^3.0.0"
+          },
+          "legacyFolders": {},
+          "legacyFiles": {},
+          "url": "https://github.com/hhvrc/dreadscripts-unlocked/releases/download/v0.2.0/com.dreadscripts.unlocked.common-0.2.0.zip",
+          "zipSHA256": "eb3dbf9878609c295ed44b55447d1853da6723058fe438c1701a4cc473307c9a"
+        }
+      }
+    },
+    "com.dreadscripts.unlocked.controllereditor": {
+      "versions": {
+        "0.2.0": {
+          "name": "com.dreadscripts.unlocked.controllereditor",
+          "displayName": "DreadScripts - Controller Editor (Unlocked)",
+          "version": "0.2.0",
+          "description": "Restored build of DreadScripts Controller Editor, a discontinued Unity Editor tool for working with VRChat animator controllers, reconstructed from the shipped assembly after the vendor's license server was permanently shut down. The original tools are the work of their author; this package is a community restoration and is not affiliated with or endorsed by them.",
+          "unity": "2022.3",
+          "type": "tool",
+          "author": {
+            "name": "dreadscripts-unlocked contributors",
+            "url": "https://github.com/hhvrc/dreadscripts-unlocked"
+          },
+          "gitDependencies": {},
+          "vpmDependencies": {
+            "com.vrchat.avatars": "^3.0.0",
+            "com.dreadscripts.unlocked.common": "0.2.0"
+          },
+          "legacyFolders": {},
+          "legacyFiles": {},
+          "legacyPackages": [
+            "com.dreadscripts.unlocked"
+          ],
+          "url": "https://github.com/hhvrc/dreadscripts-unlocked/releases/download/v0.2.0/com.dreadscripts.unlocked.controllereditor-0.2.0.zip",
+          "zipSHA256": "d52210fc0b888f557929b2f51353fdb8e3d64e441380e0fa840d70be89d94d77"
+        }
+      }
     }
   }
 }
