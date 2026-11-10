@@ -22,8 +22,8 @@ The packages then appear in the "Manage Project" list for any Avatars project on
 VCC resolves dependencies itself. `common` is never installed on purpose; it is the code the two
 tools shared, and comes in with either one.
 
-Up to 0.1.0 both tools were one package, `com.dreadscripts.unlocked`. It is no longer built, but
-0.1.0 stays in the listing, since projects that installed it still resolve against it. Both tools
+Up to 0.1.0 both tools were one package, `com.dreadscripts.unlocked`. It is no longer built and
+no longer listed. Both tools
 name it in `legacyPackages`, so installing either one makes VCC remove it; otherwise the old copy and
 the new one would both compile and declare every type twice.
 
@@ -50,8 +50,7 @@ listing names them, so VCC never sees an entry whose download is missing.
 All three packages share one version and one tag, because release-tool keeps one version per
 repository. A tool therefore always depends on exactly the `common` it was released with: the
 dependency is pinned to the release version in the zipped `package.json` and in the listing,
-whatever range the committed manifest carries. `com.dreadscripts.unlocked` 0.1.0 predates the
-split and stays listed under the `v0.1.0` release.
+whatever range the committed manifest carries.
 
 `index.json` is generated, not written. Each package's `package.json` is the only place it describes
 itself; the listing repeats every one of those fields per version, so maintaining it by hand means
@@ -60,7 +59,7 @@ here. `python3 vpm/build_listing.py` previews what a build would produce.
 
 Two properties worth knowing about the generator:
 
-- **The listing is append-only.** Versions already published are preserved rather than regenerated,
+- **The listing is append-only per package.** Versions already published are preserved rather than regenerated,
   URL included. VCC resolves an installed project against the versions it has seen, so removing one
   breaks that project rather than tidying the file. For the same reason the generator exits non-zero
   if a published version's contents changed: the listed hash is what VCC checks the download

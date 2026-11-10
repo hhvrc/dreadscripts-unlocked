@@ -32,10 +32,9 @@ Because they release in lockstep, a tool always depends on exactly the `common` 
 `--version` pins those dependencies in the zipped `package.json` and in the listing, whatever range the
 committed manifest carries, since release-tool only rewrites the top-level `version` field.
 
-Up to 0.1.0 both tools were one package, `com.dreadscripts.unlocked`. It is no longer built, but its
-published version stays in the listing as it was released (tag `v0.1.0`, URL and hash included),
-because projects that installed it still resolve against it. Both tools name it in
-`legacyPackages`, so VCC removes it when either is installed.
+Only packages that are still in the tree are listed. Up to 0.1.0 both tools were one package,
+`com.dreadscripts.unlocked`; it is no longer built, so it is no longer listed. Both tools name it in
+`legacyPackages`, so VCC removes it from a project when either is installed.
 
     python3 vpm/build_listing.py                          # report what would change
     python3 vpm/build_listing.py --write                  # write index.json and the zips
@@ -165,9 +164,12 @@ def main() -> int:
     listing = dict(LISTING_INFO)
     listing["packages"] = {}
 
-    # Packages that are in the listing but no longer in the tree keep their published versions.
+    # Published versions of packages still in the tree are kept; a package no longer in the tree is
+    # dropped from the listing.
+    current = {m["name"] for _, m in packages}
     for name, entry in old_packages.items():
-        listing["packages"][name] = {"versions": dict(entry.get("versions", {}))}
+        if name in current:
+            listing["packages"][name] = {"versions": dict(entry.get("versions", {}))}
 
     republished = []
     for package_dir, manifest in packages:

@@ -22,8 +22,8 @@ Then, in Manage Project for any Avatars project on Unity 2022.3, add whichever y
 
 | Package | |
 |---|---|
-| **DreadScripts - Controller Editor (Unlocked)** | Controller Editor |
-| **DreadScripts - Avatar Dynamics Overhaul (Unlocked)** | Avatar Dynamics Overhaul |
+| **DreadScripts - Controller Editor** | Controller Editor |
+| **DreadScripts - Avatar Dynamics Overhaul** | Avatar Dynamics Overhaul |
 
 Each needs `com.vrchat.avatars` 3.x and the small shared package both tools are built on, and VCC
 resolves both for you.
