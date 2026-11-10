@@ -26,6 +26,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
+      actions: write # dispatch pages.yml on main
     env:
       TAG: ${{ github.ref_name }}
 
@@ -85,10 +86,11 @@ jobs:
           git commit -m "chore: list ${TAG} in the VPM listing"
           git push origin HEAD:refs/heads/main
 
-  deploy:
-    needs: publish
-    uses: ./.github/workflows/pages.yml
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
+      # Dispatched on main rather than called from here: the github-pages environment only accepts
+      # deployments from main, and a called workflow would run in this tag's context and be
+      # rejected. The listing commit above was pushed with GITHUB_TOKEN, which does not trigger
+      # pages.yml's own push trigger.
+      - name: Deploy the listing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
