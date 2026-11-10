@@ -123,9 +123,12 @@ broke earlier tooling got introduced.
 `VERIFIED` asserts the file was diffed against `export/`. Do not write it
 otherwise.
 
-## Known debt
+## Line numbers after a re-snapshot
 
 `reverse-engineering/export/` was re-snapshotted in `561e9ec`, which renumbered every file and
-renamed some obfuscated members. Headers written before that commit carry stale
-line numbers. They are still correct on member names. The checker reports stale
-numbers as warnings, not errors, until that sweep is done.
+renamed some obfuscated members. The headers written before it were swept onto the new numbering in
+one pass, with the left column left as it was (see above for why).
+
+A re-snapshot will move numbers again. `port-coverage.py` reports a claim whose line no longer lands
+on a declaration as `stale`, per export file. That count is 0 after the sweep, so any nonzero value
+is new drift to fix, not old debt.

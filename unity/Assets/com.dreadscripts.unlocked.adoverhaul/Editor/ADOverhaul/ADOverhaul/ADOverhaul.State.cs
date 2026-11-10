@@ -17,59 +17,59 @@
 //   m_Configuration  -> physBoneReflectionResolved, line 5578
 //   _Identifier      -> physBoneManagerLateUpdate,  line 5580
 //   context          -> physBoneManagerOnDestroy,   line 5582
-//   _Serializer      -> physBoneStart,              line 5584
-//   method           -> physBoneOnEnable,           line 5586
+//   _Serializer      -> physBoneStart,              line 5788
+//   method           -> physBoneOnEnable,           line 5790
 //   utils            -> physBoneOnDisable,          line 5588
 //   _Page            -> physBoneColliderStart,      line 5590
 //   property         -> physBoneColliderOnEnable,   line 5592
-//   _Singleton       -> physBoneColliderOnDisable,  line 5594
+//   _Singleton       -> physBoneColliderOnDisable,  line 5798
 //
 //   -- PhysBone test mode (decompiled 5596-5618, 5654-5664) --
 //   _Account         -> isTesting,                       line 5596
-//   _Params          -> testPhysBoneManager,             line 5598
-//   importer         -> testRoot,                        line 5600
+//   _Params          -> testPhysBoneManager,             line 5802
+//   importer         -> testRoot,                        line 5804
 //   m_Server         -> testSourceRoots,                 line 5602
 //   watcher          -> selectedObjectsBeforeTest,       line 5604
 //   reg              -> activeObjectBeforeTest,          line 5606
-//   _Process         -> testPhysBones,                   line 5608
-//   m_Val            -> testPhysBoneEnabled,             line 5610
-//   m_Adapter        -> testPhysBoneStarted,             line 5612
+//   _Process         -> testPhysBones,                   line 5812
+//   m_Val            -> testPhysBoneEnabled,             line 5814
+//   m_Adapter        -> testPhysBoneStarted,             line 5816
 //   proxy            -> testColliders,                   line 5614
 //   m_Comparator     -> testColliderEnabled,             line 5616
-//   _Product         -> testColliderStarted,             line 5618
+//   _Product         -> testColliderStarted,             line 5822
 //   helper           -> originalToClone,                 line 5654
-//   candidate        -> cloneToOriginal,                 line 5656
+//   candidate        -> cloneToOriginal,                 line 5860
 //   _Test            -> cloneHasUnappliedChanges,        line 5658
-//   m_Stub           -> hasUnappliedTestChanges,         line 5660
-//   _Rules           -> colliderChangedDuringTest,       line 5662
-//   _Definition      -> hasShownColliderRestartPrompt,   line 5664
+//   m_Stub           -> hasUnappliedTestChanges,         line 5864
+//   _Rules           -> colliderChangedDuringTest,       line 5866
+//   _Definition      -> hasShownColliderRestartPrompt,   line 5868
 //
 //   -- Scene-view handle plumbing (decompiled 5620, 5650-5652) --
-//   _Iterator        -> handleControlIdBase,        line 5620
+//   _Iterator        -> handleControlIdBase,        line 5824
 //   customer         -> sceneViewPanelResizeHandle, line 5650
 //   m_Database       -> tooltipDragControlId,       line 5652
 //
 //   -- Avatar selection and its derived tables (decompiled 5622-5632) --
-//   m_Predicate      -> selectedAvatar,             line 5622
-//   _Collection      -> sceneAvatars,               line 5624
-//   m_Registry       -> avatarParameterNames,       line 5626
-//   m_Client         -> avatarCollisionTags,        line 5628
-//   _Observer        -> avatarPlayableLayerNames,   line 5630
-//   m_Broadcaster    -> avatarPlayableLayerTypes,   line 5632
+//   m_Predicate      -> selectedAvatar,             line 5826
+//   _Collection      -> sceneAvatars,               line 5828
+//   m_Registry       -> avatarParameterNames,       line 5830
+//   m_Client         -> avatarCollisionTags,        line 5832
+//   _Observer        -> avatarPlayableLayerNames,   line 5834
+//   m_Broadcaster    -> avatarPlayableLayerTypes,   line 5836
 //
 //   -- Shape-handle toggles (decompiled 5634-5648) --
 //   @event           -> unusedShapeFlag,   line 5634
 //   record           -> editingRadius,     line 5636
-//   _Resolver        -> editingHeight,     line 5638
+//   _Resolver        -> editingHeight,     line 5842
 //   _Tag             -> editingPosition,   line 5640
 //   filter           -> editingRotation,   line 5642
 //   m_Factory        -> shapeHasRadius,    line 5644
-//   _Attribute       -> shapeHasHeight,    line 5646
+//   _Attribute       -> shapeHasHeight,    line 5850
 //   task             -> shapeHasRotation,  line 5648
 //
 //   -- Bug report and feedback panels (decompiled 5666-5678) --
 //   initializer -> NOT PORTED, line 5666 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
-//   getter -> NOT PORTED, line 5668 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
+//   getter -> NOT PORTED, line 5872 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
 //   thread -> NOT PORTED, line 5670 -- the bug-reporter panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
 //   m_Algo -> NOT PORTED, line 5672 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
 //   role -> NOT PORTED, line 5674 -- the feedback panel, removed with it -- it posted to the dead vendor endpoint and its drawing half was never ported
@@ -82,36 +82,36 @@
 //   m_Repository -> NOT PORTED, line 5684 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   descriptor -> NOT PORTED, line 5686 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   m_Strategy -> NOT PORTED, line 5688 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   global -> NOT PORTED, line 5690 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   global -> NOT PORTED, line 5894 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   manager -> NOT PORTED, line 5692 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   _Worker -> NOT PORTED, line 5694 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   indexer -> NOT PORTED, line 5696 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _Worker -> NOT PORTED, line 5898 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   indexer -> NOT PORTED, line 5900 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   m_Pool -> NOT PORTED, line 5698 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   _System -> NOT PORTED, line 5700 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   setter -> NOT PORTED, line 5702 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   _Rule -> NOT PORTED, line 5704 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _Rule -> NOT PORTED, line 5908 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   _Struct -> NOT PORTED, line 5706 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   _Interpreter -> NOT PORTED, line 5708 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   attr -> NOT PORTED, line 5710 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   _Object -> NOT PORTED, line 5712 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   _Service -> NOT PORTED, line 5714 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   _Reponse -> NOT PORTED, line 5716 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _Interpreter -> NOT PORTED, line 5912 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   attr -> NOT PORTED, line 5914 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _Object -> NOT PORTED, line 5916 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _Service -> NOT PORTED, line 5918 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   _Reponse -> NOT PORTED, line 5920 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   specification -> NOT PORTED, line 5718 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   m_Wrapper -> NOT PORTED, line 5720 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   _Info -> NOT PORTED, line 5722 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
-//   m_Config -> NOT PORTED, line 5724 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
+//   m_Config -> NOT PORTED, line 5928 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   _Mock -> NOT PORTED, line 5726 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //   state -> NOT PORTED, line 5728 -- licence/activation state, removed with the licence code -- see vendor-backend/EXCLUDED.md
 //
 //   -- Update and announcement banner (decompiled 5730-5744) --
 //   m_Field          -> isDownloadingUpdate,   line 5730
-//   m_Advisor        -> isCheckingForUpdate,   line 5732
+//   m_Advisor        -> isCheckingForUpdate,   line 5936
 //   exporter         -> hasCheckedForUpdate,   line 5734
 //   creator          -> updateAvailable,       line 5736
 //   dispatcher       -> updateFoldout,         line 5738
 //   m_Connection     -> announcementFoldout,   line 5740
-//   m_Expression     -> version,               line 5742
-//   m_Decorator      -> extraMenuLinks,        line 5744
+//   m_Expression     -> version,               line 5946
+//   m_Decorator      -> extraMenuLinks,        line 5948
 //
 // Names were derived from each field's call sites across decompiled lines 164-8696, not from the
 // obfuscated identifiers, which are drawn at random from a design-pattern word list and are

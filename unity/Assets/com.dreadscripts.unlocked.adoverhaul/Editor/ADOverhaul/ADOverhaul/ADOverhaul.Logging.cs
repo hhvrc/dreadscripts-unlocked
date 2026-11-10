@@ -3,9 +3,9 @@
 // Ported region: the tool's console-logging family, decompiled lines 7796-7840.
 //
 //   NewIdentifier     -> Log,        line 7806
-//   DefineIdentifier  -> LogWarning, line 7796
-//   DestroyIdentifier -> LogError,   line 7801
-//   CompareIdentifier -> ThrowError, line 7834
+//   DefineIdentifier  -> LogWarning, line 8000
+//   DestroyIdentifier -> LogError,   line 8005
+//   CompareIdentifier -> ThrowError, line 8038
 //
 // Line numbers are relative to the current snapshot; the decompiled names are the durable
 // reference. Field references go through the table in ADOverhaul.State.cs.

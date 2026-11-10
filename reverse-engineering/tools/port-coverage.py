@@ -30,8 +30,8 @@ hook once the numbers are where you want them.
 CAVEATS, so the number is read correctly:
 
   - A claimed line number that no longer points at a declaration is counted as `stale` and covers
-    nothing. export/ was renumbered in 561e9ec and many headers still carry pre-561e9ec numbers, so
-    expect a nonzero stale count; it is a measure of that debt, not of missing work.
+    nothing. The headers were swept onto the 561e9ec numbering, so the count is 0; a nonzero one
+    means a re-snapshot or an edit has moved something since.
   - Brace matching is textual. It skips string, char and comment content, but it is not a parser.
   - `, in <file>.cs` entries are pointers, not claims, and are ignored -- the owning file's own
     entry is what counts.

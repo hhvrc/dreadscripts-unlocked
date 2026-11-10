@@ -1,9 +1,9 @@
 // Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/QuickInputWindow.cs
-//   static CreateHelper -> Create,        line 60
-//   NewHelper           -> SetValue,      line 104
-//   PushHelper          -> SetObjectType, line 116
-//   ViewHelper          -> GetSize,       line 133
-//   CollectHelper       -> ShowAt,        line 142
+//   static CreateHelper -> Create,        line 39
+//   NewHelper           -> SetValue,      line 87
+//   PushHelper          -> SetObjectType, line 92
+//   ViewHelper          -> GetSize,       line 104
+//   CollectHelper       -> ShowAt,        line 109
 //   m_ParamPolicy       -> inRow
 //   _ModelPolicy        -> values
 //   m_TokenizerPolicy   -> labels
@@ -12,8 +12,8 @@
 //   exceptionPolicy     -> onConfirm
 //   m_ObjectPolicy      -> validate
 //   m_UtilsPolicy       -> objectTypes
-// Line numbers are relative to the port at the time it was written; the member names are the
-// durable reference.
+// Line numbers are relative to the decompiled snapshot at the time of the port; the member names
+// are the durable reference.
 //
 // Audit status: VERIFIED -- diffed in full against export/. The nested FieldType enum, all eight
 // fields, the Title accessor and every method match statement for statement. Create's

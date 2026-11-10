@@ -5,7 +5,7 @@
 //   FindVisitor    -> Log,        line 10886
 //   AddVisitor     -> LogWarning, line 10876
 //   InvokeVisitor  -> LogError,   line 10881
-//   ExcludeVisitor -> ThrowError, line 10906
+//   ExcludeVisitor -> ThrowError, line 10908
 //
 // Line numbers are relative to the current snapshot; the decompiled names are the durable
 // reference. The whole region is ported -- nothing between those lines is left out.

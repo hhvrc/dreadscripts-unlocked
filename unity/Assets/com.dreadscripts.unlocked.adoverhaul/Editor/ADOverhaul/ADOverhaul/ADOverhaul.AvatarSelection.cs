@@ -8,25 +8,25 @@
 //   -- Avatar selection --
 //   PublishConfiguration   -> BuildLayerParameterOptions,    line 6567
 //   CollectConfiguration   -> SplitDigits,                   line 6583
-//   PrintConfiguration     -> RefreshSceneAvatars,           line 6596
+//   PrintConfiguration     -> RefreshSceneAvatars,           line 6800
 //   InterruptConfiguration -> DrawAvatarSelector,            line 6617
-//   ViewConfiguration      -> DrawAvatarPopup,               line 6626
-//   PostConfiguration      -> DrawAvatarWarnings,            line 6653
+//   ViewConfiguration      -> DrawAvatarPopup,               line 6830
+//   PostConfiguration      -> DrawAvatarWarnings,            line 6857
 //   ListConfiguration      -> DrawPrefabWarning,             line 6666
 //   ForgotConfiguration    -> DrawPlayableLayerWarning,      line 6684
-//   PushConfiguration      -> DrawTargetAvatarSelector,      line 6806
+//   PushConfiguration      -> DrawTargetAvatarSelector,      line 7010
 //   PrepareConfiguration   -> DrawAvatarParameterField,      line 6811
 //   PostIdentifier         -> the local function ReportParameterAdd, line 8629
 //
 //   -- GUI field helpers --
-//   UpdateConfiguration    -> GetMaxLossyScale,              line 6712
-//   SearchConfiguration    -> DrawPropertyWithEditToggle,    line 6717
-//   LoginConfiguration     -> DrawIconToggle,                line 6726
-//   PatchConfiguration     -> DrawToggleButton(string, ...), line 6735
+//   UpdateConfiguration    -> GetMaxLossyScale,              line 6916
+//   SearchConfiguration    -> DrawPropertyWithEditToggle,    line 6921
+//   LoginConfiguration     -> DrawIconToggle,                line 6930
+//   PatchConfiguration     -> DrawToggleButton(string, ...), line 6939
 //   CheckConfiguration     -> DrawToggleButton(GUIContent, ...), line 6740
-//   CallConfiguration      -> DrawPropertyToggleButton(SerializedProperty, string, ...), line 6748
-//   RegisterConfiguration  -> DrawPropertyToggleButton(SerializedProperty, GUIContent, ...), line 6753
-//   ChangeConfiguration    -> DrawOptionalProperty,          line 6769
+//   CallConfiguration      -> DrawPropertyToggleButton(SerializedProperty, string, ...), line 6952
+//   RegisterConfiguration  -> DrawPropertyToggleButton(SerializedProperty, GUIContent, ...), line 6957
+//   ChangeConfiguration    -> DrawOptionalProperty,          line 6973
 //   StopConfiguration      -> DrawSelfOthersToggles,         line 6777
 //
 // ============================ MoveConfiguration (6561) -- NOT PORTED ============================

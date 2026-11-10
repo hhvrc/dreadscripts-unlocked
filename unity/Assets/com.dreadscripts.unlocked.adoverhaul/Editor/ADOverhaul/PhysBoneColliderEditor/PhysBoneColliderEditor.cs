@@ -3,17 +3,17 @@
 // Ported region: the PhysBoneColliderEditor class, lines 2161-2356 of the current snapshot. Line
 // numbers move with the snapshot; the member names below are the durable reference.
 //
-//   _FieldIdentifier        -> shapeFoldout,          line 122
-//   advisorIdentifier       -> editorOverrideEnabled, line 137
-//   _CreatorIdentifier      -> shapeType,             line 145
-//   exporterIdentifier      -> rootTransform,         line 151
-//   expressionIdentifier    -> radius,                line 154
-//   _DecoratorIdentifier    -> height,                line 157
-//   paramIdentifier         -> position,              line 163
-//   _PrototypeIdentifier    -> rotation,              line 169
-//   m_DispatcherIdentifier  -> insideBounds,          line 175
-//   connectionIdentifier    -> bonesAsSpheres,        line 181
-//   AwakeProperty()         -> CacheProperties(),     line 187
+//   _FieldIdentifier        -> shapeFoldout,          line 2163
+//   advisorIdentifier       -> editorOverrideEnabled, line 2168
+//   _CreatorIdentifier      -> shapeType,             line 2172
+//   exporterIdentifier      -> rootTransform,         line 2170
+//   expressionIdentifier    -> radius,                line 2178
+//   _DecoratorIdentifier    -> height,                line 2180
+//   paramIdentifier         -> position,              line 2182
+//   _PrototypeIdentifier    -> rotation,              line 2184
+//   m_DispatcherIdentifier  -> insideBounds,          line 2174
+//   connectionIdentifier    -> bonesAsSpheres,        line 2176
+//   AwakeProperty()         -> CacheProperties(),     line 2323
 //   m_BaseIdentifier        -> colliderType,          line 2186
 //   _RequestIdentifier      -> sdkColliderEditorType, line 2188
 //   OnInspectorGUI()        -> unchanged,             line 2190

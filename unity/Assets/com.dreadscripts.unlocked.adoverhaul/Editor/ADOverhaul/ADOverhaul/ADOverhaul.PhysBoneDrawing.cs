@@ -4,7 +4,7 @@
 // the scene-view handles. Line numbers are relative to the snapshot at the time of the port -- see
 // the audit note at the end for the offset since; the decompiled names are the durable reference.
 //
-//   RunConfiguration    -> DrawShapeProperties, line 5746
+//   RunConfiguration    -> DrawShapeProperties, line 5950
 //   OrderConfiguration  -> DrawShapeHandles,    line 5840
 //
 // Used by the region above, but owned by another file. DrawPropertyWithEditToggle is called

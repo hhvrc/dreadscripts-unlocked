@@ -6,7 +6,7 @@
 //
 //   CancelConfiguration  -> SetShapeEditOverlayActive,    line 6700
 //   LogoutConfiguration  -> RefreshAvatarTables,          line 6509
-//   SetupConfiguration   -> RefreshAvatarParameterNames,  line 6524
+//   SetupConfiguration   -> RefreshAvatarParameterNames,  line 6728
 //   SelectConfiguration  -> ResetFoldouts,                line 6536
 //
 // PARTIAL PORT. The rest of the region is left out rather than stubbed. This list was written when

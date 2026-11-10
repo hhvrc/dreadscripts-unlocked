@@ -1,6 +1,6 @@
 // Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/EditorUtils.cs
 //   static ForgotRules        -> FindType(string),         line 5285
-//   static WriteRules         -> RequireType(string),      line 5276
+//   static WriteRules         -> RequireType(string),      line 5275
 //   static RemoveResolver     -> Is<T>(this Type),         line 2650
 //   static InstantiateResolver -> Is(this Type, Type),     line 2659
 // Line numbers are relative to the decompiled snapshot at the time of the port; the type and

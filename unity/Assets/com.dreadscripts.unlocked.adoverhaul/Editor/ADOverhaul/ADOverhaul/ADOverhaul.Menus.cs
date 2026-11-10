@@ -5,15 +5,15 @@
 // 8185-8296). Line numbers move with the snapshot; the decompiled names below are the durable
 // reference. Field references go through the table in ADOverhaul.State.cs.
 //
-//   SortIdentifier      -> DrawToolHeader,           line 7904
-//   InvokeIdentifier    -> ShowContextMenu,          line 7936
-//   CustomizeIdentifier -> DrawUpdateBanner,         line 8020
+//   SortIdentifier      -> DrawToolHeader,           line 8108
+//   InvokeIdentifier    -> ShowContextMenu,          line 8140
+//   CustomizeIdentifier -> DrawUpdateBanner,         line 8224
 //   ConcatIdentifier    -> DrawAnnouncementBanner,   line 8059
-//   SetupIdentifier     -> ApplyCachedUpdateInfo,    line 8185
+//   SetupIdentifier     -> ApplyCachedUpdateInfo,    line 8389
 //   SelectIdentifier    -> DrawFoldoutBox,           line 8228
-//   WriteIdentifier     -> DrawTitledOverlay,        line 8249
-//   MoveIdentifier      -> DrawOverlay,              line 8266
-//   PublishIdentifier   -> DrawSettingsButton,       line 8290
+//   WriteIdentifier     -> DrawTitledOverlay,        line 8453
+//   MoveIdentifier      -> DrawOverlay,              line 8470
+//   PublishIdentifier   -> DrawSettingsButton,       line 8494
 //
 // This file was written in two passes. The first could port only PublishIdentifier, because
 // everything else here reads ADOSettings, which was not reconstructed yet. ADOSettings has since
@@ -26,8 +26,8 @@
 // Three members this file calls are decompiled lines 7770, 7775 and 7784 -- strictly the tail of the
 // update-request region, not of this one, but every surviving caller is in this file:
 //
-//   CalculateIdentifier -> RepaintOpenWindowsDelayed, line 7770
-//   CalcIdentifier      -> RepaintOpenWindows,        line 7775
+//   CalculateIdentifier -> RepaintOpenWindowsDelayed, line 7974
+//   CalcIdentifier      -> RepaintOpenWindows,        line 7979
 //   DeleteIdentifier    -> DrawCreditLink,            line 7784
 //
 // Ownership note, since the history is confusing and the files disagreed for a moment. This file and

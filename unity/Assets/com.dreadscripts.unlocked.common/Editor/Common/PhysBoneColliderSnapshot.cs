@@ -1,7 +1,7 @@
 // Reconstructed from: reverse-engineering/export/ControllerEditor/DreadScripts/ControllerEditor/PhysBoneColliderSnapshot.cs
-//   Apply()                        -> Restore,                     line 205
-//   Apply(ContactBase)             -> ApplyTo(ContactBase),        line 226
-//   Apply(VRCPhysBoneCollider)     -> ApplyTo(VRCPhysBoneCollider), line 235
+//   Apply()                        -> Restore,                     line 51
+//   Apply(ContactBase)             -> ApplyTo(ContactBase),        line 72
+//   Apply(VRCPhysBoneCollider)     -> ApplyTo(VRCPhysBoneCollider), line 81
 // Line numbers are relative to the decompiled snapshot at the time of the port; the member names
 // are the durable reference. The three same-named methods are split into Restore (write back onto
 // the source) and ApplyTo (write onto another component) so the call sites read unambiguously.

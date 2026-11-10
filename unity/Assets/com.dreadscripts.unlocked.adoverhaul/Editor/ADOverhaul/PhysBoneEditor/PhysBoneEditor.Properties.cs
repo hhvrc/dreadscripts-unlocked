@@ -1,16 +1,16 @@
 // Reconstructed from: reverse-engineering/export/ADOverhaul2022/DreadScripts/ADOverhaul/ADOverhaul.cs
 //
-// Ported region: the SerializedProperty cache of PhysBoneEditor, lines 2792-2906 of the current
-// snapshot, and PrintSingleton, lines 4113-4208. Line numbers move with the snapshot; the member
+// Ported region: the SerializedProperty cache of PhysBoneEditor, lines 2996-3114 of the current
+// snapshot, and PrintSingleton, lines 4317-4412. Line numbers move with the snapshot; the member
 // names below are the durable reference.
 //
-//   PrintSingleton()               -> CacheProperties(),  line 269
-//   taskAuthentication             -> bindings,           line 233
-//   m_CustomerAuthentication       -> bindingLabels,      line 241
-//   m_DatabaseAuthentication       -> bindingPopupValues, line 244
-//   _HelperAuthentication          -> popupValueToBindingIndex, line 254
-//   _CandidateAuthentication       -> bindingIndexToPopupValue, line 257
-//   m_ReaderAuthentication         -> bindingLabelsBuilt, line 262
+//   PrintSingleton()               -> CacheProperties(),  line 4317
+//   taskAuthentication             -> bindings,           line 3104
+//   m_CustomerAuthentication       -> bindingLabels,      line 3106
+//   m_DatabaseAuthentication       -> bindingPopupValues, line 3108
+//   _HelperAuthentication          -> popupValueToBindingIndex, line 3110
+//   _CandidateAuthentication       -> bindingIndexToPopupValue, line 3112
+//   m_ReaderAuthentication         -> bindingLabelsBuilt, line 3114
 //
 // The fifty-four SerializedProperty statics are renamed to the serialized field each one resolves,
 // so the mapping is read off the FindProperty call rather than listed here:
