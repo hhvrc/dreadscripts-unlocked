@@ -47,7 +47,13 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-PKG = ROOT / 'unity' / 'Assets' / 'com.dreadscripts.unlocked'
+PKG = ROOT / 'unity' / 'Assets'  # every com.dreadscripts.unlocked* package
+
+# Export builds that are a reference, not a porting target: ADOverhaul2019 is the same plugin as
+# ADOverhaul2022 built for an earlier Unity (port_status.py treats it the same way). A file may still
+# claim lines in it, when it carries a third copy of something both products already account for, but
+# the 2019 build's unclaimed remainder is not missing work, so it is left out of the measurement.
+REFERENCE_ONLY = ('reverse-engineering/export/ADOverhaul2019/',)
 
 SRC = re.compile(r'^//\s*Reconstructed from:\s*(\S+)')
 SRC_EXTRA = re.compile(r'^//\s{3,}(\S+\.cs)\s*$')
@@ -61,7 +67,10 @@ MAP_UNPORTED = re.compile(r'^//\s{3}(?P<d>.+?)\s*->\s*NOT PORTED,\s*line (?P<n>\
 DECL = re.compile(
     r'^\s*(\[.*\]\s*)?((public|private|protected|internal|static|readonly|sealed|abstract|override'
     r'|virtual|const|extern|unsafe|partial|async|new|volatile|event|implicit|explicit)\s+)*'
-    r'[\w<>\[\],.?]+[\s\w<>\[\],.?()]*\s*[({=;]|^\s*(class|struct|interface|enum|delegate)\s')
+    r'[\w<>\[\],.?]+[\s\w@<>\[\],.?()]*\s*[({=;]'
+    r'|^\s*(\[.*\]\s*)?((public|private|protected|internal|static|sealed|abstract|partial|new|unsafe'
+    r'|readonly|ref)\s+)*(class|struct|interface|enum|delegate|record)\s')
+ATTRIBUTE_ONLY = re.compile(r'^\s*\[.*\]\s*$')
 
 
 def read_header(path):
@@ -155,6 +164,9 @@ def member_extent(lines, start, limit=4000):
         return None
 
     idx = start - 1
+    # A claim may point at an attribute that sits on its own line above the declaration.
+    while idx < len(lines) - 1 and ATTRIBUTE_ONLY.match(lines[idx]):
+        idx += 1
     if not DECL.match(lines[idx]):
         return None
 
@@ -172,6 +184,19 @@ def member_extent(lines, start, limit=4000):
         if not seen_brace and code.rstrip().endswith(';'):
             return (start, i + 1)  # field, or expression-bodied member
     return (start, min(len(lines), idx + limit))
+
+
+def module_of(source):
+    """The DreadScripts module an export file belongs to: the folder under DreadScripts/, labelled
+    with its assembly when the two differ (ADOverhaul is decompiled from ADOverhaul2022)."""
+    parts = Path(source).parts
+    assembly = parts[2] if len(parts) > 2 else '?'
+    if 'DreadScripts' in parts:
+        i = parts.index('DreadScripts')
+        module = '/'.join(parts[i + 1:-1]) or assembly
+    else:
+        module = assembly
+    return module if module == assembly else f'{module} ({assembly})'
 
 
 def is_code(line):
@@ -205,6 +230,8 @@ def main():
 
     report = {}
     for source, claims in sorted(by_source.items()):
+        if source.startswith(REFERENCE_ONLY):
+            continue
         export_path = ROOT / source
         if not export_path.is_file():
             unresolved.add(source)
@@ -245,6 +272,7 @@ def main():
             gaps.sort(key=lambda g: -g[2])
 
         report[source] = {
+            'module': module_of(source),
             'codeLines': len(code_lines),
             'ported': len(covered),
             'excluded': len(excluded),
@@ -255,33 +283,53 @@ def main():
             'largestGaps': [{'from': a, 'to': b, 'lines': n} for a, b, n in gaps[:args.n]],
         }
 
+    keys = ('codeLines', 'ported', 'excluded', 'unaccounted', 'staleClaims')
+    modules = collections.defaultdict(collections.Counter)
+    for r in report.values():
+        for k in keys:
+            modules[r['module']][k] += r[k]
+
+    def pcts(t):
+        code = t['codeLines']
+        return ((round(100.0 * t['ported'] / code, 1) if code else 0.0),
+                (round(100.0 * (t['ported'] + t['excluded']) / code, 1) if code else 0.0))
+
     if args.json:
-        print(json.dumps({'files': report, 'ambiguous': ambiguous,
+        mod_out = {}
+        for m, t in sorted(modules.items()):
+            port_pct, acct_pct = pcts(t)
+            mod_out[m] = dict(t, coveragePct=port_pct, accountedPct=acct_pct)
+        print(json.dumps({'modules': mod_out, 'files': report, 'ambiguous': ambiguous,
                           'unresolvedSources': sorted(unresolved)}, indent=2))
     else:
-        name_w = max((len(Path(s).name) for s in report), default=20)
-        print(f'{"export file".ljust(name_w)}  {"code":>6} {"ported":>7} {"excl":>6} {"unacct":>7} '
-              f'{"port%":>6} {"acct%":>6} {"stale":>6}')
-        print('-' * (name_w + 50))
+        name_w = max([len(Path(s).name) + 2 for s in report] + [len(m) for m in modules] + [20])
+        rule = '-' * (name_w + 50)
+
+        def row(label, t):
+            port_pct, acct_pct = pcts(t)
+            return (f'{label.ljust(name_w)}  {t["codeLines"]:>6} {t["ported"]:>7} {t["excluded"]:>6} '
+                    f'{t["unaccounted"]:>7} {port_pct:>5.1f}% {acct_pct:>5.1f}% {t["staleClaims"]:>6}')
+
+        print(f'{"module / export file".ljust(name_w)}  {"code":>6} {"ported":>7} {"excl":>6} '
+              f'{"unacct":>7} {"port%":>6} {"acct%":>6} {"stale":>6}')
         tot = collections.Counter()
-        for source, r in sorted(report.items(), key=lambda kv: -kv[1]['unaccounted']):
-            print(f'{Path(source).name.ljust(name_w)}  {r["codeLines"]:>6} {r["ported"]:>7} '
-                  f'{r["excluded"]:>6} {r["unaccounted"]:>7} {r["coveragePct"]:>5.1f}% '
-                  f'{r["accountedPct"]:>5.1f}% {r["staleClaims"]:>6}')
-            for k in ('codeLines', 'ported', 'excluded', 'unaccounted', 'staleClaims'):
-                tot[k] += r[k]
-        print('-' * (name_w + 50))
-        pct = round(100.0 * tot['ported'] / tot['codeLines'], 1) if tot['codeLines'] else 0.0
-        apct = round(100.0 * (tot['ported'] + tot['excluded']) / tot['codeLines'], 1) if tot['codeLines'] else 0.0
-        print(f'{"TOTAL".ljust(name_w)}  {tot["codeLines"]:>6} {tot["ported"]:>7} '
-              f'{tot["excluded"]:>6} {tot["unaccounted"]:>7} {pct:>5.1f}% {apct:>5.1f}% '
-              f'{tot["staleClaims"]:>6}')
+        for m, t in sorted(modules.items(), key=lambda kv: -kv[1]['unaccounted']):
+            print(rule)
+            print(row(m, t))
+            files = [(s, r) for s, r in report.items() if r['module'] == m]
+            for source, r in sorted(files, key=lambda kv: -kv[1]['unaccounted']):
+                print(row('  ' + Path(source).name, r))
+            tot.update(t)
+        print(rule)
+        print(row('TOTAL', tot))
 
         if args.gaps:
-            for source, r in sorted(report.items(), key=lambda kv: -kv[1]['unaccounted']):
+            for source, r in sorted(report.items(),
+                                    key=lambda kv: (-modules[kv[1]['module']]['unaccounted'],
+                                                    -kv[1]['unaccounted'])):
                 if not r['largestGaps']:
                     continue
-                print(f'\n{Path(source).name} -- largest unaccounted runs')
+                print(f'\n[{r["module"]}] {Path(source).name} -- largest unaccounted runs')
                 for g in r['largestGaps']:
                     print(f'    lines {g["from"]:>6}-{g["to"]:<6} {g["lines"]:>5} lines')
 

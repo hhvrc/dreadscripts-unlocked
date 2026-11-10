@@ -56,7 +56,7 @@ from rename_status import entries, owner_of  # noqa: E402
 from refresh_renames import RENAMES  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
-PACKAGE = ROOT.parent / "unity" / "Assets" / "com.dreadscripts.unlocked" / "Editor"
+PACKAGE = ROOT.parent / "unity" / "Assets"  # every com.dreadscripts.unlocked* package
 
 SRC = re.compile(r"^//\s*Reconstructed from:\s*(\S+)")
 # The MAP forms that carry a decompiled name and a ported name. Sub-entries (no line number) are

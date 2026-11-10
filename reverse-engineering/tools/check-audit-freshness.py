@@ -26,7 +26,7 @@ from pathlib import Path
 # which silently scanned nothing the moment the script moved -- reporting '0 files: 0 errors'
 # and looking like a pass.
 DEFAULT_ROOT = str(Path(__file__).resolve().parent.parent.parent
-                   / 'unity' / 'Assets' / 'com.dreadscripts.unlocked')
+                   / 'unity' / 'Assets')  # every com.dreadscripts.unlocked* package
 STAMP = 'Audit status: VERIFIED'
 LF = chr(10)
 CRLF = chr(13) + chr(10)

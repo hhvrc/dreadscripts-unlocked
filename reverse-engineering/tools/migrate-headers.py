@@ -25,7 +25,7 @@ from pathlib import Path
 # which silently scanned nothing the moment the script moved -- reporting '0 files: 0 errors'
 # and looking like a pass.
 DEFAULT_ROOT = str(Path(__file__).resolve().parent.parent.parent
-                   / 'unity' / 'Assets' / 'com.dreadscripts.unlocked')
+                   / 'unity' / 'Assets')  # every com.dreadscripts.unlocked* package
 
 PAREN = re.compile(
     r'^(?P<i>//\s{3})(?P<d>.+?)\s+\((?:decompiled )?lines? (?P<n>\d+)\)\s*->\s*(?P<p>.+?)\s*$')

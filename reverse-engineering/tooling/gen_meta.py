@@ -27,7 +27,7 @@ import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PACKAGE = ROOT.parent / "unity" / "Assets" / "com.dreadscripts.unlocked"
+PACKAGE = ROOT.parent / "unity" / "Assets"  # every com.dreadscripts.unlocked* package
 
 SCRIPT_META = """fileFormatVersion: 2
 guid: {guid}
@@ -70,7 +70,7 @@ def main() -> int:
     ap.add_argument("--write", action="store_true",
                     help="create the missing files (default is to report only)")
     ap.add_argument("--root", type=Path, default=PACKAGE,
-                    help="package root to scan (default: the restored package)")
+                    help="root to scan (default: unity/Assets, which holds every restored package)")
     args = ap.parse_args()
 
     root = args.root.resolve()

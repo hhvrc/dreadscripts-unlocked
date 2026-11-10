@@ -18,8 +18,18 @@ In the VRChat Creator Companion: **Settings → Packages → Add Repository**, a
 https://hhvrc.github.io/dreadscripts-unlocked/index.json
 ```
 
-The package then appears in Manage Project for any Avatars project on Unity 2022.3. It needs
-`com.vrchat.avatars` 3.x, which VCC resolves for you.
+Then, in Manage Project for any Avatars project on Unity 2022.3, add whichever you want:
+
+| Package | |
+|---|---|
+| **DreadScripts - Controller Editor (Unlocked)** | Controller Editor |
+| **DreadScripts - Avatar Dynamics Overhaul (Unlocked)** | Avatar Dynamics Overhaul |
+
+Each needs `com.vrchat.avatars` 3.x and the small shared package both tools are built on, and VCC
+resolves both for you.
+
+Up to 0.1.0 the two tools were one package, **DreadScripts - Unlocked**. If a project has it, add
+the tools you use from the list above: VCC removes the old package as it installs them.
 
 ## What they do
 
@@ -35,7 +45,8 @@ radius, endpoints and limits with real handles instead of number fields, curve e
 multi-object apply across a selection, collider and ignore-transform picking by clicking in the
 scene, and a test mode that runs the dynamics without entering play mode.
 
-Both shipped as separate products and shared most of their code, so they are one package here.
+Both shipped as separate products and shared much of their code. Here each is its own package again,
+and the code they shared is a third package that either one brings in.
 
 ## What is different from the originals
 
@@ -58,7 +69,7 @@ If you would rather run the assemblies you bought, [`drm_server/`](drm_server/) 
 that answers the dead validation endpoint. It needs a hosts-file entry and a self-signed
 certificate; see [`drm_server/README.md`](drm_server/README.md).
 
-You do not need it for the package above.
+You do not need it for the packages above.
 
 ## How this was made
 
@@ -134,7 +145,7 @@ genuine bug worth reporting.
 ## Layout
 
 ```
-unity/                    the restored package
+unity/                    the restored packages, one folder each under Assets/
 vpm/                      the VPM listing VCC installs from
 drm_server/               local stand-in for the shut-down validation endpoint
 reverse-engineering/      how all of the above was produced
@@ -147,8 +158,8 @@ permanently — which left every copy unable to run, including paid ones. This r
 products are no longer sold and the licensing is no longer enforced by anyone, because there is
 nothing left running to enforce it.
 
-The restored package is derived work and this repository claims no licence over it; see the
-`NOTICE` beside the package and the table below.
+The restored packages are derived work and this repository claims no licence over them; see the
+`NOTICE` in each package and the table below.
 
 ## Licences
 
@@ -157,7 +168,7 @@ licence that applies to it.
 
 | Path | Licence | |
 |---|---|---|
-| `unity/Assets/com.dreadscripts.unlocked/` | **not ours to license** | The restored package — derived from the original author's work |
+| `unity/Assets/com.dreadscripts.unlocked*/` | **not ours to license** | The restored packages, derived from the original author's work |
 | `drm_server/` | MIT | |
 | `vpm/` | MIT | |
 | `reverse-engineering/tooling/` | **GPL-3.0** | The pipeline |

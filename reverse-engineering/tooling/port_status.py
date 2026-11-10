@@ -26,9 +26,25 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXPORT = ROOT / "export"
-PACKAGE = ROOT.parent / "unity" / "Assets" / "com.dreadscripts.unlocked" / "Editor"
+ASSETS = ROOT.parent / "unity" / "Assets"
 
-# Where each export subtree is ported to, relative to PACKAGE.
+# Each module is its own VPM package; the module directory inside it keeps the module's name, so a
+# destination below reads the same as it did when the three shared one package.
+MODULE_DIRS = {
+    "ADOverhaul": ASSETS / "com.dreadscripts.unlocked.adoverhaul" / "Editor" / "ADOverhaul",
+    "ControllerEditor": ASSETS / "com.dreadscripts.unlocked.controllereditor" / "Editor" / "ControllerEditor",
+    "Common": ASSETS / "com.dreadscripts.unlocked.common" / "Editor" / "Common",
+}
+
+
+def module_path(rel: str) -> Path:
+    """`<Module>/<rest>` -> the directory it lives in, in whichever package owns that module."""
+    module, _, rest = rel.partition("/")
+    base = MODULE_DIRS[module]
+    return base / rest if rest else base
+
+
+# Where each export subtree is ported to, as <Module>/<path within it>.
 DESTINATIONS = {
     "ADOverhaul2022/DreadScripts/ADOverhaul": "ADOverhaul",
     "ControllerEditor/DreadScripts/ControllerEditor": "ControllerEditor",
@@ -57,6 +73,8 @@ SHARED = {
     # ADOverhaul's copy is nested inside ADOEditorUtility as ReadableTexture rather than being a
     # file of its own, so only the ControllerEditor stem appears here.
     "ReadableTextureScope": "ReadableTextureScope",
+    # Shipped only in ControllerEditor, but ADOverhaul uses it too, so it is ported into Common.
+    "PhysBoneColliderSnapshot": "PhysBoneColliderSnapshot",
 }
 
 # ADOverhaul2019 is the same plugin as ADOverhaul2022, built for an earlier Unity. Only one of them
@@ -194,7 +212,7 @@ def main() -> int:
         return 1
 
     # Types shared by both products live here rather than under either tool's directory.
-    shared_files = by_stem(PACKAGE / "Common")
+    shared_files = by_stem(MODULE_DIRS["Common"])
     shared_landed = set(shared_files)
 
     # Every package file already reported on, so the closing sweep can tell an unported region that
@@ -202,7 +220,7 @@ def main() -> int:
     accounted = set()
     total_done = total_todo = total_skip = 0
     for src_rel, dst_rel in DESTINATIONS.items():
-        src, dst = EXPORT / src_rel, PACKAGE / dst_rel
+        src, dst = EXPORT / src_rel, module_path(dst_rel)
         if not src.is_dir():
             print(f"{src_rel}: missing from export/")
             continue
@@ -325,13 +343,13 @@ def main() -> int:
     # A file hoisted out of a root class has no <Stem>.cs in export/ to be matched against, so the
     # loop above never looks at it and an unported region inside it goes unreported entirely. This
     # sweep is the only thing that can see those, and it found five the per-stem walk could not.
-    orphan = sorted(p for p in PACKAGE.rglob("*.cs")
+    orphan = sorted(p for p in ASSETS.rglob("*.cs")
                     if p not in accounted and file_is_incomplete(p))
     if orphan:
         print(f"\n{len(orphan)} unported region(s) in files with no export counterpart "
               f"(hoisted out of a root class, so no stem matches them):")
         for p in orphan:
-            print(f"  {p.relative_to(PACKAGE)}")
+            print(f"  {p.relative_to(ASSETS)}")
     if STRIP_DRM:
         print("\nported only after stripping the licence code inside them:")
         for stem, why in sorted(STRIP_DRM.items()):

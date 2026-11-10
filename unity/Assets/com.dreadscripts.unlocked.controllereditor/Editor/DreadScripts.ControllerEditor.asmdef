@@ -1,0 +1,18 @@
+{
+    "name": "DreadScripts.ControllerEditor",
+    "rootNamespace": "DreadScripts.ControllerEditor",
+    "references": [
+        "DreadScripts.Common"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

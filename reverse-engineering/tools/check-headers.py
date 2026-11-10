@@ -17,7 +17,7 @@ from pathlib import Path
 # which silently scanned nothing the moment the script moved -- reporting '0 files: 0 errors'
 # and looking like a pass.
 DEFAULT_ROOT = str(Path(__file__).resolve().parent.parent.parent
-                   / 'unity' / 'Assets' / 'com.dreadscripts.unlocked')
+                   / 'unity' / 'Assets')  # every com.dreadscripts.unlocked* package
 
 FIRST = re.compile(r'^// (?:Reconstructed from|Shared by both tools)\b')
 SRC = re.compile(r'^//\s*Reconstructed from:\s*(\S+)')
@@ -111,7 +111,9 @@ def check(root):
             for i, line in enumerate(head):
                 m = SRC.match(line)
                 if m:
-                    source = m.group(1).split('/')[-1]
+                    # The full path, not the basename: ADOverhaul2019 and ADOverhaul2022 each have an
+                    # ADOEditorUtility.cs, and a line in one is not a line in the other.
+                    source = m.group(1)
                 if AUDIT.match(line):
                     saw_audit = True
                     stats['audit:' + AUDIT.match(line).group(1)] += 1
@@ -174,8 +176,9 @@ def check(root):
                 # re-snapshot looks identical until you can see that the two files name different
                 # decompiled members.
                 where = ', '.join(f'{os.path.basename(p)} [{n}]' for p, n in sorted(rows))
+                label = '/'.join(key[0].split('/')[-4:])
                 errors[rows[0][0]].append(
-                    f'{key[0]}:{key[1]} claimed by {len(files)} files: {where}')
+                    f'{label}:{key[1]} claimed by {len(files)} files: {where}')
     return errors, warns, stats
 
 

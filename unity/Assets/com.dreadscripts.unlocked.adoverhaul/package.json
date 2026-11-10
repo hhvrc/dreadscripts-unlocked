@@ -1,0 +1,22 @@
+{
+  "name": "com.dreadscripts.unlocked.adoverhaul",
+  "displayName": "DreadScripts - Avatar Dynamics Overhaul (Unlocked)",
+  "version": "0.2.0",
+  "description": "Restored build of DreadScripts Avatar Dynamics Overhaul, a discontinued Unity Editor tool that replaces the inspectors for VRChat PhysBones and Contacts, reconstructed from the shipped assembly after the vendor's license server was permanently shut down. The original tools are the work of their author; this package is a community restoration and is not affiliated with or endorsed by them.",
+  "unity": "2022.3",
+  "type": "tool",
+  "author": {
+    "name": "dreadscripts-unlocked contributors",
+    "url": "https://github.com/hhvrc/dreadscripts-unlocked"
+  },
+  "gitDependencies": {},
+  "vpmDependencies": {
+    "com.vrchat.avatars": "^3.0.0",
+    "com.dreadscripts.unlocked.common": "^0.2.0"
+  },
+  "legacyFolders": {},
+  "legacyFiles": {},
+  "legacyPackages": [
+    "com.dreadscripts.unlocked"
+  ]
+}
