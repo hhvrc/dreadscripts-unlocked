@@ -29,32 +29,34 @@ the new one would both compile and declare every type twice.
 
 ## Publishing a version
 
-[`index.json`](index.json) is generated, not written. Each package's `package.json` is the only
-place it describes itself; the listing repeats every one of those fields per version, so maintaining
-it by hand means two copies of the same facts and a mismatch that surfaces inside someone else's
-project rather than here.
+Releases are automated. Nothing here is run by hand.
 
-Each package is versioned and released on its own, under a tag of its own:
-
-| Package | Release tag |
-|---|---|
-| `com.dreadscripts.unlocked.controllereditor` | `controllereditor-v<version>` |
-| `com.dreadscripts.unlocked.adoverhaul` | `adoverhaul-v<version>` |
-| `com.dreadscripts.unlocked.common` | `common-v<version>` |
-
-To release, bump `version` in the packages that changed (and the dependency ranges on them, if a
-change needs a newer `common`), then:
+**To release, add a change file and push to `main`.** [`release.yml`](../.github/workflows/release.yml)
+runs OpenShock's [release-tool](https://github.com/OpenShock/release-tool) on every push. With no
+change files waiting in [`.changes/`](../.changes/README.md) it does nothing. With some, it computes
+the next version from them, writes it into all three `package.json` files and `CHANGELOG.md`, commits,
+tags `v<version>`, stages a draft GitHub release with the notes, and hands the tag to publish.yml.
 
 ```bash
-python3 vpm/build_listing.py            # report what would change
-python3 vpm/build_listing.py --write    # build the zips, hash them, rewrite index.json
+release-tool new "Fix the collider gizmo drawing at the wrong scale" --kind fixed
 ```
 
-Create each new version's release under its tag and attach `vpm/dist/<name>-<version>.zip`, which is
-where that version's `url` in the listing points. Do this before pushing `index.json`: the push
-publishes the listing, and an entry whose zip is not there yet fails to install. The zips are release
-artifacts and are not committed. `com.dreadscripts.unlocked` 0.1.0 predates the split and stays at
-the `v0.1.0` tag it was released under.
+[`publish.yml`](../.github/workflows/publish.yml) runs on every `v*` tag, including one pushed by hand
+(its `package.json` files must already carry the version). It builds the three zips at the tag with
+`build_listing.py --version`, attaches them to the release and publishes it, adds the version to
+[`index.json`](index.json) on `main`, and redeploys the listing. The zips are attached before the
+listing names them, so VCC never sees an entry whose download is missing.
+
+All three packages share one version and one tag, because release-tool keeps one version per
+repository. A tool therefore always depends on exactly the `common` it was released with: the
+dependency is pinned to the release version in the zipped `package.json` and in the listing,
+whatever range the committed manifest carries. `com.dreadscripts.unlocked` 0.1.0 predates the
+split and stays listed under the `v0.1.0` release.
+
+`index.json` is generated, not written. Each package's `package.json` is the only place it describes
+itself; the listing repeats every one of those fields per version, so maintaining it by hand means
+two copies of the same facts and a mismatch that surfaces inside someone else's project rather than
+here. `python3 vpm/build_listing.py` previews what a build would produce.
 
 Two properties worth knowing about the generator:
 
@@ -62,10 +64,9 @@ Two properties worth knowing about the generator:
   URL included. VCC resolves an installed project against the versions it has seen, so removing one
   breaks that project rather than tidying the file. For the same reason the generator exits non-zero
   if a published version's contents changed: the listed hash is what VCC checks the download
-  against, so that version needs a bump instead.
-- **The archive is deterministic.** Members are written in sorted order, so an unchanged package
-  produces an unchanged zip and an unchanged hash. Otherwise the listing looks stale every time it
-  is rebuilt.
+  against, so that version needs a new release instead.
+- **The archive is deterministic.** Members are written in sorted order with fixed timestamps, so an
+  unchanged package produces an unchanged zip and an unchanged hash, on any machine.
 
 ## Serving it
 

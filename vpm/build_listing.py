@@ -23,19 +23,26 @@ Every `unity/Assets/com.dreadscripts.unlocked*/package.json` is a package:
     com.dreadscripts.unlocked.controllereditor  Controller Editor
     com.dreadscripts.unlocked.adoverhaul        Avatar Dynamics Overhaul
 
-Each is versioned on its own and released under its own tag, `<short name>-v<version>` (for example
-`controllereditor-v0.2.0`), so releasing one tool does not bump the others.
+All three share one version and are released together under one tag, `v<version>`. The version is
+not chosen here: OpenShock's release-tool computes it from the change files in `.changes/`, writes it
+into each `package.json`, and tags the release commit (see .github/workflows/release.yml). A tag then
+runs .github/workflows/publish.yml, which calls this script with `--version`.
+
+Because they release in lockstep, a tool always depends on exactly the `common` it was released with.
+`--version` pins those dependencies in the zipped `package.json` and in the listing, whatever range the
+committed manifest carries, since release-tool only rewrites the top-level `version` field.
 
 Up to 0.1.0 both tools were one package, `com.dreadscripts.unlocked`. It is no longer built, but its
 published version stays in the listing as it was released (tag `v0.1.0`, URL and hash included),
 because projects that installed it still resolve against it. Both tools name it in
 `legacyPackages`, so VCC removes it when either is installed.
 
-    python3 vpm/build_listing.py                 # report what would change
-    python3 vpm/build_listing.py --write         # write index.json and the zips
+    python3 vpm/build_listing.py                          # report what would change
+    python3 vpm/build_listing.py --write                  # write index.json and the zips
+    python3 vpm/build_listing.py --write --version 0.2.0  # CI: release 0.2.0 (checks the manifests agree)
 
-The zips are written to `vpm/dist/` and are NOT committed -- they are release artifacts. Attach each
-to the GitHub release its listing URL names, so the URL resolves.
+The zips are written to `vpm/dist/` and are NOT committed -- they are release artifacts, attached to
+the GitHub release for the tag by publish.yml.
 """
 
 import argparse
@@ -67,9 +74,14 @@ LISTING_INFO = {
 }
 
 
+# Fixed member timestamps: a zip records each file's mtime, which a fresh checkout sets to the time of
+# the checkout, so without this the same tree would hash differently on every run.
+ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+
+
 def tag_for(name: str, version: str) -> str:
-    """The release tag a package version is published under."""
-    return f"{name[len(PREFIX):]}-v{version}"
+    """The release tag a package version is published under: one tag for all packages."""
+    return f"v{version}"
 
 
 def find_packages() -> list[tuple[Path, dict]]:
@@ -94,8 +106,17 @@ def check_dependencies(packages: list[tuple[Path, dict]]) -> None:
                 sys.exit(f"error: {m['name']} depends on {dep}, which is not one of the packages here")
 
 
+def pin_own_dependencies(manifest: dict, version: str) -> dict:
+    """A copy of the manifest whose dependencies on our own packages require exactly `version`."""
+    pinned = dict(manifest)
+    pinned["vpmDependencies"] = {dep: (version if dep.startswith(PREFIX) else rng)
+                                 for dep, rng in manifest.get("vpmDependencies", {}).items()}
+    return pinned
+
+
 def build_zip(package_dir: Path, manifest: dict, write: bool) -> tuple[Path, str]:
-    """(zip path, sha256). The hash is what VCC verifies, so it is computed from the real bytes."""
+    """(zip path, sha256). The hash is what VCC verifies, so it is computed from the real bytes.
+    `manifest` is what goes into the zip's package.json, which may differ from the committed one."""
     name, version = manifest["name"], manifest["version"]
     out = DIST / f"{name}-{version}.zip"
     if write:
@@ -106,8 +127,17 @@ def build_zip(package_dir: Path, manifest: dict, write: bool) -> tuple[Path, str
         # that moves for no reason makes the listing look stale when nothing has happened.
         with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
             for f in sorted(package_dir.rglob("*")):
-                if f.is_file():
-                    z.write(f, f.relative_to(package_dir).as_posix())
+                if not f.is_file():
+                    continue
+                arcname = f.relative_to(package_dir).as_posix()
+                info = zipfile.ZipInfo(arcname, date_time=ZIP_TIMESTAMP)
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = 0o644 << 16
+                if arcname == "package.json":
+                    data = (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
+                else:
+                    data = f.read_bytes()
+                z.writestr(info, data)
     if not out.exists():
         return out, ""
     return out, hashlib.sha256(out.read_bytes()).hexdigest()
@@ -117,10 +147,18 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--write", action="store_true", help="write index.json and build the zips")
+    ap.add_argument("--version", help="release this version: every package must carry it, and "
+                                      "dependencies between our packages are pinned to it")
     args = ap.parse_args()
 
     packages = find_packages()
     check_dependencies(packages)
+    if args.version:
+        wrong = [f"{m['name']} is {m['version']}" for _, m in packages if m["version"] != args.version]
+        if wrong:
+            sys.exit(f"error: releasing {args.version}, but " + ", ".join(wrong) +
+                     ". release-tool writes the version into every package.json; was the tag made by it?")
+        packages = [(d, pin_own_dependencies(m, args.version)) for d, m in packages]
 
     old = json.loads(LISTING.read_text(encoding="utf-8")) if LISTING.is_file() else {}
     old_packages = old.get("packages", {})

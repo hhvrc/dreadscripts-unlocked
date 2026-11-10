@@ -1,0 +1,94 @@
+# Publishes a release tag to the Creator Companion: builds the three package zips at the tag, attaches
+# them to the tag's GitHub release, adds the version to vpm/index.json on main, and redeploys the
+# listing. Runs on any v* tag, whether release.yml made it (it dispatches this) or it was pushed by
+# hand. The tag's package.json files must already carry its version; build_listing.py checks.
+name: publish
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch: # release.yml dispatches this on the tag it pushed
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ github.ref_name }}
+
+    steps:
+      - name: Require a release tag
+        if: github.ref_type != 'tag' || !startsWith(github.ref_name, 'v')
+        run: |
+          echo "::error::publish runs on a v<version> tag, not on ${GITHUB_REF}."
+          exit 1
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # origin/main, for the listing published so far
+          lfs: true # 0Harmony.dll ships in the ControllerEditor package
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # The listing on main, not the one at the tag: it may list releases made after this tag's
+      # commit, and the listing is append-only.
+      - name: Start from the published listing
+        run: git show origin/main:vpm/index.json > vpm/index.json
+
+      - name: Build package zips and listing
+        run: python3 vpm/build_listing.py --write --version "${TAG#v}"
+
+      - name: Attach zips to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          shopt -s nullglob
+          zips=(vpm/dist/*-"${TAG#v}".zip)
+          if [ "${#zips[@]}" -ne 3 ]; then
+            echo "::error::expected 3 package zips for ${TAG}, found ${#zips[@]}"
+            exit 1
+          fi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${zips[@]}" --clobber
+            gh release edit "$TAG" --draft=false
+          else
+            gh release create "$TAG" "${zips[@]}" --title "$TAG" --generate-notes --verify-tag
+          fi
+
+      - name: Commit the listing to main
+        run: |
+          cp vpm/index.json "$RUNNER_TEMP/index.json"
+          git fetch origin main
+          git checkout -f -B main origin/main
+          cp "$RUNNER_TEMP/index.json" vpm/index.json
+          if git diff --quiet -- vpm/index.json; then
+            echo "Listing already lists ${TAG}."
+            exit 0
+          fi
+          git add vpm/index.json
+          git commit -m "chore: list ${TAG} in the VPM listing"
+          git push origin HEAD:refs/heads/main
+
+  deploy:
+    needs: publish
+    uses: ./.github/workflows/pages.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

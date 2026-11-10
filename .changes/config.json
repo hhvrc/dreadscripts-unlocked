@@ -1,0 +1,13 @@
+{
+  "tag_prefix": "v",
+  "branches": {
+    "main": { "release": "stable" }
+  },
+  "version_files": [
+    { "path": "unity/Assets/com.dreadscripts.unlocked.common/package.json", "json_key": "version" },
+    { "path": "unity/Assets/com.dreadscripts.unlocked.controllereditor/package.json", "json_key": "version" },
+    { "path": "unity/Assets/com.dreadscripts.unlocked.adoverhaul/package.json", "json_key": "version" }
+  ],
+  "maintainers": ["hhvrc"],
+  "ignore_paths": ["reverse-engineering/**", "drm_server/**", "**/*.md", ".github/**"]
+}

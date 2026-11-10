@@ -1,6 +1,9 @@
 # Serves the VPM listing (vpm/index.json) at https://hhvrc.github.io/dreadscripts-unlocked/index.json,
-# the URL users add to the Creator Companion. Only the listing is published; the package zip it
-# points at is a release asset.
+# the URL users add to the Creator Companion. Only the listing is published; the package zips it
+# points at are release assets.
+#
+# publish.yml calls this after it commits a new version to the listing. That commit is pushed with
+# GITHUB_TOKEN, which never triggers the push trigger below, so the call is what deploys it.
 name: Deploy VPM listing
 
 on:
@@ -8,6 +11,7 @@ on:
     branches: [main]
     paths: [vpm/index.json, .github/workflows/pages.yml]
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -25,7 +29,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # main, not the triggering ref: when publish.yml calls this from a tag, the tag predates the
+      # listing commit that lists it.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
       - name: Stage site
         run: |
           mkdir _site
