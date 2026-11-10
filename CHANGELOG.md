@@ -1,3 +1,10 @@
+## [v0.2.1] - 2026-11-10
+
+### Internal
+- List HeavenVR as the package author and drop "(Unlocked)" from the package names
+
+**Full Changelog: [v0.2.0 -> v0.2.1](https://github.com/hhvrc/dreadscripts-unlocked/compare/v0.2.0...v0.2.1)**
+
 ## [v0.2.0] - 2026-11-10
 
 ### Notices
