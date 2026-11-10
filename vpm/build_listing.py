@@ -68,7 +68,7 @@ RELEASE_URL = f"https://github.com/{REPO}/releases/download/{{tag}}/{{name}}-{{v
 LISTING_INFO = {
     "name": "DreadScripts Unlocked",
     "id": "com.hhvrc.dreadscripts-unlocked",
-    "author": "dreadscripts-unlocked contributors",
+    "author": "HeavenVR",
     "url": LISTING_URL,
     "description": "Community restoration of two discontinued DreadScripts Unity Editor tools.",
 }
